@@ -20,6 +20,7 @@ private:
 
 private slots:
     void pushbutton1_click();
+    void pushbutton2_click();
 };
 
 #endif // MAINWINDOW_H

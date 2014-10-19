@@ -7,6 +7,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     this->connect(this->ui->pushButton, SIGNAL(clicked()), this, SLOT(pushbutton1_click()));
+    this->connect(this->ui->pushButton_2, SIGNAL(clicked()), this, SLOT(pushbutton2_click()));
 }
 
 MainWindow::~MainWindow()
@@ -16,4 +17,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::pushbutton1_click(){
     this->ui->lineEdit->setText("Internet is for porn");
+}
+
+void MainWindow::pushbutton2_click(){
+    this->ui->lineEdit->setText("");
 }
