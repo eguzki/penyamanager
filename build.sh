@@ -1,7 +1,75 @@
-#/bin/bash
 
-set -e
+#!/bin/bash
+#
+# Simple build script for Unix
+# This will invoke qmake and make at the same time ...
+#
 
-qmake
+help()
+{
+    echo "usage: build.sh ARGS"
+    echo "where ARGS can be:"
+    cat << EOF
+    clean           clean all generated files
+    --release       do a Release build (not yet implemented)
+EOF
+}
 
-make
+checkBinary()
+{
+    set +e
+    FIND=$(which $1)
+    if [ ${#FIND} -eq 0 ]
+    then
+     echo "$1 is not installed ?"
+     exit 1
+    fi
+    set -e
+}
+
+set -e # Returns error if any command returns error
+
+# configuration options
+# ... you can store you local modifications on a 'build.local' file
+
+checkBinary "which"
+checkBinary "qmake"
+checkBinary "make"
+QMAKE=$(which qmake)
+MAKE=$(which make)
+
+PROJECT_NAME="penyamanager"
+CURRENT_PATH="$( cd "$( dirname "$0" )" && pwd )"
+TARGETPATH=$CURRENT_PATH/dist
+PROJECT_PATH=$CURRENT_PATH/$PROJECT_NAME
+QMAKE_FLAGS="-Wall"
+DEBUG=yes
+
+while [ "$1" ]
+do
+    case $1 in
+    clean)
+        CLEAN=yes
+        ;;
+    --release)
+        DEBUG=no
+        ;;
+    --help)
+        help
+        exit 0
+        ;;
+    *)
+        TARGET="$1";;
+    esac
+    shift
+done
+
+[ -d $TARGETPATH ] || mkdir -p $TARGETPATH
+
+echo "** BUILD:: running \"$QMAKE\" and \"$MAKE $TARGET\" in $TARGETPATH [DEBUG build]"
+cd $TARGETPATH
+$QMAKE $QMAKE_FLAGS $PROJECT_PATH
+
+echo "** BUILD:: making with: $MAKE**"
+$MAKE
+
