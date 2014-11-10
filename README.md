@@ -4,7 +4,7 @@ penyamanager
 **penyamanager** project provides a cross-platform system to manage private membership oriented clubs.
 
 # Highlights
-* Invoice generator
+* Create invoice/order
 * Invoice manager
 * Table reservation manager
 * Membership manager
@@ -15,11 +15,10 @@ penyamanager
 # TODO
 * Login
 * Member Dashboard
-* Member invoice list
+* Member activity
 * Member invoice detail
 * Member Deposits
 * Member table reservation
-* Member account activity
 * DAO
 * Admin, membership manager, list, info detail
 * Admin product manager
@@ -31,7 +30,7 @@ TODO
 # Development
 
 ## Howto build
-* Install QTCreator [IDE](https://qt-project.org/downloads) 
+* Install QTCreator [IDE](https://qt-project.org/downloads)
 * Clone source code from [here](https://github.com/eguzki/penyamanager)
 * From QTCreator import **penyamanager.pro** file
 * Build: CTRL + SHIFT + B
