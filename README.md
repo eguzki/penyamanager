@@ -11,6 +11,7 @@ penyamanager
 * Member account manager
 * Stock manager
 * Product manager
+* other thing
 
 # TODO
 * Login
