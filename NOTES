@@ -1,0 +1,3 @@
+* Exit application from tray icon
+http://qt-project.org/doc/qt-4.8/qsystemtrayicon.html
+http://stackoverflow.com/questions/10369826/how-can-i-disable-alt-f4-window-closing-using-qt
