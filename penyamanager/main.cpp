@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
     mainWindow.setParner(&loginWindow);
     loginWindow.setParner(&mainWindow);
 
-    loginWindow.show();
+    loginWindow.showMaximized();
 
     return a.exec();
 }

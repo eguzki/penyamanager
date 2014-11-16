@@ -17,7 +17,7 @@ void LoginWindow::setParner(QWidget *partner) {
     if(partner == 0)
         return;
 
-   connect(this->ui->loginButton, SIGNAL(clicked()), this, SLOT(hide()));
-   connect(this->ui->loginButton, SIGNAL(clicked()), partner, SLOT(showMaximized()));
+    connect(this->ui->loginButton, SIGNAL(clicked()), this, SLOT(hide()));
+    connect(this->ui->loginButton, SIGNAL(clicked()), partner, SLOT(showMaximized()));
 
 }

@@ -19,8 +19,8 @@ void MainWindow::setParner(QWidget *partner) {
     if(partner == 0)
         return;
 
-   connect(this->ui->exitButton, SIGNAL(clicked()), this, SLOT(hide()));
-   connect(this->ui->exitButton, SIGNAL(clicked()), partner, SLOT(showMaximized()));
+    connect(this->ui->exitButton, SIGNAL(clicked()), this, SLOT(hide()));
+    connect(this->ui->exitButton, SIGNAL(clicked()), partner, SLOT(showMaximized()));
 
 }
 
