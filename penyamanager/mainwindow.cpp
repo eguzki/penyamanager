@@ -7,7 +7,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    this->connect(this->ui->pushButton, SIGNAL(clicked()), this, SLOT(pushbutton1_click()));
+    this->connect(this->ui->quitButton, SIGNAL(clicked()), this, SLOT(quitButtonOnClick()));
 }
 
 MainWindow::~MainWindow()
@@ -15,6 +15,15 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::pushbutton1_click(){
-    this->ui->lineEdit->setText("Internet is for porn");
+void MainWindow::setParner(QWidget *partner) {
+    if(partner == 0)
+        return;
+
+   connect(this->ui->exitButton, SIGNAL(clicked()), this, SLOT(hide()));
+   connect(this->ui->exitButton, SIGNAL(clicked()), partner, SLOT(showMaximized()));
+
+}
+
+void MainWindow::quitButtonOnClick(){
+    exit(0);
 }

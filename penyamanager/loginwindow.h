@@ -14,12 +14,13 @@ class LoginWindow : public QMainWindow
 public:
     explicit LoginWindow(QWidget *parent = 0);
     ~LoginWindow();
+    void setParner(QWidget *partner);
 
 private:
     Ui::LoginWindow *ui;
 
 private slots:
-    void pushbutton1_click();
+
 };
 
 #endif // LOGINWINDOW_H

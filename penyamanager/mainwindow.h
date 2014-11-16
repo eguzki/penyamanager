@@ -14,12 +14,13 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    void setParner(QWidget *partner);
 
 private:
     Ui::MainWindow *ui;
 
 private slots:
-    void pushbutton1_click();
+    void quitButtonOnClick();
 };
 
 #endif // MAINWINDOW_H

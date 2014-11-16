@@ -6,8 +6,6 @@ LoginWindow::LoginWindow(QWidget *parent) :
     ui(new Ui::LoginWindow)
 {
     ui->setupUi(this);
-
-    this->connect(this->ui->pushButton, SIGNAL(clicked()), this, SLOT(pushbutton1_click()));
 }
 
 LoginWindow::~LoginWindow()
@@ -15,6 +13,11 @@ LoginWindow::~LoginWindow()
     delete ui;
 }
 
-void LoginWindow::pushbutton1_click(){
-    this->ui->lineEdit->setText("Internet is for porn");
+void LoginWindow::setParner(QWidget *partner) {
+    if(partner == 0)
+        return;
+
+   connect(this->ui->loginButton, SIGNAL(clicked()), this, SLOT(hide()));
+   connect(this->ui->loginButton, SIGNAL(clicked()), partner, SLOT(showMaximized()));
+
 }
