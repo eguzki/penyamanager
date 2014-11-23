@@ -7,6 +7,7 @@ penyamanager
 * Create invoice/order
 * Invoice manager
 * Table reservation manager
+* Table manager
 * Membership manager
 * Member account manager
 * Stock manager
