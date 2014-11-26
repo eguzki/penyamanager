@@ -2,7 +2,7 @@
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
+    QWidget(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
@@ -20,7 +20,7 @@ void MainWindow::setParner(QWidget *partner) {
         return;
 
     connect(this->ui->exitButton, SIGNAL(clicked()), this, SLOT(hide()));
-    connect(this->ui->exitButton, SIGNAL(clicked()), partner, SLOT(showMaximized()));
+    connect(this->ui->exitButton, SIGNAL(clicked()), partner, SLOT(showFullScreen()));
 
 }
 

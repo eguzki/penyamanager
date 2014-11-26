@@ -2,7 +2,7 @@
 #include "ui_loginwindow.h"
 
 LoginWindow::LoginWindow(QWidget *parent) :
-    QMainWindow(parent),
+    QWidget(parent),
     ui(new Ui::LoginWindow)
 {
     ui->setupUi(this);
@@ -18,6 +18,6 @@ void LoginWindow::setParner(QWidget *partner) {
         return;
 
     connect(this->ui->loginButton, SIGNAL(clicked()), this, SLOT(hide()));
-    connect(this->ui->loginButton, SIGNAL(clicked()), partner, SLOT(showMaximized()));
+    connect(this->ui->loginButton, SIGNAL(clicked()), partner, SLOT(showFullScreen()));
 
 }
