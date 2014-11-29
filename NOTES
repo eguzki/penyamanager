@@ -35,6 +35,7 @@ http://stackoverflow.com/questions/10369826/how-can-i-disable-alt-f4-window-clos
 * Inventario?? num dosis given day??
 
 * Languages:
+** check QT translatable property of labels
 ** table with fields: label_id, lang(bool), text
 ** primary key: (label_id, lang)
 ** lang: 0 -> euskera
