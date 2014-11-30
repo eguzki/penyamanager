@@ -27,6 +27,8 @@ penyamanager
 
 # Howto install
 * Windows 7
+* Network partition for resources
+* Mysql driver install
 TODO
 
 # Development

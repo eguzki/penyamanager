@@ -62,12 +62,9 @@ flags = [
 
     '-DQT_CORE_LIB',
     '-DQT_GUI_LIB',
-    '-DQT_NETWORK_LIB',
-    '-DQT_QML_LIB',
-    '-DQT_QUICK_LIB',
     '-DQT_SQL_LIB',
     '-DQT_WIDGETS_LIB',
-    '-DQT_XML_LIB',
+    '-DQT_NETWORK_LIB',
 
     '-I', '/usr/include/c++/4.8.2',
     '-I', '/usr/include/x86_64-linux-gnu/c++/4.8',

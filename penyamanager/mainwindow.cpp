@@ -25,5 +25,7 @@ void MainWindow::setParner(QWidget *partner) {
 }
 
 void MainWindow::quitButtonOnClick(){
-    exit(0);
+    // qApp is a macro defined as: (QApplication*)QCoreApplication::instance()
+    qApp->exit(0);
+    //close();
 }
