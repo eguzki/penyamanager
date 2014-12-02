@@ -17,12 +17,14 @@ TEMPLATE = app
 SOURCES += main.cpp\
         singletons.cpp\
         ddbbhelper.cpp\
+        familyviewdelegate.cpp\
         mainwindow.cpp\
         loginwindow.cpp
 
 HEADERS  += mainwindow.h\
         singletons.h\
         ddbbhelper.h\
+        familyviewdelegate.h\
         loginwindow.h
 
 FORMS    += mainwindow.ui\
