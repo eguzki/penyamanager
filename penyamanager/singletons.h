@@ -1,7 +1,7 @@
 #ifndef SINGLETONS_H
 #define SINGLETONS_H
 
-#include <QtSql>
+#include "dao.h"
 
 class Singletons
 {
@@ -11,7 +11,7 @@ class Singletons
         static void Destroy();
 
     public:
-        static QSqlDatabase m_db;
+        static DAO *m_pDAO;
 };
 
 #endif // SINGLETONS_H

@@ -11,20 +11,23 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 QTPLUGIN += qsqlmysql
 
+#QMAKE_CXXFLAGS += -std=gnu++0x
+QMAKE_CXXFLAGS += -std=c++11
+
 TARGET = penyamanager
 TEMPLATE = app
 
 SOURCES += main.cpp\
         singletons.cpp\
-        ddbbhelper.cpp\
-        familyviewdelegate.cpp\
+        dao.cpp\
         mainwindow.cpp\
+        objs/ProductFamily.cpp\
         loginwindow.cpp
 
 HEADERS  += mainwindow.h\
         singletons.h\
-        ddbbhelper.h\
-        familyviewdelegate.h\
+        dao.h\
+        objs/ProductFamily.h\
         loginwindow.h
 
 FORMS    += mainwindow.ui\

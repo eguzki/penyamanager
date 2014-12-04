@@ -1,26 +1,32 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QWidget>
+#include "IPartner.h"
 
 namespace Ui {
 class MainWindow;
 }
 
-class MainWindow : public QWidget
+class MainWindow : public IPartner
 {
     Q_OBJECT
 
-public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
-    void setParner(QWidget *partner);
+    public:
+        //
+        explicit MainWindow(QWidget *parent = 0);
+        //
+        ~MainWindow();
+        //
+        void setParner(IPartner *partner);
 
-private:
-    Ui::MainWindow *ui;
+    private:
+        Ui::MainWindow *ui;
 
-private slots:
-    void quitButtonOnClick();
+    private slots:
+        //
+        void quitButtonOnClick();
+        //
+        void init();
 };
 
 #endif // MAINWINDOW_H

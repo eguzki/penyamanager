@@ -1,28 +1,19 @@
 //
-#include <QtSql>
 
-#include "ddbbhelper.h"
-//#include "familyviewdelegate.h"
+#include <QMessageBox>
+
+#include "singletons.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
 //
 MainWindow::MainWindow(QWidget *parent) :
-    QWidget(parent),
+    IPartner(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
     this->connect(this->ui->quitButton, SIGNAL(clicked()), this, SLOT(quitButtonOnClick()));
-
-    QSqlQueryModel *pModel = new FamilyItemsSqlQueryModel;
-    pModel->setQuery("SELECT idproduct_family, name, image FROM product_family WHERE active = 1");
-
-//    FamilyViewDelegate *pFvd = new FamilyViewDelegate;
-
-    ui->familyListView->setModelColumn(1);
-    ui->familyListView->setModel(pModel);
- //   ui->familyListView->setItemDelegate(pFvd);
 }
 
 //
@@ -32,13 +23,26 @@ MainWindow::~MainWindow()
 }
 
 //
-void MainWindow::setParner(QWidget *partner)
+void MainWindow::setParner(IPartner *partner)
 {
     if(partner == 0)
         return;
 
     connect(this->ui->exitButton, SIGNAL(clicked()), this, SLOT(hide()));
-    connect(this->ui->exitButton, SIGNAL(clicked()), partner, SLOT(showFullScreen()));
+    connect(this->ui->exitButton, SIGNAL(clicked()), partner, SLOT(init()));
+}
+
+void MainWindow::init()
+{
+    showFullScreen();
+    if (!Singletons::m_pDAO->isOpen()) {
+        QSqlError err = Singletons::m_pDAO->lastError();
+        QMessageBox::critical(this, "Unable to initialize Database",
+                "Error initializing database: " + err.text());
+        qApp->exit(0);
+    }
+
+    Singletons::m_pDAO->getProductFamilies();
 }
 
 //
