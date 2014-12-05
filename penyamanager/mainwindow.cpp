@@ -1,5 +1,7 @@
 //
 
+#include <QLabel>
+#include <QListWidgetItem>
 #include <QMessageBox>
 
 #include "singletons.h"
@@ -34,7 +36,6 @@ void MainWindow::setParner(IPartner *partner)
 
 void MainWindow::init()
 {
-    showFullScreen();
     if (!Singletons::m_pDAO->isOpen()) {
         QSqlError err = Singletons::m_pDAO->lastError();
         QMessageBox::critical(this, "Unable to initialize Database",
@@ -42,7 +43,38 @@ void MainWindow::init()
         qApp->exit(0);
     }
 
-    Singletons::m_pDAO->getProductFamilies();
+    ProductFamilyListPtr pfListPtr = Singletons::m_pDAO->getProductFamilies();
+
+    fillFamilyProducts(pfListPtr);
+
+    showFullScreen();
+}
+//
+void MainWindow::createFamilyWidget(const ProductFamilyPtr &pfPtr, QListWidget *pList)
+{
+    QListWidgetItem *pFamilyItem = new QListWidgetItem(pList);
+    pList->addItem(pFamilyItem);
+
+    QWidget *pFamilyWidget = new QWidget;
+    QLabel *pImageLabel = new QLabel(pfPtr->m_imagePath);
+    QLabel *pTextLabel = new QLabel(pfPtr->m_name);
+
+    QHBoxLayout *pLayout = new QHBoxLayout;
+    pLayout->addWidget(pImageLabel);
+    pLayout->addWidget(pTextLabel);
+    pFamilyWidget->setLayout(pLayout);
+    pFamilyItem->setSizeHint(pLayout->minimumSize());
+    pList->setItemWidget(pFamilyItem, pFamilyWidget);
+}
+//
+void MainWindow::fillFamilyProducts(const ProductFamilyListPtr &pflPtr)
+{
+    this->ui->familyListWidget->clear();
+
+    for (ProductFamilyList::iterator iter = pflPtr->begin(); iter != pflPtr->end(); ++iter)
+    {
+        createFamilyWidget(*iter, this->ui->familyListWidget);
+    }
 }
 
 //

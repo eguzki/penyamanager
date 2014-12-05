@@ -1,6 +1,9 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QListWidget>
+
+#include "objs/ProductFamily.h"
 #include "IPartner.h"
 
 namespace Ui {
@@ -18,6 +21,12 @@ class MainWindow : public IPartner
         ~MainWindow();
         //
         void setParner(IPartner *partner);
+
+    private:
+        //
+        void fillFamilyProducts(const ProductFamilyListPtr &pflPtr);
+        //
+        void createFamilyWidget(const ProductFamilyPtr &pfPtr, QListWidget *pList);
 
     private:
         Ui::MainWindow *ui;
