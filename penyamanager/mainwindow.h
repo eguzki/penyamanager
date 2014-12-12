@@ -10,6 +10,9 @@ namespace Ui {
 class MainWindow;
 }
 
+
+namespace PenyaManager {
+
 class MainWindow : public IPartner
 {
     Q_OBJECT
@@ -36,6 +39,9 @@ class MainWindow : public IPartner
         void quitButtonOnClick();
         //
         void init();
+        //
+        void familyItemClicked(QListWidgetItem* item);
 };
+}
 
 #endif // MAINWINDOW_H

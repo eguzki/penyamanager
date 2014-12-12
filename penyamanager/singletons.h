@@ -3,6 +3,8 @@
 
 #include "dao.h"
 
+namespace PenyaManager {
+
 class Singletons
 {
     public:
@@ -13,5 +15,7 @@ class Singletons
     public:
         static DAO *m_pDAO;
 };
+
+}
 
 #endif // SINGLETONS_H

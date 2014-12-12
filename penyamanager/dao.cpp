@@ -1,6 +1,7 @@
 #include "DataTypes.h"
 #include "dao.h"
 
+namespace PenyaManager {
 //
 DAO::DAO(const QString& hostname, const QString& databaseName,
                 const QString& username, const QString& pass)
@@ -60,4 +61,5 @@ ProductFamilyListPtr DAO::getProductFamilies()
     }
     m_productFamiliesQuery.finish();
     return pfListPrt;
+}
 }

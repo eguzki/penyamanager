@@ -2,6 +2,8 @@
 
 #include "singletons.h"
 
+namespace PenyaManager {
+
 DAO *Singletons::m_pDAO = 0;
 
 void Singletons::Create() {
@@ -15,4 +17,6 @@ void Singletons::Destroy() {
         delete m_pDAO;
         m_pDAO = 0;
     }
+}
+
 }

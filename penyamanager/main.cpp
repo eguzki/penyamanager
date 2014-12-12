@@ -6,12 +6,12 @@
 
 int main(int argc, char *argv[])
 {
-    Singletons::Create();
+    PenyaManager::Singletons::Create();
 
     QApplication::setStyle("windows");
     QApplication a(argc, argv);
-    MainWindow mainWindow;
-    LoginWindow loginWindow;
+    PenyaManager::MainWindow mainWindow;
+    PenyaManager::LoginWindow loginWindow;
 
     mainWindow.setParner(&loginWindow);
     loginWindow.setParner(&mainWindow);
@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 
     int returnValue = a.exec();
 
-    Singletons::Destroy();
+    PenyaManager::Singletons::Destroy();
 
     return returnValue;
 }

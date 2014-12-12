@@ -7,27 +7,31 @@ namespace Ui {
 class LoginWindow;
 }
 
-class LoginWindow : public IPartner
-{
-    Q_OBJECT
+namespace PenyaManager {
 
-    public:
-        //
-        explicit LoginWindow(QWidget *parent = 0);
-        //
-        ~LoginWindow();
-        //
-        void setParner(IPartner *partner);
-        //
-        void start();
+    class LoginWindow : public IPartner
+    {
+        Q_OBJECT
 
-    private:
-        Ui::LoginWindow *ui;
+        public:
+            //
+            explicit LoginWindow(QWidget *parent = 0);
+            //
+            ~LoginWindow();
+            //
+            void setParner(IPartner *partner);
+            //
+            void start();
 
-    private slots:
-        //
-        void init();
+        private:
+            Ui::LoginWindow *ui;
 
-};
+        private slots:
+            //
+            void init();
+
+    };
+
+}
 
 #endif // LOGINWINDOW_H

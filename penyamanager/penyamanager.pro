@@ -17,16 +17,22 @@ QMAKE_CXXFLAGS += -std=c++11
 TARGET = penyamanager
 TEMPLATE = app
 
+RESOURCES = penyamanager.qrc
+
 SOURCES += main.cpp\
         singletons.cpp\
         dao.cpp\
         mainwindow.cpp\
+        utils.cpp\
+        constants.cpp\
         objs/ProductFamily.cpp\
         loginwindow.cpp
 
 HEADERS  += mainwindow.h\
         singletons.h\
         dao.h\
+        utils.h\
+        constants.h\
         objs/ProductFamily.h\
         loginwindow.h
 
