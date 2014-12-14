@@ -16,7 +16,30 @@ CREATE TABLE IF NOT EXISTS `alegria`.`product_family` (
   `name` VARCHAR(45) NOT NULL,
   `image` VARCHAR(300) NOT NULL,
   `active` TINYINT(1) NOT NULL,
+  `reg_date` DATETIME NOT NULL,
   PRIMARY KEY (`idproduct_family`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `alegria`.`product_item`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `alegria`.`product_item` ;
+
+CREATE TABLE IF NOT EXISTS `alegria`.`product_item` (
+  `idproduct_item` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(200) NOT NULL,
+  `image` VARCHAR(300) NOT NULL,
+  `active` TINYINT(1) NOT NULL,
+  `reg_date` DATETIME NOT NULL,
+  `idproduct_family` INT NOT NULL,
+  PRIMARY KEY (`idproduct_item`),
+  INDEX `fk_product_item_product_family_idx` (`idproduct_family` ASC),
+  CONSTRAINT `fk_product_item_product_family`
+    FOREIGN KEY (`idproduct_family`)
+    REFERENCES `alegria`.`product_family` (`idproduct_family`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
