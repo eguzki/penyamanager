@@ -28,132 +28,130 @@
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>100</height>
+       <height>150</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
        <width>16777215</width>
-       <height>100</height>
+       <height>150</height>
       </size>
      </property>
-     <widget class="QLabel" name="label">
-      <property name="geometry">
-       <rect>
-        <x>190</x>
-        <y>30</y>
-        <width>211</width>
-        <height>51</height>
-       </rect>
+     <layout class="QHBoxLayout" name="horizontalLayout_5">
+      <property name="spacing">
+       <number>4</number>
       </property>
-      <property name="font">
-       <font>
-        <pointsize>37</pointsize>
-       </font>
+      <property name="leftMargin">
+       <number>4</number>
       </property>
-      <property name="text">
-       <string>TOP BAR</string>
+      <property name="topMargin">
+       <number>4</number>
       </property>
-     </widget>
-    </widget>
-   </item>
-   <item>
-    <widget class="QWidget" name="mainWidget" native="true">
-     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <property name="rightMargin">
+       <number>4</number>
+      </property>
+      <property name="bottomMargin">
+       <number>4</number>
+      </property>
       <item>
-       <widget class="QWidget" name="paddingWidget" native="true">
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
-         <item>
-          <widget class="QGroupBox" name="familyGroupBox">
-           <property name="minimumSize">
-            <size>
-             <width>300</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>300</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="styleSheet">
-            <string notr="true"/>
-           </property>
-           <property name="title">
-            <string>Families</string>
-           </property>
-           <layout class="QVBoxLayout" name="horizontalLayout_3">
-            <item>
-             <widget class="QListWidget" name="familyListWidget">
-              <property name="movement">
-               <enum>QListView::Static</enum>
-              </property>
-              <property name="flow">
-               <enum>QListView::TopToBottom</enum>
-              </property>
-              <property name="viewMode">
-               <enum>QListView::IconMode</enum>
-              </property>
-              <property name="uniformItemSizes">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <widget class="QGroupBox" name="productGroupBox">
-           <property name="title">
-            <string>Products</string>
-           </property>
-           <layout class="QHBoxLayout" name="horizontalLayout_4">
-            <item>
-             <widget class="QListWidget" name="productListWidget"/>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <widget class="QGroupBox" name="invoiceGroupBox">
-           <property name="minimumSize">
-            <size>
-             <width>500</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>500</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="title">
-            <string>Invoice</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item alignment="Qt::AlignRight">
-       <widget class="QWidget" name="buttonWidget" native="true">
+       <widget class="QGroupBox" name="memberGroupBox">
         <property name="minimumSize">
          <size>
-          <width>250</width>
-          <height>50</height>
+          <width>300</width>
+          <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>16777215</width>
-          <height>50</height>
+          <width>300</width>
+          <height>16777215</height>
          </size>
         </property>
+        <property name="title">
+         <string>Member</string>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_6">
+         <property name="spacing">
+          <number>4</number>
+         </property>
+         <property name="leftMargin">
+          <number>4</number>
+         </property>
+         <property name="topMargin">
+          <number>4</number>
+         </property>
+         <property name="rightMargin">
+          <number>4</number>
+         </property>
+         <property name="bottomMargin">
+          <number>4</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="memberImage">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>80</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>80</width>
+             <height>80</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>TextLabel</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QWidget" name="memberView" native="true"/>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="optionsGroupBox">
+        <property name="title">
+         <string>Options</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
         <layout class="QHBoxLayout" name="horizontalLayout">
+         <property name="spacing">
+          <number>4</number>
+         </property>
+         <property name="leftMargin">
+          <number>4</number>
+         </property>
+         <property name="topMargin">
+          <number>4</number>
+         </property>
+         <property name="rightMargin">
+          <number>4</number>
+         </property>
+         <property name="bottomMargin">
+          <number>4</number>
+         </property>
          <item>
           <widget class="QPushButton" name="exitButton">
+           <property name="minimumSize">
+            <size>
+             <width>100</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>100</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="autoFillBackground">
+            <bool>false</bool>
+           </property>
            <property name="text">
             <string>Exit</string>
            </property>
@@ -161,12 +159,132 @@
          </item>
          <item>
           <widget class="QPushButton" name="quitButton">
+           <property name="minimumSize">
+            <size>
+             <width>100</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>100</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="text">
             <string>Quit</string>
            </property>
           </widget>
          </item>
+         <item>
+          <widget class="QWidget" name="paddingWidget" native="true"/>
+         </item>
         </layout>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="mainWidget" native="true">
+     <layout class="QHBoxLayout" name="verticalLayout_2">
+      <property name="spacing">
+       <number>4</number>
+      </property>
+      <property name="leftMargin">
+       <number>4</number>
+      </property>
+      <property name="topMargin">
+       <number>4</number>
+      </property>
+      <property name="rightMargin">
+       <number>4</number>
+      </property>
+      <property name="bottomMargin">
+       <number>4</number>
+      </property>
+      <item>
+       <widget class="QGroupBox" name="familyGroupBox">
+        <property name="minimumSize">
+         <size>
+          <width>300</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>300</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="title">
+         <string>Families</string>
+        </property>
+        <layout class="QVBoxLayout" name="horizontalLayout_3">
+         <item>
+          <widget class="QListWidget" name="familyListWidget">
+           <property name="movement">
+            <enum>QListView::Static</enum>
+           </property>
+           <property name="flow">
+            <enum>QListView::TopToBottom</enum>
+           </property>
+           <property name="uniformItemSizes">
+            <bool>true</bool>
+           </property>
+           <property name="selectionRectVisible">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="productGroupBox">
+        <property name="title">
+         <string>Products</string>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <widget class="QListWidget" name="productListWidget">
+           <property name="movement">
+            <enum>QListView::Static</enum>
+           </property>
+           <property name="flow">
+            <enum>QListView::LeftToRight</enum>
+           </property>
+           <property name="isWrapping" stdset="0">
+            <bool>true</bool>
+           </property>
+           <property name="uniformItemSizes">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="invoiceGroupBox">
+        <property name="minimumSize">
+         <size>
+          <width>500</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>500</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="title">
+         <string>Invoice</string>
+        </property>
        </widget>
       </item>
      </layout>

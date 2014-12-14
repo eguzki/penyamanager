@@ -48,16 +48,53 @@ void MainWindow::init()
         qApp->exit(0);
     }
 
+    //loadUserProfile();
+
     ProductFamilyListPtr pfListPtr = Singletons::m_pDAO->getProductFamilies();
+
+    this->ui->productListWidget->clear();
 
     fillFamilyProducts(pfListPtr);
 
     showFullScreen();
 }
+
+//
+void MainWindow::createProductItemWidget(const ProductItemPtr &pfPtr, QListWidget *pList)
+{
+    QListWidgetItem *pProductItem = new QListWidgetItem(pList);
+    pProductItem->setData(Constants::kIdRole, pfPtr->m_id);
+    pList->addItem(pProductItem);
+
+    QWidget *pProduceItemWidget = new QWidget;
+    // load family image
+    QLabel *pImageLabel = new QLabel;
+    QString imagePath = QDir(Constants::kImageRootPath).filePath(pfPtr->m_imagePath);
+    QPixmap productItemPixmap = Utils::getImage(imagePath);
+    pImageLabel->setPixmap(productItemPixmap);
+    pImageLabel->setFixedWidth(Constants::kFamilyImageWidth);
+    pImageLabel->setFixedHeight(Constants::kFamilyImageHeigth);
+    pImageLabel->setScaledContents(true);
+
+    QLabel *pTextLabel = new QLabel(pfPtr->m_name);
+    pTextLabel->setFixedWidth(Constants::kFamilyWidgetWidth -  Constants::kFamilyImageWidth - 5);
+    pTextLabel->setFixedHeight(Constants::kFamilyImageHeigth);
+
+    QHBoxLayout *pLayout = new QHBoxLayout;
+    pLayout->addWidget(pImageLabel);
+    pLayout->addWidget(pTextLabel);
+    pProduceItemWidget->setLayout(pLayout);
+    pProductItem->setSizeHint(pLayout->minimumSize());
+    pProductItem->setFlags(Qt::ItemIsSelectable);
+    pProductItem->setBackgroundColor(pList->count() % 2 == 0 ? (Qt::lightGray) : (Qt::darkGray));
+    pList->setItemWidget(pProductItem, pProduceItemWidget);
+}
+
 //
 void MainWindow::createFamilyWidget(const ProductFamilyPtr &pfPtr, QListWidget *pList)
 {
     QListWidgetItem *pFamilyItem = new QListWidgetItem(pList);
+    pFamilyItem->setData(Constants::kIdRole, pfPtr->m_id);
     pList->addItem(pFamilyItem);
 
     QWidget *pFamilyWidget = new QWidget;
@@ -71,7 +108,7 @@ void MainWindow::createFamilyWidget(const ProductFamilyPtr &pfPtr, QListWidget *
     pImageLabel->setScaledContents(true);
 
     QLabel *pTextLabel = new QLabel(pfPtr->m_name);
-    pTextLabel->setFixedWidth(Constants::kFamilyImageWidth);
+    pTextLabel->setFixedWidth(Constants::kFamilyWidgetWidth -  Constants::kFamilyImageWidth - 5);
     pTextLabel->setFixedHeight(Constants::kFamilyImageHeigth);
 
     QHBoxLayout *pLayout = new QHBoxLayout;
@@ -80,7 +117,7 @@ void MainWindow::createFamilyWidget(const ProductFamilyPtr &pfPtr, QListWidget *
     pFamilyWidget->setLayout(pLayout);
     pFamilyItem->setSizeHint(pLayout->minimumSize());
     pFamilyItem->setFlags(Qt::ItemIsSelectable);
-    pFamilyItem->setBackgroundColor(Qt::blue);
+    pFamilyItem->setBackgroundColor(pList->count() % 2 == 0 ? (Qt::lightGray) : (Qt::darkGray));
     pList->setItemWidget(pFamilyItem, pFamilyWidget);
 }
 //
@@ -95,6 +132,19 @@ void MainWindow::fillFamilyProducts(const ProductFamilyListPtr &pflPtr)
 }
 
 //
+void MainWindow::fillProductItems(Int32 familyId)
+{
+    this->ui->productListWidget->clear();
+
+    ProductItemListPtr pfListPtr = Singletons::m_pDAO->getProductsFromFamily(familyId);
+
+    for (ProductItemList::iterator iter = pfListPtr->begin(); iter != pfListPtr->end(); ++iter)
+    {
+        createProductItemWidget(*iter, this->ui->productListWidget);
+    }
+}
+
+//
 void MainWindow::quitButtonOnClick()
 {
     // qApp is a macro defined as: (QApplication*)QCoreApplication::instance()
@@ -105,11 +155,8 @@ void MainWindow::quitButtonOnClick()
 //
 void MainWindow::familyItemClicked(QListWidgetItem* item)
 {
-    QDateTime now = QDateTime::currentDateTime();
-    QDateTime xmas(QDate(now.date().year(), 12, 25), QTime(0, 0));
-    QString str;
-    str.sprintf("slsls %lli", now.secsTo(xmas) % 10);
-    this->ui->label->setText(str);
+    Int32 familyId = item->data(Constants::kIdRole).toInt();
+    fillProductItems(familyId);
 }
 
 }

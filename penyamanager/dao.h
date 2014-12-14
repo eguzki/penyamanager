@@ -4,6 +4,7 @@
 #include <QtSql>
 
 #include "objs/ProductFamily.h"
+#include "objs/ProductItem.h"
 
 namespace PenyaManager {
     //
@@ -21,12 +22,16 @@ namespace PenyaManager {
             QSqlError lastError() const;
             //
             ProductFamilyListPtr getProductFamilies();
+            //
+            ProductItemListPtr getProductsFromFamily(Int32 familyId);
 
         private:
             //
             QSqlDatabase            m_db;
             //
             QSqlQuery               m_productFamiliesQuery;
-    }; 
+            //
+            QSqlQuery               m_productItemsByFamilyQuery;
+    };
 }
 #endif // DAO_H

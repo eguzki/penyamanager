@@ -32,6 +32,11 @@ http://stackoverflow.com/questions/10369826/how-can-i-disable-alt-f4-window-clos
 * on confirmation -> print ticket
 * create pending deposit
 
+* Account balance
+** have account history with entry every month for each user.
+** When user profile login, if previous month account info is not available, create.
+** User account balance is not a field in ddbb, it's last account balance and all invoices/transactions after that
+
 * Inventario?? num dosis given day??
 
 * Languages:

@@ -3,6 +3,7 @@
 
 #include <QListWidget>
 
+#include "objs/ProductItem.h"
 #include "objs/ProductFamily.h"
 #include "IPartner.h"
 
@@ -29,7 +30,11 @@ class MainWindow : public IPartner
         //
         void fillFamilyProducts(const ProductFamilyListPtr &pflPtr);
         //
+        void fillProductItems(Int32 familyId);
+        //
         void createFamilyWidget(const ProductFamilyPtr &pfPtr, QListWidget *pList);
+        //
+        void createProductItemWidget(const ProductItemPtr &pfPtr, QListWidget *pList);
 
     private:
         Ui::MainWindow *ui;

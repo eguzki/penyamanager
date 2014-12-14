@@ -26,6 +26,7 @@ SOURCES += main.cpp\
         utils.cpp\
         constants.cpp\
         objs/ProductFamily.cpp\
+        objs/ProductItem.cpp\
         loginwindow.cpp
 
 HEADERS  += mainwindow.h\
@@ -34,6 +35,7 @@ HEADERS  += mainwindow.h\
         utils.h\
         constants.h\
         objs/ProductFamily.h\
+        objs/ProductItem.h\
         loginwindow.h
 
 FORMS    += mainwindow.ui\
