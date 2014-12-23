@@ -55,6 +55,8 @@ CREATE TABLE IF NOT EXISTS `alegria`.`member` (
   `surname` VARCHAR(100) NOT NULL,
   `curr_idinvoice` INT NULL,
   `image` VARCHAR(300) NOT NULL,
+  `lastmodified` DATETIME NOT NULL,
+  `reg_date` DATETIME NOT NULL,
   PRIMARY KEY (`idmember`),
   INDEX `fk_member_invoice1_idx` (`curr_idinvoice` ASC),
   CONSTRAINT `fk_member_invoice1`
@@ -76,6 +78,7 @@ CREATE TABLE IF NOT EXISTS `alegria`.`invoice` (
   `date` DATETIME NOT NULL,
   `total` DECIMAL(10,2) NOT NULL,
   `idmember` INT NOT NULL,
+  `payment` INT NOT NULL,
   PRIMARY KEY (`idinvoice`),
   INDEX `fk_invoice_member1_idx` (`idmember` ASC),
   CONSTRAINT `fk_invoice_member1`
@@ -119,8 +122,10 @@ DROP TABLE IF EXISTS `alegria`.`account` ;
 CREATE TABLE IF NOT EXISTS `alegria`.`account` (
   `idaccount` INT NOT NULL AUTO_INCREMENT,
   `idmember` INT NOT NULL,
+  `amount` DECIMAL(10,2) NOT NULL,
+  `date` DATETIME NOT NULL,
   `balance` DECIMAL(10,2) NOT NULL,
-  `bal_date` DATETIME NOT NULL,
+  `description` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`idaccount`),
   INDEX `fk_account_member1_idx` (`idmember` ASC),
   CONSTRAINT `fk_account_member1`
