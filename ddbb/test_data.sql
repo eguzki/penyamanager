@@ -4,7 +4,7 @@ USE `alegria`;
 --
 -- Host: 192.168.56.2    Database: alegria
 -- ------------------------------------------------------
--- Server version	5.1.73
+-- Server version	5.1.71-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -18,21 +18,24 @@ USE `alegria`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `product_family`
+-- Dumping data for table `account`
 --
 
-DROP TABLE IF EXISTS `product_family`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `product_family` (
-  `idproduct_family` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) NOT NULL,
-  `image` varchar(300) NOT NULL,
-  `active` tinyint(1) NOT NULL,
-  `reg_date` datetime NOT NULL,
-  PRIMARY KEY (`idproduct_family`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+LOCK TABLES `account` WRITE;
+/*!40000 ALTER TABLE `account` DISABLE KEYS */;
+INSERT INTO `account` VALUES (1,1,76.54,'2014-12-01 00:00:00');
+/*!40000 ALTER TABLE `account` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `member`
+--
+
+LOCK TABLES `member` WRITE;
+/*!40000 ALTER TABLE `member` DISABLE KEYS */;
+INSERT INTO `member` VALUES (1,'Eguzki','Astiz Lezaun',NULL,'mypicture.png'),(2,'Urko','Usunariz Fernandez',NULL,'mypicture2.png');
+/*!40000 ALTER TABLE `member` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Dumping data for table `product_family`
@@ -43,26 +46,6 @@ LOCK TABLES `product_family` WRITE;
 INSERT INTO `product_family` VALUES (1,'refreshments','refresh.jpg',1,'2014-12-14 13:31:19'),(2,'liquors','liquors.jpg',1,'2014-12-14 13:34:23'),(3,'beers','beers.jpg',1,'2014-12-14 13:34:23'),(4,'wines','wines.jpg',1,'2014-12-14 13:34:23'),(5,'patxaranak','patxaranak.jpg',1,'2014-12-14 13:34:23');
 /*!40000 ALTER TABLE `product_family` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `product_item`
---
-
-DROP TABLE IF EXISTS `product_item`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `product_item` (
-  `idproduct_item` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(200) NOT NULL,
-  `image` varchar(300) NOT NULL,
-  `active` tinyint(1) NOT NULL,
-  `reg_date` datetime NOT NULL,
-  `idproduct_family` int(11) NOT NULL,
-  PRIMARY KEY (`idproduct_item`),
-  KEY `fk_product_item_product_family_idx` (`idproduct_family`),
-  CONSTRAINT `fk_product_item_product_family` FOREIGN KEY (`idproduct_family`) REFERENCES `product_family` (`idproduct_family`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `product_item`
@@ -83,4 +66,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-12-14 13:49:10
+-- Dump completed on 2014-12-23 15:05:14
