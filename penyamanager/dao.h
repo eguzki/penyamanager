@@ -3,6 +3,7 @@
 
 #include <QtSql>
 
+#include "objs/Member.h"
 #include "objs/ProductFamily.h"
 #include "objs/ProductItem.h"
 
@@ -24,6 +25,10 @@ namespace PenyaManager {
             ProductFamilyListPtr getProductFamilies();
             //
             ProductItemListPtr getProductsFromFamily(Int32 familyId);
+            //
+            MemberPtr getMemberbyName(const QString &memberLoginName);
+            //
+            Float getMemberBalance(Int32 memberId);
 
         private:
             //
@@ -32,6 +37,8 @@ namespace PenyaManager {
             QSqlQuery               m_productFamiliesQuery;
             //
             QSqlQuery               m_productItemsByFamilyQuery;
+            //
+            QSqlQuery               m_memberByName;
     };
 }
 #endif // DAO_H

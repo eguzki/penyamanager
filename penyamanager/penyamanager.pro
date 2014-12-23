@@ -25,6 +25,10 @@ SOURCES += main.cpp\
         mainwindow.cpp\
         utils.cpp\
         constants.cpp\
+        services.cpp\
+        objs/Transaction.cpp\
+        objs/Invoice.cpp\
+        objs/Member.cpp\
         objs/ProductFamily.cpp\
         objs/ProductItem.cpp\
         loginwindow.cpp
@@ -34,6 +38,10 @@ HEADERS  += mainwindow.h\
         dao.h\
         utils.h\
         constants.h\
+        services.h\
+        objs/Transaction.h\
+        objs/Invoice.h\
+        objs/Member.h\
         objs/ProductFamily.h\
         objs/ProductItem.h\
         loginwindow.h

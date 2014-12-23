@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <limits.h>
 #include <string.h>
- 
+
 // STL includes
 #include <iostream>
 #include <fstream>
@@ -45,6 +45,7 @@ typedef unsigned long long  Uint64;
 typedef Uint8               Byte;
 typedef void                Void;
 typedef bool                Bool;
+typedef float               Float;
 
 typedef std::vector<Uint8>  ByteVector;
 typedef std::vector<Uint32> Uint32Vector;

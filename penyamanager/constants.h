@@ -1,6 +1,7 @@
 #ifndef PENYACONSTANTS_H
 #define PENYACONSTANTS_H
 
+#include <QString>
 #include "DataTypes.h"
 
 namespace PenyaManager {
@@ -18,9 +19,25 @@ namespace PenyaManager {
             static const QString    kImageRootPath;
             // id role
             static const Int32      kIdRole;
+            // Member image width
+            static const Uint32     kMemberImageWidth;
+            // Member image width
+            static const Uint32     kMemberImageHeigth;
 
         private:
             Constants() {}
+    };
+    //
+    enum InvoiceState
+    {
+        Open,
+        Closed
+    };
+    //
+    enum PaymentType
+    {
+        Cash,
+        Account
     };
 }
 

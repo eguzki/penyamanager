@@ -3,31 +3,34 @@
 
 #include <DataTypes.h>
 
-//
-class ProductFamily
+namespace PenyaManager
 {
-    public:
-        //
-        ProductFamily();
-        //
-        ProductFamily(const QString &name, const QString &imagePath);
-        //
-        virtual ~ProductFamily(){}
+    //
+    class ProductFamily
+    {
+        public:
+            //
+            ProductFamily();
+            //
+            ProductFamily(const QString &name, const QString &imagePath);
+            //
+            virtual ~ProductFamily(){}
 
-    public:
-        //
-        Int32               m_id; 
-        //
-        QString             m_name;
-        //
-        QString             m_imagePath;
-};
+        public:
+            //
+            Int32               m_id;
+            //
+            QString             m_name;
+            //
+            QString             m_imagePath;
+    };
 
-//
-typedef std::shared_ptr<ProductFamily> ProductFamilyPtr;
-//
-typedef std::vector<ProductFamilyPtr> ProductFamilyList;
-//
-typedef std::shared_ptr<ProductFamilyList> ProductFamilyListPtr;
+    //
+    typedef std::shared_ptr<ProductFamily> ProductFamilyPtr;
+    //
+    typedef std::vector<ProductFamilyPtr> ProductFamilyList;
+    //
+    typedef std::shared_ptr<ProductFamilyList> ProductFamilyListPtr;
+}
 
-#endif // IPARNER_H
+#endif // PRODUCTFAMILY_H

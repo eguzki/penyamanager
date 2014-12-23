@@ -4,11 +4,13 @@
 #include "IPartner.h"
 
 namespace Ui {
-class LoginWindow;
+    //
+    class LoginWindow;
 }
 
 namespace PenyaManager {
 
+    //
     class LoginWindow : public IPartner
     {
         Q_OBJECT
@@ -24,12 +26,16 @@ namespace PenyaManager {
             void start();
 
         private:
+            //
             Ui::LoginWindow *ui;
+            //
+            IPartner        *m_pPartner;
 
         private slots:
             //
             void init();
-
+            //
+            void on_loginButton_clicked();
     };
 
 }

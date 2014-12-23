@@ -2,7 +2,7 @@
 
 namespace PenyaManager {
     // get image
-    QPixmap Utils::getImage(const QString& filename) 
+    QPixmap Utils::getImage(const QString& filename)
     {
         QPixmap image(filename);
         if (image.isNull()) {

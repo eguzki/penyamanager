@@ -6,7 +6,7 @@
 namespace PenyaManager {
 
     //
-    class IPartner: public QWidget 
+    class IPartner: public QWidget
     {
         public:
             //

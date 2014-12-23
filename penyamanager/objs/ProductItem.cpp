@@ -4,15 +4,18 @@
 
 #include "ProductItem.h"
 
-//
-ProductItem::ProductItem()
+namespace PenyaManager
 {
-}
+    //
+    ProductItem::ProductItem()
+    {
+    }
 
-//
-ProductItem::ProductItem(const QString &name, const QString &imagePath)
-    :
-        m_name(name),
-        m_imagePath(imagePath)
-{
+    //
+    ProductItem::ProductItem(const QString &name, const QString &imagePath)
+        :
+            m_name(name),
+            m_imagePath(imagePath)
+    {
+    }
 }

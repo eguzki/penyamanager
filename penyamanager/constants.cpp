@@ -14,4 +14,8 @@ namespace PenyaManager {
     const QString   Constants::kImageRootPath           = "/home/eguzki/tmp";
     //
     const Int32     Constants::kIdRole                  = 101;
+    //
+    const Uint32    Constants::kMemberImageWidth        = 80;
+    //
+    const Uint32    Constants::kMemberImageHeigth       = 80;
 }
