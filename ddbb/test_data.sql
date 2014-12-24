@@ -27,12 +27,14 @@ DROP TABLE IF EXISTS `account`;
 CREATE TABLE `account` (
   `idaccount` int(11) NOT NULL AUTO_INCREMENT,
   `idmember` int(11) NOT NULL,
+  `amount` decimal(10,2) NOT NULL,
+  `date` datetime NOT NULL,
   `balance` decimal(10,2) NOT NULL,
-  `bal_date` datetime NOT NULL,
+  `description` varchar(100) NOT NULL,
   PRIMARY KEY (`idaccount`),
   KEY `fk_account_member1_idx` (`idmember`),
   CONSTRAINT `fk_account_member1` FOREIGN KEY (`idmember`) REFERENCES `member` (`idmember`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,7 +43,7 @@ CREATE TABLE `account` (
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` VALUES (1,1,76.54,'2014-12-01 00:00:00');
+INSERT INTO `account` VALUES (1,1,76.54,'2014-12-01 00:00:00',76.54,'deposit'),(2,1,-54.50,'2014-12-01 00:00:00',22.04,'invoice id: 1');
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -87,6 +89,7 @@ CREATE TABLE `invoice` (
   `date` datetime NOT NULL,
   `total` decimal(10,2) NOT NULL,
   `idmember` int(11) NOT NULL,
+  `payment` int(11) NOT NULL,
   PRIMARY KEY (`idinvoice`),
   KEY `fk_invoice_member1_idx` (`idmember`),
   CONSTRAINT `fk_invoice_member1` FOREIGN KEY (`idmember`) REFERENCES `member` (`idmember`) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -99,7 +102,7 @@ CREATE TABLE `invoice` (
 
 LOCK TABLES `invoice` WRITE;
 /*!40000 ALTER TABLE `invoice` DISABLE KEYS */;
-INSERT INTO `invoice` VALUES (1,0,'2014-12-23 17:11:52',-54.50,1);
+INSERT INTO `invoice` VALUES (1,2,'2014-12-23 17:11:52',-54.50,1,1);
 /*!40000 ALTER TABLE `invoice` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -116,6 +119,8 @@ CREATE TABLE `member` (
   `surname` varchar(100) NOT NULL,
   `curr_idinvoice` int(11) DEFAULT NULL,
   `image` varchar(300) NOT NULL,
+  `lastmodified` datetime NOT NULL,
+  `reg_date` datetime NOT NULL,
   PRIMARY KEY (`idmember`),
   KEY `fk_member_invoice1_idx` (`curr_idinvoice`),
   CONSTRAINT `fk_member_invoice1` FOREIGN KEY (`curr_idinvoice`) REFERENCES `invoice` (`idinvoice`) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -128,7 +133,7 @@ CREATE TABLE `member` (
 
 LOCK TABLES `member` WRITE;
 /*!40000 ALTER TABLE `member` DISABLE KEYS */;
-INSERT INTO `member` VALUES (1,'Eguzki','Astiz Lezaun',NULL,'mypicture.png'),(2,'Urko','Usunariz Fernandez',NULL,'mypicture2.png');
+INSERT INTO `member` VALUES (1,'Eguzki','Astiz Lezaun',NULL,'mypicture.png','2014-12-01 00:00:00','2014-12-01 00:00:00'),(2,'Urko','Usunariz Fernandez',NULL,'mypicture2.png','2014-12-01 00:00:00','2014-12-01 00:00:00');
 /*!40000 ALTER TABLE `member` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -199,4 +204,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-12-23 17:16:21
+-- Dump completed on 2014-12-24 15:05:32
