@@ -26,9 +26,9 @@ namespace PenyaManager {
             //
             ProductItemListPtr getProductsFromFamily(Int32 familyId);
             //
-            MemberPtr getMemberbyName(const QString &memberLoginName);
+            MemberPtr getMemberByName(const QString &memberLoginName);
             //
-            Float getMemberBalance(Int32 memberId);
+            InvoicePtr getInvoiceById(Uint32 invoiceId);
 
         private:
             //
@@ -39,6 +39,8 @@ namespace PenyaManager {
             QSqlQuery               m_productItemsByFamilyQuery;
             //
             QSqlQuery               m_memberByName;
+            //
+            QSqlQuery               m_invoiceById;
     };
 }
 #endif // DAO_H

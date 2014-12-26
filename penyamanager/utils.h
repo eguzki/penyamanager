@@ -1,8 +1,10 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-#include "DataTypes.h"
 #include <QPixmap>
+
+#include "DataTypes.h"
+#include "constants.h"
 
 namespace PenyaManager {
     //

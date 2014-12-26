@@ -22,6 +22,7 @@ penyamanager
 * Member Deposits
 * Member table reservation
 * DAO
+* Log high level (ERROR, CRITICAL) errors
 * Admin, membership manager, list, info detail
 * Admin product manager
 

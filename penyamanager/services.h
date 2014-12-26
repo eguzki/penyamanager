@@ -13,8 +13,6 @@ namespace PenyaManager {
             Services();
             //
             virtual ~Services();
-            //
-            MemberPtr getMemberbyName(const QString &memberLoginName) const;
 
         private:
     };

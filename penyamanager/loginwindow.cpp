@@ -1,5 +1,5 @@
 //
-
+#include <QDebug>
 #include <QMessageBox>
 #include "loginwindow.h"
 #include "ui_loginwindow.h"
@@ -15,7 +15,7 @@ namespace PenyaManager {
     {
         ui->setupUi(this);
         //
-        connect(this->ui->loginButton, SIGNAL(clicked()), this, SLOT(on_loginButton_clicked()));
+        //connect(this->ui->loginButton, SIGNAL(clicked()), this, SLOT(on_loginButton_clicked()));
     }
 
     //
@@ -56,6 +56,7 @@ namespace PenyaManager {
     //
     void LoginWindow::on_loginButton_clicked()
     {
+        qDebug() << "login";
         if(m_pPartner == 0)
         {
             // TODO log critical error
@@ -68,7 +69,7 @@ namespace PenyaManager {
         //
         // Loading user Profile
         //
-        MemberPtr pCurrMemberPtr = Singletons::m_pServices->getMemberbyName(this->ui->loginInput->text());
+        MemberPtr pCurrMemberPtr = Singletons::m_pDAO->getMemberByName(this->ui->loginInput->text());
         if (pCurrMemberPtr)
         {
             this->hide();
