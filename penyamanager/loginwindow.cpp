@@ -15,7 +15,7 @@ namespace PenyaManager {
     {
         ui->setupUi(this);
         //
-        //connect(this->ui->loginButton, SIGNAL(clicked()), this, SLOT(on_loginButton_clicked()));
+        connect(this->ui->loginButton, SIGNAL(clicked()), this, SLOT(onLoginButtonClicked()));
     }
 
     //
@@ -54,7 +54,7 @@ namespace PenyaManager {
         m_pPartner = partner;
     }
     //
-    void LoginWindow::on_loginButton_clicked()
+    void LoginWindow::onLoginButtonClicked()
     {
         qDebug() << "login";
         if(m_pPartner == 0)

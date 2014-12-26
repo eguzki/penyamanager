@@ -33,7 +33,7 @@ namespace PenyaManager {
                 "FROM account "
                 "INNER JOIN member "
                 "ON member.idmember=account.idmember "
-                "WHERE member.name = :memberName"
+                "WHERE member.name=':memberName'"
                 "ORDER BY account.date DESC LIMIT 1"
                 );
 

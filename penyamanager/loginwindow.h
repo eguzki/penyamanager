@@ -35,7 +35,7 @@ namespace PenyaManager {
             //
             void init();
             //
-            void on_loginButton_clicked();
+            void onLoginButtonClicked();
     };
 
 }
