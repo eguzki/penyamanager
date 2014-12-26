@@ -34,7 +34,7 @@ CREATE TABLE `account` (
   PRIMARY KEY (`idaccount`),
   KEY `fk_account_member1_idx` (`idmember`),
   CONSTRAINT `fk_account_member1` FOREIGN KEY (`idmember`) REFERENCES `member` (`idmember`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,7 @@ CREATE TABLE `account` (
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` VALUES (1,1,76.54,'2014-12-01 00:00:00',76.54,'deposit'),(2,1,-54.50,'2014-12-01 00:00:00',22.04,'invoice id: 1');
+INSERT INTO `account` VALUES (1,1,76.54,'2014-12-01 00:00:00',76.54,'deposit'),(2,1,-54.50,'2014-12-01 00:00:01',22.04,'invoice id: 1'),(3,2,20.00,'2014-12-01 00:00:01',20.00,'deposit');
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -72,7 +72,7 @@ CREATE TABLE `inv_prod` (
 
 LOCK TABLES `inv_prod` WRITE;
 /*!40000 ALTER TABLE `inv_prod` DISABLE KEYS */;
-INSERT INTO `inv_prod` VALUES (1,1,10),(1,2,10),(1,5,7);
+INSERT INTO `inv_prod` VALUES (1,1,10),(1,2,10),(1,5,7),(2,5,1);
 /*!40000 ALTER TABLE `inv_prod` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -93,7 +93,7 @@ CREATE TABLE `invoice` (
   PRIMARY KEY (`idinvoice`),
   KEY `fk_invoice_member1_idx` (`idmember`),
   CONSTRAINT `fk_invoice_member1` FOREIGN KEY (`idmember`) REFERENCES `member` (`idmember`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -102,7 +102,7 @@ CREATE TABLE `invoice` (
 
 LOCK TABLES `invoice` WRITE;
 /*!40000 ALTER TABLE `invoice` DISABLE KEYS */;
-INSERT INTO `invoice` VALUES (1,2,'2014-12-23 17:11:52',-54.50,1,1);
+INSERT INTO `invoice` VALUES (1,2,'2014-12-23 17:11:52',-54.50,1,1),(2,0,'2014-12-23 17:11:52',-3.50,2,1);
 /*!40000 ALTER TABLE `invoice` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -133,7 +133,7 @@ CREATE TABLE `member` (
 
 LOCK TABLES `member` WRITE;
 /*!40000 ALTER TABLE `member` DISABLE KEYS */;
-INSERT INTO `member` VALUES (1,'Eguzki','Astiz Lezaun',NULL,'mypicture.png','2014-12-01 00:00:00','2014-12-01 00:00:00'),(2,'Urko','Usunariz Fernandez',NULL,'mypicture2.png','2014-12-01 00:00:00','2014-12-01 00:00:00');
+INSERT INTO `member` VALUES (1,'Eguzki','Astiz Lezaun',NULL,'mypicture.png','2014-12-01 00:00:00','2014-12-01 00:00:00'),(2,'Urko','Usunariz Fernandez',2,'mypicture2.png','2014-12-01 00:00:00','2014-12-01 00:00:00');
 /*!40000 ALTER TABLE `member` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -204,4 +204,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-12-24 15:05:32
+-- Dump completed on 2014-12-26 16:00:59
