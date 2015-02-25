@@ -1,3 +1,5 @@
+CREATE SCHEMA IF NOT EXISTS `penya_db` DEFAULT CHARACTER SET utf8 COLLATE utf8_spanish_ci 
+
 CREATE TABLE IF NOT EXISTS `penya_db`.`members` (
   `id_member` INT(11) NOT NULL,
   `name` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_spanish_ci' NULL DEFAULT NULL,
