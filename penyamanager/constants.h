@@ -27,18 +27,6 @@ namespace PenyaManager {
         private:
             Constants() {}
     };
-    //
-    enum InvoiceState
-    {
-        Open,
-        Closed
-    };
-    //
-    enum PaymentType
-    {
-        Cash,
-        Account
-    };
 }
 
 #endif // PENYACONSTANTS_H

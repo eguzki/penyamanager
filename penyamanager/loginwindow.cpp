@@ -56,7 +56,7 @@ namespace PenyaManager {
     //
     void LoginWindow::onLoginButtonClicked()
     {
-        qDebug() << "login";
+        //qDebug() << "login";
         if(m_pPartner == 0)
         {
             // TODO log critical error
@@ -69,7 +69,7 @@ namespace PenyaManager {
         //
         // Loading user Profile
         //
-        MemberPtr pCurrMemberPtr = Singletons::m_pDAO->getMemberByName(this->ui->loginInput->text());
+        MemberPtr pCurrMemberPtr = Singletons::m_pDAO->getActiveMemberByName(this->ui->loginInput->text());
         if (pCurrMemberPtr)
         {
             this->hide();

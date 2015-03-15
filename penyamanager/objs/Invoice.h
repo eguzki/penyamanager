@@ -2,10 +2,21 @@
 #define INVOICE_H
 
 #include <DataTypes.h>
-#include <constants.h>
 
 namespace PenyaManager
 {
+    //
+    enum class InvoiceState
+    {
+        Open,
+        Closed
+    };
+    //
+    enum class PaymentType
+    {
+        Cash,
+        Account
+    };
     //
     class Invoice
     {
