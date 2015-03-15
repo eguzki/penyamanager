@@ -51,19 +51,13 @@ DROP TABLE IF EXISTS `alegria`.`member` ;
 
 CREATE TABLE IF NOT EXISTS `alegria`.`member` (
   `idmember` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(45) NOT NULL,
+  `name` VARCHAR(45) BINARY NOT NULL,
   `surname` VARCHAR(100) NOT NULL,
-  `curr_idinvoice` INT NULL,
   `image` VARCHAR(300) NOT NULL,
   `lastmodified` DATETIME NOT NULL,
   `reg_date` DATETIME NOT NULL,
-  PRIMARY KEY (`idmember`),
-  INDEX `fk_member_invoice1_idx` (`curr_idinvoice` ASC),
-  CONSTRAINT `fk_member_invoice1`
-    FOREIGN KEY (`curr_idinvoice`)
-    REFERENCES `alegria`.`invoice` (`idinvoice`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+  `active` TINYINT(1) NOT NULL,
+  PRIMARY KEY (`idmember`))
 ENGINE = InnoDB;
 
 
