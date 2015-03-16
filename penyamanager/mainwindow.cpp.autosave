@@ -24,5 +24,5 @@ void MainWindow::on_login_main_clicked()
 {
     families fam;
     fam.setWindowModality(true);
-    fam.exec();
+    fam.
 }

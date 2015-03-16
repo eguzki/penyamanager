@@ -20,6 +20,7 @@ private:
 
 private slots:
     void pushbutton1_click();
+    void on_login_main_clicked();
 };
 
 #endif // MAINWINDOW_H

@@ -37,6 +37,19 @@
      <string>Push me bitch!</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="login_main">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>200</y>
+      <width>81</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>login</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
