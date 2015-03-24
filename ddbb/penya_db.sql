@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `penya_db`.`tables` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_spanish_ci
-COMMENT = 'Reservation table number storage'
+COMMENT = 'Reservation table number storage 1'
 
 
 CREATE TABLE IF NOT EXISTS `penya_db`.`table_res` (
