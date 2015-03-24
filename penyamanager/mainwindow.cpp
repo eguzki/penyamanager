@@ -23,6 +23,10 @@ void MainWindow::pushbutton1_click(){
 void MainWindow::on_login_main_clicked()
 {
     families fam;
-    fam.setWindowModality(true);
-    fam.exec();
+    fam.isModal();
+    fam.show();
+
+    /* aquí mostramos la pantalla sin bloquear la que queda detrás (login). El primer método, bloquea la ventana del login */
+//    fam =new families(this);
+//    fam->show();
 }
