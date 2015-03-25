@@ -1,0 +1,8 @@
+Campo fecha prod_inv
+Foto producto-> datatype LONGBLOB
+
+On DELETE -> cascade para invoices y tal????
+
+Control de Stock -> No entiendo. Donde almacena el total
+
+Datatype id_stock id_stock_entry id_stock_prod INT??? BIGINT????
