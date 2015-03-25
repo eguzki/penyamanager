@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>admon_screen</class>
+ <widget class="QMainWindow" name="admon_screen">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>20</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Ver socio</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_2">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>20</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Socios/Cartas</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_3">
+    <property name="geometry">
+     <rect>
+      <x>270</x>
+      <y>20</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Balance</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_4">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>20</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Sobres debo</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="id_member">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>250</y>
+      <width>60</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Nº Socio</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="name">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>270</y>
+      <width>60</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Nombre</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="surname">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>290</y>
+      <width>60</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Apellido</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="active">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>310</y>
+      <width>60</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Activo</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="card_num">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>330</y>
+      <width>60</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Nº Tarjeta</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="entry_date">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>350</y>
+      <width>60</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Fecha alta</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="birth">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>370</y>
+      <width>60</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Fecha Nacimiento</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="address">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>390</y>
+      <width>60</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Dirección</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="zip_code">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>410</y>
+      <width>60</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>C.P.</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="town">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>430</y>
+      <width>60</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Ciudad</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="state">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>450</y>
+      <width>60</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Provincia</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="tel">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>470</y>
+      <width>60</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>T. Fijo</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="tel2">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>490</y>
+      <width>60</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>T. Móvil</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="email">
+    <property name="geometry">
+     <rect>
+      <x>410</x>
+      <y>250</y>
+      <width>60</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>email</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="bank_account">
+    <property name="geometry">
+     <rect>
+      <x>410</x>
+      <y>270</y>
+      <width>60</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Nº cuenta</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="postal_send">
+    <property name="geometry">
+     <rect>
+      <x>410</x>
+      <y>290</y>
+      <width>60</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Envío cartas</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="notes">
+    <property name="geometry">
+     <rect>
+      <x>410</x>
+      <y>310</y>
+      <width>60</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Notas</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
