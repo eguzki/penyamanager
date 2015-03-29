@@ -4,6 +4,9 @@ penyamanager/penyamanager.pro.*
 build-penyamanager-Desktop-Debug
 dist
 
+# vim ide stuff
+.ycm_extra_conf.pyc
+
 
 
 

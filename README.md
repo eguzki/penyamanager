@@ -7,6 +7,7 @@ penyamanager
 * Create invoice/order
 * Invoice manager
 * Table reservation manager
+* Table manager
 * Membership manager
 * Member account manager
 * Stock manager
@@ -21,11 +22,14 @@ penyamanager
 * Member Deposits
 * Member table reservation
 * DAO
+* Log high level (ERROR, CRITICAL) errors
 * Admin, membership manager, list, info detail
 * Admin product manager
 
 # Howto install
 * Windows 7
+* Network partition for resources
+* Mysql driver install
 TODO
 
 # Development

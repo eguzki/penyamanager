@@ -44,6 +44,7 @@ TARGETPATH=$CURRENT_PATH/dist
 PROJECT_PATH=$CURRENT_PATH/$PROJECT_NAME
 QMAKE_FLAGS="-Wall"
 DEBUG=yes
+CLEAN=no
 
 while [ "$1" ]
 do
@@ -64,12 +65,20 @@ do
     shift
 done
 
-[ -d $TARGETPATH ] || mkdir -p $TARGETPATH
 
-echo "** BUILD:: running \"$QMAKE\" and \"$MAKE $TARGET\" in $TARGETPATH [DEBUG build]"
-cd $TARGETPATH
-$QMAKE $QMAKE_FLAGS $PROJECT_PATH
+if [ "$CLEAN" = "yes" ] ; then
+    echo "cleaning dist, buid-*"
+    rm -rf dist
+    rm -rf build-*
+else
+    [ -d $TARGETPATH ] || mkdir -p $TARGETPATH
 
-echo "** BUILD:: making with: $MAKE**"
-$MAKE
+    echo "** BUILD:: running \"$QMAKE\" and \"$MAKE $TARGET\" in $TARGETPATH [DEBUG build]"
+    cd $TARGETPATH
+    $QMAKE $QMAKE_FLAGS $PROJECT_PATH
+
+    echo "** BUILD:: making with: $MAKE**"
+    $MAKE
+fi
+
 
