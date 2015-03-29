@@ -214,67 +214,78 @@
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
         </property>
-        <layout class="QHBoxLayout" name="horizontalLayout">
-         <property name="spacing">
-          <number>6</number>
+        <widget class="QPushButton" name="quitButton">
+         <property name="geometry">
+          <rect>
+           <x>80</x>
+           <y>110</y>
+           <width>100</width>
+           <height>23</height>
+          </rect>
          </property>
-         <property name="leftMargin">
-          <number>9</number>
+         <property name="minimumSize">
+          <size>
+           <width>100</width>
+           <height>0</height>
+          </size>
          </property>
-         <property name="topMargin">
-          <number>9</number>
+         <property name="maximumSize">
+          <size>
+           <width>100</width>
+           <height>16777215</height>
+          </size>
          </property>
-         <property name="rightMargin">
-          <number>9</number>
+         <property name="text">
+          <string>Quit</string>
          </property>
-         <property name="bottomMargin">
-          <number>9</number>
+        </widget>
+        <widget class="QPushButton" name="exitButton">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>66</y>
+           <width>100</width>
+           <height>23</height>
+          </rect>
          </property>
-         <item>
-          <widget class="QPushButton" name="exitButton">
-           <property name="minimumSize">
-            <size>
-             <width>100</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>100</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="autoFillBackground">
-            <bool>false</bool>
-           </property>
-           <property name="text">
-            <string>Exit</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="quitButton">
-           <property name="minimumSize">
-            <size>
-             <width>100</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>100</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Quit</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QWidget" name="paddingWidget" native="true"/>
-         </item>
-        </layout>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>100</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>100</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="autoFillBackground">
+          <bool>false</bool>
+         </property>
+         <property name="text">
+          <string>Exit</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="adminButton">
+         <property name="geometry">
+          <rect>
+           <x>170</x>
+           <y>30</y>
+           <width>75</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>AdminButton</string>
+         </property>
+        </widget>
        </widget>
       </item>
      </layout>

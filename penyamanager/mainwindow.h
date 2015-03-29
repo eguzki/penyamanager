@@ -26,6 +26,7 @@ class MainWindow : public IPartner
         ~MainWindow();
         //
         void setParner(IPartner *partner);
+        void setAdminParner(IPartner *partner);
 
     private:
         //
@@ -43,6 +44,7 @@ class MainWindow : public IPartner
 
     private:
         Ui::MainWindow *ui;
+        IPartner *adminPartner;
 
     private slots:
         //
@@ -51,6 +53,8 @@ class MainWindow : public IPartner
         void init();
         //
         void familyItemClicked(QListWidgetItem* item);
+        //
+        void on_adminButton_clicked();
 };
 }
 

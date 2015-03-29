@@ -40,6 +40,17 @@ namespace PenyaManager {
         connect(this->ui->familyListWidget, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(familyItemClicked(QListWidgetItem*)));
     }
 
+    //
+    void MainWindow::setAdminParner(IPartner *partner)
+    {
+        if(partner == 0)
+            return;
+        this->adminPartner = partner;
+
+        //connect(this->ui->adminButton, SIGNAL(clicked()), this, SLOT(hide()));
+        //connect(this->ui->adminButton, SIGNAL(clicked()), partner, SLOT(init()));
+      }
+
     void MainWindow::init()
     {
         if (!Singletons::m_pDAO->isOpen()) {
@@ -78,7 +89,7 @@ namespace PenyaManager {
         // Show
         //
 
-        showFullScreen();
+        show();
     }
 
     //
@@ -204,4 +215,14 @@ namespace PenyaManager {
         this->ui->invoiceGroupBox->setTitle(QString("Invoice (%1) on (%2)").arg(pInvoicePtr->m_id).arg(invoiceDate.toString()));
         this->ui->totalDisplayLabel->setText(QString("%1 €").arg(pInvoicePtr->m_total));
     }
+
+    void PenyaManager::MainWindow::on_adminButton_clicked()
+    {
+        this->hide();
+        adminPartner->init();
+    }
+
+
 }
+
+
