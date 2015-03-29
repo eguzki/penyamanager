@@ -189,7 +189,7 @@ namespace PenyaManager {
         this->ui->memberImage->setFixedWidth(Constants::kMemberImageWidth);
         this->ui->memberImage->setFixedHeight(Constants::kMemberImageHeigth);
         this->ui->memberImage->setScaledContents(true);
-        this->ui->memberNameLabel->setText(pMemberPtr->m_name + " " + pMemberPtr->m_surename);
+        this->ui->memberNameLabel->setText(pMemberPtr->m_name + " " + pMemberPtr->m_surname);
         this->ui->memberIdInfo->setText(QString::number(pMemberPtr->m_id));
         this->ui->memberBalanceInfo->setText(QString::number(pMemberPtr->m_balance, 'f', 2));
     }

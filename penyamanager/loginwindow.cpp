@@ -44,7 +44,7 @@ namespace PenyaManager {
             return;
         }
 
-        showFullScreen();
+        show();
     }
 
     //
@@ -69,7 +69,8 @@ namespace PenyaManager {
         //
         // Loading user Profile
         //
-        MemberPtr pCurrMemberPtr = Singletons::m_pDAO->getActiveMemberByName(this->ui->loginInput->text());
+
+        MemberPtr pCurrMemberPtr = Singletons::m_pDAO->getActiveMemberById(this->ui->loginInput->text().toInt());
         if (pCurrMemberPtr)
         {
             this->hide();

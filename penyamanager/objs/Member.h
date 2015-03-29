@@ -13,7 +13,7 @@ namespace PenyaManager
             //
             Member();
             //
-            Member(Int32 id, const QString &name, const QString &surename, const QString &imagePath, bool active);
+            Member(Int32 id, const QString &name, const QString &surname, const QString &imagePath, bool active);
             //
             virtual ~Member(){}
 
@@ -23,7 +23,7 @@ namespace PenyaManager
             //
             QString             m_name;
             //
-            QString             m_surename;
+            QString             m_surname;
             //
             QString             m_imagePath;
             //

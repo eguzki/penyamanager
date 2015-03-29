@@ -27,7 +27,7 @@ namespace PenyaManager {
             //
             ProductItemListPtr getProductsFromFamily(Int32 familyId);
             //
-            MemberPtr getActiveMemberByName(const QString &memberLoginName);
+            MemberPtr getActiveMemberById(Int32 memberLoginId);
             //
             InvoicePtr getMemberActiveInvoice(Int32 memberId);
 
@@ -39,7 +39,7 @@ namespace PenyaManager {
             //
             QSqlQuery               m_productItemsByFamilyQuery;
             //
-            QSqlQuery               m_memberByName;
+            QSqlQuery               m_memberById;
             //
             QSqlQuery               m_memberActiveInvoice;
     };
