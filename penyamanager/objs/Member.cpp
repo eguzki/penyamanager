@@ -9,14 +9,14 @@ namespace PenyaManager
     {
     }
     //
-    Member::Member(Int32 id, const QString &name, const QString &surename, const QString &imagePath, InvoicePtr currInvoice)
+    Member::Member(Int32 id, const QString &name, const QString &surname, const QString &imagePath, bool active)
         :
             m_id(id),
             m_name(name),
-            m_surename(surename),
+            m_surname(surname),
             m_imagePath(imagePath),
-            m_currInvoce(currInvoice),
-            m_balance(0.0)
+            m_balance(0.0),
+            m_active(active)
     {
     }
 }

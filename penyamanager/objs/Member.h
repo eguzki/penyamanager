@@ -3,7 +3,6 @@
 
 #include <QString>
 #include <DataTypes.h>
-#include "Invoice.h"
 
 namespace PenyaManager
 {
@@ -14,7 +13,7 @@ namespace PenyaManager
             //
             Member();
             //
-            Member(Int32 id, const QString &name, const QString &surename, const QString &imagePath, InvoicePtr currInvoice);
+            Member(Int32 id, const QString &name, const QString &surname, const QString &imagePath, bool active);
             //
             virtual ~Member(){}
 
@@ -24,13 +23,13 @@ namespace PenyaManager
             //
             QString             m_name;
             //
-            QString             m_surename;
+            QString             m_surname;
             //
             QString             m_imagePath;
             //
-            InvoicePtr          m_currInvoce;
-            //
             Float               m_balance;
+            //
+            bool                m_active;
     };
 
     //

@@ -40,6 +40,7 @@ HEADERS  += mainwindow.h\
         utils.h\
         constants.h\
         services.h\
+        IPartner.h\
         objs/Transaction.h\
         objs/Invoice.h\
         objs/Member.h\

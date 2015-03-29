@@ -1,6 +1,7 @@
 //
 
 #include <QLabel>
+#include <QDateTime>
 #include <QListWidgetItem>
 #include <QMessageBox>
 
@@ -65,6 +66,13 @@ namespace PenyaManager {
         this->ui->productListWidget->clear();
 
         fillFamilyProducts(pfListPtr);
+
+        //
+        // Loading Current Invoice (if it exists)
+        //
+
+        InvoicePtr invoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
+        fillInvoiceData(invoicePtr);
 
         //
         // Show
@@ -181,8 +189,19 @@ namespace PenyaManager {
         this->ui->memberImage->setFixedWidth(Constants::kMemberImageWidth);
         this->ui->memberImage->setFixedHeight(Constants::kMemberImageHeigth);
         this->ui->memberImage->setScaledContents(true);
-        this->ui->memberNameLabel->setText(pMemberPtr->m_name + " " + pMemberPtr->m_surename);
+        this->ui->memberNameLabel->setText(pMemberPtr->m_name + " " + pMemberPtr->m_surname);
         this->ui->memberIdInfo->setText(QString::number(pMemberPtr->m_id));
         this->ui->memberBalanceInfo->setText(QString::number(pMemberPtr->m_balance, 'f', 2));
+    }
+
+    //
+    void MainWindow::fillInvoiceData(const InvoicePtr &pInvoicePtr)
+    {
+        if (!pInvoicePtr) {
+            return;
+        }
+        QDateTime invoiceDate = QDateTime::fromMSecsSinceEpoch(pInvoicePtr->m_date);
+        this->ui->invoiceGroupBox->setTitle(QString("Invoice (%1) on (%2)").arg(pInvoicePtr->m_id).arg(invoiceDate.toString()));
+        this->ui->totalDisplayLabel->setText(QString("%1 €").arg(pInvoicePtr->m_total));
     }
 }

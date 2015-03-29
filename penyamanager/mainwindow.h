@@ -4,6 +4,7 @@
 #include <QListWidget>
 
 #include "objs/Member.h"
+#include "objs/Invoice.h"
 #include "objs/ProductItem.h"
 #include "objs/ProductFamily.h"
 #include "IPartner.h"
@@ -37,6 +38,8 @@ class MainWindow : public IPartner
         void createFamilyWidget(const ProductFamilyPtr &pfPtr, QListWidget *pList);
         //
         void createProductItemWidget(const ProductItemPtr &pfPtr, QListWidget *pList);
+        //
+        void fillInvoiceData(const InvoicePtr &pInvoicePtr);
 
     private:
         Ui::MainWindow *ui;

@@ -9,8 +9,8 @@ namespace PenyaManager {
             m_db(QSqlDatabase::addDatabase("QMYSQL")),
             m_productFamiliesQuery(m_db),
             m_productItemsByFamilyQuery(m_db),
-            m_memberByName(m_db),
-            m_invoiceById(m_db)
+            m_memberById(m_db),
+            m_memberActiveInvoice(m_db)
     {
         // configure db connection
         m_db.setHostName(hostname);
@@ -28,23 +28,28 @@ namespace PenyaManager {
         m_productItemsByFamilyQuery.prepare("SELECT idproduct_item, name, image FROM product_item WHERE active = 1 AND idproduct_family = :familyId");
 
         // Member by name
-        m_memberByName.prepare(
-                "SELECT member.idmember, member.name, member.surname, member.image, member.curr_idinvoice, account.balance "
+        m_memberById.prepare(
+                "SELECT member.idmember, member.name, member.surname, member.image, account.balance "
                 "FROM account "
                 "INNER JOIN member "
                 "ON member.idmember=account.idmember "
-                "WHERE member.name=':memberName'"
-                "ORDER BY account.date DESC LIMIT 1"
+                "WHERE member.idmember= :memberId "
+                "AND member.active= :activeId "
+                "ORDER BY account.date DESC LIMIT 1 "
                 );
 
         // Invoice by ID
-        m_invoiceById.prepare("SELECT idinvoice, state, date, total, payment FROM invoice WHERE idinvoice = :invoiceId");
+        m_memberActiveInvoice.prepare(
+                "SELECT idinvoice, state, date, total, idmember, payment FROM invoice "
+                "WHERE idmember = :memberId AND state = :stateId "
+                "ORDER BY date DESC LIMIT 1"
+                );
     }
 
     //
     DAO::~DAO()
     {
-        if (m_db.isOpen())
+        if (isOpen())
         {
             m_db.close();
         }
@@ -104,50 +109,45 @@ namespace PenyaManager {
         return pfListPrt;
     }
     //
-    MemberPtr DAO::getMemberByName(const QString &memberLoginName)
+    MemberPtr DAO::getActiveMemberById(Int32 memberLoginId)
     {
         // member and balance
-        m_memberByName.bindValue(":memberName", memberLoginName);
-        m_memberByName.exec();
-        if (!m_memberByName.next())
+        m_memberById.bindValue(":memberId", memberLoginId);
+        // only active members
+        m_memberById.bindValue(":activeId", 1);
+        m_memberById.exec();
+        if (!m_memberById.next())
         {
             return MemberPtr();
         }
         MemberPtr memberPtr(new Member());
-        memberPtr->m_id = m_memberByName.value(0).toUInt();
-        memberPtr->m_name = m_memberByName.value(1).toString();
-        memberPtr->m_surename = m_memberByName.value(2).toString();
-        memberPtr->m_imagePath = m_memberByName.value(3).toString();
-        memberPtr->m_balance = m_memberByName.value(5).toFloat();
+        memberPtr->m_id = m_memberById.value(0).toUInt();
+        memberPtr->m_name = m_memberById.value(1).toString();
+        memberPtr->m_surname = m_memberById.value(2).toString();
+        memberPtr->m_imagePath = m_memberById.value(3).toString();
+        memberPtr->m_balance = m_memberById.value(4).toFloat();
 
-        // invoice
-        memberPtr->m_currInvoce = InvoicePtr();
-        if (!m_memberByName.isNull(4))
-        {
-            memberPtr->m_currInvoce = getInvoiceById(m_memberByName.value(4).toUInt());
-        }
-
-        m_memberByName.finish();
-
+        m_memberById.finish();
         return memberPtr;
     }
     //
-    InvoicePtr DAO::getInvoiceById(Uint32 invoiceId)
+    InvoicePtr DAO::getMemberActiveInvoice(Int32 memberId)
     {
-        m_invoiceById.bindValue(":invoiceId", invoiceId);
-        m_invoiceById.exec();
-        if (!m_invoiceById.next())
+        m_memberActiveInvoice.bindValue(":memberId", memberId);
+        m_memberActiveInvoice.bindValue(":stateId", static_cast<Int32>(InvoiceState::Open));
+        m_memberActiveInvoice.exec();
+        if (!m_memberActiveInvoice.next())
         {
             return InvoicePtr();
         }
         InvoicePtr pInvoicePtr(new Invoice());
-        pInvoicePtr->m_id = m_invoiceById.value(0).toUInt();
-        pInvoicePtr->m_state = static_cast<InvoiceState>(m_invoiceById.value(2).toUInt());
-        pInvoicePtr->m_date = m_invoiceById.value(3).toDateTime().toMSecsSinceEpoch();
-        pInvoicePtr->m_total = m_invoiceById.value(4).toFloat();
-        pInvoicePtr->m_payment = static_cast<PaymentType>(m_invoiceById.value(5).toUInt());
+        pInvoicePtr->m_id = m_memberActiveInvoice.value(0).toUInt();
+        pInvoicePtr->m_state = static_cast<InvoiceState>(m_memberActiveInvoice.value(2).toUInt());
+        pInvoicePtr->m_date = m_memberActiveInvoice.value(3).toDateTime().toMSecsSinceEpoch();
+        pInvoicePtr->m_total = m_memberActiveInvoice.value(4).toFloat();
+        pInvoicePtr->m_payment = static_cast<PaymentType>(m_memberActiveInvoice.value(5).toUInt());
 
-        m_invoiceById.finish();
+        m_memberActiveInvoice.finish();
 
         return pInvoicePtr;
     }
