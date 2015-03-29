@@ -9,7 +9,7 @@ namespace PenyaManager {
             m_db(QSqlDatabase::addDatabase("QMYSQL")),
             m_productFamiliesQuery(m_db),
             m_productItemsByFamilyQuery(m_db),
-            m_memberByName(m_db),
+            m_memberById(m_db),
             m_memberActiveInvoice(m_db)
     {
         // configure db connection
@@ -28,14 +28,14 @@ namespace PenyaManager {
         m_productItemsByFamilyQuery.prepare("SELECT idproduct_item, name, image FROM product_item WHERE active = 1 AND idproduct_family = :familyId");
 
         // Member by name
-        m_memberByName.prepare(
+        m_memberById.prepare(
                 "SELECT member.idmember, member.name, member.surname, member.image, account.balance "
                 "FROM account "
                 "INNER JOIN member "
                 "ON member.idmember=account.idmember "
-                "WHERE member.name = :memberName "
-                "AND member.active = :activeId "
-                "ORDER BY account.date DESC LIMIT 1"
+                "WHERE member.idmember= :memberId "
+                "AND member.active= :activeId "
+                "ORDER BY account.date DESC LIMIT 1 "
                 );
 
         // Invoice by ID
@@ -109,25 +109,25 @@ namespace PenyaManager {
         return pfListPrt;
     }
     //
-    MemberPtr DAO::getActiveMemberByName(const QString &memberLoginName)
+    MemberPtr DAO::getActiveMemberById(Int32 memberLoginId)
     {
         // member and balance
-        m_memberByName.bindValue(":memberName", memberLoginName);
+        m_memberById.bindValue(":memberId", memberLoginId);
         // only active members
-        m_memberByName.bindValue(":activeId", 1);
-        m_memberByName.exec();
-        if (!m_memberByName.next())
+        m_memberById.bindValue(":activeId", 1);
+        m_memberById.exec();
+        if (!m_memberById.next())
         {
             return MemberPtr();
         }
         MemberPtr memberPtr(new Member());
-        memberPtr->m_id = m_memberByName.value(0).toUInt();
-        memberPtr->m_name = m_memberByName.value(1).toString();
-        memberPtr->m_surename = m_memberByName.value(2).toString();
-        memberPtr->m_imagePath = m_memberByName.value(3).toString();
-        memberPtr->m_balance = m_memberByName.value(4).toFloat();
+        memberPtr->m_id = m_memberById.value(0).toUInt();
+        memberPtr->m_name = m_memberById.value(1).toString();
+        memberPtr->m_surname = m_memberById.value(2).toString();
+        memberPtr->m_imagePath = m_memberById.value(3).toString();
+        memberPtr->m_balance = m_memberById.value(4).toFloat();
 
-        m_memberByName.finish();
+        m_memberById.finish();
         return memberPtr;
     }
     //
