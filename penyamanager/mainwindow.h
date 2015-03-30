@@ -51,6 +51,8 @@ class MainWindow : public IPartner
         void init();
         //
         void familyItemClicked(QListWidgetItem* item);
+        //
+        void productItemClicked(QListWidgetItem* item);
 };
 }
 

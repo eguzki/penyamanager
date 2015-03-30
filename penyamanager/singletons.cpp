@@ -14,8 +14,8 @@ Services *Singletons::m_pServices = 0;
 void Singletons::Create() 
 {
     // DAO Acces
-    //m_pDAO = new DAO("192.168.56.2", "alegria", "user", "user");
-    m_pDAO = new DAO("192.168.1.254", "alegria", "root", "Urko&Eguzki");
+    m_pDAO = new DAO("192.168.56.2", "alegria", "user", "user");
+    //m_pDAO = new DAO("192.168.1.254", "alegria", "root", "Urko&Eguzki");
     m_pServices = new Services;
 }
 

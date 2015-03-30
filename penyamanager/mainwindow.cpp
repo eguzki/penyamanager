@@ -21,6 +21,8 @@ namespace PenyaManager {
         ui->setupUi(this);
 
         this->connect(this->ui->quitButton, SIGNAL(clicked()), this, SLOT(quitButtonOnClick()));
+        this->connect(this->ui->familyListWidget, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(familyItemClicked(QListWidgetItem*)));
+        this->connect(this->ui->productListWidget, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(productItemClicked(QListWidgetItem*)));
     }
 
     //
@@ -37,7 +39,7 @@ namespace PenyaManager {
 
         connect(this->ui->exitButton, SIGNAL(clicked()), this, SLOT(hide()));
         connect(this->ui->exitButton, SIGNAL(clicked()), partner, SLOT(init()));
-        connect(this->ui->familyListWidget, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(familyItemClicked(QListWidgetItem*)));
+
     }
 
     void MainWindow::init()
@@ -186,6 +188,7 @@ namespace PenyaManager {
     {
         QString imagePath = QDir(Constants::kImageRootPath).filePath(pMemberPtr->m_imagePath);
         QPixmap memberPixmap = Utils::getImage(imagePath);
+        this->ui->memberImage->setPixmap(memberPixmap);
         this->ui->memberImage->setFixedWidth(Constants::kMemberImageWidth);
         this->ui->memberImage->setFixedHeight(Constants::kMemberImageHeigth);
         this->ui->memberImage->setScaledContents(true);
@@ -203,5 +206,13 @@ namespace PenyaManager {
         QDateTime invoiceDate = QDateTime::fromMSecsSinceEpoch(pInvoicePtr->m_date);
         this->ui->invoiceGroupBox->setTitle(QString("Invoice (%1) on (%2)").arg(pInvoicePtr->m_id).arg(invoiceDate.toString()));
         this->ui->totalDisplayLabel->setText(QString("%1 €").arg(pInvoicePtr->m_total));
+    }
+
+    //
+    void MainWindow::productItemClicked(QListWidgetItem* item)
+    {
+        Int32 productId = item->data(Constants::kIdRole).toInt();
+        //QMessageBox::critical(this, "some text", QString("product_id: %1").arg(productId));
+
     }
 }
