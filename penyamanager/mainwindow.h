@@ -42,6 +42,7 @@ class MainWindow : public IPartner
         void fillInvoiceData(const InvoicePtr &pInvoicePtr);
 
     private:
+        //
         Ui::MainWindow *ui;
 
     private slots:

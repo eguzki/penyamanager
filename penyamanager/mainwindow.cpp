@@ -7,6 +7,7 @@
 
 #include "constants.h"
 #include "utils.h"
+#include "numitemdialog.h"
 #include "singletons.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -213,6 +214,9 @@ namespace PenyaManager {
     {
         Int32 productId = item->data(Constants::kIdRole).toInt();
         //QMessageBox::critical(this, "some text", QString("product_id: %1").arg(productId));
+        NumItemDialog numItemDialog(this);
+        Uint32 count = numItemDialog.exec();
+        QMessageBox::critical(this, "some text", QString("clicked: %1").arg(count));
 
     }
 }

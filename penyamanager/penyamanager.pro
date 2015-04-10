@@ -31,7 +31,8 @@ SOURCES += main.cpp\
         objs/Member.cpp\
         objs/ProductFamily.cpp\
         objs/ProductItem.cpp\
-        loginwindow.cpp
+        loginwindow.cpp \
+    numitemdialog.cpp
 
 HEADERS  += mainwindow.h\
         singletons.h\
@@ -45,7 +46,9 @@ HEADERS  += mainwindow.h\
         objs/Member.h\
         objs/ProductFamily.h\
         objs/ProductItem.h\
-        loginwindow.h
+        loginwindow.h \
+    numitemdialog.h
 
 FORMS    += mainwindow.ui\
-        loginwindow.ui
+        loginwindow.ui \
+    numitemdialog.ui
