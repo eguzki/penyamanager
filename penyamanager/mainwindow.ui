@@ -397,7 +397,17 @@
              <number>9</number>
             </property>
             <item>
-             <widget class="QTableWidget" name="invoiceTableWidget"/>
+             <widget class="QTableWidget" name="invoiceTableWidget">
+              <property name="editTriggers">
+               <set>QAbstractItemView::NoEditTriggers</set>
+              </property>
+              <property name="selectionMode">
+               <enum>QAbstractItemView::NoSelection</enum>
+              </property>
+              <attribute name="verticalHeaderVisible">
+               <bool>false</bool>
+              </attribute>
+             </widget>
             </item>
            </layout>
           </widget>
@@ -438,22 +448,23 @@
           </widget>
          </item>
          <item>
-          <widget class="QDialogButtonBox" name="buttonBox">
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>100</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>16777215</width>
-             <height>100</height>
-            </size>
-           </property>
-           <property name="standardButtons">
-            <set>QDialogButtonBox::Apply|QDialogButtonBox::Reset</set>
-           </property>
+          <widget class="QWidget" name="invoiceButtonBox" native="true">
+           <layout class="QHBoxLayout" name="horizontalLayout_9">
+            <item>
+             <widget class="QPushButton" name="invoiceResetButton">
+              <property name="text">
+               <string>Reset</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="invoiceCloseButton">
+              <property name="text">
+               <string>Close</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </widget>
          </item>
         </layout>

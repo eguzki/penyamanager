@@ -18,4 +18,10 @@ namespace PenyaManager {
     const Uint32    Constants::kMemberImageWidth        = 80;
     //
     const Uint32    Constants::kMemberImageHeigth       = 80;
+    //
+    const Uint32    Constants::kLoginWindowKey          = 0;
+    //
+    const Uint32    Constants::kMainWindowKey           = 1;
+    //
+    const Uint32    Constants::kInvoiceWindowKey        = 2;
 }

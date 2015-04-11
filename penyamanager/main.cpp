@@ -1,22 +1,19 @@
 #include <QApplication>
 
+#include "constants.h"
+#include "IPartner.h"
 #include "singletons.h"
-#include "mainwindow.h"
-#include "loginwindow.h"
 
 int main(int argc, char *argv[])
 {
-    PenyaManager::Singletons::Create();
-
     QApplication::setStyle("windows");
     QApplication a(argc, argv);
-    PenyaManager::MainWindow mainWindow;
-    PenyaManager::LoginWindow loginWindow;
 
-    mainWindow.setParner(&loginWindow);
-    loginWindow.setParner(&mainWindow);
+    PenyaManager::Singletons::Create();
 
-    loginWindow.start();
+    // entry point -> login window
+    PenyaManager::IPartner* pLoginPartner = PenyaManager::Singletons::m_pParnetFinder->getPartner(PenyaManager::Constants::kLoginWindowKey);
+    pLoginPartner->init();
 
     int returnValue = a.exec();
 

@@ -23,6 +23,12 @@ namespace PenyaManager {
             static const Uint32     kMemberImageWidth;
             // Member image width
             static const Uint32     kMemberImageHeigth;
+            // LoginWindow key
+            static const Uint32     kLoginWindowKey;
+            // MainWindow key 
+            static const Uint32     kMainWindowKey;
+            // InvoiceWindow key
+            static const Uint32     kInvoiceWindowKey;
 
         private:
             Constants() {}

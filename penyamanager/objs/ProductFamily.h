@@ -1,6 +1,8 @@
 #ifndef PRODUCTFAMILY_H
 #define PRODUCTFAMILY_H
 
+#include <QString>
+
 #include <DataTypes.h>
 
 namespace PenyaManager

@@ -3,6 +3,7 @@
 
 #include "objs/Member.h"
 #include "services.h"
+#include "partnerfinder.h"
 #include "dao.h"
 
 namespace PenyaManager {
@@ -22,6 +23,8 @@ class Singletons
         static MemberPtr        m_pCurrMember;
         //
         static Services         *m_pServices;
+        //
+        static PartnerFinder    *m_pParnetFinder;
 };
 
 }

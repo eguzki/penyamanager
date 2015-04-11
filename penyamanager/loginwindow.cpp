@@ -1,33 +1,27 @@
 //
 #include <QDebug>
 #include <QMessageBox>
-#include "loginwindow.h"
-#include "ui_loginwindow.h"
+#include "constants.h"
 #include "singletons.h"
+#include "ui_loginwindow.h"
+#include "loginwindow.h"
 
 namespace PenyaManager {
 
     //
     LoginWindow::LoginWindow(QWidget *parent) :
         IPartner(parent),
-        ui(new Ui::LoginWindow),
-        m_pPartner(0)
+        ui(new Ui::LoginWindow)
     {
         ui->setupUi(this);
         //
-        connect(this->ui->loginButton, SIGNAL(clicked()), this, SLOT(onLoginButtonClicked()));
+        this->connect(this->ui->loginButton, SIGNAL(clicked()), this, SLOT(onLoginButtonClicked()));
     }
 
     //
     LoginWindow::~LoginWindow()
     {
         delete ui;
-    }
-
-    //
-    void LoginWindow::start()
-    {
-        init();
     }
 
     //
@@ -48,35 +42,18 @@ namespace PenyaManager {
     }
 
     //
-    void LoginWindow::setParner(IPartner *partner) {
-        if(partner == 0)
-            return;
-        m_pPartner = partner;
-    }
-    //
     void LoginWindow::onLoginButtonClicked()
     {
-        //qDebug() << "login";
-        if(m_pPartner == 0)
-        {
-            // TODO log critical error
-            QMessageBox::critical(this, "Unexpected state",
-                    "Application state should not reach this point. Exiting.");
-            qApp->exit(0);
-            return;
-        }
-
-        //
         // Loading user Profile
-        //
-
         MemberPtr pCurrMemberPtr = Singletons::m_pDAO->getActiveMemberById(this->ui->loginInput->text().toInt());
         if (pCurrMemberPtr)
         {
             this->hide();
             // assign user
             Singletons::m_pCurrMember = pCurrMemberPtr;
-            m_pPartner->init();
+            // call main window
+            IPartner* pMainWindow = Singletons::m_pParnetFinder->getPartner(Constants::kMainWindowKey);
+            pMainWindow->init();
         } else {
             // User could not be found
             QMessageBox::about(this, "User not found",
