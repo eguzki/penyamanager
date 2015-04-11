@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QListWidgetItem>
 #include <QListWidget>
 
 #include "objs/Member.h"
@@ -40,6 +41,8 @@ class MainWindow : public IPartner
         void createProductItemWidget(const ProductItemPtr &pfPtr, QListWidget *pList);
         //
         void fillInvoiceData(const InvoicePtr &pInvoicePtr);
+        //
+        void closeCurrentInvoice();
 
     private:
         //
@@ -54,6 +57,10 @@ class MainWindow : public IPartner
         void familyItemClicked(QListWidgetItem* item);
         //
         void productItemClicked(QListWidgetItem* item);
+        //
+        void on_invoiceCloseButton_clicked();
+        //
+        void on_invoiceResetButton_clicked();
 };
 }
 

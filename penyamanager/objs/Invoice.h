@@ -1,6 +1,8 @@
 #ifndef INVOICE_H
 #define INVOICE_H
 
+#include <QString>
+#include <QDateTime>
 #include <DataTypes.h>
 
 namespace PenyaManager
@@ -24,7 +26,7 @@ namespace PenyaManager
             //
             Invoice();
             //
-            Invoice(Int32 id, Int32 memberId, InvoiceState state, Uint64 date, Float total, PaymentType payment);
+            Invoice(Int32 id, Int32 memberId, InvoiceState state, const QDateTime &date, Float total, PaymentType payment);
             //
             virtual ~Invoice(){}
 
@@ -36,7 +38,7 @@ namespace PenyaManager
             //
             InvoiceState        m_state;
             //
-            Uint64              m_date;
+            QDateTime           m_date;
             //
             Float               m_total;
             //

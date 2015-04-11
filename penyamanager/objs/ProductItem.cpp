@@ -1,7 +1,5 @@
 //
 
-#include <QString>
-
 #include "ProductItem.h"
 
 namespace PenyaManager
@@ -12,10 +10,14 @@ namespace PenyaManager
     }
 
     //
-    ProductItem::ProductItem(const QString &name, const QString &imagePath)
+    ProductItem::ProductItem(const QString &name, const QString &imagePath, bool active, const QDateTime &regDate, Int32 familyId, Float price)
         :
             m_name(name),
-            m_imagePath(imagePath)
+            m_imagePath(imagePath),
+            m_active(active),
+            m_regDate(regDate),
+            m_familyId(familyId),
+            m_price(price)
     {
     }
 }

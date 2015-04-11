@@ -2,7 +2,6 @@
 
 #include <QLabel>
 #include <QDateTime>
-#include <QListWidgetItem>
 #include <QMessageBox>
 
 #include "constants.h"
@@ -96,8 +95,10 @@ namespace PenyaManager {
         pProductItem->setData(Constants::kIdRole, pfPtr->m_id);
         pList->addItem(pProductItem);
 
+        // main product widget
         QWidget *pProduceItemWidget = new QWidget;
-        // load family image
+
+        // load product image
         QLabel *pImageLabel = new QLabel;
         QString imagePath = QDir(Constants::kImageRootPath).filePath(pfPtr->m_imagePath);
         QPixmap productItemPixmap = Utils::getImage(imagePath);
@@ -106,13 +107,22 @@ namespace PenyaManager {
         pImageLabel->setFixedHeight(Constants::kFamilyImageHeigth);
         pImageLabel->setScaledContents(true);
 
+        // product info: name and price
+        QWidget *pProductItemInfoWidget = new QWidget;
+        QVBoxLayout *pInfoLayout = new QVBoxLayout;
         QLabel *pTextLabel = new QLabel(pfPtr->m_name);
         pTextLabel->setFixedWidth(Constants::kFamilyWidgetWidth -  Constants::kFamilyImageWidth - 5);
-        pTextLabel->setFixedHeight(Constants::kFamilyImageHeigth);
+        //pTextLabel->setFixedHeight(Constants::kFamilyImageHeigth);
+        QLabel *pProductPriceLabel = new QLabel(QString("%1 €").arg(pfPtr->m_price));
+        pTextLabel->setFixedWidth(Constants::kFamilyWidgetWidth -  Constants::kFamilyImageWidth - 5);
+        //pTextLabel->setFixedHeight(Constants::kFamilyImageHeigth);
+        pInfoLayout->addWidget(pTextLabel);
+        pInfoLayout->addWidget(pProductPriceLabel);
+        pProductItemInfoWidget->setLayout(pInfoLayout);
 
         QHBoxLayout *pLayout = new QHBoxLayout;
         pLayout->addWidget(pImageLabel);
-        pLayout->addWidget(pTextLabel);
+        pLayout->addWidget(pProductItemInfoWidget);
         pProduceItemWidget->setLayout(pLayout);
         pProductItem->setSizeHint(pLayout->minimumSize());
         pProductItem->setFlags(Qt::ItemIsSelectable);
@@ -211,8 +221,7 @@ namespace PenyaManager {
         }
 
         // Invoice header
-        QDateTime invoiceDate = QDateTime::fromMSecsSinceEpoch(pInvoicePtr->m_date);
-        this->ui->invoiceGroupBox->setTitle(QString("Invoice (%1) on (%2)").arg(pInvoicePtr->m_id).arg(invoiceDate.toString()));
+        this->ui->invoiceGroupBox->setTitle(tr("Invoice (Ref #%1) on (%2)").arg(pInvoicePtr->m_id).arg(pInvoicePtr->m_date.toString()));
 
         // get invoice products
         InvoiceProductItemListPtr pInvoiceProductItemListPtr = Singletons::m_pDAO->getInvoiceProductItems(pInvoicePtr->m_id);
@@ -246,7 +255,6 @@ namespace PenyaManager {
         }
         this->ui->totalDisplayLabel->setText(QString("%1 €").arg(totalInvoice));
     }
-
     //
     void MainWindow::productItemClicked(QListWidgetItem* item)
     {
@@ -270,4 +278,36 @@ namespace PenyaManager {
         pInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
         fillInvoiceData(pInvoicePtr);
     }
+    //
+    void MainWindow::on_invoiceCloseButton_clicked()
+    {
+        /*
+        Int32 ret = QMessageBox::information(this, tr("Invoice will be closed"), tr("Do you want to continue?"), QMessageBox::Yes | QMessageBox::No);
+        switch (ret) {
+            case QMessageBox::Yes:
+                // close invoice
+                qDebug() << "close";
+                break;
+            default:
+                // nop
+                qDebug() << "do not close";
+                break;
+        }
+        */
+    }
+    //
+    void MainWindow::on_invoiceResetButton_clicked()
+    {
+        MemberPtr pCurrMember = Singletons::m_pCurrMember;
+        // always fresh invoice
+        InvoicePtr pInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
+        Singletons::m_pDAO->resetInvoiceProductItems(pInvoicePtr->m_id);
+        fillInvoiceData(pInvoicePtr);
+    }
+    //
+    void MainWindow::closeCurrentInvoice()
+    {
+    }
 }
+
+
