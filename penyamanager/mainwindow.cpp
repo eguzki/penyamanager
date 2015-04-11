@@ -270,19 +270,10 @@ namespace PenyaManager {
     //
     void MainWindow::on_invoiceCloseButton_clicked()
     {
-        /*
-        Int32 ret = QMessageBox::information(this, tr("Invoice will be closed"), tr("Do you want to continue?"), QMessageBox::Yes | QMessageBox::No);
-        switch (ret) {
-            case QMessageBox::Yes:
-                // close invoice
-                qDebug() << "close";
-                break;
-            default:
-                // nop
-                qDebug() << "do not close";
-                break;
-        }
-        */
+        hide();
+        // call invoice window 
+        IPartner* pInvoiceWindow = Singletons::m_pParnetFinder->getPartner(Constants::kInvoiceWindowKey);
+        pInvoiceWindow->init();
     }
     //
     void MainWindow::on_invoiceResetButton_clicked()
@@ -292,10 +283,6 @@ namespace PenyaManager {
         InvoicePtr pInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
         Singletons::m_pDAO->resetInvoiceProductItems(pInvoicePtr->m_id);
         fillInvoiceData(pInvoicePtr);
-    }
-    //
-    void MainWindow::closeCurrentInvoice()
-    {
     }
     //
     void MainWindow::on_exitButton_clicked()
