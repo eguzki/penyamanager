@@ -17,10 +17,8 @@ namespace PenyaManager {
         }
             //
             virtual ~IPartner(){}
-            //
+            // called every time window is shown
             virtual void init() = 0;
-            //
-            virtual void setParner(IPartner *partner) = 0;
     };
 }
 

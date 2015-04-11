@@ -20,16 +20,10 @@ namespace PenyaManager {
             explicit LoginWindow(QWidget *parent = 0);
             //
             ~LoginWindow();
-            //
-            void setParner(IPartner *partner);
-            //
-            void start();
 
         private:
             //
             Ui::LoginWindow *ui;
-            //
-            IPartner        *m_pPartner;
 
         private slots:
             //

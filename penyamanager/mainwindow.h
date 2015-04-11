@@ -25,8 +25,6 @@ class MainWindow : public IPartner
         explicit MainWindow(QWidget *parent = 0);
         //
         ~MainWindow();
-        //
-        void setParner(IPartner *partner);
 
     private:
         //
@@ -61,6 +59,8 @@ class MainWindow : public IPartner
         void on_invoiceCloseButton_clicked();
         //
         void on_invoiceResetButton_clicked();
+        //
+        void on_exitButton_clicked();
 };
 }
 

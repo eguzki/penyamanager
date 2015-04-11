@@ -31,17 +31,6 @@ namespace PenyaManager {
         delete ui;
     }
 
-    //
-    void MainWindow::setParner(IPartner *partner)
-    {
-        if(partner == 0)
-            return;
-
-        connect(this->ui->exitButton, SIGNAL(clicked()), this, SLOT(hide()));
-        connect(this->ui->exitButton, SIGNAL(clicked()), partner, SLOT(init()));
-
-    }
-
     void MainWindow::init()
     {
         if (!Singletons::m_pDAO->isOpen()) {
@@ -308,6 +297,15 @@ namespace PenyaManager {
     void MainWindow::closeCurrentInvoice()
     {
     }
+    //
+    void MainWindow::on_exitButton_clicked()
+    {
+        hide();
+        // call login window on exit
+        IPartner* pLoginWindow = Singletons::m_pParnetFinder->getPartner(Constants::kLoginWindowKey);
+        pLoginWindow->init();
+    }
 }
+
 
 

@@ -26,6 +26,7 @@ SOURCES += main.cpp\
         utils.cpp\
         constants.cpp\
         services.cpp\
+        partnerfinder.cpp\
         objs/Transaction.cpp\
         objs/Invoice.cpp\
         objs/Member.cpp\
@@ -33,7 +34,8 @@ SOURCES += main.cpp\
         objs/ProductItem.cpp\
         objs/InvoiceProductItem.cpp\
         loginwindow.cpp \
-    numitemdialog.cpp
+    numitemdialog.cpp \
+    invoicewindow.cpp
 
 HEADERS  += mainwindow.h\
         singletons.h\
@@ -42,6 +44,7 @@ HEADERS  += mainwindow.h\
         constants.h\
         services.h\
         IPartner.h\
+        partnerfinder.h\
         objs/Transaction.h\
         objs/Invoice.h\
         objs/Member.h\
@@ -49,8 +52,10 @@ HEADERS  += mainwindow.h\
         objs/ProductItem.h\
         objs/InvoiceProductItem.h\
         loginwindow.h \
-    numitemdialog.h
+    numitemdialog.h \
+    invoicewindow.h
 
 FORMS    += mainwindow.ui\
         loginwindow.ui \
-    numitemdialog.ui
+    numitemdialog.ui \
+    invoicewindow.ui
