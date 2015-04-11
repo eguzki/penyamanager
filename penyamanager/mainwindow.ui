@@ -397,7 +397,17 @@
              <number>9</number>
             </property>
             <item>
-             <widget class="QTableWidget" name="invoiceTableWidget"/>
+             <widget class="QTableWidget" name="invoiceTableWidget">
+              <property name="editTriggers">
+               <set>QAbstractItemView::NoEditTriggers</set>
+              </property>
+              <property name="selectionMode">
+               <enum>QAbstractItemView::NoSelection</enum>
+              </property>
+              <attribute name="verticalHeaderVisible">
+               <bool>false</bool>
+              </attribute>
+             </widget>
             </item>
            </layout>
           </widget>

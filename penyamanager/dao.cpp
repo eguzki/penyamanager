@@ -1,3 +1,5 @@
+//
+
 #include "DataTypes.h"
 #include "dao.h"
 
@@ -10,7 +12,12 @@ namespace PenyaManager {
             m_productFamiliesQuery(m_db),
             m_productItemsByFamilyQuery(m_db),
             m_memberById(m_db),
-            m_memberActiveInvoice(m_db)
+            m_memberActiveInvoice(m_db),
+            m_removeProductInvoice(m_db),
+            m_updateProductInvoice(m_db),
+            m_insertInvoice(m_db),
+            m_getLastId("SELECT LAST_INSERT_ID()", m_db),
+            m_productInvoiceItemsQuery(m_db)
     {
         // configure db connection
         m_db.setHostName(hostname);
@@ -43,6 +50,35 @@ namespace PenyaManager {
                 "SELECT idinvoice, state, date, total, idmember, payment FROM invoice "
                 "WHERE idmember = :memberId AND state = :stateId "
                 "ORDER BY date DESC LIMIT 1"
+                );
+
+        // remove product invoice by ID
+        m_removeProductInvoice.prepare(
+                "DELETE FROM inv_prod "
+                "WHERE idinvoice = :invoiceid AND idproduct_item = :productid"
+                );
+
+        // update product invoice by ID
+        m_updateProductInvoice.prepare(
+                "INSERT INTO inv_prod "
+                "(idinvoice, idproduct_item, count) "
+                "VALUES (:invoiceid, :productid, :count) "
+                "ON DUPLICATE KEY UPDATE "
+                "count=:newcount"
+                );
+
+        //insert new invoice by
+        m_insertInvoice.prepare(
+                "INSERT INTO invoice"
+                "(idinvoice, state, date, total, idmember, payment) "
+                "VALUES (NULL, :state, :date, :total, :idmember, :payment)"
+                );
+
+        // invoice product items by invoiceId
+        m_productInvoiceItemsQuery.prepare(
+                "SELECT product_item.name, product_item.price, inv_prod.count "
+                "FROM inv_prod INNER JOIN product_item ON inv_prod.idproduct_item=product_item.idproduct_item "
+                "WHERE idinvoice=:invoiceid"
                 );
     }
 
@@ -146,9 +182,81 @@ namespace PenyaManager {
         pInvoicePtr->m_date = m_memberActiveInvoice.value(3).toDateTime().toMSecsSinceEpoch();
         pInvoicePtr->m_total = m_memberActiveInvoice.value(4).toFloat();
         pInvoicePtr->m_payment = static_cast<PaymentType>(m_memberActiveInvoice.value(5).toUInt());
-
         m_memberActiveInvoice.finish();
 
         return pInvoicePtr;
+    }
+    //
+    void DAO::removeProductInvoice(Int32 invoiceId, Int32 productId)
+    {
+        m_removeProductInvoice.bindValue(":invoiceid", invoiceId);
+        m_removeProductInvoice.bindValue(":productid", productId);
+        if (!m_removeProductInvoice.exec())
+        {
+            qDebug() << m_removeProductInvoice.lastError();
+        }
+        m_removeProductInvoice.finish();
+    }
+    //
+    void DAO::updateProductInvoice(Int32 invoiceId, Int32 productId, Uint32 count)
+    {
+        m_updateProductInvoice.bindValue(":invoiceid", invoiceId);
+        m_updateProductInvoice.bindValue(":productid", productId);
+        m_updateProductInvoice.bindValue(":count", count);
+        m_updateProductInvoice.bindValue(":newcount", count);
+        if (!m_updateProductInvoice.exec())
+        {
+            qDebug() << m_updateProductInvoice.lastError();
+        } else {
+            qDebug() << "inv_prod update ok";
+        }
+        m_updateProductInvoice.finish();
+    }
+    //
+    InvoicePtr DAO::createInvoice(Int32 memberId)
+    {
+        InvoicePtr pInvoicePtr(new Invoice(
+                    0,
+                    memberId,
+                    InvoiceState::Open,
+                    QDateTime::currentDateTime().toMSecsSinceEpoch(),
+                    0.0,
+                    PaymentType::Account
+                    ));
+
+        m_insertInvoice.bindValue(":state", static_cast<Int32>(pInvoicePtr->m_state));
+        m_insertInvoice.bindValue(":date", QVariant(QDateTime::fromMSecsSinceEpoch(pInvoicePtr->m_date)));
+        m_insertInvoice.bindValue(":total", pInvoicePtr->m_total);
+        m_insertInvoice.bindValue(":idmember", pInvoicePtr->m_memberId);
+        m_insertInvoice.bindValue(":payment", static_cast<Int32>(pInvoicePtr->m_payment));
+        m_insertInvoice.exec();
+        m_insertInvoice.finish();
+
+        // For LAST_INSERT_ID(), the most recently generated ID is maintained in the server on a per-connection basis
+        m_getLastId.exec();
+        m_getLastId.next();
+        pInvoicePtr->m_id = m_getLastId.value(0).toUInt();
+        qDebug() << "invoice create ok";
+        qDebug() << pInvoicePtr->m_id;
+        m_getLastId.finish();
+        return pInvoicePtr;
+    }
+    //
+    InvoiceProductItemListPtr DAO::getInvoiceProductItems(Int32 invoiceId)
+    {
+        // bind value
+        m_productInvoiceItemsQuery.bindValue(":invoiceid", invoiceId);
+        // run query
+        m_productInvoiceItemsQuery.exec();
+
+        InvoiceProductItemListPtr pIPIListPrt(new InvoiceProductItemList);
+        while (m_productInvoiceItemsQuery.next()) {
+            QString productName = m_productInvoiceItemsQuery.value(0).toString();
+            Float pricePerUnit = m_productInvoiceItemsQuery.value(1).toFloat();
+            Uint32 count = m_productInvoiceItemsQuery.value(2).toUInt();
+            InvoiceProductItemPtr pInvoiceProductItemPtr(new InvoiceProductItem(productName, pricePerUnit, count)); 
+            pIPIListPrt->push_back(pInvoiceProductItemPtr);
+        }
+        return pIPIListPrt;
     }
 }

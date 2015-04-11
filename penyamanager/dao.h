@@ -7,6 +7,7 @@
 #include "objs/Invoice.h"
 #include "objs/ProductFamily.h"
 #include "objs/ProductItem.h"
+#include "objs/InvoiceProductItem.h"
 
 namespace PenyaManager {
     //
@@ -30,6 +31,14 @@ namespace PenyaManager {
             MemberPtr getActiveMemberById(Int32 memberLoginId);
             //
             InvoicePtr getMemberActiveInvoice(Int32 memberId);
+            //
+            InvoicePtr createInvoice(Int32 memberId);
+            //
+            void removeProductInvoice(Int32 invoiceId, Int32 productId);
+            //
+            void updateProductInvoice(Int32 invoiceId, Int32 productId, Uint32 count);
+            //
+            InvoiceProductItemListPtr getInvoiceProductItems(Int32 invoiceId);
 
         private:
             //
@@ -42,6 +51,16 @@ namespace PenyaManager {
             QSqlQuery               m_memberById;
             //
             QSqlQuery               m_memberActiveInvoice;
+            //
+            QSqlQuery               m_removeProductInvoice;
+            //
+            QSqlQuery               m_updateProductInvoice;
+            //
+            QSqlQuery               m_insertInvoice;
+            //
+            QSqlQuery               m_getLastId;
+            //
+            QSqlQuery               m_productInvoiceItemsQuery;
     };
 }
 #endif // DAO_H

@@ -74,14 +74,19 @@ namespace PenyaManager {
         // Loading Current Invoice (if it exists)
         //
 
-        InvoicePtr invoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
-        fillInvoiceData(invoicePtr);
+        InvoicePtr pInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
+        if (!pInvoicePtr) {
+            // there is no active invoice, create it!
+            pInvoicePtr = Singletons::m_pDAO->createInvoice(pCurrMember->m_id);
+        }
+
+        fillInvoiceData(pInvoicePtr);
 
         //
         // Show
         //
 
-        showFullScreen();
+        show();
     }
 
     //
@@ -204,9 +209,42 @@ namespace PenyaManager {
         if (!pInvoicePtr) {
             return;
         }
+
+        // Invoice header
         QDateTime invoiceDate = QDateTime::fromMSecsSinceEpoch(pInvoicePtr->m_date);
         this->ui->invoiceGroupBox->setTitle(QString("Invoice (%1) on (%2)").arg(pInvoicePtr->m_id).arg(invoiceDate.toString()));
-        this->ui->totalDisplayLabel->setText(QString("%1 €").arg(pInvoicePtr->m_total));
+
+        // get invoice products
+        InvoiceProductItemListPtr pInvoiceProductItemListPtr = Singletons::m_pDAO->getInvoiceProductItems(pInvoicePtr->m_id);
+
+        // table
+        this->ui->invoiceTableWidget->setColumnCount(4);
+        this->ui->invoiceTableWidget->setRowCount(pInvoiceProductItemListPtr->size());
+
+        // invoice table Header
+        QStringList headers;
+        headers.append("article");
+        headers.append("price/u");
+        headers.append("count");
+        headers.append("total");
+        this->ui->invoiceTableWidget->setHorizontalHeaderLabels(headers);
+        // invoice table reset
+        this->ui->invoiceTableWidget->clearContents();
+
+        Uint32 rowCount = 0;
+        Float totalInvoice = 0.0;
+        for (InvoiceProductItemList::iterator iter = pInvoiceProductItemListPtr->begin(); iter != pInvoiceProductItemListPtr->end(); ++iter)
+        {
+            InvoiceProductItemPtr pInvoiceProductItemPtr = *iter;
+            this->ui->invoiceTableWidget->setItem(rowCount, 0, new QTableWidgetItem(pInvoiceProductItemPtr->m_productname));
+            this->ui->invoiceTableWidget->setItem(rowCount, 1, new QTableWidgetItem(tr("%1 €").arg(pInvoiceProductItemPtr->m_priceperunit)));
+            this->ui->invoiceTableWidget->setItem(rowCount, 2, new QTableWidgetItem(tr("%1").arg(pInvoiceProductItemPtr->m_count)));
+            Float totalPrice = pInvoiceProductItemPtr->m_priceperunit * pInvoiceProductItemPtr->m_count;
+            this->ui->invoiceTableWidget->setItem(rowCount, 3, new QTableWidgetItem(tr("%1 €").arg(totalPrice)));
+            totalInvoice += totalPrice;
+            rowCount++;
+        }
+        this->ui->totalDisplayLabel->setText(QString("%1 €").arg(totalInvoice));
     }
 
     //
@@ -216,7 +254,20 @@ namespace PenyaManager {
         //QMessageBox::critical(this, "some text", QString("product_id: %1").arg(productId));
         NumItemDialog numItemDialog(this);
         Uint32 count = numItemDialog.exec();
-        QMessageBox::critical(this, "some text", QString("clicked: %1").arg(count));
+        MemberPtr pCurrMember = Singletons::m_pCurrMember;
+        // always fresh invoice
+        InvoicePtr pInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
 
+        if (!count) {
+            // count was 0 -> remove item from invoice
+            Singletons::m_pDAO->removeProductInvoice(pInvoicePtr->m_id, productId);
+        } else {
+            // count was not 0 -> update item from invoice
+            Singletons::m_pDAO->updateProductInvoice(pInvoicePtr->m_id, productId, count);
+        }
+
+        // always fresh invoice
+        pInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
+        fillInvoiceData(pInvoicePtr);
     }
 }

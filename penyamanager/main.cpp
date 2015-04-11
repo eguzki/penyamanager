@@ -6,10 +6,11 @@
 
 int main(int argc, char *argv[])
 {
-    PenyaManager::Singletons::Create();
-
     QApplication::setStyle("windows");
     QApplication a(argc, argv);
+
+    PenyaManager::Singletons::Create();
+
     PenyaManager::MainWindow mainWindow;
     PenyaManager::LoginWindow loginWindow;
 

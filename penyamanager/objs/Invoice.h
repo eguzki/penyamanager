@@ -24,13 +24,15 @@ namespace PenyaManager
             //
             Invoice();
             //
-            Invoice(Int32 id, InvoiceState state, Uint64 date, Float total, PaymentType payment);
+            Invoice(Int32 id, Int32 memberId, InvoiceState state, Uint64 date, Float total, PaymentType payment);
             //
             virtual ~Invoice(){}
 
         public:
             //
             Int32               m_id;
+            //
+            Int32               m_memberId;
             //
             InvoiceState        m_state;
             //
