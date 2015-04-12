@@ -4,6 +4,7 @@
 #include <QtSql>
 
 #include "DataTypes.h"
+#include "objs/Transaction.h"
 #include "objs/Member.h"
 #include "objs/Invoice.h"
 #include "objs/ProductFamily.h"
@@ -44,6 +45,12 @@ namespace PenyaManager {
             void resetInvoiceProductItems(Int32 invoiceId);
             //
             void updateInvoice(const InvoicePtr &pInvoicePtr);
+            //
+            TransactionPtr getLastAccountInfo(Int32 memberId);
+            //
+            void insertTransaction(const TransactionPtr &pTransactionPtr);
+            //
+            void updateMember(const MemberPtr &pMemberPtr);
 
         private:
             //
@@ -70,6 +77,12 @@ namespace PenyaManager {
             QSqlQuery               m_resetInvoiceProductItemsQuery;
             //
             QSqlQuery               m_updateInvoiceQuery;
+            //
+            QSqlQuery               m_memberLastAccountInfoQuery;
+            //
+            QSqlQuery               m_insertTransactionQuery;
+            //
+            QSqlQuery               m_updateMemberQuery;
     };
 }
 #endif // DAO_H

@@ -78,24 +78,10 @@ namespace PenyaManager {
             qApp->exit(0);
             return;
         }
-        // invoice date: now
-        pInvoicePtr->m_date = QDateTime::currentDateTime();
-        // state: closed
-        pInvoicePtr->m_state = InvoiceState::Closed;
-        // total
-        InvoiceProductItemListPtr pInvoiceProductItemListPtr = Singletons::m_pDAO->getInvoiceProductItems(pInvoicePtr->m_id);
-        Float totalInvoice = 0.0;
-        for (InvoiceProductItemList::iterator iter = pInvoiceProductItemListPtr->begin(); iter != pInvoiceProductItemListPtr->end(); ++iter)
-        {
-            InvoiceProductItemPtr pInvoiceProductItemPtr = *iter;
-            Float totalPrice = pInvoiceProductItemPtr->m_priceperunit * pInvoiceProductItemPtr->m_count;
-            totalInvoice += totalPrice;
-        }
-        pInvoicePtr->m_total = totalInvoice;
-        // payment
-        pInvoicePtr->m_payment = (this->ui->accountRadioButton->isChecked()) ? (PaymentType::Account) : (PaymentType::Cash);
-        // update invoice data
-        Singletons::m_pDAO->updateInvoice(pInvoicePtr);
+
+        PaymentType payment = (this->ui->accountRadioButton->isChecked()) ? (PaymentType::Account) : (PaymentType::Cash);
+        // Update member balance
+        Singletons::m_pServices->closeInvoice(pCurrMember, pInvoicePtr->m_id, payment);
 
         // Go to login page
         hide();
@@ -156,7 +142,6 @@ namespace PenyaManager {
         // ID
         this->ui->invoiceIdInfoLabel->setText(QString("%1").arg(pInvoicePtr->m_id));
         // Date
-        qDebug() << pInvoicePtr->m_date.toString();
         this->ui->invoiceDateInfoLabel->setText(tr("%1").arg(pInvoicePtr->m_date.toString()));
         // Total
         this->ui->invoiceTotalInfoLabel->setText(QString("%1 €").arg(totalInvoice));

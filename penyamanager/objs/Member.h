@@ -2,6 +2,7 @@
 #define MEMBER_H
 
 #include <QString>
+#include <QDateTime>
 #include <DataTypes.h>
 
 namespace PenyaManager
@@ -30,6 +31,10 @@ namespace PenyaManager
             Float               m_balance;
             //
             bool                m_active;
+            //
+            QDateTime           m_regDate;
+            //
+            QDateTime           m_lastModified;
     };
 
     //
