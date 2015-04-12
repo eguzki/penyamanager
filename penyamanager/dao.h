@@ -42,6 +42,8 @@ namespace PenyaManager {
             InvoiceProductItemListPtr getInvoiceProductItems(Int32 invoiceId);
             //
             void resetInvoiceProductItems(Int32 invoiceId);
+            //
+            void updateInvoice(const InvoicePtr &pInvoicePtr);
 
         private:
             //
@@ -66,6 +68,8 @@ namespace PenyaManager {
             QSqlQuery               m_productInvoiceItemsQuery;
             //
             QSqlQuery               m_resetInvoiceProductItemsQuery;
+            //
+            QSqlQuery               m_updateInvoiceQuery;
     };
 }
 #endif // DAO_H

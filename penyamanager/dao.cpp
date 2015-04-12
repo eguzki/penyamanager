@@ -17,7 +17,8 @@ namespace PenyaManager {
             m_insertInvoiceQuery(m_db),
             m_getLastIdQuery("SELECT LAST_INSERT_ID()", m_db),
             m_productInvoiceItemsQuery(m_db),
-            m_resetInvoiceProductItemsQuery(m_db)
+            m_resetInvoiceProductItemsQuery(m_db),
+            m_updateInvoiceQuery(m_db)
     {
         // configure db connection
         m_db.setHostName(hostname);
@@ -47,7 +48,7 @@ namespace PenyaManager {
 
         // Invoice by ID
         m_memberActiveInvoiceQuery.prepare(
-                "SELECT idinvoice, state, date, total, idmember, payment FROM invoice "
+                "SELECT idinvoice, state, date, total, payment FROM invoice "
                 "WHERE idmember = :memberId AND state = :stateId "
                 "ORDER BY date DESC LIMIT 1"
                 );
@@ -67,7 +68,7 @@ namespace PenyaManager {
                 "count=:newcount"
                 );
 
-        //insert new invoice by
+        // insert new invoice
         m_insertInvoiceQuery.prepare(
                 "INSERT INTO invoice"
                 "(idinvoice, state, date, total, idmember, payment) "
@@ -84,6 +85,13 @@ namespace PenyaManager {
         m_resetInvoiceProductItemsQuery.prepare(
                 "DELETE FROM inv_prod "
                 "WHERE idinvoice = :invoiceid"
+                );
+
+        // update existing invoice
+        m_updateInvoiceQuery.prepare(
+                "UPDATE invoice "
+                "SET state=:state, date=:date, total=:total, payment=:payment "
+               "WHERE idinvoice=:invoiceid"
                 );
     }
 
@@ -185,10 +193,10 @@ namespace PenyaManager {
         }
         InvoicePtr pInvoicePtr(new Invoice());
         pInvoicePtr->m_id = m_memberActiveInvoiceQuery.value(0).toUInt();
-        pInvoicePtr->m_state = static_cast<InvoiceState>(m_memberActiveInvoiceQuery.value(2).toUInt());
-        pInvoicePtr->m_date = m_memberActiveInvoiceQuery.value(3).toDateTime();
-        pInvoicePtr->m_total = m_memberActiveInvoiceQuery.value(4).toFloat();
-        pInvoicePtr->m_payment = static_cast<PaymentType>(m_memberActiveInvoiceQuery.value(5).toUInt());
+        pInvoicePtr->m_state = static_cast<InvoiceState>(m_memberActiveInvoiceQuery.value(1).toUInt());
+        pInvoicePtr->m_date = m_memberActiveInvoiceQuery.value(2).toDateTime();
+        pInvoicePtr->m_total = m_memberActiveInvoiceQuery.value(3).toFloat();
+        pInvoicePtr->m_payment = static_cast<PaymentType>(m_memberActiveInvoiceQuery.value(4).toUInt());
         m_memberActiveInvoiceQuery.finish();
 
         return pInvoicePtr;
@@ -260,6 +268,7 @@ namespace PenyaManager {
             InvoiceProductItemPtr pInvoiceProductItemPtr(new InvoiceProductItem(productName, pricePerUnit, count));
             pIPIListPrt->push_back(pInvoiceProductItemPtr);
         }
+        m_productInvoiceItemsQuery.finish();
         return pIPIListPrt;
     }
     //
@@ -271,5 +280,20 @@ namespace PenyaManager {
             qDebug() << m_resetInvoiceProductItemsQuery.lastError();
         }
         m_resetInvoiceProductItemsQuery.finish();
+    }
+    //
+    void DAO::updateInvoice(const InvoicePtr &pInvoicePtr)
+    {
+        // bind value
+        m_updateInvoiceQuery.bindValue(":invoiceid", pInvoicePtr->m_id);
+        m_updateInvoiceQuery.bindValue(":state", static_cast<Int32>(pInvoicePtr->m_state));
+        m_updateInvoiceQuery.bindValue(":date", pInvoicePtr->m_date);
+        m_updateInvoiceQuery.bindValue(":total", pInvoicePtr->m_total);
+        m_updateInvoiceQuery.bindValue(":payment", static_cast<Int32>(pInvoicePtr->m_payment));
+        if (!m_updateInvoiceQuery.exec())
+        {
+            qDebug() << m_updateInvoiceQuery.lastError();
+        }
+        m_updateInvoiceQuery.finish();
     }
 }

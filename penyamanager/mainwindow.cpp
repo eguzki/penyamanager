@@ -271,7 +271,7 @@ namespace PenyaManager {
     void MainWindow::on_invoiceCloseButton_clicked()
     {
         hide();
-        // call invoice window 
+        // call invoice window
         IPartner* pInvoiceWindow = Singletons::m_pParnetFinder->getPartner(Constants::kInvoiceWindowKey);
         pInvoiceWindow->init();
     }
