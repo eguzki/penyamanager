@@ -39,8 +39,6 @@ class MainWindow : public IPartner
         void createProductItemWidget(const ProductItemPtr &pfPtr, QListWidget *pList);
         //
         void fillInvoiceData(const InvoicePtr &pInvoicePtr);
-        //
-        void closeCurrentInvoice();
 
     private:
         //

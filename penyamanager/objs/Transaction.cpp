@@ -8,9 +8,10 @@ namespace PenyaManager {
     {
     }
     //
-    Transaction::Transaction(Int32 id, Float amount, Uint64 date, Float balance, const QString &descr)
+    Transaction::Transaction(TransactionType type, Int32 memberId, Float amount, const QDateTime& date, Float balance, const QString &descr)
         :
-            m_id(id),
+            m_type(type),
+            m_memberId(memberId),
             m_amount(amount),
             m_date(date),
             m_balance(balance),

@@ -17,7 +17,11 @@ namespace PenyaManager {
             m_insertInvoiceQuery(m_db),
             m_getLastIdQuery("SELECT LAST_INSERT_ID()", m_db),
             m_productInvoiceItemsQuery(m_db),
-            m_resetInvoiceProductItemsQuery(m_db)
+            m_resetInvoiceProductItemsQuery(m_db),
+            m_updateInvoiceQuery(m_db),
+            m_memberLastAccountInfoQuery(m_db),
+            m_insertTransactionQuery(m_db),
+            m_updateMemberQuery(m_db)
     {
         // configure db connection
         m_db.setHostName(hostname);
@@ -36,19 +40,19 @@ namespace PenyaManager {
 
         // Member by name
         m_memberByIdQuery.prepare(
-                "SELECT member.idmember, member.name, member.surname, member.image, account.balance "
+                "SELECT member.idmember, member.name, member.surname, member.image, account.balance, member.lastmodified, member.reg_date "
                 "FROM account "
                 "INNER JOIN member "
                 "ON member.idmember=account.idmember "
-                "WHERE member.idmember= :memberId "
+                "WHERE member.idmember= :memberid "
                 "AND member.active= :activeId "
                 "ORDER BY account.date DESC LIMIT 1 "
                 );
 
         // Invoice by ID
         m_memberActiveInvoiceQuery.prepare(
-                "SELECT idinvoice, state, date, total, idmember, payment FROM invoice "
-                "WHERE idmember = :memberId AND state = :stateId "
+                "SELECT idinvoice, state, date, total, payment FROM invoice "
+                "WHERE idmember = :memberid AND state = :stateid "
                 "ORDER BY date DESC LIMIT 1"
                 );
 
@@ -67,7 +71,7 @@ namespace PenyaManager {
                 "count=:newcount"
                 );
 
-        //insert new invoice by
+        // insert new invoice
         m_insertInvoiceQuery.prepare(
                 "INSERT INTO invoice"
                 "(idinvoice, state, date, total, idmember, payment) "
@@ -84,6 +88,36 @@ namespace PenyaManager {
         m_resetInvoiceProductItemsQuery.prepare(
                 "DELETE FROM inv_prod "
                 "WHERE idinvoice = :invoiceid"
+                );
+
+        // update existing invoice
+        m_updateInvoiceQuery.prepare(
+                "UPDATE invoice "
+                "SET state=:state, date=:date, total=:total, payment=:payment "
+               "WHERE idinvoice=:invoiceid"
+                );
+
+        // member's last account transaction
+        m_memberLastAccountInfoQuery.prepare(
+                "SELECT amount, date, balance, description, type "
+                "FROM account "
+                "WHERE idmember=:memberid "
+                "ORDER BY date DESC "
+                "LIMIT 1"
+                );
+
+        // insert transaction
+        m_insertTransactionQuery.prepare(
+                "INSERT INTO account "
+                "(idmember, amount, date, balance, description, type) "
+                "VALUES (:memberid, :amount, :date, :balance, :description, :type)"
+                );
+
+        // update existing member
+        m_updateMemberQuery.prepare(
+                "UPDATE member "
+                "SET name=:name, surname=:surname, image=:image, lastmodified=:lastmodified, reg_date=:reg_date"
+               "WHERE idmember=:memberid"
                 );
     }
 
@@ -112,7 +146,10 @@ namespace PenyaManager {
     ProductFamilyListPtr DAO::getProductFamilies()
     {
         // run query
-        m_productFamiliesQuery.exec();
+        if (!m_productFamiliesQuery.exec())
+        {
+            qDebug() << m_productFamiliesQuery.lastError();
+        }
 
         ProductFamilyListPtr pfListPrt(new ProductFamilyList);
 
@@ -134,7 +171,10 @@ namespace PenyaManager {
         // bind value
         m_productItemsByFamilyQuery.bindValue(":familyId", familyId);
         // run query
-        m_productItemsByFamilyQuery.exec();
+        if (!m_productItemsByFamilyQuery.exec())
+        {
+            qDebug() << m_productItemsByFamilyQuery.lastError();
+        }
 
         ProductItemListPtr pfListPrt(new ProductItemList);
 
@@ -155,10 +195,13 @@ namespace PenyaManager {
     MemberPtr DAO::getActiveMemberById(Int32 memberLoginId)
     {
         // member and balance
-        m_memberByIdQuery.bindValue(":memberId", memberLoginId);
+        m_memberByIdQuery.bindValue(":memberid", memberLoginId);
         // only active members
         m_memberByIdQuery.bindValue(":activeId", 1);
-        m_memberByIdQuery.exec();
+        if (!m_memberByIdQuery.exec())
+        {
+            qDebug() << m_memberByIdQuery.lastError();
+        }
         if (!m_memberByIdQuery.next())
         {
             return MemberPtr();
@@ -169,26 +212,30 @@ namespace PenyaManager {
         memberPtr->m_surname = m_memberByIdQuery.value(2).toString();
         memberPtr->m_imagePath = m_memberByIdQuery.value(3).toString();
         memberPtr->m_balance = m_memberByIdQuery.value(4).toFloat();
-
+        memberPtr->m_lastModified = m_memberByIdQuery.value(5).toDateTime();
+        memberPtr->m_regDate = m_memberByIdQuery.value(6).toDateTime();
         m_memberByIdQuery.finish();
         return memberPtr;
     }
     //
     InvoicePtr DAO::getMemberActiveInvoice(Int32 memberId)
     {
-        m_memberActiveInvoiceQuery.bindValue(":memberId", memberId);
-        m_memberActiveInvoiceQuery.bindValue(":stateId", static_cast<Int32>(InvoiceState::Open));
-        m_memberActiveInvoiceQuery.exec();
+        m_memberActiveInvoiceQuery.bindValue(":memberid", memberId);
+        m_memberActiveInvoiceQuery.bindValue(":stateid", static_cast<Int32>(InvoiceState::Open));
+        if (!m_memberActiveInvoiceQuery.exec())
+        {
+            qDebug() << m_memberActiveInvoiceQuery.lastError();
+        }
         if (!m_memberActiveInvoiceQuery.next())
         {
             return InvoicePtr();
         }
         InvoicePtr pInvoicePtr(new Invoice());
         pInvoicePtr->m_id = m_memberActiveInvoiceQuery.value(0).toUInt();
-        pInvoicePtr->m_state = static_cast<InvoiceState>(m_memberActiveInvoiceQuery.value(2).toUInt());
-        pInvoicePtr->m_date = m_memberActiveInvoiceQuery.value(3).toDateTime();
-        pInvoicePtr->m_total = m_memberActiveInvoiceQuery.value(4).toFloat();
-        pInvoicePtr->m_payment = static_cast<PaymentType>(m_memberActiveInvoiceQuery.value(5).toUInt());
+        pInvoicePtr->m_state = static_cast<InvoiceState>(m_memberActiveInvoiceQuery.value(1).toUInt());
+        pInvoicePtr->m_date = m_memberActiveInvoiceQuery.value(2).toDateTime();
+        pInvoicePtr->m_total = m_memberActiveInvoiceQuery.value(3).toFloat();
+        pInvoicePtr->m_payment = static_cast<PaymentType>(m_memberActiveInvoiceQuery.value(4).toUInt());
         m_memberActiveInvoiceQuery.finish();
 
         return pInvoicePtr;
@@ -234,11 +281,17 @@ namespace PenyaManager {
         m_insertInvoiceQuery.bindValue(":total", pInvoicePtr->m_total);
         m_insertInvoiceQuery.bindValue(":idmember", pInvoicePtr->m_memberId);
         m_insertInvoiceQuery.bindValue(":payment", static_cast<Int32>(pInvoicePtr->m_payment));
-        m_insertInvoiceQuery.exec();
+        if (!m_insertInvoiceQuery.exec())
+        {
+            qDebug() << m_insertInvoiceQuery.lastError();
+        }
         m_insertInvoiceQuery.finish();
 
         // For LAST_INSERT_ID(), the most recently generated ID is maintained in the server on a per-connection basis
-        m_getLastIdQuery.exec();
+        if (!m_getLastIdQuery.exec())
+        {
+            qDebug() << m_getLastIdQuery.lastError();
+        }
         m_getLastIdQuery.next();
         pInvoicePtr->m_id = m_getLastIdQuery.value(0).toUInt();
         m_getLastIdQuery.finish();
@@ -250,7 +303,10 @@ namespace PenyaManager {
         // bind value
         m_productInvoiceItemsQuery.bindValue(":invoiceid", invoiceId);
         // run query
-        m_productInvoiceItemsQuery.exec();
+        if (!m_productInvoiceItemsQuery.exec())
+        {
+            qDebug() << m_productInvoiceItemsQuery.lastError();
+        }
 
         InvoiceProductItemListPtr pIPIListPrt(new InvoiceProductItemList);
         while (m_productInvoiceItemsQuery.next()) {
@@ -260,6 +316,7 @@ namespace PenyaManager {
             InvoiceProductItemPtr pInvoiceProductItemPtr(new InvoiceProductItem(productName, pricePerUnit, count));
             pIPIListPrt->push_back(pInvoiceProductItemPtr);
         }
+        m_productInvoiceItemsQuery.finish();
         return pIPIListPrt;
     }
     //
@@ -271,5 +328,72 @@ namespace PenyaManager {
             qDebug() << m_resetInvoiceProductItemsQuery.lastError();
         }
         m_resetInvoiceProductItemsQuery.finish();
+    }
+    //
+    void DAO::updateInvoice(const InvoicePtr &pInvoicePtr)
+    {
+        // bind value
+        m_updateInvoiceQuery.bindValue(":invoiceid", pInvoicePtr->m_id);
+        m_updateInvoiceQuery.bindValue(":state", static_cast<Int32>(pInvoicePtr->m_state));
+        m_updateInvoiceQuery.bindValue(":date", pInvoicePtr->m_date);
+        m_updateInvoiceQuery.bindValue(":total", pInvoicePtr->m_total);
+        m_updateInvoiceQuery.bindValue(":payment", static_cast<Int32>(pInvoicePtr->m_payment));
+        if (!m_updateInvoiceQuery.exec())
+        {
+            qDebug() << m_updateInvoiceQuery.lastError();
+        }
+        m_updateInvoiceQuery.finish();
+    }
+    //
+    TransactionPtr DAO::getLastAccountInfo(Int32 memberId)
+    {
+        m_memberLastAccountInfoQuery.bindValue(":memberid", memberId);
+        if (!m_memberLastAccountInfoQuery.exec())
+        {
+            qDebug() << m_memberLastAccountInfoQuery.lastError();
+        }
+        if (!m_memberLastAccountInfoQuery.next())
+        {
+            return TransactionPtr();
+        }
+        TransactionPtr pLastAccountInfoPtr(new Transaction);
+        pLastAccountInfoPtr->m_memberId = memberId;
+        pLastAccountInfoPtr->m_amount = m_memberLastAccountInfoQuery.value(0).toFloat();
+        pLastAccountInfoPtr->m_date = m_memberLastAccountInfoQuery.value(1).toDateTime();
+        pLastAccountInfoPtr->m_balance = m_memberLastAccountInfoQuery.value(2).toFloat();
+        pLastAccountInfoPtr->m_descr = m_memberLastAccountInfoQuery.value(3).toString();
+        pLastAccountInfoPtr->m_type = static_cast<TransactionType>(m_memberLastAccountInfoQuery.value(4).toUInt());
+        m_memberLastAccountInfoQuery.finish();
+        return pLastAccountInfoPtr;
+    }
+    //
+    void DAO::insertTransaction(const TransactionPtr &pTransactionPtr)
+    {
+        m_insertTransactionQuery.bindValue(":memberid", pTransactionPtr->m_memberId);
+        m_insertTransactionQuery.bindValue(":amount", pTransactionPtr->m_amount);
+        m_insertTransactionQuery.bindValue(":date", pTransactionPtr->m_date);
+        m_insertTransactionQuery.bindValue(":balance", pTransactionPtr->m_balance);
+        m_insertTransactionQuery.bindValue(":description", pTransactionPtr->m_descr);
+        m_insertTransactionQuery.bindValue(":type", static_cast<Int32>(pTransactionPtr->m_type));
+        if (!m_insertTransactionQuery.exec())
+        {
+            qDebug() << m_insertTransactionQuery.lastError();
+        }
+        m_insertTransactionQuery.finish();
+    }
+    //
+    void DAO::updateMember(const MemberPtr &pMemberPtr)
+    {
+        m_updateMemberQuery.bindValue(":idmember", pMemberPtr->m_id);
+        m_updateMemberQuery.bindValue(":name", pMemberPtr->m_name);
+        m_updateMemberQuery.bindValue(":surname", pMemberPtr->m_surname);
+        m_updateMemberQuery.bindValue(":image", pMemberPtr->m_imagePath);
+        m_updateMemberQuery.bindValue(":lastmodified", pMemberPtr->m_lastModified);
+        m_updateMemberQuery.bindValue(":reg_date", pMemberPtr->m_regDate);
+        if (!m_updateMemberQuery.exec())
+        {
+            qDebug() << m_updateMemberQuery.lastError();
+        }
+        m_updateMemberQuery.finish();
     }
 }

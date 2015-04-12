@@ -8,9 +8,11 @@ USE `alegria` ;
 -- -----------------------------------------------------
 -- Table `alegria`.`member`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `alegria`.`member` ;
+
 CREATE TABLE IF NOT EXISTS `alegria`.`member` (
   `idmember` INT(11) NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_bin' BINARY NOT NULL,
+  `name` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_bin' NOT NULL,
   `surname` VARCHAR(100) NOT NULL,
   `image` VARCHAR(300) NOT NULL,
   `lastmodified` DATETIME NOT NULL,
@@ -25,6 +27,8 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 -- Table `alegria`.`account`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `alegria`.`account` ;
+
 CREATE TABLE IF NOT EXISTS `alegria`.`account` (
   `idaccount` INT(11) NOT NULL AUTO_INCREMENT,
   `idmember` INT(11) NOT NULL,
@@ -32,6 +36,7 @@ CREATE TABLE IF NOT EXISTS `alegria`.`account` (
   `date` DATETIME NOT NULL,
   `balance` DECIMAL(10,2) NOT NULL,
   `description` VARCHAR(100) NOT NULL,
+  `type` INT(11) NOT NULL,
   PRIMARY KEY (`idaccount`),
   INDEX `fk_account_member1_idx` (`idmember` ASC),
   CONSTRAINT `fk_account_member1`
@@ -47,6 +52,8 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 -- Table `alegria`.`invoice`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `alegria`.`invoice` ;
+
 CREATE TABLE IF NOT EXISTS `alegria`.`invoice` (
   `idinvoice` INT(11) NOT NULL AUTO_INCREMENT,
   `state` INT(11) NOT NULL,
@@ -69,6 +76,8 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 -- Table `alegria`.`product_family`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `alegria`.`product_family` ;
+
 CREATE TABLE IF NOT EXISTS `alegria`.`product_family` (
   `idproduct_family` INT(11) NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
@@ -84,6 +93,8 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 -- Table `alegria`.`product_item`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `alegria`.`product_item` ;
+
 CREATE TABLE IF NOT EXISTS `alegria`.`product_item` (
   `idproduct_item` INT(11) NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(200) NOT NULL,
@@ -107,6 +118,8 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 -- Table `alegria`.`inv_prod`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `alegria`.`inv_prod` ;
+
 CREATE TABLE IF NOT EXISTS `alegria`.`inv_prod` (
   `idinvoice` INT(11) NOT NULL,
   `idproduct_item` INT(11) NOT NULL,

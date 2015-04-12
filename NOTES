@@ -43,4 +43,7 @@ http://stackoverflow.com/questions/10369826/how-can-i-disable-alt-f4-window-clos
 
 * Only one active invoice??
 * bote
+* Otros gastos?? table fee??
 * Stock tracking??? On invoice creation, modify stock??
+* Log system to trace user activity
+* configuration file (system dependent)
