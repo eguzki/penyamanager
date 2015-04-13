@@ -35,7 +35,8 @@ SOURCES += main.cpp\
         objs/InvoiceProductItem.cpp\
         loginwindow.cpp \
     numitemdialog.cpp \
-    invoicewindow.cpp
+    invoicewindow.cpp \
+    depositwindow.cpp
 
 HEADERS  += mainwindow.h\
         singletons.h\
@@ -53,9 +54,11 @@ HEADERS  += mainwindow.h\
         objs/InvoiceProductItem.h\
         loginwindow.h \
     numitemdialog.h \
-    invoicewindow.h
+    invoicewindow.h \
+    depositwindow.h
 
 FORMS    += mainwindow.ui\
         loginwindow.ui \
     numitemdialog.ui \
-    invoicewindow.ui
+    invoicewindow.ui \
+    depositwindow.ui

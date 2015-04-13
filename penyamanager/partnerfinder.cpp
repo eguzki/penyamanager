@@ -6,6 +6,7 @@
 #include "mainwindow.h"
 #include "loginwindow.h"
 #include "invoicewindow.h"
+#include "depositwindow.h"
 #include "partnerfinder.h"
 
 namespace PenyaManager {
@@ -17,6 +18,7 @@ namespace PenyaManager {
         m_partnerMap[Constants::kLoginWindowKey] = new LoginWindow;
         m_partnerMap[Constants::kMainWindowKey] = new MainWindow;
         m_partnerMap[Constants::kInvoiceWindowKey] = new InvoiceWindow;
+        m_partnerMap[Constants::kDepositsWindowKey] = new DepositWindow;
     }
     //
     PartnerFinder::~PartnerFinder()

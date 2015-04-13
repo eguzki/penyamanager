@@ -24,4 +24,6 @@ namespace PenyaManager {
     const Uint32    Constants::kMainWindowKey           = 1;
     //
     const Uint32    Constants::kInvoiceWindowKey        = 2;
+    //
+    const Uint32    Constants::kDepositsWindowKey        = 2;
 }

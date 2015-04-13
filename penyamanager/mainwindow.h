@@ -46,8 +46,6 @@ class MainWindow : public IPartner
 
     private slots:
         //
-        void quitButtonOnClick();
-        //
         void init();
         //
         void familyItemClicked(QListWidgetItem* item);
@@ -59,6 +57,8 @@ class MainWindow : public IPartner
         void on_invoiceResetButton_clicked();
         //
         void on_exitButton_clicked();
+        //
+        void on_depositsButton_clicked();
 };
 }
 

@@ -20,7 +20,6 @@ namespace PenyaManager {
     {
         ui->setupUi(this);
 
-        this->connect(this->ui->quitButton, SIGNAL(clicked()), this, SLOT(quitButtonOnClick()));
         this->connect(this->ui->familyListWidget, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(familyItemClicked(QListWidgetItem*)));
         this->connect(this->ui->productListWidget, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(productItemClicked(QListWidgetItem*)));
     }
@@ -174,14 +173,6 @@ namespace PenyaManager {
     }
 
     //
-    void MainWindow::quitButtonOnClick()
-    {
-        // qApp is a macro defined as: (QApplication*)QCoreApplication::instance()
-        qApp->exit(0);
-        //close();
-    }
-
-    //
     void MainWindow::familyItemClicked(QListWidgetItem* item)
     {
         Int32 familyId = item->data(Constants::kIdRole).toInt();
@@ -292,7 +283,16 @@ namespace PenyaManager {
         IPartner* pLoginWindow = Singletons::m_pParnetFinder->getPartner(Constants::kLoginWindowKey);
         pLoginWindow->init();
     }
+    void MainWindow::on_depositsButton_clicked()
+    {
+        hide();
+        // call invoice window
+        IPartner* pDepositsWindow = Singletons::m_pParnetFinder->getPartner(Constants::kDepositsWindowKey);
+        pDepositsWindow->init();
+    }
 }
+
+
 
 
 
