@@ -1,4 +1,6 @@
 #include <QApplication>
+#include <QStyleFactory>
+#include <QMessageBox>
 
 #include "singletons.h"
 #include "mainwindow.h"
@@ -11,6 +13,7 @@ int main(int argc, char *argv[])
 
     QApplication::setStyle("windows");
     QApplication a(argc, argv);
+
     PenyaManager::MainWindow mainWindow;
     PenyaManager::LoginWindow loginWindow;
     PenyaManager::admon_screen adminWindow;
