@@ -32,7 +32,8 @@ SOURCES += main.cpp\
         objs/ProductFamily.cpp\
         objs/ProductItem.cpp\
         loginwindow.cpp \
-    admon_screen.cpp
+    admon_screen.cpp \
+    memberselect.cpp
 
 HEADERS  += mainwindow.h\
         singletons.h\
@@ -47,8 +48,10 @@ HEADERS  += mainwindow.h\
         objs/ProductFamily.h\
         objs/ProductItem.h\
         loginwindow.h \
-    admon_screen.h
+    admon_screen.h \
+    memberselect.h
 
 FORMS    += mainwindow.ui\
         loginwindow.ui \
-    admon_screen.ui
+    admon_screen.ui \
+    memberselect.ui

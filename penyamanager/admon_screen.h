@@ -2,6 +2,7 @@
 #define ADMON_SCREEN_H
 
 #include "IPartner.h"
+#include "objs/Member.h"
 
 namespace Ui {
 class admon_screen;
@@ -21,8 +22,12 @@ public:
     void setParner(IPartner *partner);
     void init();
 
+private slots:
+    void on_pushButton_clicked();
+
 private:
     Ui::admon_screen *ui;
+    void fillMemberProfile(const MemberByAdminPtr &pMemberPtr);
 
 };
 }

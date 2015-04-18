@@ -54,8 +54,8 @@ namespace PenyaManager {
 
     void MainWindow::init()
     {
-       QMessageBox::critical(this, "styles",
-                            QStyleFactory::keys().join(","));
+       /*QMessageBox::critical(this, "styles",
+                            QStyleFactory::keys().join(","));*/
         if (!Singletons::m_pDAO->isOpen()) {
             QSqlError err = Singletons::m_pDAO->lastError();
             QMessageBox::critical(this, "Unable to initialize Database",

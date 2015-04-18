@@ -339,7 +339,7 @@
      <string>Cancelar</string>
     </property>
    </widget>
-   <widget class="QTextEdit" name="textEdit">
+   <widget class="QTextEdit" name="textidmember">
     <property name="geometry">
      <rect>
       <x>250</x>
@@ -408,6 +408,16 @@
      <string>T. Fijo</string>
     </property>
    </widget>
+   <widget class="QTextEdit" name="textname">
+    <property name="geometry">
+     <rect>
+      <x>250</x>
+      <y>10</y>
+      <width>104</width>
+      <height>25</height>
+     </rect>
+    </property>
+   </widget>
    <zorder>idmember</zorder>
    <zorder>name</zorder>
    <zorder>surname</zorder>
@@ -419,7 +429,6 @@
    <zorder>zip_code</zorder>
    <zorder>town</zorder>
    <zorder>state</zorder>
-   <zorder>tel</zorder>
    <zorder>tel2</zorder>
    <zorder>email</zorder>
    <zorder>bank_account</zorder>
@@ -427,11 +436,12 @@
    <zorder>notes</zorder>
    <zorder>saveButton</zorder>
    <zorder>cancelButton</zorder>
-   <zorder>textEdit</zorder>
+   <zorder>textidmember</zorder>
    <zorder>graphicsView</zorder>
    <zorder>activeCheckbox</zorder>
    <zorder>tel</zorder>
    <zorder>toolButton</zorder>
+   <zorder>textname</zorder>
   </widget>
   <widget class="QStatusBar" name="statusbar">
    <property name="geometry">

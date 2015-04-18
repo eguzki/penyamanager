@@ -38,6 +38,17 @@ namespace PenyaManager {
                 "ORDER BY account.date DESC LIMIT 1 "
                 );
 
+        // Member selected by Admin
+        m_memberByAdmin.prepare(
+                "SELECT member.idmember, member.name, member.surname, member.image, account.balance, member.bank_account "
+                "FROM account "
+                "INNER JOIN member "
+                "ON member.idmember=account.idmember "
+                "WHERE member.idmember= :memberId "
+                "AND member.active= :activeId "
+                "ORDER BY account.date DESC LIMIT 1 "
+                );
+
         // Invoice by ID
         m_memberActiveInvoice.prepare(
                 "SELECT idinvoice, state, date, total, idmember, payment FROM invoice "
@@ -131,6 +142,32 @@ namespace PenyaManager {
         return memberPtr;
     }
     //
+
+    MemberByAdminPtr DAO::getActiveMemberByAdmin(Int32 memberLoginId)
+    {
+        // member and balance
+        m_memberByAdmin.bindValue(":memberId", memberLoginId);
+        // only active members
+        m_memberByAdmin.bindValue(":activeId", 1);
+        m_memberByAdmin.exec();
+        if (!m_memberByAdmin.next())
+        {
+            return MemberByAdminPtr();
+        }
+        MemberByAdminPtr memberPtr(new MemberByAdmin);
+        memberPtr->m_id = m_memberByAdmin.value(0).toUInt();
+        memberPtr->m_name = m_memberByAdmin.value(1).toString();
+        memberPtr->m_surname = m_memberByAdmin.value(2).toString();
+        memberPtr->m_imagePath = m_memberByAdmin.value(3).toString();
+        memberPtr->m_balance = m_memberByAdmin.value(4).toFloat();
+        memberPtr->m_bank_account = m_memberByAdmin.value(5).toString();
+
+        m_memberByAdmin.finish();
+        return memberPtr;
+    }
+    //
+
+
     InvoicePtr DAO::getMemberActiveInvoice(Int32 memberId)
     {
         m_memberActiveInvoice.bindValue(":memberId", memberId);

@@ -30,6 +30,8 @@ namespace PenyaManager {
             MemberPtr getActiveMemberById(Int32 memberLoginId);
             //
             InvoicePtr getMemberActiveInvoice(Int32 memberId);
+            //
+            MemberByAdminPtr getActiveMemberByAdmin(Int32 memberLoginId);
 
         private:
             //
@@ -42,6 +44,8 @@ namespace PenyaManager {
             QSqlQuery               m_memberById;
             //
             QSqlQuery               m_memberActiveInvoice;
+            //
+            QSqlQuery               m_memberByAdmin;
     };
 }
 #endif // DAO_H
