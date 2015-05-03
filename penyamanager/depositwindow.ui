@@ -152,14 +152,14 @@
                 <number>1</number>
                </property>
                <item>
-                <widget class="QLabel" name="memberAccountLabel">
+                <widget class="QLabel" name="memberIdLabel">
                  <property name="text">
                   <string>ID:</string>
                  </property>
                 </widget>
                </item>
                <item>
-                <widget class="QLabel" name="memberAccountInfoLabel">
+                <widget class="QLabel" name="memberIdInfoLabel">
                  <property name="text">
                   <string>TextLabel</string>
                  </property>
@@ -187,14 +187,14 @@
                 <number>1</number>
                </property>
                <item>
-                <widget class="QLabel" name="memberIdLabel">
+                <widget class="QLabel" name="memberAccountLabel">
                  <property name="text">
                   <string>Balance:</string>
                  </property>
                 </widget>
                </item>
                <item>
-                <widget class="QLabel" name="memberIdInfoLabel">
+                <widget class="QLabel" name="memberAccountInfoLabel">
                  <property name="text">
                   <string>TextLabel</string>
                  </property>
@@ -218,7 +218,7 @@
          </sizepolicy>
         </property>
         <property name="title">
-         <string>GroupBox</string>
+         <string>Options</string>
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_5">
          <item>

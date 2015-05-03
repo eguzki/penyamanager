@@ -14,6 +14,14 @@ namespace PenyaManager {
     {
     }
     //
+    void Services::createDeposit(const MemberPtr &pMemberPtr, Float amount)
+    {
+        // create account register info
+        // currently simple description. Maybe let user set some subject?
+        QString description("deposit");
+        this->createAccountTransaction(pMemberPtr->m_id, amount, description, TransactionType::Deposit);
+    }
+    //
     void Services::closeInvoice(const MemberPtr &pMemberPtr, Int32 invoiceId, PaymentType payment)
     {
         InvoicePtr pInvoicePtr(new Invoice());
