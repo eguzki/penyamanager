@@ -27,6 +27,7 @@ namespace PenyaManager {
     //
     MainWindow::~MainWindow()
     {
+        m_rowProductIdMap.clear();
         delete ui;
     }
 
@@ -219,6 +220,8 @@ namespace PenyaManager {
         this->ui->invoiceTableWidget->setHorizontalHeaderLabels(headers);
         // invoice table reset
         this->ui->invoiceTableWidget->clearContents();
+        // internal data structure reset
+        this->m_rowProductIdMap.clear();
 
         Uint32 rowCount = 0;
         Float totalInvoice = 0.0;
@@ -231,6 +234,7 @@ namespace PenyaManager {
             Float totalPrice = pInvoiceProductItemPtr->m_priceperunit * pInvoiceProductItemPtr->m_count;
             this->ui->invoiceTableWidget->setItem(rowCount, 3, new QTableWidgetItem(tr("%1 €").arg(totalPrice)));
             totalInvoice += totalPrice;
+            this->m_rowProductIdMap[rowCount] = pInvoiceProductItemPtr->m_productId;
             rowCount++;
         }
         this->ui->totalDisplayLabel->setText(QString("%1 €").arg(totalInvoice));
@@ -240,23 +244,7 @@ namespace PenyaManager {
     {
         Int32 productId = item->data(Constants::kIdRole).toInt();
         //QMessageBox::critical(this, "some text", QString("product_id: %1").arg(productId));
-        NumItemDialog numItemDialog(this);
-        Uint32 count = numItemDialog.exec();
-        MemberPtr pCurrMember = Singletons::m_pCurrMember;
-        // always fresh invoice
-        InvoicePtr pInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
-
-        if (!count) {
-            // count was 0 -> remove item from invoice
-            Singletons::m_pDAO->removeProductInvoice(pInvoicePtr->m_id, productId);
-        } else {
-            // count was not 0 -> update item from invoice
-            Singletons::m_pDAO->updateProductInvoice(pInvoicePtr->m_id, productId, count);
-        }
-
-        // always fresh invoice
-        pInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
-        fillInvoiceData(pInvoicePtr);
+        this->readNumItems(productId);
     }
     //
     void MainWindow::on_invoiceCloseButton_clicked()
@@ -290,7 +278,40 @@ namespace PenyaManager {
         IPartner* pDepositsWindow = Singletons::m_pParnetFinder->getPartner(Constants::kDepositsWindowKey);
         pDepositsWindow->init();
     }
+    //
+    void MainWindow::on_invoiceTableWidget_cellClicked(int row, int column)
+    {
+        auto rowMap = m_rowProductIdMap.find(row);
+        if (rowMap == m_rowProductIdMap.end()) {
+            //this should never happen
+            return;
+        }
+        Int32 productId = rowMap->second;
+        this->readNumItems(productId);
+    }
+    //
+    void MainWindow::readNumItems(Int32 productId)
+    {
+        NumItemDialog numItemDialog(this);
+        Uint32 count = numItemDialog.exec();
+        MemberPtr pCurrMember = Singletons::m_pCurrMember;
+        // always fresh invoice
+        InvoicePtr pInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
+
+        if (!count) {
+            // count was 0 -> remove item from invoice
+            Singletons::m_pDAO->removeProductInvoice(pInvoicePtr->m_id, productId);
+        } else {
+            // count was not 0 -> update item from invoice
+            Singletons::m_pDAO->updateProductInvoice(pInvoicePtr->m_id, productId, count);
+        }
+
+        // always fresh invoice
+        pInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
+        fillInvoiceData(pInvoicePtr);
+    }
 }
+
 
 
 

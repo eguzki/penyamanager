@@ -1,6 +1,8 @@
 //
 
 #include "singletons.h"
+#include "objs/Invoice.h"
+#include "objs/Deposit.h"
 #include "services.h"
 
 namespace PenyaManager {
@@ -16,13 +18,21 @@ namespace PenyaManager {
     //
     void Services::createDeposit(const MemberPtr &pMemberPtr, Float amount)
     {
-        // create account register info
+        // create deposit register info as unconfirmed
+        DepositPtr pDepositPtr(new Deposit);
+        pDepositPtr->m_memberId = pMemberPtr->m_id;
+        // create unconfirmed deposit. Admin has to validate and process.
+        pDepositPtr->m_state = DepositState::Unchecked;
+        pDepositPtr->m_date = QDateTime::currentDateTime();
+        pDepositPtr->m_total = amount;
         // currently simple description. Maybe let user set some subject?
-        QString description("deposit");
-        this->createAccountTransaction(pMemberPtr->m_id, amount, description, TransactionType::Deposit);
+        pDepositPtr->m_descr = QString("deposit");
+
+        // store in ddbb
+        Singletons::m_pDAO->createDeposit(pDepositPtr);
     }
     //
-    void Services::closeInvoice(const MemberPtr &pMemberPtr, Int32 invoiceId, PaymentType payment)
+    void Services::closeInvoice(const MemberPtr &pMemberPtr, Int32 invoiceId)
     {
         InvoicePtr pInvoicePtr(new Invoice());
         // id
@@ -43,19 +53,14 @@ namespace PenyaManager {
             totalInvoice += totalPrice;
         }
         pInvoicePtr->m_total = totalInvoice;
-        // payment
-        pInvoicePtr->m_payment = payment;
 
         // update invoice data
         Singletons::m_pDAO->updateInvoice(pInvoicePtr);
 
-        if (payment == PaymentType::Account)
-        {
-            // create account register info
-            QString description = QString("invoice ref %1").arg(invoiceId);
-            // account transaction has totalInvoice as negative amount
-            this->createAccountTransaction(pMemberPtr->m_id, -totalInvoice, description, TransactionType::Invoice);
-        }
+        // create account register info
+        QString description = QString("invoice ref %1").arg(invoiceId);
+        // account transaction has totalInvoice as negative amount
+        this->createAccountTransaction(pMemberPtr->m_id, -totalInvoice, description, TransactionType::Invoice);
     }
     //
     void Services::createAccountTransaction(Int32 memberId, Float amount, const QString &description, TransactionType type)

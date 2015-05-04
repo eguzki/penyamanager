@@ -1,5 +1,5 @@
-#ifndef INVOICE_H
-#define INVOICE_H
+#ifndef DEPOSIT_H
+#define DEPOSIT_H
 
 #include <QString>
 #include <QDateTime>
@@ -8,21 +8,21 @@
 namespace PenyaManager
 {
     //
-    enum class InvoiceState
+    enum class DepositState
     {
-        Open,
+        Unchecked,
         Closed
     };
     //
-    class Invoice
+    class Deposit
     {
         public:
             //
-            Invoice();
+            Deposit();
             //
-            Invoice(Int32 id, Int32 memberId, InvoiceState state, const QDateTime &date, Float total);
+            Deposit(Int32 id, Int32 memberId, DepositState state, const QDateTime &date, Float total, const QString &descr);
             //
-            virtual ~Invoice(){}
+            virtual ~Deposit(){}
 
         public:
             //
@@ -30,15 +30,17 @@ namespace PenyaManager
             //
             Int32               m_memberId;
             //
-            InvoiceState        m_state;
+            DepositState        m_state;
             //
             QDateTime           m_date;
             //
             Float               m_total;
+            //
+            QString             m_descr;
     };
 
     //
-    typedef std::shared_ptr<Invoice> InvoicePtr;
+    typedef std::shared_ptr<Deposit> DepositPtr;
 }
 
-#endif // INVOICE_H
+#endif // DEPOSIT_H

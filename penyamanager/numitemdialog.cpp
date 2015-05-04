@@ -24,6 +24,8 @@ namespace PenyaManager {
         this->connect(this->ui->toolButton_7, &QToolButton::clicked, std::bind(&NumItemDialog::onButtonClick, this, 7));
         this->connect(this->ui->toolButton_8, &QToolButton::clicked, std::bind(&NumItemDialog::onButtonClick, this, 8));
         this->connect(this->ui->toolButton_9, &QToolButton::clicked, std::bind(&NumItemDialog::onButtonClick, this, 9));
+
+        this->ui->numDisplayLabel->setText("");
     }
 
     //
@@ -33,9 +35,32 @@ namespace PenyaManager {
     }
 
     //
-    void NumItemDialog::onButtonClick(Uint32 count)
+    void NumItemDialog::onButtonClick(Uint32 num)
     {
+        // Check number is not too high
+        if (this->ui->numDisplayLabel->text().length() > 4)
+        {
+            // do not allow "big" numbers
+            return;
+        }
+        QString newCountText(this->ui->numDisplayLabel->text().append(QString::number(num)));
+        this->ui->numDisplayLabel->setText(newCountText);
+    }
+    //
+    void NumItemDialog::on_toolButton_C_clicked()
+    {
+        this->ui->numDisplayLabel->setText("");
+    }
+    //
+    void NumItemDialog::on_toolButton_Done_clicked()
+    {
+        Uint32 count = 0;
+
+        if (this->ui->numDisplayLabel->text().length() > 0)
+        {
+            count = this->ui->numDisplayLabel->text().toUInt();
+        }
+
         done(count);
     }
-
 }

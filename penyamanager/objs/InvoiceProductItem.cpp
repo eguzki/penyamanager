@@ -11,8 +11,9 @@ namespace PenyaManager
     }
 
     //
-    InvoiceProductItem::InvoiceProductItem(QString productName, Float priceperunit, Uint32 count)
+    InvoiceProductItem::InvoiceProductItem(Int32 productId, QString productName, Float priceperunit, Uint32 count)
         :
+            m_productId(productId),
             m_productname(productName),
             m_priceperunit(priceperunit),
             m_count(count)

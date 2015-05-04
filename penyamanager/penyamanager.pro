@@ -29,6 +29,7 @@ SOURCES += main.cpp\
         partnerfinder.cpp\
         objs/Transaction.cpp\
         objs/Invoice.cpp\
+        objs/Deposit.cpp\
         objs/Member.cpp\
         objs/ProductFamily.cpp\
         objs/ProductItem.cpp\
@@ -48,6 +49,7 @@ HEADERS  += mainwindow.h\
         partnerfinder.h\
         objs/Transaction.h\
         objs/Invoice.h\
+        objs/Deposit.h\
         objs/Member.h\
         objs/ProductFamily.h\
         objs/ProductItem.h\

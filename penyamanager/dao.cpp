@@ -21,7 +21,8 @@ namespace PenyaManager {
             m_updateInvoiceQuery(m_db),
             m_memberLastAccountInfoQuery(m_db),
             m_insertTransactionQuery(m_db),
-            m_updateMemberQuery(m_db)
+            m_updateMemberQuery(m_db),
+            m_insertDepositQuery(m_db)
     {
         // configure db connection
         m_db.setHostName(hostname);
@@ -51,7 +52,7 @@ namespace PenyaManager {
 
         // Invoice by ID
         m_memberActiveInvoiceQuery.prepare(
-                "SELECT idinvoice, state, date, total, payment FROM invoice "
+                "SELECT idinvoice, state, date, total FROM invoice "
                 "WHERE idmember = :memberid AND state = :stateid "
                 "ORDER BY date DESC LIMIT 1"
                 );
@@ -74,13 +75,13 @@ namespace PenyaManager {
         // insert new invoice
         m_insertInvoiceQuery.prepare(
                 "INSERT INTO invoice"
-                "(idinvoice, state, date, total, idmember, payment) "
-                "VALUES (NULL, :state, :date, :total, :idmember, :payment)"
+                "(idinvoice, state, date, total, idmember) "
+                "VALUES (NULL, :state, :date, :total, :idmember)"
                 );
 
         // invoice product items by invoiceId
         m_productInvoiceItemsQuery.prepare(
-                "SELECT product_item.name, product_item.price, inv_prod.count "
+                "SELECT product_item.idproduct_item, product_item.name, product_item.price, inv_prod.count "
                 "FROM inv_prod INNER JOIN product_item ON inv_prod.idproduct_item=product_item.idproduct_item "
                 "WHERE idinvoice=:invoiceid"
                 );
@@ -93,8 +94,8 @@ namespace PenyaManager {
         // update existing invoice
         m_updateInvoiceQuery.prepare(
                 "UPDATE invoice "
-                "SET state=:state, date=:date, total=:total, payment=:payment "
-               "WHERE idinvoice=:invoiceid"
+                "SET state=:state, date=:date, total=:total "
+                "WHERE idinvoice=:invoiceid"
                 );
 
         // member's last account transaction
@@ -118,6 +119,12 @@ namespace PenyaManager {
                 "UPDATE member "
                 "SET name=:name, surname=:surname, image=:image, lastmodified=:lastmodified, reg_date=:reg_date"
                "WHERE idmember=:memberid"
+                );
+        // insert new deposit
+        m_insertDepositQuery.prepare(
+                "INSERT INTO deposit "
+                "(idmember, state, date, total, description) "
+                "VALUES (:memberid, :state, :date, :total, :description)"
                 );
     }
 
@@ -235,7 +242,6 @@ namespace PenyaManager {
         pInvoicePtr->m_state = static_cast<InvoiceState>(m_memberActiveInvoiceQuery.value(1).toUInt());
         pInvoicePtr->m_date = m_memberActiveInvoiceQuery.value(2).toDateTime();
         pInvoicePtr->m_total = m_memberActiveInvoiceQuery.value(3).toFloat();
-        pInvoicePtr->m_payment = static_cast<PaymentType>(m_memberActiveInvoiceQuery.value(4).toUInt());
         m_memberActiveInvoiceQuery.finish();
 
         return pInvoicePtr;
@@ -272,15 +278,13 @@ namespace PenyaManager {
                     memberId,
                     InvoiceState::Open,
                     QDateTime::currentDateTime(),
-                    0.0,
-                    PaymentType::Account
+                    0.0
                     ));
 
         m_insertInvoiceQuery.bindValue(":state", static_cast<Int32>(pInvoicePtr->m_state));
         m_insertInvoiceQuery.bindValue(":date", pInvoicePtr->m_date);
         m_insertInvoiceQuery.bindValue(":total", pInvoicePtr->m_total);
         m_insertInvoiceQuery.bindValue(":idmember", pInvoicePtr->m_memberId);
-        m_insertInvoiceQuery.bindValue(":payment", static_cast<Int32>(pInvoicePtr->m_payment));
         if (!m_insertInvoiceQuery.exec())
         {
             qDebug() << m_insertInvoiceQuery.lastError();
@@ -310,10 +314,11 @@ namespace PenyaManager {
 
         InvoiceProductItemListPtr pIPIListPrt(new InvoiceProductItemList);
         while (m_productInvoiceItemsQuery.next()) {
-            QString productName = m_productInvoiceItemsQuery.value(0).toString();
-            Float pricePerUnit = m_productInvoiceItemsQuery.value(1).toFloat();
-            Uint32 count = m_productInvoiceItemsQuery.value(2).toUInt();
-            InvoiceProductItemPtr pInvoiceProductItemPtr(new InvoiceProductItem(productName, pricePerUnit, count));
+            Int32 productId = m_productInvoiceItemsQuery.value(0).toInt();
+            QString productName = m_productInvoiceItemsQuery.value(1).toString();
+            Float pricePerUnit = m_productInvoiceItemsQuery.value(2).toFloat();
+            Uint32 count = m_productInvoiceItemsQuery.value(3).toUInt();
+            InvoiceProductItemPtr pInvoiceProductItemPtr(new InvoiceProductItem(productId, productName, pricePerUnit, count));
             pIPIListPrt->push_back(pInvoiceProductItemPtr);
         }
         m_productInvoiceItemsQuery.finish();
@@ -337,7 +342,6 @@ namespace PenyaManager {
         m_updateInvoiceQuery.bindValue(":state", static_cast<Int32>(pInvoicePtr->m_state));
         m_updateInvoiceQuery.bindValue(":date", pInvoicePtr->m_date);
         m_updateInvoiceQuery.bindValue(":total", pInvoicePtr->m_total);
-        m_updateInvoiceQuery.bindValue(":payment", static_cast<Int32>(pInvoicePtr->m_payment));
         if (!m_updateInvoiceQuery.exec())
         {
             qDebug() << m_updateInvoiceQuery.lastError();
@@ -395,5 +399,29 @@ namespace PenyaManager {
             qDebug() << m_updateMemberQuery.lastError();
         }
         m_updateMemberQuery.finish();
+    }
+    //
+    DepositPtr DAO::createDeposit(const DepositPtr &pDepositPtr)
+    {
+        m_insertDepositQuery.bindValue(":memberid", pDepositPtr->m_memberId);
+        m_insertDepositQuery.bindValue(":state", static_cast<Int32>(pDepositPtr->m_state));
+        m_insertDepositQuery.bindValue(":date", pDepositPtr->m_date);
+        m_insertDepositQuery.bindValue(":total", pDepositPtr->m_total);
+        m_insertDepositQuery.bindValue(":description", pDepositPtr->m_descr);
+        if (!m_insertDepositQuery.exec())
+        {
+            qDebug() << m_insertDepositQuery.lastError();
+        }
+        m_insertDepositQuery.finish();
+        // For LAST_INSERT_ID(), the most recently generated ID is maintained in the server on a per-connection basis
+        if (!m_getLastIdQuery.exec())
+        {
+            qDebug() << m_getLastIdQuery.lastError();
+        } else {
+            m_getLastIdQuery.next();
+            pDepositPtr->m_id = m_getLastIdQuery.value(0).toUInt();
+        }
+        m_getLastIdQuery.finish();
+        return pDepositPtr;
     }
 }

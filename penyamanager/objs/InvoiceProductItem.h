@@ -14,11 +14,13 @@ namespace PenyaManager
             //
             InvoiceProductItem();
             //
-            InvoiceProductItem(QString productName, Float priceperunit, Uint32 count);
+            InvoiceProductItem(Int32 productId, QString productName, Float priceperunit, Uint32 count);
             //
             virtual ~InvoiceProductItem(){}
 
         public:
+            //
+            Int32               m_productId;
             //
             QString             m_productname;
             //
