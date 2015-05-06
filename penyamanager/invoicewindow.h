@@ -10,7 +10,7 @@ namespace Ui {
 }
 
 namespace PenyaManager {
-
+    //
     class InvoiceWindow : public IPartner
     {
         Q_OBJECT

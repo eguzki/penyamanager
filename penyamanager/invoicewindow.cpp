@@ -79,9 +79,8 @@ namespace PenyaManager {
             return;
         }
 
-        PaymentType payment = (this->ui->accountRadioButton->isChecked()) ? (PaymentType::Account) : (PaymentType::Cash);
         // Update member balance
-        Singletons::m_pServices->closeInvoice(pCurrMember, pInvoicePtr->m_id, payment);
+        Singletons::m_pServices->closeInvoice(pCurrMember, pInvoicePtr->m_id);
 
         // Go to login page
         hide();
@@ -147,9 +146,7 @@ namespace PenyaManager {
         this->ui->invoiceTotalInfoLabel->setText(QString("%1 €").arg(totalInvoice));
         // new balance
         Float newBalance = pMemberPtr->m_balance;
-        if (this->ui->accountRadioButton->isChecked()) {
-            newBalance -= totalInvoice;
-        }
+        newBalance -= totalInvoice;
         this->ui->newBalanceInfoLabel->setText(QString("%1 €").arg(newBalance));
     }
     //

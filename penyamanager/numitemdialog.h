@@ -29,6 +29,10 @@ namespace PenyaManager {
         private slots:
             //
             void onButtonClick(Uint32 count);
+            //
+            void on_toolButton_C_clicked();
+            //
+            void on_toolButton_Done_clicked();
     };
 
 }

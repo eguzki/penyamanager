@@ -2,6 +2,7 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
+DROP SCHEMA IF EXISTS `alegria` ;
 CREATE SCHEMA IF NOT EXISTS `alegria` DEFAULT CHARACTER SET utf8 ;
 USE `alegria` ;
 
@@ -18,6 +19,18 @@ CREATE TABLE IF NOT EXISTS `alegria`.`member` (
   `lastmodified` DATETIME NOT NULL,
   `reg_date` DATETIME NOT NULL,
   `active` TINYINT(1) NOT NULL,
+  `isAdmin` TINYINT(1) NOT NULL,
+  `birth` DATE NULL,
+  `address` VARCHAR(120) NULL,
+  `zip_code` INT(11) NULL,
+  `town` VARCHAR(45) NULL,
+  `state` VARCHAR(45) NULL,
+  `tel` INT(11) NULL,
+  `tel2` INT(11) NULL,
+  `email` VARCHAR(45) NULL,
+  `bank_account` VARCHAR(45) NOT NULL,
+  `postal_send` TINYINT(1) NULL,
+  `notes` VARCHAR(45) NULL,
   PRIMARY KEY (`idmember`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 3
@@ -60,7 +73,6 @@ CREATE TABLE IF NOT EXISTS `alegria`.`invoice` (
   `date` DATETIME NOT NULL,
   `total` DECIMAL(10,2) NOT NULL,
   `idmember` INT(11) NOT NULL,
-  `payment` INT(11) NOT NULL,
   PRIMARY KEY (`idinvoice`),
   INDEX `fk_invoice_member1_idx` (`idmember` ASC),
   CONSTRAINT `fk_invoice_member1`
@@ -138,6 +150,30 @@ CREATE TABLE IF NOT EXISTS `alegria`.`inv_prod` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `alegria`.`deposit`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `alegria`.`deposit` ;
+
+CREATE TABLE IF NOT EXISTS `alegria`.`deposit` (
+  `iddeposit` INT(11) NOT NULL AUTO_INCREMENT,
+  `state` INT(11) NOT NULL,
+  `date` DATETIME NOT NULL,
+  `total` DECIMAL(10,2) NOT NULL,
+  `description` VARCHAR(120) NULL,
+  `idmember` INT(11) NOT NULL,
+  PRIMARY KEY (`iddeposit`),
+  INDEX `fk_deposit_member1_idx` (`idmember` ASC),
+  CONSTRAINT `fk_deposit_member1`
+    FOREIGN KEY (`idmember`)
+    REFERENCES `alegria`.`member` (`idmember`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 3
 DEFAULT CHARACTER SET = utf8;
 
 

@@ -7,6 +7,7 @@
 #include "objs/Transaction.h"
 #include "objs/Member.h"
 #include "objs/Invoice.h"
+#include "objs/Deposit.h"
 #include "objs/ProductFamily.h"
 #include "objs/ProductItem.h"
 #include "objs/InvoiceProductItem.h"
@@ -51,6 +52,8 @@ namespace PenyaManager {
             void insertTransaction(const TransactionPtr &pTransactionPtr);
             //
             void updateMember(const MemberPtr &pMemberPtr);
+            //
+            DepositPtr createDeposit(const DepositPtr &pDepositPtr);
 
         private:
             //
@@ -83,6 +86,8 @@ namespace PenyaManager {
             QSqlQuery               m_insertTransactionQuery;
             //
             QSqlQuery               m_updateMemberQuery;
+            //
+            QSqlQuery               m_insertDepositQuery;
     };
 }
 #endif // DAO_H

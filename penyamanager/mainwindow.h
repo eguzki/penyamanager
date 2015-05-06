@@ -39,14 +39,17 @@ class MainWindow : public IPartner
         void createProductItemWidget(const ProductItemPtr &pfPtr, QListWidget *pList);
         //
         void fillInvoiceData(const InvoicePtr &pInvoicePtr);
+        //
+        void readNumItems(Int32 productId);
 
     private:
         //
         Ui::MainWindow *ui;
+        //
+        typedef std::map<Int32, Int32>          RowProductIdMap;
+        RowProductIdMap                         m_rowProductIdMap;
 
     private slots:
-        //
-        void quitButtonOnClick();
         //
         void init();
         //
@@ -59,6 +62,10 @@ class MainWindow : public IPartner
         void on_invoiceResetButton_clicked();
         //
         void on_exitButton_clicked();
+        //
+        void on_depositsButton_clicked();
+        //
+        void on_invoiceTableWidget_cellClicked(int row, int column);
 };
 }
 

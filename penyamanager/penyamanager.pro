@@ -29,13 +29,15 @@ SOURCES += main.cpp\
         partnerfinder.cpp\
         objs/Transaction.cpp\
         objs/Invoice.cpp\
+        objs/Deposit.cpp\
         objs/Member.cpp\
         objs/ProductFamily.cpp\
         objs/ProductItem.cpp\
         objs/InvoiceProductItem.cpp\
         loginwindow.cpp \
     numitemdialog.cpp \
-    invoicewindow.cpp
+    invoicewindow.cpp \
+    depositwindow.cpp
 
 HEADERS  += mainwindow.h\
         singletons.h\
@@ -47,15 +49,18 @@ HEADERS  += mainwindow.h\
         partnerfinder.h\
         objs/Transaction.h\
         objs/Invoice.h\
+        objs/Deposit.h\
         objs/Member.h\
         objs/ProductFamily.h\
         objs/ProductItem.h\
         objs/InvoiceProductItem.h\
         loginwindow.h \
     numitemdialog.h \
-    invoicewindow.h
+    invoicewindow.h \
+    depositwindow.h
 
 FORMS    += mainwindow.ui\
         loginwindow.ui \
     numitemdialog.ui \
-    invoicewindow.ui
+    invoicewindow.ui \
+    depositwindow.ui
