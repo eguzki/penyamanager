@@ -31,6 +31,8 @@ namespace PenyaManager {
             static const Uint32     kInvoiceWindowKey;
             // DepositsWindow key
             static const Uint32     kDepositsWindowKey;
+            // AccountViewWindow key
+            static const Uint32     kAccountViewWindowKey;
 
         private:
             Constants() {}

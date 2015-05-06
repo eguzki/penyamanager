@@ -310,7 +310,16 @@ namespace PenyaManager {
         pInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
         fillInvoiceData(pInvoicePtr);
     }
+    //
+    void MainWindow::on_accountButton_clicked()
+    {
+        hide();
+        // call invoice window
+        IPartner* pInvoiceWindow = Singletons::m_pParnetFinder->getPartner(Constants::kAccountViewWindowKey);
+        pInvoiceWindow->init();
+    }
 }
+
 
 
 
