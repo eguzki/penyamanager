@@ -37,7 +37,8 @@ SOURCES += main.cpp\
         loginwindow.cpp \
     numitemdialog.cpp \
     invoicewindow.cpp \
-    depositwindow.cpp
+    depositwindow.cpp \
+    accountview.cpp
 
 HEADERS  += mainwindow.h\
         singletons.h\
@@ -57,10 +58,12 @@ HEADERS  += mainwindow.h\
         loginwindow.h \
     numitemdialog.h \
     invoicewindow.h \
-    depositwindow.h
+    depositwindow.h \
+    accountview.h
 
 FORMS    += mainwindow.ui\
         loginwindow.ui \
     numitemdialog.ui \
     invoicewindow.ui \
-    depositwindow.ui
+    depositwindow.ui \
+    accountview.ui

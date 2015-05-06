@@ -281,6 +281,7 @@ namespace PenyaManager {
     //
     void MainWindow::on_invoiceTableWidget_cellClicked(int row, int column)
     {
+        UNUSEDPARAMETER(column);
         auto rowMap = m_rowProductIdMap.find(row);
         if (rowMap == m_rowProductIdMap.end()) {
             //this should never happen
@@ -310,7 +311,16 @@ namespace PenyaManager {
         pInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
         fillInvoiceData(pInvoicePtr);
     }
+    //
+    void MainWindow::on_accountButton_clicked()
+    {
+        hide();
+        // call invoice window
+        IPartner* pInvoiceWindow = Singletons::m_pParnetFinder->getPartner(Constants::kAccountViewWindowKey);
+        pInvoiceWindow->init();
+    }
 }
+
 
 
 

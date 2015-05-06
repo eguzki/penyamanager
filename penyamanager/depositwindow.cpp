@@ -130,5 +130,3 @@ namespace PenyaManager {
         updateNewBalanceLabel(0.0);
     }
 }
-
-

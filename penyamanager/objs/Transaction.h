@@ -13,8 +13,12 @@ namespace PenyaManager
     enum class TransactionType
     {
         Invoice,
-        Deposit 
+        Deposit, 
+        AccountPayment 
     };
+    
+    QString getStringFromTransactionTypeEnum(TransactionType e);
+
     //
     class Transaction
     {
@@ -43,6 +47,10 @@ namespace PenyaManager
 
     //
     typedef std::shared_ptr<Transaction> TransactionPtr;
+    //
+    typedef std::vector<TransactionPtr> TransactionList;
+    //
+    typedef std::shared_ptr<TransactionList> TransactionListPtr;
 }
 
 #endif // TRANSACTION_H

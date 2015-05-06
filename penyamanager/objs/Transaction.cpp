@@ -4,6 +4,17 @@
 
 namespace PenyaManager {
     //
+    QString getStringFromTransactionTypeEnum(TransactionType e)
+    {
+        switch (e)
+        {
+            case TransactionType::Invoice: return "Invoice";
+            case TransactionType::Deposit: return "Deposit";
+            case TransactionType::AccountPayment: return "AccountPayment";
+            default: return "Bad TransactionType";
+        }
+    }
+    //
     Transaction::Transaction()
     {
     }
