@@ -54,6 +54,8 @@ namespace PenyaManager {
             void updateMember(const MemberPtr &pMemberPtr);
             //
             DepositPtr createDeposit(const DepositPtr &pDepositPtr);
+            //
+            TransactionListPtr getAccountList(Int32 memberId, const QDate &fromDate, const QDate &toDate);
 
         private:
             //
@@ -88,6 +90,8 @@ namespace PenyaManager {
             QSqlQuery               m_updateMemberQuery;
             //
             QSqlQuery               m_insertDepositQuery;
+            //
+            QSqlQuery               m_memberAccountListQuery;
     };
 }
 #endif // DAO_H

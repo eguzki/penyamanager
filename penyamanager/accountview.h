@@ -27,14 +27,14 @@ namespace PenyaManager {
         private:
             //
             void fillMemberProfile(const MemberPtr &pMemberPtr);
+            //
+            void fillAccountData(Int32 memberId, const QDate &fromDate, const QDate &toDate);
 
         private slots:
             //
-            void on_fromCalendarWidget_clicked(const QDate &date);
-            //
-            void on_toCalendarWidget_clicked(const QDate &date);
-            //
             void on_backPushButton_clicked();
+            //
+            void on_searchButton_clicked();
 
         private:
             //

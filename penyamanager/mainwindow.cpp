@@ -281,6 +281,7 @@ namespace PenyaManager {
     //
     void MainWindow::on_invoiceTableWidget_cellClicked(int row, int column)
     {
+        UNUSEDPARAMETER(column);
         auto rowMap = m_rowProductIdMap.find(row);
         if (rowMap == m_rowProductIdMap.end()) {
             //this should never happen

@@ -22,7 +22,8 @@ namespace PenyaManager {
             m_memberLastAccountInfoQuery(m_db),
             m_insertTransactionQuery(m_db),
             m_updateMemberQuery(m_db),
-            m_insertDepositQuery(m_db)
+            m_insertDepositQuery(m_db),
+            m_memberAccountListQuery(m_db)
     {
         // configure db connection
         m_db.setHostName(hostname);
@@ -125,6 +126,14 @@ namespace PenyaManager {
                 "INSERT INTO deposit "
                 "(idmember, state, date, total, description) "
                 "VALUES (:memberid, :state, :date, :total, :description)"
+                );
+        // member's account transaction list
+        m_memberAccountListQuery.prepare(
+                "SELECT amount, date, description, type "
+                "FROM account "
+                "WHERE idmember=:memberid "
+                "AND date BETWEEN :fromDate AND :toDate "
+                "ORDER BY date DESC"
                 );
     }
 
@@ -423,5 +432,30 @@ namespace PenyaManager {
         }
         m_getLastIdQuery.finish();
         return pDepositPtr;
+    }
+    //
+    TransactionListPtr DAO::getAccountList(Int32 memberId, const QDate &fromDate, const QDate &toDate)
+    {
+        // bind value
+        m_memberAccountListQuery.bindValue(":memberid", memberId);
+        m_memberAccountListQuery.bindValue(":fromDate", fromDate);
+        m_memberAccountListQuery.bindValue(":toDate", toDate);
+        // run query
+        if (!m_memberAccountListQuery.exec())
+        {
+            qDebug() << m_memberAccountListQuery.lastError();
+        }
+
+        TransactionListPtr pTransactionListPtr(new TransactionList);
+        while (m_memberAccountListQuery.next()) {
+            TransactionPtr pTransactionPtr(new Transaction());
+            pTransactionPtr->m_amount = m_memberAccountListQuery.value(0).toFloat();
+            pTransactionPtr->m_date = m_memberAccountListQuery.value(1).toDateTime();
+            pTransactionPtr->m_descr = m_memberAccountListQuery.value(2).toString();
+            pTransactionPtr->m_type = static_cast<TransactionType>(m_memberAccountListQuery.value(3).toUInt());
+            pTransactionListPtr->push_back(pTransactionPtr);
+        }
+        m_memberAccountListQuery.finish();
+        return pTransactionListPtr;
     }
 }
