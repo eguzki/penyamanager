@@ -40,12 +40,13 @@ namespace PenyaManager {
 
         // Member selected by Admin
         m_memberByAdmin.prepare(
-                "SELECT member.idmember, member.name, member.surname, member.image, account.balance, member.bank_account "
+                "SELECT member.idmember, member.name, member.surname, member.image, member.lastmodified, member.reg_date, member.active, member.isAdmin, "
+                "member.birth, member.address, member.zip_code, member.town, member.state, member.tel, member.tel2, member.email, member.bank_account, "
+                "member.postal_send, member.notes, account.balance "
                 "FROM account "
                 "INNER JOIN member "
                 "ON member.idmember=account.idmember "
                 "WHERE member.idmember= :memberId "
-                "AND member.active= :activeId "
                 "ORDER BY account.date DESC LIMIT 1 "
                 );
 
@@ -147,8 +148,6 @@ namespace PenyaManager {
     {
         // member and balance
         m_memberByAdmin.bindValue(":memberId", memberLoginId);
-        // only active members
-        m_memberByAdmin.bindValue(":activeId", 1);
         m_memberByAdmin.exec();
         if (!m_memberByAdmin.next())
         {
@@ -158,9 +157,17 @@ namespace PenyaManager {
         memberPtr->m_id = m_memberByAdmin.value(0).toUInt();
         memberPtr->m_name = m_memberByAdmin.value(1).toString();
         memberPtr->m_surname = m_memberByAdmin.value(2).toString();
-        memberPtr->m_imagePath = m_memberByAdmin.value(3).toString();
-        memberPtr->m_balance = m_memberByAdmin.value(4).toFloat();
-        memberPtr->m_bank_account = m_memberByAdmin.value(5).toString();
+        memberPtr->m_image = m_memberByAdmin.value(3).toString();
+        memberPtr->m_reg_date = m_memberByAdmin.value(5).toDate();
+        memberPtr->m_zip_code = m_memberByAdmin.value(11).toUInt();
+        memberPtr->m_bank_account = m_memberByAdmin.value(16).toString();
+        memberPtr->m_active = m_memberByAdmin.value(6).toUInt() == 1;
+
+        //memberPtr->m_balance = m_memberByAdmin.value(22222).toFloat();
+
+       /* member.idmember, member.name, member.surname, member.image, member.lastmodified, member.reg_date, member.active, member.isAdmin, "
+                        "member.birth, member.address, member.zip_code, member.town, member.state, member.tel, member.tel2, member.email, member.bank_account, "
+                        "member.postal_send, member.notes, account.balance*/
 
         m_memberByAdmin.finish();
         return memberPtr;

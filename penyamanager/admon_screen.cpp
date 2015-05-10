@@ -46,18 +46,6 @@ void admon_screen::init()
     show();
 }
 
-/*void admin_screen::fillAdminData(const MemberPtr &pMemberPtr)
-{
-    QString imagePath = QDir(Constants::kImageRootPath).filePath(pMemberPtr->m_imagePath);
-    QPixmap memberPixmap = Utils::getImage(imagePath);
-    this->ui->memberImage->setFixedWidth(Constants::kMemberImageWidth);
-    this->ui->memberImage->setFixedHeight(Constants::kMemberImageHeigth);
-    this->ui->memberImage->setScaledContents(true);
-    this->ui->memberNameLabel->setText(pMemberPtr->m_name + " " + pMemberPtr->m_surname);
-    this->ui->memberIdInfo->setText(QString::number(pMemberPtr->m_id));
-    this->ui->memberBalanceInfo->setText(QString::number(pMemberPtr->m_balance, 'f', 2));
-
-}*/
 
 void admon_screen::fillMemberProfile(const MemberByAdminPtr &pMemberPtr)
 {
@@ -69,6 +57,24 @@ void admon_screen::fillMemberProfile(const MemberByAdminPtr &pMemberPtr)
     //this->ui->memberNameLabel->setText(pMemberPtr->m_name + " " + pMemberPtr->m_surname);
     this->ui->textidmember->setText(QString::number(pMemberPtr->m_id));
     this->ui->textname->setText(pMemberPtr->m_name);
+    this->ui->textsurname->setText(pMemberPtr->m_surname);
+    this->ui->textreg_date->setText(pMemberPtr->m_reg_date.toString());
+    this->ui->activeCheckbox->setChecked(pMemberPtr->m_active);
+    //this->ui->textisAdmin->setText(pMemberPtr->m_isAdmin);
+    //this->ui->textbirth->setText(pMemberPtr->m_birth);
+    this->ui->textaddress->setText(pMemberPtr->m_address);
+    this->ui->textzip_code->setText(QString::number(pMemberPtr->m_zip_code));
+    this->ui->texttown->setText(pMemberPtr->m_town);
+    this->ui->textstate->setText(pMemberPtr->m_state);
+    this->ui->texttel->setText(QString::number(pMemberPtr->m_tel));
+    this->ui->texttel2->setText(QString::number(pMemberPtr->m_tel2));
+    this->ui->textemail->setText(pMemberPtr->m_email);
+    this->ui->textbank_account->setText(pMemberPtr->m_bank_account);
+    //this->ui->textpostal_send->setText(QString::number(pMemberPtr->m_postal_send));
+    this->ui->textnotes->setText(pMemberPtr->m_notes);
+
+
+
     //this->ui->memberBalanceInfo->setText(QString::number(pMemberPtr->m_balance, 'f', 2));
 }
 

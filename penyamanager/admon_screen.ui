@@ -115,7 +115,7 @@
      <string>Nº Tarjeta</string>
     </property>
    </widget>
-   <widget class="QLabel" name="entry_date">
+   <widget class="QLabel" name="reg_date">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -418,12 +418,160 @@
      </rect>
     </property>
    </widget>
+   <widget class="QTextEdit" name="textsurname">
+    <property name="geometry">
+     <rect>
+      <x>250</x>
+      <y>40</y>
+      <width>104</width>
+      <height>25</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="textcard_num">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>130</y>
+      <width>104</width>
+      <height>25</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="textreg_date">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>160</y>
+      <width>104</width>
+      <height>25</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="textbirth">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>190</y>
+      <width>104</width>
+      <height>25</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="textaddress">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>220</y>
+      <width>104</width>
+      <height>25</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="textzip_code">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>250</y>
+      <width>104</width>
+      <height>25</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="texttown">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>280</y>
+      <width>104</width>
+      <height>25</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="textstate">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>310</y>
+      <width>104</width>
+      <height>25</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="texttel">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>340</y>
+      <width>104</width>
+      <height>25</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="texttel2">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>370</y>
+      <width>104</width>
+      <height>25</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="textemail">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>400</y>
+      <width>104</width>
+      <height>25</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="textbank_account">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>430</y>
+      <width>104</width>
+      <height>25</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="textnotes">
+    <property name="geometry">
+     <rect>
+      <x>670</x>
+      <y>170</y>
+      <width>104</width>
+      <height>25</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="postal_sendCheckbox">
+    <property name="geometry">
+     <rect>
+      <x>670</x>
+      <y>130</y>
+      <width>80</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
    <zorder>idmember</zorder>
    <zorder>name</zorder>
    <zorder>surname</zorder>
    <zorder>active</zorder>
    <zorder>card_num</zorder>
-   <zorder>entry_date</zorder>
+   <zorder>reg_date</zorder>
    <zorder>birth</zorder>
    <zorder>address</zorder>
    <zorder>zip_code</zorder>
@@ -442,6 +590,20 @@
    <zorder>tel</zorder>
    <zorder>toolButton</zorder>
    <zorder>textname</zorder>
+   <zorder>textsurname</zorder>
+   <zorder>textcard_num</zorder>
+   <zorder>textreg_date</zorder>
+   <zorder>textbirth</zorder>
+   <zorder>textaddress</zorder>
+   <zorder>textzip_code</zorder>
+   <zorder>texttown</zorder>
+   <zorder>textstate</zorder>
+   <zorder>texttel</zorder>
+   <zorder>texttel2</zorder>
+   <zorder>textemail</zorder>
+   <zorder>textbank_account</zorder>
+   <zorder>textnotes</zorder>
+   <zorder>postal_sendCheckbox</zorder>
   </widget>
   <widget class="QStatusBar" name="statusbar">
    <property name="geometry">
