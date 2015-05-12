@@ -177,6 +177,47 @@ AUTO_INCREMENT = 3
 DEFAULT CHARACTER SET = utf8;
 
 
+-- -----------------------------------------------------
+-- Table `alegria`.`lunchtables`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `alegria`.`lunchtables` ;
+
+CREATE TABLE IF NOT EXISTS `alegria`.`lunchtables` (
+  `idtable` INT(11) NOT NULL,
+  `name` VARCHAR(45) NOT NULL,
+  `guestnum` SMALLINT NOT NULL,
+  PRIMARY KEY (`idtable`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `alegria`.`tablereservation`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `alegria`.`tablereservation` ;
+
+CREATE TABLE IF NOT EXISTS `alegria`.`tablereservation` (
+  `idtablereservation` INT NOT NULL AUTO_INCREMENT,
+  `date` DATE NOT NULL,
+  `reservationtype` TINYINT NOT NULL,
+  `guestnum` SMALLINT NOT NULL,
+  `idmember` INT(11) NOT NULL,
+  `idtable` INT(11) NOT NULL,
+  PRIMARY KEY (`idtablereservation`),
+  INDEX `fk_tablereservation_member1_idx` (`idmember` ASC),
+  INDEX `fk_tablereservation_lunchtables_idx` (`idtable` ASC),
+  CONSTRAINT `fk_tablereservation_member1`
+    FOREIGN KEY (`idmember`)
+    REFERENCES `alegria`.`member` (`idmember`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_tablereservation_table1`
+    FOREIGN KEY (`idtable`)
+    REFERENCES `alegria`.`lunchtables` (`idtable`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

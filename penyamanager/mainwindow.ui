@@ -231,6 +231,19 @@
           <number>9</number>
          </property>
          <item>
+          <widget class="QPushButton" name="tableReservationButton">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Table Reservation</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QPushButton" name="accountButton">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
