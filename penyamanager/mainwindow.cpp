@@ -319,7 +319,16 @@ namespace PenyaManager {
         IPartner* pInvoiceWindow = Singletons::m_pParnetFinder->getPartner(Constants::kAccountViewWindowKey);
         pInvoiceWindow->init();
     }
+    //
+    void MainWindow::on_tableReservationButton_clicked()
+    {
+        hide();
+        // call invoice window
+        IPartner* pInvoiceWindow = Singletons::m_pParnetFinder->getPartner(Constants::kTableReservationViewWindowKey);
+        pInvoiceWindow->init();
+    }
 }
+
 
 
 

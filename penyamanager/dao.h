@@ -5,12 +5,14 @@
 
 #include "DataTypes.h"
 #include "objs/Transaction.h"
+#include "objs/TableReservation.h"
 #include "objs/Member.h"
 #include "objs/Invoice.h"
 #include "objs/Deposit.h"
 #include "objs/ProductFamily.h"
 #include "objs/ProductItem.h"
 #include "objs/InvoiceProductItem.h"
+#include "objs/LunchTable.h"
 
 namespace PenyaManager {
     //
@@ -56,6 +58,14 @@ namespace PenyaManager {
             DepositPtr createDeposit(const DepositPtr &pDepositPtr);
             //
             TransactionListPtr getAccountList(Int32 memberId, const QDate &fromDate, const QDate &toDate);
+            //
+            TableReservationListPtr getTableReservation(ReservationType reservationType, const QDate &now);
+            //
+            LunchTableListPtr getLunchTableList();
+            //
+            void makeTableReservation(const QDate &date, ReservationType reservationType, Uint16 guestNum, Int32 memberId, Int32 idtable);
+            //
+            void cancelTableReservation(Int32 reservationId);
 
         private:
             //
@@ -92,6 +102,14 @@ namespace PenyaManager {
             QSqlQuery               m_insertDepositQuery;
             //
             QSqlQuery               m_memberAccountListQuery;
+            //
+            QSqlQuery               m_tableReservationListQuery;
+            //
+            QSqlQuery               m_lunchTablesListQuery;
+            //
+            QSqlQuery               m_insertTableReservationQuery;
+            //
+            QSqlQuery               m_cancelTableReservationQuery;
     };
 }
 #endif // DAO_H

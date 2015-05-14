@@ -68,6 +68,7 @@ class MainWindow : public IPartner
         void on_invoiceTableWidget_cellClicked(int row, int column);
         //
         void on_accountButton_clicked();
+        void on_tableReservationButton_clicked();
 };
 }
 
