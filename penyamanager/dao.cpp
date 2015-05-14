@@ -23,7 +23,9 @@ namespace PenyaManager {
             m_insertTransactionQuery(m_db),
             m_updateMemberQuery(m_db),
             m_insertDepositQuery(m_db),
-            m_memberAccountListQuery(m_db)
+            m_memberAccountListQuery(m_db),
+            m_tableReservationListQuery(m_db),
+            m_lunchTablesListQuery(m_db)
     {
         // configure db connection
         m_db.setHostName(hostname);
@@ -134,6 +136,19 @@ namespace PenyaManager {
                 "WHERE idmember=:memberid "
                 "AND date BETWEEN :fromDate AND :toDate "
                 "ORDER BY date DESC"
+                );
+        // table reservation list for a given moment (date and reservationtype)
+        m_tableReservationListQuery.prepare(
+                "SELECT tablereservation.idtable, member.name, member.surname, tablereservation.idmember, tablereservation.guestnum "
+                "FROM tablereservation "
+                "INNER JOIN member ON tablereservation.idmember=member.idmember "
+                "WHERE date=:dateid "
+                "AND reservationtype=:reservationtypeid"
+                );
+        // lunch tables list
+        m_lunchTablesListQuery.prepare(
+                "SELECT idtable, name, guestnum "
+                "FROM lunchtables"
                 );
     }
 
@@ -457,5 +472,50 @@ namespace PenyaManager {
         }
         m_memberAccountListQuery.finish();
         return pTransactionListPtr;
+    }
+    //
+    TableReservationListPtr DAO::getTableReservation(ReservationType reservationType, const QDate &now)
+    {
+        // bind value
+        m_tableReservationListQuery.bindValue(":reservationtypeid", static_cast<Uint16>(reservationType));
+        m_tableReservationListQuery.bindValue(":dateid", now);
+        // run query
+        if (!m_tableReservationListQuery.exec())
+        {
+            qDebug() << m_tableReservationListQuery.lastError();
+        }
+
+        TableReservationListPtr pTableReservationListPtr(new TableReservationList);
+        while (m_tableReservationListQuery.next()) {
+            TableReservationPtr pTableReservationPtr(new TableReservation);
+            pTableReservationPtr->m_idTable = m_tableReservationListQuery.value(0).toInt();
+            pTableReservationPtr->m_memberName = m_tableReservationListQuery.value(1).toString();
+            pTableReservationPtr->m_memberSurname = m_tableReservationListQuery.value(2).toString();
+            pTableReservationPtr->m_idMember = m_tableReservationListQuery.value(3).toInt();
+            pTableReservationPtr->m_guestNum = m_tableReservationListQuery.value(4).toUInt();
+            pTableReservationListPtr->push_back(pTableReservationPtr);
+        }
+        m_tableReservationListQuery.finish();
+        return pTableReservationListPtr;
+    }
+    //
+    LunchTableListPtr DAO::getLunchTableList()
+    {
+        // run query
+        if (!m_lunchTablesListQuery.exec())
+        {
+            qDebug() << m_lunchTablesListQuery.lastError();
+        }
+
+        LunchTableListPtr pLunchTableListPtr(new LunchTableList);
+        while (m_lunchTablesListQuery.next()) {
+            LunchTablePtr pLunchTablePtr(new LunchTable);
+            pLunchTablePtr->m_idTable = m_lunchTablesListQuery.value(0).toInt();
+            pLunchTablePtr->m_tableName = m_lunchTablesListQuery.value(1).toString();
+            pLunchTablePtr->m_guestNum = m_lunchTablesListQuery.value(2).toUInt();
+            pLunchTableListPtr->push_back(pLunchTablePtr);
+        }
+        m_lunchTablesListQuery.finish();
+        return pLunchTableListPtr;
     }
 }

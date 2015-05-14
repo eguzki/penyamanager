@@ -34,12 +34,14 @@ SOURCES += main.cpp\
         objs/ProductFamily.cpp\
         objs/ProductItem.cpp\
         objs/InvoiceProductItem.cpp\
+        objs/TableReservation.cpp\
+        objs/LunchTable.cpp\
         loginwindow.cpp \
     numitemdialog.cpp \
     invoicewindow.cpp \
     depositwindow.cpp \
     accountview.cpp \
-    tablereservations.cpp
+    tablereservationview.cpp
 
 HEADERS  += mainwindow.h\
         singletons.h\
@@ -56,12 +58,14 @@ HEADERS  += mainwindow.h\
         objs/ProductFamily.h\
         objs/ProductItem.h\
         objs/InvoiceProductItem.h\
+        objs/TableReservation.h\
+        objs/LunchTable.h\
         loginwindow.h \
     numitemdialog.h \
     invoicewindow.h \
     depositwindow.h \
     accountview.h \
-    tablereservations.h
+    tablereservationview.h
 
 FORMS    += mainwindow.ui\
         loginwindow.ui \
@@ -69,4 +73,4 @@ FORMS    += mainwindow.ui\
     invoicewindow.ui \
     depositwindow.ui \
     accountview.ui \
-    tablereservations.ui
+    tablereservationview.ui
