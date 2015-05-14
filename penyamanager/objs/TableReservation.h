@@ -8,7 +8,7 @@
 namespace PenyaManager
 {
     //
-    enum class ReservationType 
+    enum class ReservationType
     {
         Lunch,
         Dinner
@@ -20,11 +20,13 @@ namespace PenyaManager
             //
             TableReservation();
             //
-            TableReservation(Int32 idTable, const QString &memberName, const QString &memberSurname, Uint32 idMember, Uint16 guestNum);
+            TableReservation(Int32 reservationId, Int32 idTable, const QString &memberName, const QString &memberSurname, Uint32 idMember, Uint16 guestNum);
             //
             virtual ~TableReservation(){}
 
         public:
+            //
+            Int32               m_reservationId;
             //
             Int32               m_idTable;
             //

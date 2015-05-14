@@ -62,6 +62,10 @@ namespace PenyaManager {
             TableReservationListPtr getTableReservation(ReservationType reservationType, const QDate &now);
             //
             LunchTableListPtr getLunchTableList();
+            //
+            void makeTableReservation(const QDate &date, ReservationType reservationType, Uint16 guestNum, Int32 memberId, Int32 idtable);
+            //
+            void cancelTableReservation(Int32 reservationId);
 
         private:
             //
@@ -102,6 +106,10 @@ namespace PenyaManager {
             QSqlQuery               m_tableReservationListQuery;
             //
             QSqlQuery               m_lunchTablesListQuery;
+            //
+            QSqlQuery               m_insertTableReservationQuery;
+            //
+            QSqlQuery               m_cancelTableReservationQuery;
     };
 }
 #endif // DAO_H

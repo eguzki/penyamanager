@@ -37,7 +37,7 @@ namespace PenyaManager {
             //
             void fillTableReservations(const MemberPtr &, const QDate &, ReservationType);
             //
-            void prepareTableReservationMap(TableReservationMap &, const TableReservationListPtr &);
+            void prepareTableReservationMap(TableReservationMap &, const TableReservationListPtr &, const MemberPtr &, bool &);
 
         private slots:
             //
@@ -46,6 +46,10 @@ namespace PenyaManager {
             void on_reservationType_toggled(int, bool);
             //
             void on_calendarWidget_clicked(const QDate &date);
+            //
+            void on_reservedButton_clicked(int tableId);
+            //
+            void on_cancelButton_clicked(int reservationId);
 
     private:
             //

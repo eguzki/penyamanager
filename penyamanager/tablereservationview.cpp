@@ -1,9 +1,11 @@
 //
 
 #include <QMessageBox>
+#include <QPushButton>
 
 #include "objs/LunchTable.h"
 #include "utils.h"
+#include "numitemdialog.h"
 #include "singletons.h"
 #include "tablereservationview.h"
 #include "ui_tablereservationview.h"
@@ -68,6 +70,7 @@ namespace PenyaManager {
     //
     void TableReservationView::on_reservationType_toggled(int reservationTypeInt, bool checked)
     {
+        //QMessageBox::information(this, "Table reservation", QString::number(checked));
         if (!checked) {
             // discard event of unchecked button
             return;
@@ -79,7 +82,7 @@ namespace PenyaManager {
         fillTableReservations(pCurrMemberPtr, date, reservationType);
     }
     //
-    void TableReservationView::initializeTableReservations(const MemberPtr &pMemberPtr)
+    void TableReservationView::initializeTableReservations(const MemberPtr &pCurrMemberPtr)
     {
         //QDateTime nowDateTime = QDateTime(QDate(2015, 5, 11), QTime(0,0)); // when reservations cannot be done
         //QDateTime nowDateTime = QDateTime(QDate(2015, 5, 11), QTime(7,0)); // monday after deadline
@@ -98,30 +101,31 @@ namespace PenyaManager {
         if (nowDate.dayOfWeek() == 1 && nowDateTime.time().hour() < 6) {
             // monday before deadline, user cannot select for reservation
             this->ui->calendarWidget->setSelectionMode(QCalendarWidget::NoSelection);
+            // reservation type (lunch/dinner) buttons
             this->ui->lunchButton->setEnabled(false);
             this->ui->dinnerButton->setEnabled(false);
-            return;
         } else {
             // reservation type (lunch/dinner) buttons
+            this->ui->lunchButton->setEnabled(true);
+            this->ui->dinnerButton->setEnabled(true);
             this->ui->lunchButton->setCheckable(true);
             this->ui->dinnerButton->setCheckable(true);
             this->ui->lunchButton->setChecked(true);
             this->ui->dinnerButton->setChecked(false);
+            this->ui->calendarWidget->setSelectionMode(QCalendarWidget::SingleSelection);
+            fillTableReservations(pCurrMemberPtr, nowDate, ReservationType::Lunch);
         }
-
-        this->ui->calendarWidget->setSelectionMode(QCalendarWidget::SingleSelection);
-
-        // no need to call fillTableReservations. on_reservationType_toggled slot will be called when button is initialized
     }
     //
     void TableReservationView::fillTableReservations(const MemberPtr &pMemberPtr, const QDate &nowDate, ReservationType reservationType)
     {
         // fetch reservation data
-        TableReservationListPtr pTableReservationListPtr =  Singletons::m_pDAO->getTableReservation(reservationType, nowDate);
+        TableReservationListPtr pTableReservationListPtr = Singletons::m_pDAO->getTableReservation(reservationType, nowDate);
 
+        bool hasReservation = false;
         // create map structure for easy and efficient lookup
         TableReservationMap tableReservationMap;
-        prepareTableReservationMap(tableReservationMap, pTableReservationListPtr);
+        prepareTableReservationMap(tableReservationMap, pTableReservationListPtr, pMemberPtr, hasReservation);
 
         // fetch tables data
         LunchTableListPtr pLunchTableListPtr = Singletons::m_pDAO->getLunchTableList();
@@ -152,45 +156,83 @@ namespace PenyaManager {
 
         // fill data
         Uint32 rowCount = 0;
-        for (LunchTableList::iterator iter = pLunchTableListPtr->begin(); iter != pLunchTableListPtr->end(); ++iter)
-        {
+        for (LunchTableList::iterator iter = pLunchTableListPtr->begin(); iter != pLunchTableListPtr->end(); ++iter) {
             LunchTablePtr pLunchTablePtr = *iter;
+            this->ui->tableReservationTableWidget->setRowHeight(rowCount, 50);
             this->ui->tableReservationTableWidget->setItem(rowCount, 0, new QTableWidgetItem(QString::number(pLunchTablePtr->m_idTable)));
             this->ui->tableReservationTableWidget->setItem(rowCount, 1, new QTableWidgetItem(pLunchTablePtr->m_tableName));
             this->ui->tableReservationTableWidget->setItem(rowCount, 2, new QTableWidgetItem(QString::number(pLunchTablePtr->m_guestNum)));
             auto tableReservationMapItem = tableReservationMap.find(pLunchTablePtr->m_idTable);
+            // not showwing action buttons when: a)has reservation for unreserved tables and b)reservation of other members
             if (tableReservationMapItem == tableReservationMap.end()) {
                 // this table is not reserved
-                this->ui->tableReservationTableWidget->setItem(rowCount, 5, new QTableWidgetItem("Action"));
+                if (!hasReservation) {
+                    // show reservation action
+                    // only when there is no reserved table for this (date, reservationType)
+                    QPushButton *pReservationButton = new QPushButton("Reserve", this->ui->tableReservationTableWidget);
+                    this->connect(pReservationButton, &QPushButton::clicked, std::bind(&TableReservationView::on_reservedButton_clicked, this, pLunchTablePtr->m_idTable));
+                    this->ui->tableReservationTableWidget->setCellWidget(rowCount, 5, pReservationButton);
+                }
             } else {
                 // this table is reserved
                 TableReservationPtr pTableReservationPtr = tableReservationMapItem->second;
                 QString guestName = QString("[%1] %2 %3").arg(pTableReservationPtr->m_idMember).arg(pTableReservationPtr->m_memberName).arg(pTableReservationPtr->m_memberSurname);
                 this->ui->tableReservationTableWidget->setItem(rowCount, 3, new QTableWidgetItem(guestName));
                 this->ui->tableReservationTableWidget->setItem(rowCount, 4, new QTableWidgetItem(QString::number(pTableReservationPtr->m_guestNum)));
-                this->ui->tableReservationTableWidget->setItem(rowCount, 5, new QTableWidgetItem("Action"));
+                if (pTableReservationPtr->m_idMember == pMemberPtr->m_id) {
+                    // show cancel button action
+                    QPushButton *pCancelButton = new QPushButton("Cancel", this->ui->tableReservationTableWidget);
+                    this->connect(pCancelButton, &QPushButton::clicked, std::bind(&TableReservationView::on_cancelButton_clicked, this, pTableReservationPtr->m_reservationId));
+                    this->ui->tableReservationTableWidget->setCellWidget(rowCount, 5, pCancelButton);
+                }
             }
             rowCount++;
         }
     }
     //
-    void TableReservationView::prepareTableReservationMap(TableReservationMap &tableReservationMap, const TableReservationListPtr &pTableReservationListPtr)
+    void TableReservationView::prepareTableReservationMap(TableReservationMap &tableReservationMap, const TableReservationListPtr &pTableReservationListPtr, const MemberPtr &pMemberPtr, bool &hasReservation)
     {
+        hasReservation = false;
         for (auto iter = pTableReservationListPtr->begin(); iter != pTableReservationListPtr->end(); ++iter)
         {
             TableReservationPtr pTableReservationPtr = *iter;
             tableReservationMap[pTableReservationPtr->m_idTable] = pTableReservationPtr;
+            if (pTableReservationPtr->m_idMember == pMemberPtr->m_id)
+            {
+                hasReservation = true;
+            }
         }
     }
     //
     void TableReservationView::on_calendarWidget_clicked(const QDate &date)
     {
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
-        bool lunchChecked = this->ui->lunchButton->isChecked();
-        ReservationType reservationType = (lunchChecked)?(ReservationType::Lunch) : (ReservationType::Dinner);
+        ReservationType reservationType = static_cast<ReservationType>(this->ui->reservationTypeButtonGroup->checkedId());
         fillTableReservations(pCurrMemberPtr, date, reservationType);
     }
+    //
+    void TableReservationView::on_reservedButton_clicked(int tableId)
+    {
+        MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
+        QDate date = this->ui->calendarWidget->selectedDate();
+        ReservationType reservationType = static_cast<ReservationType>(this->ui->reservationTypeButtonGroup->checkedId());
+        NumItemDialog numItemDialog(this);
+        Uint32 guestNum = numItemDialog.exec();
+        Singletons::m_pDAO->makeTableReservation(date, reservationType, guestNum, pCurrMemberPtr->m_id, tableId);
+        QMessageBox::information(this, "Table reservation", "Reservation done");
+        hide();
+        // call main window
+        IPartner* pMainWindow = Singletons::m_pParnetFinder->getPartner(Constants::kMainWindowKey);
+        pMainWindow->init();
+    }
+    //
+    void TableReservationView::on_cancelButton_clicked(int reservationId)
+    {
+        Singletons::m_pDAO->cancelTableReservation(reservationId);
+        QMessageBox::information(this, "Table reservation", "Reservation cancelled");
+        hide();
+        // call main window
+        IPartner* pMainWindow = Singletons::m_pParnetFinder->getPartner(Constants::kMainWindowKey);
+        pMainWindow->init();
+    }
 }
-
-
-

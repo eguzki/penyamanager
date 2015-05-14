@@ -25,7 +25,9 @@ namespace PenyaManager {
             m_insertDepositQuery(m_db),
             m_memberAccountListQuery(m_db),
             m_tableReservationListQuery(m_db),
-            m_lunchTablesListQuery(m_db)
+            m_lunchTablesListQuery(m_db),
+            m_insertTableReservationQuery(m_db),
+            m_cancelTableReservationQuery(m_db)
     {
         // configure db connection
         m_db.setHostName(hostname);
@@ -139,7 +141,7 @@ namespace PenyaManager {
                 );
         // table reservation list for a given moment (date and reservationtype)
         m_tableReservationListQuery.prepare(
-                "SELECT tablereservation.idtable, member.name, member.surname, tablereservation.idmember, tablereservation.guestnum "
+                "SELECT tablereservation.idtablereservation, tablereservation.idtable, member.name, member.surname, tablereservation.idmember, tablereservation.guestnum "
                 "FROM tablereservation "
                 "INNER JOIN member ON tablereservation.idmember=member.idmember "
                 "WHERE date=:dateid "
@@ -149,6 +151,17 @@ namespace PenyaManager {
         m_lunchTablesListQuery.prepare(
                 "SELECT idtable, name, guestnum "
                 "FROM lunchtables"
+                );
+        // insert table reservation
+        m_insertTableReservationQuery.prepare(
+                "INSERT INTO tablereservation "
+                "(date, reservationtype, guestnum, idmember, idtable) "
+                "VALUES (:date, :reservationtype, :guestnum, :idmember, :idtable)"
+                );
+        // cancel table reservation
+        m_cancelTableReservationQuery.prepare(
+                "DELETE FROM tablereservation "
+                "WHERE idtablereservation = :idtablereservation"
                 );
     }
 
@@ -488,11 +501,12 @@ namespace PenyaManager {
         TableReservationListPtr pTableReservationListPtr(new TableReservationList);
         while (m_tableReservationListQuery.next()) {
             TableReservationPtr pTableReservationPtr(new TableReservation);
-            pTableReservationPtr->m_idTable = m_tableReservationListQuery.value(0).toInt();
-            pTableReservationPtr->m_memberName = m_tableReservationListQuery.value(1).toString();
-            pTableReservationPtr->m_memberSurname = m_tableReservationListQuery.value(2).toString();
-            pTableReservationPtr->m_idMember = m_tableReservationListQuery.value(3).toInt();
-            pTableReservationPtr->m_guestNum = m_tableReservationListQuery.value(4).toUInt();
+            pTableReservationPtr->m_reservationId = m_tableReservationListQuery.value(0).toInt();
+            pTableReservationPtr->m_idTable = m_tableReservationListQuery.value(1).toInt();
+            pTableReservationPtr->m_memberName = m_tableReservationListQuery.value(2).toString();
+            pTableReservationPtr->m_memberSurname = m_tableReservationListQuery.value(3).toString();
+            pTableReservationPtr->m_idMember = m_tableReservationListQuery.value(4).toInt();
+            pTableReservationPtr->m_guestNum = m_tableReservationListQuery.value(5).toUInt();
             pTableReservationListPtr->push_back(pTableReservationPtr);
         }
         m_tableReservationListQuery.finish();
@@ -517,5 +531,29 @@ namespace PenyaManager {
         }
         m_lunchTablesListQuery.finish();
         return pLunchTableListPtr;
+    }
+    //
+    void DAO::makeTableReservation(const QDate &date, ReservationType reservationType, Uint16 guestNum, Int32 memberId, Int32 idTable)
+    {
+        m_insertTableReservationQuery.bindValue(":date", date);
+        m_insertTableReservationQuery.bindValue(":reservationtype", static_cast<Uint16>(reservationType));
+        m_insertTableReservationQuery.bindValue(":guestnum", guestNum);
+        m_insertTableReservationQuery.bindValue(":idmember", memberId);
+        m_insertTableReservationQuery.bindValue(":idtable", idTable);
+        if (!m_insertTableReservationQuery.exec())
+        {
+            qDebug() << m_insertTableReservationQuery.lastError();
+        }
+        m_insertTableReservationQuery.finish();
+    }
+    //
+    void DAO::cancelTableReservation(Int32 reservationId)
+    {
+        m_cancelTableReservationQuery.bindValue(":idtablereservation", reservationId);
+        if (!m_cancelTableReservationQuery.exec())
+        {
+            qDebug() << m_cancelTableReservationQuery.lastError();
+        }
+        m_cancelTableReservationQuery.finish();
     }
 }
