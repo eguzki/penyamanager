@@ -43,7 +43,7 @@ namespace PenyaManager {
             //
             void on_backButton_clicked();
             //
-            void on_reservationType_clicked(int reservationTypeInt);
+            void on_reservationType_toggled(int, bool);
             //
             void on_calendarWidget_clicked(const QDate &date);
 

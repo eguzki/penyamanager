@@ -18,7 +18,7 @@ namespace PenyaManager {
         ui->setupUi(this);
         this->ui->reservationTypeButtonGroup->setId(this->ui->dinnerButton, static_cast<Int32>(ReservationType::Dinner));
         this->ui->reservationTypeButtonGroup->setId(this->ui->lunchButton, static_cast<Int32>(ReservationType::Lunch));
-        this->connect(this->ui->reservationTypeButtonGroup, SIGNAL(buttonClicked(int)), this, SLOT(on_reservationType_clicked(int)));
+        this->connect(this->ui->reservationTypeButtonGroup, SIGNAL(buttonToggled(int,bool)), this, SLOT(on_reservationType_toggled(int,bool)));
     }
     //
     TableReservationView::~TableReservationView()
@@ -66,8 +66,13 @@ namespace PenyaManager {
         pMainWindow->init();
     }
     //
-    void TableReservationView::on_reservationType_clicked(int reservationTypeInt)
+    void TableReservationView::on_reservationType_toggled(int reservationTypeInt, bool checked)
     {
+        if (!checked) {
+            // discard event of unchecked button
+            return;
+        }
+
         QDate date = this->ui->calendarWidget->selectedDate();
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
         ReservationType reservationType = static_cast<ReservationType>(reservationTypeInt);
@@ -76,10 +81,10 @@ namespace PenyaManager {
     //
     void TableReservationView::initializeTableReservations(const MemberPtr &pMemberPtr)
     {
-        QDateTime nowDateTime = QDateTime::currentDateTime();
         //QDateTime nowDateTime = QDateTime(QDate(2015, 5, 11), QTime(0,0)); // when reservations cannot be done
         //QDateTime nowDateTime = QDateTime(QDate(2015, 5, 11), QTime(7,0)); // monday after deadline
         //QDateTime nowDateTime = QDateTime(QDate(2015, 5, 17), QTime(7,0)); // sunday (same day min and max)
+        QDateTime nowDateTime = QDateTime::currentDateTime();
         QDate nowDate = nowDateTime.date();
 
         this->ui->calendarWidget->setSelectedDate(nowDate);
@@ -106,8 +111,7 @@ namespace PenyaManager {
 
         this->ui->calendarWidget->setSelectionMode(QCalendarWidget::SingleSelection);
 
-        fillTableReservations(pMemberPtr, nowDate, ReservationType::Lunch);
-
+        // no need to call fillTableReservations. on_reservationType_toggled slot will be called when button is initialized
     }
     //
     void TableReservationView::fillTableReservations(const MemberPtr &pMemberPtr, const QDate &nowDate, ReservationType reservationType)
