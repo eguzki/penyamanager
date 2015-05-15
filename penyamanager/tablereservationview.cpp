@@ -11,6 +11,11 @@
 #include "ui_tablereservationview.h"
 
 namespace PenyaManager {
+    // Rules:
+    // * One member, one reservation in a given (day, reservationtype {lunch, dinner})
+    // * Reservations can be done only for the current week days
+    // * Reservations are available since Monday 06:00AM till Sunday 23:59PM
+    // * Reservations can be cancelled
 
     //
     TableReservationView::TableReservationView(QWidget *parent) :
@@ -20,7 +25,6 @@ namespace PenyaManager {
         ui->setupUi(this);
         this->ui->reservationTypeButtonGroup->setId(this->ui->dinnerButton, static_cast<Int32>(ReservationType::Dinner));
         this->ui->reservationTypeButtonGroup->setId(this->ui->lunchButton, static_cast<Int32>(ReservationType::Lunch));
-        this->connect(this->ui->reservationTypeButtonGroup, SIGNAL(buttonToggled(int,bool)), this, SLOT(on_reservationType_toggled(int,bool)));
     }
     //
     TableReservationView::~TableReservationView()
@@ -66,20 +70,6 @@ namespace PenyaManager {
         // call main window
         IPartner* pMainWindow = Singletons::m_pParnetFinder->getPartner(Constants::kMainWindowKey);
         pMainWindow->init();
-    }
-    //
-    void TableReservationView::on_reservationType_toggled(int reservationTypeInt, bool checked)
-    {
-        //QMessageBox::information(this, "Table reservation", QString::number(checked));
-        if (!checked) {
-            // discard event of unchecked button
-            return;
-        }
-
-        QDate date = this->ui->calendarWidget->selectedDate();
-        MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
-        ReservationType reservationType = static_cast<ReservationType>(reservationTypeInt);
-        fillTableReservations(pCurrMemberPtr, date, reservationType);
     }
     //
     void TableReservationView::initializeTableReservations(const MemberPtr &pCurrMemberPtr)
@@ -235,4 +225,30 @@ namespace PenyaManager {
         IPartner* pMainWindow = Singletons::m_pParnetFinder->getPartner(Constants::kMainWindowKey);
         pMainWindow->init();
     }
+    //
+    void TableReservationView::on_lunchButton_clicked(bool checked)
+    {
+        if (!checked) {
+            // discard event of unchecked button
+            return;
+        }
+
+        QDate date = this->ui->calendarWidget->selectedDate();
+        MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
+        fillTableReservations(pCurrMemberPtr, date, ReservationType::Lunch);
+    }
+    //
+
+    void TableReservationView::on_dinnerButton_clicked(bool checked)
+    {
+        if (!checked) {
+            // discard event of unchecked button
+            return;
+        }
+
+        QDate date = this->ui->calendarWidget->selectedDate();
+        MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
+        fillTableReservations(pCurrMemberPtr, date, ReservationType::Dinner);
+    }
 }
+
