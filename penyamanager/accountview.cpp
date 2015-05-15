@@ -37,7 +37,8 @@ namespace PenyaManager {
         this->ui->fromCalendarWidget->setSelectedDate(fromIntialDate);
         this->ui->toCalendarWidget->setSelectedDate(toInitialDate);
 
-        fillAccountData(pCurrMemberPtr->m_id, fromIntialDate, toInitialDate);
+        // add one day to "toDate" to be included
+        fillAccountData(pCurrMemberPtr->m_id, fromIntialDate, toInitialDate.addDays(1));
 
         //
         // Show
@@ -110,7 +111,8 @@ namespace PenyaManager {
             QMessageBox::information(this, "Wrong search criteria", "From date must be before To date");
         } else {
             MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
-            fillAccountData(pCurrMemberPtr->m_id, this->ui->fromCalendarWidget->selectedDate(), this->ui->toCalendarWidget->selectedDate());
+            // add one day to "toDate" to be included
+            fillAccountData(pCurrMemberPtr->m_id, this->ui->fromCalendarWidget->selectedDate(), this->ui->toCalendarWidget->selectedDate().addDays(1));
         }
     }
 }
