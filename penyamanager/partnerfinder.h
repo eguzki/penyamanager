@@ -16,6 +16,8 @@ namespace PenyaManager {
             virtual ~PartnerFinder();
             //
             IPartner*   getPartner(Uint32 partnerKey);
+            //
+            void addPartner(Uint32 partnerKey, IPartner *);
 
         private:
             //
