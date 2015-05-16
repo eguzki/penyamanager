@@ -328,11 +328,3 @@ namespace PenyaManager {
         pInvoiceWindow->init();
     }
 }
-
-
-
-
-
-
-
-

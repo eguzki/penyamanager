@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `alegria`.`member` (
   `email` VARCHAR(45) NULL,
   `bank_account` VARCHAR(45) NOT NULL,
   `postal_send` TINYINT(1) NULL,
-  `notes` VARCHAR(45) NULL,
+  `notes` VARCHAR(300) NULL,
   PRIMARY KEY (`idmember`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 3

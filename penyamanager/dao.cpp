@@ -21,7 +21,6 @@ namespace PenyaManager {
             m_updateInvoiceQuery(m_db),
             m_memberLastAccountInfoQuery(m_db),
             m_insertTransactionQuery(m_db),
-            m_updateMemberQuery(m_db),
             m_insertDepositQuery(m_db),
             m_memberAccountListQuery(m_db),
             m_tableReservationListQuery(m_db),
@@ -52,6 +51,18 @@ namespace PenyaManager {
                 "ON member.idmember=account.idmember "
                 "WHERE member.idmember= :memberid "
                 "AND member.active= :activeId "
+                "ORDER BY account.date DESC LIMIT 1 "
+                );
+
+        // Member selected by Admin
+        m_memberByAdmin.prepare(
+                "SELECT member.idmember, member.name, member.surname, member.image, member.lastmodified, member.reg_date, member.active, member.isAdmin, "
+                "member.birth, member.address, member.zip_code, member.town, member.state, member.tel, member.tel2, member.email, member.bank_account, "
+                "member.postal_send, member.notes, account.balance "
+                "FROM account "
+                "INNER JOIN member "
+                "ON member.idmember=account.idmember "
+                "WHERE member.idmember= :memberId "
                 "ORDER BY account.date DESC LIMIT 1 "
                 );
 
@@ -117,13 +128,6 @@ namespace PenyaManager {
                 "INSERT INTO account "
                 "(idmember, amount, date, balance, description, type) "
                 "VALUES (:memberid, :amount, :date, :balance, :description, :type)"
-                );
-
-        // update existing member
-        m_updateMemberQuery.prepare(
-                "UPDATE member "
-                "SET name=:name, surname=:surname, image=:image, lastmodified=:lastmodified, reg_date=:reg_date"
-               "WHERE idmember=:memberid"
                 );
         // insert new deposit
         m_insertDepositQuery.prepare(
@@ -262,6 +266,38 @@ namespace PenyaManager {
         return memberPtr;
     }
     //
+
+    MemberByAdminPtr DAO::getActiveMemberByAdmin(Int32 memberLoginId)
+    {
+        // member and balance
+        m_memberByAdmin.bindValue(":memberId", memberLoginId);
+        m_memberByAdmin.exec();
+        if (!m_memberByAdmin.next())
+        {
+            return MemberByAdminPtr();
+        }
+        MemberByAdminPtr memberPtr(new MemberByAdmin);
+        memberPtr->m_id = m_memberByAdmin.value(0).toUInt();
+        memberPtr->m_name = m_memberByAdmin.value(1).toString();
+        memberPtr->m_surname = m_memberByAdmin.value(2).toString();
+        memberPtr->m_image = m_memberByAdmin.value(3).toString();
+        memberPtr->m_reg_date = m_memberByAdmin.value(5).toDate();
+        memberPtr->m_zip_code = m_memberByAdmin.value(11).toUInt();
+        memberPtr->m_bank_account = m_memberByAdmin.value(16).toString();
+        memberPtr->m_active = m_memberByAdmin.value(6).toUInt() == 1;
+
+        //memberPtr->m_balance = m_memberByAdmin.value(22222).toFloat();
+
+       /* member.idmember, member.name, member.surname, member.image, member.lastmodified, member.reg_date, member.active, member.isAdmin, "
+                        "member.birth, member.address, member.zip_code, member.town, member.state, member.tel, member.tel2, member.email, member.bank_account, "
+                        "member.postal_send, member.notes, account.balance*/
+
+        m_memberByAdmin.finish();
+        return memberPtr;
+    }
+    //
+
+
     InvoicePtr DAO::getMemberActiveInvoice(Int32 memberId)
     {
         m_memberActiveInvoiceQuery.bindValue(":memberid", memberId);
@@ -421,21 +457,6 @@ namespace PenyaManager {
             qDebug() << m_insertTransactionQuery.lastError();
         }
         m_insertTransactionQuery.finish();
-    }
-    //
-    void DAO::updateMember(const MemberPtr &pMemberPtr)
-    {
-        m_updateMemberQuery.bindValue(":idmember", pMemberPtr->m_id);
-        m_updateMemberQuery.bindValue(":name", pMemberPtr->m_name);
-        m_updateMemberQuery.bindValue(":surname", pMemberPtr->m_surname);
-        m_updateMemberQuery.bindValue(":image", pMemberPtr->m_imagePath);
-        m_updateMemberQuery.bindValue(":lastmodified", pMemberPtr->m_lastModified);
-        m_updateMemberQuery.bindValue(":reg_date", pMemberPtr->m_regDate);
-        if (!m_updateMemberQuery.exec())
-        {
-            qDebug() << m_updateMemberQuery.lastError();
-        }
-        m_updateMemberQuery.finish();
     }
     //
     DepositPtr DAO::createDeposit(const DepositPtr &pDepositPtr)

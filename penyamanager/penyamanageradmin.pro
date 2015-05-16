@@ -35,7 +35,9 @@ SOURCES += adminmain.cpp\
         objs/InvoiceProductItem.cpp\
         objs/TableReservation.cpp\
         objs/LunchTable.cpp\
-        adminloginwindow.cpp
+        adminloginwindow.cpp\
+        admon_screen.cpp\
+        memberselect.cpp
 
 HEADERS  += singletons.h\
         dao.h\
@@ -53,6 +55,10 @@ HEADERS  += singletons.h\
         objs/InvoiceProductItem.h\
         objs/TableReservation.h\
         objs/LunchTable.h\
-        adminloginwindow.h
+        adminloginwindow.h\
+        admon_screen.h\
+        memberselect.h
 
-FORMS    += adminloginwindow.ui
+FORMS    += adminloginwindow.ui\
+        admon_screen.ui\
+        memberselect.ui

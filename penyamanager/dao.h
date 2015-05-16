@@ -37,6 +37,8 @@ namespace PenyaManager {
             //
             InvoicePtr getMemberActiveInvoice(Int32 memberId);
             //
+            MemberByAdminPtr getActiveMemberByAdmin(Int32 memberLoginId);
+            //
             InvoicePtr createInvoice(Int32 memberId);
             //
             void removeProductInvoice(Int32 invoiceId, Int32 productId);
@@ -52,8 +54,6 @@ namespace PenyaManager {
             TransactionPtr getLastAccountInfo(Int32 memberId);
             //
             void insertTransaction(const TransactionPtr &pTransactionPtr);
-            //
-            void updateMember(const MemberPtr &pMemberPtr);
             //
             DepositPtr createDeposit(const DepositPtr &pDepositPtr);
             //
@@ -79,6 +79,8 @@ namespace PenyaManager {
             //
             QSqlQuery               m_memberActiveInvoiceQuery;
             //
+            QSqlQuery               m_memberByAdmin;
+            //
             QSqlQuery               m_removeProductInvoiceQuery;
             //
             QSqlQuery               m_updateProductInvoiceQuery;
@@ -96,8 +98,6 @@ namespace PenyaManager {
             QSqlQuery               m_memberLastAccountInfoQuery;
             //
             QSqlQuery               m_insertTransactionQuery;
-            //
-            QSqlQuery               m_updateMemberQuery;
             //
             QSqlQuery               m_insertDepositQuery;
             //
