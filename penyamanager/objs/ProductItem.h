@@ -1,6 +1,9 @@
 #ifndef PRODUCTITEM_H
 #define PRODUCTITEM_H
 
+#include <QString>
+#include <QDateTime>
+
 #include <DataTypes.h>
 
 namespace PenyaManager
@@ -12,7 +15,7 @@ namespace PenyaManager
             //
             ProductItem();
             //
-            ProductItem(const QString &name, const QString &imagePath);
+            ProductItem(const QString &name, const QString &imagePath, bool active, const QDateTime &regDate, Int32 familyId, Float price);
             //
             virtual ~ProductItem(){}
 
@@ -23,6 +26,14 @@ namespace PenyaManager
             QString             m_name;
             //
             QString             m_imagePath;
+            //
+            bool                m_active;
+            //
+            QDateTime           m_regDate;
+            //
+            Int32               m_familyId;
+            //
+            Float               m_price;
     };
 
     //

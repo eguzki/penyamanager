@@ -14,15 +14,14 @@ QTPLUGIN += qsqlmysql
 #QMAKE_CXXFLAGS += -std=gnu++0x
 QMAKE_CXXFLAGS += -std=c++11
 
-TARGET = penyamanager
+TARGET = penyamanageradmin
 TEMPLATE = app
 
 RESOURCES = penyamanager.qrc
 
-SOURCES += main.cpp\
+SOURCES += adminmain.cpp\
         singletons.cpp\
         dao.cpp\
-        mainwindow.cpp\
         utils.cpp\
         constants.cpp\
         services.cpp\
@@ -36,15 +35,9 @@ SOURCES += main.cpp\
         objs/InvoiceProductItem.cpp\
         objs/TableReservation.cpp\
         objs/LunchTable.cpp\
-        loginwindow.cpp \
-    numitemdialog.cpp \
-    invoicewindow.cpp \
-    depositwindow.cpp \
-    accountview.cpp \
-    tablereservationview.cpp
+        adminloginwindow.cpp
 
-HEADERS  += mainwindow.h\
-        singletons.h\
+HEADERS  += singletons.h\
         dao.h\
         utils.h\
         constants.h\
@@ -60,17 +53,6 @@ HEADERS  += mainwindow.h\
         objs/InvoiceProductItem.h\
         objs/TableReservation.h\
         objs/LunchTable.h\
-        loginwindow.h \
-    numitemdialog.h \
-    invoicewindow.h \
-    depositwindow.h \
-    accountview.h \
-    tablereservationview.h
+        adminloginwindow.h
 
-FORMS    += mainwindow.ui\
-        loginwindow.ui \
-    numitemdialog.ui \
-    invoicewindow.ui \
-    depositwindow.ui \
-    accountview.ui \
-    tablereservationview.ui
+FORMS    += adminloginwindow.ui

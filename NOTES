@@ -41,4 +41,9 @@ http://stackoverflow.com/questions/10369826/how-can-i-disable-alt-f4-window-clos
 ** lang: 0 -> euskera
 ** lang: 1 -> spanish
 
-* fillInvoiceData -> m_total correct? QDateTime::fromMSecsSinceEpoch(pInvoicePtr->m_date); working???
+* Only one active invoice??
+* bote
+* Otros gastos?? table fee??
+* Stock tracking??? On invoice creation, modify stock??
+* Log system to trace user activity
+* configuration file (system dependent)

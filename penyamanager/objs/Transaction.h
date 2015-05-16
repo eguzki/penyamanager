@@ -2,6 +2,7 @@
 #define TRANSACTION_H
 
 #include <QString>
+#include <QDateTime>
 
 #include <DataTypes.h>
 #include <constants.h>
@@ -9,23 +10,35 @@
 namespace PenyaManager
 {
     //
+    enum class TransactionType
+    {
+        Invoice,
+        Deposit, 
+        AccountPayment 
+    };
+    
+    QString getStringFromTransactionTypeEnum(TransactionType e);
+
+    //
     class Transaction
     {
         public:
             //
             Transaction();
             //
-            Transaction(Int32 id, Float amount, Uint64 date, Float balance, const QString &descr);
+            Transaction(TransactionType type, Int32 memberId, Float amount, const QDateTime& date, Float balance, const QString &descr);
             //
             virtual ~Transaction(){}
 
         public:
             //
-            Int32               m_id;
+            TransactionType     m_type;
+            //
+            Int32               m_memberId;
             //
             Float               m_amount;
             //
-            Uint64              m_date;
+            QDateTime           m_date;
             //
             Float               m_balance;
             //
@@ -34,6 +47,10 @@ namespace PenyaManager
 
     //
     typedef std::shared_ptr<Transaction> TransactionPtr;
+    //
+    typedef std::vector<TransactionPtr> TransactionList;
+    //
+    typedef std::shared_ptr<TransactionList> TransactionListPtr;
 }
 
 #endif // TRANSACTION_H

@@ -4,13 +4,25 @@
 
 namespace PenyaManager {
     //
+    QString getStringFromTransactionTypeEnum(TransactionType e)
+    {
+        switch (e)
+        {
+            case TransactionType::Invoice: return "Invoice";
+            case TransactionType::Deposit: return "Deposit";
+            case TransactionType::AccountPayment: return "AccountPayment";
+            default: return "Bad TransactionType";
+        }
+    }
+    //
     Transaction::Transaction()
     {
     }
     //
-    Transaction::Transaction(Int32 id, Float amount, Uint64 date, Float balance, const QString &descr)
+    Transaction::Transaction(TransactionType type, Int32 memberId, Float amount, const QDateTime& date, Float balance, const QString &descr)
         :
-            m_id(id),
+            m_type(type),
+            m_memberId(memberId),
             m_amount(amount),
             m_date(date),
             m_balance(balance),

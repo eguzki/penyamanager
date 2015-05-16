@@ -1,7 +1,5 @@
 //
 
-#include <QString>
-
 #include "ProductFamily.h"
 
 namespace PenyaManager

@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QListWidgetItem>
 #include <QListWidget>
 
 #include "objs/Member.h"
@@ -24,9 +25,6 @@ class MainWindow : public IPartner
         explicit MainWindow(QWidget *parent = 0);
         //
         ~MainWindow();
-        //
-        void setParner(IPartner *partner);
-        void setAdminParner(IPartner *partner);
 
     private:
         //
@@ -41,20 +39,36 @@ class MainWindow : public IPartner
         void createProductItemWidget(const ProductItemPtr &pfPtr, QListWidget *pList);
         //
         void fillInvoiceData(const InvoicePtr &pInvoicePtr);
+        //
+        void readNumItems(Int32 productId);
 
     private:
+        //
         Ui::MainWindow *ui;
-        IPartner *adminPartner;
+        //
+        typedef std::map<Int32, Int32>          RowProductIdMap;
+        RowProductIdMap                         m_rowProductIdMap;
 
     private slots:
-        //
-        void quitButtonOnClick();
         //
         void init();
         //
         void familyItemClicked(QListWidgetItem* item);
         //
-        void on_adminButton_clicked();
+        void productItemClicked(QListWidgetItem* item);
+        //
+        void on_invoiceCloseButton_clicked();
+        //
+        void on_invoiceResetButton_clicked();
+        //
+        void on_exitButton_clicked();
+        //
+        void on_depositsButton_clicked();
+        //
+        void on_invoiceTableWidget_cellClicked(int row, int column);
+        //
+        void on_accountButton_clicked();
+        void on_tableReservationButton_clicked();
 };
 }
 
