@@ -2,27 +2,12 @@
 
 #include <QDebug>
 
-#include "constants.h"
-#include "mainwindow.h"
-#include "loginwindow.h"
-#include "invoicewindow.h"
-#include "depositwindow.h"
-#include "accountview.h"
-#include "tablereservationview.h"
 #include "partnerfinder.h"
 
 namespace PenyaManager {
-
     //
     PartnerFinder::PartnerFinder()
     {
-        // Load windows
-        m_partnerMap[Constants::kLoginWindowKey] = new LoginWindow;
-        m_partnerMap[Constants::kMainWindowKey] = new MainWindow;
-        m_partnerMap[Constants::kInvoiceWindowKey] = new InvoiceWindow;
-        m_partnerMap[Constants::kDepositsWindowKey] = new DepositWindow;
-        m_partnerMap[Constants::kAccountViewWindowKey] = new AccountView;
-        m_partnerMap[Constants::kTableReservationViewWindowKey] = new TableReservationView;
     }
     //
     PartnerFinder::~PartnerFinder()
@@ -42,5 +27,10 @@ namespace PenyaManager {
             abort();
         }
         return partner->second;
+    }
+    //
+    void PartnerFinder::addPartner(Uint32 partnerKey, IPartner *pIPartner)
+    {
+        m_partnerMap[partnerKey] = pIPartner;
     }
 }

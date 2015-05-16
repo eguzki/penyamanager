@@ -42,6 +42,8 @@ PROJECT_NAME="penyamanager"
 CURRENT_PATH="$( cd "$( dirname "$0" )" && pwd )"
 TARGETPATH=$CURRENT_PATH/dist
 PROJECT_PATH=$CURRENT_PATH/$PROJECT_NAME
+USER_APP=$PROJECT_PATH/penyamanager.pro
+ADMIN_APP=$PROJECT_PATH/penyamanageradmin.pro
 QMAKE_FLAGS="-Wall"
 DEBUG=yes
 CLEAN=no
@@ -75,8 +77,12 @@ else
 
     echo "** BUILD:: running \"$QMAKE\" and \"$MAKE $TARGET\" in $TARGETPATH [DEBUG build]"
     cd $TARGETPATH
-    $QMAKE $QMAKE_FLAGS $PROJECT_PATH
-
+    echo "** BUILD:: building \"$USER_APP\""
+    $QMAKE $QMAKE_FLAGS $USER_APP
+    echo "** BUILD:: making with: $MAKE**"
+    $MAKE
+    echo "** BUILD:: building \"$ADMIN_APP\""
+    $QMAKE $QMAKE_FLAGS $ADMIN_APP
     echo "** BUILD:: making with: $MAKE**"
     $MAKE
 fi

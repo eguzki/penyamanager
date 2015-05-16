@@ -1,29 +1,29 @@
-#ifndef LOGINWINDOW_H
-#define LOGINWINDOW_H
+#ifndef ADMINLOGINWINDOW_H
+#define ADMINLOGINWINDOW_H
 
 #include "IPartner.h"
 
 namespace Ui {
     //
-    class LoginWindow;
+    class AdminLoginWindow;
 }
 
 namespace PenyaManager {
 
     //
-    class LoginWindow : public IPartner
+    class AdminLoginWindow : public IPartner
     {
         Q_OBJECT
 
         public:
             //
-            explicit LoginWindow(QWidget *parent = 0);
+            explicit AdminLoginWindow(QWidget *parent = 0);
             //
-            ~LoginWindow();
+            ~AdminLoginWindow();
 
         private:
             //
-            Ui::LoginWindow *ui;
+            Ui::AdminLoginWindow *ui;
 
         private slots:
             //
@@ -34,4 +34,4 @@ namespace PenyaManager {
 
 }
 
-#endif // LOGINWINDOW_H
+#endif // ADMINLOGINWINDOW_H

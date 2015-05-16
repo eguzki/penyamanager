@@ -3,29 +3,27 @@
 #include <QMessageBox>
 #include "constants.h"
 #include "singletons.h"
-#include "ui_loginwindow.h"
-#include "loginwindow.h"
+#include "ui_adminloginwindow.h"
+#include "adminloginwindow.h"
 
 namespace PenyaManager {
 
     //
-    LoginWindow::LoginWindow(QWidget *parent) :
+    AdminLoginWindow::AdminLoginWindow(QWidget *parent) :
         IPartner(parent),
-        ui(new Ui::LoginWindow)
+        ui(new Ui::AdminLoginWindow)
     {
         ui->setupUi(this);
-        //
-        this->connect(this->ui->loginButton, SIGNAL(clicked()), this, SLOT(onLoginButtonClicked()));
     }
 
     //
-    LoginWindow::~LoginWindow()
+    AdminLoginWindow::~AdminLoginWindow()
     {
         delete ui;
     }
 
     //
-    void LoginWindow::init()
+    void AdminLoginWindow::init()
     {
         this->ui->passInput->clear();
         this->ui->loginInput->clear();
@@ -40,9 +38,8 @@ namespace PenyaManager {
 
         show();
     }
-
     //
-    void LoginWindow::on_loginButton_clicked()
+    void AdminLoginWindow::on_loginButton_clicked()
     {
         // Loading user Profile
         MemberPtr pCurrMemberPtr = Singletons::m_pDAO->getActiveMemberById(this->ui->loginInput->text().toInt());
@@ -51,7 +48,7 @@ namespace PenyaManager {
             this->hide();
             // assign user
             Singletons::m_pCurrMember = pCurrMemberPtr;
-            // call main window
+            // call admin main window
             IPartner* pMainWindow = Singletons::m_pParnetFinder->getPartner(Constants::kMainWindowKey);
             pMainWindow->init();
         } else {
