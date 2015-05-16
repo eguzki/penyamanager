@@ -55,8 +55,6 @@ namespace PenyaManager {
             //
             void insertTransaction(const TransactionPtr &pTransactionPtr);
             //
-            void updateMember(const MemberPtr &pMemberPtr);
-            //
             DepositPtr createDeposit(const DepositPtr &pDepositPtr);
             //
             TransactionListPtr getAccountList(Int32 memberId, const QDate &fromDate, const QDate &toDate);
@@ -100,8 +98,6 @@ namespace PenyaManager {
             QSqlQuery               m_memberLastAccountInfoQuery;
             //
             QSqlQuery               m_insertTransactionQuery;
-            //
-            QSqlQuery               m_updateMemberQuery;
             //
             QSqlQuery               m_insertDepositQuery;
             //

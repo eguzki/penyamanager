@@ -42,6 +42,7 @@ namespace PenyaManager {
     void AdminLoginWindow::on_loginButton_clicked()
     {
         // Loading user Profile
+        // TODO generalize getActiveMemberById to filter admin users
         MemberPtr pCurrMemberPtr = Singletons::m_pDAO->getActiveMemberById(this->ui->loginInput->text().toInt());
         if (pCurrMemberPtr)
         {
@@ -49,15 +50,12 @@ namespace PenyaManager {
             // assign user
             Singletons::m_pCurrMember = pCurrMemberPtr;
             // call admin main window
-            IPartner* pMainWindow = Singletons::m_pParnetFinder->getPartner(Constants::kMainWindowKey);
+            IPartner* pMainWindow = Singletons::m_pParnetFinder->getPartner(Constants::kAdminMainWindowKey);
             pMainWindow->init();
         } else {
             // User could not be found
-            QMessageBox::about(this, "User not found",
-                    "User not registered in the system: " + this->ui->loginInput->text());
+            QMessageBox::about(this, "Admin user not found",
+                    "Admin user not registered in the system: " + this->ui->loginInput->text());
         }
     }
 }
-
-
-

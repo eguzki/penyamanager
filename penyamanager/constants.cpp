@@ -32,4 +32,6 @@ namespace PenyaManager {
     const Uint32    Constants::kTableReservationViewWindowKey   = 5;
     //
     const Uint32    Constants::kAdminLoginWindowKey             = 6;
+    //
+    const Uint32    Constants::kAdminMainWindowKey              = 7;
 }

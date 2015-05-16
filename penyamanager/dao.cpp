@@ -21,7 +21,6 @@ namespace PenyaManager {
             m_updateInvoiceQuery(m_db),
             m_memberLastAccountInfoQuery(m_db),
             m_insertTransactionQuery(m_db),
-            m_updateMemberQuery(m_db),
             m_insertDepositQuery(m_db),
             m_memberAccountListQuery(m_db),
             m_tableReservationListQuery(m_db),
@@ -129,13 +128,6 @@ namespace PenyaManager {
                 "INSERT INTO account "
                 "(idmember, amount, date, balance, description, type) "
                 "VALUES (:memberid, :amount, :date, :balance, :description, :type)"
-                );
-
-        // update existing member
-        m_updateMemberQuery.prepare(
-                "UPDATE member "
-                "SET name=:name, surname=:surname, image=:image, lastmodified=:lastmodified, reg_date=:reg_date"
-               "WHERE idmember=:memberid"
                 );
         // insert new deposit
         m_insertDepositQuery.prepare(
@@ -465,21 +457,6 @@ namespace PenyaManager {
             qDebug() << m_insertTransactionQuery.lastError();
         }
         m_insertTransactionQuery.finish();
-    }
-    //
-    void DAO::updateMember(const MemberPtr &pMemberPtr)
-    {
-        m_updateMemberQuery.bindValue(":idmember", pMemberPtr->m_id);
-        m_updateMemberQuery.bindValue(":name", pMemberPtr->m_name);
-        m_updateMemberQuery.bindValue(":surname", pMemberPtr->m_surname);
-        m_updateMemberQuery.bindValue(":image", pMemberPtr->m_imagePath);
-        m_updateMemberQuery.bindValue(":lastmodified", pMemberPtr->m_lastModified);
-        m_updateMemberQuery.bindValue(":reg_date", pMemberPtr->m_regDate);
-        if (!m_updateMemberQuery.exec())
-        {
-            qDebug() << m_updateMemberQuery.lastError();
-        }
-        m_updateMemberQuery.finish();
     }
     //
     DepositPtr DAO::createDeposit(const DepositPtr &pDepositPtr)
