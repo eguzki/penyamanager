@@ -2,7 +2,23 @@
 http://qt-project.org/doc/qt-4.8/qsystemtrayicon.html
 http://stackoverflow.com/questions/10369826/how-can-i-disable-alt-f4-window-closing-using-qt
 
-* Admin login -> screen with two options -> user mode and admin mode
+* Admin
+** List of a product purchases between date range
+** List of distributors
+** Every distributor owns N products (exclusively)?
+** List of invoices from a given member and date range
+*** When selected, invoice detail (same behavior for member app)
+** Inventary
+*** Distributor X provided list of products, invoice number, invoice total value
+*** Adjust stock?
+** Stock
+*** List of products currently
+** Deposit validator (deposit id as input -> get info -> validated or not and deposit actual value)
+*** Deposit value applied inmediatly, verified later
+** Member total expense in a date range
+** Member expense in a date range for a given product
+** Total expenses for all members in a given date range
+
 
 * User profile view -> change email or account num
 ** On email or account change -> send email to alegria@yahoo.es
