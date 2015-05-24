@@ -3,6 +3,33 @@ http://qt-project.org/doc/qt-4.8/qsystemtrayicon.html
 http://stackoverflow.com/questions/10369826/how-can-i-disable-alt-f4-window-closing-using-qt
 
 * Admin
+** Menu Dialog
+*** Members
+**** Member Info
+**** Member create
+**** Listado socios en negativo -> a) export, b)print, c)reset account
+*** Invoices
+**** List of invoices by date range
+**** List of invoices by date range for a given member
+*** Bodega
+**** Ingreso (user input-> distribuidores)
+**** Consumo producto fecha
+**** Consumo producto socio fecha
+**** GEstion prducto/familia
+**** Gestion Distribuidor (nombre, list products). 
+**** Listado stock (editable, imprimir)
+*** Account
+**** Verify deposits
+**** Total account balance (deposits can be edited). total deposits, total invoice, total stock cost
+**** User account balance
+**** 
+
+* User -> Reserva de 3 hornos y 2 fogones
+
+* When user account balance is negative -> pop up on login
+
+
+
 ** List of a product purchases between date range
 ** List of distributors
 ** Every distributor owns N products (exclusively)?
