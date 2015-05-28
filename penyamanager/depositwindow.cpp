@@ -1,5 +1,7 @@
 //
 
+#include <QMessageBox>
+
 #include "utils.h"
 #include "singletons.h"
 #include "depositwindow.h"
@@ -78,15 +80,24 @@ namespace PenyaManager {
         if (ok)
         {
             MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
+            // Create deposit info
+            DepositPtr pDepositPtr = Singletons::m_pServices->createDeposit(pCurrMemberPtr, deposit);
+            if (!pDepositPtr) {
+                // TODO handle error
+                QMessageBox::warning(this, "Could not create deposit", "Contact administrator");
+                return;
+            }
+
             // Update member balance
-            Singletons::m_pServices->createDeposit(pCurrMemberPtr, deposit);
+            QString description = QString("ref %1").arg(pDepositPtr->m_id);
+            Singletons::m_pServices->createAccountTransaction(pCurrMemberPtr->m_id, deposit, description, TransactionType::Deposit);
         }
 
         // Go to login page
         hide();
         // call login window on exit
-        IPartner* pLoginWindow = Singletons::m_pParnetFinder->getPartner(Constants::kLoginWindowKey);
-        pLoginWindow->init();
+        IPartner* pMainWindow = Singletons::m_pParnetFinder->getPartner(Constants::kMainWindowKey);
+        pMainWindow->init();
     }
     //
     void DepositWindow::updateNewBalanceLabel(double deposit)
