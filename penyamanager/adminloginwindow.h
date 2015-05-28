@@ -2,6 +2,7 @@
 #define ADMINLOGINWINDOW_H
 
 #include "IPartner.h"
+#include "adminmainwindow.h"
 
 namespace Ui {
     //
@@ -17,11 +18,13 @@ namespace PenyaManager {
 
         public:
             //
-            explicit AdminLoginWindow(QWidget *parent = 0);
+            explicit AdminLoginWindow(AdminMainWindow *pAdminMainWindow);
             //
             ~AdminLoginWindow();
 
         private:
+            //
+            AdminMainWindow *m_pAdminMainWindow;
             //
             Ui::AdminLoginWindow *ui;
 
@@ -33,5 +36,4 @@ namespace PenyaManager {
     };
 
 }
-
 #endif // ADMINLOGINWINDOW_H

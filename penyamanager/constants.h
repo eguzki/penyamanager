@@ -25,7 +25,7 @@ namespace PenyaManager {
             static const Uint32     kMemberImageHeigth;
             // LoginWindow key
             static const Uint32     kLoginWindowKey;
-            // MainWindow key 
+            // MainWindow key
             static const Uint32     kMainWindowKey;
             // InvoiceWindow key
             static const Uint32     kInvoiceWindowKey;
@@ -37,8 +37,8 @@ namespace PenyaManager {
             static const Uint32     kTableReservationViewWindowKey;
             // AdminLoginWindow key
             static const Uint32     kAdminLoginWindowKey;
-            // AdminMainWindow key
-            static const Uint32     kAdminMainWindowKey;
+            // AdminMemberInfoWindow key
+            static const Uint32     kAdminMemberInfoWindow;
 
         private:
             Constants() {}
