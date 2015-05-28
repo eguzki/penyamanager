@@ -1,6 +1,3 @@
-* Exit application from tray icon
-http://qt-project.org/doc/qt-4.8/qsystemtrayicon.html
-http://stackoverflow.com/questions/10369826/how-can-i-disable-alt-f4-window-closing-using-qt
 
 * Admin
 ** Menu Dialog
@@ -26,9 +23,8 @@ http://stackoverflow.com/questions/10369826/how-can-i-disable-alt-f4-window-clos
 
 * User -> Reserva de 3 hornos y 2 fogones
 
-* When user account balance is negative -> pop up on login
-
-
+* Member login
+** When user account balance is negative -> pop up on login
 
 ** List of a product purchases between date range
 ** List of distributors
@@ -46,36 +42,12 @@ http://stackoverflow.com/questions/10369826/how-can-i-disable-alt-f4-window-clos
 ** Member expense in a date range for a given product
 ** Total expenses for all members in a given date range
 
-
 * User profile view -> change email or account num
 ** On email or account change -> send email to alegria@yahoo.es
 
-* User invoice generator -> add items -> next window: invoice preview
-** select item: next step count, only when count is set, user can select another item.
-** when there is open invoice, show details
-* invoice preview:
-** invoice keep
-** selector: cash / account
-** pot: +/-0.10€ increase
-** After checking out invoice, automatically logout and print ticket
-** Combinados... product list?
-
-* User Account (balance)
-** view invoice detail (TBD) (modal window)
-
-* table reservation
-** new window. On exit, logout
-** cena/comida
-** local a / local b
-** no printing
-** only one table per day
-
 * Deposit
-** "condicion de pago" -> out
 * on confirmation -> print ticket
 * create pending deposit
-
-* Inventario?? num dosis given day??
 
 * Languages:
 ** check QT translatable property of labels
@@ -90,3 +62,20 @@ http://stackoverflow.com/questions/10369826/how-can-i-disable-alt-f4-window-clos
 * Stock tracking??? On invoice creation, modify stock??
 * Log system to trace user activity
 * configuration file (system dependent)
+
+* Exit application from tray icon
+http://qt-project.org/doc/qt-4.8/qsystemtrayicon.html
+http://stackoverflow.com/questions/10369826/how-can-i-disable-alt-f4-window-closing-using-qt
+
+* DONE
+** Member login window
+** Member invoice window
+** Member invoice confirmation window
+*** invoices are always applied to account. No need to verify.
+** Member table reservation window
+*** members can cancel
+*** members can only reserve one table in a given date (date, lunch/dinner)
+** Member deposit window
+*** Deposits are applied to balance on creation. Admin has to verify. 
+** Member account view
+** Admin login window
