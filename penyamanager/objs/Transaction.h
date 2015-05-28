@@ -13,10 +13,11 @@ namespace PenyaManager
     enum class TransactionType
     {
         Invoice,
-        Deposit, 
-        AccountPayment 
+        Deposit,
+        AccountPayment,
+        DepositFix
     };
-    
+
     QString getStringFromTransactionTypeEnum(TransactionType e);
 
     //

@@ -42,11 +42,12 @@ namespace PenyaManager {
         }
 
         //
-        // Loading User profile
+        // Loading User profile 
         //
-
-        MemberPtr pCurrMember = Singletons::m_pCurrMember;
-        fillMemberProfile(pCurrMember);
+        MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
+        pCurrMemberPtr = Singletons::m_pDAO->getActiveMemberById(pCurrMemberPtr->m_id);
+        Singletons::m_pCurrMember = pCurrMemberPtr;
+        fillMemberProfile(pCurrMemberPtr);
 
         //
         // Loading families
@@ -62,10 +63,10 @@ namespace PenyaManager {
         // Loading Current Invoice (if it exists)
         //
 
-        InvoicePtr pInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
+        InvoicePtr pInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMemberPtr->m_id);
         if (!pInvoicePtr) {
             // there is no active invoice, create it!
-            pInvoicePtr = Singletons::m_pDAO->createInvoice(pCurrMember->m_id);
+            pInvoicePtr = Singletons::m_pDAO->createInvoice(pCurrMemberPtr->m_id);
         }
 
         fillInvoiceData(pInvoicePtr);

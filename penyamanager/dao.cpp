@@ -461,6 +461,7 @@ namespace PenyaManager {
     //
     DepositPtr DAO::createDeposit(const DepositPtr &pDepositPtr)
     {
+        DepositPtr pNewDepositPtr;
         m_insertDepositQuery.bindValue(":memberid", pDepositPtr->m_memberId);
         m_insertDepositQuery.bindValue(":state", static_cast<Int32>(pDepositPtr->m_state));
         m_insertDepositQuery.bindValue(":date", pDepositPtr->m_date);
@@ -469,6 +470,7 @@ namespace PenyaManager {
         if (!m_insertDepositQuery.exec())
         {
             qDebug() << m_insertDepositQuery.lastError();
+            // TODO on error, finish query and exit
         }
         m_insertDepositQuery.finish();
         // For LAST_INSERT_ID(), the most recently generated ID is maintained in the server on a per-connection basis
@@ -477,10 +479,11 @@ namespace PenyaManager {
             qDebug() << m_getLastIdQuery.lastError();
         } else {
             m_getLastIdQuery.next();
-            pDepositPtr->m_id = m_getLastIdQuery.value(0).toUInt();
+            pNewDepositPtr = pDepositPtr;
+            pNewDepositPtr->m_id = m_getLastIdQuery.value(0).toUInt();
         }
         m_getLastIdQuery.finish();
-        return pDepositPtr;
+        return pNewDepositPtr;
     }
     //
     TransactionListPtr DAO::getAccountList(Int32 memberId, const QDate &fromDate, const QDate &toDate)

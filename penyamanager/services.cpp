@@ -16,7 +16,7 @@ namespace PenyaManager {
     {
     }
     //
-    void Services::createDeposit(const MemberPtr &pMemberPtr, Float amount)
+    DepositPtr Services::createDeposit(const MemberPtr &pMemberPtr, Float amount)
     {
         // create deposit register info as unconfirmed
         DepositPtr pDepositPtr(new Deposit);
@@ -29,7 +29,7 @@ namespace PenyaManager {
         pDepositPtr->m_descr = QString("deposit");
 
         // store in ddbb
-        Singletons::m_pDAO->createDeposit(pDepositPtr);
+        return Singletons::m_pDAO->createDeposit(pDepositPtr);
     }
     //
     void Services::closeInvoice(const MemberPtr &pMemberPtr, Int32 invoiceId)

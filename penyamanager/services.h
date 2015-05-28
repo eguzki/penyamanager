@@ -3,6 +3,7 @@
 
 #include "objs/Member.h"
 #include "objs/Transaction.h"
+#include "objs/Deposit.h"
 
 namespace PenyaManager {
 
@@ -19,7 +20,7 @@ namespace PenyaManager {
             //
             void createAccountTransaction(Int32 memberId, Float amount, const QString &description, TransactionType type);
             //
-            void createDeposit(const MemberPtr &pMemberPtr, Float amount);
+            DepositPtr createDeposit(const MemberPtr &pMemberPtr, Float amount);
     };
 }
 
