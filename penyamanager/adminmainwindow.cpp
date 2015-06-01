@@ -16,6 +16,7 @@ namespace PenyaManager {
         ui->setupUi(this);
 
         this->connect(this->ui->actionExit, &QAction::triggered, std::bind(&AdminMainWindow::on_exit_button_triggered, this));
+        this->connect(this->ui->actionSlow_payers, &QAction::triggered, std::bind(&AdminMainWindow::on_slow_payers_button_triggered, this));
     }
     //
     AdminMainWindow::~AdminMainWindow()
@@ -38,9 +39,27 @@ namespace PenyaManager {
     //
     void AdminMainWindow::on_exit_button_triggered()
     {
+        // when central widget is empty, takecentralwidget can lead to core dump
+        if (this->centralWidget()) {
+            // takeCentralWidget removes central widget. When setting new one, current one is not deleted
+            this->takeCentralWidget();
+        }
         this->hide();
         // call admin main window
         IPartner* pAdminLoginPartner = Singletons::m_pParnetFinder->getPartner(Constants::kAdminLoginWindowKey);
         pAdminLoginPartner->init();
+    }
+    //
+    void AdminMainWindow::on_slow_payers_button_triggered()
+    {
+        // when central widget is empty, takecentralwidget can lead to core dump
+        if (this->centralWidget()) {
+            // takeCentralWidget removes central widget. When setting new one, current one is not deleted
+            this->takeCentralWidget();
+        }
+        // call slow payers window
+        IPartner* pSlowPayersPartner = Singletons::m_pParnetFinder->getPartner(Constants::kAdminSlowPayersWindowKey);
+        pSlowPayersPartner->init();
+        this->setCentralWidget(pSlowPayersPartner);
     }
 }

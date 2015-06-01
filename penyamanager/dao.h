@@ -66,6 +66,8 @@ namespace PenyaManager {
             void makeTableReservation(const QDate &date, ReservationType reservationType, Uint16 guestNum, Int32 memberId, Int32 idtable);
             //
             void cancelTableReservation(Int32 reservationId);
+            //
+            MemberListPtr getSlowPayersList();
 
         private:
             //
@@ -110,6 +112,8 @@ namespace PenyaManager {
             QSqlQuery               m_insertTableReservationQuery;
             //
             QSqlQuery               m_cancelTableReservationQuery;
+            //
+            QSqlQuery               m_slowPayersQuery;
     };
 }
 #endif // DAO_H

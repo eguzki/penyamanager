@@ -24,6 +24,8 @@ namespace PenyaManager {
         private slots:
             //
             void on_exit_button_triggered();
+            //
+            void on_slow_payers_button_triggered();
 
         private:
             //

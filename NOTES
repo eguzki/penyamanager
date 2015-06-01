@@ -79,3 +79,6 @@ http://stackoverflow.com/questions/10369826/how-can-i-disable-alt-f4-window-clos
 *** Deposits are applied to balance on creation. Admin has to verify. 
 ** Member account view
 ** Admin login window
+** Admin slow payers window
+*** export to csv
+*** reset account (TODO)

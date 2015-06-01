@@ -41,6 +41,10 @@ namespace PenyaManager
 
     //
     typedef std::shared_ptr<Member> MemberPtr;
+    //
+    typedef std::vector<MemberPtr> MemberPtrList;
+    //
+    typedef std::shared_ptr<MemberPtrList> MemberListPtr;
 
     class MemberByAdmin
     {

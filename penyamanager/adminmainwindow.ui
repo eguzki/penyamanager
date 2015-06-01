@@ -33,18 +33,10 @@
     <property name="title">
      <string>Members</string>
     </property>
-    <widget class="QMenu" name="menuMember_list_with_negative_balance">
-     <property name="title">
-      <string>Member list with negative balance</string>
-     </property>
-     <addaction name="actionExport"/>
-     <addaction name="actionPrint"/>
-     <addaction name="actionReset_Account"/>
-    </widget>
     <addaction name="actionNew_member"/>
     <addaction name="actionMember_information"/>
     <addaction name="separator"/>
-    <addaction name="menuMember_list_with_negative_balance"/>
+    <addaction name="actionSlow_payers"/>
    </widget>
    <widget class="QMenu" name="menuInvoices">
     <property name="title">
@@ -97,17 +89,17 @@
     <string>Invoice list</string>
    </property>
   </action>
-  <action name="actionExport">
+  <action name="actionSlowPayersExport">
    <property name="text">
     <string>Export</string>
    </property>
   </action>
-  <action name="actionPrint">
+  <action name="actionSlowPayersPrint">
    <property name="text">
     <string>Print</string>
    </property>
   </action>
-  <action name="actionReset_Account">
+  <action name="actionSlowPayersResetAccount">
    <property name="text">
     <string>Reset Account</string>
    </property>
@@ -150,6 +142,11 @@
   <action name="actionExit">
    <property name="text">
     <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionSlow_payers">
+   <property name="text">
+    <string>Slow payers</string>
    </property>
   </action>
  </widget>
