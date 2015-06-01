@@ -21,6 +21,10 @@ namespace PenyaManager {
             //
             void init();
 
+        private slots:
+            //
+            void on_exit_button_triggered();
+
         private:
             //
             Ui::AdminMainWindow *ui;

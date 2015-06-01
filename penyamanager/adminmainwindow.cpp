@@ -14,6 +14,8 @@ namespace PenyaManager {
         ui(new Ui::AdminMainWindow)
     {
         ui->setupUi(this);
+
+        this->connect(this->ui->actionExit, &QAction::triggered, std::bind(&AdminMainWindow::on_exit_button_triggered, this));
     }
     //
     AdminMainWindow::~AdminMainWindow()
@@ -32,5 +34,13 @@ namespace PenyaManager {
         }
 
         show();
+    }
+    //
+    void AdminMainWindow::on_exit_button_triggered()
+    {
+        this->hide();
+        // call admin main window
+        IPartner* pAdminLoginPartner = Singletons::m_pParnetFinder->getPartner(Constants::kAdminLoginWindowKey);
+        pAdminLoginPartner->init();
     }
 }

@@ -69,16 +69,17 @@
     <addaction name="actionDeposit_Check"/>
     <addaction name="actionAccount_Balance"/>
    </widget>
-   <widget class="QMenu" name="menuExit">
+   <widget class="QMenu" name="menuMain">
     <property name="title">
-     <string>Exit</string>
+     <string>Main</string>
     </property>
+    <addaction name="actionExit"/>
    </widget>
+   <addaction name="menuMain"/>
    <addaction name="menuMembers"/>
    <addaction name="menuInvoices"/>
    <addaction name="menuStock"/>
    <addaction name="menuAccount"/>
-   <addaction name="menuExit"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionMember_information">
@@ -144,6 +145,11 @@
   <action name="actionAccount_Balance">
    <property name="text">
     <string>Account Balance</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
    </property>
   </action>
  </widget>

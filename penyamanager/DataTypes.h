@@ -23,6 +23,8 @@
 #include <tr1/memory>
 #include <cstdlib>
 
+using namespace std::placeholders;  // for _1, _2, _3...
+
 // macro to remove unused parameter warnings
 #define UNUSEDPARAMETER(x)    ((void)x)
 
