@@ -1,4 +1,5 @@
 //
+
 #include <QDebug>
 #include <QMessageBox>
 #include "constants.h"
@@ -7,21 +8,19 @@
 #include "adminloginwindow.h"
 
 namespace PenyaManager {
-
     //
-    AdminLoginWindow::AdminLoginWindow(QWidget *parent) :
-        IPartner(parent),
+    AdminLoginWindow::AdminLoginWindow(AdminMainWindow *pAdminMainWindow) :
+        IPartner(0),
+        m_pAdminMainWindow(pAdminMainWindow),
         ui(new Ui::AdminLoginWindow)
     {
         ui->setupUi(this);
     }
-
     //
     AdminLoginWindow::~AdminLoginWindow()
     {
         delete ui;
     }
-
     //
     void AdminLoginWindow::init()
     {
@@ -50,8 +49,7 @@ namespace PenyaManager {
             // assign user
             Singletons::m_pCurrMember = pCurrMemberPtr;
             // call admin main window
-            IPartner* pMainWindow = Singletons::m_pParnetFinder->getPartner(Constants::kAdminMainWindowKey);
-            pMainWindow->init();
+            m_pAdminMainWindow->init();
         } else {
             // User could not be found
             QMessageBox::about(this, "Admin user not found",

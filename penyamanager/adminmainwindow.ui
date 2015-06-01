@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AdminMainWindow</class>
+ <widget class="QMainWindow" name="AdminMainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1200</width>
+    <height>900</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1200</width>
+    <height>900</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1200</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuMembers">
+    <property name="title">
+     <string>Members</string>
+    </property>
+    <widget class="QMenu" name="menuMember_list_with_negative_balance">
+     <property name="title">
+      <string>Member list with negative balance</string>
+     </property>
+     <addaction name="actionExport"/>
+     <addaction name="actionPrint"/>
+     <addaction name="actionReset_Account"/>
+    </widget>
+    <addaction name="actionNew_member"/>
+    <addaction name="actionMember_information"/>
+    <addaction name="separator"/>
+    <addaction name="menuMember_list_with_negative_balance"/>
+   </widget>
+   <widget class="QMenu" name="menuInvoices">
+    <property name="title">
+     <string>Invoices</string>
+    </property>
+    <addaction name="actionInvoice_list"/>
+   </widget>
+   <widget class="QMenu" name="menuStock">
+    <property name="title">
+     <string>Stock</string>
+    </property>
+    <addaction name="actionStock_purchase"/>
+    <addaction name="actionProduct_consumption"/>
+    <addaction name="actionManage_Stock_items"/>
+    <addaction name="actionManage_vendors"/>
+    <addaction name="actionManage_Stock"/>
+   </widget>
+   <widget class="QMenu" name="menuAccount">
+    <property name="title">
+     <string>Account</string>
+    </property>
+    <addaction name="actionDeposit_Check"/>
+    <addaction name="actionAccount_Balance"/>
+   </widget>
+   <widget class="QMenu" name="menuMain">
+    <property name="title">
+     <string>Main</string>
+    </property>
+    <addaction name="actionExit"/>
+   </widget>
+   <addaction name="menuMain"/>
+   <addaction name="menuMembers"/>
+   <addaction name="menuInvoices"/>
+   <addaction name="menuStock"/>
+   <addaction name="menuAccount"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionMember_information">
+   <property name="text">
+    <string>Member information</string>
+   </property>
+  </action>
+  <action name="actionNew_member">
+   <property name="text">
+    <string>New member</string>
+   </property>
+  </action>
+  <action name="actionInvoice_list">
+   <property name="text">
+    <string>Invoice list</string>
+   </property>
+  </action>
+  <action name="actionExport">
+   <property name="text">
+    <string>Export</string>
+   </property>
+  </action>
+  <action name="actionPrint">
+   <property name="text">
+    <string>Print</string>
+   </property>
+  </action>
+  <action name="actionReset_Account">
+   <property name="text">
+    <string>Reset Account</string>
+   </property>
+  </action>
+  <action name="actionStock_purchase">
+   <property name="text">
+    <string>Stock purchase</string>
+   </property>
+  </action>
+  <action name="actionProduct_consumption">
+   <property name="text">
+    <string>Product Consumption</string>
+   </property>
+  </action>
+  <action name="actionManage_Stock_items">
+   <property name="text">
+    <string>Manage Families/Goods</string>
+   </property>
+  </action>
+  <action name="actionManage_vendors">
+   <property name="text">
+    <string>Manage Vendors</string>
+   </property>
+  </action>
+  <action name="actionManage_Stock">
+   <property name="text">
+    <string>Manage Stock</string>
+   </property>
+  </action>
+  <action name="actionDeposit_Check">
+   <property name="text">
+    <string>Deposit Check</string>
+   </property>
+  </action>
+  <action name="actionAccount_Balance">
+   <property name="text">
+    <string>Account Balance</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

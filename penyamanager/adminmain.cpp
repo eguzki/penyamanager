@@ -1,6 +1,7 @@
 #include <QApplication>
 
 #include "admon_screen.h"
+#include "adminmainwindow.h"
 #include "adminloginwindow.h"
 #include "constants.h"
 #include "IPartner.h"
@@ -12,8 +13,10 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     PenyaManager::Singletons::Create();
-    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::Constants::kAdminLoginWindowKey, new PenyaManager::AdminLoginWindow);
-    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::Constants::kAdminMainWindowKey, new PenyaManager::admon_screen);
+    PenyaManager::AdminMainWindow adminMainWindow;
+
+    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::Constants::kAdminLoginWindowKey, new PenyaManager::AdminLoginWindow(&adminMainWindow));
+    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::Constants::kAdminMemberInfoWindow, new PenyaManager::admon_screen);
 
     // entry point -> adminlogin window
     PenyaManager::IPartner* pAdminLoginPartner = PenyaManager::Singletons::m_pParnetFinder->getPartner(PenyaManager::Constants::kAdminLoginWindowKey);

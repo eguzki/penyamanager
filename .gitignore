@@ -1,14 +1,9 @@
 # QTCreator generated files
 #############################
 penyamanager/penyamanager.pro.*
+penyamanager/penyamanageradmin.pro.*
 build-penyamanager-Desktop-Debug
 dist
 
 # vim ide stuff
 .ycm_extra_conf.pyc
-
-
-
-
-
-
