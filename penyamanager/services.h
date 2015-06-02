@@ -21,6 +21,8 @@ namespace PenyaManager {
             void createAccountTransaction(Int32 memberId, Float amount, const QString &description, TransactionType type);
             //
             DepositPtr createDeposit(const MemberPtr &pMemberPtr, Float amount);
+            //
+            void resetSlowPayersBalance();
     };
 }
 

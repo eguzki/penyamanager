@@ -110,7 +110,16 @@ namespace PenyaManager {
     //
     void SlowPayersView::on_resetAccountsPushButton_clicked()
     {
-        // TODO
+        // assume slow payers list is not empty (button would be disabled)
+        QMessageBox::StandardButton answerButton = QMessageBox::question(this, "reset accounts", "Are you sure?");
+        if (answerButton == QMessageBox::Yes) {
+            // reset accounts balance
+            Singletons::m_pServices->resetSlowPayersBalance();
+            QMessageBox::information(this, "reset accounts", "Operation done");
+        } else {
+            QMessageBox::information(this, "reset accounts", "Operation cancelled");
+        }
+        fillSlowPayersData();
     }
 }
 

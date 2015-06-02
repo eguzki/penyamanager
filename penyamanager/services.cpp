@@ -84,4 +84,15 @@ namespace PenyaManager {
         // update account balance info
         Singletons::m_pDAO->insertTransaction(pNewTransaction);
     }
+    //
+    void Services::resetSlowPayersBalance() 
+    {
+        // fetch data
+        MemberListPtr pMemberListPtr = Singletons::m_pDAO->getSlowPayersList();
+        for (MemberPtrList::iterator iter = pMemberListPtr->begin(); iter != pMemberListPtr->end(); ++iter)
+        {
+            MemberPtr pMemberPtr = *iter;
+            createAccountTransaction(pMemberPtr->m_id, -pMemberPtr->m_balance, "reset account", TransactionType::AccountPayment);
+        }
+    }
 }
