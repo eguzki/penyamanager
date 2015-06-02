@@ -39,6 +39,8 @@ namespace PenyaManager {
             static const Uint32     kAdminLoginWindowKey;
             // AdminMemberInfoWindow key
             static const Uint32     kAdminMemberInfoWindow;
+            // AdminSlowPayersWindow key
+            static const Uint32     kAdminSlowPayersWindowKey;
 
         private:
             Constants() {}

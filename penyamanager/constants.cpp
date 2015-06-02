@@ -34,4 +34,6 @@ namespace PenyaManager {
     const Uint32    Constants::kAdminLoginWindowKey             = 6;
     //
     const Uint32    Constants::kAdminMemberInfoWindow           = 7;
+    //
+    const Uint32    Constants::kAdminSlowPayersWindowKey        = 8;
 }

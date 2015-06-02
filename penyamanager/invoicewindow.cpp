@@ -82,11 +82,10 @@ namespace PenyaManager {
         // Update member balance
         Singletons::m_pServices->closeInvoice(pCurrMember, pInvoicePtr->m_id);
 
-        // Go to login page
         hide();
-        // call login window on exit
-        IPartner* pLoginWindow = Singletons::m_pParnetFinder->getPartner(Constants::kLoginWindowKey);
-        pLoginWindow->init();
+        // call main window
+        IPartner* pMainWindow = Singletons::m_pParnetFinder->getPartner(Constants::kMainWindowKey);
+        pMainWindow->init();
     }
     //
     void InvoiceWindow::fillMemberProfile(const MemberPtr &pMemberPtr)

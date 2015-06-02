@@ -38,7 +38,8 @@ SOURCES += adminmain.cpp\
         adminloginwindow.cpp\
         admon_screen.cpp\
         memberselect.cpp \
-    adminmainwindow.cpp
+    adminmainwindow.cpp \
+    slowpayersview.cpp
 
 HEADERS  += singletons.h\
         dao.h\
@@ -59,9 +60,11 @@ HEADERS  += singletons.h\
         adminloginwindow.h\
         admon_screen.h\
         memberselect.h \
-    adminmainwindow.h
+    adminmainwindow.h \
+    slowpayersview.h
 
 FORMS    += adminloginwindow.ui\
         admon_screen.ui\
         memberselect.ui \
-    adminmainwindow.ui
+    adminmainwindow.ui \
+    slowpayersview.ui

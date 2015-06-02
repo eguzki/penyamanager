@@ -26,7 +26,8 @@ namespace PenyaManager {
             m_tableReservationListQuery(m_db),
             m_lunchTablesListQuery(m_db),
             m_insertTableReservationQuery(m_db),
-            m_cancelTableReservationQuery(m_db)
+            m_cancelTableReservationQuery(m_db),
+            m_slowPayersQuery(m_db)
     {
         // configure db connection
         m_db.setHostName(hostname);
@@ -48,8 +49,8 @@ namespace PenyaManager {
                 "SELECT member.idmember, member.name, member.surname, member.image, account.balance, member.lastmodified, member.reg_date "
                 "FROM account "
                 "INNER JOIN member "
-                "ON member.idmember=account.idmember "
-                "WHERE member.idmember= :memberid "
+                "ON account.idmember=member.idmember "
+                "WHERE account.idmember= :memberid "
                 "AND member.active= :activeId "
                 "ORDER BY account.date DESC LIMIT 1 "
                 );
@@ -166,6 +167,19 @@ namespace PenyaManager {
         m_cancelTableReservationQuery.prepare(
                 "DELETE FROM tablereservation "
                 "WHERE idtablereservation = :idtablereservation"
+                );
+        // slow payers
+        // SELECT account.idmember, MAX(account.date) AS MaxDate FROM account GROUP BY account.idmember 
+        // returns list of distinct idmembers and their last account date
+        // First INNER JOIN on the same table (account) gets balance for the row with last (newest) account date
+        // Second INNER JOIN on members table get member information
+        m_slowPayersQuery.prepare(
+                "SELECT ac.idmember, member.name, member.surname, member.image, ac.balance, member.lastmodified, member.reg_date "
+                "FROM account ac "
+                "INNER JOIN (SELECT account.idmember, MAX(account.date) AS MaxDate FROM account GROUP BY account.idmember) groupedAccount "
+                "ON ac.idmember = groupedAccount.idmember AND ac.date=groupedAccount.MaxDate "
+                "INNER JOIN member ON member.idmember=ac.idmember "
+                "WHERE ac.balance<0 AND member.active=:activeId"
                 );
     }
 
@@ -579,5 +593,31 @@ namespace PenyaManager {
             qDebug() << m_cancelTableReservationQuery.lastError();
         }
         m_cancelTableReservationQuery.finish();
+    }
+    //
+    MemberListPtr DAO::getSlowPayersList()
+    {
+        // only active members
+        m_slowPayersQuery.bindValue(":activeId", 1);
+        if (!m_slowPayersQuery.exec())
+        {
+            qDebug() << m_slowPayersQuery.lastError();
+        }
+
+        MemberListPtr pMemberListPtr(new MemberPtrList);
+        while (m_slowPayersQuery.next()) {
+            MemberPtr pMemberPtr(new Member);
+            pMemberPtr->m_id =  m_slowPayersQuery.value(0).toInt();
+            pMemberPtr->m_name =  m_slowPayersQuery.value(1).toString();
+            pMemberPtr->m_surname =  m_slowPayersQuery.value(2).toString();
+            pMemberPtr->m_imagePath =  m_slowPayersQuery.value(3).toString();
+            pMemberPtr->m_balance =  m_slowPayersQuery.value(4).toFloat();
+            pMemberPtr->m_lastModified =  m_slowPayersQuery.value(5).toDateTime();
+            pMemberPtr->m_regDate =  m_slowPayersQuery.value(6).toDateTime();
+            pMemberListPtr->push_back(pMemberPtr);
+        }
+
+        m_slowPayersQuery.finish();
+        return pMemberListPtr;
     }
 }
