@@ -27,7 +27,11 @@ namespace PenyaManager {
             m_lunchTablesListQuery(m_db),
             m_insertTableReservationQuery(m_db),
             m_cancelTableReservationQuery(m_db),
-            m_slowPayersQuery(m_db)
+            m_slowPayersQuery(m_db),
+            m_invoiceListByMemberIdQuery(m_db),
+            m_invoiceListByMemberIdStatsQuery(m_db),
+            m_invoiceListQuery(m_db),
+            m_invoiceListStatsQuery(m_db)
     {
         // configure db connection
         m_db.setHostName(hostname);
@@ -169,7 +173,7 @@ namespace PenyaManager {
                 "WHERE idtablereservation = :idtablereservation"
                 );
         // slow payers
-        // SELECT account.idmember, MAX(account.date) AS MaxDate FROM account GROUP BY account.idmember 
+        // SELECT account.idmember, MAX(account.date) AS MaxDate FROM account GROUP BY account.idmember
         // returns list of distinct idmembers and their last account date
         // First INNER JOIN on the same table (account) gets balance for the row with last (newest) account date
         // Second INNER JOIN on members table get member information
@@ -180,6 +184,34 @@ namespace PenyaManager {
                 "ON ac.idmember = groupedAccount.idmember AND ac.date=groupedAccount.MaxDate "
                 "INNER JOIN member ON member.idmember=ac.idmember "
                 "WHERE ac.balance<0 AND member.active=:activeId"
+                );
+        // active invoice list by memberId
+        m_invoiceListByMemberIdQuery.prepare(
+                "SELECT idinvoice, date, total FROM invoice "
+                "WHERE idmember = :memberid AND state = :stateid "
+                "AND date BETWEEN :fromDate AND :toDate "
+                "ORDER BY date DESC "
+                "LIMIT :limit OFFSET :offset"
+                );
+        // active invoice list by memberId stats
+        m_invoiceListByMemberIdStatsQuery.prepare(
+                "SELECT COUNT(*), SUM(total) FROM invoice "
+                "WHERE idmember = :memberid AND state = :stateid "
+                "AND date BETWEEN :fromDate AND :toDate"
+                );
+        // active invoice list
+        m_invoiceListQuery.prepare(
+                "SELECT idinvoice, idmember, date, total FROM invoice "
+                "WHERE state = :stateid "
+                "AND date BETWEEN :fromDate AND :toDate "
+                "ORDER BY date DESC "
+                "LIMIT :limit OFFSET :offset"
+                );
+        // active invoice list stats
+        m_invoiceListStatsQuery.prepare(
+                "SELECT COUNT(*), SUM(total) FROM invoice "
+                "WHERE state = :stateid "
+                "AND date BETWEEN :fromDate AND :toDate"
                 );
     }
 
@@ -619,5 +651,104 @@ namespace PenyaManager {
 
         m_slowPayersQuery.finish();
         return pMemberListPtr;
+    }
+    //
+    InvoiceListPtr DAO::getInvoiceListByMemberId(Int32 memberId, const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count)
+    {
+        // only active invoices
+        m_invoiceListByMemberIdQuery.bindValue(":stateid", static_cast<Int32>(InvoiceState::Closed));
+        m_invoiceListByMemberIdQuery.bindValue(":memberid", memberId);
+        m_invoiceListByMemberIdQuery.bindValue(":fromDate", fromDate);
+        m_invoiceListByMemberIdQuery.bindValue(":toDate", toDate);
+        m_invoiceListByMemberIdQuery.bindValue(":limit", count);
+        m_invoiceListByMemberIdQuery.bindValue(":offset", page * count);
+        if (!m_invoiceListByMemberIdQuery.exec())
+        {
+            qDebug() << m_invoiceListByMemberIdQuery.lastError();
+        }
+
+        InvoiceListPtr pInvoiceListPtr(new InvoiceList);
+        while (m_invoiceListByMemberIdQuery.next()) {
+            InvoicePtr pInvoicePtr(new Invoice);
+            pInvoicePtr->m_id =  m_invoiceListByMemberIdQuery.value(0).toInt();
+            pInvoicePtr->m_memberId =  memberId;
+            pInvoicePtr->m_state =  InvoiceState::Closed;
+            pInvoicePtr->m_date =  m_invoiceListByMemberIdQuery.value(1).toDateTime();
+            pInvoicePtr->m_total =  m_invoiceListByMemberIdQuery.value(2).toFloat();
+            pInvoiceListPtr->push_back(pInvoicePtr);
+        }
+
+        m_invoiceListByMemberIdQuery.finish();
+        return pInvoiceListPtr;
+    }
+    //
+    InvoiceListStatsPtr DAO::getInvoiceListByMemberIdStats(Int32 memberId, const QDate &fromDate, const QDate &toDate)
+    {
+        InvoiceListStatsPtr pInvoiceListStatsPtr(new InvoiceListStats);
+        pInvoiceListStatsPtr->m_totalNumInvoices= 0;
+        pInvoiceListStatsPtr->m_totalAmount = 0;
+        // only active invoices
+        m_invoiceListByMemberIdStatsQuery.bindValue(":stateid", static_cast<Int32>(InvoiceState::Closed));
+        m_invoiceListByMemberIdStatsQuery.bindValue(":memberid", memberId);
+        m_invoiceListByMemberIdStatsQuery.bindValue(":fromDate", fromDate);
+        m_invoiceListByMemberIdStatsQuery.bindValue(":toDate", toDate);
+        if (!m_invoiceListByMemberIdStatsQuery.exec())
+        {
+            qDebug() << m_invoiceListByMemberIdStatsQuery.lastError();
+        } else {
+            m_invoiceListByMemberIdStatsQuery.next();
+            pInvoiceListStatsPtr->m_totalNumInvoices = m_invoiceListByMemberIdStatsQuery.value(0).toUInt();
+            pInvoiceListStatsPtr->m_totalAmount = m_invoiceListByMemberIdStatsQuery.value(1).toFloat();
+        }
+        m_invoiceListByMemberIdStatsQuery.finish();
+        return pInvoiceListStatsPtr;
+    }
+    //
+    InvoiceListPtr DAO::getInvoiceList(const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count)
+    {
+        // only active invoices
+        m_invoiceListQuery.bindValue(":stateid", static_cast<Int32>(InvoiceState::Closed));
+        m_invoiceListQuery.bindValue(":fromDate", fromDate);
+        m_invoiceListQuery.bindValue(":toDate", toDate);
+        m_invoiceListQuery.bindValue(":limit", count);
+        m_invoiceListQuery.bindValue(":offset", page * count);
+        if (!m_invoiceListQuery.exec())
+        {
+            qDebug() << m_invoiceListQuery.lastError();
+        }
+
+        InvoiceListPtr pInvoiceListPtr(new InvoiceList);
+        while (m_invoiceListQuery.next()) {
+            InvoicePtr pInvoicePtr(new Invoice);
+            pInvoicePtr->m_id =  m_invoiceListQuery.value(0).toInt();
+            pInvoicePtr->m_memberId =  m_invoiceListQuery.value(1).toInt();
+            pInvoicePtr->m_state =  InvoiceState::Closed;
+            pInvoicePtr->m_date =  m_invoiceListQuery.value(2).toDateTime();
+            pInvoicePtr->m_total =  m_invoiceListQuery.value(3).toFloat();
+            pInvoiceListPtr->push_back(pInvoicePtr);
+        }
+        m_invoiceListQuery.finish();
+        return pInvoiceListPtr;
+    }
+    //
+    InvoiceListStatsPtr DAO::getInvoiceListStats(const QDate &fromDate, const QDate &toDate)
+    {
+        InvoiceListStatsPtr pInvoiceListStatsPtr(new InvoiceListStats);
+        pInvoiceListStatsPtr->m_totalNumInvoices= 0;
+        pInvoiceListStatsPtr->m_totalAmount = 0;
+        // only active invoices
+        m_invoiceListStatsQuery.bindValue(":stateid", static_cast<Int32>(InvoiceState::Closed));
+        m_invoiceListStatsQuery.bindValue(":fromDate", fromDate);
+        m_invoiceListStatsQuery.bindValue(":toDate", toDate);
+        if (!m_invoiceListStatsQuery.exec())
+        {
+            qDebug() << m_invoiceListStatsQuery.lastError();
+        } else {
+            m_invoiceListStatsQuery.next();
+            pInvoiceListStatsPtr->m_totalNumInvoices = m_invoiceListStatsQuery.value(0).toUInt();
+            pInvoiceListStatsPtr->m_totalAmount = m_invoiceListStatsQuery.value(1).toFloat();
+        }
+        m_invoiceListStatsQuery.finish();
+        return pInvoiceListStatsPtr;
     }
 }

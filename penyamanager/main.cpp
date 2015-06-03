@@ -18,15 +18,15 @@ int main(int argc, char *argv[])
     PenyaManager::Singletons::Create();
 
     // Fill views
-    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::Constants::kLoginWindowKey, new PenyaManager::LoginWindow);
-    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::Constants::kMainWindowKey, new PenyaManager::MainWindow);
-    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::Constants::kInvoiceWindowKey, new PenyaManager::InvoiceWindow);
-    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::Constants::kDepositsWindowKey, new PenyaManager::DepositWindow);
-    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::Constants::kAccountViewWindowKey, new PenyaManager::AccountView);
-    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::Constants::kTableReservationViewWindowKey, new PenyaManager::TableReservationView);
+    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::kLoginWindowKey, new PenyaManager::LoginWindow);
+    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::kMainWindowKey, new PenyaManager::MainWindow);
+    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::kInvoiceWindowKey, new PenyaManager::InvoiceWindow);
+    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::kDepositsWindowKey, new PenyaManager::DepositWindow);
+    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::kAccountViewWindowKey, new PenyaManager::AccountView);
+    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::kTableReservationViewWindowKey, new PenyaManager::TableReservationView);
 
     // entry point -> login window
-    PenyaManager::IPartner* pLoginPartner = PenyaManager::Singletons::m_pParnetFinder->getPartner(PenyaManager::Constants::kLoginWindowKey);
+    PenyaManager::IPartner* pLoginPartner = PenyaManager::Singletons::m_pParnetFinder->getPartner(PenyaManager::kLoginWindowKey);
     pLoginPartner->init();
 
     int returnValue = a.exec();

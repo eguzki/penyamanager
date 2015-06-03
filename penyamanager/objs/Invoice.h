@@ -39,6 +39,31 @@ namespace PenyaManager
 
     //
     typedef std::shared_ptr<Invoice> InvoicePtr;
+    //
+    typedef std::vector<InvoicePtr> InvoiceList;
+    //
+    typedef std::shared_ptr<InvoiceList> InvoiceListPtr;
+
+    //
+    class InvoiceListStats
+    {
+        public:
+            //
+            InvoiceListStats();
+            //
+            InvoiceListStats(Uint32 totalNumInvoices, Float totalAmount);
+            //
+            virtual ~InvoiceListStats(){}
+
+        public:
+            //
+            Uint32              m_totalNumInvoices;
+            //
+            Float               m_totalAmount;
+    };
+
+    //
+    typedef std::shared_ptr<InvoiceListStats> InvoiceListStatsPtr;
 }
 
 #endif // INVOICE_H

@@ -85,7 +85,7 @@ namespace PenyaManager {
         Singletons::m_pDAO->insertTransaction(pNewTransaction);
     }
     //
-    void Services::resetSlowPayersBalance() 
+    void Services::resetSlowPayersBalance()
     {
         // fetch data
         MemberListPtr pMemberListPtr = Singletons::m_pDAO->getSlowPayersList();

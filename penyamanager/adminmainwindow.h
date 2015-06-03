@@ -26,6 +26,8 @@ namespace PenyaManager {
             void on_exit_button_triggered();
             //
             void on_slow_payers_button_triggered();
+            //
+            void on_invoice_list_button_triggered();
 
         private:
             //

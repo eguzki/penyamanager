@@ -19,21 +19,5 @@ namespace PenyaManager {
     //
     const Uint32    Constants::kMemberImageHeigth               = 80;
     //
-    const Uint32    Constants::kLoginWindowKey                  = 0;
-    //
-    const Uint32    Constants::kMainWindowKey                   = 1;
-    //
-    const Uint32    Constants::kInvoiceWindowKey                = 2;
-    //
-    const Uint32    Constants::kDepositsWindowKey               = 3;
-    //
-    const Uint32    Constants::kAccountViewWindowKey            = 4;
-    //
-    const Uint32    Constants::kTableReservationViewWindowKey   = 5;
-    //
-    const Uint32    Constants::kAdminLoginWindowKey             = 6;
-    //
-    const Uint32    Constants::kAdminMemberInfoWindow           = 7;
-    //
-    const Uint32    Constants::kAdminSlowPayersWindowKey        = 8;
+    const Uint32    Constants::kInvoiceListPageCount            = 25;
 }

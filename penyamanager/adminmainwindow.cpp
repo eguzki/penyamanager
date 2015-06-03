@@ -17,6 +17,7 @@ namespace PenyaManager {
 
         this->connect(this->ui->actionExit, &QAction::triggered, std::bind(&AdminMainWindow::on_exit_button_triggered, this));
         this->connect(this->ui->actionSlow_payers, &QAction::triggered, std::bind(&AdminMainWindow::on_slow_payers_button_triggered, this));
+        this->connect(this->ui->actionInvoice_list, &QAction::triggered, std::bind(&AdminMainWindow::on_invoice_list_button_triggered, this));
     }
     //
     AdminMainWindow::~AdminMainWindow()
@@ -46,7 +47,7 @@ namespace PenyaManager {
         }
         this->hide();
         // call admin main window
-        IPartner* pAdminLoginPartner = Singletons::m_pParnetFinder->getPartner(Constants::kAdminLoginWindowKey);
+        IPartner* pAdminLoginPartner = Singletons::m_pParnetFinder->getPartner(kAdminLoginWindowKey);
         pAdminLoginPartner->init();
     }
     //
@@ -58,8 +59,21 @@ namespace PenyaManager {
             this->takeCentralWidget();
         }
         // call slow payers window
-        IPartner* pSlowPayersPartner = Singletons::m_pParnetFinder->getPartner(Constants::kAdminSlowPayersWindowKey);
+        IPartner* pSlowPayersPartner = Singletons::m_pParnetFinder->getPartner(kAdminSlowPayersWindowKey);
         pSlowPayersPartner->init();
         this->setCentralWidget(pSlowPayersPartner);
+    }
+    //
+    void AdminMainWindow::on_invoice_list_button_triggered()
+    {
+        // when central widget is empty, takecentralwidget can lead to core dump
+        if (this->centralWidget()) {
+            // takeCentralWidget removes central widget. When setting new one, current one is not deleted
+            this->takeCentralWidget();
+        }
+        // call invoice list window
+        IPartner* pInvoiceListView = Singletons::m_pParnetFinder->getPartner(kAdminInvoiceListWindowKey);
+        pInvoiceListView->init();
+        this->setCentralWidget(pInvoiceListView);
     }
 }

@@ -61,7 +61,7 @@ namespace PenyaManager {
     {
         hide();
         // call main window
-        IPartner* pMainWindow = Singletons::m_pParnetFinder->getPartner(Constants::kMainWindowKey);
+        IPartner* pMainWindow = Singletons::m_pParnetFinder->getPartner(kMainWindowKey);
         pMainWindow->init();
     }
     //
@@ -84,7 +84,7 @@ namespace PenyaManager {
 
         hide();
         // call main window
-        IPartner* pMainWindow = Singletons::m_pParnetFinder->getPartner(Constants::kMainWindowKey);
+        IPartner* pMainWindow = Singletons::m_pParnetFinder->getPartner(kMainWindowKey);
         pMainWindow->init();
     }
     //

@@ -68,6 +68,14 @@ namespace PenyaManager {
             void cancelTableReservation(Int32 reservationId);
             //
             MemberListPtr getSlowPayersList();
+            //
+            InvoiceListPtr getInvoiceListByMemberId(Int32 memberId, const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count);
+            //
+            InvoiceListStatsPtr getInvoiceListByMemberIdStats(Int32 memberId, const QDate &fromDate, const QDate &toDate);
+            //
+            InvoiceListPtr getInvoiceList(const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count);
+            //
+            InvoiceListStatsPtr getInvoiceListStats(const QDate &fromDate, const QDate &toDate);
 
         private:
             //
@@ -114,6 +122,14 @@ namespace PenyaManager {
             QSqlQuery               m_cancelTableReservationQuery;
             //
             QSqlQuery               m_slowPayersQuery;
+            //
+            QSqlQuery               m_invoiceListByMemberIdQuery;
+            //
+            QSqlQuery               m_invoiceListByMemberIdStatsQuery;
+            //
+            QSqlQuery               m_invoiceListQuery;
+            //
+            QSqlQuery               m_invoiceListStatsQuery;
     };
 }
 #endif // DAO_H

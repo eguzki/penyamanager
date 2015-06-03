@@ -52,7 +52,7 @@ namespace PenyaManager {
             // assign user
             Singletons::m_pCurrMember = pCurrMemberPtr;
             // call main window
-            IPartner* pMainWindow = Singletons::m_pParnetFinder->getPartner(Constants::kMainWindowKey);
+            IPartner* pMainWindow = Singletons::m_pParnetFinder->getPartner(kMainWindowKey);
             pMainWindow->init();
         } else {
             // User could not be found

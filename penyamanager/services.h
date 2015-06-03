@@ -1,6 +1,7 @@
 #ifndef SERVICES_H
 #define SERVICES_H
 
+#include "objs/Invoice.h"
 #include "objs/Member.h"
 #include "objs/Transaction.h"
 #include "objs/Deposit.h"

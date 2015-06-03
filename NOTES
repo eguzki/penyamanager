@@ -4,21 +4,18 @@
 *** Members
 **** Member Info
 **** Member create
-*** Invoices
-**** List of invoices by date range
-**** List of invoices by date range for a given member
 *** Bodega
 **** Ingreso (user input-> distribuidores)
 **** Consumo producto fecha
 **** Consumo producto socio fecha
 **** GEstion prducto/familia
-**** Gestion Distribuidor (nombre, list products). 
+**** Gestion Distribuidor (nombre, list products).
 **** Listado stock (editable, imprimir)
 *** Account
 **** Verify deposits
 **** Total account balance (deposits can be edited). total deposits, total invoice, total stock cost
 **** User account balance
-**** 
+****
 
 * User -> Reserva de 3 hornos y 2 fogones
 
@@ -76,9 +73,14 @@ http://stackoverflow.com/questions/10369826/how-can-i-disable-alt-f4-window-clos
 *** members can cancel
 *** members can only reserve one table in a given date (date, lunch/dinner)
 ** Member deposit window
-*** Deposits are applied to balance on creation. Admin has to verify. 
+*** Deposits are applied to balance on creation. Admin has to verify.
 ** Member account view
 ** Admin login window
 ** Admin slow payers window
 *** export to csv
 *** reset account
+** Invoices
+*** List of invoices by date range
+invoices can be clicked (TODO)
+show in results, query params like date (TODO)
+*** List of invoices by date range for a given member
