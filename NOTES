@@ -9,7 +9,6 @@
 **** Consumo producto fecha
 **** Consumo producto socio fecha
 **** GEstion prducto/familia
-**** Gestion Distribuidor (nombre, list products).
 **** Listado stock (editable, imprimir)
 *** Account
 **** Verify deposits
@@ -41,10 +40,6 @@
 * User profile view -> change email or account num
 ** On email or account change -> send email to alegria@yahoo.es
 
-* Deposit
-* on confirmation -> print ticket
-* create pending deposit
-
 * Languages:
 ** check QT translatable property of labels
 ** table with fields: label_id, lang(bool), text
@@ -52,10 +47,6 @@
 ** lang: 0 -> euskera
 ** lang: 1 -> spanish
 
-* Only one active invoice??
-* bote
-* Otros gastos?? table fee??
-* Stock tracking??? On invoice creation, modify stock??
 * Log system to trace user activity
 * configuration file (system dependent)
 
@@ -81,5 +72,7 @@ http://stackoverflow.com/questions/10369826/how-can-i-disable-alt-f4-window-clos
 *** reset account
 ** Invoices
 *** List of invoices by date range
-**** invoices can be clicked 
+**** invoices can be clicked
 **** List of invoices by date range for a given member
+** Bodega
+**** Gestion Distribuidor (nombre, list products). (TODO)
