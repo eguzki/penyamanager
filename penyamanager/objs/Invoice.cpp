@@ -19,4 +19,16 @@ namespace PenyaManager
             m_total(total)
     {
     }
+    //
+    InvoiceListStats::InvoiceListStats()
+    {
+    }
+
+    //
+    InvoiceListStats::InvoiceListStats(Uint32 totalNumInvoices, Float totalAmount)
+        :
+            m_totalNumInvoices(totalNumInvoices),
+            m_totalAmount(totalAmount)
+    {
+    }
 }

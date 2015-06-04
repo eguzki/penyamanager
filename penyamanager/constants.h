@@ -6,6 +6,16 @@
 
 namespace PenyaManager {
     //
+    enum class WindowKey {
+            kLoginWindowKey, kMainWindowKey, kInvoiceWindowKey, kDepositsWindowKey,
+            kAccountViewWindowKey, kTableReservationViewWindowKey, kAdminLoginWindowKey,
+            kAdminMemberInfoWindowKey, kAdminSlowPayersWindowKey, kAdminInvoiceListWindowKey,
+            kAdminInvoiceDetailsWindowKey
+    };
+    //
+    typedef std::function<void(WindowKey)>	CentralWidgetCallback;
+
+    //
     class Constants
     {
         public:
@@ -23,24 +33,8 @@ namespace PenyaManager {
             static const Uint32     kMemberImageWidth;
             // Member image width
             static const Uint32     kMemberImageHeigth;
-            // LoginWindow key
-            static const Uint32     kLoginWindowKey;
-            // MainWindow key
-            static const Uint32     kMainWindowKey;
-            // InvoiceWindow key
-            static const Uint32     kInvoiceWindowKey;
-            // DepositsWindow key
-            static const Uint32     kDepositsWindowKey;
-            // AccountViewWindow key
-            static const Uint32     kAccountViewWindowKey;
-            // TableReservationViewWindow key
-            static const Uint32     kTableReservationViewWindowKey;
-            // AdminLoginWindow key
-            static const Uint32     kAdminLoginWindowKey;
-            // AdminMemberInfoWindow key
-            static const Uint32     kAdminMemberInfoWindow;
-            // AdminSlowPayersWindow key
-            static const Uint32     kAdminSlowPayersWindowKey;
+            // Invoice List page count
+            static const Uint32     kInvoiceListPageCount;
 
         private:
             Constants() {}

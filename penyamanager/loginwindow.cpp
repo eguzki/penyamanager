@@ -48,12 +48,9 @@ namespace PenyaManager {
         MemberPtr pCurrMemberPtr = Singletons::m_pDAO->getActiveMemberById(this->ui->loginInput->text().toInt());
         if (pCurrMemberPtr)
         {
-            this->hide();
             // assign user
             Singletons::m_pCurrMember = pCurrMemberPtr;
-            // call main window
-            IPartner* pMainWindow = Singletons::m_pParnetFinder->getPartner(Constants::kMainWindowKey);
-            pMainWindow->init();
+            switchWindow(WindowKey::kMainWindowKey);
         } else {
             // User could not be found
             QMessageBox::about(this, "User not found",

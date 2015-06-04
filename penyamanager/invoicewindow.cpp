@@ -59,10 +59,8 @@ namespace PenyaManager {
     //
     void InvoiceWindow::on_backPushButton_clicked()
     {
-        hide();
         // call main window
-        IPartner* pMainWindow = Singletons::m_pParnetFinder->getPartner(Constants::kMainWindowKey);
-        pMainWindow->init();
+        switchWindow(WindowKey::kMainWindowKey);
     }
     //
     void InvoiceWindow::on_confirmPushButton_clicked()
@@ -82,10 +80,8 @@ namespace PenyaManager {
         // Update member balance
         Singletons::m_pServices->closeInvoice(pCurrMember, pInvoicePtr->m_id);
 
-        hide();
         // call main window
-        IPartner* pMainWindow = Singletons::m_pParnetFinder->getPartner(Constants::kMainWindowKey);
-        pMainWindow->init();
+        switchWindow(WindowKey::kMainWindowKey);
     }
     //
     void InvoiceWindow::fillMemberProfile(const MemberPtr &pMemberPtr)
@@ -157,5 +153,4 @@ namespace PenyaManager {
         this->ui->newBalanceInfoLabel->setText(QString("%1 €").arg(newBalance));
     }
 }
-
 

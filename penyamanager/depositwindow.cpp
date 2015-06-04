@@ -66,10 +66,7 @@ namespace PenyaManager {
     //
     void DepositWindow::on_backButton_clicked()
     {
-        this->hide();
-        // call main window
-        IPartner* pMainWindow = Singletons::m_pParnetFinder->getPartner(Constants::kMainWindowKey);
-        pMainWindow->init();
+        switchWindow(WindowKey::kMainWindowKey);
     }
     //
     void DepositWindow::on_confirmButton_clicked()
@@ -93,11 +90,8 @@ namespace PenyaManager {
             Singletons::m_pServices->createAccountTransaction(pCurrMemberPtr->m_id, deposit, description, TransactionType::Deposit);
         }
 
-        // Go to login page
-        hide();
-        // call login window on exit
-        IPartner* pMainWindow = Singletons::m_pParnetFinder->getPartner(Constants::kMainWindowKey);
-        pMainWindow->init();
+        // Go to main window
+        switchWindow(WindowKey::kMainWindowKey);
     }
     //
     void DepositWindow::updateNewBalanceLabel(double deposit)

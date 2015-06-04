@@ -25,6 +25,8 @@ class Singletons
         static Services         *m_pServices;
         //
         static PartnerFinder    *m_pParnetFinder;
+        //
+        static Int32            m_currentAdminInvoiceId;
 };
 
 }

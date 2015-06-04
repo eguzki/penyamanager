@@ -98,10 +98,8 @@ namespace PenyaManager {
     //
     void AccountView::on_backPushButton_clicked()
     {
-        this->hide();
         // call main window
-        IPartner* pMainWindow = Singletons::m_pParnetFinder->getPartner(Constants::kMainWindowKey);
-        pMainWindow->init();
+        switchWindow(WindowKey::kMainWindowKey);
     }
     //
     void AccountView::on_searchButton_clicked()

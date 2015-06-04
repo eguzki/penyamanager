@@ -2,6 +2,7 @@
 #define PARTNERFINDER_H
 
 #include "DataTypes.h"
+#include "constants.h"
 #include "IPartner.h"
 
 namespace PenyaManager {
@@ -15,13 +16,13 @@ namespace PenyaManager {
             //
             virtual ~PartnerFinder();
             //
-            IPartner*   getPartner(Uint32 partnerKey);
+            IPartner*   getPartner(WindowKey partnerKey);
             //
-            void addPartner(Uint32 partnerKey, IPartner *);
+            void addPartner(WindowKey partnerKey, IPartner *);
 
         private:
             //
-            typedef std::map<Uint32, IPartner*> PartnerMap;
+            typedef std::map<WindowKey, IPartner*> PartnerMap;
             PartnerMap                              m_partnerMap;
     };
 }

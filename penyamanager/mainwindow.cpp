@@ -42,7 +42,7 @@ namespace PenyaManager {
         }
 
         //
-        // Loading User profile 
+        // Loading User profile
         //
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
         pCurrMemberPtr = Singletons::m_pDAO->getActiveMemberById(pCurrMemberPtr->m_id);
@@ -250,10 +250,7 @@ namespace PenyaManager {
     //
     void MainWindow::on_invoiceCloseButton_clicked()
     {
-        hide();
-        // call invoice window
-        IPartner* pInvoiceWindow = Singletons::m_pParnetFinder->getPartner(Constants::kInvoiceWindowKey);
-        pInvoiceWindow->init();
+        switchWindow(WindowKey::kInvoiceWindowKey);
     }
     //
     void MainWindow::on_invoiceResetButton_clicked()
@@ -267,17 +264,13 @@ namespace PenyaManager {
     //
     void MainWindow::on_exitButton_clicked()
     {
-        hide();
         // call login window on exit
-        IPartner* pLoginWindow = Singletons::m_pParnetFinder->getPartner(Constants::kLoginWindowKey);
-        pLoginWindow->init();
+        switchWindow(WindowKey::kLoginWindowKey);
     }
     void MainWindow::on_depositsButton_clicked()
     {
-        hide();
-        // call invoice window
-        IPartner* pDepositsWindow = Singletons::m_pParnetFinder->getPartner(Constants::kDepositsWindowKey);
-        pDepositsWindow->init();
+        // call deposits window
+        switchWindow(WindowKey::kDepositsWindowKey);
     }
     //
     void MainWindow::on_invoiceTableWidget_cellClicked(int row, int column)
@@ -315,17 +308,13 @@ namespace PenyaManager {
     //
     void MainWindow::on_accountButton_clicked()
     {
-        hide();
-        // call invoice window
-        IPartner* pInvoiceWindow = Singletons::m_pParnetFinder->getPartner(Constants::kAccountViewWindowKey);
-        pInvoiceWindow->init();
+        // call account window
+        switchWindow(WindowKey::kAccountViewWindowKey);
     }
     //
     void MainWindow::on_tableReservationButton_clicked()
     {
-        hide();
-        // call invoice window
-        IPartner* pInvoiceWindow = Singletons::m_pParnetFinder->getPartner(Constants::kTableReservationViewWindowKey);
-        pInvoiceWindow->init();
+        // call table reservation window
+        switchWindow(WindowKey::kTableReservationViewWindowKey);
     }
 }
