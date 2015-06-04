@@ -41,7 +41,9 @@ namespace PenyaManager {
     void AdminMainWindow::on_exit_button_triggered()
     {
         // call admin login window
-        switchCentralWidget(WindowKey::kAdminLoginWindowKey);
+        hide();
+        IPartner* pPartner = Singletons::m_pParnetFinder->getPartner(WindowKey::kAdminLoginWindowKey);
+        pPartner->init();
     }
     //
     void AdminMainWindow::on_slow_payers_button_triggered()

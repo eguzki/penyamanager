@@ -77,6 +77,8 @@ namespace PenyaManager {
         this->ui->invoiceDateValueLabel->setText(tr("%1").arg(pInvoicePtr->m_date.toString()));
         // Total
         this->ui->invoiceTotalValueLabel->setText(QString("%1 €").arg(totalInvoice));
+        // memberid
+        this->ui->memberIdValueLabel->setText(QString("%1").arg(pInvoicePtr->m_memberId));
     }
 }
 

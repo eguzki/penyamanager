@@ -59,6 +59,32 @@
        </widget>
       </item>
       <item>
+       <widget class="QFrame" name="memberIdFrame">
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_5">
+         <item>
+          <widget class="QLabel" name="memberIdLabel">
+           <property name="text">
+            <string>MemberId:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="memberIdValueLabel">
+           <property name="text">
+            <string>1</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
        <widget class="QFrame" name="invoiceDateFrame">
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>

@@ -73,7 +73,7 @@ namespace PenyaManager {
                 );
         // Invoice by member ID
         m_invoiceQuery.prepare(
-                "SELECT state, date, total FROM invoice "
+                "SELECT state, date, total, idmember FROM invoice "
                 "WHERE idinvoice = :invoiceid "
                 );
 
@@ -365,6 +365,7 @@ namespace PenyaManager {
         pInvoicePtr->m_state = static_cast<InvoiceState>(m_invoiceQuery.value(0).toUInt());
         pInvoicePtr->m_date = m_invoiceQuery.value(1).toDateTime();
         pInvoicePtr->m_total = m_invoiceQuery.value(2).toFloat();
+        pInvoicePtr->m_memberId = m_invoiceQuery.value(3).toInt();
         m_invoiceQuery.finish();
 
         return pInvoicePtr;

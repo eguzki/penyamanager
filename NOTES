@@ -81,6 +81,5 @@ http://stackoverflow.com/questions/10369826/how-can-i-disable-alt-f4-window-clos
 *** reset account
 ** Invoices
 *** List of invoices by date range
-invoices can be clicked (TODO)
-show in results, query params like date (TODO)
-*** List of invoices by date range for a given member
+**** invoices can be clicked 
+**** List of invoices by date range for a given member

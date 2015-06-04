@@ -21,6 +21,9 @@ namespace PenyaManager {
 
         this->ui->fromCalendarWidget->setSelectedDate(fromIntialDate);
         this->ui->toCalendarWidget->setSelectedDate(toInitialDate);
+
+        this->ui->fromDateResultValueLabel->clear();
+        this->ui->toDateResultValueLabel->clear();
     }
     //
     AdminInvoiceListView::~AdminInvoiceListView()
@@ -82,6 +85,9 @@ namespace PenyaManager {
         // fill total stats view
         this->ui->totalInvoicesValueLabel->setText(QString::number(pInvoiceListStats->m_totalNumInvoices));
         this->ui->totalCountValueLabel->setText(tr("%1 €").arg(pInvoiceListStats->m_totalAmount));
+        // fill dates used for query
+        this->ui->fromDateResultValueLabel->setText(fromDate.toString());
+        this->ui->toDateResultValueLabel->setText(toDate.addDays(-1).toString());
         // fill invoice list
         fillInvoiceList(pInvoiceList);
     }
