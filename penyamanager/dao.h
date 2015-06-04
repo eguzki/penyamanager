@@ -37,6 +37,8 @@ namespace PenyaManager {
             //
             InvoicePtr getMemberActiveInvoice(Int32 memberId);
             //
+            InvoicePtr getInvoice(Int32 invoiceId);
+            //
             MemberByAdminPtr getActiveMemberByAdmin(Int32 memberLoginId);
             //
             InvoicePtr createInvoice(Int32 memberId);
@@ -86,6 +88,8 @@ namespace PenyaManager {
             QSqlQuery               m_productItemsByFamilyQuery;
             //
             QSqlQuery               m_memberByIdQuery;
+            //
+            QSqlQuery               m_invoiceQuery;
             //
             QSqlQuery               m_memberActiveInvoiceQuery;
             //

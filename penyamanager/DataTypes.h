@@ -54,4 +54,7 @@ typedef std::vector<Uint8>  ByteVector;
 typedef std::vector<Uint32> Uint32Vector;
 typedef std::vector<Uint64> Uint64Vector;
 
+//
+typedef std::map<Int32, Int32> RowProductIdMap;
+
 #endif // DATATYPES_H

@@ -26,6 +26,7 @@ SOURCES += main.cpp\
         utils.cpp\
         constants.cpp\
         services.cpp\
+        IPartner.cpp\
         partnerfinder.cpp\
         objs/Transaction.cpp\
         objs/Invoice.cpp\

@@ -12,6 +12,8 @@ namespace PenyaManager {
             kAdminMemberInfoWindowKey, kAdminSlowPayersWindowKey, kAdminInvoiceListWindowKey,
             kAdminInvoiceDetailsWindowKey
     };
+    //
+    typedef std::function<void(WindowKey)>	CentralWidgetCallback;
 
     //
     class Constants

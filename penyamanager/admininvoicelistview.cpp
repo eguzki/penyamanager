@@ -6,9 +6,10 @@
 
 namespace PenyaManager {
     //
-    AdminInvoiceListView::AdminInvoiceListView(QWidget *parent) :
+    AdminInvoiceListView::AdminInvoiceListView(QWidget *parent, const CentralWidgetCallback &callback) :
         IPartner(parent),
         ui(new Ui::AdminInvoiceListView),
+        m_switchCentralWidgetCallback(callback),
         m_currentPage(0)
     {
         ui->setupUi(this);
@@ -110,6 +111,8 @@ namespace PenyaManager {
         this->ui->invoicesTableWidget->setColumnWidth(3, 100);
         // invoice table reset
         this->ui->invoicesTableWidget->clearContents();
+        // internal data structure reset
+        this->m_rowProductIdMap.clear();
 
         // fill data
         Uint32 rowCount = 0;
@@ -120,8 +123,25 @@ namespace PenyaManager {
             this->ui->invoicesTableWidget->setItem(rowCount, 1, new QTableWidgetItem(pInvoicePtr->m_date.toString()));
             this->ui->invoicesTableWidget->setItem(rowCount, 2, new QTableWidgetItem(tr("%1 €").arg(pInvoicePtr->m_total)));
             this->ui->invoicesTableWidget->setItem(rowCount, 3, new QTableWidgetItem(QString::number(pInvoicePtr->m_memberId)));
+            this->m_rowProductIdMap[rowCount] = pInvoicePtr->m_id;
             rowCount++;
         }
+    }
+    //
+    void AdminInvoiceListView::on_invoicesTableWidget_cellDoubleClicked(int row, int column)
+    {
+        UNUSEDPARAMETER(column);
+        auto rowMap = m_rowProductIdMap.find(row);
+        if (rowMap == m_rowProductIdMap.end()) {
+            //this should never happen
+            return;
+        }
+        Int32 invoiceId = rowMap->second;
+        // use static global variable to pass argument
+        Singletons::m_currentAdminInvoiceId = invoiceId;
+
+        // call invoice details window throw adminmainwindow
+        m_switchCentralWidgetCallback(WindowKey::kAdminInvoiceDetailsWindowKey);
     }
 }
 

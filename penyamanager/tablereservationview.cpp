@@ -66,10 +66,8 @@ namespace PenyaManager {
     //
     void TableReservationView::on_backButton_clicked()
     {
-        this->hide();
         // call main window
-        IPartner* pMainWindow = Singletons::m_pParnetFinder->getPartner(WindowKey::kMainWindowKey);
-        pMainWindow->init();
+        switchWindow(WindowKey::kMainWindowKey);
     }
     //
     void TableReservationView::initializeTableReservations(const MemberPtr &pCurrMemberPtr)
@@ -210,20 +208,16 @@ namespace PenyaManager {
         Uint32 guestNum = numItemDialog.exec();
         Singletons::m_pDAO->makeTableReservation(date, reservationType, guestNum, pCurrMemberPtr->m_id, tableId);
         QMessageBox::information(this, "Table reservation", "Reservation done");
-        hide();
         // call main window
-        IPartner* pMainWindow = Singletons::m_pParnetFinder->getPartner(WindowKey::kMainWindowKey);
-        pMainWindow->init();
+        switchWindow(WindowKey::kMainWindowKey);
     }
     //
     void TableReservationView::on_cancelButton_clicked(int reservationId)
     {
         Singletons::m_pDAO->cancelTableReservation(reservationId);
         QMessageBox::information(this, "Table reservation", "Reservation cancelled");
-        hide();
         // call main window
-        IPartner* pMainWindow = Singletons::m_pParnetFinder->getPartner(WindowKey::kMainWindowKey);
-        pMainWindow->init();
+        switchWindow(WindowKey::kMainWindowKey);
     }
     //
     void TableReservationView::on_lunchButton_clicked(bool checked)

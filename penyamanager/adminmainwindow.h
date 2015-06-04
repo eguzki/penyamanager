@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 
+#include "constants.h"
+
 namespace Ui {
 class AdminMainWindow;
 }
@@ -20,6 +22,8 @@ namespace PenyaManager {
             ~AdminMainWindow();
             //
             void init();
+            //
+            void switchCentralWidget(WindowKey key);
 
         private slots:
             //

@@ -19,7 +19,7 @@ namespace PenyaManager {
 
         public:
             //
-            explicit AdminInvoiceListView(QWidget *parent = 0);
+            explicit AdminInvoiceListView(QWidget *parent, const CentralWidgetCallback &callback);
             //
             ~AdminInvoiceListView();
             //
@@ -40,12 +40,18 @@ namespace PenyaManager {
             void on_nextPagePushButton_clicked();
             //
             void on_searchPushButton_clicked();
+            //
+            void on_invoicesTableWidget_cellDoubleClicked(int row, int column);
 
-        private:
+    private:
             //
             Ui::AdminInvoiceListView *ui;
             //
+            CentralWidgetCallback       m_switchCentralWidgetCallback;
+            //
             Uint32                      m_currentPage;
+            //
+            RowProductIdMap             m_rowProductIdMap;
     };
 }
 

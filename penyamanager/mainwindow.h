@@ -46,7 +46,6 @@ class MainWindow : public IPartner
         //
         Ui::MainWindow *ui;
         //
-        typedef std::map<Int32, Int32>          RowProductIdMap;
         RowProductIdMap                         m_rowProductIdMap;
 
     private slots:
@@ -68,6 +67,7 @@ class MainWindow : public IPartner
         void on_invoiceTableWidget_cellClicked(int row, int column);
         //
         void on_accountButton_clicked();
+        //
         void on_tableReservationButton_clicked();
 };
 }

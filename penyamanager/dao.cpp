@@ -11,6 +11,7 @@ namespace PenyaManager {
             m_productFamiliesQuery(m_db),
             m_productItemsByFamilyQuery(m_db),
             m_memberByIdQuery(m_db),
+            m_invoiceQuery(m_db),
             m_memberActiveInvoiceQuery(m_db),
             m_removeProductInvoiceQuery(m_db),
             m_updateProductInvoiceQuery(m_db),
@@ -70,8 +71,13 @@ namespace PenyaManager {
                 "WHERE member.idmember= :memberId "
                 "ORDER BY account.date DESC LIMIT 1 "
                 );
+        // Invoice by member ID
+        m_invoiceQuery.prepare(
+                "SELECT state, date, total FROM invoice "
+                "WHERE idinvoice = :invoiceid "
+                );
 
-        // Invoice by ID
+        // Invoice by member ID
         m_memberActiveInvoiceQuery.prepare(
                 "SELECT idinvoice, state, date, total FROM invoice "
                 "WHERE idmember = :memberid AND state = :stateid "
@@ -343,6 +349,26 @@ namespace PenyaManager {
     }
     //
 
+    InvoicePtr DAO::getInvoice(Int32 invoiceId)
+    {
+        m_invoiceQuery.bindValue(":invoiceid", invoiceId);
+        if (!m_invoiceQuery.exec())
+        {
+            qDebug() << m_invoiceQuery.lastError();
+        }
+        if (!m_invoiceQuery.next())
+        {
+            return InvoicePtr();
+        }
+        InvoicePtr pInvoicePtr(new Invoice());
+        pInvoicePtr->m_id = invoiceId;
+        pInvoicePtr->m_state = static_cast<InvoiceState>(m_invoiceQuery.value(0).toUInt());
+        pInvoicePtr->m_date = m_invoiceQuery.value(1).toDateTime();
+        pInvoicePtr->m_total = m_invoiceQuery.value(2).toFloat();
+        m_invoiceQuery.finish();
+
+        return pInvoicePtr;
+    }
 
     InvoicePtr DAO::getMemberActiveInvoice(Int32 memberId)
     {

@@ -3,6 +3,8 @@
 
 #include <QWidget>
 
+#include "constants.h"
+
 namespace PenyaManager {
 
     //
@@ -19,6 +21,8 @@ namespace PenyaManager {
             virtual ~IPartner(){}
             // called every time window is shown
             virtual void init() = 0;
+            //
+            virtual void switchWindow(WindowKey key);
     };
 }
 

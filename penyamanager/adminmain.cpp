@@ -21,7 +21,10 @@ int main(int argc, char *argv[])
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kAdminLoginWindowKey, new PenyaManager::AdminLoginWindow(&adminMainWindow));
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kAdminMemberInfoWindowKey, new PenyaManager::admon_screen);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kAdminSlowPayersWindowKey, new PenyaManager::SlowPayersView);
-    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kAdminInvoiceListWindowKey, new PenyaManager::AdminInvoiceListView);
+
+    // central widgets need adminmainwindow callback to call each other
+    PenyaManager::AdminInvoiceListView *pAdminInvoiceListView = new PenyaManager::AdminInvoiceListView(NULL, std::bind(&PenyaManager::AdminMainWindow::switchCentralWidget, &adminMainWindow, _1));
+    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kAdminInvoiceListWindowKey, pAdminInvoiceListView);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kAdminInvoiceDetailsWindowKey, new PenyaManager::AdminInvoiceDetails);
 
     // entry point -> adminlogin window

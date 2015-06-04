@@ -3,6 +3,7 @@
 
 #include <QWidget>
 
+#include "objs/Invoice.h"
 #include "IPartner.h"
 
 namespace Ui {
@@ -24,6 +25,11 @@ namespace PenyaManager {
             void init();
 
         private:
+            //
+            void fillInvoiceData(const InvoicePtr &pInvoicePtr);
+
+        private:
+            //
             Ui::AdminInvoiceDetails *ui;
     };
 

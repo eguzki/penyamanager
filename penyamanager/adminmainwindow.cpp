@@ -40,31 +40,23 @@ namespace PenyaManager {
     //
     void AdminMainWindow::on_exit_button_triggered()
     {
-        // when central widget is empty, takecentralwidget can lead to core dump
-        if (this->centralWidget()) {
-            // takeCentralWidget removes central widget. When setting new one, current one is not deleted
-            this->takeCentralWidget();
-        }
-        this->hide();
-        // call admin main window
-        IPartner* pAdminLoginPartner = Singletons::m_pParnetFinder->getPartner(WindowKey::kAdminLoginWindowKey);
-        pAdminLoginPartner->init();
+        // call admin login window
+        switchCentralWidget(WindowKey::kAdminLoginWindowKey);
     }
     //
     void AdminMainWindow::on_slow_payers_button_triggered()
     {
-        // when central widget is empty, takecentralwidget can lead to core dump
-        if (this->centralWidget()) {
-            // takeCentralWidget removes central widget. When setting new one, current one is not deleted
-            this->takeCentralWidget();
-        }
         // call slow payers window
-        IPartner* pSlowPayersPartner = Singletons::m_pParnetFinder->getPartner(WindowKey::kAdminSlowPayersWindowKey);
-        pSlowPayersPartner->init();
-        this->setCentralWidget(pSlowPayersPartner);
+        switchCentralWidget(WindowKey::kAdminSlowPayersWindowKey);
     }
     //
     void AdminMainWindow::on_invoice_list_button_triggered()
+    {
+        // call invoice list window
+        switchCentralWidget(WindowKey::kAdminInvoiceListWindowKey);
+    }
+    //
+    void AdminMainWindow::switchCentralWidget(WindowKey key)
     {
         // when central widget is empty, takecentralwidget can lead to core dump
         if (this->centralWidget()) {
@@ -72,8 +64,8 @@ namespace PenyaManager {
             this->takeCentralWidget();
         }
         // call invoice list window
-        IPartner* pInvoiceListView = Singletons::m_pParnetFinder->getPartner(WindowKey::kAdminInvoiceListWindowKey);
-        pInvoiceListView->init();
-        this->setCentralWidget(pInvoiceListView);
+        IPartner* pPartner = Singletons::m_pParnetFinder->getPartner(key);
+        pPartner->init();
+        this->setCentralWidget(pPartner);
     }
 }

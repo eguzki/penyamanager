@@ -250,10 +250,7 @@ namespace PenyaManager {
     //
     void MainWindow::on_invoiceCloseButton_clicked()
     {
-        hide();
-        // call invoice window
-        IPartner* pInvoiceWindow = Singletons::m_pParnetFinder->getPartner(WindowKey::kInvoiceWindowKey);
-        pInvoiceWindow->init();
+        switchWindow(WindowKey::kInvoiceWindowKey);
     }
     //
     void MainWindow::on_invoiceResetButton_clicked()
@@ -267,17 +264,13 @@ namespace PenyaManager {
     //
     void MainWindow::on_exitButton_clicked()
     {
-        hide();
         // call login window on exit
-        IPartner* pLoginWindow = Singletons::m_pParnetFinder->getPartner(WindowKey::kLoginWindowKey);
-        pLoginWindow->init();
+        switchWindow(WindowKey::kLoginWindowKey);
     }
     void MainWindow::on_depositsButton_clicked()
     {
-        hide();
-        // call invoice window
-        IPartner* pDepositsWindow = Singletons::m_pParnetFinder->getPartner(WindowKey::kDepositsWindowKey);
-        pDepositsWindow->init();
+        // call deposits window
+        switchWindow(WindowKey::kDepositsWindowKey);
     }
     //
     void MainWindow::on_invoiceTableWidget_cellClicked(int row, int column)
@@ -315,17 +308,13 @@ namespace PenyaManager {
     //
     void MainWindow::on_accountButton_clicked()
     {
-        hide();
-        // call invoice window
-        IPartner* pInvoiceWindow = Singletons::m_pParnetFinder->getPartner(WindowKey::kAccountViewWindowKey);
-        pInvoiceWindow->init();
+        // call account window
+        switchWindow(WindowKey::kAccountViewWindowKey);
     }
     //
     void MainWindow::on_tableReservationButton_clicked()
     {
-        hide();
-        // call invoice window
-        IPartner* pInvoiceWindow = Singletons::m_pParnetFinder->getPartner(WindowKey::kTableReservationViewWindowKey);
-        pInvoiceWindow->init();
+        // call table reservation window
+        switchWindow(WindowKey::kTableReservationViewWindowKey);
     }
 }
