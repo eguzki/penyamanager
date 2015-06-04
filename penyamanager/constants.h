@@ -6,10 +6,11 @@
 
 namespace PenyaManager {
     //
-    enum WindowKey {
+    enum class WindowKey {
             kLoginWindowKey, kMainWindowKey, kInvoiceWindowKey, kDepositsWindowKey,
             kAccountViewWindowKey, kTableReservationViewWindowKey, kAdminLoginWindowKey,
-            kAdminMemberInfoWindow, kAdminSlowPayersWindowKey, kAdminInvoiceListWindowKey
+            kAdminMemberInfoWindowKey, kAdminSlowPayersWindowKey, kAdminInvoiceListWindowKey,
+            kAdminInvoiceDetailsWindowKey
     };
 
     //

@@ -19,7 +19,7 @@ namespace PenyaManager {
         m_partnerMap.clear();
     }
     //
-    IPartner* PartnerFinder::getPartner(Uint32 partnerKey)
+    IPartner* PartnerFinder::getPartner(WindowKey partnerKey)
     {
         auto partner = m_partnerMap.find(partnerKey);
         if (partner == m_partnerMap.end()) {
@@ -29,7 +29,7 @@ namespace PenyaManager {
         return partner->second;
     }
     //
-    void PartnerFinder::addPartner(Uint32 partnerKey, IPartner *pIPartner)
+    void PartnerFinder::addPartner(WindowKey partnerKey, IPartner *pIPartner)
     {
         m_partnerMap[partnerKey] = pIPartner;
     }

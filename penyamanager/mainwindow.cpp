@@ -42,7 +42,7 @@ namespace PenyaManager {
         }
 
         //
-        // Loading User profile 
+        // Loading User profile
         //
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
         pCurrMemberPtr = Singletons::m_pDAO->getActiveMemberById(pCurrMemberPtr->m_id);
@@ -252,7 +252,7 @@ namespace PenyaManager {
     {
         hide();
         // call invoice window
-        IPartner* pInvoiceWindow = Singletons::m_pParnetFinder->getPartner(kInvoiceWindowKey);
+        IPartner* pInvoiceWindow = Singletons::m_pParnetFinder->getPartner(WindowKey::kInvoiceWindowKey);
         pInvoiceWindow->init();
     }
     //
@@ -269,14 +269,14 @@ namespace PenyaManager {
     {
         hide();
         // call login window on exit
-        IPartner* pLoginWindow = Singletons::m_pParnetFinder->getPartner(kLoginWindowKey);
+        IPartner* pLoginWindow = Singletons::m_pParnetFinder->getPartner(WindowKey::kLoginWindowKey);
         pLoginWindow->init();
     }
     void MainWindow::on_depositsButton_clicked()
     {
         hide();
         // call invoice window
-        IPartner* pDepositsWindow = Singletons::m_pParnetFinder->getPartner(kDepositsWindowKey);
+        IPartner* pDepositsWindow = Singletons::m_pParnetFinder->getPartner(WindowKey::kDepositsWindowKey);
         pDepositsWindow->init();
     }
     //
@@ -317,7 +317,7 @@ namespace PenyaManager {
     {
         hide();
         // call invoice window
-        IPartner* pInvoiceWindow = Singletons::m_pParnetFinder->getPartner(kAccountViewWindowKey);
+        IPartner* pInvoiceWindow = Singletons::m_pParnetFinder->getPartner(WindowKey::kAccountViewWindowKey);
         pInvoiceWindow->init();
     }
     //
@@ -325,7 +325,7 @@ namespace PenyaManager {
     {
         hide();
         // call invoice window
-        IPartner* pInvoiceWindow = Singletons::m_pParnetFinder->getPartner(kTableReservationViewWindowKey);
+        IPartner* pInvoiceWindow = Singletons::m_pParnetFinder->getPartner(WindowKey::kTableReservationViewWindowKey);
         pInvoiceWindow->init();
     }
 }

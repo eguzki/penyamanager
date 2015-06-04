@@ -100,7 +100,7 @@ namespace PenyaManager {
     {
         this->hide();
         // call main window
-        IPartner* pMainWindow = Singletons::m_pParnetFinder->getPartner(kMainWindowKey);
+        IPartner* pMainWindow = Singletons::m_pParnetFinder->getPartner(WindowKey::kMainWindowKey);
         pMainWindow->init();
     }
     //

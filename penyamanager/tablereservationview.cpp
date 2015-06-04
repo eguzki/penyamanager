@@ -68,7 +68,7 @@ namespace PenyaManager {
     {
         this->hide();
         // call main window
-        IPartner* pMainWindow = Singletons::m_pParnetFinder->getPartner(kMainWindowKey);
+        IPartner* pMainWindow = Singletons::m_pParnetFinder->getPartner(WindowKey::kMainWindowKey);
         pMainWindow->init();
     }
     //
@@ -212,7 +212,7 @@ namespace PenyaManager {
         QMessageBox::information(this, "Table reservation", "Reservation done");
         hide();
         // call main window
-        IPartner* pMainWindow = Singletons::m_pParnetFinder->getPartner(kMainWindowKey);
+        IPartner* pMainWindow = Singletons::m_pParnetFinder->getPartner(WindowKey::kMainWindowKey);
         pMainWindow->init();
     }
     //
@@ -222,7 +222,7 @@ namespace PenyaManager {
         QMessageBox::information(this, "Table reservation", "Reservation cancelled");
         hide();
         // call main window
-        IPartner* pMainWindow = Singletons::m_pParnetFinder->getPartner(kMainWindowKey);
+        IPartner* pMainWindow = Singletons::m_pParnetFinder->getPartner(WindowKey::kMainWindowKey);
         pMainWindow->init();
     }
     //

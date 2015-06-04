@@ -68,7 +68,7 @@ namespace PenyaManager {
     {
         this->hide();
         // call main window
-        IPartner* pMainWindow = Singletons::m_pParnetFinder->getPartner(kMainWindowKey);
+        IPartner* pMainWindow = Singletons::m_pParnetFinder->getPartner(WindowKey::kMainWindowKey);
         pMainWindow->init();
     }
     //
@@ -96,7 +96,7 @@ namespace PenyaManager {
         // Go to login page
         hide();
         // call login window on exit
-        IPartner* pMainWindow = Singletons::m_pParnetFinder->getPartner(kMainWindowKey);
+        IPartner* pMainWindow = Singletons::m_pParnetFinder->getPartner(WindowKey::kMainWindowKey);
         pMainWindow->init();
     }
     //

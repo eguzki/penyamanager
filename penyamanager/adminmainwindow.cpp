@@ -47,7 +47,7 @@ namespace PenyaManager {
         }
         this->hide();
         // call admin main window
-        IPartner* pAdminLoginPartner = Singletons::m_pParnetFinder->getPartner(kAdminLoginWindowKey);
+        IPartner* pAdminLoginPartner = Singletons::m_pParnetFinder->getPartner(WindowKey::kAdminLoginWindowKey);
         pAdminLoginPartner->init();
     }
     //
@@ -59,7 +59,7 @@ namespace PenyaManager {
             this->takeCentralWidget();
         }
         // call slow payers window
-        IPartner* pSlowPayersPartner = Singletons::m_pParnetFinder->getPartner(kAdminSlowPayersWindowKey);
+        IPartner* pSlowPayersPartner = Singletons::m_pParnetFinder->getPartner(WindowKey::kAdminSlowPayersWindowKey);
         pSlowPayersPartner->init();
         this->setCentralWidget(pSlowPayersPartner);
     }
@@ -72,7 +72,7 @@ namespace PenyaManager {
             this->takeCentralWidget();
         }
         // call invoice list window
-        IPartner* pInvoiceListView = Singletons::m_pParnetFinder->getPartner(kAdminInvoiceListWindowKey);
+        IPartner* pInvoiceListView = Singletons::m_pParnetFinder->getPartner(WindowKey::kAdminInvoiceListWindowKey);
         pInvoiceListView->init();
         this->setCentralWidget(pInvoiceListView);
     }
