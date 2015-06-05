@@ -1,14 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>SlowPayersView</class>
- <widget class="QWidget" name="SlowPayersView">
+ <class>ProviderManagerView</class>
+ <widget class="QWidget" name="ProviderManagerView">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>1200</width>
+    <height>1000</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1200</width>
+    <height>1000</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1200</width>
+    <height>1000</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Form</string>
@@ -48,8 +60,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #bbb);
 background: qradialgradient(cx: 0.4, cy: -0.1,
 fx: 0.4, fy: -0.1,
 radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
-}
-</string>
+}</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -81,9 +92,23 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="newProviderPushButton">
+       <widget class="QPushButton" name="resetAccountsPushButton">
         <property name="text">
-         <string>new provider</string>
+         <string>Reset accounts</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="csvPushButton">
+        <property name="text">
+         <string>export to CSV</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="printPushButton">
+        <property name="text">
+         <string>print</string>
         </property>
        </widget>
       </item>
@@ -98,21 +123,6 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
-      <item>
-       <widget class="QTableWidget" name="slowPayersTableWidget">
-        <property name="editTriggers">
-         <set>QAbstractItemView::NoEditTriggers</set>
-        </property>
-        <property name="selectionMode">
-         <enum>QAbstractItemView::NoSelection</enum>
-        </property>
-        <property name="selectionBehavior">
-         <enum>QAbstractItemView::SelectColumns</enum>
-        </property>
-       </widget>
-      </item>
-     </layout>
     </widget>
    </item>
   </layout>

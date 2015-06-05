@@ -46,7 +46,7 @@
    </widget>
    <widget class="QMenu" name="menuStock">
     <property name="title">
-     <string>Stock</string>
+     <string>Goods</string>
     </property>
     <addaction name="actionStock_purchase"/>
     <addaction name="actionProduct_consumption"/>
