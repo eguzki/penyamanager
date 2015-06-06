@@ -92,23 +92,9 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="resetAccountsPushButton">
+       <widget class="QPushButton" name="newProviderPushButton">
         <property name="text">
-         <string>Reset accounts</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="csvPushButton">
-        <property name="text">
-         <string>export to CSV</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="printPushButton">
-        <property name="text">
-         <string>print</string>
+         <string>new provider</string>
         </property>
        </widget>
       </item>
@@ -123,6 +109,50 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QFrame" name="providersFrame">
+        <property name="minimumSize">
+         <size>
+          <width>300</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>300</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <widget class="QListWidget" name="providersListWidget"/>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QFrame" name="productsFrame">
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <widget class="QListWidget" name="productsListWidget"/>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
   </layout>

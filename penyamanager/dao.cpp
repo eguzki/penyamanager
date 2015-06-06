@@ -32,7 +32,8 @@ namespace PenyaManager {
             m_invoiceListByMemberIdQuery(m_db),
             m_invoiceListByMemberIdStatsQuery(m_db),
             m_invoiceListQuery(m_db),
-            m_invoiceListStatsQuery(m_db)
+            m_invoiceListStatsQuery(m_db),
+            m_providerListQuery(m_db)
     {
         // configure db connection
         m_db.setHostName(hostname);
@@ -218,6 +219,10 @@ namespace PenyaManager {
                 "SELECT COUNT(*), SUM(total) FROM invoice "
                 "WHERE state = :stateid "
                 "AND date BETWEEN :fromDate AND :toDate"
+                );
+        // provider list
+        m_providerListQuery.prepare(
+                "SELECT idprovider, name, image, reg_date, phone FROM provider"
                 );
     }
 
@@ -777,5 +782,27 @@ namespace PenyaManager {
         }
         m_invoiceListStatsQuery.finish();
         return pInvoiceListStatsPtr;
+    }
+    //
+    ProviderListPtr DAO::getProviderList()
+    {
+        // run query
+        if (!m_providerListQuery.exec())
+        {
+            qDebug() << m_providerListQuery.lastError();
+        }
+
+        ProviderListPtr pProviderListPtr(new ProviderList);
+        while (m_providerListQuery.next()) {
+            ProviderPtr pProviderPtr(new Provider);
+            pProviderPtr->m_id = m_providerListQuery.value(0).toInt();
+            pProviderPtr->m_name = m_providerListQuery.value(1).toString();
+            pProviderPtr->m_image = m_providerListQuery.value(2).toString();
+            pProviderPtr->m_regDate = m_providerListQuery.value(3).toDateTime();
+            pProviderPtr->m_phone = m_providerListQuery.value(4).toString();
+            pProviderListPtr->push_back(pProviderPtr);
+        }
+        m_providerListQuery.finish();
+        return pProviderListPtr;
     }
 }

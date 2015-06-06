@@ -51,7 +51,7 @@
     <addaction name="actionStock_purchase"/>
     <addaction name="actionProduct_consumption"/>
     <addaction name="actionManage_Stock_items"/>
-    <addaction name="actionManage_vendors"/>
+    <addaction name="actionManage_providers"/>
     <addaction name="actionManage_Stock"/>
    </widget>
    <widget class="QMenu" name="menuAccount">
@@ -119,9 +119,9 @@
     <string>Manage Families/Goods</string>
    </property>
   </action>
-  <action name="actionManage_vendors">
+  <action name="actionManage_providers">
    <property name="text">
-    <string>Manage Vendors</string>
+    <string>Manage Providers</string>
    </property>
   </action>
   <action name="actionManage_Stock">

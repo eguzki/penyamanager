@@ -36,14 +36,15 @@ SOURCES += adminmain.cpp\
         objs/InvoiceProductItem.cpp\
         objs/TableReservation.cpp\
         objs/LunchTable.cpp\
+        objs/Provider.cpp\
         adminloginwindow.cpp\
         admon_screen.cpp\
         memberselect.cpp \
-    adminmainwindow.cpp \
-    slowpayersview.cpp \
-    admininvoicelistview.cpp \
-    admininvoicedetails.cpp \
-    providermanagerview.cpp
+        adminmainwindow.cpp \
+        slowpayersview.cpp \
+        admininvoicelistview.cpp \
+        admininvoicedetails.cpp \
+        providermanagerview.cpp
 
 HEADERS  += singletons.h\
         dao.h\
@@ -61,20 +62,21 @@ HEADERS  += singletons.h\
         objs/InvoiceProductItem.h\
         objs/TableReservation.h\
         objs/LunchTable.h\
+        objs/Provider.h\
         adminloginwindow.h\
         admon_screen.h\
         memberselect.h \
-    adminmainwindow.h \
-    slowpayersview.h \
-    admininvoicelistview.h \
-    admininvoicedetails.h \
-    providermanagerview.h
+        adminmainwindow.h \
+        slowpayersview.h \
+        admininvoicelistview.h \
+        admininvoicedetails.h \
+        providermanagerview.h
 
 FORMS    += adminloginwindow.ui\
         admon_screen.ui\
         memberselect.ui \
-    adminmainwindow.ui \
-    slowpayersview.ui \
-    admininvoicelistview.ui \
-    admininvoicedetails.ui \
-    providermanagerview.ui
+        adminmainwindow.ui \
+        slowpayersview.ui \
+        admininvoicelistview.ui \
+        admininvoicedetails.ui \
+        providermanagerview.ui
