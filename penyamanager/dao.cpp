@@ -33,7 +33,8 @@ namespace PenyaManager {
             m_invoiceListByMemberIdStatsQuery(m_db),
             m_invoiceListQuery(m_db),
             m_invoiceListStatsQuery(m_db),
-            m_providerListQuery(m_db)
+            m_providerListQuery(m_db),
+            m_productItemsByProviderQuery(m_db)
     {
         // configure db connection
         m_db.setHostName(hostname);
@@ -224,6 +225,8 @@ namespace PenyaManager {
         m_providerListQuery.prepare(
                 "SELECT idprovider, name, image, reg_date, phone FROM provider"
                 );
+        // ProductItems by provider
+        m_productItemsByProviderQuery.prepare("SELECT idproduct_item, name, image, reg_date, idproduct_family, price FROM product_item WHERE active=1 AND idprovider=:providerId");
     }
 
     //
@@ -804,5 +807,32 @@ namespace PenyaManager {
         }
         m_providerListQuery.finish();
         return pProviderListPtr;
+    }
+    //
+    ProductItemListPtr DAO::getProductsFromProvider(Int32 providerId)
+    {
+        // bind value
+        m_productItemsByProviderQuery.bindValue(":providerId", providerId);
+        // run query
+        if (!m_productItemsByProviderQuery.exec())
+        {
+            qDebug() << m_productItemsByProviderQuery.lastError();
+        }
+
+        ProductItemListPtr pfListPrt(new ProductItemList);
+
+        while (m_productItemsByProviderQuery.next()) {
+            ProductItemPtr pfPtr(new ProductItem);
+            pfPtr->m_id = m_productItemsByProviderQuery.value(0).toUInt();
+            pfPtr->m_name = m_productItemsByProviderQuery.value(1).toString();
+            pfPtr->m_imagePath = m_productItemsByProviderQuery.value(2).toString();
+            pfPtr->m_active = true;
+            pfPtr->m_regDate = m_productItemsByProviderQuery.value(3).toDateTime();
+            pfPtr->m_familyId = m_productItemsByProviderQuery.value(4).toInt();
+            pfPtr->m_price = m_productItemsByProviderQuery.value(5).toFloat();
+            pfListPrt->push_back(pfPtr);
+        }
+        m_productFamiliesQuery.finish();
+        return pfListPrt;
     }
 }

@@ -81,6 +81,8 @@ namespace PenyaManager {
             InvoiceListStatsPtr getInvoiceListStats(const QDate &fromDate, const QDate &toDate);
             //
             ProviderListPtr getProviderList();
+            //
+            ProductItemListPtr getProductsFromProvider(Int32 providerId);
 
         private:
             //
@@ -139,6 +141,8 @@ namespace PenyaManager {
             QSqlQuery               m_invoiceListStatsQuery;
             //
             QSqlQuery               m_providerListQuery;
+            //
+            QSqlQuery               m_productItemsByProviderQuery;
     };
 }
 #endif // DAO_H
