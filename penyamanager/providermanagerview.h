@@ -20,7 +20,7 @@ namespace PenyaManager {
 
         public:
             //
-            explicit ProviderManagerView(QWidget *parent = 0);
+            explicit ProviderManagerView(QWidget *parent, const CentralWidgetCallback &callback);
             //
             ~ProviderManagerView();
             //
@@ -39,10 +39,14 @@ namespace PenyaManager {
         private slots:
             //
             void providerItemClicked(QListWidgetItem* item);
+            //
+            void on_newProviderPushButton_clicked();
 
-        private:
+    private:
             //
             Ui::ProviderManagerView *ui;
+            //
+            CentralWidgetCallback       m_switchCentralWidgetCallback;
     };
 
 }

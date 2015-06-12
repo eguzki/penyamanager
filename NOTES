@@ -20,6 +20,7 @@
 * User -> Reserva de 3 hornos y 2 fogones
 
 * Member login
+** layout: https://jryannel.wordpress.com/2010/02/22/designing-a-login-view/
 ** When user account balance is negative -> pop up on login
 
 ** List of a product purchases between date range

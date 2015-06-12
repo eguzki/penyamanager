@@ -21,6 +21,7 @@
 #include <list>
 #include <algorithm>
 #include <time.h>
+#include <functional>
 #include <tr1/memory>
 #include <cstdlib>
 

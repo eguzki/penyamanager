@@ -9,9 +9,10 @@
 
 namespace PenyaManager {
     //
-    ProviderManagerView::ProviderManagerView(QWidget *parent) :
+    ProviderManagerView::ProviderManagerView(QWidget *parent, const CentralWidgetCallback &callback) :
         IPartner(parent),
-        ui(new Ui::ProviderManagerView)
+        ui(new Ui::ProviderManagerView),
+        m_switchCentralWidgetCallback(callback)
     {
         ui->setupUi(this);
         this->connect(this->ui->providersListWidget, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(providerItemClicked(QListWidgetItem*)));
@@ -136,4 +137,11 @@ namespace PenyaManager {
         pProductItem->setBackgroundColor(pList->count() % 2 == 0 ? (Qt::lightGray) : (Qt::darkGray));
         pList->setItemWidget(pProductItem, pProduceItemWidget);
     }
+    //
+    void ProviderManagerView::on_newProviderPushButton_clicked()
+    {
+        // call invoice details window throw adminmainwindow
+        m_switchCentralWidgetCallback(WindowKey::kAdminNewProviderKey);
+    }
 }
+
