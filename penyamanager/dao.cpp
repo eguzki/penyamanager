@@ -34,7 +34,8 @@ namespace PenyaManager {
             m_invoiceListQuery(m_db),
             m_invoiceListStatsQuery(m_db),
             m_providerListQuery(m_db),
-            m_productItemsByProviderQuery(m_db)
+            m_productItemsByProviderQuery(m_db),
+            m_createProviderQuery(m_db)
     {
         // configure db connection
         m_db.setHostName(hostname);
@@ -227,6 +228,12 @@ namespace PenyaManager {
                 );
         // ProductItems by provider
         m_productItemsByProviderQuery.prepare("SELECT idproduct_item, name, image, reg_date, idproduct_family, price FROM product_item WHERE active=1 AND idprovider=:providerId");
+        // create provider
+        m_createProviderQuery.prepare(
+                "INSERT INTO provider "
+                "(name, image, reg_date, phone) "
+                "VALUES (:name, :image, :reg_date, :phone)"
+                );
     }
 
     //
@@ -834,5 +841,27 @@ namespace PenyaManager {
         }
         m_productFamiliesQuery.finish();
         return pfListPrt;
+    }
+    //
+    void DAO::createProvider(const QString &name, const QString &imageFileName, const QString &phone)
+    {
+        QDate today(QDateTime::currentDateTime().date());
+        m_createProviderQuery.bindValue(":name", name);
+        if (imageFileName.isEmpty()) {
+            m_createProviderQuery.bindValue(":image", QVariant());
+        } else {
+            m_createProviderQuery.bindValue(":image", imageFileName);
+        }
+        m_createProviderQuery.bindValue(":reg_date", today);
+        if (phone.isEmpty()) {
+            m_createProviderQuery.bindValue(":phone", QVariant());
+        } else {
+            m_createProviderQuery.bindValue(":phone", phone);
+        }
+        if (!m_createProviderQuery.exec())
+        {
+            qDebug() << m_createProviderQuery.lastError();
+        }
+        m_createProviderQuery.finish();
     }
 }

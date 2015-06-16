@@ -44,6 +44,8 @@ namespace PenyaManager {
             Ui::AdminNewProvider *ui;
             //
             CentralWidgetCallback       m_switchCentralWidgetCallback;
+            //
+            QString                     m_providerImageFilename;
     };
 }
 

@@ -254,6 +254,9 @@
            <property name="verticalHeaderFormat">
             <enum>QCalendarWidget::NoVerticalHeader</enum>
            </property>
+           <property name="dateEditEnabled">
+            <bool>false</bool>
+           </property>
           </widget>
          </item>
         </layout>
@@ -281,6 +284,9 @@
            </property>
            <property name="verticalHeaderFormat">
             <enum>QCalendarWidget::NoVerticalHeader</enum>
+           </property>
+           <property name="dateEditEnabled">
+            <bool>false</bool>
            </property>
           </widget>
          </item>
