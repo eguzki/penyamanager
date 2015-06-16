@@ -32,6 +32,8 @@ namespace PenyaManager {
             void on_slow_payers_button_triggered();
             //
             void on_invoice_list_button_triggered();
+            //
+            void on_manage_providers_button_triggered();
 
         private:
             //

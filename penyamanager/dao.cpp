@@ -32,7 +32,10 @@ namespace PenyaManager {
             m_invoiceListByMemberIdQuery(m_db),
             m_invoiceListByMemberIdStatsQuery(m_db),
             m_invoiceListQuery(m_db),
-            m_invoiceListStatsQuery(m_db)
+            m_invoiceListStatsQuery(m_db),
+            m_providerListQuery(m_db),
+            m_productItemsByProviderQuery(m_db),
+            m_createProviderQuery(m_db)
     {
         // configure db connection
         m_db.setHostName(hostname);
@@ -218,6 +221,18 @@ namespace PenyaManager {
                 "SELECT COUNT(*), SUM(total) FROM invoice "
                 "WHERE state = :stateid "
                 "AND date BETWEEN :fromDate AND :toDate"
+                );
+        // provider list
+        m_providerListQuery.prepare(
+                "SELECT idprovider, name, image, reg_date, phone FROM provider"
+                );
+        // ProductItems by provider
+        m_productItemsByProviderQuery.prepare("SELECT idproduct_item, name, image, reg_date, idproduct_family, price FROM product_item WHERE active=1 AND idprovider=:providerId");
+        // create provider
+        m_createProviderQuery.prepare(
+                "INSERT INTO provider "
+                "(name, image, reg_date, phone) "
+                "VALUES (:name, :image, :reg_date, :phone)"
                 );
     }
 
@@ -777,5 +792,76 @@ namespace PenyaManager {
         }
         m_invoiceListStatsQuery.finish();
         return pInvoiceListStatsPtr;
+    }
+    //
+    ProviderListPtr DAO::getProviderList()
+    {
+        // run query
+        if (!m_providerListQuery.exec())
+        {
+            qDebug() << m_providerListQuery.lastError();
+        }
+
+        ProviderListPtr pProviderListPtr(new ProviderList);
+        while (m_providerListQuery.next()) {
+            ProviderPtr pProviderPtr(new Provider);
+            pProviderPtr->m_id = m_providerListQuery.value(0).toInt();
+            pProviderPtr->m_name = m_providerListQuery.value(1).toString();
+            pProviderPtr->m_image = m_providerListQuery.value(2).toString();
+            pProviderPtr->m_regDate = m_providerListQuery.value(3).toDateTime();
+            pProviderPtr->m_phone = m_providerListQuery.value(4).toString();
+            pProviderListPtr->push_back(pProviderPtr);
+        }
+        m_providerListQuery.finish();
+        return pProviderListPtr;
+    }
+    //
+    ProductItemListPtr DAO::getProductsFromProvider(Int32 providerId)
+    {
+        // bind value
+        m_productItemsByProviderQuery.bindValue(":providerId", providerId);
+        // run query
+        if (!m_productItemsByProviderQuery.exec())
+        {
+            qDebug() << m_productItemsByProviderQuery.lastError();
+        }
+
+        ProductItemListPtr pfListPrt(new ProductItemList);
+
+        while (m_productItemsByProviderQuery.next()) {
+            ProductItemPtr pfPtr(new ProductItem);
+            pfPtr->m_id = m_productItemsByProviderQuery.value(0).toUInt();
+            pfPtr->m_name = m_productItemsByProviderQuery.value(1).toString();
+            pfPtr->m_imagePath = m_productItemsByProviderQuery.value(2).toString();
+            pfPtr->m_active = true;
+            pfPtr->m_regDate = m_productItemsByProviderQuery.value(3).toDateTime();
+            pfPtr->m_familyId = m_productItemsByProviderQuery.value(4).toInt();
+            pfPtr->m_price = m_productItemsByProviderQuery.value(5).toFloat();
+            pfListPrt->push_back(pfPtr);
+        }
+        m_productFamiliesQuery.finish();
+        return pfListPrt;
+    }
+    //
+    void DAO::createProvider(const QString &name, const QString &imageFileName, const QString &phone)
+    {
+        QDate today(QDateTime::currentDateTime().date());
+        m_createProviderQuery.bindValue(":name", name);
+        if (imageFileName.isEmpty()) {
+            m_createProviderQuery.bindValue(":image", QVariant());
+        } else {
+            m_createProviderQuery.bindValue(":image", imageFileName);
+        }
+        m_createProviderQuery.bindValue(":reg_date", today);
+        if (phone.isEmpty()) {
+            m_createProviderQuery.bindValue(":phone", QVariant());
+        } else {
+            m_createProviderQuery.bindValue(":phone", phone);
+        }
+        if (!m_createProviderQuery.exec())
+        {
+            qDebug() << m_createProviderQuery.lastError();
+        }
+        m_createProviderQuery.finish();
     }
 }

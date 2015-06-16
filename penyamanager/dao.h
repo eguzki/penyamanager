@@ -9,6 +9,7 @@
 #include "objs/Member.h"
 #include "objs/Invoice.h"
 #include "objs/Deposit.h"
+#include "objs/Provider.h"
 #include "objs/ProductFamily.h"
 #include "objs/ProductItem.h"
 #include "objs/InvoiceProductItem.h"
@@ -78,6 +79,12 @@ namespace PenyaManager {
             InvoiceListPtr getInvoiceList(const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count);
             //
             InvoiceListStatsPtr getInvoiceListStats(const QDate &fromDate, const QDate &toDate);
+            //
+            ProviderListPtr getProviderList();
+            //
+            ProductItemListPtr getProductsFromProvider(Int32 providerId);
+            //
+            void createProvider(const QString &name, const QString &imageFileName, const QString &phone);
 
         private:
             //
@@ -134,6 +141,12 @@ namespace PenyaManager {
             QSqlQuery               m_invoiceListQuery;
             //
             QSqlQuery               m_invoiceListStatsQuery;
+            //
+            QSqlQuery               m_providerListQuery;
+            //
+            QSqlQuery               m_productItemsByProviderQuery;
+            //
+            QSqlQuery               m_createProviderQuery;
     };
 }
 #endif // DAO_H

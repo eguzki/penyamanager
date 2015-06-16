@@ -10,7 +10,7 @@ namespace PenyaManager {
             kLoginWindowKey, kMainWindowKey, kInvoiceWindowKey, kDepositsWindowKey,
             kAccountViewWindowKey, kTableReservationViewWindowKey, kAdminLoginWindowKey,
             kAdminMemberInfoWindowKey, kAdminSlowPayersWindowKey, kAdminInvoiceListWindowKey,
-            kAdminInvoiceDetailsWindowKey
+            kAdminInvoiceDetailsWindowKey, kAdminProviderWindowKey, kAdminNewProviderKey
     };
     //
     typedef std::function<void(WindowKey)>	CentralWidgetCallback;

@@ -7,7 +7,8 @@
 #include "IPartner.h"
 
 namespace Ui {
-class AdminInvoiceDetails;
+    //
+    class AdminInvoiceDetails;
 }
 
 namespace PenyaManager {

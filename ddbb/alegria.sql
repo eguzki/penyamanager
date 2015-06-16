@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `alegria`.`member` (
   `email` VARCHAR(45) NULL,
   `bank_account` VARCHAR(45) NOT NULL,
   `postal_send` TINYINT(1) NULL,
-  `notes` VARCHAR(300) NULL,
+  `notes` VARCHAR(45) NULL,
   PRIMARY KEY (`idmember`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 3
@@ -103,6 +103,21 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
+-- Table `alegria`.`provider`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `alegria`.`provider` ;
+
+CREATE TABLE IF NOT EXISTS `alegria`.`provider` (
+  `idprovider` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(200) NOT NULL,
+  `image` VARCHAR(200) NULL,
+  `reg_date` DATE NULL,
+  `phone` VARCHAR(45) NULL,
+  PRIMARY KEY (`idprovider`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `alegria`.`product_item`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `alegria`.`product_item` ;
@@ -115,11 +130,18 @@ CREATE TABLE IF NOT EXISTS `alegria`.`product_item` (
   `reg_date` DATETIME NOT NULL,
   `idproduct_family` INT(11) NOT NULL,
   `price` DECIMAL(10,2) NOT NULL,
+  `idprovider` INT(11) NOT NULL,
   PRIMARY KEY (`idproduct_item`),
   INDEX `fk_product_item_product_family_idx` (`idproduct_family` ASC),
+  INDEX `fk_product_item_provider1_idx` (`idprovider` ASC),
   CONSTRAINT `fk_product_item_product_family`
     FOREIGN KEY (`idproduct_family`)
     REFERENCES `alegria`.`product_family` (`idproduct_family`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_product_item_provider1`
+    FOREIGN KEY (`idprovider`)
+    REFERENCES `alegria`.`provider` (`idprovider`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
