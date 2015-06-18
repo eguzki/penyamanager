@@ -3,7 +3,7 @@
 
 #include <QWidget>
 
-#include "objs/Member.h"
+#include "memberprofilegroupbox.h"
 #include "IPartner.h"
 
 namespace Ui {
@@ -26,8 +26,6 @@ namespace PenyaManager {
 
         private:
             //
-            void fillMemberProfile(const MemberPtr &pMemberPtr);
-            //
             void fillAccountData(Int32 memberId, const QDate &fromDate, const QDate &toDate);
 
         private slots:
@@ -39,6 +37,8 @@ namespace PenyaManager {
         private:
             //
             Ui::AccountView *ui;
+            //
+            MemberProfileGroupBox       *m_pMemberProfileGroupBox;
     };
 }
 

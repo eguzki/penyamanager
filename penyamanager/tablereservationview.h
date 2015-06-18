@@ -5,6 +5,7 @@
 #include <QDate>
 #include <QAbstractButton>
 
+#include "memberprofilegroupbox.h"
 #include "objs/TableReservation.h"
 #include "objs/Member.h"
 #include "IPartner.h"
@@ -31,8 +32,6 @@ namespace PenyaManager {
 
         private:
             //
-            void fillMemberProfile(const MemberPtr &);
-            //
             void initializeTableReservations(const MemberPtr &);
             //
             void fillTableReservations(const MemberPtr &, const QDate &, ReservationType);
@@ -56,6 +55,8 @@ namespace PenyaManager {
     private:
             //
             Ui::TableReservationView *ui;
+            //
+            MemberProfileGroupBox       *m_pMemberProfileGroupBox;
     };
 }
 

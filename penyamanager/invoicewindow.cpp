@@ -13,9 +13,11 @@ namespace PenyaManager {
     InvoiceWindow::InvoiceWindow(QWidget *parent) :
         IPartner(parent),
         ui(new Ui::InvoiceWindow),
-        m_cachedInvoiceTotal(0.0)
+        m_cachedInvoiceTotal(0.0),
+        m_pMemberProfileGroupBox(new MemberProfileGroupBox)
     {
         ui->setupUi(this);
+        this->ui->topPanelWidget->layout()->addWidget(m_pMemberProfileGroupBox);
     }
     //
     InvoiceWindow::~InvoiceWindow()
@@ -37,7 +39,7 @@ namespace PenyaManager {
         // Loading User profile
         //
         MemberPtr pCurrMember = Singletons::m_pCurrMember;
-        fillMemberProfile(pCurrMember);
+        this->m_pMemberProfileGroupBox->init(pCurrMember);
 
         //
         // Loading Current Invoice
@@ -82,19 +84,6 @@ namespace PenyaManager {
 
         // call main window
         switchWindow(WindowKey::kMainWindowKey);
-    }
-    //
-    void InvoiceWindow::fillMemberProfile(const MemberPtr &pMemberPtr)
-    {
-        QString imagePath = QDir(Constants::kImageRootPath).filePath(pMemberPtr->m_imagePath);
-        QPixmap memberPixmap = Utils::getImage(imagePath);
-        this->ui->memberImage->setPixmap(memberPixmap);
-        this->ui->memberImage->setFixedWidth(Constants::kMemberImageWidth);
-        this->ui->memberImage->setFixedHeight(Constants::kMemberImageHeigth);
-        this->ui->memberImage->setScaledContents(true);
-        this->ui->memberNameLabel->setText(pMemberPtr->m_name + " " + pMemberPtr->m_surname);
-        this->ui->memberIdInfo->setText(QString::number(pMemberPtr->m_id));
-        this->ui->memberBalanceInfo->setText(QString::number(pMemberPtr->m_balance, 'f', 2));
     }
     //
     void InvoiceWindow::fillInvoiceData(const MemberPtr &pMemberPtr, const InvoicePtr &pInvoicePtr)

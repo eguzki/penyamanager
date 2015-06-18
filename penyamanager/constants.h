@@ -7,10 +7,10 @@
 namespace PenyaManager {
     //
     enum class WindowKey {
-            kLoginWindowKey, kMainWindowKey, kInvoiceWindowKey, kDepositsWindowKey,
+            kLoginWindowKey, kMainWindowKey, kInvoiceWindowKey, kInvoiceListWindoKey, kDepositsWindowKey,
             kAccountViewWindowKey, kTableReservationViewWindowKey, kAdminLoginWindowKey,
             kAdminMemberInfoWindowKey, kAdminSlowPayersWindowKey, kAdminInvoiceListWindowKey,
-            kAdminInvoiceDetailsWindowKey, kAdminProviderWindowKey, kAdminNewProviderKey
+            kInvoiceDetailsWindowKey, kAdminProviderWindowKey, kAdminNewProviderKey
     };
     //
     typedef std::function<void(WindowKey)>	CentralWidgetCallback;

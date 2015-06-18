@@ -20,9 +20,11 @@ namespace PenyaManager {
     //
     TableReservationView::TableReservationView(QWidget *parent) :
         IPartner(parent),
-        ui(new Ui::TableReservationView)
+        ui(new Ui::TableReservationView),
+        m_pMemberProfileGroupBox(new MemberProfileGroupBox)
     {
         ui->setupUi(this);
+        this->ui->topPanelWidget->layout()->addWidget(m_pMemberProfileGroupBox);
         this->ui->reservationTypeButtonGroup->setId(this->ui->dinnerButton, static_cast<Int32>(ReservationType::Dinner));
         this->ui->reservationTypeButtonGroup->setId(this->ui->lunchButton, static_cast<Int32>(ReservationType::Lunch));
     }
@@ -38,7 +40,7 @@ namespace PenyaManager {
         // Loading User profile
         //
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
-        fillMemberProfile(pCurrMemberPtr);
+        this->m_pMemberProfileGroupBox->init(pCurrMemberPtr);
 
         //
         // Initial state
@@ -49,19 +51,6 @@ namespace PenyaManager {
         // Show
         //
         show();
-    }
-    //
-    void TableReservationView::fillMemberProfile(const MemberPtr &pMemberPtr)
-    {
-        QString imagePath = QDir(Constants::kImageRootPath).filePath(pMemberPtr->m_imagePath);
-        QPixmap memberPixmap = Utils::getImage(imagePath);
-        this->ui->memberImage->setPixmap(memberPixmap);
-        this->ui->memberImage->setFixedWidth(Constants::kMemberImageWidth);
-        this->ui->memberImage->setFixedHeight(Constants::kMemberImageHeigth);
-        this->ui->memberImage->setScaledContents(true);
-        this->ui->memberNameLabel->setText(pMemberPtr->m_name + " " + pMemberPtr->m_surname);
-        this->ui->memberIdInfoLabel->setText(QString::number(pMemberPtr->m_id));
-        this->ui->memberAccountInfoLabel->setText(QString::number(pMemberPtr->m_balance, 'f', 2));
     }
     //
     void TableReservationView::on_backButton_clicked()

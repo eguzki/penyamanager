@@ -4,6 +4,7 @@
 #include <QWidget>
 
 #include "objs/Member.h"
+#include "memberprofilegroupbox.h"
 #include "IPartner.h"
 
 namespace Ui {
@@ -26,8 +27,6 @@ namespace PenyaManager {
 
         private:
             //
-            void fillMemberProfile(const MemberPtr &pMemberPtr);
-            //
             void updateNewBalanceLabel(double deposit);
 
         private slots:
@@ -45,6 +44,8 @@ namespace PenyaManager {
         private:
             //
             Ui::DepositWindow *ui;
+            //
+            MemberProfileGroupBox       *m_pMemberProfileGroupBox;
     };
 }
 

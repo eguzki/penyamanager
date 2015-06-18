@@ -3,6 +3,7 @@
 
 #include "objs/Member.h"
 #include "objs/Invoice.h"
+#include "memberprofilegroupbox.h"
 #include "IPartner.h"
 
 namespace Ui {
@@ -25,8 +26,6 @@ namespace PenyaManager {
 
         private:
             //
-            void fillMemberProfile(const MemberPtr &pMemberPtr);
-            //
             void fillInvoiceData(const MemberPtr &pMemberPtr, const InvoicePtr &pInvoicePtr);
 
         private slots:
@@ -42,6 +41,8 @@ namespace PenyaManager {
             Ui::InvoiceWindow *ui;
             //
             Float               m_cachedInvoiceTotal;
+            //
+            MemberProfileGroupBox       *m_pMemberProfileGroupBox;
     };
 
 }

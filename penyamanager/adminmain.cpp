@@ -5,7 +5,7 @@
 #include "adminloginwindow.h"
 #include "slowpayersview.h"
 #include "admininvoicelistview.h"
-#include "admininvoicedetails.h"
+#include "invoicedetailswidget.h"
 #include "providermanagerview.h"
 #include "adminnewprovider.h"
 #include "constants.h"
@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
     // instantiate adminmain widgets
     PenyaManager::AdminInvoiceListView *pAdminInvoiceListView = new PenyaManager::AdminInvoiceListView(NULL, adminMainWindowSwitchCallback);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kAdminInvoiceListWindowKey, pAdminInvoiceListView);
-    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kAdminInvoiceDetailsWindowKey, new PenyaManager::AdminInvoiceDetails);
+    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kInvoiceDetailsWindowKey, new PenyaManager::InvoiceDetailsWidget);
     PenyaManager::ProviderManagerView *pProviderManagerView = new PenyaManager::ProviderManagerView(NULL, adminMainWindowSwitchCallback);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kAdminProviderWindowKey, pProviderManagerView);
     PenyaManager::AdminNewProvider *pAdminNewProvider = new PenyaManager::AdminNewProvider(NULL, adminMainWindowSwitchCallback);

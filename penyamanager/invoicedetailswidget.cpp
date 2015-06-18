@@ -1,27 +1,27 @@
 //
 
 #include "singletons.h"
-#include "admininvoicedetails.h"
-#include "ui_admininvoicedetails.h"
+#include "invoicedetailswidget.h"
+#include "ui_invoicedetailswidget.h"
 
 namespace PenyaManager {
     //
-    AdminInvoiceDetails::AdminInvoiceDetails(QWidget *parent) :
+    InvoiceDetailsWidget::InvoiceDetailsWidget(QWidget *parent) :
         IPartner(parent),
-        ui(new Ui::AdminInvoiceDetails)
+        ui(new Ui::InvoiceDetailsWidget)
     {
         ui->setupUi(this);
     }
     //
-    AdminInvoiceDetails::~AdminInvoiceDetails()
+    InvoiceDetailsWidget::~InvoiceDetailsWidget()
     {
         delete ui;
     }
     //
-    void AdminInvoiceDetails::init()
+    void InvoiceDetailsWidget::init()
     {
         // use static global variable to get invoiceId
-        Int32 invoiceId = Singletons::m_currentAdminInvoiceId;
+        Int32 invoiceId = Singletons::m_currentInvoiceId;
 
         //
         // Loading Current Invoice
@@ -37,7 +37,7 @@ namespace PenyaManager {
         show();
     }
     //
-    void AdminInvoiceDetails::fillInvoiceData(const InvoicePtr &pInvoicePtr)
+    void InvoiceDetailsWidget::fillInvoiceData(const InvoicePtr &pInvoicePtr)
     {
         //
         // Product List
