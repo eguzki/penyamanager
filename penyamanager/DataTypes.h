@@ -56,6 +56,6 @@ typedef std::vector<Uint32> Uint32Vector;
 typedef std::vector<Uint64> Uint64Vector;
 
 //
-typedef std::map<Int32, Int32> RowProductIdMap;
+typedef std::map<Int32, Int32> RowIdMap;
 
 #endif // DATATYPES_H

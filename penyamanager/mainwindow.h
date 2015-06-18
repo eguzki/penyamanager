@@ -8,6 +8,7 @@
 #include "objs/Invoice.h"
 #include "objs/ProductItem.h"
 #include "objs/ProductFamily.h"
+#include "memberprofilegroupbox.h"
 #include "IPartner.h"
 
 namespace Ui {
@@ -32,8 +33,6 @@ namespace PenyaManager {
             //
             void fillProductItems(Int32 familyId);
             //
-            void fillMemberProfile(const MemberPtr &pMemberPtr);
-            //
             void createFamilyWidget(const ProductFamilyPtr &pfPtr, QListWidget *pList);
             //
             void createProductItemWidget(const ProductItemPtr &pfPtr, QListWidget *pList);
@@ -46,7 +45,9 @@ namespace PenyaManager {
             //
             Ui::MainWindow *ui;
             //
-            RowProductIdMap                         m_rowProductIdMap;
+            RowIdMap                         m_rowProductIdMap;
+            //
+            MemberProfileGroupBox       *m_pMemberProfileGroupBox;
 
         private slots:
             //
@@ -69,6 +70,8 @@ namespace PenyaManager {
             void on_accountButton_clicked();
             //
             void on_tableReservationButton_clicked();
+            //
+            void on_invoicesPushButton_clicked();
     };
 }
 

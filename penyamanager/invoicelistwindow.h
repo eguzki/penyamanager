@@ -1,27 +1,27 @@
-#ifndef ADMININVOICELISTVIEW_H
-#define ADMININVOICELISTVIEW_H
+#ifndef INVOICELISTWINDOW_H
+#define INVOICELISTWINDOW_H
 
 #include <QWidget>
 
 #include "objs/Invoice.h"
-#include "DataTypes.h"
+#include "memberprofilegroupbox.h"
 #include "IPartner.h"
 
 namespace Ui {
-class AdminInvoiceListView;
+class InvoiceListWindow;
 }
 
 namespace PenyaManager {
     //
-    class AdminInvoiceListView : public IPartner
+    class InvoiceListWindow : public IPartner
     {
         Q_OBJECT
 
         public:
             //
-            explicit AdminInvoiceListView(QWidget *parent, const CentralWidgetCallback &callback);
+            explicit InvoiceListWindow(QWidget *parent = 0);
             //
-            ~AdminInvoiceListView();
+            ~InvoiceListWindow();
             //
             void init();
 
@@ -33,21 +33,21 @@ namespace PenyaManager {
 
         private slots:
             //
-            void on_clearPushButton_clicked();
+            void on_searchPushButton_clicked();
+            //
+            void on_backPushButton_clicked();
             //
             void on_prevPagePushButton_clicked();
             //
             void on_nextPagePushButton_clicked();
             //
-            void on_searchPushButton_clicked();
-            //
             void on_invoicesTableWidget_cellDoubleClicked(int row, int column);
 
-    private:
+        private:
             //
-            Ui::AdminInvoiceListView *ui;
+            Ui::InvoiceListWindow *ui;
             //
-            CentralWidgetCallback       m_switchCentralWidgetCallback;
+            MemberProfileGroupBox       *m_pMemberProfileGroupBox;
             //
             Uint32                      m_currentPage;
             //
@@ -57,4 +57,4 @@ namespace PenyaManager {
     };
 }
 
-#endif // ADMININVOICELISTVIEW_H
+#endif // INVOICELISTWINDOW_H

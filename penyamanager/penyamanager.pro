@@ -43,7 +43,11 @@ SOURCES += main.cpp\
         invoicewindow.cpp \
         depositwindow.cpp \
         accountview.cpp \
-        tablereservationview.cpp
+        tablereservationview.cpp \
+        invoicelistwindow.cpp \ 
+        invoicedetailswidget.cpp \
+        memberprofilegroupbox.cpp \
+    invoicedetailswindow.cpp
 
 HEADERS  += mainwindow.h\
         singletons.h\
@@ -68,7 +72,11 @@ HEADERS  += mainwindow.h\
         invoicewindow.h \
         depositwindow.h \
         accountview.h \
-        tablereservationview.h
+        tablereservationview.h \
+        invoicelistwindow.h \ 
+        invoicedetailswidget.h \
+        memberprofilegroupbox.h \
+    invoicedetailswindow.h
 
         FORMS    += mainwindow.ui\
         loginwindow.ui \
@@ -76,4 +84,8 @@ HEADERS  += mainwindow.h\
         invoicewindow.ui \
         depositwindow.ui \
         accountview.ui \
-        tablereservationview.ui
+        tablereservationview.ui \
+        invoicelistwindow.ui \ 
+        invoicedetailswidget.ui \
+        memberprofilegroupbox.ui \
+    invoicedetailswindow.ui

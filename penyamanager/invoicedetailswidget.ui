@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>AdminInvoiceDetails</class>
- <widget class="QWidget" name="AdminInvoiceDetails">
+ <class>InvoiceDetailsWidget</class>
+ <widget class="QWidget" name="InvoiceDetailsWidget">
   <property name="geometry">
    <rect>
     <x>0</x>

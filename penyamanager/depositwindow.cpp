@@ -11,9 +11,11 @@ namespace PenyaManager {
     //
     DepositWindow::DepositWindow(QWidget *parent) :
         IPartner(parent),
-        ui(new Ui::DepositWindow)
+        ui(new Ui::DepositWindow),
+        m_pMemberProfileGroupBox(new MemberProfileGroupBox)
     {
         ui->setupUi(this);
+        this->ui->topPanelWidget->layout()->addWidget(m_pMemberProfileGroupBox);
         this->connect(this->ui->pushButton_00, &QPushButton::clicked, std::bind(&DepositWindow::on_pushButton_number_clicked, this, 0));
         this->connect(this->ui->pushButton_01, &QPushButton::clicked, std::bind(&DepositWindow::on_pushButton_number_clicked, this, 1));
         this->connect(this->ui->pushButton_02, &QPushButton::clicked, std::bind(&DepositWindow::on_pushButton_number_clicked, this, 2));
@@ -38,7 +40,7 @@ namespace PenyaManager {
         //
 
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
-        fillMemberProfile(pCurrMemberPtr);
+        this->m_pMemberProfileGroupBox->init(pCurrMemberPtr);
 
         // Current deposit reset
         this->ui->depositLabel->setText("");
@@ -49,19 +51,6 @@ namespace PenyaManager {
         //
 
         show();
-    }
-    //
-    void DepositWindow::fillMemberProfile(const MemberPtr &pMemberPtr)
-    {
-        QString imagePath = QDir(Constants::kImageRootPath).filePath(pMemberPtr->m_imagePath);
-        QPixmap memberPixmap = Utils::getImage(imagePath);
-        this->ui->memberImage->setPixmap(memberPixmap);
-        this->ui->memberImage->setFixedWidth(Constants::kMemberImageWidth);
-        this->ui->memberImage->setFixedHeight(Constants::kMemberImageHeigth);
-        this->ui->memberImage->setScaledContents(true);
-        this->ui->memberNameLabel->setText(pMemberPtr->m_name + " " + pMemberPtr->m_surname);
-        this->ui->memberIdInfoLabel->setText(QString::number(pMemberPtr->m_id));
-        this->ui->memberAccountInfoLabel->setText(QString::number(pMemberPtr->m_balance, 'f', 2));
     }
     //
     void DepositWindow::on_backButton_clicked()

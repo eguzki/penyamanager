@@ -1,5 +1,5 @@
-#ifndef ADMININVOICEDETAILS_H
-#define ADMININVOICEDETAILS_H
+#ifndef INVOICEDETAILSWIDGET_H
+#define INVOICEDETAILSWIDGET_H
 
 #include <QWidget>
 
@@ -8,20 +8,20 @@
 
 namespace Ui {
     //
-    class AdminInvoiceDetails;
+    class InvoiceDetailsWidget;
 }
 
 namespace PenyaManager {
     //
-    class AdminInvoiceDetails : public IPartner
+    class InvoiceDetailsWidget : public IPartner
     {
         Q_OBJECT
 
         public:
             //
-            explicit AdminInvoiceDetails(QWidget *parent = 0);
+            explicit InvoiceDetailsWidget(QWidget *parent = 0);
             //
-            ~AdminInvoiceDetails();
+            ~InvoiceDetailsWidget();
             //
             void init();
 
@@ -31,9 +31,9 @@ namespace PenyaManager {
 
         private:
             //
-            Ui::AdminInvoiceDetails *ui;
+            Ui::InvoiceDetailsWidget *ui;
     };
 
 }
 
-#endif // ADMININVOICEDETAILS_H
+#endif // INVOICEDETAILSWIDGET_H

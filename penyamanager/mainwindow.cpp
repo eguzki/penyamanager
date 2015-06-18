@@ -16,9 +16,11 @@ namespace PenyaManager {
     //
     MainWindow::MainWindow(QWidget *parent) :
         IPartner(parent),
-        ui(new Ui::MainWindow)
+        ui(new Ui::MainWindow),
+        m_pMemberProfileGroupBox(new MemberProfileGroupBox)
     {
         ui->setupUi(this);
+        this->ui->topPanelWidget->layout()->addWidget(m_pMemberProfileGroupBox);
 
         this->connect(this->ui->familyListWidget, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(familyItemClicked(QListWidgetItem*)));
         this->connect(this->ui->productListWidget, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(productItemClicked(QListWidgetItem*)));
@@ -47,7 +49,7 @@ namespace PenyaManager {
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
         pCurrMemberPtr = Singletons::m_pDAO->getActiveMemberById(pCurrMemberPtr->m_id);
         Singletons::m_pCurrMember = pCurrMemberPtr;
-        fillMemberProfile(pCurrMemberPtr);
+        this->m_pMemberProfileGroupBox->init(pCurrMemberPtr);
 
         //
         // Loading families
@@ -180,21 +182,6 @@ namespace PenyaManager {
         Int32 familyId = item->data(Constants::kIdRole).toInt();
         fillProductItems(familyId);
     }
-
-    //
-    void MainWindow::fillMemberProfile(const MemberPtr &pMemberPtr)
-    {
-        QString imagePath = QDir(Constants::kImageRootPath).filePath(pMemberPtr->m_imagePath);
-        QPixmap memberPixmap = Utils::getImage(imagePath);
-        this->ui->memberImage->setPixmap(memberPixmap);
-        this->ui->memberImage->setFixedWidth(Constants::kMemberImageWidth);
-        this->ui->memberImage->setFixedHeight(Constants::kMemberImageHeigth);
-        this->ui->memberImage->setScaledContents(true);
-        this->ui->memberNameLabel->setText(pMemberPtr->m_name + " " + pMemberPtr->m_surname);
-        this->ui->memberIdInfo->setText(QString::number(pMemberPtr->m_id));
-        this->ui->memberBalanceInfo->setText(QString::number(pMemberPtr->m_balance, 'f', 2));
-    }
-
     //
     void MainWindow::fillInvoiceData(const InvoicePtr &pInvoicePtr)
     {
@@ -317,4 +304,12 @@ namespace PenyaManager {
         // call table reservation window
         switchWindow(WindowKey::kTableReservationViewWindowKey);
     }
+    //
+    void MainWindow::on_invoicesPushButton_clicked()
+    {
+        // call table reservation window
+        switchWindow(WindowKey::kInvoiceListWindoKey);
+    }
 }
+
+

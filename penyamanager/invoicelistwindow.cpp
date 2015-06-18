@@ -1,19 +1,20 @@
 //
 
 #include "singletons.h"
-#include "admininvoicelistview.h"
-#include "ui_admininvoicelistview.h"
+#include "invoicelistwindow.h"
+#include "ui_invoicelistwindow.h"
 
 namespace PenyaManager {
     //
-    AdminInvoiceListView::AdminInvoiceListView(QWidget *parent, const CentralWidgetCallback &callback) :
+    InvoiceListWindow::InvoiceListWindow(QWidget *parent) :
         IPartner(parent),
-        ui(new Ui::AdminInvoiceListView),
-        m_switchCentralWidgetCallback(callback),
+        ui(new Ui::InvoiceListWindow),
+        m_pMemberProfileGroupBox(new MemberProfileGroupBox),
         m_currentPage(0),
         m_firstTime(true)
     {
         ui->setupUi(this);
+        this->ui->topPanelWidget->layout()->addWidget(m_pMemberProfileGroupBox);
 
         // initialize calendar inital values
         QDate toInitialDate = QDate::currentDate();
@@ -27,13 +28,20 @@ namespace PenyaManager {
         this->ui->toDateResultValueLabel->clear();
     }
     //
-    AdminInvoiceListView::~AdminInvoiceListView()
+    InvoiceListWindow::~InvoiceListWindow()
     {
         delete ui;
     }
     //
-    void AdminInvoiceListView::init()
+    void InvoiceListWindow::init()
     {
+        //
+        // Loading User profile
+        //
+
+        MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
+        this->m_pMemberProfileGroupBox->init(pCurrMemberPtr);
+
         if (this->m_firstTime) {
             updateResults();
         }
@@ -45,40 +53,41 @@ namespace PenyaManager {
         show();
     }
     //
-    void AdminInvoiceListView::on_clearPushButton_clicked()
+    void InvoiceListWindow::on_searchPushButton_clicked()
     {
-        this->ui->memberIdLineEdit->clear();
+        // when user pushes search, afterwards, on init() results are not updated
+        this->m_firstTime = false;
+        m_currentPage = 0;
+        updateResults();
     }
     //
-    void AdminInvoiceListView::on_prevPagePushButton_clicked()
+    void InvoiceListWindow::on_backPushButton_clicked()
+    {
+        switchWindow(WindowKey::kMainWindowKey);
+    }
+    //
+    void InvoiceListWindow::on_prevPagePushButton_clicked()
     {
         m_currentPage--;
         updateResults();
     }
     //
-    void AdminInvoiceListView::on_nextPagePushButton_clicked()
+    void InvoiceListWindow::on_nextPagePushButton_clicked()
     {
         m_currentPage++;
         updateResults();
     }
     //
-    void AdminInvoiceListView::updateResults()
+    void InvoiceListWindow::updateResults()
     {
         InvoiceListPtr pInvoiceList;
         InvoiceListStatsPtr pInvoiceListStats;
-        bool ok;
-        Int32 memberId = this->ui->memberIdLineEdit->text().toInt(&ok);
+        MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
         QDate fromDate = this->ui->fromCalendarWidget->selectedDate();
         // add one day to "toDate" to be included
         QDate toDate = this->ui->toCalendarWidget->selectedDate().addDays(1);
-        if (!ok) {
-            this->ui->memberIdLineEdit->clear();
-            pInvoiceList = Singletons::m_pDAO->getInvoiceList(fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
-            pInvoiceListStats = Singletons::m_pDAO->getInvoiceListStats(fromDate, toDate);
-        } else {
-            pInvoiceList = Singletons::m_pDAO->getInvoiceListByMemberId(memberId, fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
-            pInvoiceListStats = Singletons::m_pDAO->getInvoiceListByMemberIdStats(memberId, fromDate, toDate);
-        }
+        pInvoiceList = Singletons::m_pDAO->getInvoiceListByMemberId(pCurrMemberPtr->m_id, fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
+        pInvoiceListStats = Singletons::m_pDAO->getInvoiceListByMemberIdStats(pCurrMemberPtr->m_id, fromDate, toDate);
         // enable-disable pagination buttons
         // total num pages
         Uint32 numPages = (Uint32)ceil((Float)pInvoiceListStats->m_totalNumInvoices/Constants::kInvoiceListPageCount);
@@ -96,15 +105,7 @@ namespace PenyaManager {
         fillInvoiceList(pInvoiceList);
     }
     //
-    void AdminInvoiceListView::on_searchPushButton_clicked()
-    {
-        // when user pushes search, afterwards, on init() results are not updated
-        this->m_firstTime = false;
-        m_currentPage = 0;
-        updateResults();
-    }
-    //
-    void AdminInvoiceListView::fillInvoiceList(InvoiceListPtr pInvoiceListPtr)
+    void InvoiceListWindow::fillInvoiceList(InvoiceListPtr pInvoiceListPtr)
     {
         // table
         this->ui->invoicesTableWidget->setColumnCount(4);
@@ -140,7 +141,7 @@ namespace PenyaManager {
         }
     }
     //
-    void AdminInvoiceListView::on_invoicesTableWidget_cellDoubleClicked(int row, int column)
+    void InvoiceListWindow::on_invoicesTableWidget_cellDoubleClicked(int row, int column)
     {
         UNUSEDPARAMETER(column);
         auto rowMap = m_rowProductIdMap.find(row);
@@ -153,8 +154,8 @@ namespace PenyaManager {
         // use static global variable to pass argument
         Singletons::m_currentInvoiceId = invoiceId;
 
-        // call invoice details window throw adminmainwindow
-        m_switchCentralWidgetCallback(WindowKey::kInvoiceDetailsWindowKey);
+        // call invoice details window
+        switchWindow(WindowKey::kInvoiceDetailsWindowKey);
     }
 }
 
