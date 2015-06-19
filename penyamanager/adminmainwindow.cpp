@@ -19,6 +19,7 @@ namespace PenyaManager {
         this->connect(this->ui->actionSlow_payers, &QAction::triggered, std::bind(&AdminMainWindow::on_slow_payers_button_triggered, this));
         this->connect(this->ui->actionInvoice_list, &QAction::triggered, std::bind(&AdminMainWindow::on_invoice_list_button_triggered, this));
         this->connect(this->ui->actionManage_providers, &QAction::triggered, std::bind(&AdminMainWindow::on_manage_providers_button_triggered, this));
+        this->connect(this->ui->actionManage_Stock, &QAction::triggered, std::bind(&AdminMainWindow::on_manage_stock_button_triggered, this));
     }
     //
     AdminMainWindow::~AdminMainWindow()
@@ -63,6 +64,12 @@ namespace PenyaManager {
     {
         // call invoice list window
         switchCentralWidget(WindowKey::kAdminProviderWindowKey);
+    }
+    //
+    void AdminMainWindow::on_manage_stock_button_triggered()
+    {
+        // call invoice list window
+        switchCentralWidget(WindowKey::kStockManagementWindowKey);
     }
     //
     void AdminMainWindow::switchCentralWidget(WindowKey key)

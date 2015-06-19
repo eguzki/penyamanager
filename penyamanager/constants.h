@@ -10,7 +10,7 @@ namespace PenyaManager {
             kLoginWindowKey, kMainWindowKey, kInvoiceWindowKey, kInvoiceListWindoKey, kDepositsWindowKey,
             kAccountViewWindowKey, kTableReservationViewWindowKey, kAdminLoginWindowKey,
             kAdminMemberInfoWindowKey, kAdminSlowPayersWindowKey, kAdminInvoiceListWindowKey,
-            kInvoiceDetailsWindowKey, kAdminProviderWindowKey, kAdminNewProviderKey
+            kInvoiceDetailsWindowKey, kAdminProviderWindowKey, kAdminNewProviderKey, kStockManagementWindowKey
     };
     //
     typedef std::function<void(WindowKey)>	CentralWidgetCallback;
@@ -35,6 +35,8 @@ namespace PenyaManager {
             static const Uint32     kMemberImageHeigth;
             // Invoice List page count
             static const Uint32     kInvoiceListPageCount;
+            // Product List page count
+            static const Uint32     kProductListPageCount;
 
         private:
             Constants() {}

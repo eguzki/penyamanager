@@ -85,6 +85,10 @@ namespace PenyaManager {
             ProductItemListPtr getProductsFromProvider(Int32 providerId);
             //
             void createProvider(const QString &name, const QString &imageFileName, const QString &phone);
+            //
+            ProductItemListPtr getProductsList(Uint32 page, Uint32 count);
+            //
+            ProductListStatsPtr getProductsListStats();
 
         private:
             //
@@ -147,6 +151,10 @@ namespace PenyaManager {
             QSqlQuery               m_productItemsByProviderQuery;
             //
             QSqlQuery               m_createProviderQuery;
+            //
+            QSqlQuery               m_productItemsQuery;
+            //
+            QSqlQuery               m_productItemsStatsQuery;
     };
 }
 #endif // DAO_H

@@ -35,7 +35,9 @@ namespace PenyaManager {
             m_invoiceListStatsQuery(m_db),
             m_providerListQuery(m_db),
             m_productItemsByProviderQuery(m_db),
-            m_createProviderQuery(m_db)
+            m_createProviderQuery(m_db),
+            m_productItemsQuery(m_db),
+            m_productItemsStatsQuery(m_db)
     {
         // configure db connection
         m_db.setHostName(hostname);
@@ -50,7 +52,7 @@ namespace PenyaManager {
         m_productFamiliesQuery.prepare("SELECT idproduct_family, name, image FROM product_family WHERE active = 1");
 
         // ProductItems by family
-        m_productItemsByFamilyQuery.prepare("SELECT idproduct_item, name, image, reg_date, price FROM product_item WHERE active = 1 AND idproduct_family = :familyId");
+        m_productItemsByFamilyQuery.prepare("SELECT idproduct_item, name, image, reg_date, price, idprovider FROM product_item WHERE active = 1 AND idproduct_family = :familyId");
 
         // Member by name
         m_memberByIdQuery.prepare(
@@ -234,6 +236,16 @@ namespace PenyaManager {
                 "(name, image, reg_date, phone) "
                 "VALUES (:name, :image, :reg_date, :phone)"
                 );
+        // product items query
+        m_productItemsQuery.prepare(
+                "SELECT idproduct_item, name, active, image, reg_date, price, idproduct_family, idprovider FROM product_item "
+                "ORDER BY reg_date DESC "
+                "LIMIT :limit OFFSET :offset"
+                );
+        // product items stats query
+        m_productItemsStatsQuery.prepare(
+                "SELECT COUNT(*) FROM product_item"
+                );
     }
 
     //
@@ -299,7 +311,8 @@ namespace PenyaManager {
             QString image = m_productItemsByFamilyQuery.value(2).toString();
             QDateTime regDate = m_productItemsByFamilyQuery.value(3).toDateTime();
             Float price = m_productItemsByFamilyQuery.value(4).toFloat();
-            ProductItemPtr pfPtr(new ProductItem(name, image, true, regDate, familyId, price));
+            Int32 providerId = m_productItemsByFamilyQuery.value(5).toInt();
+            ProductItemPtr pfPtr(new ProductItem(name, image, true, regDate, familyId, price, providerId));
             pfPtr->m_id = id;
             pfListPrt->push_back(pfPtr);
         }
@@ -863,5 +876,48 @@ namespace PenyaManager {
             qDebug() << m_createProviderQuery.lastError();
         }
         m_createProviderQuery.finish();
+    }
+    //
+    ProductItemListPtr DAO::getProductsList(Uint32 page, Uint32 count)
+    {
+        // only active invoices
+        m_productItemsQuery.bindValue(":limit", count);
+        m_productItemsQuery.bindValue(":offset", page * count);
+        if (!m_productItemsQuery.exec())
+        {
+            qDebug() << m_productItemsQuery.lastError();
+        }
+
+        ProductItemListPtr pProductItemListPtr(new ProductItemList);
+        while (m_productItemsQuery.next()) {
+            ProductItemPtr pProductItemPtr(new ProductItem);
+            pProductItemPtr->m_id =  m_productItemsQuery.value(0).toInt();
+            pProductItemPtr->m_name =  m_productItemsQuery.value(1).toString();
+            pProductItemPtr->m_active =  m_productItemsQuery.value(2).toInt() == 1;
+            pProductItemPtr->m_imagePath =  m_productItemsQuery.value(3).toString();
+            pProductItemPtr->m_regDate =  m_productItemsQuery.value(4).toDateTime();
+            pProductItemPtr->m_price =  m_productItemsQuery.value(5).toFloat();
+            pProductItemPtr->m_familyId =  m_productItemsQuery.value(6).toInt();
+            pProductItemPtr->m_providerId =  m_productItemsQuery.value(7).toInt();
+            pProductItemListPtr->push_back(pProductItemPtr);
+        }
+
+        m_productItemsQuery.finish();
+        return pProductItemListPtr;
+    }
+    //
+    ProductListStatsPtr DAO::getProductsListStats()
+    {
+        ProductListStatsPtr pProductListStatsPtr(new ProductListStats);
+        pProductListStatsPtr->m_totalNumProducts = 0;
+        if (!m_productItemsStatsQuery.exec())
+        {
+            qDebug() << m_productItemsStatsQuery.lastError();
+        } else {
+            m_productItemsStatsQuery.next();
+            pProductListStatsPtr->m_totalNumProducts = m_productItemsStatsQuery.value(0).toUInt();
+        }
+        m_productItemsStatsQuery.finish();
+        return pProductListStatsPtr;
     }
 }
