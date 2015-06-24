@@ -1,5 +1,9 @@
 //
 
+#include <QFileDialog>
+#include <QTextStream>
+#include <QMessageBox>
+
 #include "utils.h"
 #include "singletons.h"
 #include "stockmanagementwindow.h"
@@ -24,7 +28,7 @@ namespace PenyaManager {
     void StockManagementWindow::initializeTable()
     {
         // table
-        this->ui->productsTableWidget->setColumnCount(8);
+        this->ui->productsTableWidget->setColumnCount(9);
         // invoice table Header
         QStringList headers;
         headers.append("Image");
@@ -35,6 +39,7 @@ namespace PenyaManager {
         headers.append("price/unit");
         headers.append("familyId");
         headers.append("providerId");
+        headers.append("# units");
 
         this->ui->productsTableWidget->setHorizontalHeaderLabels(headers);
         this->ui->productsTableWidget->setColumnWidth(0, Constants::kFamilyImageWidth);
@@ -45,6 +50,7 @@ namespace PenyaManager {
         this->ui->productsTableWidget->setColumnWidth(5, 100);
         this->ui->productsTableWidget->setColumnWidth(6, 100);
         this->ui->productsTableWidget->setColumnWidth(7, 100);
+        this->ui->productsTableWidget->setColumnWidth(8, 100);
     }
     //
     void StockManagementWindow::init()
@@ -63,12 +69,36 @@ namespace PenyaManager {
     //
     void StockManagementWindow::on_csvPushButton_clicked()
     {
+        // Assume product list is not empty (buttons should be disabled)
+        QString filename = QFileDialog::getSaveFileName(this, tr("Export CSV"));
 
+        if (filename.isNull()){
+            return;
+        }
+
+        QFile f(filename);
+        if (!f.open( QIODevice::WriteOnly )) {
+            QMessageBox::warning(this, "Unable to save file", "Error opening " + filename);
+            return;
+        }
+        QTextStream out(&f);
+        // print header
+        out << "name, stock" << "\n";
+
+        // fetch data
+        ProductItemListPtr pfListPtr = Singletons::m_pDAO->getProductsList(0, 100000);
+        for (ProductItemList::iterator iter = pfListPtr->begin(); iter != pfListPtr->end(); ++iter)
+        {
+            ProductItemPtr pProductPtr = *iter;
+            out << pProductPtr->m_name << ", " << QString::number(pProductPtr->m_stock) << "\n";
+        }
+        f.close();
+        QMessageBox::information(this, "export stock CSV", "Stock exported to " + filename);
     }
     //
     void StockManagementWindow::on_printPushButton_clicked()
     {
-
+        //TODO
     }
     //
     void StockManagementWindow::on_prevPagePushButton_clicked()
@@ -98,6 +128,14 @@ namespace PenyaManager {
         this->ui->totalProductsValueLabel->setText(QString::number(pProductListStats->m_totalNumProducts));
         // fill product list
         fillProductList(pfListPtr);
+        //
+        if (pfListPtr->size() > 0) {
+            this->ui->csvPushButton->setEnabled(true);
+            this->ui->printPushButton->setEnabled(true);
+        } else {
+            this->ui->csvPushButton->setEnabled(false);
+            this->ui->printPushButton->setEnabled(false);
+        }
     }
     //
     void StockManagementWindow::fillProductList(const ProductItemListPtr &pProductItemListPtr)
@@ -132,6 +170,8 @@ namespace PenyaManager {
             this->ui->productsTableWidget->setItem(rowCount, 6, new QTableWidgetItem(QString::number(pProductPtr->m_familyId)));
             //  product productid
             this->ui->productsTableWidget->setItem(rowCount, 7, new QTableWidgetItem(QString::number(pProductPtr->m_providerId)));
+            //  product stock
+            this->ui->productsTableWidget->setItem(rowCount, 8, new QTableWidgetItem(QString::number(pProductPtr->m_stock)));
             rowCount++;
         }
     }

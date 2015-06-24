@@ -15,7 +15,7 @@ namespace PenyaManager
             //
             ProductItem();
             //
-            ProductItem(const QString &name, const QString &imagePath, bool active, const QDateTime &regDate, Int32 familyId, Float price, Int32 providerId);
+            ProductItem(const QString &name, const QString &imagePath, bool active, const QDateTime &regDate, Int32 familyId, Float price, Int32 providerId, Int32 stock);
             //
             virtual ~ProductItem(){}
 
@@ -36,6 +36,8 @@ namespace PenyaManager
             Float               m_price;
             //
             Int32               m_providerId;
+            //
+            Int32               m_stock;
     };
 
     //

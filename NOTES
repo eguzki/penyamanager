@@ -82,5 +82,5 @@ http://stackoverflow.com/questions/10369826/how-can-i-disable-alt-f4-window-clos
 *** Provider List (name , list products).
 **** New provider
 *** Stock management (list products)
-**** export to csv (TODO)
+**** export to csv
 **** add item count to product item (and logic to increment and decrement) (TODO)

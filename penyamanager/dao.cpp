@@ -238,7 +238,7 @@ namespace PenyaManager {
                 );
         // product items query
         m_productItemsQuery.prepare(
-                "SELECT idproduct_item, name, active, image, reg_date, price, idproduct_family, idprovider FROM product_item "
+                "SELECT idproduct_item, name, active, image, reg_date, price, idproduct_family, idprovider, stock FROM product_item "
                 "ORDER BY reg_date DESC "
                 "LIMIT :limit OFFSET :offset"
                 );
@@ -306,14 +306,14 @@ namespace PenyaManager {
         ProductItemListPtr pfListPrt(new ProductItemList);
 
         while (m_productItemsByFamilyQuery.next()) {
-            Uint32 id = m_productItemsByFamilyQuery.value(0).toUInt();
-            QString name = m_productItemsByFamilyQuery.value(1).toString();
-            QString image = m_productItemsByFamilyQuery.value(2).toString();
-            QDateTime regDate = m_productItemsByFamilyQuery.value(3).toDateTime();
-            Float price = m_productItemsByFamilyQuery.value(4).toFloat();
-            Int32 providerId = m_productItemsByFamilyQuery.value(5).toInt();
-            ProductItemPtr pfPtr(new ProductItem(name, image, true, regDate, familyId, price, providerId));
-            pfPtr->m_id = id;
+            ProductItemPtr pfPtr(new ProductItem);
+            pfPtr->m_id = m_productItemsByFamilyQuery.value(0).toUInt();
+            pfPtr->m_name = m_productItemsByFamilyQuery.value(1).toString();
+            pfPtr->m_imagePath = m_productItemsByFamilyQuery.value(2).toString();
+            pfPtr->m_regDate = m_productItemsByFamilyQuery.value(3).toDateTime();
+            pfPtr->m_price = m_productItemsByFamilyQuery.value(4).toFloat();
+            pfPtr->m_providerId = m_productItemsByFamilyQuery.value(5).toInt();
+            pfPtr->m_active = true;
             pfListPrt->push_back(pfPtr);
         }
         m_productFamiliesQuery.finish();
@@ -899,6 +899,7 @@ namespace PenyaManager {
             pProductItemPtr->m_price =  m_productItemsQuery.value(5).toFloat();
             pProductItemPtr->m_familyId =  m_productItemsQuery.value(6).toInt();
             pProductItemPtr->m_providerId =  m_productItemsQuery.value(7).toInt();
+            pProductItemPtr->m_stock =  m_productItemsQuery.value(8).toInt();
             pProductItemListPtr->push_back(pProductItemPtr);
         }
 
