@@ -131,6 +131,7 @@ CREATE TABLE IF NOT EXISTS `alegria`.`product_item` (
   `idproduct_family` INT(11) NOT NULL,
   `price` DECIMAL(10,2) NOT NULL,
   `idprovider` INT(11) NOT NULL,
+  `stock` INT(11) NOT NULL,
   PRIMARY KEY (`idproduct_item`),
   INDEX `fk_product_item_product_family_idx` (`idproduct_family` ASC),
   INDEX `fk_product_item_provider1_idx` (`idprovider` ASC),

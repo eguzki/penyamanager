@@ -9,8 +9,8 @@
 **** Consumo producto fecha
 **** Consumo producto socio fecha
 **** GEstion prducto/familia
-**** Listado stock (editable, imprimir)
 **** edit provider??
+**** print stock list
 *** Account
 **** Verify deposits
 **** Total account balance (deposits can be edited). total deposits, total invoice, total stock cost
@@ -62,6 +62,7 @@ http://stackoverflow.com/questions/10369826/how-can-i-disable-alt-f4-window-clos
 *** unfinished invoice is loaded
 ** Member invoice confirmation window
 *** invoices are always applied to account. No need to verify.
+*** items count substracted from stock
 ** Member table reservation window
 *** members can cancel
 *** members can only reserve one table in a given date (date, lunch/dinner)
@@ -81,3 +82,5 @@ http://stackoverflow.com/questions/10369826/how-can-i-disable-alt-f4-window-clos
 ** Bodega
 *** Provider List (name , list products).
 **** New provider
+*** Stock management (list products)
+**** export to csv

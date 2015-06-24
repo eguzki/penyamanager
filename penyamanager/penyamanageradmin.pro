@@ -45,7 +45,8 @@ SOURCES += adminmain.cpp\
         admininvoicelistview.cpp \
         invoicedetailswidget.cpp \
         providermanagerview.cpp \
-        adminnewprovider.cpp
+        adminnewprovider.cpp \
+    stockmanagementwindow.cpp
 
 HEADERS  += singletons.h\
         dao.h\
@@ -72,7 +73,8 @@ HEADERS  += singletons.h\
         admininvoicelistview.h \
         invoicedetailswidget.h \
         providermanagerview.h \
-        adminnewprovider.h
+        adminnewprovider.h \
+    stockmanagementwindow.h
 
 FORMS    += adminloginwindow.ui\
         admon_screen.ui\
@@ -82,4 +84,5 @@ FORMS    += adminloginwindow.ui\
         admininvoicelistview.ui \
         invoicedetailswidget.ui \
         providermanagerview.ui \
-    adminnewprovider.ui
+    adminnewprovider.ui \
+    stockmanagementwindow.ui
