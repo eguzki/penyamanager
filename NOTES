@@ -8,7 +8,6 @@
 **** Ingreso (user input-> distribuidores)
 **** Consumo producto fecha
 **** Consumo producto socio fecha
-**** GEstion prducto/familia
 **** edit provider??
 **** print stock list
 *** Account
@@ -84,3 +83,4 @@ http://stackoverflow.com/questions/10369826/how-can-i-disable-alt-f4-window-clos
 **** New provider
 *** Stock management (list products)
 **** export to csv
+** Manage product/family (TODO)
