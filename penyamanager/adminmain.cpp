@@ -9,6 +9,7 @@
 #include "providermanagerview.h"
 #include "adminnewprovider.h"
 #include "stockmanagementwindow.h"
+#include "familyitemmanagementwindow.h"
 #include "constants.h"
 #include "IPartner.h"
 #include "singletons.h"
@@ -36,6 +37,7 @@ int main(int argc, char *argv[])
     PenyaManager::AdminNewProvider *pAdminNewProvider = new PenyaManager::AdminNewProvider(NULL, adminMainWindowSwitchCallback);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kAdminNewProviderKey, pAdminNewProvider);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kStockManagementWindowKey, new PenyaManager::StockManagementWindow);
+    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kFamilyItemManagementWindowKey, new PenyaManager::FamilyItemManagementWindow);
 
     // entry point -> adminlogin window
     PenyaManager::IPartner* pAdminLoginPartner = PenyaManager::Singletons::m_pParnetFinder->getPartner(PenyaManager::WindowKey::kAdminLoginWindowKey);

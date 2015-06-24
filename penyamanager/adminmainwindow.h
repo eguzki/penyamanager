@@ -36,6 +36,8 @@ namespace PenyaManager {
             void on_manage_providers_button_triggered();
             //
             void on_manage_stock_button_triggered();
+            //
+            void on_manage_family_items_button_triggered();
 
         private:
             //
