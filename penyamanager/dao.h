@@ -89,6 +89,8 @@ namespace PenyaManager {
             ProductItemListPtr getProductsList(Uint32 page, Uint32 count);
             //
             ProductListStatsPtr getProductsListStats();
+            //
+            void updateStock(Int32 productItemId, Int32 count);
 
         private:
             //
@@ -155,6 +157,8 @@ namespace PenyaManager {
             QSqlQuery               m_productItemsQuery;
             //
             QSqlQuery               m_productItemsStatsQuery;
+            //
+            QSqlQuery               m_updateStockQuery;
     };
 }
 #endif // DAO_H

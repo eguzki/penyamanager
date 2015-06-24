@@ -37,7 +37,8 @@ namespace PenyaManager {
             m_productItemsByProviderQuery(m_db),
             m_createProviderQuery(m_db),
             m_productItemsQuery(m_db),
-            m_productItemsStatsQuery(m_db)
+            m_productItemsStatsQuery(m_db),
+            m_updateStockQuery(m_db)
     {
         // configure db connection
         m_db.setHostName(hostname);
@@ -245,6 +246,10 @@ namespace PenyaManager {
         // product items stats query
         m_productItemsStatsQuery.prepare(
                 "SELECT COUNT(*) FROM product_item"
+                );
+        // update product item stock
+        m_updateStockQuery.prepare(
+                "UPDATE product_item SET stock = stock + :count WHERE idproduct_item = :productid"
                 );
     }
 
@@ -920,5 +925,16 @@ namespace PenyaManager {
         }
         m_productItemsStatsQuery.finish();
         return pProductListStatsPtr;
+    }
+    //
+    void DAO::updateStock(Int32 productItemId, Int32 count)
+    {
+        m_updateStockQuery.bindValue(":count", count);
+        m_updateStockQuery.bindValue(":productid", productItemId);
+        if (!m_updateStockQuery.exec())
+        {
+            qDebug() << m_updateStockQuery.lastError();
+        }
+        m_updateStockQuery.finish();
     }
 }

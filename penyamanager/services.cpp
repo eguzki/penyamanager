@@ -61,6 +61,13 @@ namespace PenyaManager {
         QString description = QString("invoice ref %1").arg(invoiceId);
         // account transaction has totalInvoice as negative amount
         this->createAccountTransaction(pMemberPtr->m_id, -totalInvoice, description, TransactionType::Invoice);
+        // Update stock
+        for (InvoiceProductItemList::iterator iter = pInvoiceProductItemListPtr->begin(); iter != pInvoiceProductItemListPtr->end(); ++iter)
+        {
+            InvoiceProductItemPtr pInvoiceProductItemPtr = *iter;
+            // count as negative addition
+            Singletons::m_pDAO->updateStock(pInvoiceProductItemPtr->m_productId,-pInvoiceProductItemPtr->m_count);
+        }
     }
     //
     void Services::createAccountTransaction(Int32 memberId, Float amount, const QString &description, TransactionType type)
