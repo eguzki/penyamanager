@@ -36,9 +36,10 @@ namespace PenyaManager {
             m_providerListQuery(m_db),
             m_productItemsByProviderQuery(m_db),
             m_createProviderQuery(m_db),
-            m_productItemsQuery(m_db),
+            m_productItemListQuery(m_db),
             m_productItemsStatsQuery(m_db),
-            m_updateStockQuery(m_db)
+            m_updateStockQuery(m_db),
+            m_productItemQuery(m_db)
     {
         // configure db connection
         m_db.setHostName(hostname);
@@ -238,7 +239,7 @@ namespace PenyaManager {
                 "VALUES (:name, :image, :reg_date, :phone)"
                 );
         // product items query
-        m_productItemsQuery.prepare(
+        m_productItemListQuery.prepare(
                 "SELECT idproduct_item, name, active, image, reg_date, price, idproduct_family, idprovider, stock FROM product_item "
                 "ORDER BY reg_date DESC "
                 "LIMIT :limit OFFSET :offset"
@@ -250,6 +251,11 @@ namespace PenyaManager {
         // update product item stock
         m_updateStockQuery.prepare(
                 "UPDATE product_item SET stock = stock + :count WHERE idproduct_item = :productid"
+                );
+        // product item
+        m_productItemQuery.prepare(
+                "SELECT name, active, image, reg_date, price, idproduct_family, idprovider, stock FROM product_item "
+                "WHERE idproduct_item = :productid"
                 );
     }
 
@@ -886,29 +892,29 @@ namespace PenyaManager {
     ProductItemListPtr DAO::getProductsList(Uint32 page, Uint32 count)
     {
         // only active invoices
-        m_productItemsQuery.bindValue(":limit", count);
-        m_productItemsQuery.bindValue(":offset", page * count);
-        if (!m_productItemsQuery.exec())
+        m_productItemListQuery.bindValue(":limit", count);
+        m_productItemListQuery.bindValue(":offset", page * count);
+        if (!m_productItemListQuery.exec())
         {
-            qDebug() << m_productItemsQuery.lastError();
+            qDebug() << m_productItemListQuery.lastError();
         }
 
         ProductItemListPtr pProductItemListPtr(new ProductItemList);
-        while (m_productItemsQuery.next()) {
+        while (m_productItemListQuery.next()) {
             ProductItemPtr pProductItemPtr(new ProductItem);
-            pProductItemPtr->m_id =  m_productItemsQuery.value(0).toInt();
-            pProductItemPtr->m_name =  m_productItemsQuery.value(1).toString();
-            pProductItemPtr->m_active =  m_productItemsQuery.value(2).toInt() == 1;
-            pProductItemPtr->m_imagePath =  m_productItemsQuery.value(3).toString();
-            pProductItemPtr->m_regDate =  m_productItemsQuery.value(4).toDateTime();
-            pProductItemPtr->m_price =  m_productItemsQuery.value(5).toFloat();
-            pProductItemPtr->m_familyId =  m_productItemsQuery.value(6).toInt();
-            pProductItemPtr->m_providerId =  m_productItemsQuery.value(7).toInt();
-            pProductItemPtr->m_stock =  m_productItemsQuery.value(8).toInt();
+            pProductItemPtr->m_id =  m_productItemListQuery.value(0).toInt();
+            pProductItemPtr->m_name =  m_productItemListQuery.value(1).toString();
+            pProductItemPtr->m_active =  m_productItemListQuery.value(2).toInt() == 1;
+            pProductItemPtr->m_imagePath =  m_productItemListQuery.value(3).toString();
+            pProductItemPtr->m_regDate =  m_productItemListQuery.value(4).toDateTime();
+            pProductItemPtr->m_price =  m_productItemListQuery.value(5).toFloat();
+            pProductItemPtr->m_familyId =  m_productItemListQuery.value(6).toInt();
+            pProductItemPtr->m_providerId =  m_productItemListQuery.value(7).toInt();
+            pProductItemPtr->m_stock =  m_productItemListQuery.value(8).toInt();
             pProductItemListPtr->push_back(pProductItemPtr);
         }
 
-        m_productItemsQuery.finish();
+        m_productItemListQuery.finish();
         return pProductItemListPtr;
     }
     //
@@ -936,5 +942,27 @@ namespace PenyaManager {
             qDebug() << m_updateStockQuery.lastError();
         }
         m_updateStockQuery.finish();
+    }
+    //
+    ProductItemPtr DAO::getProductItem(Int32 productItemId)
+    {
+        ProductItemPtr pProductItemPtr(new ProductItem);
+        m_productItemQuery.bindValue(":productid", productItemId);
+        if (!m_productItemQuery.exec())
+        {
+            qDebug() << m_productItemQuery.lastError();
+        } else {
+            m_productItemQuery.next();
+            pProductItemPtr->m_name = m_productItemQuery.value(0).toString();
+            pProductItemPtr->m_active =  m_productItemQuery.value(1).toInt() == 1;
+            pProductItemPtr->m_imagePath = m_productItemQuery.value(2).toString();
+            pProductItemPtr->m_regDate = m_productItemQuery.value(3).toDateTime();
+            pProductItemPtr->m_price = m_productItemQuery.value(4).toFloat();
+            pProductItemPtr->m_familyId = m_productItemQuery.value(5).toInt();
+            pProductItemPtr->m_providerId = m_productItemQuery.value(6).toInt();
+            pProductItemPtr->m_stock = m_productItemQuery.value(7).toInt();
+        }
+        m_productItemQuery.finish();
+        return pProductItemPtr;
     }
 }

@@ -84,3 +84,4 @@ http://stackoverflow.com/questions/10369826/how-can-i-disable-alt-f4-window-clos
 *** Stock management (list products)
 **** export to csv
 ** Manage product/family (TODO)
+*** products can be edited. Price cannot be changed. To change price, inv_prid table should carry price.

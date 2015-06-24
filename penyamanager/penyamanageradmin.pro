@@ -47,7 +47,8 @@ SOURCES += adminmain.cpp\
         providermanagerview.cpp \
         adminnewprovider.cpp \
     stockmanagementwindow.cpp \
-    familyitemmanagementwindow.cpp
+    familyitemmanagementwindow.cpp \
+    adminproductitem.cpp
 
 HEADERS  += singletons.h\
         dao.h\
@@ -76,7 +77,8 @@ HEADERS  += singletons.h\
         providermanagerview.h \
         adminnewprovider.h \
     stockmanagementwindow.h \
-    familyitemmanagementwindow.h
+    familyitemmanagementwindow.h \
+    adminproductitem.h
 
 FORMS    += adminloginwindow.ui\
         admon_screen.ui\
@@ -88,4 +90,5 @@ FORMS    += adminloginwindow.ui\
         providermanagerview.ui \
     adminnewprovider.ui \
     stockmanagementwindow.ui \
-    familyitemmanagementwindow.ui
+    familyitemmanagementwindow.ui \
+    adminproductitem.ui

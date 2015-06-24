@@ -18,7 +18,7 @@ namespace PenyaManager {
 
         public:
             //
-            explicit FamilyItemManagementWindow(QWidget *parent = 0);
+            explicit FamilyItemManagementWindow(QWidget *parent, const CentralWidgetCallback &callback);
             //
             ~FamilyItemManagementWindow();
             //
@@ -47,6 +47,8 @@ namespace PenyaManager {
         private:
             //
             Ui::FamilyItemManagementWindow *ui;
+            //
+            CentralWidgetCallback       m_switchCentralWidgetCallback;
     };
 }
 

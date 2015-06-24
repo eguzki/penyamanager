@@ -9,9 +9,10 @@
 
 namespace PenyaManager {
     //
-    FamilyItemManagementWindow::FamilyItemManagementWindow(QWidget *parent) :
+    FamilyItemManagementWindow::FamilyItemManagementWindow(QWidget *parent, const CentralWidgetCallback &callback) :
         IPartner(parent),
-        ui(new Ui::FamilyItemManagementWindow)
+        ui(new Ui::FamilyItemManagementWindow),
+        m_switchCentralWidgetCallback(callback)
     {
         ui->setupUi(this);
         this->connect(this->ui->familyListWidget, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(familyItemClicked(QListWidgetItem*)));
@@ -44,7 +45,10 @@ namespace PenyaManager {
     //
     void FamilyItemManagementWindow::on_newItemPushButton_clicked()
     {
-
+        // setting m_currentProductId < 0, AdminProductItemWindow will initialize empty
+        Singletons::m_currentProductId = -1;
+        // call invoice details window throw adminmainwindow
+        m_switchCentralWidgetCallback(WindowKey::kAdminProductItemKey);
     }
     //
     void FamilyItemManagementWindow::on_newFamilyPushButton_clicked()
@@ -101,7 +105,9 @@ namespace PenyaManager {
     void FamilyItemManagementWindow::productItemClicked(QListWidgetItem* item)
     {
         Int32 productId = item->data(Constants::kIdRole).toInt();
-        //QMessageBox::critical(this, "some text", QString("product_id: %1").arg(productId));
+        Singletons::m_currentProductId = productId;
+        // call invoice details window throw adminmainwindow
+        m_switchCentralWidgetCallback(WindowKey::kAdminProductItemKey);
     }
     //
     void FamilyItemManagementWindow::fillProductItems(Int32 familyId)

@@ -27,6 +27,8 @@ class Singletons
         static PartnerFinder    *m_pParnetFinder;
         //
         static Int32            m_currentInvoiceId;
+        //
+        static Int32            m_currentProductId;
 };
 
 }
