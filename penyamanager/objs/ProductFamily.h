@@ -14,7 +14,7 @@ namespace PenyaManager
             //
             ProductFamily();
             //
-            ProductFamily(const QString &name, const QString &imagePath);
+            ProductFamily(const QString &name, const QString &imagePath, bool active);
             //
             virtual ~ProductFamily(){}
 
@@ -25,6 +25,8 @@ namespace PenyaManager
             QString             m_name;
             //
             QString             m_imagePath;
+            //
+            bool                m_active;
     };
 
     //

@@ -30,9 +30,9 @@ namespace PenyaManager {
             //
             QSqlError lastError() const;
             //
-            ProductFamilyListPtr getProductFamilies();
+            ProductFamilyListPtr getProductFamilies(bool onlyActive);
             //
-            ProductItemListPtr getProductsFromFamily(Int32 familyId);
+            ProductItemListPtr getProductsFromFamily(Int32 familyId, bool onlyActive);
             //
             MemberPtr getActiveMemberById(Int32 memberLoginId);
             //
@@ -93,6 +93,10 @@ namespace PenyaManager {
             void updateStock(Int32 productItemId, Int32 count);
             //
             ProductItemPtr getProductItem(Int32 productItemId);
+            //
+            void updateProductItem(const ProductItemPtr &pProductItemPtr);
+            //
+            void createProductItem(const ProductItemPtr &pProductItemPtr);
 
         private:
             //
@@ -163,6 +167,10 @@ namespace PenyaManager {
             QSqlQuery               m_updateStockQuery;
             //
             QSqlQuery               m_productItemQuery;
+            //
+            QSqlQuery               m_updateProductItemQuery;
+            //
+            QSqlQuery               m_createProductItemQuery;
     };
 }
 #endif // DAO_H

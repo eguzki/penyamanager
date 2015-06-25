@@ -10,10 +10,11 @@ namespace PenyaManager
     }
 
     //
-    ProductFamily::ProductFamily(const QString &name, const QString &imagePath)
+    ProductFamily::ProductFamily(const QString &name, const QString &imagePath, bool active)
         :
             m_name(name),
-            m_imagePath(imagePath)
+            m_imagePath(imagePath),
+            m_active(active)
     {
     }
 }

@@ -30,7 +30,7 @@ namespace PenyaManager {
         // Loading families
         //
 
-        ProductFamilyListPtr pfListPtr = Singletons::m_pDAO->getProductFamilies();
+        ProductFamilyListPtr pfListPtr = Singletons::m_pDAO->getProductFamilies(false);
 
         this->ui->productListWidget->clear();
 
@@ -114,7 +114,7 @@ namespace PenyaManager {
     {
         this->ui->productListWidget->clear();
 
-        ProductItemListPtr pfListPtr = Singletons::m_pDAO->getProductsFromFamily(familyId);
+        ProductItemListPtr pfListPtr = Singletons::m_pDAO->getProductsFromFamily(familyId, false);
 
         for (ProductItemList::iterator iter = pfListPtr->begin(); iter != pfListPtr->end(); ++iter)
         {

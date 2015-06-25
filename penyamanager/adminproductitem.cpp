@@ -54,7 +54,6 @@ namespace PenyaManager {
         }
 
         // validate price field
-        //
         if (this->ui->priceLineEdit->text().isEmpty())
         {
             QMessageBox::warning(this, "Data missing", "price cannot be empty");
@@ -64,6 +63,18 @@ namespace PenyaManager {
         Float price = this->ui->priceLineEdit->text().toFloat(&ok);
         if (!ok) {
             QMessageBox::warning(this, "Data not valid", "price is not valid");
+            return;
+        }
+        // validate providers
+        if (!this->ui->providerComboBox->count())
+        {
+            QMessageBox::warning(this, "Data missing", "Providers list is empty. Add some providers first");
+            return;
+        }
+        // validate families
+        if (!this->ui->familyComboBox->count())
+        {
+            QMessageBox::warning(this, "Data missing", "Family list is empty. Add some families first");
             return;
         }
 
@@ -85,6 +96,10 @@ namespace PenyaManager {
         if (Singletons::m_currentProductId >= 0) {
             // edit previous item
             pProductPtr = Singletons::m_pDAO->getProductItem(Singletons::m_currentProductId);
+            if (!pProductPtr) {
+                QMessageBox::warning(this, "Unexpected state", QString("Editing item [id: %1] not found in ddbb").arg(Singletons::m_currentProductId));
+                return;
+            }
             // save old image in case we need to delete it
             QString oldImage = pProductPtr->m_imagePath;
 
@@ -101,7 +116,7 @@ namespace PenyaManager {
                 pProductPtr->m_imagePath = destFileName;
             }
             // active
-            pProductPtr->m_active = this->ui->activeCheckBox->isEnabled();
+            pProductPtr->m_active = this->ui->activeCheckBox->isChecked();
             // regDate -> no change
             // family
             pProductPtr->m_familyId = this->ui->familyComboBox->currentData().toInt();
@@ -131,15 +146,16 @@ namespace PenyaManager {
             // name
             pProductPtr->m_name = this->ui->nameLineEdit->text();
             // imagePath
+            // can be null, allowed by ddbb schema
             pProductPtr->m_imagePath = destFileName;
             // active
-            pProductPtr->m_active = this->ui->activeCheckBox->isEnabled();
+            pProductPtr->m_active = this->ui->activeCheckBox->isChecked();
             // regDate
             pProductPtr->m_regDate = QDateTime::currentDateTime();
             // family
             pProductPtr->m_familyId = this->ui->familyComboBox->currentData().toInt();
             // price (already validated)
-            pProductPtr->m_price = this->ui->priceLineEdit->text().toFloat();
+            pProductPtr->m_price = price;
             // providerId
             pProductPtr->m_providerId = this->ui->providerComboBox->currentData().toInt();
             // stock -> no change
@@ -167,9 +183,9 @@ namespace PenyaManager {
         this->ui->imageLabel->setFixedHeight(Constants::kMemberImageHeigth);
         this->ui->imageLabel->setScaledContents(true);
         // active
-        this->ui->activeCheckBox->setEnabled(pProductPtr->m_active);
+        this->ui->activeCheckBox->setChecked(pProductPtr->m_active);
         // price, disable edit
-        this->ui->priceLineEdit->setText(QString("%1 €").arg(pProductPtr->m_price));
+        this->ui->priceLineEdit->setText(QString::number(pProductPtr->m_price));
         this->ui->priceLineEdit->setReadOnly(true);
         // provider
         this->ui->providerComboBox->clear();
@@ -191,7 +207,7 @@ namespace PenyaManager {
         this->ui->providerComboBox->setCurrentIndex(productProviderIndex);
         // family
         this->ui->familyComboBox->clear();
-        ProductFamilyListPtr pfListPtr = Singletons::m_pDAO->getProductFamilies();
+        ProductFamilyListPtr pfListPtr = Singletons::m_pDAO->getProductFamilies(false);
         currentIndex = 0;
         Int32 productFamilyIndex = -1;
         for (auto iter = pfListPtr->begin(); iter != pfListPtr->end(); ++iter)
@@ -220,7 +236,7 @@ namespace PenyaManager {
         this->ui->imageLabel->setFixedHeight(Constants::kMemberImageHeigth);
         this->ui->imageLabel->setScaledContents(true);
         // active
-        this->ui->activeCheckBox->setEnabled(true);
+        this->ui->activeCheckBox->setChecked(true);
         // price, disable edit
         this->ui->priceLineEdit->clear();
         this->ui->priceLineEdit->setReadOnly(false);
@@ -238,7 +254,7 @@ namespace PenyaManager {
         }
         // family
         this->ui->familyComboBox->clear();
-        ProductFamilyListPtr pfListPtr = Singletons::m_pDAO->getProductFamilies();
+        ProductFamilyListPtr pfListPtr = Singletons::m_pDAO->getProductFamilies(false);
         currentIndex = 0;
         for (auto iter = pfListPtr->begin(); iter != pfListPtr->end(); ++iter)
         {
