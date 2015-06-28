@@ -2,6 +2,7 @@
 #define PRODUCTFAMILY_H
 
 #include <QString>
+#include <QDateTime>
 
 #include <DataTypes.h>
 
@@ -14,7 +15,7 @@ namespace PenyaManager
             //
             ProductFamily();
             //
-            ProductFamily(const QString &name, const QString &imagePath);
+            ProductFamily(const QString &name, const QString &imagePath, bool active, const QDateTime &regDate);
             //
             virtual ~ProductFamily(){}
 
@@ -25,6 +26,10 @@ namespace PenyaManager
             QString             m_name;
             //
             QString             m_imagePath;
+            //
+            bool                m_active;
+            //
+            QDateTime           m_regDate;
     };
 
     //

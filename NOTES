@@ -1,4 +1,7 @@
 
+* Configuration
+** ddbb host
+** image path
 * Admin
 ** Menu Dialog
 *** Members
@@ -8,7 +11,6 @@
 **** Ingreso (user input-> distribuidores)
 **** Consumo producto fecha
 **** Consumo producto socio fecha
-**** GEstion prducto/familia
 **** edit provider??
 **** print stock list
 *** Account
@@ -16,6 +18,8 @@
 **** Total account balance (deposits can be edited). total deposits, total invoice, total stock cost
 **** User account balance
 ****
+
+* highligth family icon when selected
 
 * User -> Reserva de 3 hornos y 2 fogones
 
@@ -84,3 +88,6 @@ http://stackoverflow.com/questions/10369826/how-can-i-disable-alt-f4-window-clos
 **** New provider
 *** Stock management (list products)
 **** export to csv
+** Manage product/family
+*** products can be created/edited. Price cannot be changed. To change price, inv_prid table should carry price.
+*** families can be created/edited.

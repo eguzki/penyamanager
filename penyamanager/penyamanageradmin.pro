@@ -46,7 +46,10 @@ SOURCES += adminmain.cpp\
         invoicedetailswidget.cpp \
         providermanagerview.cpp \
         adminnewprovider.cpp \
-    stockmanagementwindow.cpp
+    stockmanagementwindow.cpp \
+    familyitemmanagementwindow.cpp \
+    adminproductitem.cpp \
+    adminfamilyview.cpp
 
 HEADERS  += singletons.h\
         dao.h\
@@ -74,7 +77,10 @@ HEADERS  += singletons.h\
         invoicedetailswidget.h \
         providermanagerview.h \
         adminnewprovider.h \
-    stockmanagementwindow.h
+    stockmanagementwindow.h \
+    familyitemmanagementwindow.h \
+    adminproductitem.h \
+    adminfamilyview.h
 
 FORMS    += adminloginwindow.ui\
         admon_screen.ui\
@@ -85,4 +91,7 @@ FORMS    += adminloginwindow.ui\
         invoicedetailswidget.ui \
         providermanagerview.ui \
     adminnewprovider.ui \
-    stockmanagementwindow.ui
+    stockmanagementwindow.ui \
+    familyitemmanagementwindow.ui \
+    adminproductitem.ui \
+    adminfamilyview.ui

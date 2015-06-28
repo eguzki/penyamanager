@@ -125,7 +125,7 @@ DROP TABLE IF EXISTS `alegria`.`product_item` ;
 CREATE TABLE IF NOT EXISTS `alegria`.`product_item` (
   `idproduct_item` INT(11) NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(200) NOT NULL,
-  `image` VARCHAR(300) NOT NULL,
+  `image` VARCHAR(300) NULL,
   `active` TINYINT(1) NOT NULL,
   `reg_date` DATETIME NOT NULL,
   `idproduct_family` INT(11) NOT NULL,
