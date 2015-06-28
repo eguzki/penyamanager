@@ -11,7 +11,7 @@ namespace PenyaManager {
             kAccountViewWindowKey, kTableReservationViewWindowKey, kAdminLoginWindowKey,
             kAdminMemberInfoWindowKey, kAdminSlowPayersWindowKey, kAdminInvoiceListWindowKey,
             kInvoiceDetailsWindowKey, kAdminProviderWindowKey, kAdminNewProviderKey, kStockManagementWindowKey,
-            kFamilyItemManagementWindowKey, kAdminProductItemKey
+            kFamilyItemManagementWindowKey, kAdminProductItemKey, kAdminFamilyViewKey
     };
     //
     typedef std::function<void(WindowKey)>	CentralWidgetCallback;

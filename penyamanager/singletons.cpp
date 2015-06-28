@@ -13,6 +13,7 @@ Services *Singletons::m_pServices = 0;
 PartnerFinder *Singletons::m_pParnetFinder = 0;
 Int32 Singletons::m_currentInvoiceId = 0;
 Int32 Singletons::m_currentProductId = 0;
+Int32 Singletons::m_currentFamilyId = 0;
 
 void Singletons::Create()
 {

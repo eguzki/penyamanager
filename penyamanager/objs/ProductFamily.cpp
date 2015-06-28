@@ -10,11 +10,12 @@ namespace PenyaManager
     }
 
     //
-    ProductFamily::ProductFamily(const QString &name, const QString &imagePath, bool active)
+    ProductFamily::ProductFamily(const QString &name, const QString &imagePath, bool active, const QDateTime &regDate)
         :
             m_name(name),
             m_imagePath(imagePath),
-            m_active(active)
+            m_active(active),
+            m_regDate(regDate)
     {
     }
 }

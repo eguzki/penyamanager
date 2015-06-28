@@ -43,8 +43,10 @@ namespace PenyaManager {
             void familyItemClicked(QListWidgetItem* item);
             //
             void productItemClicked(QListWidgetItem* item);
+            //
+            void on_editFamilyPushButton_clicked();
 
-        private:
+    private:
             //
             Ui::FamilyItemManagementWindow *ui;
             //

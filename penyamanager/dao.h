@@ -97,6 +97,12 @@ namespace PenyaManager {
             void updateProductItem(const ProductItemPtr &pProductItemPtr);
             //
             void createProductItem(const ProductItemPtr &pProductItemPtr);
+            //
+            ProductFamilyPtr getProductFamily(Int32 familyId);
+            //
+            void updateProductFamilyItem(const ProductFamilyPtr &pFamilyPtr);
+            //
+            void createProductFamilyItem(const ProductFamilyPtr &pFamilyPtr);
 
         private:
             //
@@ -171,6 +177,12 @@ namespace PenyaManager {
             QSqlQuery               m_updateProductItemQuery;
             //
             QSqlQuery               m_createProductItemQuery;
+            //
+            QSqlQuery               m_productFamilyItemQuery;
+            //
+            QSqlQuery               m_updateProductFamilyItemQuery;
+            //
+            QSqlQuery               m_createProductFamilyItemQuery;
     };
 }
 #endif // DAO_H

@@ -41,7 +41,10 @@ namespace PenyaManager {
             m_updateStockQuery(m_db),
             m_productItemQuery(m_db),
             m_updateProductItemQuery(m_db),
-            m_createProductItemQuery(m_db)
+            m_createProductItemQuery(m_db),
+            m_productFamilyItemQuery(m_db),
+            m_updateProductFamilyItemQuery(m_db),
+            m_createProductFamilyItemQuery(m_db)
     {
         // configure db connection
         m_db.setHostName(hostname);
@@ -264,7 +267,7 @@ namespace PenyaManager {
         // update product item
         m_updateProductItemQuery.prepare(
                 "UPDATE product_item "
-                "SET name=:name, image=:image, active=:active, reg_date=:reg_date, idproduct_family=:familyid, price=:price, "
+                "SET name=:name, image=:image, active=:active, idproduct_family=:familyid, price=:price, "
                 "idprovider=:providerid, stock=:stock "
                 "WHERE idproduct_item = :productid"
                 );
@@ -273,6 +276,23 @@ namespace PenyaManager {
                 "INSERT INTO product_item "
                 "(name, image, active, reg_date, idproduct_family, price, idprovider, stock) "
                 "VALUES (:name, :image, :active, :reg_date, :familyid, :price, :providerid, :stock)"
+                );
+        // product family item
+        m_productFamilyItemQuery.prepare(
+                "SELECT name, active, image, reg_date FROM product_family "
+                "WHERE idproduct_family = :familyid"
+                );
+        // update product family item
+        m_updateProductFamilyItemQuery.prepare(
+                "UPDATE product_family "
+                "SET name=:name, image=:image, active=:active "
+                "WHERE idproduct_family = :familyid"
+                );
+        // create product family item
+        m_createProductFamilyItemQuery.prepare(
+                "INSERT INTO product_family "
+                "(name, image, active, reg_date) "
+                "VALUES (:name, :image, :active, :reg_date)"
                 );
     }
 
@@ -995,7 +1015,6 @@ namespace PenyaManager {
         m_updateProductItemQuery.bindValue(":name", pProductPtr->m_name);
         m_updateProductItemQuery.bindValue(":image", pProductPtr->m_imagePath);
         m_updateProductItemQuery.bindValue(":active", (pProductPtr->m_active)?(1):(0));
-        m_updateProductItemQuery.bindValue(":reg_date", pProductPtr->m_regDate);
         m_updateProductItemQuery.bindValue(":familyid", pProductPtr->m_familyId);
         m_updateProductItemQuery.bindValue(":price", pProductPtr->m_price);
         m_updateProductItemQuery.bindValue(":providerid", pProductPtr->m_providerId);
@@ -1023,5 +1042,50 @@ namespace PenyaManager {
             qDebug() << m_createProductItemQuery.lastError();
         }
         m_createProductItemQuery.finish();
+    }
+    //
+    ProductFamilyPtr DAO::getProductFamily(Int32 familyId)
+    {
+        ProductFamilyPtr pProductFamilyPtr(new ProductFamily);
+        m_productFamilyItemQuery.bindValue(":familyid", familyId);
+        if (!m_productFamilyItemQuery.exec())
+        {
+            qDebug() << m_productFamilyItemQuery.lastError();
+        } else {
+            m_productFamilyItemQuery.next();
+            pProductFamilyPtr->m_id = familyId;
+            pProductFamilyPtr->m_name = m_productFamilyItemQuery.value(0).toString();
+            pProductFamilyPtr->m_active =  m_productFamilyItemQuery.value(1).toInt() == 1;
+            pProductFamilyPtr->m_imagePath = m_productFamilyItemQuery.value(2).toString();
+            pProductFamilyPtr->m_regDate = m_productFamilyItemQuery.value(3).toDateTime();
+        }
+        m_productFamilyItemQuery.finish();
+        return pProductFamilyPtr;
+    }
+    //
+    void DAO::updateProductFamilyItem(const ProductFamilyPtr &pFamilyPtr)
+    {
+        m_updateProductFamilyItemQuery.bindValue(":name", pFamilyPtr->m_name);
+        m_updateProductFamilyItemQuery.bindValue(":image", pFamilyPtr->m_imagePath);
+        m_updateProductFamilyItemQuery.bindValue(":active", (pFamilyPtr->m_active)?(1):(0));
+        m_updateProductFamilyItemQuery.bindValue(":familyid", pFamilyPtr->m_id);
+        if (!m_updateProductFamilyItemQuery.exec())
+        {
+            qDebug() << m_updateProductFamilyItemQuery.lastError();
+        }
+        m_updateProductFamilyItemQuery.finish();
+    }
+    //
+    void DAO::createProductFamilyItem(const ProductFamilyPtr &pFamilyPtr)
+    {
+        m_createProductFamilyItemQuery.bindValue(":name", pFamilyPtr->m_name);
+        m_createProductFamilyItemQuery.bindValue(":image", pFamilyPtr->m_imagePath);
+        m_createProductFamilyItemQuery.bindValue(":active", (pFamilyPtr->m_active)?(1):(0));
+        m_createProductFamilyItemQuery.bindValue(":reg_date", pFamilyPtr->m_regDate);
+        if (!m_createProductFamilyItemQuery.exec())
+        {
+            qDebug() << m_createProductFamilyItemQuery.lastError();
+        }
+        m_createProductFamilyItemQuery.finish();
     }
 }

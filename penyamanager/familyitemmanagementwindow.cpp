@@ -34,6 +34,8 @@ namespace PenyaManager {
 
         this->ui->productListWidget->clear();
 
+        this->ui->editFamilyPushButton->hide();
+
         fillFamilyProducts(pfListPtr);
 
         //
@@ -53,7 +55,10 @@ namespace PenyaManager {
     //
     void FamilyItemManagementWindow::on_newFamilyPushButton_clicked()
     {
-
+        // setting m_currentFamilyId < 0, AdminFamilyView will initialize empty
+        Singletons::m_currentFamilyId = -1;
+        // call adminfamilyview window throw adminmainwindow
+        m_switchCentralWidgetCallback(WindowKey::kAdminFamilyViewKey);
     }
     //
     void FamilyItemManagementWindow::fillFamilyProducts(const ProductFamilyListPtr &pflPtr)
@@ -99,6 +104,8 @@ namespace PenyaManager {
     void FamilyItemManagementWindow::familyItemClicked(QListWidgetItem* item)
     {
         Int32 familyId = item->data(Constants::kIdRole).toInt();
+        this->ui->editFamilyPushButton->show();
+        Singletons::m_currentFamilyId = familyId;
         fillProductItems(familyId);
     }
     //
@@ -161,6 +168,12 @@ namespace PenyaManager {
         pProductItem->setFlags(Qt::ItemIsSelectable);
         pProductItem->setBackgroundColor(pList->count() % 2 == 0 ? (Qt::lightGray) : (Qt::darkGray));
         pList->setItemWidget(pProductItem, pProduceItemWidget);
+    }
+    //
+    void FamilyItemManagementWindow::on_editFamilyPushButton_clicked()
+    {
+        // call family edit window throw adminmainwindow
+        m_switchCentralWidgetCallback(WindowKey::kAdminFamilyViewKey);
     }
 }
 
