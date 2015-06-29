@@ -14,7 +14,7 @@ namespace PenyaManager
             //
             InvoiceProductItem();
             //
-            InvoiceProductItem(Int32 productId, QString productName, Float priceperunit, Uint32 count);
+            InvoiceProductItem(Int32 productId, QString productName, QString imagePath, Float priceperunit, Uint32 count);
             //
             virtual ~InvoiceProductItem(){}
 
@@ -23,6 +23,8 @@ namespace PenyaManager
             Int32               m_productId;
             //
             QString             m_productname;
+            //
+            QString             m_imagePath;
             //
             Float               m_priceperunit;
             //
@@ -35,6 +37,25 @@ namespace PenyaManager
     typedef std::vector<InvoiceProductItemPtr> InvoiceProductItemList;
     //
     typedef std::shared_ptr<InvoiceProductItemList> InvoiceProductItemListPtr;
+
+    //
+    class InvoiceProductItemStats
+    {
+        public:
+            //
+            InvoiceProductItemStats();
+            //
+            InvoiceProductItemStats(Uint32 totalProducts);
+            //
+            virtual ~InvoiceProductItemStats(){}
+
+        public:
+            //
+            Uint32              m_totalProducts;
+    };
+
+    //
+    typedef std::shared_ptr<InvoiceProductItemStats> InvoiceProductItemStatsPtr;
 }
 
 #endif // INVOICEPRODUCTITEM_H
