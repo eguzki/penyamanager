@@ -1,5 +1,7 @@
 //
 
+#include "utils.h"
+#include "constants.h"
 #include "singletons.h"
 #include "invoicedetailswidget.h"
 #include "ui_invoicedetailswidget.h"
@@ -43,10 +45,11 @@ namespace PenyaManager {
         // Product List
         //
         InvoiceProductItemListPtr pInvoiceProductItemListPtr = Singletons::m_pDAO->getInvoiceProductItems(pInvoicePtr->m_id);
-        this->ui->productTableWidget->setColumnCount(4);
+        this->ui->productTableWidget->setColumnCount(5);
         this->ui->productTableWidget->setRowCount(pInvoiceProductItemListPtr->size());
         // invoice table Header
         QStringList headers;
+        headers.append("icon");
         headers.append("article");
         headers.append("price/u");
         headers.append("count");
@@ -59,11 +62,19 @@ namespace PenyaManager {
         for (InvoiceProductItemList::iterator iter = pInvoiceProductItemListPtr->begin(); iter != pInvoiceProductItemListPtr->end(); ++iter)
         {
             InvoiceProductItemPtr pInvoiceProductItemPtr = *iter;
-            this->ui->productTableWidget->setItem(rowCount, 0, new QTableWidgetItem(pInvoiceProductItemPtr->m_productname));
-            this->ui->productTableWidget->setItem(rowCount, 1, new QTableWidgetItem(tr("%1 €").arg(pInvoiceProductItemPtr->m_priceperunit)));
-            this->ui->productTableWidget->setItem(rowCount, 2, new QTableWidgetItem(tr("%1").arg(pInvoiceProductItemPtr->m_count)));
+
+            // image
+            QTableWidgetItem *productImage = new QTableWidgetItem;
+            QString imagePath = QDir(Constants::kImageRootPath).filePath(pInvoiceProductItemPtr->m_imagePath);
+            QPixmap productItemPixmap = Utils::getImage(imagePath).scaled(Constants::kFamilyImageWidth, Constants::kFamilyImageHeigth);
+            productImage->setData(Qt::DecorationRole, productItemPixmap);
+            this->ui->productTableWidget->setRowHeight(rowCount, Constants::kFamilyImageHeigth);
+            this->ui->productTableWidget->setItem(rowCount, 0, productImage);
+            this->ui->productTableWidget->setItem(rowCount, 1, new QTableWidgetItem(pInvoiceProductItemPtr->m_productname));
+            this->ui->productTableWidget->setItem(rowCount, 2, new QTableWidgetItem(tr("%1 €").arg(pInvoiceProductItemPtr->m_priceperunit)));
+            this->ui->productTableWidget->setItem(rowCount, 3, new QTableWidgetItem(tr("%1").arg(pInvoiceProductItemPtr->m_count)));
             Float totalPrice = pInvoiceProductItemPtr->m_priceperunit * pInvoiceProductItemPtr->m_count;
-            this->ui->productTableWidget->setItem(rowCount, 3, new QTableWidgetItem(tr("%1 €").arg(totalPrice)));
+            this->ui->productTableWidget->setItem(rowCount, 4, new QTableWidgetItem(tr("%1 €").arg(totalPrice)));
             totalInvoice += totalPrice;
             rowCount++;
         }

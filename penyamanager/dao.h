@@ -103,6 +103,14 @@ namespace PenyaManager {
             void updateProductFamilyItem(const ProductFamilyPtr &pFamilyPtr);
             //
             void createProductFamilyItem(const ProductFamilyPtr &pFamilyPtr);
+            //
+            InvoiceProductItemListPtr getProductExpensesList(const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count);
+            //
+            InvoiceProductItemStatsPtr getProductExpensesListStats(const QDate &fromDate, const QDate &toDate);
+            //
+            InvoiceProductItemListPtr getProductExpensesListByMemberId(Int32 memberId, const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count);
+            //
+            InvoiceProductItemStatsPtr getProductExpensesListByMemberIdStats(Int32 memberId, const QDate &fromDate, const QDate &toDate);
 
         private:
             //
@@ -183,6 +191,14 @@ namespace PenyaManager {
             QSqlQuery               m_updateProductFamilyItemQuery;
             //
             QSqlQuery               m_createProductFamilyItemQuery;
+            //
+            QSqlQuery               m_productExpensesListByMemberIdQuery;
+            //
+            QSqlQuery               m_productExpensesListByMemberIdStatsQuery;
+            //
+            QSqlQuery               m_productExpensesListQuery;
+            //
+            QSqlQuery               m_productExpensesListStatsQuery;
     };
 }
 #endif // DAO_H

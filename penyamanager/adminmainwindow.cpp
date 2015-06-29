@@ -21,6 +21,7 @@ namespace PenyaManager {
         this->connect(this->ui->actionManage_providers, &QAction::triggered, std::bind(&AdminMainWindow::on_manage_providers_button_triggered, this));
         this->connect(this->ui->actionManage_Stock, &QAction::triggered, std::bind(&AdminMainWindow::on_manage_stock_button_triggered, this));
         this->connect(this->ui->actionManage_family_items, &QAction::triggered, std::bind(&AdminMainWindow::on_manage_family_items_button_triggered, this));
+        this->connect(this->ui->actionProduct_consumption, &QAction::triggered, std::bind(&AdminMainWindow::on_product_expenses_button_triggered, this));
     }
     //
     AdminMainWindow::~AdminMainWindow()
@@ -90,5 +91,11 @@ namespace PenyaManager {
         IPartner* pPartner = Singletons::m_pParnetFinder->getPartner(key);
         pPartner->init();
         this->setCentralWidget(pPartner);
+    }
+    //
+    void AdminMainWindow::on_product_expenses_button_triggered()
+    {
+        // call family item management window
+        switchCentralWidget(WindowKey::kProductExpensesViewKey);
     }
 }

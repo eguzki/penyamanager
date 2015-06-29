@@ -12,6 +12,7 @@
 #include "familyitemmanagementwindow.h"
 #include "adminproductitem.h"
 #include "adminfamilyview.h"
+#include "productexpensesview.h"
 #include "constants.h"
 #include "IPartner.h"
 #include "singletons.h"
@@ -45,6 +46,7 @@ int main(int argc, char *argv[])
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kAdminProductItemKey, pAdminProductItem);
     PenyaManager::AdminFamilyView *pAdminFamilyView = new PenyaManager::AdminFamilyView(NULL, adminMainWindowSwitchCallback);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kAdminFamilyViewKey, pAdminFamilyView);
+    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kProductExpensesViewKey, new PenyaManager::ProductExpensesView);
 
     // entry point -> adminlogin window
     PenyaManager::IPartner* pAdminLoginPartner = PenyaManager::Singletons::m_pParnetFinder->getPartner(PenyaManager::WindowKey::kAdminLoginWindowKey);

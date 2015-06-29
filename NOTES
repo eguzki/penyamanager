@@ -9,34 +9,27 @@
 **** Member create
 *** Bodega
 **** Ingreso (user input-> distribuidores)
-**** Consumo producto fecha
-**** Consumo producto socio fecha
+**** List of provider invoices (no need to give list of products, just invoice number)
 **** edit provider??
 **** print stock list
 *** Account
 **** Verify deposits
 **** Total account balance (deposits can be edited). total deposits, total invoice, total stock cost
 **** User account balance
-****
 
 * highligth family icon when selected
 
 * User -> Reserva de 3 hornos y 2 fogones
 
 * Member login
-** layout: https://jryannel.wordpress.com/2010/02/22/designing-a-login-view/
 ** When user account balance is negative -> pop up on login
 
 ** List of a product purchases between date range
 ** List of distributors
 ** Every distributor owns N products (exclusively)?
-** List of invoices from a given member and date range
-*** When selected, invoice detail (same behavior for member app)
 ** Inventary
 *** Distributor X provided list of products, invoice number, invoice total value
 *** Adjust stock?
-** Stock
-*** List of products currently
 ** Deposit validator (deposit id as input -> get info -> validated or not and deposit actual value)
 *** Deposit value applied inmediatly, verified later
 ** Member total expense in a date range
@@ -88,6 +81,8 @@ http://stackoverflow.com/questions/10369826/how-can-i-disable-alt-f4-window-clos
 **** New provider
 *** Stock management (list products)
 **** export to csv
+*** List product expenses in date range 
+**** for a given member optionally
 ** Manage product/family
 *** products can be created/edited. Price cannot be changed. To change price, inv_prid table should carry price.
 *** families can be created/edited.

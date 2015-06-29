@@ -44,7 +44,12 @@ namespace PenyaManager {
             m_createProductItemQuery(m_db),
             m_productFamilyItemQuery(m_db),
             m_updateProductFamilyItemQuery(m_db),
-            m_createProductFamilyItemQuery(m_db)
+            m_createProductFamilyItemQuery(m_db),
+            m_productExpensesListByMemberIdQuery(m_db),
+            m_productExpensesListByMemberIdStatsQuery(m_db),
+            m_productExpensesListQuery(m_db),
+            m_productExpensesListStatsQuery(m_db)
+
     {
         // configure db connection
         m_db.setHostName(hostname);
@@ -122,7 +127,7 @@ namespace PenyaManager {
 
         // invoice product items by invoiceId
         m_productInvoiceItemsQuery.prepare(
-                "SELECT product_item.idproduct_item, product_item.name, product_item.price, inv_prod.count "
+                "SELECT product_item.idproduct_item, product_item.name, product_item.image, product_item.price, inv_prod.count "
                 "FROM inv_prod INNER JOIN product_item ON inv_prod.idproduct_item=product_item.idproduct_item "
                 "WHERE idinvoice=:invoiceid"
                 );
@@ -293,6 +298,42 @@ namespace PenyaManager {
                 "INSERT INTO product_family "
                 "(name, image, active, reg_date) "
                 "VALUES (:name, :image, :active, :reg_date)"
+                );
+        // product expenses list by memberId
+        m_productExpensesListByMemberIdQuery.prepare(
+                "SELECT product_item.idproduct_item, product_item.name, product_item.image, product_item.price, SUM(inv_prod.count) "
+                "FROM invoice "
+                "INNER JOIN inv_prod ON inv_prod.idinvoice=invoice.idinvoice "
+                "INNER JOIN product_item ON product_item.idproduct_item=inv_prod.idproduct_item "
+                "WHERE invoice.idmember=:memberid AND invoice.date BETWEEN :fromDate AND :toDate AND invoice.state=1 "
+                "GROUP BY inv_prod.idproduct_item "
+                "LIMIT :limit OFFSET :offset"
+                );
+        // product expenses list by memberId stats
+        m_productExpensesListByMemberIdStatsQuery.prepare(
+                "SELECT COUNT(DISTINCT inv_prod.idproduct_item) "
+                "FROM invoice "
+                "INNER JOIN inv_prod ON inv_prod.idinvoice=invoice.idinvoice "
+                "WHERE invoice.idmember=:memberid AND invoice.date BETWEEN :fromDate AND :toDate AND invoice.state=1"
+                );
+        // product expenses list
+        // only closed
+        m_productExpensesListQuery.prepare(
+                "SELECT product_item.idproduct_item, product_item.name, product_item.image, product_item.price, SUM(inv_prod.count) "
+                "FROM invoice "
+                "INNER JOIN inv_prod ON inv_prod.idinvoice=invoice.idinvoice "
+                "INNER JOIN product_item ON product_item.idproduct_item=inv_prod.idproduct_item "
+                "WHERE invoice.date BETWEEN :fromDate AND :toDate AND invoice.state=1 "
+                "GROUP BY inv_prod.idproduct_item "
+                "LIMIT :limit OFFSET :offset"
+                );
+        // product expenses list stats
+        // only closed
+        m_productExpensesListStatsQuery.prepare(
+                "SELECT COUNT(DISTINCT inv_prod.idproduct_item) "
+                "FROM invoice "
+                "INNER JOIN inv_prod ON inv_prod.idinvoice=invoice.idinvoice "
+                "WHERE invoice.date BETWEEN :fromDate AND :toDate AND invoice.state=1"
                 );
     }
 
@@ -542,11 +583,12 @@ namespace PenyaManager {
 
         InvoiceProductItemListPtr pIPIListPrt(new InvoiceProductItemList);
         while (m_productInvoiceItemsQuery.next()) {
-            Int32 productId = m_productInvoiceItemsQuery.value(0).toInt();
-            QString productName = m_productInvoiceItemsQuery.value(1).toString();
-            Float pricePerUnit = m_productInvoiceItemsQuery.value(2).toFloat();
-            Uint32 count = m_productInvoiceItemsQuery.value(3).toUInt();
-            InvoiceProductItemPtr pInvoiceProductItemPtr(new InvoiceProductItem(productId, productName, pricePerUnit, count));
+            InvoiceProductItemPtr pInvoiceProductItemPtr(new InvoiceProductItem);
+            pInvoiceProductItemPtr->m_productId = m_productInvoiceItemsQuery.value(0).toInt();
+            pInvoiceProductItemPtr->m_productname = m_productInvoiceItemsQuery.value(1).toString();
+            pInvoiceProductItemPtr->m_imagePath = m_productInvoiceItemsQuery.value(2).toString();
+            pInvoiceProductItemPtr->m_priceperunit = m_productInvoiceItemsQuery.value(3).toFloat();
+            pInvoiceProductItemPtr->m_count = m_productInvoiceItemsQuery.value(4).toUInt();
             pIPIListPrt->push_back(pInvoiceProductItemPtr);
         }
         m_productInvoiceItemsQuery.finish();
@@ -1087,5 +1129,92 @@ namespace PenyaManager {
             qDebug() << m_createProductFamilyItemQuery.lastError();
         }
         m_createProductFamilyItemQuery.finish();
+    }
+    //
+    InvoiceProductItemListPtr DAO::getProductExpensesList(const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count)
+    {
+        // only active invoices
+        m_productExpensesListQuery.bindValue(":fromDate", fromDate);
+        m_productExpensesListQuery.bindValue(":toDate", toDate);
+        m_productExpensesListQuery.bindValue(":limit", count);
+        m_productExpensesListQuery.bindValue(":offset", page * count);
+        if (!m_productExpensesListQuery.exec())
+        {
+            qDebug() << m_productExpensesListQuery.lastError();
+        }
+
+        InvoiceProductItemListPtr pInvoiceProductItemListPtr(new InvoiceProductItemList);
+        while (m_productExpensesListQuery.next()) {
+            InvoiceProductItemPtr pInvoiceProductItemPtr(new InvoiceProductItem);
+            pInvoiceProductItemPtr->m_productId =  m_productExpensesListQuery.value(0).toInt();
+            pInvoiceProductItemPtr->m_productname =  m_productExpensesListQuery.value(1).toString();
+            pInvoiceProductItemPtr->m_imagePath =  m_productExpensesListQuery.value(2).toString();
+            pInvoiceProductItemPtr->m_priceperunit =  m_productExpensesListQuery.value(3).toFloat();
+            pInvoiceProductItemPtr->m_count =  m_productExpensesListQuery.value(4).toUInt();
+            pInvoiceProductItemListPtr->push_back(pInvoiceProductItemPtr);
+        }
+        m_productExpensesListQuery.finish();
+        return pInvoiceProductItemListPtr;
+    }
+    //
+    InvoiceProductItemStatsPtr DAO::getProductExpensesListStats(const QDate &fromDate, const QDate &toDate)
+    {
+        m_productExpensesListStatsQuery.bindValue(":fromDate", fromDate);
+        m_productExpensesListStatsQuery.bindValue(":toDate", toDate);
+        InvoiceProductItemStatsPtr pInvoiceProductItemStatsPtr(new InvoiceProductItemStats);
+        pInvoiceProductItemStatsPtr->m_totalProducts = 0;
+        if (!m_productExpensesListStatsQuery.exec())
+        {
+            qDebug() << m_productExpensesListStatsQuery.lastError();
+        } else {
+            m_productExpensesListStatsQuery.next();
+            pInvoiceProductItemStatsPtr->m_totalProducts = m_productExpensesListStatsQuery.value(0).toUInt();
+        }
+        m_productExpensesListStatsQuery.finish();
+        return pInvoiceProductItemStatsPtr;
+    }
+    //
+    InvoiceProductItemListPtr DAO::getProductExpensesListByMemberId(Int32 memberId, const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count)
+    {
+        m_productExpensesListByMemberIdQuery.bindValue(":memberid", memberId);
+        m_productExpensesListByMemberIdQuery.bindValue(":fromDate", fromDate);
+        m_productExpensesListByMemberIdQuery.bindValue(":toDate", toDate);
+        m_productExpensesListByMemberIdQuery.bindValue(":limit", count);
+        m_productExpensesListByMemberIdQuery.bindValue(":offset", page * count);
+        if (!m_productExpensesListByMemberIdQuery.exec())
+        {
+            qDebug() << m_productExpensesListByMemberIdQuery.lastError();
+        }
+
+        InvoiceProductItemListPtr pInvoiceProductItemListPtr(new InvoiceProductItemList);
+        while (m_productExpensesListByMemberIdQuery.next()) {
+            InvoiceProductItemPtr pInvoiceProductItemPtr(new InvoiceProductItem);
+            pInvoiceProductItemPtr->m_productId =  m_productExpensesListByMemberIdQuery.value(0).toInt();
+            pInvoiceProductItemPtr->m_productname =  m_productExpensesListByMemberIdQuery.value(1).toString();
+            pInvoiceProductItemPtr->m_imagePath =  m_productExpensesListByMemberIdQuery.value(2).toString();
+            pInvoiceProductItemPtr->m_priceperunit =  m_productExpensesListByMemberIdQuery.value(3).toFloat();
+            pInvoiceProductItemPtr->m_count =  m_productExpensesListByMemberIdQuery.value(4).toUInt();
+            pInvoiceProductItemListPtr->push_back(pInvoiceProductItemPtr);
+        }
+        m_productExpensesListByMemberIdQuery.finish();
+        return pInvoiceProductItemListPtr;
+    }
+    //
+    InvoiceProductItemStatsPtr DAO::getProductExpensesListByMemberIdStats(Int32 memberId, const QDate &fromDate, const QDate &toDate)
+    {
+        m_productExpensesListByMemberIdStatsQuery.bindValue(":memberid", memberId);
+        m_productExpensesListByMemberIdStatsQuery.bindValue(":fromDate", fromDate);
+        m_productExpensesListByMemberIdStatsQuery.bindValue(":toDate", toDate);
+        InvoiceProductItemStatsPtr pInvoiceProductItemStatsPtr(new InvoiceProductItemStats);
+        pInvoiceProductItemStatsPtr->m_totalProducts = 0;
+        if (!m_productExpensesListByMemberIdStatsQuery.exec())
+        {
+            qDebug() << m_productExpensesListByMemberIdStatsQuery.lastError();
+        } else {
+            m_productExpensesListByMemberIdStatsQuery.next();
+            pInvoiceProductItemStatsPtr->m_totalProducts = m_productExpensesListByMemberIdStatsQuery.value(0).toUInt();
+        }
+        m_productExpensesListByMemberIdStatsQuery.finish();
+        return pInvoiceProductItemStatsPtr;
     }
 }
