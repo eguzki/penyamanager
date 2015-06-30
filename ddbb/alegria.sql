@@ -241,6 +241,51 @@ CREATE TABLE IF NOT EXISTS `alegria`.`tablereservation` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `alegria`.`provider_invoices`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `alegria`.`provider_invoices` ;
+
+CREATE TABLE IF NOT EXISTS `alegria`.`provider_invoices` (
+  `idprovider_invoices` VARCHAR(50) NOT NULL,
+  `date` DATE NOT NULL,
+  `total` DECIMAL(10,2) NOT NULL,
+  `idprovider` INT NOT NULL,
+  PRIMARY KEY (`idprovider_invoices`),
+  INDEX `fk_provider_invoices_provider1_idx` (`idprovider` ASC),
+  CONSTRAINT `fk_provider_invoices_provider1`
+    FOREIGN KEY (`idprovider`)
+    REFERENCES `alegria`.`provider` (`idprovider`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `alegria`.`provider_invoices_product`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `alegria`.`provider_invoices_product` ;
+
+CREATE TABLE IF NOT EXISTS `alegria`.`provider_invoices_product` (
+  `provider_invoices_idprovider_invoices` VARCHAR(50) NOT NULL,
+  `product_item_idproduct_item` INT(11) NOT NULL,
+  `count` INT(11) NOT NULL,
+  PRIMARY KEY (`provider_invoices_idprovider_invoices`, `product_item_idproduct_item`),
+  INDEX `fk_table1_provider_invoices1_idx` (`provider_invoices_idprovider_invoices` ASC),
+  INDEX `fk_table1_product_item1_idx` (`product_item_idproduct_item` ASC),
+  CONSTRAINT `fk_table1_provider_invoices1`
+    FOREIGN KEY (`provider_invoices_idprovider_invoices`)
+    REFERENCES `alegria`.`provider_invoices` (`idprovider_invoices`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_table1_product_item1`
+    FOREIGN KEY (`product_item_idproduct_item`)
+    REFERENCES `alegria`.`product_item` (`idproduct_item`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
