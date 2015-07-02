@@ -4,6 +4,7 @@
 #include <QWidget>
 
 #include "DataTypes.h"
+#include "objs/ProductItem.h"
 #include "IPartner.h"
 
 namespace Ui {
@@ -29,7 +30,7 @@ namespace PenyaManager {
             //
             void initialize();
             //
-            void initializeTable();
+            void createProductItemRow(const ProductItemPtr &pfPtr);
 
         private slots:
             //

@@ -183,7 +183,11 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
        </widget>
       </item>
       <item>
-       <widget class="QTableWidget" name="productsTableWidget"/>
+       <widget class="QListWidget" name="productsListWidget">
+        <property name="selectionMode">
+         <enum>QAbstractItemView::NoSelection</enum>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
