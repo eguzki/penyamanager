@@ -37,6 +37,7 @@ SOURCES += adminmain.cpp\
         objs/TableReservation.cpp\
         objs/LunchTable.cpp\
         objs/Provider.cpp\
+        objs/ProviderInvoice.cpp\
         adminloginwindow.cpp\
         admon_screen.cpp\
         memberselect.cpp \
@@ -50,7 +51,8 @@ SOURCES += adminmain.cpp\
     familyitemmanagementwindow.cpp \
     adminproductitem.cpp \
     adminfamilyview.cpp \
-    productexpensesview.cpp
+    productexpensesview.cpp \
+    providerinvoiceview.cpp
 
 HEADERS  += singletons.h\
         dao.h\
@@ -69,6 +71,7 @@ HEADERS  += singletons.h\
         objs/TableReservation.h\
         objs/LunchTable.h\
         objs/Provider.h\
+        objs/ProviderInvoice.h\
         adminloginwindow.h\
         admon_screen.h\
         memberselect.h \
@@ -82,7 +85,8 @@ HEADERS  += singletons.h\
     familyitemmanagementwindow.h \
     adminproductitem.h \
     adminfamilyview.h \
-    productexpensesview.h
+    productexpensesview.h \
+    providerinvoiceview.h
 
 FORMS    += adminloginwindow.ui\
         admon_screen.ui\
@@ -97,4 +101,5 @@ FORMS    += adminloginwindow.ui\
     familyitemmanagementwindow.ui \
     adminproductitem.ui \
     adminfamilyview.ui \
-    productexpensesview.ui
+    productexpensesview.ui \
+    providerinvoiceview.ui

@@ -48,7 +48,7 @@
     <property name="title">
      <string>Goods</string>
     </property>
-    <addaction name="actionStock_purchase"/>
+    <addaction name="actionProvider_invoice"/>
     <addaction name="actionProduct_consumption"/>
     <addaction name="actionManage_family_items"/>
     <addaction name="actionManage_providers"/>
@@ -104,9 +104,9 @@
     <string>Reset Account</string>
    </property>
   </action>
-  <action name="actionStock_purchase">
+  <action name="actionProvider_invoice">
    <property name="text">
-    <string>Stock purchase</string>
+    <string>Provider Invoice</string>
    </property>
   </action>
   <action name="actionProduct_consumption">
