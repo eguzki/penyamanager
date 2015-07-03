@@ -48,8 +48,9 @@ namespace PenyaManager {
             m_productExpensesListByMemberIdQuery(m_db),
             m_productExpensesListByMemberIdStatsQuery(m_db),
             m_productExpensesListQuery(m_db),
-            m_productExpensesListStatsQuery(m_db)
-
+            m_productExpensesListStatsQuery(m_db),
+            m_createProviderInvoiceQuery(m_db),
+            m_createProviderInvoiceProductQuery(m_db)
     {
         // configure db connection
         m_db.setHostName(hostname);
@@ -334,6 +335,18 @@ namespace PenyaManager {
                 "FROM invoice "
                 "INNER JOIN inv_prod ON inv_prod.idinvoice=invoice.idinvoice "
                 "WHERE invoice.date BETWEEN :fromDate AND :toDate AND invoice.state=1"
+                );
+        // create provider invoice
+        m_createProviderInvoiceQuery.prepare(
+                "INSERT INTO provider_invoices "
+                "(idprovider_invoices, date, total, idprovider) "
+                "VALUES (:id, :date, :total, :providerid)"
+                );
+        // create provider invoice product
+        m_createProviderInvoiceProductQuery.prepare(
+                "INSERT INTO provider_invoices_product "
+                "(provider_invoices_idprovider_invoices, product_item_idproduct_item, count) "
+                "VALUES (:providerinvoiceid, :productid, :count)"
                 );
     }
 
@@ -1217,4 +1230,30 @@ namespace PenyaManager {
         m_productExpensesListByMemberIdStatsQuery.finish();
         return pInvoiceProductItemStatsPtr;
     }
+    //
+    void DAO::createProviderInvoice(const ProviderInvoicePtr &pProviderInvoicePtr)
+    {
+        m_createProviderInvoiceQuery.bindValue(":id", pProviderInvoicePtr->m_id);
+        m_createProviderInvoiceQuery.bindValue(":date", pProviderInvoicePtr->m_regDate);
+        m_createProviderInvoiceQuery.bindValue(":total", pProviderInvoicePtr->m_total);
+        m_createProviderInvoiceQuery.bindValue(":providerid", pProviderInvoicePtr->m_providerid);
+        if (!m_createProviderInvoiceQuery.exec())
+        {
+            qDebug() << m_createProviderInvoiceQuery.lastError();
+        }
+        m_createProviderInvoiceQuery.finish();
+    }
+    //
+    void DAO::createProviderInvoiceProduct(const QString &invoiceId, Int32 productId, Uint32 count)
+    {
+        m_createProviderInvoiceProductQuery.bindValue(":providerinvoiceid", invoiceId);
+        m_createProviderInvoiceProductQuery.bindValue(":productid", productId);
+        m_createProviderInvoiceProductQuery.bindValue(":count", count);
+        if (!m_createProviderInvoiceProductQuery.exec())
+        {
+            qDebug() << m_createProviderInvoiceProductQuery.lastError();
+        }
+        m_createProviderInvoiceProductQuery.finish();
+    }
 }
+

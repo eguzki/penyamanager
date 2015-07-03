@@ -139,7 +139,11 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="totalLineEdit"/>
+          <widget class="QDoubleSpinBox" name="totalDoubleSpinBox">
+           <property name="maximum">
+            <double>999999.989999999990687</double>
+           </property>
+          </widget>
          </item>
          <item>
           <spacer name="horizontalSpacer_5">

@@ -37,6 +37,7 @@ SOURCES += adminmain.cpp\
         objs/TableReservation.cpp\
         objs/LunchTable.cpp\
         objs/Provider.cpp\
+        objs/ProviderInvoice.cpp\
         adminloginwindow.cpp\
         admon_screen.cpp\
         memberselect.cpp \
@@ -70,6 +71,7 @@ HEADERS  += singletons.h\
         objs/TableReservation.h\
         objs/LunchTable.h\
         objs/Provider.h\
+        objs/ProviderInvoice.h\
         adminloginwindow.h\
         admon_screen.h\
         memberselect.h \

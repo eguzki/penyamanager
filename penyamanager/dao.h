@@ -14,6 +14,7 @@
 #include "objs/ProductItem.h"
 #include "objs/InvoiceProductItem.h"
 #include "objs/LunchTable.h"
+#include "objs/ProviderInvoice.h"
 
 namespace PenyaManager {
     //
@@ -111,6 +112,10 @@ namespace PenyaManager {
             InvoiceProductItemListPtr getProductExpensesListByMemberId(Int32 memberId, const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count);
             //
             InvoiceProductItemStatsPtr getProductExpensesListByMemberIdStats(Int32 memberId, const QDate &fromDate, const QDate &toDate);
+            //
+            void createProviderInvoice(const ProviderInvoicePtr &pProviderInvoicePtr);
+            //
+            void createProviderInvoiceProduct(const QString &invoiceId, Int32 productId, Uint32 count);
 
         private:
             //
@@ -199,6 +204,10 @@ namespace PenyaManager {
             QSqlQuery               m_productExpensesListQuery;
             //
             QSqlQuery               m_productExpensesListStatsQuery;
+            //
+            QSqlQuery               m_createProviderInvoiceQuery;
+            //
+            QSqlQuery               m_createProviderInvoiceProductQuery;
     };
 }
 #endif // DAO_H

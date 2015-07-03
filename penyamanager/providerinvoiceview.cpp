@@ -28,8 +28,43 @@ namespace PenyaManager {
     //
     void ProviderInvoiceView::on_savePushButton_clicked()
     {
-        // TODO validate invoice id
-        // TODO validate total
+        // validate invoice id
+        QString invoiceId = this->ui->invoiceLineEdit->text();
+        if (invoiceId.isEmpty()){
+            QMessageBox::warning(this, "Data missing", "Invoice ID cannot be empty");
+            return;
+        }
+        // validate total
+        Float total = this->ui->totalDoubleSpinBox->value();
+        if ( total == 0.0 )
+        {
+            QMessageBox msgBox;
+            msgBox.setText("Invoice has 0.0 as total value");
+            msgBox.setInformativeText("Are you sure to continue?");
+            msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+            msgBox.setDefaultButton(QMessageBox::Cancel);
+            int ret = msgBox.exec();
+            if (ret == QMessageBox::Cancel)
+            {
+                return;
+            }
+        }
+        // validate providerID
+        if (m_currentProviderIndex == -1)
+        {
+            QMessageBox::warning(this, "Data missing", "Select Provider");
+            return;
+        }
+
+        // create invoice
+        ProviderInvoicePtr pProviderInvoicePtr(new ProviderInvoice);
+        pProviderInvoicePtr->m_id = invoiceId;
+        pProviderInvoicePtr->m_regDate = QDate::currentDate();
+        pProviderInvoicePtr->m_total = total;
+        pProviderInvoicePtr->m_providerid = this->ui->providerComboBox->currentData().toInt();
+        Singletons::m_pDAO->createProviderInvoice(pProviderInvoicePtr);
+
+        // create invoice products
         for (auto idx = 0; idx < this->ui->productsListWidget->count(); ++idx)
         {
             QListWidgetItem *pProductItem = this->ui->productsListWidget->item(idx);
@@ -45,16 +80,21 @@ namespace PenyaManager {
             }
 
             Int32 productId = pProductItem->data(Constants::kIdRole).toInt();
-            qDebug() << productId << ": " << pCountSpinBox->value();
+            // only those qith non zero count
+            if (pCountSpinBox->value() > 0)
+            {
+                Singletons::m_pDAO->createProviderInvoiceProduct(pProviderInvoicePtr->m_id, productId, pCountSpinBox->value());
+            }
         }
-
+        QMessageBox::information(this, "New provider invoice", "Saved Successfully");
+        initialize();
     }
     //
     void ProviderInvoiceView::initialize()
     {
         m_currentProviderIndex = -1;
         this->ui->invoiceLineEdit->clear();
-        this->ui->totalLineEdit->clear();
+        this->ui->totalDoubleSpinBox->setValue(0.0);
         this->ui->providerComboBox->clear();
         this->ui->productsListWidget->clear();
 
