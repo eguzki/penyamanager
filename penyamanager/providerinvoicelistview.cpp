@@ -87,7 +87,7 @@ namespace PenyaManager {
         this->ui->fromDateResultValueLabel->clear();
         this->ui->toDateResultValueLabel->clear();
         this->ui->providerComboBox->clear();
-        this->ui->invoicesTableWidget->clear();
+        this->ui->invoicesTableWidget->clearContents();
 
         ProviderListPtr pProviderListPtr = Singletons::m_pDAO->getProviderList();
 
@@ -142,7 +142,7 @@ namespace PenyaManager {
     void ProviderInvoiceListView::fillInvoiceList(ProviderInvoiceListPtr pProviderInvoiceListPtr)
     {
         // invoice table reset
-        this->ui->invoicesTableWidget->clear();
+        this->ui->invoicesTableWidget->clearContents();
         this->ui->invoicesTableWidget->setRowCount(pProviderInvoiceListPtr->size());
         // fill data
         Uint32 rowCount = 0;
