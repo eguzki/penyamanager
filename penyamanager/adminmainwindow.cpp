@@ -23,6 +23,7 @@ namespace PenyaManager {
         this->connect(this->ui->actionManage_family_items, &QAction::triggered, std::bind(&AdminMainWindow::on_manage_family_items_button_triggered, this));
         this->connect(this->ui->actionProduct_consumption, &QAction::triggered, std::bind(&AdminMainWindow::on_product_expenses_button_triggered, this));
         this->connect(this->ui->actionProvider_invoice, &QAction::triggered, std::bind(&AdminMainWindow::on_provider_invoice_button_triggered, this));
+        this->connect(this->ui->actionProvider_invoice_list, &QAction::triggered, std::bind(&AdminMainWindow::on_provider_invoice_list_button_triggered, this));
     }
     //
     AdminMainWindow::~AdminMainWindow()
@@ -104,5 +105,11 @@ namespace PenyaManager {
     {
         // call provider invoice window
         switchCentralWidget(WindowKey::kProviderInvoiceViewKey);
+    }
+    //
+    void AdminMainWindow::on_provider_invoice_list_button_triggered()
+    {
+        // call provider invoice window
+        switchCentralWidget(WindowKey::kProviderInvoiceListViewKey);
     }
 }

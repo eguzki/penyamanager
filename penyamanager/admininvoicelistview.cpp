@@ -108,7 +108,6 @@ namespace PenyaManager {
     {
         // table
         this->ui->invoicesTableWidget->setColumnCount(4);
-        this->ui->invoicesTableWidget->setRowCount(pInvoiceListPtr->size());
 
         // invoice table Header
         QStringList headers;
@@ -125,6 +124,8 @@ namespace PenyaManager {
         this->ui->invoicesTableWidget->clearContents();
         // internal data structure reset
         this->m_rowProductIdMap.clear();
+
+        this->ui->invoicesTableWidget->setRowCount(pInvoiceListPtr->size());
 
         // fill data
         Uint32 rowCount = 0;
