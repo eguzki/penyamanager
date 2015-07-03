@@ -46,12 +46,10 @@
    </widget>
    <widget class="QMenu" name="menuStock">
     <property name="title">
-     <string>Goods</string>
+     <string>Items</string>
     </property>
-    <addaction name="actionProvider_invoice"/>
     <addaction name="actionProduct_consumption"/>
     <addaction name="actionManage_family_items"/>
-    <addaction name="actionManage_providers"/>
     <addaction name="actionManage_Stock"/>
    </widget>
    <widget class="QMenu" name="menuAccount">
@@ -67,11 +65,20 @@
     </property>
     <addaction name="actionExit"/>
    </widget>
+   <widget class="QMenu" name="menuProviders">
+    <property name="title">
+     <string>Providers</string>
+    </property>
+    <addaction name="actionManage_providers"/>
+    <addaction name="actionProvider_invoice"/>
+    <addaction name="actionProvider_invoice_list"/>
+   </widget>
    <addaction name="menuMain"/>
    <addaction name="menuMembers"/>
    <addaction name="menuInvoices"/>
    <addaction name="menuStock"/>
    <addaction name="menuAccount"/>
+   <addaction name="menuProviders"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionMember_information">
@@ -106,7 +113,7 @@
   </action>
   <action name="actionProvider_invoice">
    <property name="text">
-    <string>Provider Invoice</string>
+    <string>New provider invoice</string>
    </property>
   </action>
   <action name="actionProduct_consumption">
@@ -147,6 +154,11 @@
   <action name="actionSlow_payers">
    <property name="text">
     <string>Slow payers</string>
+   </property>
+  </action>
+  <action name="actionProvider_invoice_list">
+   <property name="text">
+    <string>Provider Invoice List</string>
    </property>
   </action>
  </widget>

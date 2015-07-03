@@ -50,7 +50,11 @@ namespace PenyaManager {
             m_productExpensesListQuery(m_db),
             m_productExpensesListStatsQuery(m_db),
             m_createProviderInvoiceQuery(m_db),
-            m_createProviderInvoiceProductQuery(m_db)
+            m_createProviderInvoiceProductQuery(m_db),
+            m_providerInvoiceListByProviderIdQuery(m_db),
+            m_providerInvoiceListByProviderIdStatsQuery(m_db),
+            m_providerInvoiceListQuery(m_db),
+            m_providerInvoiceListStatsQuery(m_db)
     {
         // configure db connection
         m_db.setHostName(hostname);
@@ -347,6 +351,32 @@ namespace PenyaManager {
                 "INSERT INTO provider_invoices_product "
                 "(provider_invoices_idprovider_invoices, product_item_idproduct_item, count) "
                 "VALUES (:providerinvoiceid, :productid, :count)"
+                );
+        // provider invoice list by provider
+        m_providerInvoiceListByProviderIdQuery.prepare(
+                "SELECT idprovider_invoices, date, total, idprovider FROM provider_invoices "
+                "WHERE idprovider = :providerid "
+                "AND date BETWEEN :fromDate AND :toDate "
+                "ORDER BY date DESC "
+                "LIMIT :limit OFFSET :offset"
+                );
+        // provider invoice list Stats by provider
+        m_providerInvoiceListByProviderIdStatsQuery.prepare(
+                "SELECT COUNT(*), SUM(total) FROM provider_invoices "
+                "WHERE idprovider = :providerid "
+                "AND date BETWEEN :fromDate AND :toDate"
+                );
+        // provider invoice list
+        m_providerInvoiceListQuery.prepare(
+                "SELECT idprovider_invoices, date, total, idprovider FROM provider_invoices "
+                "WHERE date BETWEEN :fromDate AND :toDate "
+                "ORDER BY date DESC "
+                "LIMIT :limit OFFSET :offset"
+                );
+        // provider invoice list
+        m_providerInvoiceListStatsQuery.prepare(
+                "SELECT COUNT(*), SUM(total) FROM provider_invoices "
+                "WHERE date BETWEEN :fromDate AND :toDate"
                 );
     }
 
@@ -1254,6 +1284,98 @@ namespace PenyaManager {
             qDebug() << m_createProviderInvoiceProductQuery.lastError();
         }
         m_createProviderInvoiceProductQuery.finish();
+    }
+    //
+    ProviderInvoiceListPtr DAO::getProviderInvoiceList(const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count)
+    {
+        ProviderInvoiceListPtr pInvoiceListPtr(new ProviderInvoiceList);
+        m_providerInvoiceListQuery.bindValue(":fromDate", fromDate);
+        m_providerInvoiceListQuery.bindValue(":toDate", toDate);
+        m_providerInvoiceListQuery.bindValue(":limit", count);
+        m_providerInvoiceListQuery.bindValue(":offset", page * count);
+        if (!m_providerInvoiceListQuery.exec())
+        {
+            qDebug() << m_providerInvoiceListQuery.lastError();
+        } else {
+            while (m_providerInvoiceListQuery.next()) {
+                ProviderInvoicePtr pInvoicePtr(new ProviderInvoice);
+                pInvoicePtr->m_id = m_providerInvoiceListQuery.value(0).toString();
+                pInvoicePtr->m_regDate = m_providerInvoiceListQuery.value(1).toDate();
+                pInvoicePtr->m_total = m_providerInvoiceListQuery.value(2).toFloat();
+                pInvoicePtr->m_providerid = m_providerInvoiceListQuery.value(3).toInt();
+                pInvoiceListPtr->push_back(pInvoicePtr);
+            }
+        }
+
+        m_providerInvoiceListQuery.finish();
+        return pInvoiceListPtr;
+    }
+    //
+    ProviderInvoiceListStatsPtr DAO::getProviderInvoiceListStats(const QDate &fromDate, const QDate &toDate)
+    {
+        ProviderInvoiceListStatsPtr pInvoiceListStatsPtr(new ProviderInvoiceListStats);
+        pInvoiceListStatsPtr->m_totalNumInvoices= 0;
+        pInvoiceListStatsPtr->m_totalAmount = 0;
+
+        m_providerInvoiceListStatsQuery.bindValue(":fromDate", fromDate);
+        m_providerInvoiceListStatsQuery.bindValue(":toDate", toDate);
+        if (!m_providerInvoiceListStatsQuery.exec())
+        {
+            qDebug() << m_providerInvoiceListStatsQuery.lastError();
+        } else {
+            m_providerInvoiceListStatsQuery.next();
+            pInvoiceListStatsPtr->m_totalNumInvoices = m_providerInvoiceListStatsQuery.value(0).toUInt();
+            pInvoiceListStatsPtr->m_totalAmount = m_providerInvoiceListStatsQuery.value(1).toFloat();
+        }
+        m_providerInvoiceListStatsQuery.finish();
+        return pInvoiceListStatsPtr;
+    }
+    //
+    ProviderInvoiceListPtr DAO::getProviderInvoiceListByProviderId(Int32 providerId, const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count)
+    {
+        ProviderInvoiceListPtr pInvoiceListPtr(new ProviderInvoiceList);
+        m_providerInvoiceListByProviderIdQuery.bindValue(":providerid", providerId);
+        m_providerInvoiceListByProviderIdQuery.bindValue(":fromDate", fromDate);
+        m_providerInvoiceListByProviderIdQuery.bindValue(":toDate", toDate);
+        m_providerInvoiceListByProviderIdQuery.bindValue(":limit", count);
+        m_providerInvoiceListByProviderIdQuery.bindValue(":offset", page * count);
+        if (!m_providerInvoiceListByProviderIdQuery.exec())
+        {
+            qDebug() << m_providerInvoiceListByProviderIdQuery.lastError();
+        } else {
+            while (m_providerInvoiceListByProviderIdQuery.next()) {
+                ProviderInvoicePtr pInvoicePtr(new ProviderInvoice);
+                pInvoicePtr->m_id = m_providerInvoiceListByProviderIdQuery.value(0).toString();
+                pInvoicePtr->m_regDate = m_providerInvoiceListByProviderIdQuery.value(1).toDate();
+                pInvoicePtr->m_total = m_providerInvoiceListByProviderIdQuery.value(2).toFloat();
+                pInvoicePtr->m_providerid = m_providerInvoiceListByProviderIdQuery.value(3).toInt();
+                pInvoiceListPtr->push_back(pInvoicePtr);
+            }
+        }
+
+        m_providerInvoiceListByProviderIdQuery.finish();
+        return pInvoiceListPtr;
+    }
+    //
+    ProviderInvoiceListStatsPtr DAO::getProviderInvoiceListByProviderIdStats(Int32 providerId, const QDate &fromDate, const QDate &toDate)
+    {
+        ProviderInvoiceListStatsPtr pInvoiceListStatsPtr(new ProviderInvoiceListStats);
+        pInvoiceListStatsPtr->m_totalNumInvoices= 0;
+        pInvoiceListStatsPtr->m_totalAmount = 0;
+
+        m_providerInvoiceListByProviderIdStatsQuery.bindValue(":providerid", providerId);
+        m_providerInvoiceListByProviderIdStatsQuery.bindValue(":fromDate", fromDate);
+        m_providerInvoiceListByProviderIdStatsQuery.bindValue(":toDate", toDate);
+        if (!m_providerInvoiceListByProviderIdStatsQuery.exec())
+        {
+            qDebug() << m_providerInvoiceListByProviderIdStatsQuery.lastError();
+        } else {
+            m_providerInvoiceListByProviderIdStatsQuery.next();
+            pInvoiceListStatsPtr->m_totalNumInvoices = m_providerInvoiceListByProviderIdStatsQuery.value(0).toUInt();
+            pInvoiceListStatsPtr->m_totalAmount = m_providerInvoiceListByProviderIdStatsQuery.value(1).toFloat();
+        }
+        m_providerInvoiceListByProviderIdStatsQuery.finish();
+        return pInvoiceListStatsPtr;
     }
 }
 

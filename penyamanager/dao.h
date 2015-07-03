@@ -116,6 +116,14 @@ namespace PenyaManager {
             void createProviderInvoice(const ProviderInvoicePtr &pProviderInvoicePtr);
             //
             void createProviderInvoiceProduct(const QString &invoiceId, Int32 productId, Uint32 count);
+            //
+            ProviderInvoiceListPtr getProviderInvoiceList(const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count);
+            //
+            ProviderInvoiceListStatsPtr getProviderInvoiceListStats(const QDate &fromDate, const QDate &toDate);
+            //
+            ProviderInvoiceListPtr getProviderInvoiceListByProviderId(Int32 providerId, const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count);
+            //
+            ProviderInvoiceListStatsPtr getProviderInvoiceListByProviderIdStats(Int32 providerId, const QDate &fromDate, const QDate &toDate);
 
         private:
             //
@@ -208,6 +216,14 @@ namespace PenyaManager {
             QSqlQuery               m_createProviderInvoiceQuery;
             //
             QSqlQuery               m_createProviderInvoiceProductQuery;
+            //
+            QSqlQuery               m_providerInvoiceListByProviderIdQuery;
+            //
+            QSqlQuery               m_providerInvoiceListByProviderIdStatsQuery;
+            //
+            QSqlQuery               m_providerInvoiceListQuery;
+            //
+            QSqlQuery               m_providerInvoiceListStatsQuery;
     };
 }
 #endif // DAO_H

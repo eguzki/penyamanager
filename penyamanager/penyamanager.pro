@@ -38,13 +38,14 @@ SOURCES += main.cpp\
         objs/TableReservation.cpp\
         objs/LunchTable.cpp\
         objs/Provider.cpp\
+        objs/ProviderInvoice.cpp\
         loginwindow.cpp \
         numitemdialog.cpp \
         invoicewindow.cpp \
         depositwindow.cpp \
         accountview.cpp \
         tablereservationview.cpp \
-        invoicelistwindow.cpp \ 
+        invoicelistwindow.cpp \
         invoicedetailswidget.cpp \
         memberprofilegroupbox.cpp \
     invoicedetailswindow.cpp
@@ -67,13 +68,14 @@ HEADERS  += mainwindow.h\
         objs/TableReservation.h\
         objs/LunchTable.h\
         objs/Provider.h\
+        objs/ProviderInvoice.h\
         loginwindow.h \
         numitemdialog.h \
         invoicewindow.h \
         depositwindow.h \
         accountview.h \
         tablereservationview.h \
-        invoicelistwindow.h \ 
+        invoicelistwindow.h \
         invoicedetailswidget.h \
         memberprofilegroupbox.h \
     invoicedetailswindow.h
@@ -85,7 +87,7 @@ HEADERS  += mainwindow.h\
         depositwindow.ui \
         accountview.ui \
         tablereservationview.ui \
-        invoicelistwindow.ui \ 
+        invoicelistwindow.ui \
         invoicedetailswidget.ui \
         memberprofilegroupbox.ui \
     invoicedetailswindow.ui
