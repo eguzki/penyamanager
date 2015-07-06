@@ -55,7 +55,8 @@ namespace PenyaManager {
             m_providerInvoiceListByProviderIdStatsQuery(m_db),
             m_providerInvoiceListQuery(m_db),
             m_providerInvoiceListStatsQuery(m_db),
-            m_uncheckedDepositListQuery(m_db)
+            m_uncheckedDepositListQuery(m_db),
+            m_closeDepositQuery(m_db)
     {
         // configure db connection
         m_db.setHostName(hostname);
@@ -383,6 +384,12 @@ namespace PenyaManager {
         m_uncheckedDepositListQuery.prepare(
                 "SELECT iddeposit, date, total, description, idmember FROM deposit "
                 "WHERE state = 0"
+                );
+        // close deposit
+        m_closeDepositQuery.prepare(
+                "UPDATE deposit "
+                "SET state=1 "
+                "WHERE iddeposit=:depositid"
                 );
     }
 
@@ -1404,6 +1411,16 @@ namespace PenyaManager {
 
         m_uncheckedDepositListQuery.finish();
         return pDepositListPtr;
+    }
+    //
+    void DAO::closeDeposit(Int32 depositId)
+    {
+        m_closeDepositQuery.bindValue(":depositid", depositId);
+        if (!m_closeDepositQuery.exec())
+        {
+            qDebug() << m_closeDepositQuery.lastError();
+        }
+        m_closeDepositQuery.finish();
     }
 }
 

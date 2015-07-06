@@ -88,4 +88,5 @@ http://stackoverflow.com/questions/10369826/how-can-i-disable-alt-f4-window-clos
 **** products can be created/edited. Price cannot be changed. To change price, inv_prid table should carry price.
 **** families can be created/edited.
 ** Account
-*** Verify deposits (TODO)
+*** Verify deposits
+**** when cash is unbalanced with total, create account transaction with type (3) DepositFix

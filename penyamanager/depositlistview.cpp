@@ -101,17 +101,21 @@ namespace PenyaManager {
                     "DepositListView failed taking SpinBox");
             return;
         }
-        qDebug() << pDoubleSpinBox->value();
         // get memberId
         Int32 memberId = this->ui->depositTableWidget->item(rowCount, 2)->data(Qt::UserRole).toInt();
-        qDebug() << memberId;
         // get total
         Float total = this->ui->depositTableWidget->item(rowCount, 3)->data(Qt::UserRole).toFloat();
-        qDebug() << total;
         // deposit id
         Int32 depositId = this->ui->depositTableWidget->item(rowCount, 0)->data(Qt::UserRole).toInt();
-        qDebug() << depositId;
-        // TODO create account entry with difference when not equal
+        Float amount = pDoubleSpinBox->value() - total;
+        if (amount != 0) {
+            // create account entry with difference when not equal
+            Singletons::m_pServices->createAccountTransaction(memberId, amount, "deposit fix", TransactionType::DepositFix);
+        }
+        // close deposit
+        Singletons::m_pDAO->closeDeposit(depositId);
+        QMessageBox::information(this, "Deposit checked", QString("Difference: %1").arg(amount));
+        showUncheckedDeposits();
     }
 }
 
