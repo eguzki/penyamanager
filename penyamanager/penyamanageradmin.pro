@@ -53,7 +53,8 @@ SOURCES += adminmain.cpp\
     adminfamilyview.cpp \
     productexpensesview.cpp \
     providerinvoiceview.cpp \
-    providerinvoicelistview.cpp
+    providerinvoicelistview.cpp \
+    depositlistview.cpp
 
 HEADERS  += singletons.h\
         dao.h\
@@ -88,7 +89,8 @@ HEADERS  += singletons.h\
     adminfamilyview.h \
     productexpensesview.h \
     providerinvoiceview.h \
-    providerinvoicelistview.h
+    providerinvoicelistview.h \
+    depositlistview.h
 
 FORMS    += adminloginwindow.ui\
         admon_screen.ui\
@@ -105,4 +107,5 @@ FORMS    += adminloginwindow.ui\
     adminfamilyview.ui \
     productexpensesview.ui \
     providerinvoiceview.ui \
-    providerinvoicelistview.ui
+    providerinvoicelistview.ui \
+    depositlistview.ui

@@ -41,6 +41,10 @@ namespace PenyaManager
 
     //
     typedef std::shared_ptr<Deposit> DepositPtr;
+    //
+    typedef std::vector<DepositPtr> DepositList;
+    //
+    typedef std::shared_ptr<DepositList> DepositListPtr;
 }
 
 #endif // DEPOSIT_H

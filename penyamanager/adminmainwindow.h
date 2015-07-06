@@ -44,6 +44,8 @@ namespace PenyaManager {
             void on_provider_invoice_button_triggered();
             //
             void on_provider_invoice_list_button_triggered();
+            //
+            void on_deposit_list_button_triggered();
 
         private:
             //

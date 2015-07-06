@@ -8,12 +8,9 @@
 **** Member Info
 **** Member create
 *** Bodega
-**** Ingreso (user input-> distribuidores)
-**** List of provider invoices (no need to give list of products, just invoice number)
 **** edit provider??
 **** print stock list
 *** Account
-**** Verify deposits
 **** Total account balance (deposits can be edited). total deposits, total invoice, total stock cost
 **** User account balance
 
@@ -90,3 +87,5 @@ http://stackoverflow.com/questions/10369826/how-can-i-disable-alt-f4-window-clos
 *** Manage product/family
 **** products can be created/edited. Price cannot be changed. To change price, inv_prid table should carry price.
 **** families can be created/edited.
+** Account
+*** Verify deposits (TODO)
