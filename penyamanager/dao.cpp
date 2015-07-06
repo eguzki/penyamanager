@@ -54,7 +54,9 @@ namespace PenyaManager {
             m_providerInvoiceListByProviderIdQuery(m_db),
             m_providerInvoiceListByProviderIdStatsQuery(m_db),
             m_providerInvoiceListQuery(m_db),
-            m_providerInvoiceListStatsQuery(m_db)
+            m_providerInvoiceListStatsQuery(m_db),
+            m_uncheckedDepositListQuery(m_db),
+            m_closeDepositQuery(m_db)
     {
         // configure db connection
         m_db.setHostName(hostname);
@@ -377,6 +379,17 @@ namespace PenyaManager {
         m_providerInvoiceListStatsQuery.prepare(
                 "SELECT COUNT(*), SUM(total) FROM provider_invoices "
                 "WHERE date BETWEEN :fromDate AND :toDate"
+                );
+        // unchecked deposit list
+        m_uncheckedDepositListQuery.prepare(
+                "SELECT iddeposit, date, total, description, idmember FROM deposit "
+                "WHERE state = 0"
+                );
+        // close deposit
+        m_closeDepositQuery.prepare(
+                "UPDATE deposit "
+                "SET state=1 "
+                "WHERE iddeposit=:depositid"
                 );
     }
 
@@ -1376,6 +1389,38 @@ namespace PenyaManager {
         }
         m_providerInvoiceListByProviderIdStatsQuery.finish();
         return pInvoiceListStatsPtr;
+    }
+    //
+    DepositListPtr DAO::getUncheckedDeposits()
+    {
+        DepositListPtr pDepositListPtr(new DepositList);
+        if (!m_uncheckedDepositListQuery.exec())
+        {
+            qDebug() << m_uncheckedDepositListQuery.lastError();
+        } else {
+            while (m_uncheckedDepositListQuery.next()) {
+                DepositPtr pDepositPtr(new Deposit);
+                pDepositPtr->m_id = m_uncheckedDepositListQuery.value(0).toInt();
+                pDepositPtr->m_date = m_uncheckedDepositListQuery.value(1).toDateTime();
+                pDepositPtr->m_total = m_uncheckedDepositListQuery.value(2).toFloat();
+                pDepositPtr->m_descr = m_uncheckedDepositListQuery.value(3).toString();
+                pDepositPtr->m_memberId = m_uncheckedDepositListQuery.value(4).toInt();
+                pDepositListPtr->push_back(pDepositPtr);
+            }
+        }
+
+        m_uncheckedDepositListQuery.finish();
+        return pDepositListPtr;
+    }
+    //
+    void DAO::closeDeposit(Int32 depositId)
+    {
+        m_closeDepositQuery.bindValue(":depositid", depositId);
+        if (!m_closeDepositQuery.exec())
+        {
+            qDebug() << m_closeDepositQuery.lastError();
+        }
+        m_closeDepositQuery.finish();
     }
 }
 

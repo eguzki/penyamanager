@@ -124,6 +124,10 @@ namespace PenyaManager {
             ProviderInvoiceListPtr getProviderInvoiceListByProviderId(Int32 providerId, const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count);
             //
             ProviderInvoiceListStatsPtr getProviderInvoiceListByProviderIdStats(Int32 providerId, const QDate &fromDate, const QDate &toDate);
+            //
+            DepositListPtr getUncheckedDeposits();
+            //
+            void closeDeposit(Int32 depositId);
 
         private:
             //
@@ -224,6 +228,10 @@ namespace PenyaManager {
             QSqlQuery               m_providerInvoiceListQuery;
             //
             QSqlQuery               m_providerInvoiceListStatsQuery;
+            //
+            QSqlQuery               m_uncheckedDepositListQuery;
+            //
+            QSqlQuery               m_closeDepositQuery;
     };
 }
 #endif // DAO_H
