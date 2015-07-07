@@ -52,7 +52,7 @@ namespace PenyaManager {
     void AccountView::fillAccountData(Int32 memberId, const QDate &fromDate, const QDate &toDate)
     {
         // fetch data
-        TransactionListPtr pTransactionListPtr = Singletons::m_pDAO->getAccountList(memberId, fromDate, toDate);
+        TransactionListPtr pTransactionListPtr = Singletons::m_pDAO->getAccountListByMemberId(memberId, fromDate, toDate, 0, 9999);
 
         // table
         this->ui->accountTableWidget->setColumnCount(4);

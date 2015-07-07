@@ -133,13 +133,5 @@ namespace PenyaManager {
         newBalance -= totalInvoice;
         this->ui->newBalanceInfoLabel->setText(QString("%1 €").arg(newBalance));
     }
-    //
-    void InvoiceWindow::on_cashRadioButton_toggled(bool cashButtonChecked)
-    {
-        MemberPtr pCurrMember = Singletons::m_pCurrMember;
-        // new balance
-        Float newBalance = cashButtonChecked?(pCurrMember->m_balance):(pCurrMember->m_balance - m_cachedInvoiceTotal);
-        this->ui->newBalanceInfoLabel->setText(QString("%1 €").arg(newBalance));
-    }
 }
 

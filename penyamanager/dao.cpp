@@ -23,7 +23,16 @@ namespace PenyaManager {
             m_memberLastAccountInfoQuery(m_db),
             m_insertTransactionQuery(m_db),
             m_insertDepositQuery(m_db),
+            m_accountListQuery(m_db),
             m_memberAccountListQuery(m_db),
+            m_accountListCountQuery(m_db),
+            m_accountListInvoicesSumQuery(m_db),
+            m_accountListDepositsSumQuery(m_db),
+            m_accountListBankChargesSumQuery(m_db),
+            m_accountListByMemberIdCountQuery(m_db),
+            m_accountListByMemberIdInvoicesSumQuery(m_db),
+            m_accountListByMemberIdDepositsSumQuery(m_db),
+            m_accountListByMemberIdBankChargesSumQuery(m_db),
             m_tableReservationListQuery(m_db),
             m_lunchTablesListQuery(m_db),
             m_insertTableReservationQuery(m_db),
@@ -178,7 +187,66 @@ namespace PenyaManager {
                 "FROM account "
                 "WHERE idmember=:memberid "
                 "AND date BETWEEN :fromDate AND :toDate "
-                "ORDER BY date DESC"
+                "ORDER BY date DESC "
+                "LIMIT :limit OFFSET :offset"
+                );
+        // member's account transaction list
+        m_accountListQuery.prepare(
+                "SELECT amount, date, description, type "
+                "FROM account "
+                "WHERE date BETWEEN :fromDate AND :toDate "
+                "ORDER BY date DESC "
+                "LIMIT :limit OFFSET :offset"
+                );
+        // num transactions from account
+        m_accountListCountQuery.prepare(
+                "SELECT COUNT(*) FROM account "
+                "WHERE date BETWEEN :fromDate AND :toDate"
+                );
+        // sum of invoices from account
+        m_accountListInvoicesSumQuery.prepare(
+                "SELECT SUM(amount) FROM account "
+                "WHERE date BETWEEN :fromDate AND :toDate "
+                "AND type=0"
+                );
+        // sum of deposits from account
+        m_accountListDepositsSumQuery.prepare(
+                "SELECT SUM(amount) FROM account "
+                "WHERE date BETWEEN :fromDate AND :toDate "
+                "AND type IN (1, 3)"
+                );
+        // sum of bank charges from account
+        m_accountListBankChargesSumQuery.prepare(
+                "SELECT SUM(amount) FROM account "
+                "WHERE date BETWEEN :fromDate AND :toDate "
+                "AND type=2"
+                );
+        // num transactions by memberid from account
+        m_accountListByMemberIdCountQuery.prepare(
+                "SELECT COUNT(*) FROM account "
+                "WHERE idmember=:memberid "
+                "AND date BETWEEN :fromDate AND :toDate"
+                );
+        // sum of invoices by memberid from account
+        m_accountListByMemberIdInvoicesSumQuery.prepare(
+                "SELECT SUM(amount) FROM account "
+                "WHERE idmember=:memberid "
+                "AND date BETWEEN :fromDate AND :toDate "
+                "AND type=0"
+                );
+        // sum of deposits by memberid from account
+        m_accountListByMemberIdDepositsSumQuery.prepare(
+                "SELECT SUM(amount) FROM account "
+                "WHERE idmember=:memberid "
+                "AND date BETWEEN :fromDate AND :toDate "
+                "AND type IN (1, 3)"
+                );
+        // sum of bank charger by memberid from account
+        m_accountListByMemberIdBankChargesSumQuery.prepare(
+                "SELECT SUM(amount) FROM account "
+                "WHERE idmember=:memberid "
+                "AND date BETWEEN :fromDate AND :toDate "
+                "AND type=2"
                 );
         // table reservation list for a given moment (date and reservationtype)
         m_tableReservationListQuery.prepare(
@@ -739,27 +807,57 @@ namespace PenyaManager {
         return pNewDepositPtr;
     }
     //
-    TransactionListPtr DAO::getAccountList(Int32 memberId, const QDate &fromDate, const QDate &toDate)
+    TransactionListPtr DAO::getAccountList(const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count)
     {
+        TransactionListPtr pTransactionListPtr(new TransactionList);
+        // bind value
+        m_accountListQuery.bindValue(":fromDate", fromDate);
+        m_accountListQuery.bindValue(":toDate", toDate);
+        m_accountListQuery.bindValue(":limit", count);
+        m_accountListQuery.bindValue(":offset", page * count);
+        // run query
+        if (!m_accountListQuery.exec())
+        {
+            qDebug() << m_accountListQuery.lastError();
+        } else {
+            while (m_accountListQuery.next()) {
+                TransactionPtr pTransactionPtr(new Transaction());
+                pTransactionPtr->m_amount = m_accountListQuery.value(0).toFloat();
+                pTransactionPtr->m_date = m_accountListQuery.value(1).toDateTime();
+                pTransactionPtr->m_descr = m_accountListQuery.value(2).toString();
+                pTransactionPtr->m_type = static_cast<TransactionType>(m_accountListQuery.value(3).toUInt());
+                pTransactionListPtr->push_back(pTransactionPtr);
+            }
+        }
+
+        m_memberAccountListQuery.finish();
+        return pTransactionListPtr;
+    }
+    //
+    TransactionListPtr DAO::getAccountListByMemberId(Int32 memberId, const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count)
+    {
+        TransactionListPtr pTransactionListPtr(new TransactionList);
         // bind value
         m_memberAccountListQuery.bindValue(":memberid", memberId);
         m_memberAccountListQuery.bindValue(":fromDate", fromDate);
         m_memberAccountListQuery.bindValue(":toDate", toDate);
+        m_memberAccountListQuery.bindValue(":limit", count);
+        m_memberAccountListQuery.bindValue(":offset", page * count);
         // run query
         if (!m_memberAccountListQuery.exec())
         {
             qDebug() << m_memberAccountListQuery.lastError();
+        } else {
+            while (m_memberAccountListQuery.next()) {
+                TransactionPtr pTransactionPtr(new Transaction());
+                pTransactionPtr->m_amount = m_memberAccountListQuery.value(0).toFloat();
+                pTransactionPtr->m_date = m_memberAccountListQuery.value(1).toDateTime();
+                pTransactionPtr->m_descr = m_memberAccountListQuery.value(2).toString();
+                pTransactionPtr->m_type = static_cast<TransactionType>(m_memberAccountListQuery.value(3).toUInt());
+                pTransactionListPtr->push_back(pTransactionPtr);
+            }
         }
 
-        TransactionListPtr pTransactionListPtr(new TransactionList);
-        while (m_memberAccountListQuery.next()) {
-            TransactionPtr pTransactionPtr(new Transaction());
-            pTransactionPtr->m_amount = m_memberAccountListQuery.value(0).toFloat();
-            pTransactionPtr->m_date = m_memberAccountListQuery.value(1).toDateTime();
-            pTransactionPtr->m_descr = m_memberAccountListQuery.value(2).toString();
-            pTransactionPtr->m_type = static_cast<TransactionType>(m_memberAccountListQuery.value(3).toUInt());
-            pTransactionListPtr->push_back(pTransactionPtr);
-        }
         m_memberAccountListQuery.finish();
         return pTransactionListPtr;
     }

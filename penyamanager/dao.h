@@ -61,7 +61,9 @@ namespace PenyaManager {
             //
             DepositPtr createDeposit(const DepositPtr &pDepositPtr);
             //
-            TransactionListPtr getAccountList(Int32 memberId, const QDate &fromDate, const QDate &toDate);
+            TransactionListPtr getAccountList(const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count);
+            //
+            TransactionListPtr getAccountListByMemberId(Int32 memberId, const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count);
             //
             TableReservationListPtr getTableReservation(ReservationType reservationType, const QDate &now);
             //
@@ -165,7 +167,25 @@ namespace PenyaManager {
             //
             QSqlQuery               m_insertDepositQuery;
             //
+            QSqlQuery               m_accountListQuery;
+            //
             QSqlQuery               m_memberAccountListQuery;
+            //
+            QSqlQuery               m_accountListCountQuery;
+            //
+            QSqlQuery               m_accountListInvoicesSumQuery;
+            //
+            QSqlQuery               m_accountListDepositsSumQuery;
+            //
+            QSqlQuery               m_accountListBankChargesSumQuery;
+            //
+            QSqlQuery               m_accountListByMemberIdCountQuery;
+            //
+            QSqlQuery               m_accountListByMemberIdInvoicesSumQuery;
+            //
+            QSqlQuery               m_accountListByMemberIdDepositsSumQuery;
+            //
+            QSqlQuery               m_accountListByMemberIdBankChargesSumQuery;
             //
             QSqlQuery               m_tableReservationListQuery;
             //

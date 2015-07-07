@@ -102,4 +102,20 @@ namespace PenyaManager {
             createAccountTransaction(pMemberPtr->m_id, -pMemberPtr->m_balance, "reset account", TransactionType::AccountPayment);
         }
     }
+    //
+    TransactionListStatsPtr Services::getAccountListStats(const QDate &fromDate, const QDate &toDate)
+    {
+        // query to get total num of transactions
+        // query to get sum of invoices
+        // query to get sum of deposits
+        // query to get sum of bank charges
+    }
+    //
+    TransactionListStatsPtr Services::getAccountListByMemberIdStats(Int32 memberId, const QDate &fromDate, const QDate &toDate)
+    {
+        // query to get total num of transactions
+        // query to get sum of invoices
+        // query to get sum of deposits
+        // query to get sum of bank charges
+    }
 }

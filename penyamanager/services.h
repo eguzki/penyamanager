@@ -24,6 +24,10 @@ namespace PenyaManager {
             DepositPtr createDeposit(const MemberPtr &pMemberPtr, Float amount);
             //
             void resetSlowPayersBalance();
+            //
+            TransactionListStatsPtr getAccountListStats(const QDate &fromDate, const QDate &toDate);
+            //
+            TransactionListStatsPtr getAccountListByMemberIdStats(Int32 memberId, const QDate &fromDate, const QDate &toDate);
     };
 }
 

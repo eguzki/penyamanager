@@ -29,5 +29,14 @@ namespace PenyaManager {
             m_descr(descr)
     {
     }
+    //
+    TransactionListStats::TransactionListStats()
+        :
+            m_totalNumTransactions(0),
+            m_totalInvoices(0.0),
+            m_totalDeposits(0.0),
+            m_totalBankCharges(0.0)
+    {
+    }
 
 }
