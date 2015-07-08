@@ -8,7 +8,9 @@ namespace PenyaManager {
     //
     AccountBalanceView::AccountBalanceView(QWidget *parent) :
         IPartner(parent),
-        ui(new Ui::AccountBalanceView)
+        ui(new Ui::AccountBalanceView),
+        m_currentPage(0),
+        m_firstTime(true)
     {
         ui->setupUi(this);
 
@@ -47,7 +49,7 @@ namespace PenyaManager {
     void AccountBalanceView::initializeTable()
     {
         // table
-        this->ui->transactionsTableWidget->setColumnCount(5);
+        this->ui->transactionsTableWidget->setColumnCount(4);
 
         // invoice table Header
         QStringList headers;
@@ -55,13 +57,11 @@ namespace PenyaManager {
         headers.append("memberid");
         headers.append("description");
         headers.append("amount");
-        headers.append("balance");
         this->ui->transactionsTableWidget->setHorizontalHeaderLabels(headers);
         Uint32 column = 0;
         this->ui->transactionsTableWidget->setColumnWidth(column++, 200);
         this->ui->transactionsTableWidget->setColumnWidth(column++, 100);
         this->ui->transactionsTableWidget->setColumnWidth(column++, 300);
-        this->ui->transactionsTableWidget->setColumnWidth(column++, 100);
         this->ui->transactionsTableWidget->setColumnWidth(column++, 100);
     }
     //
@@ -99,8 +99,21 @@ namespace PenyaManager {
     {
         // num rows
         this->ui->transactionsTableWidget->setRowCount(pTransactionListPtr->size());
-        // deposit table reset
+        // table reset
         this->ui->transactionsTableWidget->clearContents();
+
+        // fill data
+        Uint32 rowCount = 0;
+        for (TransactionList::iterator iter = pTransactionListPtr->begin(); iter != pTransactionListPtr->end(); ++iter)
+        {
+            Uint32 column = 0;
+            TransactionPtr pTransactionPtr = *iter;
+            this->ui->transactionsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(pTransactionPtr->m_date.toString()));
+            this->ui->transactionsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(QString::number(pTransactionPtr->m_memberId)));
+            this->ui->transactionsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(pTransactionPtr->m_descr));
+            this->ui->transactionsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(tr("%1 €").arg(pTransactionPtr->m_amount)));
+            rowCount++;
+        }
     }
     //
     void AccountBalanceView::updateResults()
@@ -120,5 +133,22 @@ namespace PenyaManager {
             pTransactionListPtr = Singletons::m_pDAO->getAccountListByMemberId(memberId, fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
             pTransactionListStatsPtr = Singletons::m_pServices->getAccountListByMemberIdStats(memberId, fromDate, toDate);
         }
+        // enable-disable pagination buttons
+        // total num pages
+        Uint32 numPages = (Uint32)ceil((Float)pTransactionListStatsPtr->m_totalNumTransactions/Constants::kInvoiceListPageCount);
+        this->ui->prevPagePushButton->setEnabled(m_currentPage > 0);
+        this->ui->nextPagePushButton->setEnabled(m_currentPage < numPages-1);
+        // fill page view
+        this->ui->pageInfoLabel->setText(tr("page %1 out of %2").arg(m_currentPage+1).arg(numPages));
+        // fill total stats view
+        this->ui->totalRowsValueLabel->setText(QString::number(pTransactionListStatsPtr->m_totalNumTransactions));
+        this->ui->totalDepositsValueLabel->setText(tr("%1 €").arg(pTransactionListStatsPtr->m_totalDeposits));
+        this->ui->totalInvoicesValueLabel->setText(tr("%1 €").arg(pTransactionListStatsPtr->m_totalInvoices));
+        this->ui->totalBankChargesValueLabel->setText(tr("%1 €").arg(pTransactionListStatsPtr->m_totalBankCharges));
+        // fill dates used for query
+        this->ui->fromDateResultValueLabel->setText(fromDate.toString());
+        this->ui->toDateResultValueLabel->setText(toDate.addDays(-1).toString());
+        // fill transaction list
+        fillTransactionList(pTransactionListPtr);
     }
 }

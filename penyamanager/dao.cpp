@@ -183,7 +183,7 @@ namespace PenyaManager {
                 );
         // member's account transaction list
         m_memberAccountListQuery.prepare(
-                "SELECT amount, date, description, type "
+                "SELECT amount, date, description, balance, type "
                 "FROM account "
                 "WHERE idmember=:memberid "
                 "AND date BETWEEN :fromDate AND :toDate "
@@ -192,7 +192,7 @@ namespace PenyaManager {
                 );
         // member's account transaction list
         m_accountListQuery.prepare(
-                "SELECT amount, date, description, type "
+                "SELECT idmember, amount, date, description, balance, type "
                 "FROM account "
                 "WHERE date BETWEEN :fromDate AND :toDate "
                 "ORDER BY date DESC "
@@ -821,17 +821,170 @@ namespace PenyaManager {
             qDebug() << m_accountListQuery.lastError();
         } else {
             while (m_accountListQuery.next()) {
+                Uint32 value = 0;
                 TransactionPtr pTransactionPtr(new Transaction());
-                pTransactionPtr->m_amount = m_accountListQuery.value(0).toFloat();
-                pTransactionPtr->m_date = m_accountListQuery.value(1).toDateTime();
-                pTransactionPtr->m_descr = m_accountListQuery.value(2).toString();
-                pTransactionPtr->m_type = static_cast<TransactionType>(m_accountListQuery.value(3).toUInt());
+                pTransactionPtr->m_memberId = m_accountListQuery.value(value++).toInt();
+                pTransactionPtr->m_amount = m_accountListQuery.value(value++).toFloat();
+                pTransactionPtr->m_date = m_accountListQuery.value(value++).toDateTime();
+                pTransactionPtr->m_descr = m_accountListQuery.value(value++).toString();
+                pTransactionPtr->m_balance = m_accountListQuery.value(value++).toFloat();
+                pTransactionPtr->m_type = static_cast<TransactionType>(m_accountListQuery.value(value++).toUInt());
                 pTransactionListPtr->push_back(pTransactionPtr);
             }
         }
 
-        m_memberAccountListQuery.finish();
+        m_accountListQuery.finish();
         return pTransactionListPtr;
+    }
+    //
+    Uint32 DAO::getAccountListCount(const QDate &fromDate, const QDate &toDate)
+    {
+        Uint32 count = 0;
+        m_accountListCountQuery.bindValue(":fromDate", fromDate);
+        m_accountListCountQuery.bindValue(":toDate", toDate);
+        if (!m_accountListCountQuery.exec())
+        {
+            qDebug() << m_accountListCountQuery.lastError();
+        } else {
+            if (!m_accountListCountQuery.next())
+            {
+                return count;
+            }
+            count = m_accountListCountQuery.value(0).toUInt();
+        }
+        m_accountListCountQuery.finish();
+        return count;
+    }
+    //
+    Float DAO::getAccountListInvoicesSum(const QDate &fromDate, const QDate &toDate)
+    {
+        Float count = 0.0;
+        m_accountListInvoicesSumQuery.bindValue(":fromDate", fromDate);
+        m_accountListInvoicesSumQuery.bindValue(":toDate", toDate);
+        if (!m_accountListInvoicesSumQuery.exec())
+        {
+            qDebug() << m_accountListInvoicesSumQuery.lastError();
+        } else {
+            if (m_accountListInvoicesSumQuery.next())
+            {
+                count = m_accountListInvoicesSumQuery.value(0).toFloat();
+            }
+        }
+        m_accountListInvoicesSumQuery.finish();
+        return count;
+    }
+    //
+    Float DAO::getAccountListDepositsSum(const QDate &fromDate, const QDate &toDate)
+    {
+        Float count = 0.0;
+        m_accountListDepositsSumQuery.bindValue(":fromDate", fromDate);
+        m_accountListDepositsSumQuery.bindValue(":toDate", toDate);
+        if (!m_accountListDepositsSumQuery.exec())
+        {
+            qDebug() << m_accountListDepositsSumQuery.lastError();
+        } else {
+            if (m_accountListDepositsSumQuery.next())
+            {
+                count = m_accountListDepositsSumQuery.value(0).toFloat();
+            }
+        }
+        m_accountListDepositsSumQuery.finish();
+        return count;
+    }
+    //
+    Float DAO::getAccountListBankChargesSum(const QDate &fromDate, const QDate &toDate)
+    {
+        Float count = 0.0;
+        m_accountListBankChargesSumQuery.bindValue(":fromDate", fromDate);
+        m_accountListBankChargesSumQuery.bindValue(":toDate", toDate);
+        if (!m_accountListBankChargesSumQuery.exec())
+        {
+            qDebug() << m_accountListBankChargesSumQuery.lastError();
+        } else {
+            if (m_accountListBankChargesSumQuery.next())
+            {
+                count = m_accountListBankChargesSumQuery.value(0).toFloat();
+            }
+        }
+        m_accountListBankChargesSumQuery.finish();
+        return count;
+    }
+    //
+    Uint32 DAO::getAccountListByMemberIdCount(Int32 memberId, const QDate &fromDate, const QDate &toDate)
+    {
+        Uint32 count = 0;
+        m_accountListByMemberIdCountQuery.bindValue(":memberid", memberId);
+        m_accountListByMemberIdCountQuery.bindValue(":fromDate", fromDate);
+        m_accountListByMemberIdCountQuery.bindValue(":toDate", toDate);
+        if (!m_accountListByMemberIdCountQuery.exec())
+        {
+            qDebug() << m_accountListByMemberIdCountQuery.lastError();
+        } else {
+            if (!m_accountListByMemberIdCountQuery.next())
+            {
+                return count;
+            }
+            count = m_accountListByMemberIdCountQuery.value(0).toUInt();
+        }
+        m_accountListByMemberIdCountQuery.finish();
+        return count;
+    }
+    //
+    Float DAO::getAccountListByMemberIdInvoicesSum(Int32 memberId, const QDate &fromDate, const QDate &toDate)
+    {
+        Float count = 0.0;
+        m_accountListByMemberIdInvoicesSumQuery.bindValue(":memberid", memberId);
+        m_accountListByMemberIdInvoicesSumQuery.bindValue(":fromDate", fromDate);
+        m_accountListByMemberIdInvoicesSumQuery.bindValue(":toDate", toDate);
+        if (!m_accountListByMemberIdInvoicesSumQuery.exec())
+        {
+            qDebug() << m_accountListByMemberIdInvoicesSumQuery.lastError();
+        } else {
+            if (m_accountListByMemberIdInvoicesSumQuery.next())
+            {
+                count = m_accountListByMemberIdInvoicesSumQuery.value(0).toFloat();
+            }
+        }
+        m_accountListByMemberIdInvoicesSumQuery.finish();
+        return count;
+    }
+    //
+    Float DAO::getAccountListByMemberIdDepositsSum(Int32 memberId, const QDate &fromDate, const QDate &toDate)
+    {
+        Float count = 0.0;
+        m_accountListByMemberIdDepositsSumQuery.bindValue(":memberid", memberId);
+        m_accountListByMemberIdDepositsSumQuery.bindValue(":fromDate", fromDate);
+        m_accountListByMemberIdDepositsSumQuery.bindValue(":toDate", toDate);
+        if (!m_accountListByMemberIdDepositsSumQuery.exec())
+        {
+            qDebug() << m_accountListByMemberIdDepositsSumQuery.lastError();
+        } else {
+            if (m_accountListByMemberIdDepositsSumQuery.next())
+            {
+                count = m_accountListByMemberIdDepositsSumQuery.value(0).toFloat();
+            }
+        }
+        m_accountListByMemberIdDepositsSumQuery.finish();
+        return count;
+    }
+    //
+    Float DAO::getAccountListByMemberIdBankChargesSum(Int32 memberId, const QDate &fromDate, const QDate &toDate)
+    {
+        Float count = 0.0;
+        m_accountListByMemberIdBankChargesSumQuery.bindValue(":memberid", memberId);
+        m_accountListByMemberIdBankChargesSumQuery.bindValue(":fromDate", fromDate);
+        m_accountListByMemberIdBankChargesSumQuery.bindValue(":toDate", toDate);
+        if (!m_accountListByMemberIdBankChargesSumQuery.exec())
+        {
+            qDebug() << m_accountListByMemberIdBankChargesSumQuery.lastError();
+        } else {
+            if (m_accountListByMemberIdBankChargesSumQuery.next())
+            {
+                count = m_accountListByMemberIdBankChargesSumQuery.value(0).toFloat();
+            }
+        }
+        m_accountListByMemberIdBankChargesSumQuery.finish();
+        return count;
     }
     //
     TransactionListPtr DAO::getAccountListByMemberId(Int32 memberId, const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count)
@@ -849,11 +1002,14 @@ namespace PenyaManager {
             qDebug() << m_memberAccountListQuery.lastError();
         } else {
             while (m_memberAccountListQuery.next()) {
+                Uint32 value = 0;
                 TransactionPtr pTransactionPtr(new Transaction());
-                pTransactionPtr->m_amount = m_memberAccountListQuery.value(0).toFloat();
-                pTransactionPtr->m_date = m_memberAccountListQuery.value(1).toDateTime();
-                pTransactionPtr->m_descr = m_memberAccountListQuery.value(2).toString();
-                pTransactionPtr->m_type = static_cast<TransactionType>(m_memberAccountListQuery.value(3).toUInt());
+                pTransactionPtr->m_memberId = memberId;
+                pTransactionPtr->m_amount = m_memberAccountListQuery.value(value++).toFloat();
+                pTransactionPtr->m_date = m_memberAccountListQuery.value(value++).toDateTime();
+                pTransactionPtr->m_descr = m_memberAccountListQuery.value(value++).toString();
+                pTransactionPtr->m_balance = m_memberAccountListQuery.value(value++).toFloat();
+                pTransactionPtr->m_type = static_cast<TransactionType>(m_memberAccountListQuery.value(value++).toUInt());
                 pTransactionListPtr->push_back(pTransactionPtr);
             }
         }

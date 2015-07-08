@@ -105,17 +105,29 @@ namespace PenyaManager {
     //
     TransactionListStatsPtr Services::getAccountListStats(const QDate &fromDate, const QDate &toDate)
     {
+        TransactionListStatsPtr pTransactionListStatsPtr(new TransactionListStats);
         // query to get total num of transactions
+        pTransactionListStatsPtr->m_totalNumTransactions = Singletons::m_pDAO->getAccountListCount(fromDate, toDate);
         // query to get sum of invoices
+        pTransactionListStatsPtr->m_totalInvoices = Singletons::m_pDAO->getAccountListInvoicesSum(fromDate, toDate);
         // query to get sum of deposits
+        pTransactionListStatsPtr->m_totalDeposits = Singletons::m_pDAO->getAccountListDepositsSum(fromDate, toDate);
         // query to get sum of bank charges
+        pTransactionListStatsPtr->m_totalBankCharges = Singletons::m_pDAO->getAccountListBankChargesSum(fromDate, toDate);
+        return pTransactionListStatsPtr;
     }
     //
     TransactionListStatsPtr Services::getAccountListByMemberIdStats(Int32 memberId, const QDate &fromDate, const QDate &toDate)
     {
+        TransactionListStatsPtr pTransactionListStatsPtr(new TransactionListStats);
         // query to get total num of transactions
+        pTransactionListStatsPtr->m_totalNumTransactions = Singletons::m_pDAO->getAccountListByMemberIdCount(memberId, fromDate, toDate);
         // query to get sum of invoices
+        pTransactionListStatsPtr->m_totalInvoices = Singletons::m_pDAO->getAccountListByMemberIdInvoicesSum(memberId, fromDate, toDate);
         // query to get sum of deposits
+        pTransactionListStatsPtr->m_totalDeposits = Singletons::m_pDAO->getAccountListByMemberIdDepositsSum(memberId, fromDate, toDate);
         // query to get sum of bank charges
+        pTransactionListStatsPtr->m_totalBankCharges = Singletons::m_pDAO->getAccountListByMemberIdBankChargesSum(memberId, fromDate, toDate);
+        return pTransactionListStatsPtr;
     }
 }

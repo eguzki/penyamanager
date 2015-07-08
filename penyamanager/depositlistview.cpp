@@ -110,7 +110,8 @@ namespace PenyaManager {
         Float amount = pDoubleSpinBox->value() - total;
         if (amount != 0) {
             // create account entry with difference when not equal
-            Singletons::m_pServices->createAccountTransaction(memberId, amount, "deposit fix", TransactionType::DepositFix);
+            QString descr = QString("deposit fix. Ref: %1").arg(depositId);
+            Singletons::m_pServices->createAccountTransaction(memberId, amount, descr, TransactionType::DepositFix);
         }
         // close deposit
         Singletons::m_pDAO->closeDeposit(depositId);
