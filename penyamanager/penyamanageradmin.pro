@@ -34,8 +34,8 @@ SOURCES += adminmain.cpp\
         objs/ProductFamily.cpp\
         objs/ProductItem.cpp\
         objs/InvoiceProductItem.cpp\
-        objs/TableReservation.cpp\
-        objs/LunchTable.cpp\
+        objs/Reservation.cpp\
+        objs/ReservationItem.cpp\
         objs/Provider.cpp\
         objs/ProviderInvoice.cpp\
         adminloginwindow.cpp\
@@ -71,8 +71,8 @@ HEADERS  += singletons.h\
         objs/ProductFamily.h\
         objs/ProductItem.h\
         objs/InvoiceProductItem.h\
-        objs/TableReservation.h\
-        objs/LunchTable.h\
+        objs/Reservation.h\
+        objs/ReservationItem.h\
         objs/Provider.h\
         objs/ProviderInvoice.h\
         adminloginwindow.h\

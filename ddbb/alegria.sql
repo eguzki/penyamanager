@@ -219,13 +219,13 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `alegria`.`tablereservation` ;
 
 CREATE TABLE IF NOT EXISTS `alegria`.`tablereservation` (
-  `idtablereservation` INT NOT NULL AUTO_INCREMENT,
+  `idreservation` INT NOT NULL AUTO_INCREMENT,
   `date` DATE NOT NULL,
   `reservationtype` TINYINT NOT NULL,
   `guestnum` SMALLINT NOT NULL,
   `idmember` INT(11) NOT NULL,
   `idtable` INT(11) NOT NULL,
-  PRIMARY KEY (`idtablereservation`),
+  PRIMARY KEY (`idreservation`),
   INDEX `fk_tablereservation_member1_idx` (`idmember` ASC),
   INDEX `fk_tablereservation_lunchtables_idx` (`idtable` ASC),
   CONSTRAINT `fk_tablereservation_member1`
@@ -281,6 +281,88 @@ CREATE TABLE IF NOT EXISTS `alegria`.`provider_invoices_product` (
   CONSTRAINT `fk_table1_product_item1`
     FOREIGN KEY (`product_item_idproduct_item`)
     REFERENCES `alegria`.`product_item` (`idproduct_item`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `alegria`.`ovens`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `alegria`.`ovens` ;
+
+CREATE TABLE IF NOT EXISTS `alegria`.`ovens` (
+  `idoven` INT(11) NOT NULL,
+  `name` VARCHAR(45) NOT NULL,
+  `guestnum` SMALLINT NOT NULL,
+  PRIMARY KEY (`idoven`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `alegria`.`ovenreservation`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `alegria`.`ovenreservation` ;
+
+CREATE TABLE IF NOT EXISTS `alegria`.`ovenreservation` (
+  `idreservation` INT NOT NULL AUTO_INCREMENT,
+  `date` DATE NOT NULL,
+  `reservationtype` TINYINT NOT NULL,
+  `guestnum` SMALLINT NOT NULL,
+  `idmember` INT(11) NOT NULL,
+  `idoven` INT(11) NOT NULL,
+  PRIMARY KEY (`idreservation`),
+  INDEX `fk_tablereservation_member1_idx` (`idmember` ASC),
+  INDEX `fk_ovenreservation_oventables1_idx` (`idoven` ASC),
+  CONSTRAINT `fk_tablereservation_member10`
+    FOREIGN KEY (`idmember`)
+    REFERENCES `alegria`.`member` (`idmember`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_ovenreservation_oventables1`
+    FOREIGN KEY (`idoven`)
+    REFERENCES `alegria`.`ovens` (`idoven`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `alegria`.`fireplaces`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `alegria`.`fireplaces` ;
+
+CREATE TABLE IF NOT EXISTS `alegria`.`fireplaces` (
+  `idfireplace` INT(11) NOT NULL,
+  `name` VARCHAR(45) NOT NULL,
+  `guestnum` SMALLINT NOT NULL,
+  PRIMARY KEY (`idfireplace`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `alegria`.`fireplacereservation`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `alegria`.`fireplacereservation` ;
+
+CREATE TABLE IF NOT EXISTS `alegria`.`fireplacereservation` (
+  `idreservation` INT NOT NULL AUTO_INCREMENT,
+  `date` DATE NOT NULL,
+  `reservationtype` TINYINT NOT NULL,
+  `guestnum` SMALLINT NOT NULL,
+  `idmember` INT(11) NOT NULL,
+  `idfireplace` INT(11) NOT NULL,
+  PRIMARY KEY (`idreservation`),
+  INDEX `fk_tablereservation_member1_idx` (`idmember` ASC),
+  INDEX `fk_fireplacereservation_fireplacetables1_idx` (`idfireplace` ASC),
+  CONSTRAINT `fk_tablereservation_member100`
+    FOREIGN KEY (`idmember`)
+    REFERENCES `alegria`.`member` (`idmember`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_fireplacereservation_fireplacetables1`
+    FOREIGN KEY (`idfireplace`)
+    REFERENCES `alegria`.`fireplaces` (`idfireplace`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

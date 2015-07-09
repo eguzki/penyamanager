@@ -6,7 +6,8 @@
 #include <QAbstractButton>
 
 #include "memberprofilegroupbox.h"
-#include "objs/TableReservation.h"
+#include "objs/Reservation.h"
+#include "objs/ReservationItem.h"
 #include "objs/Member.h"
 #include "IPartner.h"
 
@@ -16,7 +17,7 @@ class TableReservationView;
 
 namespace PenyaManager {
     //
-    typedef std::map<Uint32, TableReservationPtr> TableReservationMap;
+    typedef std::map<Uint32, ReservationPtr> ReservationMap;
     //
     class TableReservationView : public IPartner
     {
@@ -32,11 +33,15 @@ namespace PenyaManager {
 
         private:
             //
+            void initializeTable();
+            //
             void initializeTableReservations(const MemberPtr &);
             //
             void fillTableReservations(const MemberPtr &, const QDate &, ReservationType);
             //
-            void prepareTableReservationMap(TableReservationMap &, const TableReservationListPtr &, const MemberPtr &, bool &);
+            void fillReservationsItems(const MemberPtr &pMemberPtr, const ReservationListPtr &pReservationListPtr, const ReservationItemListPtr &pReservationItemListPtr, Uint32 &rowCount);
+            //
+            void prepareTableReservationMap(ReservationMap &, const ReservationListPtr &, const MemberPtr &, bool &);
 
         private slots:
             //
@@ -44,9 +49,9 @@ namespace PenyaManager {
             //
             void on_calendarWidget_clicked(const QDate &date);
             //
-            void on_reservedButton_clicked(int tableId);
+            void on_reservedButton_clicked(int itemId, ReservationItemType itemType);
             //
-            void on_cancelButton_clicked(int reservationId);
+            void on_cancelButton_clicked(int reservationId, ReservationItemType itemType);
             //
             void on_lunchButton_clicked(bool checked);
             //

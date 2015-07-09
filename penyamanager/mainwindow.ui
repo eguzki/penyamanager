@@ -86,7 +86,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>Table Reservation</string>
+            <string>Reservations</string>
            </property>
           </widget>
          </item>

@@ -34,9 +34,17 @@ namespace PenyaManager {
             m_accountListByMemberIdDepositsSumQuery(m_db),
             m_accountListByMemberIdBankChargesSumQuery(m_db),
             m_tableReservationListQuery(m_db),
+            m_ovenReservationListQuery(m_db),
+            m_fireplaceReservationListQuery(m_db),
             m_lunchTablesListQuery(m_db),
+            m_ovenListQuery(m_db),
+            m_fireplaceListQuery(m_db),
             m_insertTableReservationQuery(m_db),
             m_cancelTableReservationQuery(m_db),
+            m_insertOvenReservationQuery(m_db),
+            m_cancelOvenReservationQuery(m_db),
+            m_insertFireplaceReservationQuery(m_db),
+            m_cancelFireplaceReservationQuery(m_db),
             m_slowPayersQuery(m_db),
             m_invoiceListByMemberIdQuery(m_db),
             m_invoiceListByMemberIdStatsQuery(m_db),
@@ -250,9 +258,25 @@ namespace PenyaManager {
                 );
         // table reservation list for a given moment (date and reservationtype)
         m_tableReservationListQuery.prepare(
-                "SELECT tablereservation.idtablereservation, tablereservation.idtable, member.name, member.surname, tablereservation.idmember, tablereservation.guestnum "
+                "SELECT tablereservation.idreservation, tablereservation.idtable, member.name, member.surname, tablereservation.idmember, tablereservation.guestnum "
                 "FROM tablereservation "
                 "INNER JOIN member ON tablereservation.idmember=member.idmember "
+                "WHERE date=:dateid "
+                "AND reservationtype=:reservationtypeid"
+                );
+        // oven reservation list for a given moment (date and reservationtype)
+        m_ovenReservationListQuery.prepare(
+                "SELECT ovenreservation.idreservation, ovenreservation.idoven, member.name, member.surname, ovenreservation.idmember, ovenreservation.guestnum "
+                "FROM ovenreservation "
+                "INNER JOIN member ON ovenreservation.idmember=member.idmember "
+                "WHERE date=:dateid "
+                "AND reservationtype=:reservationtypeid"
+                );
+        // oven reservation list for a given moment (date and reservationtype)
+        m_fireplaceReservationListQuery.prepare(
+                "SELECT fireplacereservation.idreservation, fireplacereservation.idfireplace, member.name, member.surname, fireplacereservation.idmember, fireplacereservation.guestnum "
+                "FROM fireplacereservation "
+                "INNER JOIN member ON fireplacereservation.idmember=member.idmember "
                 "WHERE date=:dateid "
                 "AND reservationtype=:reservationtypeid"
                 );
@@ -260,6 +284,16 @@ namespace PenyaManager {
         m_lunchTablesListQuery.prepare(
                 "SELECT idtable, name, guestnum "
                 "FROM lunchtables"
+                );
+        // oven list
+        m_ovenListQuery.prepare(
+                "SELECT idoven, name, guestnum "
+                "FROM ovens"
+                );
+        // fireplace list
+        m_fireplaceListQuery.prepare(
+                "SELECT idfireplace, name, guestnum "
+                "FROM fireplaces"
                 );
         // insert table reservation
         m_insertTableReservationQuery.prepare(
@@ -270,7 +304,29 @@ namespace PenyaManager {
         // cancel table reservation
         m_cancelTableReservationQuery.prepare(
                 "DELETE FROM tablereservation "
-                "WHERE idtablereservation = :idtablereservation"
+                "WHERE idreservation = :idreservation"
+                );
+        // insert oven reservation
+        m_insertOvenReservationQuery.prepare(
+                "INSERT INTO ovenreservation "
+                "(date, reservationtype, guestnum, idmember, idoven) "
+                "VALUES (:date, :reservationtype, :guestnum, :idmember, :idoven)"
+                );
+        // cancel oven reservation
+        m_cancelOvenReservationQuery.prepare(
+                "DELETE FROM ovenreservation "
+                "WHERE idreservation = :idreservation"
+                );
+        // insert fireplace reservation
+        m_insertFireplaceReservationQuery.prepare(
+                "INSERT INTO fireplacereservation "
+                "(date, reservationtype, guestnum, idmember, idfireplace) "
+                "VALUES (:date, :reservationtype, :guestnum, :idmember, :idfireplace)"
+                );
+        // cancel fireplace reservation
+        m_cancelFireplaceReservationQuery.prepare(
+                "DELETE FROM fireplacereservation "
+                "WHERE idreservation = :idreservation"
                 );
         // slow payers
         // SELECT account.idmember, MAX(account.date) AS MaxDate FROM account GROUP BY account.idmember
@@ -1018,7 +1074,7 @@ namespace PenyaManager {
         return pTransactionListPtr;
     }
     //
-    TableReservationListPtr DAO::getTableReservation(ReservationType reservationType, const QDate &now)
+    ReservationListPtr DAO::getTableReservation(ReservationType reservationType, const QDate &now)
     {
         // bind value
         m_tableReservationListQuery.bindValue(":reservationtypeid", static_cast<Uint16>(reservationType));
@@ -1029,39 +1085,134 @@ namespace PenyaManager {
             qDebug() << m_tableReservationListQuery.lastError();
         }
 
-        TableReservationListPtr pTableReservationListPtr(new TableReservationList);
+        ReservationListPtr pReservationListPtr(new ReservationList);
         while (m_tableReservationListQuery.next()) {
-            TableReservationPtr pTableReservationPtr(new TableReservation);
-            pTableReservationPtr->m_reservationId = m_tableReservationListQuery.value(0).toInt();
-            pTableReservationPtr->m_idTable = m_tableReservationListQuery.value(1).toInt();
-            pTableReservationPtr->m_memberName = m_tableReservationListQuery.value(2).toString();
-            pTableReservationPtr->m_memberSurname = m_tableReservationListQuery.value(3).toString();
-            pTableReservationPtr->m_idMember = m_tableReservationListQuery.value(4).toInt();
-            pTableReservationPtr->m_guestNum = m_tableReservationListQuery.value(5).toUInt();
-            pTableReservationListPtr->push_back(pTableReservationPtr);
+            ReservationPtr pReservationPtr(new Reservation);
+            pReservationPtr->m_reservationId = m_tableReservationListQuery.value(0).toInt();
+            pReservationPtr->m_idItem = m_tableReservationListQuery.value(1).toInt();
+            pReservationPtr->m_memberName = m_tableReservationListQuery.value(2).toString();
+            pReservationPtr->m_memberSurname = m_tableReservationListQuery.value(3).toString();
+            pReservationPtr->m_idMember = m_tableReservationListQuery.value(4).toInt();
+            pReservationPtr->m_guestNum = m_tableReservationListQuery.value(5).toUInt();
+            pReservationListPtr->push_back(pReservationPtr);
         }
         m_tableReservationListQuery.finish();
-        return pTableReservationListPtr;
+        return pReservationListPtr;
     }
     //
-    LunchTableListPtr DAO::getLunchTableList()
+    ReservationListPtr DAO::getOvenReservation(ReservationType reservationType, const QDate &now)
     {
+        // bind value
+        m_ovenReservationListQuery.bindValue(":reservationtypeid", static_cast<Uint16>(reservationType));
+        m_ovenReservationListQuery.bindValue(":dateid", now);
+        // run query
+        if (!m_ovenReservationListQuery.exec())
+        {
+            qDebug() << m_ovenReservationListQuery.lastError();
+        }
+
+        ReservationListPtr pReservationListPtr(new ReservationList);
+        while (m_ovenReservationListQuery.next()) {
+            ReservationPtr pReservationPtr(new Reservation);
+            pReservationPtr->m_reservationId = m_ovenReservationListQuery.value(0).toInt();
+            pReservationPtr->m_idItem = m_ovenReservationListQuery.value(1).toInt();
+            pReservationPtr->m_memberName = m_ovenReservationListQuery.value(2).toString();
+            pReservationPtr->m_memberSurname = m_ovenReservationListQuery.value(3).toString();
+            pReservationPtr->m_idMember = m_ovenReservationListQuery.value(4).toInt();
+            pReservationPtr->m_guestNum = m_ovenReservationListQuery.value(5).toUInt();
+            pReservationListPtr->push_back(pReservationPtr);
+        }
+        m_ovenReservationListQuery.finish();
+        return pReservationListPtr;
+    }
+    //
+    ReservationListPtr DAO::getFireplaceReservation(ReservationType reservationType, const QDate &now)
+    {
+        // bind value
+        m_fireplaceReservationListQuery.bindValue(":reservationtypeid", static_cast<Uint16>(reservationType));
+        m_fireplaceReservationListQuery.bindValue(":dateid", now);
+        // run query
+        if (!m_fireplaceReservationListQuery.exec())
+        {
+            qDebug() << m_fireplaceReservationListQuery.lastError();
+        }
+
+        ReservationListPtr pReservationListPtr(new ReservationList);
+        while (m_fireplaceReservationListQuery.next()) {
+            ReservationPtr pReservationPtr(new Reservation);
+            pReservationPtr->m_reservationId = m_fireplaceReservationListQuery.value(0).toInt();
+            pReservationPtr->m_idItem = m_fireplaceReservationListQuery.value(1).toInt();
+            pReservationPtr->m_memberName = m_fireplaceReservationListQuery.value(2).toString();
+            pReservationPtr->m_memberSurname = m_fireplaceReservationListQuery.value(3).toString();
+            pReservationPtr->m_idMember = m_fireplaceReservationListQuery.value(4).toInt();
+            pReservationPtr->m_guestNum = m_fireplaceReservationListQuery.value(5).toUInt();
+            pReservationListPtr->push_back(pReservationPtr);
+        }
+        m_fireplaceReservationListQuery.finish();
+        return pReservationListPtr;
+    }
+    //
+    ReservationItemListPtr DAO::getLunchTableList()
+    {
+        ReservationItemListPtr pReservationItemListPtr(new ReservationItemList);
         // run query
         if (!m_lunchTablesListQuery.exec())
         {
             qDebug() << m_lunchTablesListQuery.lastError();
-        }
-
-        LunchTableListPtr pLunchTableListPtr(new LunchTableList);
-        while (m_lunchTablesListQuery.next()) {
-            LunchTablePtr pLunchTablePtr(new LunchTable);
-            pLunchTablePtr->m_idTable = m_lunchTablesListQuery.value(0).toInt();
-            pLunchTablePtr->m_tableName = m_lunchTablesListQuery.value(1).toString();
-            pLunchTablePtr->m_guestNum = m_lunchTablesListQuery.value(2).toUInt();
-            pLunchTableListPtr->push_back(pLunchTablePtr);
+        } else {
+            while (m_lunchTablesListQuery.next()) {
+                ReservationItemPtr pReservationItemPtr(new ReservationItem);
+                pReservationItemPtr->m_itemType = ReservationItemType::LunchTableType;
+                pReservationItemPtr->m_idItem = m_lunchTablesListQuery.value(0).toInt();
+                pReservationItemPtr->m_itemName = m_lunchTablesListQuery.value(1).toString();
+                pReservationItemPtr->m_guestNum = m_lunchTablesListQuery.value(2).toUInt();
+                pReservationItemListPtr->push_back(pReservationItemPtr);
+            }
         }
         m_lunchTablesListQuery.finish();
-        return pLunchTableListPtr;
+        return pReservationItemListPtr;
+    }
+    //
+    ReservationItemListPtr DAO::getOvenList()
+    {
+        ReservationItemListPtr pReservationItemListPtr(new ReservationItemList);
+        // run query
+        if (!m_ovenListQuery.exec())
+        {
+            qDebug() << m_ovenListQuery.lastError();
+        } else {
+            while (m_ovenListQuery.next()) {
+                ReservationItemPtr pReservationItemPtr(new ReservationItem);
+                pReservationItemPtr->m_itemType = ReservationItemType::OvenType;
+                pReservationItemPtr->m_idItem = m_ovenListQuery.value(0).toInt();
+                pReservationItemPtr->m_itemName = m_ovenListQuery.value(1).toString();
+                pReservationItemPtr->m_guestNum = m_ovenListQuery.value(2).toUInt();
+                pReservationItemListPtr->push_back(pReservationItemPtr);
+            }
+        }
+        m_ovenListQuery.finish();
+        return pReservationItemListPtr;
+    }
+    //
+    ReservationItemListPtr DAO::getFireplaceList()
+    {
+        ReservationItemListPtr pReservationItemListPtr(new ReservationItemList);
+        // run query
+        if (!m_fireplaceListQuery.exec())
+        {
+            qDebug() << m_fireplaceListQuery.lastError();
+        } else {
+            while (m_fireplaceListQuery.next()) {
+                ReservationItemPtr pReservationItemPtr(new ReservationItem);
+                pReservationItemPtr->m_itemType = ReservationItemType::FireplaceType;
+                pReservationItemPtr->m_idItem = m_fireplaceListQuery.value(0).toInt();
+                pReservationItemPtr->m_itemName = m_fireplaceListQuery.value(1).toString();
+                pReservationItemPtr->m_guestNum = m_fireplaceListQuery.value(2).toUInt();
+                pReservationItemListPtr->push_back(pReservationItemPtr);
+            }
+        }
+        m_fireplaceListQuery.finish();
+        return pReservationItemListPtr;
     }
     //
     void DAO::makeTableReservation(const QDate &date, ReservationType reservationType, Uint16 guestNum, Int32 memberId, Int32 idTable)
@@ -1080,12 +1231,60 @@ namespace PenyaManager {
     //
     void DAO::cancelTableReservation(Int32 reservationId)
     {
-        m_cancelTableReservationQuery.bindValue(":idtablereservation", reservationId);
+        m_cancelTableReservationQuery.bindValue(":idreservation", reservationId);
         if (!m_cancelTableReservationQuery.exec())
         {
             qDebug() << m_cancelTableReservationQuery.lastError();
         }
         m_cancelTableReservationQuery.finish();
+    }
+    //
+    void DAO::makeOvenReservation(const QDate &date, ReservationType reservationType, Uint16 guestNum, Int32 memberId, Int32 idOven)
+    {
+        m_insertOvenReservationQuery.bindValue(":date", date);
+        m_insertOvenReservationQuery.bindValue(":reservationtype", static_cast<Uint16>(reservationType));
+        m_insertOvenReservationQuery.bindValue(":guestnum", guestNum);
+        m_insertOvenReservationQuery.bindValue(":idmember", memberId);
+        m_insertOvenReservationQuery.bindValue(":idoven", idOven);
+        if (!m_insertOvenReservationQuery.exec())
+        {
+            qDebug() << m_insertOvenReservationQuery.lastError();
+        }
+        m_insertOvenReservationQuery.finish();
+    }
+    //
+    void DAO::cancelOvenReservation(Int32 reservationId)
+    {
+        m_cancelOvenReservationQuery.bindValue(":idreservation", reservationId);
+        if (!m_cancelOvenReservationQuery.exec())
+        {
+            qDebug() << m_cancelOvenReservationQuery.lastError();
+        }
+        m_cancelOvenReservationQuery.finish();
+    }
+    //
+    void DAO::makeFireplaceReservation(const QDate &date, ReservationType reservationType, Uint16 guestNum, Int32 memberId, Int32 idFireplace)
+    {
+        m_insertFireplaceReservationQuery.bindValue(":date", date);
+        m_insertFireplaceReservationQuery.bindValue(":reservationtype", static_cast<Uint16>(reservationType));
+        m_insertFireplaceReservationQuery.bindValue(":guestnum", guestNum);
+        m_insertFireplaceReservationQuery.bindValue(":idmember", memberId);
+        m_insertFireplaceReservationQuery.bindValue(":idfireplace", idFireplace);
+        if (!m_insertFireplaceReservationQuery.exec())
+        {
+            qDebug() << m_insertFireplaceReservationQuery.lastError();
+        }
+        m_insertFireplaceReservationQuery.finish();
+    }
+    //
+    void DAO::cancelFireplaceReservation(Int32 reservationId)
+    {
+        m_cancelFireplaceReservationQuery.bindValue(":idreservation", reservationId);
+        if (!m_cancelFireplaceReservationQuery.exec())
+        {
+            qDebug() << m_cancelFireplaceReservationQuery.lastError();
+        }
+        m_cancelFireplaceReservationQuery.finish();
     }
     //
     MemberListPtr DAO::getSlowPayersList()
