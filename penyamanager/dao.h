@@ -61,7 +61,25 @@ namespace PenyaManager {
             //
             DepositPtr createDeposit(const DepositPtr &pDepositPtr);
             //
-            TransactionListPtr getAccountList(Int32 memberId, const QDate &fromDate, const QDate &toDate);
+            TransactionListPtr getAccountList(const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count);
+            //
+            Uint32 getAccountListCount(const QDate &fromDate, const QDate &toDate);
+            //
+            Float getAccountListInvoicesSum(const QDate &fromDate, const QDate &toDate);
+            //
+            Float getAccountListDepositsSum(const QDate &fromDate, const QDate &toDate);
+            //
+            Float getAccountListBankChargesSum(const QDate &fromDate, const QDate &toDate);
+            //
+            TransactionListPtr getAccountListByMemberId(Int32 memberId, const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count);
+            //
+            Uint32 getAccountListByMemberIdCount(Int32 memberId, const QDate &fromDate, const QDate &toDate);
+            //
+            Float getAccountListByMemberIdInvoicesSum(Int32 memberId, const QDate &fromDate, const QDate &toDate);
+            //
+            Float getAccountListByMemberIdDepositsSum(Int32 memberId, const QDate &fromDate, const QDate &toDate);
+            //
+            Float getAccountListByMemberIdBankChargesSum(Int32 memberId, const QDate &fromDate, const QDate &toDate);
             //
             TableReservationListPtr getTableReservation(ReservationType reservationType, const QDate &now);
             //
@@ -165,7 +183,25 @@ namespace PenyaManager {
             //
             QSqlQuery               m_insertDepositQuery;
             //
+            QSqlQuery               m_accountListQuery;
+            //
             QSqlQuery               m_memberAccountListQuery;
+            //
+            QSqlQuery               m_accountListCountQuery;
+            //
+            QSqlQuery               m_accountListInvoicesSumQuery;
+            //
+            QSqlQuery               m_accountListDepositsSumQuery;
+            //
+            QSqlQuery               m_accountListBankChargesSumQuery;
+            //
+            QSqlQuery               m_accountListByMemberIdCountQuery;
+            //
+            QSqlQuery               m_accountListByMemberIdInvoicesSumQuery;
+            //
+            QSqlQuery               m_accountListByMemberIdDepositsSumQuery;
+            //
+            QSqlQuery               m_accountListByMemberIdBankChargesSumQuery;
             //
             QSqlQuery               m_tableReservationListQuery;
             //

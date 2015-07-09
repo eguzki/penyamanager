@@ -52,10 +52,10 @@ namespace PenyaManager {
     void AccountView::fillAccountData(Int32 memberId, const QDate &fromDate, const QDate &toDate)
     {
         // fetch data
-        TransactionListPtr pTransactionListPtr = Singletons::m_pDAO->getAccountList(memberId, fromDate, toDate);
+        TransactionListPtr pTransactionListPtr = Singletons::m_pDAO->getAccountListByMemberId(memberId, fromDate, toDate, 0, 9999);
 
         // table
-        this->ui->accountTableWidget->setColumnCount(4);
+        this->ui->accountTableWidget->setColumnCount(5);
         this->ui->accountTableWidget->setRowCount(pTransactionListPtr->size());
 
         // invoice table Header
@@ -63,12 +63,15 @@ namespace PenyaManager {
         headers.append("Date");
         headers.append("Description");
         headers.append("Amount");
+        headers.append("Balance");
         headers.append("Type");
+        Uint32 column = 0;
         this->ui->accountTableWidget->setHorizontalHeaderLabels(headers);
-        this->ui->accountTableWidget->setColumnWidth(0, 200);
-        this->ui->accountTableWidget->setColumnWidth(1, 400);
-        this->ui->accountTableWidget->setColumnWidth(2, 200);
-        this->ui->accountTableWidget->setColumnWidth(3, 130);
+        this->ui->accountTableWidget->setColumnWidth(column++, 200);
+        this->ui->accountTableWidget->setColumnWidth(column++, 400);
+        this->ui->accountTableWidget->setColumnWidth(column++, 200);
+        this->ui->accountTableWidget->setColumnWidth(column++, 200);
+        this->ui->accountTableWidget->setColumnWidth(column++, 130);
         // invoice table reset
         this->ui->accountTableWidget->clearContents();
 
@@ -76,11 +79,13 @@ namespace PenyaManager {
         Uint32 rowCount = 0;
         for (TransactionList::iterator iter = pTransactionListPtr->begin(); iter != pTransactionListPtr->end(); ++iter)
         {
+            Uint32 column = 0;
             TransactionPtr pTransactionPtr = *iter;
-            this->ui->accountTableWidget->setItem(rowCount, 0, new QTableWidgetItem(pTransactionPtr->m_date.toString()));
-            this->ui->accountTableWidget->setItem(rowCount, 1, new QTableWidgetItem(pTransactionPtr->m_descr));
-            this->ui->accountTableWidget->setItem(rowCount, 2, new QTableWidgetItem(tr("%1 €").arg(pTransactionPtr->m_amount)));
-            this->ui->accountTableWidget->setItem(rowCount, 3, new QTableWidgetItem(getStringFromTransactionTypeEnum(pTransactionPtr->m_type)));
+            this->ui->accountTableWidget->setItem(rowCount, column++, new QTableWidgetItem(pTransactionPtr->m_date.toString()));
+            this->ui->accountTableWidget->setItem(rowCount, column++, new QTableWidgetItem(pTransactionPtr->m_descr));
+            this->ui->accountTableWidget->setItem(rowCount, column++, new QTableWidgetItem(tr("%1 €").arg(pTransactionPtr->m_amount)));
+            this->ui->accountTableWidget->setItem(rowCount, column++, new QTableWidgetItem(tr("%1 €").arg(pTransactionPtr->m_balance)));
+            this->ui->accountTableWidget->setItem(rowCount, column++, new QTableWidgetItem(getStringFromTransactionTypeEnum(pTransactionPtr->m_type)));
             rowCount++;
         }
     }

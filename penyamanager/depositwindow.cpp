@@ -75,7 +75,7 @@ namespace PenyaManager {
             }
 
             // Update member balance
-            QString description = QString("ref %1").arg(pDepositPtr->m_id);
+            QString description = QString("deposit id: %1").arg(pDepositPtr->m_id);
             Singletons::m_pServices->createAccountTransaction(pCurrMemberPtr->m_id, deposit, description, TransactionType::Deposit);
         }
 

@@ -52,6 +52,29 @@ namespace PenyaManager
     typedef std::vector<TransactionPtr> TransactionList;
     //
     typedef std::shared_ptr<TransactionList> TransactionListPtr;
+
+    //
+    class TransactionListStats
+    {
+        public:
+            //
+            TransactionListStats();
+            //
+            virtual ~TransactionListStats(){}
+
+        public:
+            //
+            Uint32              m_totalNumTransactions;
+            //
+            Float               m_totalInvoices;
+            //
+            Float               m_totalDeposits;
+            //
+            Float               m_totalBankCharges;
+    };
+
+    //
+    typedef std::shared_ptr<TransactionListStats> TransactionListStatsPtr;
 }
 
 #endif // TRANSACTION_H

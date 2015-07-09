@@ -33,10 +33,8 @@ namespace PenyaManager {
             void on_backPushButton_clicked();
             //
             void on_confirmPushButton_clicked();
-            //
-            void on_cashRadioButton_toggled(bool cashButtonChecked);
 
-    private:
+        private:
             //
             Ui::InvoiceWindow *ui;
             //
