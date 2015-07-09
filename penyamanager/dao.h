@@ -5,7 +5,7 @@
 
 #include "DataTypes.h"
 #include "objs/Transaction.h"
-#include "objs/TableReservation.h"
+#include "objs/Reservation.h"
 #include "objs/Member.h"
 #include "objs/Invoice.h"
 #include "objs/Deposit.h"
@@ -13,7 +13,7 @@
 #include "objs/ProductFamily.h"
 #include "objs/ProductItem.h"
 #include "objs/InvoiceProductItem.h"
-#include "objs/LunchTable.h"
+#include "objs/ReservationItem.h"
 #include "objs/ProviderInvoice.h"
 
 namespace PenyaManager {
@@ -81,13 +81,29 @@ namespace PenyaManager {
             //
             Float getAccountListByMemberIdBankChargesSum(Int32 memberId, const QDate &fromDate, const QDate &toDate);
             //
-            TableReservationListPtr getTableReservation(ReservationType reservationType, const QDate &now);
+            ReservationListPtr getTableReservation(ReservationType reservationType, const QDate &now);
             //
-            LunchTableListPtr getLunchTableList();
+            ReservationListPtr getOvenReservation(ReservationType reservationType, const QDate &now);
+            //
+            ReservationListPtr getFireplaceReservation(ReservationType reservationType, const QDate &now);
+            //
+            ReservationItemListPtr getLunchTableList();
+            //
+            ReservationItemListPtr getOvenList();
+            //
+            ReservationItemListPtr getFireplaceList();
             //
             void makeTableReservation(const QDate &date, ReservationType reservationType, Uint16 guestNum, Int32 memberId, Int32 idtable);
             //
             void cancelTableReservation(Int32 reservationId);
+            //
+            void makeOvenReservation(const QDate &date, ReservationType reservationType, Uint16 guestNum, Int32 memberId, Int32 idOven);
+            //
+            void cancelOvenReservation(Int32 reservationId);
+            //
+            void makeFireplaceReservation(const QDate &date, ReservationType reservationType, Uint16 guestNum, Int32 memberId, Int32 idFireplace);
+            //
+            void cancelFireplaceReservation(Int32 reservationId);
             //
             MemberListPtr getSlowPayersList();
             //
@@ -205,11 +221,27 @@ namespace PenyaManager {
             //
             QSqlQuery               m_tableReservationListQuery;
             //
+            QSqlQuery               m_ovenReservationListQuery;
+            //
+            QSqlQuery               m_fireplaceReservationListQuery;
+            //
             QSqlQuery               m_lunchTablesListQuery;
+            //
+            QSqlQuery               m_ovenListQuery;
+            //
+            QSqlQuery               m_fireplaceListQuery;
             //
             QSqlQuery               m_insertTableReservationQuery;
             //
             QSqlQuery               m_cancelTableReservationQuery;
+            //
+            QSqlQuery               m_insertOvenReservationQuery;
+            //
+            QSqlQuery               m_cancelOvenReservationQuery;
+            //
+            QSqlQuery               m_insertFireplaceReservationQuery;
+            //
+            QSqlQuery               m_cancelFireplaceReservationQuery;
             //
             QSqlQuery               m_slowPayersQuery;
             //

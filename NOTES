@@ -2,6 +2,7 @@
 * Configuration
 ** ddbb host
 ** image path
+* Login/pass check
 * Admin
 ** Menu Dialog
 *** Members
@@ -10,11 +11,9 @@
 *** Bodega
 **** edit provider??
 **** print stock list
-*** Account
 
 * highligth family icon when selected
 
-* User -> Reserva de 3 hornos y 2 fogones
 
 * Member login
 ** When user account balance is negative -> pop up on login
@@ -56,8 +55,15 @@ http://stackoverflow.com/questions/10369826/how-can-i-disable-alt-f4-window-clos
 *** invoices are always applied to account. No need to verify.
 *** items count substracted from stock
 ** Member table reservation window
+*** When guest num view is canceled, 0 is selected. 0 is forbidden (TODO)
 *** members can cancel
 *** members can only reserve one table in a given date (date, lunch/dinner)
+** Member oven reservation window
+*** members can cancel
+*** members can only reserve one oven in a given date (date, lunch/dinner)
+** Member fireplace reservation window
+*** members can cancel
+*** members can only reserve one fireplace in a given date (date, lunch/dinner)
 ** Member deposit window
 *** Deposits are applied to balance on creation. Admin has to verify.
 ** Member account view
