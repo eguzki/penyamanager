@@ -18,18 +18,6 @@
 * Member login
 ** When user account balance is negative -> pop up on login
 
-** List of a product purchases between date range
-** List of distributors
-** Every distributor owns N products (exclusively)?
-** Inventary
-*** Distributor X provided list of products, invoice number, invoice total value
-*** Adjust stock?
-** Deposit validator (deposit id as input -> get info -> validated or not and deposit actual value)
-*** Deposit value applied inmediatly, verified later
-** Member total expense in a date range
-** Member expense in a date range for a given product
-** Total expenses for all members in a given date range
-
 * User profile view -> change email or account num
 ** On email or account change -> send email to alegria@yahoo.es
 
@@ -55,7 +43,6 @@ http://stackoverflow.com/questions/10369826/how-can-i-disable-alt-f4-window-clos
 *** invoices are always applied to account. No need to verify.
 *** items count substracted from stock
 ** Member table reservation window
-*** When guest num view is canceled, 0 is selected. 0 is forbidden (TODO)
 *** members can cancel
 *** members can only reserve one table in a given date (date, lunch/dinner)
 ** Member oven reservation window

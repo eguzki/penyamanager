@@ -220,6 +220,10 @@ namespace PenyaManager {
         ReservationType reservationType = static_cast<ReservationType>(this->ui->reservationTypeButtonGroup->checkedId());
         NumItemDialog numItemDialog(this);
         Uint32 guestNum = numItemDialog.exec();
+        if (guestNum == 0) 
+        {
+            return;
+        }
 
         QString title;
         switch (itemType)
