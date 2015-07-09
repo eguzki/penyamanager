@@ -88,7 +88,7 @@ http://stackoverflow.com/questions/10369826/how-can-i-disable-alt-f4-window-clos
 ** Account
 *** Verify deposits
 **** when cash is unbalanced with total, create account transaction with type (3) DepositFix
-*** Total account balance (TODO)
+*** Total account balance
 **** deposits can be edited (????)
 **** total deposits, total invoice
 **** filter by memberId
