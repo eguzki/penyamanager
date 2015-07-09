@@ -24,6 +24,8 @@ namespace PenyaManager {
 
         this->ui->fromDateResultValueLabel->clear();
         this->ui->toDateResultValueLabel->clear();
+        this->ui->memberIdResValueLabel->setText(QString("ALL"));
+        this->ui->totalRowsValueLabel->clear();
 
         initializeTable();
     }
@@ -127,11 +129,13 @@ namespace PenyaManager {
         Int32 memberId = this->ui->memberIdLineEdit->text().toInt(&ok);
         if (!ok) {
             this->ui->memberIdLineEdit->clear();
+            this->ui->memberIdResValueLabel->setText(QString("ALL"));
             pTransactionListPtr = Singletons::m_pDAO->getAccountList(fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
             pTransactionListStatsPtr = Singletons::m_pServices->getAccountListStats(fromDate, toDate);
         } else {
             pTransactionListPtr = Singletons::m_pDAO->getAccountListByMemberId(memberId, fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
             pTransactionListStatsPtr = Singletons::m_pServices->getAccountListByMemberIdStats(memberId, fromDate, toDate);
+            this->ui->memberIdResValueLabel->setText(QString::number(memberId));
         }
         // enable-disable pagination buttons
         // total num pages

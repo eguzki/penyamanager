@@ -317,6 +317,48 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
           </spacer>
          </item>
          <item>
+          <widget class="QLabel" name="memberIdResLabel">
+           <property name="text">
+            <string>MemberId:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="memberIdResValueLabel">
+           <property name="minimumSize">
+            <size>
+             <width>100</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>100</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>0</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_9">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Fixed</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
           <widget class="QLabel" name="totalRowsLabel">
            <property name="text">
             <string>Rows:</string>
