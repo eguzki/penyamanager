@@ -73,7 +73,9 @@ namespace PenyaManager {
             m_providerInvoiceListQuery(m_db),
             m_providerInvoiceListStatsQuery(m_db),
             m_uncheckedDepositListQuery(m_db),
-            m_closeDepositQuery(m_db)
+            m_closeDepositQuery(m_db),
+            m_memberListQuery(m_db),
+            m_memberListStatsQuery(m_db)
     {
         // configure db connection
         m_db.setHostName(hostname);
@@ -94,26 +96,17 @@ namespace PenyaManager {
 
         // Member by name
         m_memberByIdQuery.prepare(
-                "SELECT member.idmember, member.name, member.surname, member.image, account.balance, member.lastmodified, member.reg_date "
+                "SELECT member.idmember, member.name, member.surname, member.image, member.lastmodified, member.reg_date, member.isAdmin, member.birth, "
+                "member.address, member.zip_code, member.town, member.state, member.tel, member.tel2, member.email, member.bank_account, member.postal_send, "
+                "member.notes, account.balance "
                 "FROM account "
                 "INNER JOIN member "
                 "ON account.idmember=member.idmember "
-                "WHERE account.idmember= :memberid "
-                "AND member.active= :activeId "
+                "WHERE account.idmember=:memberid "
+                "AND member.active=1 "
                 "ORDER BY account.date DESC LIMIT 1 "
                 );
 
-        // Member selected by Admin
-        m_memberByAdmin.prepare(
-                "SELECT member.idmember, member.name, member.surname, member.image, member.lastmodified, member.reg_date, member.active, member.isAdmin, "
-                "member.birth, member.address, member.zip_code, member.town, member.state, member.tel, member.tel2, member.email, member.bank_account, "
-                "member.postal_send, member.notes, account.balance "
-                "FROM account "
-                "INNER JOIN member "
-                "ON member.idmember=account.idmember "
-                "WHERE member.idmember= :memberId "
-                "ORDER BY account.date DESC LIMIT 1 "
-                );
         // Invoice by member ID
         m_invoiceQuery.prepare(
                 "SELECT state, date, total, idmember FROM invoice "
@@ -339,7 +332,7 @@ namespace PenyaManager {
                 "INNER JOIN (SELECT account.idmember, MAX(account.date) AS MaxDate FROM account GROUP BY account.idmember) groupedAccount "
                 "ON ac.idmember = groupedAccount.idmember AND ac.date=groupedAccount.MaxDate "
                 "INNER JOIN member ON member.idmember=ac.idmember "
-                "WHERE ac.balance<0 AND member.active=:activeId"
+                "WHERE ac.balance<0 AND member.active=1"
                 );
         // active invoice list by memberId
         m_invoiceListByMemberIdQuery.prepare(
@@ -499,7 +492,7 @@ namespace PenyaManager {
                 "ORDER BY date DESC "
                 "LIMIT :limit OFFSET :offset"
                 );
-        // provider invoice list
+        // provider invoice list stats
         m_providerInvoiceListStatsQuery.prepare(
                 "SELECT COUNT(*), SUM(total) FROM provider_invoices "
                 "WHERE date BETWEEN :fromDate AND :toDate"
@@ -514,6 +507,19 @@ namespace PenyaManager {
                 "UPDATE deposit "
                 "SET state=1 "
                 "WHERE iddeposit=:depositid"
+                );
+        // member list
+        m_memberListQuery.prepare(
+                "SELECT member.idmember, member.name, member.surname, member.image, member.lastmodified, member.reg_date, member.active, member.isAdmin, member.birth, "
+                "member.address, member.zip_code, member.town, member.state, member.tel, member.tel2, member.email, member.bank_account, member.postal_send, "
+                "member.notes "
+                "FROM member "
+                "ORDER BY surname ASC "
+                "LIMIT :limit OFFSET :offset"
+                );
+        // member list stats
+        m_memberListStatsQuery.prepare(
+                "SELECT COUNT(*) FROM member"
                 );
     }
 
@@ -595,63 +601,45 @@ namespace PenyaManager {
         return pfListPrt;
     }
     //
-    MemberPtr DAO::getActiveMemberById(Int32 memberLoginId)
+    MemberPtr DAO::getActiveMemberById(Int32 memberId)
     {
+        MemberPtr pMemberPtr;
         // member and balance
-        m_memberByIdQuery.bindValue(":memberid", memberLoginId);
-        // only active members
-        m_memberByIdQuery.bindValue(":activeId", 1);
+        m_memberByIdQuery.bindValue(":memberid", memberId);
         if (!m_memberByIdQuery.exec())
         {
             qDebug() << m_memberByIdQuery.lastError();
+        } else {
+            if (!m_memberByIdQuery.next())
+            {
+                return pMemberPtr;
+            }
+            pMemberPtr = MemberPtr(new Member);
+            Uint32 column = 0;
+            pMemberPtr->m_id = m_memberByIdQuery.value(column++).toInt();
+            pMemberPtr->m_name = m_memberByIdQuery.value(column++).toString();
+            pMemberPtr->m_surname = m_memberByIdQuery.value(column++).toString();
+            pMemberPtr->m_imagePath = m_memberByIdQuery.value(column++).toString();
+            pMemberPtr->m_lastModified = m_memberByIdQuery.value(column++).toDateTime();
+            pMemberPtr->m_regDate = m_memberByIdQuery.value(column++).toDateTime();
+            pMemberPtr->m_isAdmin = m_memberByIdQuery.value(column++).toInt() == 1;
+            pMemberPtr->m_birthdate = m_memberByIdQuery.value(column++).toDate();
+            pMemberPtr->m_address = m_memberByIdQuery.value(column++).toString();
+            pMemberPtr->m_zipCode = m_memberByIdQuery.value(column++).toString();
+            pMemberPtr->m_town = m_memberByIdQuery.value(column++).toString();
+            pMemberPtr->m_state = m_memberByIdQuery.value(column++).toString();
+            pMemberPtr->m_phone = m_memberByIdQuery.value(column++).toUInt();
+            pMemberPtr->m_phone2 = m_memberByIdQuery.value(column++).toUInt();
+            pMemberPtr->m_email = m_memberByIdQuery.value(column++).toString();
+            pMemberPtr->m_bank_account = m_memberByIdQuery.value(column++).toString();
+            pMemberPtr->m_postalSend = m_memberByIdQuery.value(column++).toInt() == 1;
+            pMemberPtr->m_notes = m_memberByIdQuery.value(column++).toString();
+            pMemberPtr->m_balance = m_memberByIdQuery.value(column++).toFloat();
         }
-        if (!m_memberByIdQuery.next())
-        {
-            return MemberPtr();
-        }
-        MemberPtr memberPtr(new Member());
-        memberPtr->m_id = m_memberByIdQuery.value(0).toUInt();
-        memberPtr->m_name = m_memberByIdQuery.value(1).toString();
-        memberPtr->m_surname = m_memberByIdQuery.value(2).toString();
-        memberPtr->m_imagePath = m_memberByIdQuery.value(3).toString();
-        memberPtr->m_balance = m_memberByIdQuery.value(4).toFloat();
-        memberPtr->m_lastModified = m_memberByIdQuery.value(5).toDateTime();
-        memberPtr->m_regDate = m_memberByIdQuery.value(6).toDateTime();
         m_memberByIdQuery.finish();
-        return memberPtr;
+        return pMemberPtr;
     }
     //
-
-    MemberByAdminPtr DAO::getActiveMemberByAdmin(Int32 memberLoginId)
-    {
-        // member and balance
-        m_memberByAdmin.bindValue(":memberId", memberLoginId);
-        m_memberByAdmin.exec();
-        if (!m_memberByAdmin.next())
-        {
-            return MemberByAdminPtr();
-        }
-        MemberByAdminPtr memberPtr(new MemberByAdmin);
-        memberPtr->m_id = m_memberByAdmin.value(0).toUInt();
-        memberPtr->m_name = m_memberByAdmin.value(1).toString();
-        memberPtr->m_surname = m_memberByAdmin.value(2).toString();
-        memberPtr->m_image = m_memberByAdmin.value(3).toString();
-        memberPtr->m_reg_date = m_memberByAdmin.value(5).toDate();
-        memberPtr->m_zip_code = m_memberByAdmin.value(11).toUInt();
-        memberPtr->m_bank_account = m_memberByAdmin.value(16).toString();
-        memberPtr->m_active = m_memberByAdmin.value(6).toUInt() == 1;
-
-        //memberPtr->m_balance = m_memberByAdmin.value(22222).toFloat();
-
-       /* member.idmember, member.name, member.surname, member.image, member.lastmodified, member.reg_date, member.active, member.isAdmin, "
-                        "member.birth, member.address, member.zip_code, member.town, member.state, member.tel, member.tel2, member.email, member.bank_account, "
-                        "member.postal_send, member.notes, account.balance*/
-
-        m_memberByAdmin.finish();
-        return memberPtr;
-    }
-    //
-
     InvoicePtr DAO::getInvoice(Int32 invoiceId)
     {
         m_invoiceQuery.bindValue(":invoiceid", invoiceId);
@@ -1289,26 +1277,24 @@ namespace PenyaManager {
     //
     MemberListPtr DAO::getSlowPayersList()
     {
+        MemberListPtr pMemberListPtr(new MemberList);
         // only active members
-        m_slowPayersQuery.bindValue(":activeId", 1);
         if (!m_slowPayersQuery.exec())
         {
             qDebug() << m_slowPayersQuery.lastError();
+        } else {
+            while (m_slowPayersQuery.next()) {
+                MemberPtr pMemberPtr(new Member);
+                pMemberPtr->m_id =  m_slowPayersQuery.value(0).toInt();
+                pMemberPtr->m_name =  m_slowPayersQuery.value(1).toString();
+                pMemberPtr->m_surname =  m_slowPayersQuery.value(2).toString();
+                pMemberPtr->m_imagePath =  m_slowPayersQuery.value(3).toString();
+                pMemberPtr->m_balance =  m_slowPayersQuery.value(4).toFloat();
+                pMemberPtr->m_lastModified =  m_slowPayersQuery.value(5).toDateTime();
+                pMemberPtr->m_regDate =  m_slowPayersQuery.value(6).toDateTime();
+                pMemberListPtr->push_back(pMemberPtr);
+            }
         }
-
-        MemberListPtr pMemberListPtr(new MemberPtrList);
-        while (m_slowPayersQuery.next()) {
-            MemberPtr pMemberPtr(new Member);
-            pMemberPtr->m_id =  m_slowPayersQuery.value(0).toInt();
-            pMemberPtr->m_name =  m_slowPayersQuery.value(1).toString();
-            pMemberPtr->m_surname =  m_slowPayersQuery.value(2).toString();
-            pMemberPtr->m_imagePath =  m_slowPayersQuery.value(3).toString();
-            pMemberPtr->m_balance =  m_slowPayersQuery.value(4).toFloat();
-            pMemberPtr->m_lastModified =  m_slowPayersQuery.value(5).toDateTime();
-            pMemberPtr->m_regDate =  m_slowPayersQuery.value(6).toDateTime();
-            pMemberListPtr->push_back(pMemberPtr);
-        }
-
         m_slowPayersQuery.finish();
         return pMemberListPtr;
     }
@@ -1874,6 +1860,61 @@ namespace PenyaManager {
             qDebug() << m_closeDepositQuery.lastError();
         }
         m_closeDepositQuery.finish();
+    }
+    //
+    MemberListPtr DAO::getMemberList(Uint32 page, Uint32 count)
+    {
+        MemberListPtr pMemberListPtr(new MemberList);
+        m_memberListQuery.bindValue(":limit", count);
+        m_memberListQuery.bindValue(":offset", page * count);
+        if (!m_memberListQuery.exec())
+        {
+            qDebug() << m_memberListQuery.lastError();
+        } else {
+            while (m_memberListQuery.next()) {
+                Uint32 column = 0;
+                MemberPtr pMemberPtr(new Member);
+                pMemberPtr->m_id = m_memberListQuery.value(column++).toInt();
+                pMemberPtr->m_name = m_memberListQuery.value(column++).toString();
+                pMemberPtr->m_surname = m_memberListQuery.value(column++).toString();
+                pMemberPtr->m_imagePath = m_memberListQuery.value(column++).toString();
+                pMemberPtr->m_lastModified = m_memberListQuery.value(column++).toDateTime();
+                pMemberPtr->m_regDate = m_memberListQuery.value(column++).toDateTime();
+                pMemberPtr->m_active = m_memberListQuery.value(column++).toInt() == 1;
+                pMemberPtr->m_isAdmin = m_memberListQuery.value(column++).toInt() == 1;
+                pMemberPtr->m_birthdate = m_memberListQuery.value(column++).toDate();
+                pMemberPtr->m_address = m_memberListQuery.value(column++).toString();
+                pMemberPtr->m_zipCode = m_memberListQuery.value(column++).toString();
+                pMemberPtr->m_town = m_memberListQuery.value(column++).toString();
+                pMemberPtr->m_state = m_memberListQuery.value(column++).toString();
+                pMemberPtr->m_phone = m_memberListQuery.value(column++).toUInt();
+                pMemberPtr->m_phone2 = m_memberListQuery.value(column++).toUInt();
+                pMemberPtr->m_email = m_memberListQuery.value(column++).toString();
+                pMemberPtr->m_bank_account = m_memberListQuery.value(column++).toString();
+                pMemberPtr->m_postalSend = m_memberListQuery.value(column++).toInt() == 1;
+                pMemberPtr->m_notes = m_memberListQuery.value(column++).toString();
+                pMemberListPtr->push_back(pMemberPtr);
+            }
+        }
+
+        m_memberListQuery.finish();
+        return pMemberListPtr;
+    }
+    //
+    MemberListStatsPtr DAO::getMemberListStats()
+    {
+        MemberListStatsPtr pMemberListStatsPtr(new MemberListStats);
+        pMemberListStatsPtr->m_totalMembers = 0;
+
+        if (!m_memberListStatsQuery.exec())
+        {
+            qDebug() << m_memberListStatsQuery.lastError();
+        } else {
+            m_memberListStatsQuery.next();
+            pMemberListStatsPtr->m_totalMembers = m_memberListStatsQuery.value(0).toUInt();
+        }
+        m_memberListStatsQuery.finish();
+        return pMemberListStatsPtr;
     }
 }
 

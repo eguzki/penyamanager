@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS `alegria`.`member` (
   `isAdmin` TINYINT(1) NOT NULL,
   `birth` DATE NULL,
   `address` VARCHAR(120) NULL,
-  `zip_code` INT(11) NULL,
+  `zip_code` VARCHAR(20) NULL,
   `town` VARCHAR(45) NULL,
   `state` VARCHAR(45) NULL,
   `tel` INT(11) NULL,

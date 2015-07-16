@@ -161,7 +161,7 @@ namespace PenyaManager {
             //  product name
             this->ui->productsTableWidget->setItem(rowCount, 2, new QTableWidgetItem(pProductPtr->m_name));
             //  product active status
-            this->ui->productsTableWidget->setItem(rowCount, 3, new QTableWidgetItem((pProductPtr->m_active)?(QString::number(1)):(QString::number(1))));
+            this->ui->productsTableWidget->setItem(rowCount, 3, new QTableWidgetItem((pProductPtr->m_active)?(QString::number(1)):(QString::number(0))));
             //  product reg date
             this->ui->productsTableWidget->setItem(rowCount, 4, new QTableWidgetItem(pProductPtr->m_regDate.toString()));
             //  product price

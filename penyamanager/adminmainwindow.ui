@@ -33,8 +33,7 @@
     <property name="title">
      <string>Members</string>
     </property>
-    <addaction name="actionNew_member"/>
-    <addaction name="actionMember_information"/>
+    <addaction name="actionMember_management"/>
     <addaction name="separator"/>
     <addaction name="actionSlow_payers"/>
    </widget>
@@ -81,9 +80,9 @@
    <addaction name="menuProviders"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="actionMember_information">
+  <action name="actionMember_management">
    <property name="text">
-    <string>Member information</string>
+    <string>Member management</string>
    </property>
   </action>
   <action name="actionNew_member">

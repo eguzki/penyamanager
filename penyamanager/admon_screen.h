@@ -27,7 +27,7 @@ private slots:
 
 private:
     Ui::admon_screen *ui;
-    void fillMemberProfile(const MemberByAdminPtr &pMemberPtr);
+    void fillMemberProfile(const MemberPtr &pMemberPtr);
 
 };
 }

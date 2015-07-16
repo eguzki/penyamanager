@@ -96,7 +96,7 @@ namespace PenyaManager {
     {
         // fetch data
         MemberListPtr pMemberListPtr = Singletons::m_pDAO->getSlowPayersList();
-        for (MemberPtrList::iterator iter = pMemberListPtr->begin(); iter != pMemberListPtr->end(); ++iter)
+        for (MemberList::iterator iter = pMemberListPtr->begin(); iter != pMemberListPtr->end(); ++iter)
         {
             MemberPtr pMemberPtr = *iter;
             createAccountTransaction(pMemberPtr->m_id, -pMemberPtr->m_balance, "reset account", TransactionType::AccountPayment);

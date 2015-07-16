@@ -1,6 +1,5 @@
 #include "admon_screen.h"
 #include "ui_admon_screen.h"
-#include "memberselect.h"
 #include "dao.h"
 #include "singletons.h"
 #include <qmessagebox.h>
@@ -47,7 +46,7 @@ void admon_screen::init()
 }
 
 
-void admon_screen::fillMemberProfile(const MemberByAdminPtr &pMemberPtr)
+void admon_screen::fillMemberProfile(const MemberPtr &pMemberPtr)
 {
     //QString imagePath = QDir(Constants::kImageRootPath).filePath(pMemberPtr->m_imagePath);
     //QPixmap memberPixmap = Utils::getImage(imagePath);
@@ -58,16 +57,16 @@ void admon_screen::fillMemberProfile(const MemberByAdminPtr &pMemberPtr)
     this->ui->textidmember->setText(QString::number(pMemberPtr->m_id));
     this->ui->textname->setText(pMemberPtr->m_name);
     this->ui->textsurname->setText(pMemberPtr->m_surname);
-    this->ui->textreg_date->setText(pMemberPtr->m_reg_date.toString());
+    this->ui->textreg_date->setText(pMemberPtr->m_regDate.toString());
     this->ui->activeCheckbox->setChecked(pMemberPtr->m_active);
     //this->ui->textisAdmin->setText(pMemberPtr->m_isAdmin);
     //this->ui->textbirth->setText(pMemberPtr->m_birth);
     this->ui->textaddress->setText(pMemberPtr->m_address);
-    this->ui->textzip_code->setText(QString::number(pMemberPtr->m_zip_code));
+    this->ui->textzip_code->setText(pMemberPtr->m_zipCode);
     this->ui->texttown->setText(pMemberPtr->m_town);
     this->ui->textstate->setText(pMemberPtr->m_state);
-    this->ui->texttel->setText(QString::number(pMemberPtr->m_tel));
-    this->ui->texttel2->setText(QString::number(pMemberPtr->m_tel2));
+    this->ui->texttel->setText(QString::number(pMemberPtr->m_phone));
+    this->ui->texttel2->setText(QString::number(pMemberPtr->m_phone2));
     this->ui->textemail->setText(pMemberPtr->m_email);
     this->ui->textbank_account->setText(pMemberPtr->m_bank_account);
     //this->ui->textpostal_send->setText(QString::number(pMemberPtr->m_postal_send));
@@ -82,18 +81,5 @@ void admon_screen::fillMemberProfile(const MemberByAdminPtr &pMemberPtr)
 
 void PenyaManager::admon_screen::on_pushButton_clicked()
 {
-    memberselect memberSelect;
-    memberSelect.setModal(true);
-    memberSelect.exec();
-    int userid=memberSelect.userid;
 
-    MemberByAdminPtr pCurrMemberPtr = Singletons::m_pDAO->getActiveMemberByAdmin(userid);
-    if (pCurrMemberPtr)
-    {
-       fillMemberProfile(pCurrMemberPtr);
-    } else {
-        // User could not be found
-        QMessageBox::about(this, "User not found",
-                "User not registered");
-    }
 }

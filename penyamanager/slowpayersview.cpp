@@ -66,7 +66,7 @@ namespace PenyaManager {
 
         // fill data
         Uint32 rowCount = 0;
-        for (MemberPtrList::iterator iter = pMemberListPtr->begin(); iter != pMemberListPtr->end(); ++iter)
+        for (MemberList::iterator iter = pMemberListPtr->begin(); iter != pMemberListPtr->end(); ++iter)
         {
             MemberPtr pMemberPtr = *iter;
             this->ui->slowPayersTableWidget->setItem(rowCount, 0, new QTableWidgetItem(QString::number(pMemberPtr->m_id)));
@@ -94,7 +94,7 @@ namespace PenyaManager {
 
         // fetch data
         MemberListPtr pMemberListPtr = Singletons::m_pDAO->getSlowPayersList();
-        for (MemberPtrList::iterator iter = pMemberListPtr->begin(); iter != pMemberListPtr->end(); ++iter)
+        for (MemberList::iterator iter = pMemberListPtr->begin(); iter != pMemberListPtr->end(); ++iter)
         {
             MemberPtr pMemberPtr = *iter;
             out << pMemberPtr->m_name << " " << pMemberPtr->m_surname << ", " << tr("%1 €").arg(pMemberPtr->m_balance) << "\n";

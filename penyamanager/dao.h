@@ -41,7 +41,7 @@ namespace PenyaManager {
             //
             InvoicePtr getInvoice(Int32 invoiceId);
             //
-            MemberByAdminPtr getActiveMemberByAdmin(Int32 memberLoginId);
+            MemberPtr getActiveMemberByAdmin(Int32 memberLoginId);
             //
             InvoicePtr createInvoice(Int32 memberId);
             //
@@ -162,6 +162,10 @@ namespace PenyaManager {
             DepositListPtr getUncheckedDeposits();
             //
             void closeDeposit(Int32 depositId);
+            //
+            MemberListPtr getMemberList(Uint32 page, Uint32 count);
+            //
+            MemberListStatsPtr getMemberListStats();
 
         private:
             //
@@ -176,8 +180,6 @@ namespace PenyaManager {
             QSqlQuery               m_invoiceQuery;
             //
             QSqlQuery               m_memberActiveInvoiceQuery;
-            //
-            QSqlQuery               m_memberByAdmin;
             //
             QSqlQuery               m_removeProductInvoiceQuery;
             //
@@ -300,6 +302,10 @@ namespace PenyaManager {
             QSqlQuery               m_uncheckedDepositListQuery;
             //
             QSqlQuery               m_closeDepositQuery;
+            //
+            QSqlQuery               m_memberListQuery;
+            //
+            QSqlQuery               m_memberListStatsQuery;
     };
 }
 #endif // DAO_H
