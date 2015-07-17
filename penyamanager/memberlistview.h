@@ -17,7 +17,7 @@ namespace PenyaManager {
 
         public:
             //
-            explicit MemberListView(QWidget *parent = 0);
+            explicit MemberListView(QWidget *parent, const CentralWidgetCallback &callback);
             //
             ~MemberListView();
             //
@@ -38,12 +38,18 @@ namespace PenyaManager {
             void on_prevPagePushButton_clicked();
             //
             void on_nextPagePushButton_clicked();
+            //
+            void on_memberTableWidget_cellDoubleClicked(int row, int column);
 
         private:
             //
             Ui::MemberListView *ui;
             //
+            CentralWidgetCallback       m_switchCentralWidgetCallback;
+            //
             Uint32                      m_currentPage;
+            //
+            RowIdMap                    m_rowProductIdMap;
     };
 }
 

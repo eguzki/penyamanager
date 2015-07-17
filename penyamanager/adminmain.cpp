@@ -1,6 +1,5 @@
 #include <QApplication>
 
-#include "admon_screen.h"
 #include "adminmainwindow.h"
 #include "adminloginwindow.h"
 #include "slowpayersview.h"
@@ -18,6 +17,7 @@
 #include "depositlistview.h"
 #include "accountbalanceview.h"
 #include "memberlistview.h"
+#include "memberview.h"
 #include "constants.h"
 #include "IPartner.h"
 #include "singletons.h"
@@ -55,7 +55,9 @@ int main(int argc, char *argv[])
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kProviderInvoiceListViewKey, new PenyaManager::ProviderInvoiceListView);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kAdminDepositListViewKey, new PenyaManager::DepositListView);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kAdminAccountBalanceViewKey, new PenyaManager::AccountBalanceView);
-    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kMemberListViewWindowKey, new PenyaManager::MemberListView);
+    PenyaManager::MemberListView *pMemberListView = new PenyaManager::MemberListView(NULL, adminMainWindowSwitchCallback);
+    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kMemberListViewWindowKey, pMemberListView);
+    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kMemberViewKey, new PenyaManager::MemberView);
 
     // entry point -> adminlogin window
     PenyaManager::IPartner* pAdminLoginPartner = PenyaManager::Singletons::m_pParnetFinder->getPartner(PenyaManager::WindowKey::kAdminLoginWindowKey);

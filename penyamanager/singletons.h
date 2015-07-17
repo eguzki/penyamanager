@@ -31,6 +31,8 @@ namespace PenyaManager {
             static Int32            m_currentProductId;
             //
             static Int32            m_currentFamilyId;
+            //
+            static Int32            m_currentMemberId;
     };
 }
 

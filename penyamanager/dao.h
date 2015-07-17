@@ -35,13 +35,11 @@ namespace PenyaManager {
             //
             ProductItemListPtr getProductsFromFamily(Int32 familyId, bool onlyActive);
             //
-            MemberPtr getActiveMemberById(Int32 memberLoginId);
+            MemberPtr getMemberById(Int32 memberId);
             //
             InvoicePtr getMemberActiveInvoice(Int32 memberId);
             //
             InvoicePtr getInvoice(Int32 invoiceId);
-            //
-            MemberPtr getActiveMemberByAdmin(Int32 memberLoginId);
             //
             InvoicePtr createInvoice(Int32 memberId);
             //

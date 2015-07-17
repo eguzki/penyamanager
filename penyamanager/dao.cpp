@@ -96,14 +96,13 @@ namespace PenyaManager {
 
         // Member by name
         m_memberByIdQuery.prepare(
-                "SELECT member.idmember, member.name, member.surname, member.image, member.lastmodified, member.reg_date, member.isAdmin, member.birth, "
+                "SELECT member.idmember, member.name, member.surname, member.image, member.lastmodified, member.reg_date, member.active, member.isAdmin, member.birth, "
                 "member.address, member.zip_code, member.town, member.state, member.tel, member.tel2, member.email, member.bank_account, member.postal_send, "
                 "member.notes, account.balance "
                 "FROM account "
                 "INNER JOIN member "
                 "ON account.idmember=member.idmember "
                 "WHERE account.idmember=:memberid "
-                "AND member.active=1 "
                 "ORDER BY account.date DESC LIMIT 1 "
                 );
 
@@ -601,7 +600,7 @@ namespace PenyaManager {
         return pfListPrt;
     }
     //
-    MemberPtr DAO::getActiveMemberById(Int32 memberId)
+    MemberPtr DAO::getMemberById(Int32 memberId)
     {
         MemberPtr pMemberPtr;
         // member and balance
@@ -622,14 +621,15 @@ namespace PenyaManager {
             pMemberPtr->m_imagePath = m_memberByIdQuery.value(column++).toString();
             pMemberPtr->m_lastModified = m_memberByIdQuery.value(column++).toDateTime();
             pMemberPtr->m_regDate = m_memberByIdQuery.value(column++).toDateTime();
+            pMemberPtr->m_active = m_memberByIdQuery.value(column++).toInt() == 1;
             pMemberPtr->m_isAdmin = m_memberByIdQuery.value(column++).toInt() == 1;
             pMemberPtr->m_birthdate = m_memberByIdQuery.value(column++).toDate();
             pMemberPtr->m_address = m_memberByIdQuery.value(column++).toString();
             pMemberPtr->m_zipCode = m_memberByIdQuery.value(column++).toString();
             pMemberPtr->m_town = m_memberByIdQuery.value(column++).toString();
             pMemberPtr->m_state = m_memberByIdQuery.value(column++).toString();
-            pMemberPtr->m_phone = m_memberByIdQuery.value(column++).toUInt();
-            pMemberPtr->m_phone2 = m_memberByIdQuery.value(column++).toUInt();
+            pMemberPtr->m_phone = m_memberByIdQuery.value(column++).toString();
+            pMemberPtr->m_phone2 = m_memberByIdQuery.value(column++).toString();
             pMemberPtr->m_email = m_memberByIdQuery.value(column++).toString();
             pMemberPtr->m_bank_account = m_memberByIdQuery.value(column++).toString();
             pMemberPtr->m_postalSend = m_memberByIdQuery.value(column++).toInt() == 1;
@@ -1887,8 +1887,8 @@ namespace PenyaManager {
                 pMemberPtr->m_zipCode = m_memberListQuery.value(column++).toString();
                 pMemberPtr->m_town = m_memberListQuery.value(column++).toString();
                 pMemberPtr->m_state = m_memberListQuery.value(column++).toString();
-                pMemberPtr->m_phone = m_memberListQuery.value(column++).toUInt();
-                pMemberPtr->m_phone2 = m_memberListQuery.value(column++).toUInt();
+                pMemberPtr->m_phone = m_memberListQuery.value(column++).toString();
+                pMemberPtr->m_phone2 = m_memberListQuery.value(column++).toString();
                 pMemberPtr->m_email = m_memberListQuery.value(column++).toString();
                 pMemberPtr->m_bank_account = m_memberListQuery.value(column++).toString();
                 pMemberPtr->m_postalSend = m_memberListQuery.value(column++).toInt() == 1;

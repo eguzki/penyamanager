@@ -45,9 +45,9 @@ namespace PenyaManager
             //
             QString             m_state;
             //
-            Uint32              m_phone;
+            QString             m_phone;
             //
-            Uint32              m_phone2;
+            QString             m_phone2;
             //
             QString             m_email;
             //

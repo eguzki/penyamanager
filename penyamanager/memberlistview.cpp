@@ -7,9 +7,10 @@
 
 namespace PenyaManager {
     //
-    MemberListView::MemberListView(QWidget *parent) :
+    MemberListView::MemberListView(QWidget *parent, const CentralWidgetCallback &callback) :
         IPartner(parent),
         ui(new Ui::MemberListView),
+        m_switchCentralWidgetCallback(callback),
         m_currentPage(0)
     {
         ui->setupUi(this);
@@ -80,7 +81,10 @@ namespace PenyaManager {
     //
     void MemberListView::on_newMemberPushButton_clicked()
     {
-
+        // setting m_currentMemberId < 0, MemberView will initialize empty
+        Singletons::m_currentMemberId = -1;
+        // call member window throw adminmainwindow
+        m_switchCentralWidgetCallback(WindowKey::kMemberViewKey);
     }
     //
     void MemberListView::on_prevPagePushButton_clicked()
@@ -101,6 +105,8 @@ namespace PenyaManager {
         this->ui->memberTableWidget->setRowCount(pMemberListPtr->size());
         // member table reset
         this->ui->memberTableWidget->clearContents();
+        // internal data structure reset
+        this->m_rowProductIdMap.clear();
 
         // fill data
         Uint32 rowCount = 0;
@@ -120,8 +126,26 @@ namespace PenyaManager {
             this->ui->memberTableWidget->setItem(rowCount, column++, new QTableWidgetItem(QString::number(pMemberPtr->m_id)));
             this->ui->memberTableWidget->setItem(rowCount, column++, new QTableWidgetItem(pMemberPtr->m_email));
             this->ui->memberTableWidget->setItem(rowCount, column++, new QTableWidgetItem((pMemberPtr->m_active)?(QString::number(1)):(QString::number(0))));
+            this->m_rowProductIdMap[rowCount] = pMemberPtr->m_id;
             rowCount++;
         }
+    }
+    //
+    void MemberListView::on_memberTableWidget_cellDoubleClicked(int row, int column)
+    {
+        UNUSEDPARAMETER(column);
+        auto rowMap = m_rowProductIdMap.find(row);
+        if (rowMap == m_rowProductIdMap.end()) {
+            //this should never happen
+            qDebug() << "[ERROR] memberID not found and should be in the map";
+            return;
+        }
+        Int32 memberId = rowMap->second;
+        // use static global variable to pass argument
+        Singletons::m_currentMemberId = memberId;
+
+        // call invoice details window throw adminmainwindow
+        m_switchCentralWidgetCallback(WindowKey::kMemberViewKey);
     }
 }
 

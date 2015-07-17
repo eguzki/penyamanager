@@ -41,10 +41,12 @@ namespace PenyaManager {
     void AdminLoginWindow::on_loginButton_clicked()
     {
         // Loading user Profile
-        // TODO generalize getActiveMemberById to filter admin users
-        MemberPtr pCurrMemberPtr = Singletons::m_pDAO->getActiveMemberById(this->ui->loginInput->text().toInt());
+        MemberPtr pCurrMemberPtr = Singletons::m_pDAO->getMemberById(this->ui->loginInput->text().toInt());
         if (pCurrMemberPtr)
         {
+            // TODO check passwd
+            // TODO check active
+            // TODO check isAdmin
             this->hide();
             // assign user
             Singletons::m_pCurrMember = pCurrMemberPtr;
