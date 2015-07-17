@@ -417,6 +417,9 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
       </item>
       <item>
        <widget class="QDateEdit" name="birthdateDateEdit">
+        <property name="displayFormat">
+         <string>dd/MM/yyyy</string>
+        </property>
         <property name="calendarPopup">
          <bool>true</bool>
         </property>

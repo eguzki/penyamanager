@@ -192,7 +192,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="priceLineEdit"/>
+       <widget class="QDoubleSpinBox" name="priceDoubleSpinBox"/>
       </item>
       <item>
        <spacer name="horizontalSpacer_5">
@@ -276,7 +276,6 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
   </layout>
   <zorder>verticalSpacer</zorder>
   <zorder>topFrame</zorder>
-  <zorder>horizontalSpacer_2</zorder>
   <zorder>nameFormWidget</zorder>
   <zorder>imageFormGroupBox</zorder>
   <zorder>activeWidget</zorder>

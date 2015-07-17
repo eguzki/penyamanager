@@ -1,6 +1,8 @@
 #ifndef MEMBERVIEW_H
 #define MEMBERVIEW_H
 
+#include <QDate>
+
 #include "IPartner.h"
 
 namespace Ui {
@@ -31,12 +33,16 @@ namespace PenyaManager {
         private slots:
             //
             void on_savePushButton_clicked();
+            //
+            void on_imagePushButton_clicked();
 
-        private:
+    private:
             //
             Ui::MemberView *ui;
             //
             QString                     m_memberImageFilename;
+            //
+            QDate                       m_minDate;
     };
 }
 
