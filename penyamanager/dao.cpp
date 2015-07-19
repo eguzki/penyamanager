@@ -75,7 +75,9 @@ namespace PenyaManager {
             m_uncheckedDepositListQuery(m_db),
             m_closeDepositQuery(m_db),
             m_memberListQuery(m_db),
-            m_memberListStatsQuery(m_db)
+            m_memberListStatsQuery(m_db),
+            m_updateMemberQuery(m_db),
+            m_createMemberQuery(m_db)
     {
         // configure db connection
         m_db.setHostName(hostname);
@@ -96,7 +98,7 @@ namespace PenyaManager {
 
         // Member by name
         m_memberByIdQuery.prepare(
-                "SELECT member.idmember, member.name, member.surname, member.image, member.lastmodified, member.reg_date, member.active, member.isAdmin, member.birth, "
+                "SELECT member.name, member.surname, member.image, member.lastmodified, member.reg_date, member.active, member.isAdmin, member.birth, "
                 "member.address, member.zip_code, member.town, member.state, member.tel, member.tel2, member.email, member.bank_account, member.postal_send, "
                 "member.notes, account.balance "
                 "FROM account "
@@ -520,6 +522,24 @@ namespace PenyaManager {
         m_memberListStatsQuery.prepare(
                 "SELECT COUNT(*) FROM member"
                 );
+        // update  member
+        m_updateMemberQuery.prepare(
+                "UPDATE member "
+                "SET name=:name, surname=:surname, image=:image, lastmodified=:lastmodified, active=:active, isAdmin=:isadmin, birth=:birth, "
+                "address=:address, zip_code=:zip_code, town=:town, state=:state, tel=:tel, tel2=:tel2, email=:email, bank_account=:bank_account, postal_send=:postal_send, "
+                "notes=:notes "
+                "WHERE idmember = :memberid"
+                );
+        // create member
+        m_createMemberQuery.prepare(
+                "INSERT INTO member "
+                "(name, surname, image, lastmodified, reg_date, active, isAdmin, birth, "
+                "address, zip_code, town, state, tel, tel2, email, bank_account, postal_send, "
+                "notes) "
+                "VALUES (:name, :surname, :image, :lastmodified, :reg_date, :active, :isadmin, :birth, "
+                ":address, :zip_code, :town, :state, :tel, :tel2, :email, :bank_account, :postal_send, "
+                ":notes)"
+                );
     }
 
     //
@@ -615,7 +635,7 @@ namespace PenyaManager {
             }
             pMemberPtr = MemberPtr(new Member);
             Uint32 column = 0;
-            pMemberPtr->m_id = m_memberByIdQuery.value(column++).toInt();
+            pMemberPtr->m_id = memberId;
             pMemberPtr->m_name = m_memberByIdQuery.value(column++).toString();
             pMemberPtr->m_surname = m_memberByIdQuery.value(column++).toString();
             pMemberPtr->m_imagePath = m_memberByIdQuery.value(column++).toString();
@@ -1915,6 +1935,157 @@ namespace PenyaManager {
         }
         m_memberListStatsQuery.finish();
         return pMemberListStatsPtr;
+    }
+    //
+    void DAO::updateMember(const MemberPtr &pMemberPtr)
+    {
+        // obligatory
+        m_updateMemberQuery.bindValue(":memberid", pMemberPtr->m_id);
+        m_updateMemberQuery.bindValue(":name", pMemberPtr->m_name);
+        m_updateMemberQuery.bindValue(":surname", pMemberPtr->m_surname);
+        m_updateMemberQuery.bindValue(":lastmodified", pMemberPtr->m_lastModified);
+        m_updateMemberQuery.bindValue(":active", pMemberPtr->m_active?1:0);
+        m_updateMemberQuery.bindValue(":isadmin", pMemberPtr->m_isAdmin?1:0);
+        m_updateMemberQuery.bindValue(":bank_account", pMemberPtr->m_bank_account);
+        m_updateMemberQuery.bindValue(":postal_send", pMemberPtr->m_postalSend?1:0);
+        // optional
+        if (pMemberPtr->m_imagePath.isEmpty()) {
+            m_updateMemberQuery.bindValue(":image", QVariant());
+        } else {
+            m_updateMemberQuery.bindValue(":image", pMemberPtr->m_imagePath);
+        }
+        if (pMemberPtr->m_birthdate.isValid()) {
+            m_updateMemberQuery.bindValue(":birth", pMemberPtr->m_birthdate);
+        } else {
+            m_updateMemberQuery.bindValue(":birth", QVariant());
+        }
+        if (pMemberPtr->m_address.isEmpty()) {
+            m_updateMemberQuery.bindValue(":address", QVariant());
+        } else {
+            m_updateMemberQuery.bindValue(":address", pMemberPtr->m_address);
+        }
+        if (pMemberPtr->m_zipCode.isEmpty()) {
+            m_updateMemberQuery.bindValue(":zip_code", QVariant());
+        } else {
+            m_updateMemberQuery.bindValue(":zip_code", pMemberPtr->m_zipCode);
+        }
+        if (pMemberPtr->m_town.isEmpty()) {
+            m_updateMemberQuery.bindValue(":town", QVariant());
+        } else {
+            m_updateMemberQuery.bindValue(":town", pMemberPtr->m_town);
+        }
+        if (pMemberPtr->m_state.isEmpty()) {
+            m_updateMemberQuery.bindValue(":state", QVariant());
+        } else {
+            m_updateMemberQuery.bindValue(":state", pMemberPtr->m_state);
+        }
+        if (pMemberPtr->m_phone.isEmpty()) {
+            m_updateMemberQuery.bindValue(":tel", QVariant());
+        } else {
+            m_updateMemberQuery.bindValue(":tel", pMemberPtr->m_phone);
+        }
+        if (pMemberPtr->m_phone2.isEmpty()) {
+            m_updateMemberQuery.bindValue(":tel2", QVariant());
+        } else {
+            m_updateMemberQuery.bindValue(":tel2", pMemberPtr->m_phone2);
+        }
+        if (pMemberPtr->m_email.isEmpty()) {
+            m_updateMemberQuery.bindValue(":email", QVariant());
+        } else {
+            m_updateMemberQuery.bindValue(":email", pMemberPtr->m_email);
+        }
+        if (pMemberPtr->m_notes.isEmpty()) {
+            m_updateMemberQuery.bindValue(":notes", QVariant());
+        } else {
+            m_updateMemberQuery.bindValue(":notes", pMemberPtr->m_notes);
+        }
+        // execute query
+        if (!m_updateMemberQuery.exec())
+        {
+            qDebug() << m_updateMemberQuery.lastError();
+        }
+        m_updateMemberQuery.finish();
+    }
+    //
+    Int32 DAO::createMember(const MemberPtr &pMemberPtr)
+    {
+        // obligatory
+        m_createMemberQuery.bindValue(":name", pMemberPtr->m_name);
+        m_createMemberQuery.bindValue(":surname", pMemberPtr->m_surname);
+        m_createMemberQuery.bindValue(":lastmodified", pMemberPtr->m_lastModified);
+        m_createMemberQuery.bindValue(":reg_date", pMemberPtr->m_regDate);
+        m_createMemberQuery.bindValue(":active", pMemberPtr->m_active?1:0);
+        m_createMemberQuery.bindValue(":isadmin", pMemberPtr->m_isAdmin?1:0);
+        m_createMemberQuery.bindValue(":bank_account", pMemberPtr->m_bank_account);
+        m_createMemberQuery.bindValue(":postal_send", pMemberPtr->m_postalSend?1:0);
+        // optional
+        if (pMemberPtr->m_imagePath.isEmpty()) {
+            m_createMemberQuery.bindValue(":image", QVariant());
+        } else {
+            m_createMemberQuery.bindValue(":image", pMemberPtr->m_imagePath);
+        }
+        if (pMemberPtr->m_birthdate.isValid()) {
+            m_createMemberQuery.bindValue(":birth", pMemberPtr->m_birthdate);
+        } else {
+            m_createMemberQuery.bindValue(":birth", QVariant());
+        }
+        if (pMemberPtr->m_address.isEmpty()) {
+            m_createMemberQuery.bindValue(":address", QVariant());
+        } else {
+            m_createMemberQuery.bindValue(":address", pMemberPtr->m_address);
+        }
+        if (pMemberPtr->m_zipCode.isEmpty()) {
+            m_createMemberQuery.bindValue(":zip_code", QVariant());
+        } else {
+            m_createMemberQuery.bindValue(":zip_code", pMemberPtr->m_zipCode);
+        }
+        if (pMemberPtr->m_town.isEmpty()) {
+            m_createMemberQuery.bindValue(":town", QVariant());
+        } else {
+            m_createMemberQuery.bindValue(":town", pMemberPtr->m_town);
+        }
+        if (pMemberPtr->m_state.isEmpty()) {
+            m_createMemberQuery.bindValue(":state", QVariant());
+        } else {
+            m_createMemberQuery.bindValue(":state", pMemberPtr->m_state);
+        }
+        if (pMemberPtr->m_phone.isEmpty()) {
+            m_createMemberQuery.bindValue(":tel", QVariant());
+        } else {
+            m_createMemberQuery.bindValue(":tel", pMemberPtr->m_phone);
+        }
+        if (pMemberPtr->m_phone2.isEmpty()) {
+            m_createMemberQuery.bindValue(":tel2", QVariant());
+        } else {
+            m_createMemberQuery.bindValue(":tel2", pMemberPtr->m_phone2);
+        }
+        if (pMemberPtr->m_email.isEmpty()) {
+            m_createMemberQuery.bindValue(":email", QVariant());
+        } else {
+            m_createMemberQuery.bindValue(":email", pMemberPtr->m_email);
+        }
+        if (pMemberPtr->m_notes.isEmpty()) {
+            m_createMemberQuery.bindValue(":notes", QVariant());
+        } else {
+            m_createMemberQuery.bindValue(":notes", pMemberPtr->m_notes);
+        }
+
+        // execute query
+        if (!m_createMemberQuery.exec())
+        {
+            qDebug() << m_createMemberQuery.lastError();
+        }
+        m_createMemberQuery.finish();
+
+        // For LAST_INSERT_ID(), the most recently generated ID is maintained in the server on a per-connection basis
+        if (!m_getLastIdQuery.exec())
+        {
+            qDebug() << m_getLastIdQuery.lastError();
+        }
+        m_getLastIdQuery.next();
+        Int32 memberId = m_getLastIdQuery.value(0).toUInt();
+        m_getLastIdQuery.finish();
+        return memberId;
     }
 }
 

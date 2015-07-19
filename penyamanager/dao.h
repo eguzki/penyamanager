@@ -164,6 +164,10 @@ namespace PenyaManager {
             MemberListPtr getMemberList(Uint32 page, Uint32 count);
             //
             MemberListStatsPtr getMemberListStats();
+            //
+            void updateMember(const MemberPtr &pMemberPtr);
+            //
+            Int32 createMember(const MemberPtr &pMemberPtr);
 
         private:
             //
@@ -304,6 +308,10 @@ namespace PenyaManager {
             QSqlQuery               m_memberListQuery;
             //
             QSqlQuery               m_memberListStatsQuery;
+            //
+            QSqlQuery               m_updateMemberQuery;
+            //
+            QSqlQuery               m_createMemberQuery;
     };
 }
 #endif // DAO_H

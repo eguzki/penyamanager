@@ -10,11 +10,12 @@
 
 namespace PenyaManager {
     //
-    MemberView::MemberView(QWidget *parent) :
+    MemberView::MemberView(QWidget *parent, const CentralWidgetCallback &callback) :
         IPartner(parent),
         ui(new Ui::MemberView),
         m_memberImageFilename(),
-        m_minDate(1900, 1, 1)
+        m_minDate(1900, 1, 1),
+        m_switchCentralWidgetCallback(callback)
     {
         ui->setupUi(this);
     }
@@ -143,7 +144,7 @@ namespace PenyaManager {
             pMemberPtr->m_name = this->ui->nameLineEdit->text();
             // surname
             pMemberPtr->m_surname = this->ui->memberSurnameLineEdit->text();
-            // imagePath
+            // imagePath (optional)
             if (!this->m_memberImageFilename.isEmpty()) {
                 // new image was selected
                 pMemberPtr->m_imagePath = destFileName;
@@ -157,54 +158,33 @@ namespace PenyaManager {
             // birthdate
             QDate birthdate = this->ui->birthdateDateEdit->date();
             pMemberPtr->m_birthdate = (birthdate == this->m_minDate)?(QDate()):(birthdate);
+            // postal send
+            pMemberPtr->m_postalSend = this->ui->postalSendCheckBox->isChecked();
             // email (optional)
-            QString email = this->ui->emailLineEdit->text();
-            if (!email.isEmpty()){
-                pMemberPtr->m_email = email;
-            }
+            pMemberPtr->m_email = this->ui->emailLineEdit->text();
             // address (optional)
-            QString address = this->ui->addressLineEdit->text();
-            if (!address.isEmpty()){
-                pMemberPtr->m_address = address;
-            }
+            pMemberPtr->m_address = this->ui->addressLineEdit->text();
             // zip code (optional)
-            QString zipCode = this->ui->zipCodeLineEdit->text();
-            if (!zipCode.isEmpty()){
-                pMemberPtr->m_zipCode = zipCode;
-            }
+            pMemberPtr->m_zipCode = this->ui->zipCodeLineEdit->text();
             // town (optional)
-            QString town = this->ui->townLineEdit->text();
-            if (!town.isEmpty()){
-                pMemberPtr->m_town = town;
-            }
+            pMemberPtr->m_town = this->ui->townLineEdit->text();
             // state (optional)
             QString state = this->ui->stateLineEdit->text();
-            if (!state.isEmpty()){
-                pMemberPtr->m_state = state;
-            }
             // phone (optional)
-            QString phone = this->ui->phoneLineEdit->text();
-            if (!phone.isEmpty()){
-                pMemberPtr->m_phone = phone;
-            }
+            pMemberPtr->m_phone = this->ui->phoneLineEdit->text();
             // phone 2 (optional)
-            QString phone2 = this->ui->phone2LineEdit->text();
-            if (!phone2.isEmpty()){
-                pMemberPtr->m_phone2 = phone2;
-            }
-            // postal send (optional)
-
-            // TODO
-            //
-            //
-            //
+            pMemberPtr->m_phone2 = this->ui->phone2LineEdit->text();
+            // notes (optional)
+            pMemberPtr->m_notes = this->ui->notesLineEdit->text();
             // regDate -> no change
+            // lastmodfies
+            pMemberPtr->m_lastModified = QDateTime::currentDateTime();
 
             // update in ddbb
-            Singletons::m_pDAO->updateProductItem(pProductPtr);
+            Singletons::m_pDAO->updateMember(pMemberPtr);
             // if there is previously one image, and it has been changed -> delete it
             // make sure it is after being updated in ddbb
-            if (!this->m_productImageFilename.isEmpty() && !oldImage.isEmpty()) {
+            if (!this->m_memberImageFilename.isEmpty() && !oldImage.isEmpty()) {
                 // delete previous file
                 QString oldImagePath = QDir(Constants::kImageRootPath).filePath(oldImage);
                 QFile oldFile(oldImagePath);
@@ -212,45 +192,64 @@ namespace PenyaManager {
             }
         } else {
             // new item
-            pProductPtr = ProductItemPtr(new ProductItem);
+            pMemberPtr = MemberPtr(new Member);
             //
             // get new attribute values
             //
 
             // id -> no needed
             // name
-            pProductPtr->m_name = this->ui->nameLineEdit->text();
-            // imagePath
-            // can be null, allowed by ddbb schema
-            pProductPtr->m_imagePath = destFileName;
+            pMemberPtr->m_name = this->ui->nameLineEdit->text();
+            // surname
+            pMemberPtr->m_surname = this->ui->memberSurnameLineEdit->text();
+            // imagePath (optional)
+            if (!this->m_memberImageFilename.isEmpty()) {
+                // new image was selected
+                pMemberPtr->m_imagePath = destFileName;
+            }
             // active
-            pProductPtr->m_active = this->ui->activeCheckBox->isChecked();
+            pMemberPtr->m_active = this->ui->activeCheckBox->isChecked();
+            // isAdmin
+            pMemberPtr->m_isAdmin = this->ui->isAdminCheckBox->isChecked();
+            // bank account
+            pMemberPtr->m_bank_account = this->ui->bankAccountLineEdit->text();
+            // birthdate
+            QDate birthdate = this->ui->birthdateDateEdit->date();
+            pMemberPtr->m_birthdate = (birthdate == this->m_minDate)?(QDate()):(birthdate);
+            // postal send
+            pMemberPtr->m_postalSend = this->ui->postalSendCheckBox->isChecked();
+            // email (optional)
+            pMemberPtr->m_email = this->ui->emailLineEdit->text();
+            // address (optional)
+            pMemberPtr->m_address = this->ui->addressLineEdit->text();
+            // zip code (optional)
+            pMemberPtr->m_zipCode = this->ui->zipCodeLineEdit->text();
+            // town (optional)
+            pMemberPtr->m_town = this->ui->townLineEdit->text();
+            // state (optional)
+            pMemberPtr->m_state = this->ui->stateLineEdit->text();
+            // phone (optional)
+            pMemberPtr->m_phone = this->ui->phoneLineEdit->text();
+            // phone 2 (optional)
+            pMemberPtr->m_phone2 = this->ui->phone2LineEdit->text();
+            // notes (optional)
+            pMemberPtr->m_notes = this->ui->notesLineEdit->text();
             // regDate
-            pProductPtr->m_regDate = QDateTime::currentDateTime();
-            // family
-            pProductPtr->m_familyId = this->ui->familyComboBox->currentData().toInt();
-            // price (already validated)
-            pProductPtr->m_price = price;
-            // providerId
-            pProductPtr->m_providerId = this->ui->providerComboBox->currentData().toInt();
-            // stock -> no change
-            pProductPtr->m_stock = 0;
+            pMemberPtr->m_regDate = QDateTime::currentDateTime();
+            // lastmodfies
+            pMemberPtr->m_lastModified = QDateTime::currentDateTime();
             // create in ddbb
-            Singletons::m_pDAO->createProductItem(pProductPtr);
+            Int32 memberId = Singletons::m_pDAO->createMember(pMemberPtr);
+
+            // create account
+            Singletons::m_pServices->createAccountTransaction(memberId, 0.0, "new account", TransactionType::DepositFix);
         }
 
         // reset var
-        this->m_productImageFilename.clear();
+        this->m_memberImageFilename.clear();
+        QMessageBox::information(this, "Create Member", "Done successfully");
         // call family product management window throw adminmainwindow
-        m_switchCentralWidgetCallback(WindowKey::kFamilyItemManagementWindowKey);
-
-        QDate date = this->ui->birthdateDateEdit->date();
-        // on insert, if empty, leave it null in mysql
-        if (date == this->m_minDate) {
-            qDebug() << "empty";
-        } else {
-            qDebug() << date.toString();
-        }
+        m_switchCentralWidgetCallback(WindowKey::kMemberListViewWindowKey);
     }
     //
     void MemberView::fillMemberInfo(Int32 memberId)

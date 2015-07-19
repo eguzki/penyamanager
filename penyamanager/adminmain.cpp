@@ -57,7 +57,8 @@ int main(int argc, char *argv[])
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kAdminAccountBalanceViewKey, new PenyaManager::AccountBalanceView);
     PenyaManager::MemberListView *pMemberListView = new PenyaManager::MemberListView(NULL, adminMainWindowSwitchCallback);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kMemberListViewWindowKey, pMemberListView);
-    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kMemberViewKey, new PenyaManager::MemberView);
+    PenyaManager::MemberView *pMemberView = new PenyaManager::MemberView(NULL, adminMainWindowSwitchCallback);
+    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kMemberViewKey, pMemberView);
 
     // entry point -> adminlogin window
     PenyaManager::IPartner* pAdminLoginPartner = PenyaManager::Singletons::m_pParnetFinder->getPartner(PenyaManager::WindowKey::kAdminLoginWindowKey);

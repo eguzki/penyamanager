@@ -18,7 +18,7 @@ namespace PenyaManager {
 
         public:
             //
-            explicit MemberView(QWidget *parent = 0);
+            explicit MemberView(QWidget *parent, const CentralWidgetCallback &callback);
             //
             ~MemberView();
             //
@@ -43,6 +43,8 @@ namespace PenyaManager {
             QString                     m_memberImageFilename;
             //
             QDate                       m_minDate;
+            //
+            CentralWidgetCallback       m_switchCentralWidgetCallback;
     };
 }
 

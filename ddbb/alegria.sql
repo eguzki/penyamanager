@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS `alegria`.`member` (
   `idmember` INT(11) NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_bin' NOT NULL,
   `surname` VARCHAR(100) NOT NULL,
-  `image` VARCHAR(300) NOT NULL,
+  `image` VARCHAR(300) NULL,
   `lastmodified` DATETIME NOT NULL,
   `reg_date` DATETIME NOT NULL,
   `active` TINYINT(1) NOT NULL,
@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `alegria`.`member` (
   `tel2` VARCHAR(45) NULL,
   `email` VARCHAR(45) NULL,
   `bank_account` VARCHAR(45) NOT NULL,
-  `postal_send` TINYINT(1) NULL,
+  `postal_send` TINYINT(1) NOT NULL,
   `notes` VARCHAR(45) NULL,
   PRIMARY KEY (`idmember`))
 ENGINE = InnoDB
