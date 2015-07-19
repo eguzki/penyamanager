@@ -39,8 +39,6 @@ SOURCES += adminmain.cpp\
         objs/Provider.cpp\
         objs/ProviderInvoice.cpp\
         adminloginwindow.cpp\
-        admon_screen.cpp\
-        memberselect.cpp \
         adminmainwindow.cpp \
         slowpayersview.cpp \
         admininvoicelistview.cpp \
@@ -55,7 +53,9 @@ SOURCES += adminmain.cpp\
     providerinvoiceview.cpp \
     providerinvoicelistview.cpp \
     depositlistview.cpp \
-    accountbalanceview.cpp
+    accountbalanceview.cpp \
+    memberlistview.cpp \
+    memberview.cpp
 
 HEADERS  += singletons.h\
         dao.h\
@@ -76,8 +76,6 @@ HEADERS  += singletons.h\
         objs/Provider.h\
         objs/ProviderInvoice.h\
         adminloginwindow.h\
-        admon_screen.h\
-        memberselect.h \
         adminmainwindow.h \
         slowpayersview.h \
         admininvoicelistview.h \
@@ -92,11 +90,11 @@ HEADERS  += singletons.h\
     providerinvoiceview.h \
     providerinvoicelistview.h \
     depositlistview.h \
-    accountbalanceview.h
+    accountbalanceview.h \
+    memberlistview.h \
+    memberview.h
 
 FORMS    += adminloginwindow.ui\
-        admon_screen.ui\
-        memberselect.ui \
         adminmainwindow.ui \
         slowpayersview.ui \
         admininvoicelistview.ui \
@@ -111,4 +109,6 @@ FORMS    += adminloginwindow.ui\
     providerinvoiceview.ui \
     providerinvoicelistview.ui \
     depositlistview.ui \
-    accountbalanceview.ui
+    accountbalanceview.ui \
+    memberlistview.ui \
+    memberview.ui

@@ -54,15 +54,9 @@ namespace PenyaManager {
         }
 
         // validate price field
-        if (this->ui->priceLineEdit->text().isEmpty())
-        {
-            QMessageBox::warning(this, "Data missing", "price cannot be empty");
-            return;
-        }
-        bool ok;
-        Float price = this->ui->priceLineEdit->text().toFloat(&ok);
-        if (!ok) {
-            QMessageBox::warning(this, "Data not valid", "price is not valid");
+        Float price = this->ui->priceDoubleSpinBox->value();
+        if (!price) {
+            QMessageBox::warning(this, "Data not valid", "price cannot be 0.0€");
             return;
         }
         // validate providers
@@ -185,8 +179,8 @@ namespace PenyaManager {
         // active
         this->ui->activeCheckBox->setChecked(pProductPtr->m_active);
         // price, disable edit
-        this->ui->priceLineEdit->setText(QString::number(pProductPtr->m_price));
-        this->ui->priceLineEdit->setReadOnly(true);
+        this->ui->priceDoubleSpinBox->setValue(pProductPtr->m_price);
+        this->ui->priceDoubleSpinBox->setReadOnly(true);
         // provider
         this->ui->providerComboBox->clear();
         ProviderListPtr pProviderListPtr = Singletons::m_pDAO->getProviderList();
@@ -238,8 +232,8 @@ namespace PenyaManager {
         // active
         this->ui->activeCheckBox->setChecked(true);
         // price, disable edit
-        this->ui->priceLineEdit->clear();
-        this->ui->priceLineEdit->setReadOnly(false);
+        this->ui->priceDoubleSpinBox->setValue(0.0);
+        this->ui->priceDoubleSpinBox->setReadOnly(false);
         // provider
         this->ui->providerComboBox->clear();
         ProviderListPtr pProviderListPtr = Singletons::m_pDAO->getProviderList();

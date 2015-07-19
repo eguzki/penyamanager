@@ -1,19 +1,16 @@
-
 * Configuration
 ** ddbb host
 ** image path
+
 * Login/pass check
+
 * Admin
 ** Menu Dialog
-*** Members
-**** Member Info
-**** Member create
 *** Bodega
 **** edit provider??
 **** print stock list
 
 * highligth family icon when selected
-
 
 * Member login
 ** When user account balance is negative -> pop up on login
@@ -29,7 +26,6 @@
 ** lang: 1 -> spanish
 
 * Log system to trace user activity
-* configuration file (system dependent)
 
 * Exit application from tray icon
 http://qt-project.org/doc/qt-4.8/qsystemtrayicon.html
@@ -85,3 +81,7 @@ http://stackoverflow.com/questions/10369826/how-can-i-disable-alt-f4-window-clos
 **** deposits can be edited (????)
 **** total deposits, total invoice
 **** filter by memberId
+** Members
+**** Member List paginated
+**** member Info (can be edited)
+**** Member create

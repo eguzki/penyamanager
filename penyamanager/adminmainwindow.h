@@ -48,6 +48,8 @@ namespace PenyaManager {
             void on_deposit_list_button_triggered();
             //
             void on_account_balance_list_button_triggered();
+            //
+            void on_member_list_view_button_triggered();
 
         private:
             //

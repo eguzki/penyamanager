@@ -45,9 +45,11 @@ namespace PenyaManager {
     void LoginWindow::on_loginButton_clicked()
     {
         // Loading user Profile
-        MemberPtr pCurrMemberPtr = Singletons::m_pDAO->getActiveMemberById(this->ui->loginInput->text().toInt());
+        MemberPtr pCurrMemberPtr = Singletons::m_pDAO->getMemberById(this->ui->loginInput->text().toInt());
         if (pCurrMemberPtr)
         {
+            // TODO check passwd
+            // TODO check active
             // assign user
             Singletons::m_pCurrMember = pCurrMemberPtr;
             switchWindow(WindowKey::kMainWindowKey);

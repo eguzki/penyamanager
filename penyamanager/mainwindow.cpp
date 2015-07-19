@@ -47,7 +47,7 @@ namespace PenyaManager {
         // Loading User profile
         //
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
-        pCurrMemberPtr = Singletons::m_pDAO->getActiveMemberById(pCurrMemberPtr->m_id);
+        pCurrMemberPtr = Singletons::m_pDAO->getMemberById(pCurrMemberPtr->m_id);
         Singletons::m_pCurrMember = pCurrMemberPtr;
         this->m_pMemberProfileGroupBox->init(pCurrMemberPtr);
 
