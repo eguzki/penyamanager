@@ -13,6 +13,11 @@ namespace PenyaManager {
         m_pwd()
     {
         ui->setupUi(this);
+        // only numbers allowed
+        QValidator *pIntValidator = new QIntValidator();
+        this->ui->pwdLineEdit->setValidator(pIntValidator);
+        QValidator *pRepeatedIntValidator = new QIntValidator();
+        this->ui->repeatedPwdLineEdit->setValidator(pRepeatedIntValidator);
     }
     //
     PassChangeDialog::~PassChangeDialog()

@@ -18,21 +18,29 @@ namespace PenyaManager {
 
         public:
             //
-            explicit NumItemDialog(QWidget *parent = 0);
+            explicit NumItemDialog(QWidget *parent = 0, bool passMode = false, Uint32 maxDigits = 5);
             //
             ~NumItemDialog();
-
-        private:
             //
-            Ui::NumItemDialog *ui;
+            QString getKeyStr();
+            //
+            Uint32 getKey();
 
         private slots:
             //
             void onButtonClick(Uint32 count);
             //
             void on_toolButton_C_clicked();
+
+        private:
             //
-            void on_toolButton_Done_clicked();
+            Ui::NumItemDialog *ui;
+            //
+            Int32           m_maxDigits;
+            //
+            QString         m_keyStr;
+            //
+            bool            m_passMode;
     };
 
 }

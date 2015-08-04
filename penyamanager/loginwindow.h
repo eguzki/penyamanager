@@ -21,15 +21,24 @@ namespace PenyaManager {
             //
             ~LoginWindow();
 
-        private:
-            //
-            Ui::LoginWindow *ui;
-
         private slots:
             //
             void init();
             //
-            void on_loginButton_clicked();
+            void on_loginPushButton_clicked();
+            //
+            void on_passwordPushButton_clicked();
+            //
+            void on_memberIdPushButton_clicked();
+
+        private:
+            //
+            Ui::LoginWindow *ui;
+            //
+            QString         m_password;
+            //
+            Int32           m_memberId;
+
     };
 
 }

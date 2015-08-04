@@ -17,6 +17,11 @@ namespace PenyaManager {
         ui(new Ui::AdminLoginWindow)
     {
         ui->setupUi(this);
+        // only numbers allowed
+        QValidator *pMemberIdIntValidator = new QIntValidator();
+        this->ui->loginInput->setValidator(pMemberIdIntValidator);
+        QValidator *pPassIntValidator = new QIntValidator();
+        this->ui->passInput->setValidator(pPassIntValidator);
     }
     //
     AdminLoginWindow::~AdminLoginWindow()
