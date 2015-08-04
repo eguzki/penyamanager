@@ -35,8 +35,10 @@ namespace PenyaManager {
             void on_savePushButton_clicked();
             //
             void on_imagePushButton_clicked();
+            //
+            void on_changePasswordPushButton_clicked();
 
-    private:
+        private:
             //
             Ui::MemberView *ui;
             //

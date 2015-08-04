@@ -57,6 +57,10 @@ namespace PenyaManager
             //
             QString             m_notes;
             //
+            QString             m_pwd;
+            //
+            QDateTime           m_lastLogin;
+            //
             Float               m_balance;
     };
 

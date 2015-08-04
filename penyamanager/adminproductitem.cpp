@@ -72,19 +72,6 @@ namespace PenyaManager {
             return;
         }
 
-        // image file
-        QString destFileName;
-
-        if (!this->m_productImageFilename.isEmpty()) {
-            QFileInfo imageInfo(this->m_productImageFilename);
-            // Copy file to destination
-            QDateTime currentDateTime = QDateTime::currentDateTime();
-            QString nameTemplate("product-%1.%2");
-            destFileName = nameTemplate.arg(QString::number(currentDateTime.toMSecsSinceEpoch()/1000)).arg(imageInfo.suffix());
-            QString destFilePath = QDir(Constants::kImageRootPath).filePath(destFileName);
-            QFile::copy(this->m_productImageFilename, destFilePath);
-        }
-
         // save in ddbb
         ProductItemPtr pProductPtr;
         if (Singletons::m_currentProductId >= 0) {
@@ -107,7 +94,9 @@ namespace PenyaManager {
             // imagePath
             if (!this->m_productImageFilename.isEmpty()) {
                 // new image was selected
-                pProductPtr->m_imagePath = destFileName;
+                pProductPtr->m_imagePath = Utils::newImageName("product", this->m_productImageFilename);
+                QString destFilePath = QDir(Constants::kImageRootPath).filePath(pProductPtr->m_imagePath);
+                QFile::copy(this->m_productImageFilename, destFilePath);
             }
             // active
             pProductPtr->m_active = this->ui->activeCheckBox->isChecked();
@@ -140,8 +129,15 @@ namespace PenyaManager {
             // name
             pProductPtr->m_name = this->ui->nameLineEdit->text();
             // imagePath
+            QString destFileName;
             // can be null, allowed by ddbb schema
             pProductPtr->m_imagePath = destFileName;
+            if (!this->m_productImageFilename.isEmpty()) {
+                // new image was selected
+                pProductPtr->m_imagePath = Utils::newImageName("product", this->m_productImageFilename);
+                QString destFilePath = QDir(Constants::kImageRootPath).filePath(pProductPtr->m_imagePath);
+                QFile::copy(this->m_productImageFilename, destFilePath);
+            }
             // active
             pProductPtr->m_active = this->ui->activeCheckBox->isChecked();
             // regDate

@@ -5,6 +5,7 @@
 
 #include "utils.h"
 #include "singletons.h"
+#include "passchangedialog.h"
 #include "memberview.h"
 #include "ui_memberview.h"
 
@@ -31,6 +32,8 @@ namespace PenyaManager {
         this->ui->memberIdValueLabel->clear();
         // reg date
         this->ui->regDateValueLabel->setText(QDate::currentDate().toString());
+        // reg date
+        this->ui->lastLoginValueLabel->setText(QDate::currentDate().toString());
         // name
         this->ui->nameLineEdit->clear();
         // surname
@@ -72,6 +75,8 @@ namespace PenyaManager {
     //
     void MemberView::init()
     {
+        // change password button
+        this->ui->changePasswordPushButton->setEnabled(Singletons::m_currentMemberId >= 0);
         //
         // Product info
         //
@@ -104,23 +109,11 @@ namespace PenyaManager {
             return;
         }
         // bank_account
+        // TODO check bank account format
         QString bankAccount = this->ui->bankAccountLineEdit->text();
         if (bankAccount.isEmpty()){
             QMessageBox::warning(this, "Data missing", "Bank Account cannot be empty");
             return;
-        }
-        // TODO check bank account format
-        // image file
-        QString destFileName;
-
-        if (!this->m_memberImageFilename.isEmpty()) {
-            QFileInfo imageInfo(this->m_memberImageFilename);
-            // Copy file to destination
-            QDateTime currentDateTime = QDateTime::currentDateTime();
-            QString nameTemplate("product-%1.%2");
-            destFileName = nameTemplate.arg(QString::number(currentDateTime.toMSecsSinceEpoch()/1000)).arg(imageInfo.suffix());
-            QString destFilePath = QDir(Constants::kImageRootPath).filePath(destFileName);
-            QFile::copy(this->m_memberImageFilename, destFilePath);
         }
 
         // save in ddbb
@@ -146,6 +139,9 @@ namespace PenyaManager {
             pMemberPtr->m_surname = this->ui->memberSurnameLineEdit->text();
             // imagePath (optional)
             if (!this->m_memberImageFilename.isEmpty()) {
+                QString destFileName = Utils::newImageName("member", this->m_memberImageFilename);
+                QString destFilePath = QDir(Constants::kImageRootPath).filePath(destFileName);
+                QFile::copy(this->m_memberImageFilename, destFilePath);
                 // new image was selected
                 pMemberPtr->m_imagePath = destFileName;
             }
@@ -205,6 +201,9 @@ namespace PenyaManager {
             // imagePath (optional)
             if (!this->m_memberImageFilename.isEmpty()) {
                 // new image was selected
+                QString destFileName = Utils::newImageName("product", this->m_memberImageFilename);
+                QString destFilePath = QDir(Constants::kImageRootPath).filePath(destFileName);
+                QFile::copy(this->m_memberImageFilename, destFilePath);
                 pMemberPtr->m_imagePath = destFileName;
             }
             // active
@@ -238,6 +237,10 @@ namespace PenyaManager {
             pMemberPtr->m_regDate = QDateTime::currentDateTime();
             // lastmodfies
             pMemberPtr->m_lastModified = QDateTime::currentDateTime();
+            // last Login
+            pMemberPtr->m_lastLogin = QDateTime::currentDateTime();
+            // default password: "alegria"
+            pMemberPtr->m_pwd = Utils::hashSHA256asHex("alegria");
             // create in ddbb
             Int32 memberId = Singletons::m_pDAO->createMember(pMemberPtr);
 
@@ -262,6 +265,8 @@ namespace PenyaManager {
         this->ui->memberIdValueLabel->setText(QString::number(pMemberPtr->m_id));
         // reg date
         this->ui->regDateValueLabel->setText(pMemberPtr->m_regDate.toString());
+        // last login date
+        this->ui->lastLoginValueLabel->setText(pMemberPtr->m_lastLogin.toString());
         // name
         this->ui->nameLineEdit->setText(pMemberPtr->m_name);
         // surname
@@ -330,6 +335,26 @@ namespace PenyaManager {
         this->ui->imageLabel->setFixedHeight(Constants::kMemberImageHeigth);
         this->ui->imageLabel->setScaledContents(true);
     }
-}
+    //
+    void MemberView::on_changePasswordPushButton_clicked()
+    {
+        if (Singletons::m_currentMemberId < 0)
+        {
+            return;
+        }
 
+        PassChangeDialog passChangeDialg;
+        int result = passChangeDialg.exec();
+        if (result == QDialog::Rejected) {
+            return;
+        }
+
+        QString pwdHash = Utils::hashSHA256asHex(passChangeDialg.getPassword());
+
+        // save new password in ddbb
+        Singletons::m_pDAO->changeMemberPassword(Singletons::m_currentMemberId, pwdHash, QDateTime::currentDateTime());
+
+        QMessageBox::information(this, "Change password", "Password changed successfully");
+    }
+}
 

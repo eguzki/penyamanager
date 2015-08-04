@@ -1,3 +1,10 @@
+//
+
+#include <QCryptographicHash>
+#include <QFileInfo>
+#include <QDateTime>
+#include <string>
+
 #include "utils.h"
 
 namespace PenyaManager {
@@ -9,5 +16,23 @@ namespace PenyaManager {
             image = QPixmap(":images/no-image.gif");
         }
         return image;
+    }
+    // file name
+    QString Utils::newImageName(const QString& prefix, const QString& filename)
+    {
+        QFileInfo imageInfo(filename);
+        // Copy file to destination
+        QDateTime currentDateTime = QDateTime::currentDateTime();
+        QString nameTemplate("%1-%2.%3");
+        return nameTemplate.arg(prefix).arg(QString::number(currentDateTime.toMSecsSinceEpoch()/1000)).arg(imageInfo.suffix());
+    }
+    //
+    QString Utils::hashSHA256asHex(const QString& plainText)
+    {
+        QCryptographicHash hash(QCryptographicHash::Algorithm::Sha256);
+        std::string plainTextStr = plainText.toStdString();
+        hash.addData(plainTextStr.c_str(), plainTextStr.length());
+        // to Hex
+        return QString(hash.result().toHex());
     }
 }

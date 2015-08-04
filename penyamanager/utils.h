@@ -13,6 +13,10 @@ namespace PenyaManager {
         public:
             // get image
             static QPixmap getImage(const QString& filename);
+            // file name
+            static QString newImageName(const QString& prefix, const QString& filename);
+            // 
+            static QString hashSHA256asHex(const QString& plainText);
 
         private:
             //

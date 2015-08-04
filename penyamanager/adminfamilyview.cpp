@@ -53,19 +53,6 @@ namespace PenyaManager {
             return;
         }
 
-        // image file
-        QString destFileName;
-
-        if (!this->m_familyImageFilename.isEmpty()) {
-            QFileInfo imageInfo(this->m_familyImageFilename);
-            // Copy file to destination
-            QDateTime currentDateTime = QDateTime::currentDateTime();
-            QString nameTemplate("prodcategory-%1.%2");
-            destFileName = nameTemplate.arg(QString::number(currentDateTime.toMSecsSinceEpoch()/1000)).arg(imageInfo.suffix());
-            QString destFilePath = QDir(Constants::kImageRootPath).filePath(destFileName);
-            QFile::copy(this->m_familyImageFilename, destFilePath);
-        }
-
         // save in ddbb
         ProductFamilyPtr pFamilyPtr;
         if (Singletons::m_currentFamilyId >= 0) {
@@ -88,7 +75,9 @@ namespace PenyaManager {
             // imagePath
             if (!this->m_familyImageFilename.isEmpty()) {
                 // new image was selected
-                pFamilyPtr->m_imagePath = destFileName;
+                pFamilyPtr->m_imagePath = Utils::newImageName("prodcategory", this->m_familyImageFilename);;
+                QString destFilePath = QDir(Constants::kImageRootPath).filePath(pFamilyPtr->m_imagePath);
+                QFile::copy(this->m_familyImageFilename, destFilePath);
             }
             // active
             pFamilyPtr->m_active = this->ui->activeCheckBox->isChecked();
@@ -115,8 +104,15 @@ namespace PenyaManager {
             // name
             pFamilyPtr->m_name = this->ui->nameLineEdit->text();
             // imagePath
+            QString destFileName;
             // can be null, allowed by ddbb schema
             pFamilyPtr->m_imagePath = destFileName;
+            if (!this->m_familyImageFilename.isEmpty()) {
+                // new image was selected
+                pFamilyPtr->m_imagePath = Utils::newImageName("prodcategory", this->m_familyImageFilename);;
+                QString destFilePath = QDir(Constants::kImageRootPath).filePath(pFamilyPtr->m_imagePath);
+                QFile::copy(this->m_familyImageFilename, destFilePath);
+            }
             // active
             pFamilyPtr->m_active = this->ui->activeCheckBox->isChecked();
             // regDate
