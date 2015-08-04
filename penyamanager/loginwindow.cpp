@@ -2,6 +2,7 @@
 #include <QDebug>
 #include <QMessageBox>
 
+#include "numitemdialog.h"
 #include "utils.h"
 #include "constants.h"
 #include "singletons.h"
@@ -13,11 +14,11 @@ namespace PenyaManager {
     //
     LoginWindow::LoginWindow(QWidget *parent) :
         IPartner(parent),
-        ui(new Ui::LoginWindow)
+        ui(new Ui::LoginWindow),
+        m_password(),
+        m_memberId(-1)
     {
         ui->setupUi(this);
-        //
-        this->connect(this->ui->loginButton, SIGNAL(clicked()), this, SLOT(onLoginButtonClicked()));
     }
 
     //
@@ -29,8 +30,10 @@ namespace PenyaManager {
     //
     void LoginWindow::init()
     {
-        this->ui->passInput->clear();
-        this->ui->loginInput->clear();
+        this->ui->memberIdLabel->clear();
+        this->ui->passwordLabel->clear();
+        this->m_memberId = -1;
+        this->m_password = QString();
 
         if (!Singletons::m_pDAO->isOpen()) {
             QSqlError err = Singletons::m_pDAO->lastError();
@@ -44,20 +47,31 @@ namespace PenyaManager {
     }
 
     //
-    void LoginWindow::on_loginButton_clicked()
+    void LoginWindow::on_loginPushButton_clicked()
     {
+        // check memberId input
+        if (this->m_memberId < 0)
+        {
+            QMessageBox::about(this, "Login failed", "MemberId not set");
+            return;
+        }
+        // check password input
+        if (this->m_password.isEmpty())
+        {
+            QMessageBox::about(this, "Login failed", "Password not set");
+            return;
+        }
         // Loading user Profile
-        MemberPtr pCurrMemberPtr = Singletons::m_pDAO->getMemberById(this->ui->loginInput->text().toInt());
+        MemberPtr pCurrMemberPtr = Singletons::m_pDAO->getMemberById(this->m_memberId);
         if (!pCurrMemberPtr)
         {
             // User could not be found
             QMessageBox::about(this, "Login failed",
-                    "User not registered in the system: " + this->ui->loginInput->text());
+                    QString("User not registered in the system: %1").arg(this->m_memberId));
             return;
         }
 
-        QString plainPwd = this->ui->passInput->text();
-        QString hashedPwd = Utils::hashSHA256asHex(plainPwd);
+        QString hashedPwd = Utils::hashSHA256asHex(this->m_password);
         if (pCurrMemberPtr->m_pwd != hashedPwd)
         {
             // User not active
@@ -70,8 +84,15 @@ namespace PenyaManager {
         {
             // User not active
             QMessageBox::about(this, "Login failed",
-                    "User not active in the system: " + this->ui->loginInput->text());
+                    QString("User not active in the system: %1").arg(this->m_memberId));
             return;
+        }
+
+        if (pCurrMemberPtr->m_balance < 0)
+        {
+            // User is slow payer
+            QMessageBox::warning(this, "Slow Payer",
+                    QString("Your current balance is negative: %1 €").arg(pCurrMemberPtr->m_balance));
         }
 
         // login granted
@@ -79,5 +100,24 @@ namespace PenyaManager {
         Singletons::m_pCurrMember = pCurrMemberPtr;
         switchWindow(WindowKey::kMainWindowKey);
     }
+    //
+    void LoginWindow::on_passwordPushButton_clicked()
+    {
+        NumItemDialog numItemDialog(this, true);
+        numItemDialog.exec();
+        this->m_password = numItemDialog.getKeyStr();
+        QString hiddenPassText(this->m_password);
+        hiddenPassText.replace(QRegExp("."), "*");
+        this->ui->passwordLabel->setText(hiddenPassText);
+    }
+    //
+    void LoginWindow::on_memberIdPushButton_clicked()
+    {
+        NumItemDialog numItemDialog(this);
+        numItemDialog.exec();
+        this->m_memberId = numItemDialog.getKey();
+        this->ui->memberIdLabel->setText(QString::number(this->m_memberId));
+    }
 }
+
 

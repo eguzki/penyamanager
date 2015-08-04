@@ -24,7 +24,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QWidget" name="topBar" native="true">
+    <widget class="QFrame" name="topFrame">
      <property name="minimumSize">
       <size>
        <width>0</width>
@@ -37,129 +37,126 @@
        <height>100</height>
       </size>
      </property>
-     <widget class="QLabel" name="label">
-      <property name="geometry">
-       <rect>
-        <x>270</x>
-        <y>20</y>
-        <width>251</width>
-        <height>51</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>37</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Members</string>
-      </property>
-     </widget>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="font">
+         <font>
+          <pointsize>37</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Members</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="loginWidget" native="true">
+    <widget class="QFrame" name="loginFrame">
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
-       <widget class="QWidget" name="loginData" native="true">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>200</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>200</height>
-         </size>
-        </property>
-        <layout class="QFormLayout" name="formLayout">
-         <property name="labelAlignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-         <property name="formAlignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-         <item row="0" column="0">
-          <widget class="QLabel" name="loginLabel">
-           <property name="text">
-            <string>Login</string>
-           </property>
+       <widget class="QWidget" name="loginInfoWidget" native="true">
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <item>
+          <widget class="QWidget" name="memberIdWidget" native="true">
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <item>
+             <widget class="QPushButton" name="memberIdPushButton">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Insert Member ID</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="memberIdLabel">
+              <property name="text">
+               <string>TextLabel</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </widget>
          </item>
-         <item row="0" column="1">
-          <widget class="QLineEdit" name="loginInput">
-           <property name="maximumSize">
-            <size>
-             <width>300</width>
-             <height>16777215</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="passLabel">
-           <property name="text">
-            <string>Password</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QLineEdit" name="passInput">
-           <property name="maximumSize">
-            <size>
-             <width>300</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="echoMode">
-            <enum>QLineEdit::Password</enum>
-           </property>
+         <item>
+          <widget class="QWidget" name="passwordWidget" native="true">
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <item>
+             <widget class="QPushButton" name="passwordPushButton">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Insert Password</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="passwordLabel">
+              <property name="text">
+               <string>TextLabel</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </widget>
          </item>
         </layout>
        </widget>
       </item>
       <item>
-       <widget class="QWidget" name="padding" native="true"/>
-      </item>
-      <item alignment="Qt::AlignRight">
-       <widget class="QWidget" name="loginButtonWidget" native="true">
+       <widget class="QPushButton" name="loginPushButton">
         <property name="minimumSize">
          <size>
-          <width>120</width>
-          <height>50</height>
+          <width>0</width>
+          <height>150</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
           <width>16777215</width>
-          <height>50</height>
+          <height>150</height>
          </size>
         </property>
-        <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
+        <property name="text">
+         <string>Login</string>
         </property>
-        <widget class="QPushButton" name="loginButton">
-         <property name="geometry">
-          <rect>
-           <x>9</x>
-           <y>12</y>
-           <width>99</width>
-           <height>27</height>
-          </rect>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>99</width>
-           <height>27</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>Login</string>
-         </property>
-        </widget>
        </widget>
       </item>
      </layout>

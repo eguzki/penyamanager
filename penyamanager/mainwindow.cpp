@@ -275,7 +275,8 @@ namespace PenyaManager {
     void MainWindow::readNumItems(Int32 productId)
     {
         NumItemDialog numItemDialog(this);
-        Uint32 count = numItemDialog.exec();
+        numItemDialog.exec();
+        Uint32 count = numItemDialog.getKey();
         MemberPtr pCurrMember = Singletons::m_pCurrMember;
         // always fresh invoice
         InvoicePtr pInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);

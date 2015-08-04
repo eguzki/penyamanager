@@ -2,6 +2,7 @@
 
 #include <functional>
 using namespace std::placeholders;
+#include <QMessageBox>
 
 #include "numitemdialog.h"
 #include "ui_numitemdialog.h"
@@ -9,9 +10,12 @@ using namespace std::placeholders;
 namespace PenyaManager {
 
     //
-    NumItemDialog::NumItemDialog(QWidget *parent) :
+    NumItemDialog::NumItemDialog(QWidget *parent, bool passMode, Uint32 maxDigits) :
         QDialog(parent),
-        ui(new Ui::NumItemDialog)
+        ui(new Ui::NumItemDialog),
+        m_maxDigits(maxDigits),
+        m_keyStr(""),
+        m_passMode(passMode)
     {
         ui->setupUi(this);
         this->connect(this->ui->toolButton_0, &QToolButton::clicked, std::bind(&NumItemDialog::onButtonClick, this, 0));
@@ -38,29 +42,38 @@ namespace PenyaManager {
     void NumItemDialog::onButtonClick(Uint32 num)
     {
         // Check number is not too high
-        if (this->ui->numDisplayLabel->text().length() > 4)
+        if (this->m_keyStr.length() >= this->m_maxDigits)
         {
             // do not allow "big" numbers
             return;
         }
-        QString newCountText(this->ui->numDisplayLabel->text().append(QString::number(num)));
-        this->ui->numDisplayLabel->setText(newCountText);
+
+        this->m_keyStr.append(QString::number(num));
+        if (m_passMode)
+        {
+            QString hiddenPass;
+            hiddenPass.fill('*', this->m_keyStr.length() - 1);
+            hiddenPass.append(this->m_keyStr.at(this->m_keyStr.length() - 1));
+            this->ui->numDisplayLabel->setText(hiddenPass);
+        } else {
+            this->ui->numDisplayLabel->setText(this->m_keyStr);
+        }
+
     }
     //
     void NumItemDialog::on_toolButton_C_clicked()
     {
         this->ui->numDisplayLabel->setText("");
+        this->m_keyStr = QString("");
     }
     //
-    void NumItemDialog::on_toolButton_Done_clicked()
+    QString NumItemDialog::getKeyStr()
     {
-        Uint32 count = 0;
-
-        if (this->ui->numDisplayLabel->text().length() > 0)
-        {
-            count = this->ui->numDisplayLabel->text().toUInt();
-        }
-
-        done(count);
+        return this->m_keyStr;
+    }
+    //
+    Uint32 NumItemDialog::getKey()
+    {
+        return this->m_keyStr.toUInt();
     }
 }

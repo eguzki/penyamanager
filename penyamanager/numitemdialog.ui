@@ -210,5 +210,22 @@
   </layout>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>toolButton_Done</sender>
+   <signal>clicked()</signal>
+   <receiver>NumItemDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>297</x>
+     <y>482</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>182</x>
+     <y>270</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

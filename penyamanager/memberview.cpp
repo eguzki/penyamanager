@@ -239,8 +239,8 @@ namespace PenyaManager {
             pMemberPtr->m_lastModified = QDateTime::currentDateTime();
             // last Login
             pMemberPtr->m_lastLogin = QDateTime::currentDateTime();
-            // default password: "alegria"
-            pMemberPtr->m_pwd = Utils::hashSHA256asHex("alegria");
+            // default password: "0000"
+            pMemberPtr->m_pwd = Utils::hashSHA256asHex("0000");
             // create in ddbb
             Int32 memberId = Singletons::m_pDAO->createMember(pMemberPtr);
 

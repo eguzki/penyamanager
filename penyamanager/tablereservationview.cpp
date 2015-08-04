@@ -219,7 +219,8 @@ namespace PenyaManager {
         QDate date = this->ui->calendarWidget->selectedDate();
         ReservationType reservationType = static_cast<ReservationType>(this->ui->reservationTypeButtonGroup->checkedId());
         NumItemDialog numItemDialog(this);
-        Uint32 guestNum = numItemDialog.exec();
+        numItemDialog.exec();
+        Uint32 guestNum = numItemDialog.getKey();
         if (guestNum == 0) 
         {
             return;
