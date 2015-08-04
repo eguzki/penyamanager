@@ -2,6 +2,8 @@
 
 #include <QDebug>
 #include <QMessageBox>
+
+#include "utils.h"
 #include "constants.h"
 #include "singletons.h"
 #include "ui_adminloginwindow.h"
@@ -42,20 +44,45 @@ namespace PenyaManager {
     {
         // Loading user Profile
         MemberPtr pCurrMemberPtr = Singletons::m_pDAO->getMemberById(this->ui->loginInput->text().toInt());
-        if (pCurrMemberPtr)
+        if (!pCurrMemberPtr)
         {
-            // TODO check passwd
-            // TODO check active
-            // TODO check isAdmin
-            this->hide();
-            // assign user
-            Singletons::m_pCurrMember = pCurrMemberPtr;
-            // call admin main window
-            m_pAdminMainWindow->init();
-        } else {
             // User could not be found
-            QMessageBox::about(this, "Admin user not found",
-                    "Admin user not registered in the system: " + this->ui->loginInput->text());
+            QMessageBox::about(this, "Login failed",
+                    "User not registered in the system: " + this->ui->loginInput->text());
+            return;
         }
+
+        QString plainPwd = this->ui->passInput->text();
+        QString hashedPwd = Utils::hashSHA256asHex(plainPwd);
+        if (pCurrMemberPtr->m_pwd != hashedPwd)
+        {
+            // User not active
+            QMessageBox::about(this, "Login failed",
+                    "Password incorrect");
+            return;
+        }
+
+        if (!pCurrMemberPtr->m_active)
+        {
+            // User not active
+            QMessageBox::about(this, "Login failed",
+                    "User not active in the system: " + this->ui->loginInput->text());
+            return;
+        }
+
+        if (!pCurrMemberPtr->m_isAdmin)
+        {
+            // User not admin
+            QMessageBox::about(this, "Login failed",
+                    "User does not have permissions to login");
+            return;
+        }
+
+        // login granted
+        this->hide();
+        // assign user
+        Singletons::m_pCurrMember = pCurrMemberPtr;
+        // call admin main window
+        m_pAdminMainWindow->init();
     }
 }

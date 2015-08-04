@@ -1,6 +1,8 @@
 //
 #include <QDebug>
 #include <QMessageBox>
+
+#include "utils.h"
 #include "constants.h"
 #include "singletons.h"
 #include "ui_loginwindow.h"
@@ -46,20 +48,36 @@ namespace PenyaManager {
     {
         // Loading user Profile
         MemberPtr pCurrMemberPtr = Singletons::m_pDAO->getMemberById(this->ui->loginInput->text().toInt());
-        if (pCurrMemberPtr)
+        if (!pCurrMemberPtr)
         {
-            // TODO check passwd
-            // TODO check active
-            // assign user
-            Singletons::m_pCurrMember = pCurrMemberPtr;
-            switchWindow(WindowKey::kMainWindowKey);
-        } else {
             // User could not be found
-            QMessageBox::about(this, "User not found",
+            QMessageBox::about(this, "Login failed",
                     "User not registered in the system: " + this->ui->loginInput->text());
+            return;
         }
+
+        QString plainPwd = this->ui->passInput->text();
+        QString hashedPwd = Utils::hashSHA256asHex(plainPwd);
+        if (pCurrMemberPtr->m_pwd != hashedPwd)
+        {
+            // User not active
+            QMessageBox::about(this, "Login failed",
+                    "Password incorrect");
+            return;
+        }
+
+        if (!pCurrMemberPtr->m_active)
+        {
+            // User not active
+            QMessageBox::about(this, "Login failed",
+                    "User not active in the system: " + this->ui->loginInput->text());
+            return;
+        }
+
+        // login granted
+        // assign user
+        Singletons::m_pCurrMember = pCurrMemberPtr;
+        switchWindow(WindowKey::kMainWindowKey);
     }
 }
-
-
 

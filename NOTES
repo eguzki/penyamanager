@@ -2,8 +2,6 @@
 ** ddbb host
 ** image path
 
-* Login/pass check
-
 * Admin
 ** Menu Dialog
 *** Bodega
@@ -33,6 +31,7 @@ http://stackoverflow.com/questions/10369826/how-can-i-disable-alt-f4-window-clos
 
 * DONE
 ** Member login window
+*** Active, admin, pwd check
 ** Member invoice window
 *** unfinished invoice is loaded
 ** Member invoice confirmation window

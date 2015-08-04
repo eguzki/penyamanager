@@ -55,7 +55,8 @@ SOURCES += adminmain.cpp\
     depositlistview.cpp \
     accountbalanceview.cpp \
     memberlistview.cpp \
-    memberview.cpp
+    memberview.cpp \
+    passchangedialog.cpp
 
 HEADERS  += singletons.h\
         dao.h\
@@ -92,7 +93,8 @@ HEADERS  += singletons.h\
     depositlistview.h \
     accountbalanceview.h \
     memberlistview.h \
-    memberview.h
+    memberview.h \
+    passchangedialog.h
 
 FORMS    += adminloginwindow.ui\
         adminmainwindow.ui \
@@ -111,4 +113,5 @@ FORMS    += adminloginwindow.ui\
     depositlistview.ui \
     accountbalanceview.ui \
     memberlistview.ui \
-    memberview.ui
+    memberview.ui \
+    passchangedialog.ui

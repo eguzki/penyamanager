@@ -168,6 +168,8 @@ namespace PenyaManager {
             void updateMember(const MemberPtr &pMemberPtr);
             //
             Int32 createMember(const MemberPtr &pMemberPtr);
+            //
+            void changeMemberPassword(Int32 memberId, const QString &pwdHash, const QDateTime &lastmodified);
 
         private:
             //
@@ -312,6 +314,8 @@ namespace PenyaManager {
             QSqlQuery               m_updateMemberQuery;
             //
             QSqlQuery               m_createMemberQuery;
+            //
+            QSqlQuery               m_updateMemberPasswordQuery;
     };
 }
 #endif // DAO_H

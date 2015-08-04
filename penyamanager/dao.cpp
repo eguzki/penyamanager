@@ -77,7 +77,8 @@ namespace PenyaManager {
             m_memberListQuery(m_db),
             m_memberListStatsQuery(m_db),
             m_updateMemberQuery(m_db),
-            m_createMemberQuery(m_db)
+            m_createMemberQuery(m_db),
+            m_updateMemberPasswordQuery(m_db)
     {
         // configure db connection
         m_db.setHostName(hostname);
@@ -100,7 +101,7 @@ namespace PenyaManager {
         m_memberByIdQuery.prepare(
                 "SELECT member.name, member.surname, member.image, member.lastmodified, member.reg_date, member.active, member.isAdmin, member.birth, "
                 "member.address, member.zip_code, member.town, member.state, member.tel, member.tel2, member.email, member.bank_account, member.postal_send, "
-                "member.notes, account.balance "
+                "member.notes, member.pwd, member.lastlogin, account.balance "
                 "FROM account "
                 "INNER JOIN member "
                 "ON account.idmember=member.idmember "
@@ -535,10 +536,16 @@ namespace PenyaManager {
                 "INSERT INTO member "
                 "(name, surname, image, lastmodified, reg_date, active, isAdmin, birth, "
                 "address, zip_code, town, state, tel, tel2, email, bank_account, postal_send, "
-                "notes) "
+                "notes, pwd, lastlogin) "
                 "VALUES (:name, :surname, :image, :lastmodified, :reg_date, :active, :isadmin, :birth, "
                 ":address, :zip_code, :town, :state, :tel, :tel2, :email, :bank_account, :postal_send, "
-                ":notes)"
+                ":notes, :pwd, :lastlogin)"
+                );
+        // update member password
+        m_updateMemberPasswordQuery.prepare(
+                "UPDATE member "
+                "SET pwd=:pwd, lastmodified=:lastmodified "
+                "WHERE idmember = :memberid"
                 );
     }
 
@@ -654,6 +661,8 @@ namespace PenyaManager {
             pMemberPtr->m_bank_account = m_memberByIdQuery.value(column++).toString();
             pMemberPtr->m_postalSend = m_memberByIdQuery.value(column++).toInt() == 1;
             pMemberPtr->m_notes = m_memberByIdQuery.value(column++).toString();
+            pMemberPtr->m_pwd = m_memberByIdQuery.value(column++).toString();
+            pMemberPtr->m_lastLogin = m_memberByIdQuery.value(column++).toDateTime();
             pMemberPtr->m_balance = m_memberByIdQuery.value(column++).toFloat();
         }
         m_memberByIdQuery.finish();
@@ -2018,6 +2027,8 @@ namespace PenyaManager {
         m_createMemberQuery.bindValue(":isadmin", pMemberPtr->m_isAdmin?1:0);
         m_createMemberQuery.bindValue(":bank_account", pMemberPtr->m_bank_account);
         m_createMemberQuery.bindValue(":postal_send", pMemberPtr->m_postalSend?1:0);
+        m_createMemberQuery.bindValue(":pwd", pMemberPtr->m_pwd);
+        m_createMemberQuery.bindValue(":lastlogin", pMemberPtr->m_lastLogin);
         // optional
         if (pMemberPtr->m_imagePath.isEmpty()) {
             m_createMemberQuery.bindValue(":image", QVariant());
@@ -2086,6 +2097,19 @@ namespace PenyaManager {
         Int32 memberId = m_getLastIdQuery.value(0).toUInt();
         m_getLastIdQuery.finish();
         return memberId;
+    }
+    //
+    void DAO::changeMemberPassword(Int32 memberId, const QString &pwdHash, const QDateTime &lastmodified)
+    {
+        m_updateMemberPasswordQuery.bindValue(":pwd", pwdHash);
+        m_updateMemberPasswordQuery.bindValue(":lastmodified", lastmodified);
+        m_updateMemberPasswordQuery.bindValue(":memberid", memberId);
+        // execute query
+        if (!m_updateMemberPasswordQuery.exec())
+        {
+            qDebug() << m_updateMemberPasswordQuery.lastError();
+        }
+        m_updateMemberPasswordQuery.finish();
     }
 }
 

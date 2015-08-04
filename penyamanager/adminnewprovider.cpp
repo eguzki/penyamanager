@@ -90,11 +90,7 @@ namespace PenyaManager {
         QString destFileName;
 
         if (!this->m_providerImageFilename.isEmpty()) {
-            QFileInfo imageInfo(this->m_providerImageFilename);
-            // Copy file to destination
-            QDateTime currentDateTime = QDateTime::currentDateTime();
-            QString nameTemplate("provider-%1.%2");
-            destFileName = nameTemplate.arg(QString::number(currentDateTime.toMSecsSinceEpoch()/1000)).arg(imageInfo.suffix());
+            destFileName = Utils::newImageName("provider", this->m_providerImageFilename);
             QString destFilePath = QDir(Constants::kImageRootPath).filePath(destFileName);
             QFile::copy(this->m_providerImageFilename, destFilePath);
         }

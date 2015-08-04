@@ -31,6 +31,8 @@ CREATE TABLE IF NOT EXISTS `alegria`.`member` (
   `bank_account` VARCHAR(45) NOT NULL,
   `postal_send` TINYINT(1) NOT NULL,
   `notes` VARCHAR(45) NULL,
+  `pwd` VARCHAR(128) NOT NULL,
+  `lastlogin` DATETIME NOT NULL,
   PRIMARY KEY (`idmember`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 3
