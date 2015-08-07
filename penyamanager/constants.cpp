@@ -5,13 +5,27 @@
 
 namespace PenyaManager {
     //
+    const QString   Constants::kOrganizationName                = "penyamanager";
+    //
+    const QString   Constants::kApplicationName                 = "alegria";
+    //
+    const QString   Constants::kResourcePathKey                 = "resourcepath";
+    //
+    const QString   Constants::kDatabaseGroupName               = "ddbb";
+    //
+    const QString   Constants::kDatabaseHost                    = "host";
+    //
+    const QString   Constants::kDatabaseName                    = "name";
+    //
+    const QString   Constants::kDatabaseUser                    = "user";
+    //
+    const QString   Constants::kDatabasePass                    = "pass";
+    //
     const Uint32    Constants::kFamilyWidgetWidth               = 300;
     //
     const Uint32    Constants::kFamilyImageWidth                = 100;
     //
     const Uint32    Constants::kFamilyImageHeigth               = 80;
-    //
-    const QString   Constants::kImageRootPath                   = "/home/eguzki/tmp";
     //
     const Int32     Constants::kIdRole                          = 101;
     //

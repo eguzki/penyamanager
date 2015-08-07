@@ -7,19 +7,28 @@ namespace PenyaManager {
 //
 // Initialization
 //
-DAO *Singletons::m_pDAO = 0;
+DAO *Singletons::m_pDAO = NULL;
 MemberPtr Singletons::m_pCurrMember;
-Services *Singletons::m_pServices = 0;
-PartnerFinder *Singletons::m_pParnetFinder = 0;
+Services *Singletons::m_pServices = NULL;
+PartnerFinder *Singletons::m_pParnetFinder = NULL;
+QSettings *Singletons::m_pSettings = NULL;
 Int32 Singletons::m_currentInvoiceId = 0;
 Int32 Singletons::m_currentProductId = 0;
 Int32 Singletons::m_currentFamilyId = 0;
 Int32 Singletons::m_currentMemberId = 0;
 
-void Singletons::Create()
+void Singletons::Create(QSettings *pSettings)
 {
+    m_pSettings = pSettings;
+    m_pSettings->beginGroup(Constants::kDatabaseGroupName);
+    QString ddbbHost(m_pSettings->value(Constants::kDatabaseHost).toString());
+    QString ddbbName(m_pSettings->value(Constants::kDatabaseName).toString());
+    QString ddbbUser(m_pSettings->value(Constants::kDatabaseUser).toString());
+    QString ddbbPass(m_pSettings->value(Constants::kDatabasePass).toString());
+    m_pSettings->endGroup();
+
     // DAO Acces
-    m_pDAO = new DAO("192.168.56.2", "alegria", "user", "user");
+    m_pDAO = new DAO(ddbbHost, ddbbName, ddbbUser, ddbbPass);
     //m_pDAO = new DAO("192.168.1.254", "alegria", "root", "Urko&Eguzki");
     m_pServices = new Services;
     m_pParnetFinder = new PartnerFinder;

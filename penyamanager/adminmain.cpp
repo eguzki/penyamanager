@@ -1,4 +1,7 @@
+//
+
 #include <QApplication>
+#include <QMessageBox>
 
 #include "adminmainwindow.h"
 #include "adminloginwindow.h"
@@ -27,7 +30,14 @@ int main(int argc, char *argv[])
     QApplication::setStyle("windows");
     QApplication a(argc, argv);
 
-    PenyaManager::Singletons::Create();
+    QSettings settings(PenyaManager::Constants::kOrganizationName, PenyaManager::Constants::kApplicationName);
+    if (!settings.contains(PenyaManager::Constants::kResourcePathKey))
+    {
+        QMessageBox::critical(NULL, "Error", "Settings file not found. Call the stupid administrator and complain for incompetence");
+        return 1;
+    }
+
+    PenyaManager::Singletons::Create(&settings);
     PenyaManager::AdminMainWindow adminMainWindow;
 
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kAdminLoginWindowKey, new PenyaManager::AdminLoginWindow(&adminMainWindow));

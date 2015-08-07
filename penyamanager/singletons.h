@@ -1,6 +1,8 @@
 #ifndef SINGLETONS_H
 #define SINGLETONS_H
 
+#include <QSettings>
+
 #include "objs/Member.h"
 #include "services.h"
 #include "partnerfinder.h"
@@ -12,7 +14,7 @@ namespace PenyaManager {
     {
         public:
             //
-            static void Create();
+            static void Create(QSettings *pSettings);
             //
             static void Destroy();
 
@@ -25,6 +27,8 @@ namespace PenyaManager {
             static Services         *m_pServices;
             //
             static PartnerFinder    *m_pParnetFinder;
+            //
+            static QSettings        *m_pSettings;
             //
             static Int32            m_currentInvoiceId;
             //

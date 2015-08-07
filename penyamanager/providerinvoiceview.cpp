@@ -106,7 +106,7 @@ namespace PenyaManager {
         for (auto iter = pProviderListPtr->begin(); iter != pProviderListPtr->end(); ++iter)
         {
             ProviderPtr pProviderPtr = *iter;
-            QString providerImagePath = QDir(Constants::kImageRootPath).filePath(pProviderPtr->m_image);
+            QString providerImagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pProviderPtr->m_image);
             QPixmap productPixmap = Utils::getImage(providerImagePath);
             this->ui->providerComboBox->insertItem(idx, QIcon(productPixmap), pProviderPtr->m_name, pProviderPtr->m_id);
             this->m_rowProviderIdMap[idx] = pProviderPtr->m_id;
@@ -163,7 +163,7 @@ namespace PenyaManager {
         QWidget *pProduceItemWidget = new QWidget(this);
         // load product image
         QLabel *pImageLabel = new QLabel;
-        QString imagePath = QDir(Constants::kImageRootPath).filePath(pIPtr->m_imagePath);
+        QString imagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pIPtr->m_imagePath);
         QPixmap productItemPixmap = Utils::getImage(imagePath);
         pImageLabel->setPixmap(productItemPixmap);
         pImageLabel->setFixedWidth(Constants::kFamilyImageWidth);

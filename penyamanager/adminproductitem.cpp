@@ -95,7 +95,7 @@ namespace PenyaManager {
             if (!this->m_productImageFilename.isEmpty()) {
                 // new image was selected
                 pProductPtr->m_imagePath = Utils::newImageName("product", this->m_productImageFilename);
-                QString destFilePath = QDir(Constants::kImageRootPath).filePath(pProductPtr->m_imagePath);
+                QString destFilePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pProductPtr->m_imagePath);
                 QFile::copy(this->m_productImageFilename, destFilePath);
             }
             // active
@@ -114,7 +114,7 @@ namespace PenyaManager {
             // make sure it is after being updated in ddbb
             if (!this->m_productImageFilename.isEmpty() && !oldImage.isEmpty()) {
                 // delete previous file
-                QString oldImagePath = QDir(Constants::kImageRootPath).filePath(oldImage);
+                QString oldImagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(oldImage);
                 QFile oldFile(oldImagePath);
                 oldFile.remove();
             }
@@ -135,7 +135,7 @@ namespace PenyaManager {
             if (!this->m_productImageFilename.isEmpty()) {
                 // new image was selected
                 pProductPtr->m_imagePath = Utils::newImageName("product", this->m_productImageFilename);
-                QString destFilePath = QDir(Constants::kImageRootPath).filePath(pProductPtr->m_imagePath);
+                QString destFilePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pProductPtr->m_imagePath);
                 QFile::copy(this->m_productImageFilename, destFilePath);
             }
             // active
@@ -166,7 +166,7 @@ namespace PenyaManager {
         // name
         this->ui->nameLineEdit->setText(pProductPtr->m_name);
         // show image
-        QString imagePath = QDir(Constants::kImageRootPath).filePath(pProductPtr->m_imagePath);
+        QString imagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pProductPtr->m_imagePath);
         QPixmap productPixmap = Utils::getImage(imagePath);
         this->ui->imageLabel->setPixmap(productPixmap);
         this->ui->imageLabel->setFixedWidth(Constants::kMemberImageWidth);
@@ -185,7 +185,7 @@ namespace PenyaManager {
         for (auto iter = pProviderListPtr->begin(); iter != pProviderListPtr->end(); ++iter)
         {
             ProviderPtr pProviderPtr = *iter;
-            QString providerImagePath = QDir(Constants::kImageRootPath).filePath(pProviderPtr->m_image);
+            QString providerImagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pProviderPtr->m_image);
             QPixmap productPixmap = Utils::getImage(providerImagePath);
             this->ui->providerComboBox->insertItem(currentIndex, QIcon(productPixmap), pProviderPtr->m_name, pProviderPtr->m_id);
             if (pProviderPtr->m_id == pProductPtr->m_providerId) {
@@ -203,7 +203,7 @@ namespace PenyaManager {
         for (auto iter = pfListPtr->begin(); iter != pfListPtr->end(); ++iter)
         {
             ProductFamilyPtr pFamilyPtr = *iter;
-            QString providerImagePath = QDir(Constants::kImageRootPath).filePath(pFamilyPtr->m_imagePath);
+            QString providerImagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pFamilyPtr->m_imagePath);
             QPixmap productPixmap = Utils::getImage(providerImagePath);
             this->ui->familyComboBox->insertItem(currentIndex, QIcon(productPixmap), pFamilyPtr->m_name, pFamilyPtr->m_id);
             if (pFamilyPtr->m_id == pProductPtr->m_familyId) {
@@ -237,7 +237,7 @@ namespace PenyaManager {
         for (auto iter = pProviderListPtr->begin(); iter != pProviderListPtr->end(); ++iter)
         {
             ProviderPtr pProviderPtr = *iter;
-            QString providerImagePath = QDir(Constants::kImageRootPath).filePath(pProviderPtr->m_image);
+            QString providerImagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pProviderPtr->m_image);
             QPixmap productPixmap = Utils::getImage(providerImagePath);
             this->ui->providerComboBox->insertItem(currentIndex, QIcon(productPixmap), pProviderPtr->m_name, pProviderPtr->m_id);
             currentIndex++;
@@ -249,7 +249,7 @@ namespace PenyaManager {
         for (auto iter = pfListPtr->begin(); iter != pfListPtr->end(); ++iter)
         {
             ProductFamilyPtr pFamilyPtr = *iter;
-            QString providerImagePath = QDir(Constants::kImageRootPath).filePath(pFamilyPtr->m_imagePath);
+            QString providerImagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pFamilyPtr->m_imagePath);
             QPixmap productPixmap = Utils::getImage(providerImagePath);
             this->ui->familyComboBox->insertItem(currentIndex, QIcon(productPixmap), pFamilyPtr->m_name, pFamilyPtr->m_id);
             currentIndex++;
@@ -259,9 +259,9 @@ namespace PenyaManager {
     void AdminProductItem::on_imagePushButton_clicked()
     {
         // Check write permissions
-        QFileInfo imagePath(Constants::kImageRootPath);
+        QFileInfo imagePath(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString());
         if (!imagePath.isDir() || !imagePath.isWritable()) {
-            QMessageBox::warning(this, "Could not write", Constants::kImageRootPath);
+            QMessageBox::warning(this, "Could not write", Singletons::m_pSettings->value(Constants::kResourcePathKey).toString());
             return;
         }
         // open file dialog

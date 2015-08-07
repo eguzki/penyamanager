@@ -80,7 +80,7 @@ namespace PenyaManager {
         QWidget *pFamilyWidget = new QWidget;
         // load family image
         QLabel *pImageLabel = new QLabel;
-        QString imagePath = QDir(Constants::kImageRootPath).filePath(pfPtr->m_imagePath);
+        QString imagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pfPtr->m_imagePath);
         QPixmap familyPixmap = Utils::getImage(imagePath);
         pImageLabel->setPixmap(familyPixmap);
         pImageLabel->setFixedWidth(Constants::kFamilyImageWidth);
@@ -140,7 +140,7 @@ namespace PenyaManager {
 
         // load product image
         QLabel *pImageLabel = new QLabel;
-        QString imagePath = QDir(Constants::kImageRootPath).filePath(pfPtr->m_imagePath);
+        QString imagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pfPtr->m_imagePath);
         QPixmap productItemPixmap = Utils::getImage(imagePath);
         pImageLabel->setPixmap(productItemPixmap);
         pImageLabel->setFixedWidth(Constants::kFamilyImageWidth);
