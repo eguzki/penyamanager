@@ -151,7 +151,7 @@ namespace PenyaManager {
             ProductItemPtr pProductPtr = *iter;
             // image
             QTableWidgetItem *productImage = new QTableWidgetItem;
-            QString imagePath = QDir(Constants::kImageRootPath).filePath(pProductPtr->m_imagePath);
+            QString imagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pProductPtr->m_imagePath);
             QPixmap productItemPixmap = Utils::getImage(imagePath).scaled(Constants::kFamilyImageWidth, Constants::kFamilyImageHeigth);
             productImage->setData(Qt::DecorationRole, productItemPixmap);
             this->ui->productsTableWidget->setRowHeight(rowCount, Constants::kFamilyImageHeigth);

@@ -115,7 +115,7 @@ namespace PenyaManager {
             MemberPtr pMemberPtr = *iter;
             // image
             QTableWidgetItem *memberImageWidget = new QTableWidgetItem;
-            QString imagePath = QDir(Constants::kImageRootPath).filePath(pMemberPtr->m_imagePath);
+            QString imagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pMemberPtr->m_imagePath);
             QPixmap productItemPixmap = Utils::getImage(imagePath).scaled(Constants::kFamilyImageWidth, Constants::kFamilyImageHeigth);
             memberImageWidget->setData(Qt::DecorationRole, productItemPixmap);
             Uint32 column = 0;

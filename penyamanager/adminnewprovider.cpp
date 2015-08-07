@@ -55,9 +55,9 @@ namespace PenyaManager {
     void AdminNewProvider::on_imagePushButton_clicked()
     {
         // Check write permissions
-        QFileInfo imagePath(Constants::kImageRootPath);
+        QFileInfo imagePath(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString());
         if (!imagePath.isDir() || !imagePath.isWritable()) {
-            QMessageBox::warning(this, "Could not write", Constants::kImageRootPath);
+            QMessageBox::warning(this, "Could not write", Singletons::m_pSettings->value(Constants::kResourcePathKey).toString());
             return;
         }
         // open file dialog
@@ -91,7 +91,7 @@ namespace PenyaManager {
 
         if (!this->m_providerImageFilename.isEmpty()) {
             destFileName = Utils::newImageName("provider", this->m_providerImageFilename);
-            QString destFilePath = QDir(Constants::kImageRootPath).filePath(destFileName);
+            QString destFilePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(destFileName);
             QFile::copy(this->m_providerImageFilename, destFilePath);
         }
 

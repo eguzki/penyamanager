@@ -140,7 +140,7 @@ namespace PenyaManager {
             // imagePath (optional)
             if (!this->m_memberImageFilename.isEmpty()) {
                 QString destFileName = Utils::newImageName("member", this->m_memberImageFilename);
-                QString destFilePath = QDir(Constants::kImageRootPath).filePath(destFileName);
+                QString destFilePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(destFileName);
                 QFile::copy(this->m_memberImageFilename, destFilePath);
                 // new image was selected
                 pMemberPtr->m_imagePath = destFileName;
@@ -182,7 +182,7 @@ namespace PenyaManager {
             // make sure it is after being updated in ddbb
             if (!this->m_memberImageFilename.isEmpty() && !oldImage.isEmpty()) {
                 // delete previous file
-                QString oldImagePath = QDir(Constants::kImageRootPath).filePath(oldImage);
+                QString oldImagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(oldImage);
                 QFile oldFile(oldImagePath);
                 oldFile.remove();
             }
@@ -202,7 +202,7 @@ namespace PenyaManager {
             if (!this->m_memberImageFilename.isEmpty()) {
                 // new image was selected
                 QString destFileName = Utils::newImageName("product", this->m_memberImageFilename);
-                QString destFilePath = QDir(Constants::kImageRootPath).filePath(destFileName);
+                QString destFilePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(destFileName);
                 QFile::copy(this->m_memberImageFilename, destFilePath);
                 pMemberPtr->m_imagePath = destFileName;
             }
@@ -272,7 +272,7 @@ namespace PenyaManager {
         // surname
         this->ui->memberSurnameLineEdit->setText(pMemberPtr->m_surname);
         // show image
-        QString imagePath = QDir(Constants::kImageRootPath).filePath(pMemberPtr->m_imagePath);
+        QString imagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pMemberPtr->m_imagePath);
         QPixmap productPixmap = Utils::getImage(imagePath);
         this->ui->imageLabel->setPixmap(productPixmap);
         this->ui->imageLabel->setFixedWidth(Constants::kMemberImageWidth);
@@ -313,9 +313,9 @@ namespace PenyaManager {
     void MemberView::on_imagePushButton_clicked()
     {
         // Check write permissions
-        QFileInfo imagePath(Constants::kImageRootPath);
+        QFileInfo imagePath(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString());
         if (!imagePath.isDir() || !imagePath.isWritable()) {
-            QMessageBox::warning(this, "Could not write", Constants::kImageRootPath);
+            QMessageBox::warning(this, "Could not write", Singletons::m_pSettings->value(Constants::kResourcePathKey).toString());
             return;
         }
         // open file dialog

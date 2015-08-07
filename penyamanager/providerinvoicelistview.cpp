@@ -99,7 +99,7 @@ namespace PenyaManager {
         for (auto iter = pProviderListPtr->begin(); iter != pProviderListPtr->end(); ++iter)
         {
             ProviderPtr pProviderPtr = *iter;
-            QString providerImagePath = QDir(Constants::kImageRootPath).filePath(pProviderPtr->m_image);
+            QString providerImagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pProviderPtr->m_image);
             QPixmap productPixmap = Utils::getImage(providerImagePath);
             this->ui->providerComboBox->insertItem(idx, QIcon(productPixmap), pProviderPtr->m_name, pProviderPtr->m_id);
             idx++;
