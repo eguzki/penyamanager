@@ -24,6 +24,7 @@ void Singletons::Create(QSettings *pSettings)
     QString ddbbHost(m_pSettings->value(Constants::kDatabaseHost).toString());
     QString ddbbName(m_pSettings->value(Constants::kDatabaseName).toString());
     QString ddbbUser(m_pSettings->value(Constants::kDatabaseUser).toString());
+    // decrypt pass
     QString ddbbPass(m_pSettings->value(Constants::kDatabasePass).toString());
     m_pSettings->endGroup();
 

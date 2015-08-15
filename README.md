@@ -26,6 +26,8 @@ penyamanager
 * Admin, membership manager, list, info detail
 * Admin product manager
 
+# [Configuration Application](ConfApp.md)
+
 # Howto install
 * Windows 7
 * Network partition for resources

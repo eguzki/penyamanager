@@ -42,6 +42,7 @@ PROJECT_NAME="penyamanager"
 CURRENT_PATH="$( cd "$( dirname "$0" )" && pwd )"
 TARGETPATH=$CURRENT_PATH/dist
 PROJECT_PATH=$CURRENT_PATH/$PROJECT_NAME
+CONF_APP=$PROJECT_PATH/penyamanagerconf.pro
 USER_APP=$PROJECT_PATH/penyamanager.pro
 ADMIN_APP=$PROJECT_PATH/penyamanageradmin.pro
 QMAKE_FLAGS="-Wall"
@@ -83,6 +84,10 @@ else
     $MAKE
     echo "** BUILD:: building \"$ADMIN_APP\""
     $QMAKE $QMAKE_FLAGS $ADMIN_APP
+    echo "** BUILD:: making with: $MAKE**"
+    $MAKE
+    echo "** BUILD:: building \"$CONF_APP\""
+    $QMAKE $QMAKE_FLAGS $CONF_APP
     echo "** BUILD:: making with: $MAKE**"
     $MAKE
 fi
