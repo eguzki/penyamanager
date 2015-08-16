@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <stdio.h>
 
+#include "utils.h"
 #include "constants.h"
 
 int main(int argc, char *argv[])
@@ -98,7 +99,9 @@ int main(int argc, char *argv[])
     settings.setValue(PenyaManager::Constants::kDatabaseHost, ddbbHost);
     settings.setValue(PenyaManager::Constants::kDatabaseName, ddbbName);
     settings.setValue(PenyaManager::Constants::kDatabaseUser, ddbbUser);
-    settings.setValue(PenyaManager::Constants::kDatabasePass, ddbbPass);
+    // Encrypt pass
+    QString cryptedPass = PenyaManager::Utils::encryptToString(ddbbPass);
+    settings.setValue(PenyaManager::Constants::kDatabasePass, cryptedPass);
     settings.endGroup();
 
     fputs("Successful\n", stdout);

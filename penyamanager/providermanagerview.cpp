@@ -3,6 +3,7 @@
 #include <QLabel>
 
 #include "utils.h"
+#include "guiutils.h"
 #include "singletons.h"
 #include "providermanagerview.h"
 #include "ui_providermanagerview.h"
@@ -59,7 +60,7 @@ namespace PenyaManager {
         // load providers image
         QLabel *pImageLabel = new QLabel;
         QString imagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pProviderPtr->m_image);
-        QPixmap providerPixmap = Utils::getImage(imagePath);
+        QPixmap providerPixmap = GuiUtils::getImage(imagePath);
         pImageLabel->setPixmap(providerPixmap);
         pImageLabel->setFixedWidth(Constants::kFamilyImageWidth);
         pImageLabel->setFixedHeight(Constants::kFamilyImageHeigth);
@@ -109,7 +110,7 @@ namespace PenyaManager {
         // load product image
         QLabel *pImageLabel = new QLabel;
         QString imagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pfPtr->m_imagePath);
-        QPixmap productItemPixmap = Utils::getImage(imagePath);
+        QPixmap productItemPixmap = GuiUtils::getImage(imagePath);
         pImageLabel->setPixmap(productItemPixmap);
         pImageLabel->setFixedWidth(Constants::kFamilyImageWidth);
         pImageLabel->setFixedHeight(Constants::kFamilyImageHeigth);

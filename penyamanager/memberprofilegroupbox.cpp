@@ -2,7 +2,7 @@
 
 #include <QDir>
 
-#include "utils.h"
+#include "guiutils.h"
 #include "singletons.h"
 #include "constants.h"
 #include "memberprofilegroupbox.h"
@@ -25,7 +25,7 @@ namespace PenyaManager {
     void MemberProfileGroupBox::init(const MemberPtr &pMemberPtr)
     {
         QString imagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pMemberPtr->m_imagePath);
-        QPixmap memberPixmap = Utils::getImage(imagePath);
+        QPixmap memberPixmap = GuiUtils::getImage(imagePath);
         this->ui->memberImageLabel->setPixmap(memberPixmap);
         this->ui->memberImageLabel->setFixedWidth(Constants::kMemberImageWidth);
         this->ui->memberImageLabel->setFixedHeight(Constants::kMemberImageHeigth);

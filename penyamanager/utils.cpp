@@ -5,18 +5,11 @@
 #include <QDateTime>
 #include <string>
 
+#include "libs/simplecrypt.h"
+#include "constants.h"
 #include "utils.h"
 
 namespace PenyaManager {
-    // get image
-    QPixmap Utils::getImage(const QString& filename)
-    {
-        QPixmap image(filename);
-        if (image.isNull()) {
-            image = QPixmap(":images/no-image.gif");
-        }
-        return image;
-    }
     // file name
     QString Utils::newImageName(const QString& prefix, const QString& filename)
     {
@@ -34,5 +27,29 @@ namespace PenyaManager {
         hash.addData(plainTextStr.c_str(), plainTextStr.length());
         // to Hex
         return QString(hash.result().toHex());
+    }
+    //
+    // Simple encryption with SimpleCrypt
+    // Simple and easy to integrate in the project
+    // Weak cryptography
+    // For strong cryptography use AES simmetric encryption. Implementations:
+    // * http://delta.affinix.com/qca/
+    // * Openssl
+    QString Utils::encryptToString(const QString& plainText)
+    {
+        SimpleCrypt crypto(Constants::kCryptKey);
+        return crypto.encryptToString(plainText);
+    }
+    //
+    // Simple encryption with SimpleCrypt
+    // Simple and easy to integrate in the project
+    // Weak cryptography
+    // For strong cryptography use AES simmetric encryption. Implementations:
+    // * http://delta.affinix.com/qca/
+    // * Openssl
+    QString Utils::decryptToString(const QString& plainText)
+    {
+        SimpleCrypt crypto(Constants::kCryptKey);
+        return crypto.decryptToString(plainText);
     }
 }

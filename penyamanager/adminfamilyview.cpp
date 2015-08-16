@@ -5,6 +5,7 @@
 #include <QDateTime>
 
 #include "utils.h"
+#include "guiutils.h"
 #include "singletons.h"
 #include "adminfamilyview.h"
 #include "ui_adminfamilyview.h"
@@ -147,7 +148,7 @@ namespace PenyaManager {
         }
         this->m_familyImageFilename = fn;
         // show image
-        QPixmap familyPixmap = Utils::getImage(fn);
+        QPixmap familyPixmap = GuiUtils::getImage(fn);
         // setting pixmap clears any previous content
         this->ui->imageLabel->setPixmap(familyPixmap);
         this->ui->imageLabel->setFixedWidth(Constants::kMemberImageWidth);
@@ -162,7 +163,7 @@ namespace PenyaManager {
         this->ui->nameLineEdit->setText(pProductFamilyPtr->m_name);
         // show image
         QString imagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pProductFamilyPtr->m_imagePath);
-        QPixmap familyPixmap = Utils::getImage(imagePath);
+        QPixmap familyPixmap = GuiUtils::getImage(imagePath);
         this->ui->imageLabel->setPixmap(familyPixmap);
         this->ui->imageLabel->setFixedWidth(Constants::kMemberImageWidth);
         this->ui->imageLabel->setFixedHeight(Constants::kMemberImageHeigth);
@@ -176,7 +177,7 @@ namespace PenyaManager {
         // name
         this->ui->nameLineEdit->clear();
         // show image
-        QPixmap familyPixmap = Utils::getImage("");
+        QPixmap familyPixmap = GuiUtils::getImage("");
         this->ui->imageLabel->setPixmap(familyPixmap);
         this->ui->imageLabel->setFixedWidth(Constants::kMemberImageWidth);
         this->ui->imageLabel->setFixedHeight(Constants::kMemberImageHeigth);

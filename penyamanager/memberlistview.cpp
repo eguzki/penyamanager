@@ -1,6 +1,6 @@
 //
 
-#include "utils.h"
+#include "guiutils.h"
 #include "singletons.h"
 #include "memberlistview.h"
 #include "ui_memberlistview.h"
@@ -116,7 +116,7 @@ namespace PenyaManager {
             // image
             QTableWidgetItem *memberImageWidget = new QTableWidgetItem;
             QString imagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pMemberPtr->m_imagePath);
-            QPixmap productItemPixmap = Utils::getImage(imagePath).scaled(Constants::kFamilyImageWidth, Constants::kFamilyImageHeigth);
+            QPixmap productItemPixmap = GuiUtils::getImage(imagePath).scaled(Constants::kFamilyImageWidth, Constants::kFamilyImageHeigth);
             memberImageWidget->setData(Qt::DecorationRole, productItemPixmap);
             Uint32 column = 0;
             this->ui->memberTableWidget->setRowHeight(rowCount, Constants::kFamilyImageHeigth);

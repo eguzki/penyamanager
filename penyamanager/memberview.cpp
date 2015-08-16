@@ -3,6 +3,7 @@
 #include <QMessageBox>
 #include <QFileDialog>
 
+#include "guiutils.h"
 #include "utils.h"
 #include "singletons.h"
 #include "passchangedialog.h"
@@ -39,7 +40,7 @@ namespace PenyaManager {
         // surname
         this->ui->memberSurnameLineEdit->clear();
         // show image
-        QPixmap memberPixmap = Utils::getImage("");
+        QPixmap memberPixmap = GuiUtils::getImage("");
         this->ui->imageLabel->setPixmap(memberPixmap);
         this->ui->imageLabel->setFixedWidth(Constants::kMemberImageWidth);
         this->ui->imageLabel->setFixedHeight(Constants::kMemberImageHeigth);
@@ -273,7 +274,7 @@ namespace PenyaManager {
         this->ui->memberSurnameLineEdit->setText(pMemberPtr->m_surname);
         // show image
         QString imagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pMemberPtr->m_imagePath);
-        QPixmap productPixmap = Utils::getImage(imagePath);
+        QPixmap productPixmap = GuiUtils::getImage(imagePath);
         this->ui->imageLabel->setPixmap(productPixmap);
         this->ui->imageLabel->setFixedWidth(Constants::kMemberImageWidth);
         this->ui->imageLabel->setFixedHeight(Constants::kMemberImageHeigth);
@@ -329,7 +330,7 @@ namespace PenyaManager {
         }
         this->m_memberImageFilename = fn;
         // show image
-        QPixmap providerPixmap = Utils::getImage(fn);
+        QPixmap providerPixmap = GuiUtils::getImage(fn);
         this->ui->imageLabel->setPixmap(providerPixmap);
         this->ui->imageLabel->setFixedWidth(Constants::kMemberImageWidth);
         this->ui->imageLabel->setFixedHeight(Constants::kMemberImageHeigth);

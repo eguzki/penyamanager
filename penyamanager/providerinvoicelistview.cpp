@@ -1,7 +1,7 @@
 //
 
 #include <QDebug>
-#include "utils.h"
+#include "guiutils.h"
 #include "singletons.h"
 #include "providerinvoicelistview.h"
 #include "ui_providerinvoicelistview.h"
@@ -100,7 +100,7 @@ namespace PenyaManager {
         {
             ProviderPtr pProviderPtr = *iter;
             QString providerImagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pProviderPtr->m_image);
-            QPixmap productPixmap = Utils::getImage(providerImagePath);
+            QPixmap productPixmap = GuiUtils::getImage(providerImagePath);
             this->ui->providerComboBox->insertItem(idx, QIcon(productPixmap), pProviderPtr->m_name, pProviderPtr->m_id);
             idx++;
         }

@@ -56,7 +56,9 @@ SOURCES += adminmain.cpp\
     accountbalanceview.cpp \
     memberlistview.cpp \
     memberview.cpp \
-    passchangedialog.cpp
+    libs/simplecrypt.cpp\
+    passchangedialog.cpp \
+    guiutils.cpp
 
 HEADERS  += singletons.h\
         dao.h\
@@ -94,7 +96,9 @@ HEADERS  += singletons.h\
     accountbalanceview.h \
     memberlistview.h \
     memberview.h \
-    passchangedialog.h
+    libs/simplecrypt.h\
+    passchangedialog.h \
+    guiutils.h
 
 FORMS    += adminloginwindow.ui\
         adminmainwindow.ui \

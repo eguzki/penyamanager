@@ -1,22 +1,21 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-#include <QPixmap>
-
-#include "DataTypes.h"
-#include "constants.h"
+#include <QString>
 
 namespace PenyaManager {
     //
     class Utils
     {
         public:
-            // get image
-            static QPixmap getImage(const QString& filename);
             // file name
             static QString newImageName(const QString& prefix, const QString& filename);
             //
             static QString hashSHA256asHex(const QString& plainText);
+            //
+            static QString encryptToString(const QString& plainText);
+            //
+            static QString decryptToString(const QString& plainText);
 
         private:
             //
@@ -26,4 +25,4 @@ namespace PenyaManager {
     };
 }
 
-#endif // PENYACONSTANTS_H
+#endif // UTILS_H 

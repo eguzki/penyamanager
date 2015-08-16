@@ -47,7 +47,9 @@ SOURCES += main.cpp\
         invoicelistwindow.cpp \
         invoicedetailswidget.cpp \
         memberprofilegroupbox.cpp \
-    invoicedetailswindow.cpp
+        libs/simplecrypt.cpp \
+    invoicedetailswindow.cpp \
+    guiutils.cpp
 
 HEADERS  += mainwindow.h\
         singletons.h\
@@ -77,7 +79,9 @@ HEADERS  += mainwindow.h\
         invoicelistwindow.h \
         invoicedetailswidget.h \
         memberprofilegroupbox.h \
-    invoicedetailswindow.h
+        libs/simplecrypt.h\
+    invoicedetailswindow.h \
+    guiutils.h
 
         FORMS    += mainwindow.ui\
         loginwindow.ui \

@@ -5,7 +5,7 @@
 #include <QMessageBox>
 
 #include "constants.h"
-#include "utils.h"
+#include "guiutils.h"
 #include "numitemdialog.h"
 #include "singletons.h"
 #include "mainwindow.h"
@@ -93,7 +93,7 @@ namespace PenyaManager {
         // load product image
         QLabel *pImageLabel = new QLabel;
         QString imagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pfPtr->m_imagePath);
-        QPixmap productItemPixmap = Utils::getImage(imagePath);
+        QPixmap productItemPixmap = GuiUtils::getImage(imagePath);
         pImageLabel->setPixmap(productItemPixmap);
         pImageLabel->setFixedWidth(Constants::kFamilyImageWidth);
         pImageLabel->setFixedHeight(Constants::kFamilyImageHeigth);
@@ -133,7 +133,7 @@ namespace PenyaManager {
         // load family image
         QLabel *pImageLabel = new QLabel;
         QString imagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pfPtr->m_imagePath);
-        QPixmap familyPixmap = Utils::getImage(imagePath);
+        QPixmap familyPixmap = GuiUtils::getImage(imagePath);
         pImageLabel->setPixmap(familyPixmap);
         pImageLabel->setFixedWidth(Constants::kFamilyImageWidth);
         pImageLabel->setFixedHeight(Constants::kFamilyImageHeigth);
