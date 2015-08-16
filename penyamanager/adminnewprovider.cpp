@@ -6,6 +6,7 @@
 #include <QDateTime>
 #include <QDebug>
 
+#include "guiutils.h"
 #include "constants.h"
 #include "singletons.h"
 #include "adminnewprovider.h"
@@ -45,7 +46,7 @@ namespace PenyaManager {
         this->ui->nameLineEdit->clear();
         this->ui->phoneLineEdit->clear();
         // no image, show default image
-        QPixmap memberPixmap = Utils::getImage("");
+        QPixmap memberPixmap = GuiUtils::getImage("");
         this->ui->imageLabel->setPixmap(memberPixmap);
         this->ui->imageLabel->setFixedWidth(Constants::kMemberImageWidth);
         this->ui->imageLabel->setFixedHeight(Constants::kMemberImageHeigth);
@@ -71,7 +72,7 @@ namespace PenyaManager {
         }
         this->m_providerImageFilename = fn;
         // show image
-        QPixmap providerPixmap = Utils::getImage(fn);
+        QPixmap providerPixmap = GuiUtils::getImage(fn);
         this->ui->imageLabel->setPixmap(providerPixmap);
         this->ui->imageLabel->setFixedWidth(Constants::kMemberImageWidth);
         this->ui->imageLabel->setFixedHeight(Constants::kMemberImageHeigth);

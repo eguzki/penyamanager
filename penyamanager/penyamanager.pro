@@ -11,7 +11,6 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 QTPLUGIN += qsqlmysql
 
-#QMAKE_CXXFLAGS += -std=gnu++0x
 QMAKE_CXXFLAGS += -std=c++11
 
 TARGET = penyamanager
@@ -48,7 +47,9 @@ SOURCES += main.cpp\
         invoicelistwindow.cpp \
         invoicedetailswidget.cpp \
         memberprofilegroupbox.cpp \
-    invoicedetailswindow.cpp
+        libs/simplecrypt.cpp \
+    invoicedetailswindow.cpp \
+    guiutils.cpp
 
 HEADERS  += mainwindow.h\
         singletons.h\
@@ -78,7 +79,9 @@ HEADERS  += mainwindow.h\
         invoicelistwindow.h \
         invoicedetailswidget.h \
         memberprofilegroupbox.h \
-    invoicedetailswindow.h
+        libs/simplecrypt.h\
+    invoicedetailswindow.h \
+    guiutils.h
 
         FORMS    += mainwindow.ui\
         loginwindow.ui \

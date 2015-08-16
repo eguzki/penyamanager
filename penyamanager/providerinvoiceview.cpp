@@ -5,7 +5,7 @@
 #include <QSpacerItem>
 #include <QMessageBox>
 
-#include "utils.h"
+#include "guiutils.h"
 #include "singletons.h"
 #include "providerinvoiceview.h"
 #include "ui_providerinvoiceview.h"
@@ -107,7 +107,7 @@ namespace PenyaManager {
         {
             ProviderPtr pProviderPtr = *iter;
             QString providerImagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pProviderPtr->m_image);
-            QPixmap productPixmap = Utils::getImage(providerImagePath);
+            QPixmap productPixmap = GuiUtils::getImage(providerImagePath);
             this->ui->providerComboBox->insertItem(idx, QIcon(productPixmap), pProviderPtr->m_name, pProviderPtr->m_id);
             this->m_rowProviderIdMap[idx] = pProviderPtr->m_id;
             idx++;
@@ -164,7 +164,7 @@ namespace PenyaManager {
         // load product image
         QLabel *pImageLabel = new QLabel;
         QString imagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pIPtr->m_imagePath);
-        QPixmap productItemPixmap = Utils::getImage(imagePath);
+        QPixmap productItemPixmap = GuiUtils::getImage(imagePath);
         pImageLabel->setPixmap(productItemPixmap);
         pImageLabel->setFixedWidth(Constants::kFamilyImageWidth);
         pImageLabel->setFixedHeight(Constants::kFamilyImageHeigth);

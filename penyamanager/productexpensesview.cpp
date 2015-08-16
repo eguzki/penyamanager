@@ -4,7 +4,7 @@
 #include <QTextStream>
 #include <QMessageBox>
 
-#include "utils.h"
+#include "guiutils.h"
 #include "constants.h"
 #include "singletons.h"
 #include "productexpensesview.h"
@@ -117,7 +117,7 @@ namespace PenyaManager {
             // image
             QTableWidgetItem *productImage = new QTableWidgetItem;
             QString imagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pInvoiceProductItem->m_imagePath);
-            QPixmap productItemPixmap = Utils::getImage(imagePath).scaled(Constants::kFamilyImageWidth, Constants::kFamilyImageHeigth);
+            QPixmap productItemPixmap = GuiUtils::getImage(imagePath).scaled(Constants::kFamilyImageWidth, Constants::kFamilyImageHeigth);
             productImage->setData(Qt::DecorationRole, productItemPixmap);
             this->ui->productTableWidget->setRowHeight(rowCount, Constants::kFamilyImageHeigth);
             this->ui->productTableWidget->setItem(rowCount, 0, productImage);

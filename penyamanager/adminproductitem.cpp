@@ -4,6 +4,7 @@
 #include <QFileDialog>
 #include <QDateTime>
 
+#include "guiutils.h"
 #include "utils.h"
 #include "singletons.h"
 #include "adminproductitem.h"
@@ -167,7 +168,7 @@ namespace PenyaManager {
         this->ui->nameLineEdit->setText(pProductPtr->m_name);
         // show image
         QString imagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pProductPtr->m_imagePath);
-        QPixmap productPixmap = Utils::getImage(imagePath);
+        QPixmap productPixmap = GuiUtils::getImage(imagePath);
         this->ui->imageLabel->setPixmap(productPixmap);
         this->ui->imageLabel->setFixedWidth(Constants::kMemberImageWidth);
         this->ui->imageLabel->setFixedHeight(Constants::kMemberImageHeigth);
@@ -186,7 +187,7 @@ namespace PenyaManager {
         {
             ProviderPtr pProviderPtr = *iter;
             QString providerImagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pProviderPtr->m_image);
-            QPixmap productPixmap = Utils::getImage(providerImagePath);
+            QPixmap productPixmap = GuiUtils::getImage(providerImagePath);
             this->ui->providerComboBox->insertItem(currentIndex, QIcon(productPixmap), pProviderPtr->m_name, pProviderPtr->m_id);
             if (pProviderPtr->m_id == pProductPtr->m_providerId) {
                 productProviderIndex = currentIndex;
@@ -204,7 +205,7 @@ namespace PenyaManager {
         {
             ProductFamilyPtr pFamilyPtr = *iter;
             QString providerImagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pFamilyPtr->m_imagePath);
-            QPixmap productPixmap = Utils::getImage(providerImagePath);
+            QPixmap productPixmap = GuiUtils::getImage(providerImagePath);
             this->ui->familyComboBox->insertItem(currentIndex, QIcon(productPixmap), pFamilyPtr->m_name, pFamilyPtr->m_id);
             if (pFamilyPtr->m_id == pProductPtr->m_familyId) {
                 productFamilyIndex = currentIndex;
@@ -220,7 +221,7 @@ namespace PenyaManager {
         // name
         this->ui->nameLineEdit->clear();
         // show image
-        QPixmap memberPixmap = Utils::getImage("");
+        QPixmap memberPixmap = GuiUtils::getImage("");
         this->ui->imageLabel->setPixmap(memberPixmap);
         this->ui->imageLabel->setFixedWidth(Constants::kMemberImageWidth);
         this->ui->imageLabel->setFixedHeight(Constants::kMemberImageHeigth);
@@ -238,7 +239,7 @@ namespace PenyaManager {
         {
             ProviderPtr pProviderPtr = *iter;
             QString providerImagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pProviderPtr->m_image);
-            QPixmap productPixmap = Utils::getImage(providerImagePath);
+            QPixmap productPixmap = GuiUtils::getImage(providerImagePath);
             this->ui->providerComboBox->insertItem(currentIndex, QIcon(productPixmap), pProviderPtr->m_name, pProviderPtr->m_id);
             currentIndex++;
         }
@@ -250,7 +251,7 @@ namespace PenyaManager {
         {
             ProductFamilyPtr pFamilyPtr = *iter;
             QString providerImagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pFamilyPtr->m_imagePath);
-            QPixmap productPixmap = Utils::getImage(providerImagePath);
+            QPixmap productPixmap = GuiUtils::getImage(providerImagePath);
             this->ui->familyComboBox->insertItem(currentIndex, QIcon(productPixmap), pFamilyPtr->m_name, pFamilyPtr->m_id);
             currentIndex++;
         }
@@ -275,7 +276,7 @@ namespace PenyaManager {
         }
         this->m_productImageFilename = fn;
         // show image
-        QPixmap providerPixmap = Utils::getImage(fn);
+        QPixmap providerPixmap = GuiUtils::getImage(fn);
         this->ui->imageLabel->setPixmap(providerPixmap);
         this->ui->imageLabel->setFixedWidth(Constants::kMemberImageWidth);
         this->ui->imageLabel->setFixedHeight(Constants::kMemberImageHeigth);
