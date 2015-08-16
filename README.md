@@ -20,6 +20,7 @@ penyamanager
 * Admin manage Items
 * Admin manage Account
 * Admin manage Members
+* Configuration Application
 
 # Howto install
 * Network partition for resources
@@ -98,4 +99,7 @@ penyamanager
 **** Member List paginated
 **** member Info (can be edited)
 **** Member create
+** Configuration Application
+*** Resource path and ddbb access via configuration system platform independent. QSettings.
+*** Database credentials encrypted using SimpleCrypt library
 
