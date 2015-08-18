@@ -53,6 +53,11 @@ namespace PenyaManager {
         show();
     }
     //
+    void InvoiceListWindow::retranslate()
+    {
+        this->ui->retranslateUi(this);
+    }
+    //
     void InvoiceListWindow::on_searchPushButton_clicked()
     {
         // when user pushes search, afterwards, on init() results are not updated

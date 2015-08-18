@@ -32,7 +32,7 @@ namespace PenyaManager {
         m_rowProductIdMap.clear();
         delete ui;
     }
-
+    //
     void MainWindow::init()
     {
         if (!Singletons::m_pDAO->isOpen()) {
@@ -79,7 +79,11 @@ namespace PenyaManager {
 
         show();
     }
-
+    //
+    void MainWindow::retranslate()
+    {
+        this->ui->retranslateUi(this);
+    }
     //
     void MainWindow::createProductItemWidget(const ProductItemPtr &pfPtr, QListWidget *pList)
     {

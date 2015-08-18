@@ -24,6 +24,8 @@ namespace PenyaManager {
             ~InvoiceDetailsWindow();
             //
             void init();
+            //
+            void retranslate();
 
     private slots:
             //

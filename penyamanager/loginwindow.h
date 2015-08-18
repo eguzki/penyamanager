@@ -1,6 +1,8 @@
 #ifndef LOGINWINDOW_H
 #define LOGINWINDOW_H
 
+#include <QTranslator>
+
 #include "IPartner.h"
 
 namespace Ui {
@@ -17,9 +19,11 @@ namespace PenyaManager {
 
         public:
             //
-            explicit LoginWindow(QWidget *parent = 0);
+            explicit LoginWindow(QWidget *parent, QTranslator *pTranslator);
             //
             ~LoginWindow();
+            //
+            void retranslate();
 
         private slots:
             //
@@ -30,15 +34,18 @@ namespace PenyaManager {
             void on_passwordPushButton_clicked();
             //
             void on_memberIdPushButton_clicked();
+            //
+            void on_languagePushButton_clicked();
 
-        private:
+    private:
             //
             Ui::LoginWindow *ui;
             //
             QString         m_password;
             //
             Int32           m_memberId;
-
+            //
+            QTranslator     *m_pTranslator;
     };
 
 }

@@ -23,14 +23,9 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
 
     // Translators
-    QTranslator qtTranslator;
-    qtTranslator.load("qt_eu", QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-    qtTranslator.load("qt_es", QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-    app.installTranslator(&qtTranslator);
-
     QTranslator penyamanagerTranslator;
+    // Initial dictionary
     penyamanagerTranslator.load("penyamanager_eu");
-    penyamanagerTranslator.load("penyamanager_es");
     app.installTranslator(&penyamanagerTranslator);
 
     // Settings
@@ -51,7 +46,8 @@ int main(int argc, char *argv[])
     }
 
     // Fill views
-    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kLoginWindowKey, new PenyaManager::LoginWindow);
+    PenyaManager::LoginWindow *pLoginWindow = new PenyaManager::LoginWindow(NULL, &penyamanagerTranslator);
+    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kLoginWindowKey, pLoginWindow);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kMainWindowKey, new PenyaManager::MainWindow);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kInvoiceWindowKey, new PenyaManager::InvoiceWindow);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kDepositsWindowKey, new PenyaManager::DepositWindow);

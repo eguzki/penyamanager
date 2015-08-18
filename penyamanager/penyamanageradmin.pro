@@ -121,5 +121,5 @@ FORMS    += adminloginwindow.ui\
     passchangedialog.ui
 
 TRANSLATIONS += \
-    penyamanager_es.ts \
-    penyamanager_eu.ts
+    translations/penyamanageradmin_es.ts \
+    translations/penyamanageradmin_eu.ts

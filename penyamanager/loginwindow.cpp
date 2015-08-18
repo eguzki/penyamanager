@@ -12,13 +12,15 @@
 namespace PenyaManager {
 
     //
-    LoginWindow::LoginWindow(QWidget *parent) :
+    LoginWindow::LoginWindow(QWidget *parent, QTranslator *pTranslator) :
         IPartner(parent),
         ui(new Ui::LoginWindow),
         m_password(),
-        m_memberId(-1)
+        m_memberId(-1),
+        m_pTranslator(pTranslator)
     {
         ui->setupUi(this);
+        // TODO pixmap disapears on translation!!
         QPixmap logoPixmap(":/images/alegrialogo.jpg");
         this->ui->imageLabel->setPixmap(logoPixmap);
     }
@@ -28,7 +30,6 @@ namespace PenyaManager {
     {
         delete ui;
     }
-
     //
     void LoginWindow::init()
     {
@@ -47,7 +48,12 @@ namespace PenyaManager {
 
         show();
     }
-
+    //
+    void LoginWindow::retranslate()
+    {
+        qDebug() << "retranslate2 login window";
+        this->ui->retranslateUi(this);
+    }
     //
     void LoginWindow::on_loginPushButton_clicked()
     {
@@ -120,6 +126,16 @@ namespace PenyaManager {
         this->m_memberId = numItemDialog.getKey();
         this->ui->memberIdLabel->setText(QString::number(this->m_memberId));
     }
+    void LoginWindow::on_languagePushButton_clicked()
+    {
+        qApp->removeTranslator(m_pTranslator);
+        Singletons::m_currentLangIndex = (Singletons::m_currentLangIndex + 1)%Singletons::m_numLangs;
+        // load new dictionary
+        qDebug() << QString("penyamanager_%1").arg(Singletons::m_pLanguagesPrefixArray[Singletons::m_currentLangIndex]);
+        bool ok = m_pTranslator->load(QString("penyamanager_%1").arg(Singletons::m_pLanguagesPrefixArray[Singletons::m_currentLangIndex]));
+        qDebug() << ok;
+        // installTranslator() will create a change event which will be sent to every single widget
+        qApp->installTranslator(m_pTranslator);
+    }
 }
-
 

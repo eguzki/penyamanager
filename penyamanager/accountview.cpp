@@ -49,6 +49,11 @@ namespace PenyaManager {
         show();
     }
     //
+    void AccountView::retranslate()
+    {
+        this->ui->retranslateUi(this);
+    }
+    //
     void AccountView::fillAccountData(Int32 memberId, const QDate &fromDate, const QDate &toDate)
     {
         // fetch data

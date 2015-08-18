@@ -13,5 +13,15 @@ namespace PenyaManager {
         IPartner* pPartner = Singletons::m_pParnetFinder->getPartner(key);
         pPartner->init();
     }
+    //
+    void IPartner::changeEvent(QEvent* event)
+    {
+        if (event->type() == QEvent::LanguageChange)
+        {
+            // retranslate designer form
+            this->retranslate();
+        }
+        QWidget::changeEvent(event);
+    }
 }
 

@@ -18,6 +18,7 @@ namespace PenyaManager {
             //
             static void Destroy();
 
+
         public:
             //
             static DAO              *m_pDAO;
@@ -37,6 +38,12 @@ namespace PenyaManager {
             static Int32            m_currentFamilyId;
             //
             static Int32            m_currentMemberId;
+            //
+            static const Uint16     m_numLangs = 2;
+            //
+            static Uint16           m_currentLangIndex;
+            //
+            static QString          m_pLanguagesPrefixArray[m_numLangs];
     };
 }
 

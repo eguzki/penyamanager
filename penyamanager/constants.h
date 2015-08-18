@@ -56,6 +56,8 @@ namespace PenyaManager {
             static const Uint32     kProductListPageCount;
             // Crypt key
             static const quint64    kCryptKey;
+            // Num languages available
+            static const Uint16     kNumLangs;
 
         private:
             Constants() {}

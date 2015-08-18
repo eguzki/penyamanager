@@ -96,5 +96,5 @@ FORMS    += mainwindow.ui\
     invoicedetailswindow.ui
 
 TRANSLATIONS += \
-    penyamanager_es.ts \
-    penyamanager_eu.ts
+    translations/penyamanager_es.ts \
+    translations/penyamanager_eu.ts

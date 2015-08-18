@@ -39,6 +39,11 @@ namespace PenyaManager {
         show();
     }
     //
+    void InvoiceDetailsWidget::retranslate()
+    {
+        this->ui->retranslateUi(this);
+    }
+    //
     void InvoiceDetailsWidget::fillInvoiceData(const InvoicePtr &pInvoicePtr)
     {
         //
