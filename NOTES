@@ -10,6 +10,29 @@
 
 * highligth family icon when selected
 
+* translations
+  * Default use: load some tranlation files and LANG system env turns out to be the language to be shown
+  * We will have language switch control -> change language dynamically
+  * installTranslator() will create a change event which will be sent to every single widget
+  * Maybe in Ipartner???
+
+void MyWidget::changeEvent(QEvent* event)
+{
+    if (event->type() == QEvent::LanguageChange)
+    {
+        // retranslate designer form
+        ui.retranslateUi(this);
+
+       // retranslate other widgets which weren't added in designer
+       // all tr("") in the same function to be called every time language is changed
+       retranslate();
+   }
+
+   // remember to call base class implementation
+   QWidget::changeEvent(event);
+   // or QMainWindow::changeEvent(event);
+}
+
 * Member login
 ** When user account balance is negative -> pop up on login
 

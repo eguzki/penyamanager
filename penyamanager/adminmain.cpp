@@ -38,6 +38,12 @@ int main(int argc, char *argv[])
     }
 
     PenyaManager::Singletons::Create(&settings);
+
+    if (!PenyaManager::Singletons::m_pDAO->isOpen()) {
+        QMessageBox::critical(NULL, "Error", "Database connection failed. Call the stupid administrator and complain for incompetence");
+        return 1;
+    }
+
     PenyaManager::AdminMainWindow adminMainWindow;
 
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kAdminLoginWindowKey, new PenyaManager::AdminLoginWindow(&adminMainWindow));

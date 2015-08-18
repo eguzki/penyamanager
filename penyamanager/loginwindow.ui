@@ -28,13 +28,13 @@
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>100</height>
+       <height>180</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
        <width>16777215</width>
-       <height>100</height>
+       <height>180</height>
       </size>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout">
@@ -52,6 +52,13 @@
        </spacer>
       </item>
       <item>
+       <widget class="QLabel" name="imageLabel">
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QLabel" name="label">
         <property name="font">
          <font>
@@ -59,7 +66,7 @@
          </font>
         </property>
         <property name="text">
-         <string>Members</string>
+         <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;SDRC Alegría de Iruñea KKAE&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
       </item>
@@ -97,7 +104,7 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>Insert Member ID</string>
+               <string extracomment="memberid button">Insert Member ID</string>
               </property>
              </widget>
             </item>
@@ -145,13 +152,13 @@
         <property name="minimumSize">
          <size>
           <width>0</width>
-          <height>150</height>
+          <height>100</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
           <width>16777215</width>
-          <height>150</height>
+          <height>100</height>
          </size>
         </property>
         <property name="text">

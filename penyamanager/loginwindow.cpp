@@ -19,6 +19,8 @@ namespace PenyaManager {
         m_memberId(-1)
     {
         ui->setupUi(this);
+        QPixmap logoPixmap(":/images/alegrialogo.jpg");
+        this->ui->imageLabel->setPixmap(logoPixmap);
     }
 
     //

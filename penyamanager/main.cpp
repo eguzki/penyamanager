@@ -1,6 +1,7 @@
 //
 
 #include <QApplication>
+#include <QTranslator>
 #include <QMessageBox>
 
 #include "constants.h"
@@ -18,8 +19,21 @@
 int main(int argc, char *argv[])
 {
     QApplication::setStyle("windows");
-    QApplication a(argc, argv);
+    // Main QApplication object
+    QApplication app(argc, argv);
 
+    // Translators
+    QTranslator qtTranslator;
+    qtTranslator.load("qt_eu", QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+    qtTranslator.load("qt_es", QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+    app.installTranslator(&qtTranslator);
+
+    QTranslator penyamanagerTranslator;
+    penyamanagerTranslator.load("penyamanager_eu");
+    penyamanagerTranslator.load("penyamanager_es");
+    app.installTranslator(&penyamanagerTranslator);
+
+    // Settings
     QSettings settings(PenyaManager::Constants::kOrganizationName, PenyaManager::Constants::kApplicationName);
     if (!settings.contains(PenyaManager::Constants::kResourcePathKey))
     {
@@ -27,7 +41,14 @@ int main(int argc, char *argv[])
         return 1;
     }
 
+    // Singletons initialization
+    // Includes ddbb connection
     PenyaManager::Singletons::Create(&settings);
+
+    if (!PenyaManager::Singletons::m_pDAO->isOpen()) {
+        QMessageBox::critical(NULL, "Error", "Database connection failed. Call the stupid administrator and complain for incompetence");
+        return 1;
+    }
 
     // Fill views
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kLoginWindowKey, new PenyaManager::LoginWindow);
@@ -43,8 +64,10 @@ int main(int argc, char *argv[])
     PenyaManager::IPartner* pLoginPartner = PenyaManager::Singletons::m_pParnetFinder->getPartner(PenyaManager::WindowKey::kLoginWindowKey);
     pLoginPartner->init();
 
-    int returnValue = a.exec();
+    // run qt event loop
+    int returnValue = app.exec();
 
+    // destroy singletons
     PenyaManager::Singletons::Destroy();
 
     return returnValue;

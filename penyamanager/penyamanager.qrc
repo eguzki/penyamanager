@@ -1,6 +1,6 @@
-<!DOCTYPE RCC>
-<RCC version="1.0">
-<qresource>
-    <file>images/no-image.gif</file>
-</qresource>
+<RCC>
+    <qresource prefix="/">
+        <file>images/no-image.gif</file>
+        <file>images/alegrialogo.jpg</file>
+    </qresource>
 </RCC>
