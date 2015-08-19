@@ -101,6 +101,8 @@ flags = [
     '-I', '/usr/include/qt5/QtXmlPatterns',
 
     '-I', 'penyamanager',
+    '-I', 'penyamanager/libs/simplecrypt',
+    '-I', 'penyamanager/libs/QsLog2',
     '-I', 'dist'
 ]
 

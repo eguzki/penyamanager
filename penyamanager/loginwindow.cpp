@@ -1,6 +1,7 @@
 //
 #include <QDebug>
 #include <QMessageBox>
+#include <QsLogDest.h>
 
 #include "numitemdialog.h"
 #include "utils.h"

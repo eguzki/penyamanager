@@ -16,6 +16,9 @@ QMAKE_CXXFLAGS += -std=c++11
 TARGET = penyamanager
 TEMPLATE = app
 
+include(libs/QsLog2/QsLog.pri)
+include(libs/simplecrypt/simplecrypt.pro)
+
 RESOURCES = penyamanager.qrc
 
 SOURCES += main.cpp\
@@ -47,7 +50,6 @@ SOURCES += main.cpp\
         invoicelistwindow.cpp \
         invoicedetailswidget.cpp \
         memberprofilegroupbox.cpp \
-        libs/simplecrypt.cpp \
     invoicedetailswindow.cpp \
     guiutils.cpp
 
@@ -79,7 +81,6 @@ HEADERS  += mainwindow.h\
         invoicelistwindow.h \
         invoicedetailswidget.h \
         memberprofilegroupbox.h \
-        libs/simplecrypt.h\
     invoicedetailswindow.h \
     guiutils.h
 

@@ -4,8 +4,8 @@
 #include <QFileInfo>
 #include <QDateTime>
 #include <string>
+#include <simplecrypt.h>
 
-#include "libs/simplecrypt.h"
 #include "constants.h"
 #include "utils.h"
 

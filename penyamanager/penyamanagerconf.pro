@@ -15,11 +15,11 @@ QMAKE_CXXFLAGS += -std=c++11
 
 TEMPLATE = app
 
+include(libs/simplecrypt/simplecrypt.pro)
+
 SOURCES +=  confmain.cpp \
             utils.cpp \
-            constants.cpp \
-            libs/simplecrypt.cpp
+            constants.cpp
 
 HEADERS  += constants.h \
-            utils.h \
-            libs/simplecrypt.h
+            utils.h
