@@ -41,6 +41,11 @@ namespace PenyaManager {
         show();
     }
     //
+    void AdminNewProvider::retranslate()
+    {
+        this->ui->retranslateUi(this);
+    }
+    //
     void AdminNewProvider::initialize()
     {
         this->ui->nameLineEdit->clear();

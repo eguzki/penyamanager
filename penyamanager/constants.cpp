@@ -39,5 +39,7 @@ namespace PenyaManager {
     // Put your own key here
     // Must be changed on compile time
     const quint64   Constants::kCryptKey                        = Q_UINT64_C(932833457959459);
+    //
+    const Uint16    Constants::kNumLangs                        = 2;
 
 }

@@ -38,6 +38,11 @@ namespace PenyaManager {
         show();
     }
     //
+    void ProviderManagerView::retranslate()
+    {
+        this->ui->retranslateUi(this);
+    }
+    //
     void ProviderManagerView::fillProviders()
     {
         this->ui->providersListWidget->clear();

@@ -22,6 +22,8 @@ namespace PenyaManager {
             ~SlowPayersView();
             //
             void init();
+            //
+            void retranslate();
 
     private slots:
             //

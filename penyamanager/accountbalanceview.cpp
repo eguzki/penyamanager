@@ -48,6 +48,11 @@ namespace PenyaManager {
         show();
     }
     //
+    void AccountBalanceView::retranslate()
+    {
+        this->ui->retranslateUi(this);
+    }
+    //
     void AccountBalanceView::initializeTable()
     {
         // table

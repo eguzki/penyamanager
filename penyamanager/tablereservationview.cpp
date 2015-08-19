@@ -34,6 +34,11 @@ namespace PenyaManager {
         delete ui;
     }
     //
+    void TableReservationView::retranslate()
+    {
+        this->ui->retranslateUi(this);
+    }
+    //
     void TableReservationView::initializeTable()
     {
         // table

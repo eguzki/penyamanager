@@ -52,6 +52,11 @@ namespace PenyaManager {
         show();
     }
     //
+    void ProductExpensesView::retranslate()
+    {
+        this->ui->retranslateUi(this);
+    }
+    //
     void ProductExpensesView::initializeTable()
     {
         // table

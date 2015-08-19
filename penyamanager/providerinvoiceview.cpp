@@ -126,6 +126,11 @@ namespace PenyaManager {
         show();
     }
     //
+    void ProviderInvoiceView::retranslate()
+    {
+        this->ui->retranslateUi(this);
+    }
+    //
     void ProviderInvoiceView::on_providerComboBox_activated(int index)
     {
         if (index < 0 || index == m_currentProviderIndex){

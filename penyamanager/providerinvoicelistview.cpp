@@ -36,6 +36,11 @@ namespace PenyaManager {
         show();
     }
     //
+    void ProviderInvoiceListView::retranslate()
+    {
+        this->ui->retranslateUi(this);
+    }
+    //
     void ProviderInvoiceListView::initializeTable()
     {
         // table

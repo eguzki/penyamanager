@@ -59,6 +59,12 @@ namespace PenyaManager {
         show();
     }
     //
+    void InvoiceWindow::retranslate()
+    {
+        qDebug() << "retranslate invoicewindow";
+        this->ui->retranslateUi(this);
+    }
+    //
     void InvoiceWindow::on_backPushButton_clicked()
     {
         // call main window

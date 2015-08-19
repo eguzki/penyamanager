@@ -67,6 +67,11 @@ namespace PenyaManager {
         show();
     }
     //
+    void StockManagementWindow::retranslate()
+    {
+        this->ui->retranslateUi(this);
+    }
+    //
     void StockManagementWindow::on_csvPushButton_clicked()
     {
         // Assume product list is not empty (buttons should be disabled)

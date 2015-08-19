@@ -29,6 +29,8 @@ namespace PenyaManager {
 
         private:
             //
+            void retranslate();
+            //
             void fillFamilyProducts(const ProductFamilyListPtr &pflPtr);
             //
             void fillProductItems(Int32 familyId);

@@ -23,6 +23,8 @@ namespace PenyaManager {
             ~AdminFamilyView();
             //
             void init();
+            //
+            void retranslate();
 
         private:
             //

@@ -45,6 +45,11 @@ namespace PenyaManager {
         show();
     }
     //
+    void InvoiceDetailsWindow::retranslate()
+    {
+        this->ui->retranslateUi(this);
+    }
+    //
     void InvoiceDetailsWindow::on_backPushButton_clicked()
     {
         switchWindow(WindowKey::kInvoiceListWindoKey);

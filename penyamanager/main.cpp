@@ -1,6 +1,7 @@
 //
 
 #include <QApplication>
+#include <QTranslator>
 #include <QMessageBox>
 
 #include "constants.h"
@@ -18,8 +19,16 @@
 int main(int argc, char *argv[])
 {
     QApplication::setStyle("windows");
-    QApplication a(argc, argv);
+    // Main QApplication object
+    QApplication app(argc, argv);
 
+    // Translators
+    QTranslator penyamanagerTranslator;
+    // Initial dictionary
+    penyamanagerTranslator.load("penyamanager_eu");
+    app.installTranslator(&penyamanagerTranslator);
+
+    // Settings
     QSettings settings(PenyaManager::Constants::kOrganizationName, PenyaManager::Constants::kApplicationName);
     if (!settings.contains(PenyaManager::Constants::kResourcePathKey))
     {
@@ -27,10 +36,18 @@ int main(int argc, char *argv[])
         return 1;
     }
 
+    // Singletons initialization
+    // Includes ddbb connection
     PenyaManager::Singletons::Create(&settings);
 
+    if (!PenyaManager::Singletons::m_pDAO->isOpen()) {
+        QMessageBox::critical(NULL, "Error", "Database connection failed. Call the stupid administrator and complain for incompetence");
+        return 1;
+    }
+
     // Fill views
-    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kLoginWindowKey, new PenyaManager::LoginWindow);
+    PenyaManager::LoginWindow *pLoginWindow = new PenyaManager::LoginWindow(NULL, &penyamanagerTranslator);
+    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kLoginWindowKey, pLoginWindow);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kMainWindowKey, new PenyaManager::MainWindow);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kInvoiceWindowKey, new PenyaManager::InvoiceWindow);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kDepositsWindowKey, new PenyaManager::DepositWindow);
@@ -43,8 +60,10 @@ int main(int argc, char *argv[])
     PenyaManager::IPartner* pLoginPartner = PenyaManager::Singletons::m_pParnetFinder->getPartner(PenyaManager::WindowKey::kLoginWindowKey);
     pLoginPartner->init();
 
-    int returnValue = a.exec();
+    // run qt event loop
+    int returnValue = app.exec();
 
+    // destroy singletons
     PenyaManager::Singletons::Destroy();
 
     return returnValue;

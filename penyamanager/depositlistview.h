@@ -23,6 +23,8 @@ namespace PenyaManager {
             ~DepositListView();
             //
             void init();
+            //
+            void retranslate();
 
         private:
             //

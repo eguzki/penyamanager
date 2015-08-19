@@ -83,7 +83,7 @@ HEADERS  += mainwindow.h\
     invoicedetailswindow.h \
     guiutils.h
 
-        FORMS    += mainwindow.ui\
+FORMS    += mainwindow.ui\
         loginwindow.ui \
         numitemdialog.ui \
         invoicewindow.ui \
@@ -94,3 +94,7 @@ HEADERS  += mainwindow.h\
         invoicedetailswidget.ui \
         memberprofilegroupbox.ui \
     invoicedetailswindow.ui
+
+TRANSLATIONS += \
+    translations/penyamanager_es.ts \
+    translations/penyamanager_eu.ts

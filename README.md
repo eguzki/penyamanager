@@ -27,23 +27,6 @@ penyamanager
 * Mysql driver install (TODO)
 * Configure application settings using [configuration application](ConfApp.md)
 
-# Development
-
-## Howto build
-* Install QTCreator [IDE](https://qt-project.org/downloads)
-* Clone source code from [here](https://github.com/eguzki/penyamanager)
-* Update **crypt key** (15 digits [0-9]) before compilation
-* From QTCreator import **penyamanageradmin.pro** file
-* From QTCreator import **penyamanagerconf.pro** file
-* From QTCreator import **penyamanager.pro** file
-* Build: CTRL + SHIFT + B
-* Run: CTRL + R
-
-## Developed using:
-* QT Creator 3.0.1
-* QT 5.2.1
-* GCC 4.8.2, 64 bit
-
 # Features
 * Member login window
   * Active, admin, pwd check
@@ -102,3 +85,30 @@ penyamanager
 * Configuration Application
   * Resource path and ddbb access via configuration system platform independent. QSettings.
   * Database credentials encrypted using SimpleCrypt library
+
+# Development
+
+## Howto build
+* Install QTCreator [IDE](https://qt-project.org/downloads)
+* Clone source code from [here](https://github.com/eguzki/penyamanager)
+* Update **crypt key** (15 digits [0-9]) before compilation
+* From QTCreator import **penyamanageradmin.pro** file
+* From QTCreator import **penyamanagerconf.pro** file
+* From QTCreator import **penyamanager.pro** file
+* Build: CTRL + SHIFT + B
+* Run: CTRL + R
+
+## Developed using:
+* Vim 7.4 [customized](https://github.com/eguzki/eguzki-vim-environment)
+* QT Creator 3.0.1
+* QT 5.2.1
+* GCC 4.8.4, 64 bit
+
+## Translations
+* Use lupdate to create/update Translation Sources (.ts)
+  * lupdate -noobsolete penyamanager.pro penyamanageradmin.pro
+  * translation sources are included in git (SCM) sourcecode manager
+* Use **linguist** to make translations in translation sources
+* Use lrelease to create translation binary (.qm)
+  * at release time, do not include qm file in git
+  * deploy .qm files in the same path as binary files

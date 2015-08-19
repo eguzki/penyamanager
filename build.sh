@@ -37,6 +37,7 @@ checkBinary "qmake"
 checkBinary "make"
 QMAKE=$(which qmake)
 MAKE=$(which make)
+LRELEASE=$(which lrelease)
 
 PROJECT_NAME="penyamanager"
 CURRENT_PATH="$( cd "$( dirname "$0" )" && pwd )"
@@ -82,14 +83,21 @@ else
     $QMAKE $QMAKE_FLAGS $USER_APP
     echo "** BUILD:: making with: $MAKE**"
     $MAKE
+    echo "** TRANSLATION:: making with: $LRELEASE**"
+    $LRELEASE $USER_APP
+    echo "** DEPLOY:: qm files**"
+    mv $PROJECT_PATH/translations/*.qm $TARGETPATH
     echo "** BUILD:: building \"$ADMIN_APP\""
     $QMAKE $QMAKE_FLAGS $ADMIN_APP
     echo "** BUILD:: making with: $MAKE**"
     $MAKE
+    echo "** TRANSLATION:: making with: $LRELEASE**"
+    $LRELEASE $ADMIN_APP
+    echo "** DEPLOY:: qm files**"
+    mv $PROJECT_PATH/translations/*.qm $TARGETPATH
     echo "** BUILD:: building \"$CONF_APP\""
     $QMAKE $QMAKE_FLAGS $CONF_APP
     echo "** BUILD:: making with: $MAKE**"
     $MAKE
 fi
-
 

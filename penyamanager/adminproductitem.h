@@ -20,6 +20,8 @@ namespace PenyaManager {
             ~AdminProductItem();
             //
             void init();
+            //
+            void retranslate();
 
         private:
             //

@@ -24,6 +24,8 @@ namespace PenyaManager {
             ~DepositWindow();
             //
             void init();
+            //
+            void retranslate();
 
         private:
             //

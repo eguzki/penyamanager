@@ -53,6 +53,11 @@ namespace PenyaManager {
         show();
     }
     //
+    void DepositWindow::retranslate()
+    {
+        this->ui->retranslateUi(this);
+    }
+    //
     void DepositWindow::on_backButton_clicked()
     {
         switchWindow(WindowKey::kMainWindowKey);

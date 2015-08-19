@@ -23,6 +23,8 @@ namespace PenyaManager {
             ~AccountBalanceView();
             //
             void init();
+            //
+            void retranslate();
 
         private:
             //

@@ -30,6 +30,8 @@ namespace PenyaManager {
             ~TableReservationView();
             //
             void init();
+            //
+            void retranslate();
 
         private:
             //

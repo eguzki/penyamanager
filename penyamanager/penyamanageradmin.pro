@@ -119,3 +119,7 @@ FORMS    += adminloginwindow.ui\
     memberlistview.ui \
     memberview.ui \
     passchangedialog.ui
+
+TRANSLATIONS += \
+    translations/penyamanageradmin_es.ts \
+    translations/penyamanageradmin_eu.ts

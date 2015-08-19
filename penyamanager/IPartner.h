@@ -23,6 +23,10 @@ namespace PenyaManager {
             virtual void init() = 0;
             //
             virtual void switchWindow(WindowKey key);
+            //
+            virtual void retranslate() = 0;
+            //
+            virtual void changeEvent(QEvent* event);
     };
 }
 

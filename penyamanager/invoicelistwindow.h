@@ -24,6 +24,8 @@ namespace PenyaManager {
             ~InvoiceListWindow();
             //
             void init();
+            //
+            void retranslate();
 
         private:
             //

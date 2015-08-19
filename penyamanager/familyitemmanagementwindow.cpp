@@ -45,6 +45,11 @@ namespace PenyaManager {
         show();
     }
     //
+    void FamilyItemManagementWindow::retranslate()
+    {
+        this->ui->retranslateUi(this);
+    }
+    //
     void FamilyItemManagementWindow::on_newItemPushButton_clicked()
     {
         // setting m_currentProductId < 0, AdminProductItemWindow will initialize empty
