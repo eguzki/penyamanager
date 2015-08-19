@@ -24,6 +24,8 @@ namespace PenyaManager {
             ~StockManagementWindow();
             //
             void init();
+            //
+            void retranslate();
 
         private:
             //

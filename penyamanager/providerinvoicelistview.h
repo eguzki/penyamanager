@@ -24,6 +24,8 @@ namespace PenyaManager {
             ~ProviderInvoiceListView();
             //
             void init();
+            //
+            void retranslate();
 
         private:
             //

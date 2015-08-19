@@ -26,6 +26,8 @@ namespace PenyaManager {
             ~AdminNewProvider();
             //
             void init();
+            //
+            void retranslate();
 
         private slots:
             //

@@ -23,6 +23,8 @@ namespace PenyaManager {
             ~FamilyItemManagementWindow();
             //
             void init();
+            //
+            void retranslate();
 
         private:
             //

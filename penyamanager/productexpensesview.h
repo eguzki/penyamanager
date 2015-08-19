@@ -25,6 +25,8 @@ namespace PenyaManager {
             ~ProductExpensesView();
             //
             void init();
+            //
+            void retranslate();
 
         private:
             //

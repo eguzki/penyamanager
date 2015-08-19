@@ -33,6 +33,11 @@ namespace PenyaManager {
         show();
     }
     //
+    void DepositListView::retranslate()
+    {
+        this->ui->retranslateUi(this);
+    }
+    //
     void DepositListView::initializeTable()
     {
         // table

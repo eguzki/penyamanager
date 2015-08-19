@@ -34,6 +34,11 @@ namespace PenyaManager {
         show();
     }
     //
+    void SlowPayersView::retranslate()
+    {
+        this->ui->retranslateUi(this);
+    }
+    //
     void SlowPayersView::fillSlowPayersData()
     {
         // fetch data

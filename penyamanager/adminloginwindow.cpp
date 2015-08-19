@@ -11,10 +11,11 @@
 
 namespace PenyaManager {
     //
-    AdminLoginWindow::AdminLoginWindow(AdminMainWindow *pAdminMainWindow) :
-        IPartner(0),
+    AdminLoginWindow::AdminLoginWindow(QWidget *parent, AdminMainWindow *pAdminMainWindow, QTranslator *pTranslator) :
+        IPartner(parent),
         m_pAdminMainWindow(pAdminMainWindow),
-        ui(new Ui::AdminLoginWindow)
+        ui(new Ui::AdminLoginWindow),
+        m_pTranslator(pTranslator)
     {
         ui->setupUi(this);
         // only numbers allowed
@@ -43,6 +44,11 @@ namespace PenyaManager {
         }
 
         show();
+    }
+    //
+    void AdminLoginWindow::retranslate()
+    {
+        this->ui->retranslateUi(this);
     }
     //
     void AdminLoginWindow::on_loginButton_clicked()
@@ -90,4 +96,16 @@ namespace PenyaManager {
         // call admin main window
         m_pAdminMainWindow->init();
     }
+    //
+    void PenyaManager::AdminLoginWindow::on_languagePushButton_clicked()
+    {
+        // change translator
+        qApp->removeTranslator(m_pTranslator);
+        Singletons::m_currentLangIndex = (Singletons::m_currentLangIndex + 1)%Singletons::m_numLangs;
+        // load new dictionary
+        m_pTranslator->load(QString("penyamanageradmin_%1").arg(Singletons::m_pLanguagesPrefixArray[Singletons::m_currentLangIndex]));
+        // installTranslator() will create a change event which will be sent to every single widget
+        qApp->installTranslator(m_pTranslator);
+    }
 }
+

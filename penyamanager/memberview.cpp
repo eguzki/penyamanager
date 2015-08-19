@@ -94,6 +94,11 @@ namespace PenyaManager {
         show();
     }
     //
+    void MemberView::retranslate()
+    {
+        this->ui->retranslateUi(this);
+    }
+    //
     void MemberView::on_savePushButton_clicked()
     {
         // Validate not empty fields

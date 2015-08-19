@@ -1,6 +1,7 @@
 //
 
 #include <QApplication>
+#include <QTranslator>
 #include <QMessageBox>
 
 #include "adminmainwindow.h"
@@ -28,7 +29,13 @@
 int main(int argc, char *argv[])
 {
     QApplication::setStyle("windows");
-    QApplication a(argc, argv);
+    QApplication app(argc, argv);
+
+    // Translators
+    QTranslator penyamanagerTranslator;
+    // Initial dictionary
+    penyamanagerTranslator.load("penyamanageradmin_eu");
+    app.installTranslator(&penyamanagerTranslator);
 
     QSettings settings(PenyaManager::Constants::kOrganizationName, PenyaManager::Constants::kApplicationName);
     if (!settings.contains(PenyaManager::Constants::kResourcePathKey))
@@ -46,7 +53,8 @@ int main(int argc, char *argv[])
 
     PenyaManager::AdminMainWindow adminMainWindow;
 
-    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kAdminLoginWindowKey, new PenyaManager::AdminLoginWindow(&adminMainWindow));
+    PenyaManager::AdminLoginWindow *pLoginWindow = new PenyaManager::AdminLoginWindow(NULL, &adminMainWindow, &penyamanagerTranslator);
+    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kAdminLoginWindowKey, pLoginWindow);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kAdminSlowPayersWindowKey, new PenyaManager::SlowPayersView);
 
     // central widgets need adminmainwindow callback to call each other
@@ -80,7 +88,7 @@ int main(int argc, char *argv[])
     PenyaManager::IPartner* pAdminLoginPartner = PenyaManager::Singletons::m_pParnetFinder->getPartner(PenyaManager::WindowKey::kAdminLoginWindowKey);
     pAdminLoginPartner->init();
 
-    int returnValue = a.exec();
+    int returnValue = app.exec();
 
     PenyaManager::Singletons::Destroy();
 

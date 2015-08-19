@@ -334,35 +334,18 @@
 <context>
     <name>LoginWindow</name>
     <message>
-        <location filename="../loginwindow.ui" line="20"/>
-        <source>LoginWindow</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../loginwindow.ui" line="57"/>
-        <location filename="../loginwindow.ui" line="114"/>
-        <location filename="../loginwindow.ui" line="140"/>
-        <source>TextLabel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../loginwindow.ui" line="107"/>
+        <location filename="../loginwindow.ui" line="119"/>
         <source>Insert Member ID</source>
         <extracomment>memberid button</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../loginwindow.ui" line="133"/>
+        <location filename="../loginwindow.ui" line="145"/>
         <source>Insert Password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../loginwindow.ui" line="189"/>
-        <source>PushButton</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../loginwindow.ui" line="214"/>
+        <location filename="../loginwindow.ui" line="240"/>
         <source>Login</source>
         <translation>Sartu</translation>
     </message>
@@ -372,7 +355,7 @@
     <message>
         <location filename="../mainwindow.ui" line="20"/>
         <source>MainWindow</source>
-        <translation type="unfinished"></translation>
+        <translation>Menu Nagusia</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="59"/>

@@ -108,7 +108,7 @@ penyamanager
 * Use lupdate to create/update Translation Sources (.ts)
   * lupdate -noobsolete penyamanager.pro penyamanageradmin.pro
   * translation sources are included in git (SCM) sourcecode manager
-* Use linguist to make translations in translation sources
+* Use **linguist** to make translations in translation sources
 * Use lrelease to create translation binary (.qm)
   * at release time, do not include qm file in git
   * deploy .qm files in the same path as binary files

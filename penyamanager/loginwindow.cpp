@@ -20,9 +20,6 @@ namespace PenyaManager {
         m_pTranslator(pTranslator)
     {
         ui->setupUi(this);
-        // TODO pixmap disapears on translation!!
-        QPixmap logoPixmap(":/images/alegrialogo.jpg");
-        this->ui->imageLabel->setPixmap(logoPixmap);
     }
 
     //
@@ -51,7 +48,6 @@ namespace PenyaManager {
     //
     void LoginWindow::retranslate()
     {
-        qDebug() << "retranslate2 login window";
         this->ui->retranslateUi(this);
     }
     //
@@ -128,12 +124,11 @@ namespace PenyaManager {
     }
     void LoginWindow::on_languagePushButton_clicked()
     {
+        // change translator
         qApp->removeTranslator(m_pTranslator);
         Singletons::m_currentLangIndex = (Singletons::m_currentLangIndex + 1)%Singletons::m_numLangs;
         // load new dictionary
-        qDebug() << QString("penyamanager_%1").arg(Singletons::m_pLanguagesPrefixArray[Singletons::m_currentLangIndex]);
-        bool ok = m_pTranslator->load(QString("penyamanager_%1").arg(Singletons::m_pLanguagesPrefixArray[Singletons::m_currentLangIndex]));
-        qDebug() << ok;
+        m_pTranslator->load(QString("penyamanager_%1").arg(Singletons::m_pLanguagesPrefixArray[Singletons::m_currentLangIndex]));
         // installTranslator() will create a change event which will be sent to every single widget
         qApp->installTranslator(m_pTranslator);
     }

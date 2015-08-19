@@ -214,23 +214,17 @@
 <context>
     <name>AdminLoginWindow</name>
     <message>
-        <location filename="../adminloginwindow.ui" line="20"/>
-        <source>AdminLoginWindow</source>
+        <location filename="../adminloginwindow.ui" line="128"/>
+        <source>Member ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../adminloginwindow.ui" line="55"/>
-        <source>ADMIN</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../adminloginwindow.ui" line="87"/>
-        <location filename="../adminloginwindow.ui" line="160"/>
+        <location filename="../adminloginwindow.ui" line="228"/>
         <source>Login</source>
-        <translation type="unfinished"></translation>
+        <translation>Entrar</translation>
     </message>
     <message>
-        <location filename="../adminloginwindow.ui" line="104"/>
+        <location filename="../adminloginwindow.ui" line="145"/>
         <source>Password</source>
         <translation type="unfinished"></translation>
     </message>
@@ -721,15 +715,15 @@
 <context>
     <name>PenyaManager::AccountBalanceView</name>
     <message>
-        <location filename="../accountbalanceview.cpp" line="116"/>
-        <location filename="../accountbalanceview.cpp" line="149"/>
-        <location filename="../accountbalanceview.cpp" line="150"/>
-        <location filename="../accountbalanceview.cpp" line="151"/>
+        <location filename="../accountbalanceview.cpp" line="121"/>
+        <location filename="../accountbalanceview.cpp" line="154"/>
+        <location filename="../accountbalanceview.cpp" line="155"/>
+        <location filename="../accountbalanceview.cpp" line="156"/>
         <source>%1 €</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../accountbalanceview.cpp" line="146"/>
+        <location filename="../accountbalanceview.cpp" line="151"/>
         <source>page %1 out of %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -737,12 +731,12 @@
 <context>
     <name>PenyaManager::AdminFamilyView</name>
     <message>
-        <location filename="../adminfamilyview.cpp" line="143"/>
+        <location filename="../adminfamilyview.cpp" line="148"/>
         <source>Open File...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../adminfamilyview.cpp" line="144"/>
+        <location filename="../adminfamilyview.cpp" line="149"/>
         <source>Image Files (*.gif *.jpeg *.jpg *.png)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -750,13 +744,13 @@
 <context>
     <name>PenyaManager::AdminInvoiceListView</name>
     <message>
-        <location filename="../admininvoicelistview.cpp" line="88"/>
+        <location filename="../admininvoicelistview.cpp" line="93"/>
         <source>page %1 out of %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admininvoicelistview.cpp" line="91"/>
-        <location filename="../admininvoicelistview.cpp" line="137"/>
+        <location filename="../admininvoicelistview.cpp" line="96"/>
+        <location filename="../admininvoicelistview.cpp" line="142"/>
         <source>%1 €</source>
         <translation type="unfinished"></translation>
     </message>
@@ -764,12 +758,12 @@
 <context>
     <name>PenyaManager::AdminNewProvider</name>
     <message>
-        <location filename="../adminnewprovider.cpp" line="67"/>
+        <location filename="../adminnewprovider.cpp" line="72"/>
         <source>Open File...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../adminnewprovider.cpp" line="68"/>
+        <location filename="../adminnewprovider.cpp" line="73"/>
         <source>Image Files (*.gif *.jpeg *.jpg *.png)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -777,12 +771,12 @@
 <context>
     <name>PenyaManager::AdminProductItem</name>
     <message>
-        <location filename="../adminproductitem.cpp" line="271"/>
+        <location filename="../adminproductitem.cpp" line="276"/>
         <source>Open File...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../adminproductitem.cpp" line="272"/>
+        <location filename="../adminproductitem.cpp" line="277"/>
         <source>Image Files (*.gif *.jpeg *.jpg *.png)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -790,7 +784,7 @@
 <context>
     <name>PenyaManager::DepositListView</name>
     <message>
-        <location filename="../depositlistview.cpp" line="80"/>
+        <location filename="../depositlistview.cpp" line="85"/>
         <source>%1 €</source>
         <translation type="unfinished"></translation>
     </message>
@@ -813,7 +807,7 @@
 <context>
     <name>PenyaManager::MemberListView</name>
     <message>
-        <location filename="../memberlistview.cpp" line="75"/>
+        <location filename="../memberlistview.cpp" line="80"/>
         <source>page %1 out of %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -821,12 +815,12 @@
 <context>
     <name>PenyaManager::MemberView</name>
     <message>
-        <location filename="../memberview.cpp" line="325"/>
+        <location filename="../memberview.cpp" line="330"/>
         <source>Open File...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../memberview.cpp" line="326"/>
+        <location filename="../memberview.cpp" line="331"/>
         <source>Image Files (*.gif *.jpeg *.jpg *.png)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -834,17 +828,17 @@
 <context>
     <name>PenyaManager::ProductExpensesView</name>
     <message>
-        <location filename="../productexpensesview.cpp" line="126"/>
+        <location filename="../productexpensesview.cpp" line="131"/>
         <source>%1 €</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../productexpensesview.cpp" line="154"/>
+        <location filename="../productexpensesview.cpp" line="159"/>
         <source>page %1 out of %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../productexpensesview.cpp" line="167"/>
+        <location filename="../productexpensesview.cpp" line="172"/>
         <source>Export CSV</source>
         <translation type="unfinished"></translation>
     </message>
@@ -852,13 +846,13 @@
 <context>
     <name>PenyaManager::ProviderInvoiceListView</name>
     <message>
-        <location filename="../providerinvoicelistview.cpp" line="131"/>
+        <location filename="../providerinvoicelistview.cpp" line="136"/>
         <source>page %1 out of %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../providerinvoicelistview.cpp" line="134"/>
-        <location filename="../providerinvoicelistview.cpp" line="153"/>
+        <location filename="../providerinvoicelistview.cpp" line="139"/>
+        <location filename="../providerinvoicelistview.cpp" line="158"/>
         <source>%1 €</source>
         <translation type="unfinished"></translation>
     </message>
@@ -866,13 +860,13 @@
 <context>
     <name>PenyaManager::SlowPayersView</name>
     <message>
-        <location filename="../slowpayersview.cpp" line="74"/>
-        <location filename="../slowpayersview.cpp" line="100"/>
+        <location filename="../slowpayersview.cpp" line="79"/>
+        <location filename="../slowpayersview.cpp" line="105"/>
         <source>%1 €</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../slowpayersview.cpp" line="82"/>
+        <location filename="../slowpayersview.cpp" line="87"/>
         <source>Export CSV</source>
         <translation type="unfinished"></translation>
     </message>
@@ -880,12 +874,12 @@
 <context>
     <name>PenyaManager::StockManagementWindow</name>
     <message>
-        <location filename="../stockmanagementwindow.cpp" line="73"/>
+        <location filename="../stockmanagementwindow.cpp" line="78"/>
         <source>Export CSV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../stockmanagementwindow.cpp" line="126"/>
+        <location filename="../stockmanagementwindow.cpp" line="131"/>
         <source>page %1 out of %2</source>
         <translation type="unfinished"></translation>
     </message>

@@ -45,6 +45,11 @@ namespace PenyaManager {
         show();
     }
     //
+    void AdminFamilyView::retranslate()
+    {
+        this->ui->retranslateUi(this);
+    }
+    //
     void AdminFamilyView::on_savePushButton_clicked()
     {
         // validate name is not empty

@@ -59,6 +59,11 @@ namespace PenyaManager {
         show();
     }
     //
+    void MemberListView::retranslate()
+    {
+        this->ui->retranslateUi(this);
+    }
+    //
     void MemberListView::updateResults()
     {
         MemberListPtr pMemberListPtr;

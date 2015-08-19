@@ -45,6 +45,11 @@ namespace PenyaManager {
         show();
     }
     //
+    void AdminInvoiceListView::retranslate()
+    {
+        this->ui->retranslateUi(this);
+    }
+    //
     void AdminInvoiceListView::on_clearPushButton_clicked()
     {
         this->ui->memberIdLineEdit->clear();

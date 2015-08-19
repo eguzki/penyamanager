@@ -23,6 +23,8 @@ namespace PenyaManager {
             ~MemberView();
             //
             void init();
+            //
+            void retranslate();
 
         private:
             //

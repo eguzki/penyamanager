@@ -2,5 +2,7 @@
     <qresource prefix="/">
         <file>images/no-image.gif</file>
         <file>images/alegrialogo.jpg</file>
+        <file>images/espanola.jpg</file>
+        <file>images/ikurrina.png</file>
     </qresource>
 </RCC>
