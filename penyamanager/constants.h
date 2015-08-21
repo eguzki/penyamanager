@@ -58,6 +58,8 @@ namespace PenyaManager {
             static const quint64    kCryptKey;
             // Num languages available
             static const Uint16     kNumLangs;
+            // Log file max size in bytes
+            static const quint64    kLogMaxSizeBytes;
 
         private:
             Constants() {}

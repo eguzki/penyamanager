@@ -41,5 +41,7 @@ namespace PenyaManager {
     const quint64   Constants::kCryptKey                        = Q_UINT64_C(932833457959459);
     //
     const Uint16    Constants::kNumLangs                        = 2;
+    // 1M
+    const quint64   Constants::kLogMaxSizeBytes                 = 1048576;
 
 }

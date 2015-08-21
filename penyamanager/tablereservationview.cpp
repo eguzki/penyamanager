@@ -3,6 +3,8 @@
 #include <QMessageBox>
 #include <QPushButton>
 
+#include <QsLog.h>
+
 #include "utils.h"
 #include "numitemdialog.h"
 #include "singletons.h"
@@ -250,6 +252,7 @@ namespace PenyaManager {
                 break;
         }
 
+        QLOG_INFO() << QString("[%1] User %2 item %3").arg(title).arg(pCurrMemberPtr->m_id).arg(itemId);
         QMessageBox::information(this, title, "Reservation done");
         // call main window
         switchWindow(WindowKey::kMainWindowKey);

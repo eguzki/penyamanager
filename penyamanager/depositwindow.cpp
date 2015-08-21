@@ -2,6 +2,8 @@
 
 #include <QMessageBox>
 
+#include <QsLog.h>
+
 #include "utils.h"
 #include "singletons.h"
 #include "depositwindow.h"
@@ -82,6 +84,8 @@ namespace PenyaManager {
             // Update member balance
             QString description = QString("deposit id: %1").arg(pDepositPtr->m_id);
             Singletons::m_pServices->createAccountTransaction(pCurrMemberPtr->m_id, deposit, description, TransactionType::Deposit);
+            QLOG_INFO() << QString("[Deposit] User %1 deposit ID %2").arg(pCurrMemberPtr->m_id).arg(pDepositPtr->m_id);
+            QMessageBox::information(this, "Deposit", tr("Deposit done"));
         }
 
         // Go to main window

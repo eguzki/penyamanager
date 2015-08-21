@@ -29,7 +29,7 @@ penyamanager
 
 # Features
 * Member login window
-  * Active, admin, pwd check
+  * Active, pwd check
 * Member invoice window
   * unfinished invoice is loaded
 * Member invoice confirmation window
@@ -50,6 +50,7 @@ penyamanager
 * Member invoice list window
   * invoices can be clicked -> invoice details
 * Admin login window
+  * Active, admin, pwd check
 * Admin slow payers window
   * export to csv
   * reset account
@@ -85,6 +86,10 @@ penyamanager
 * Configuration Application
   * Resource path and ddbb access via configuration system platform independent. QSettings.
   * Database credentials encrypted using SimpleCrypt library
+* Multilanguage
+  * Basque
+  * Spanish
+* Activity logger
 
 # Development
 

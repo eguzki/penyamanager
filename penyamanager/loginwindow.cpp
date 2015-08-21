@@ -1,7 +1,8 @@
 //
 #include <QDebug>
 #include <QMessageBox>
-#include <QsLogDest.h>
+
+#include <QsLog.h>
 
 #include "numitemdialog.h"
 #include "utils.h"
@@ -38,9 +39,10 @@ namespace PenyaManager {
 
         if (!Singletons::m_pDAO->isOpen()) {
             QSqlError err = Singletons::m_pDAO->lastError();
+            QLOG_ERROR() << QString("[FATAL] Unable to initialize Database: %1").arg(err.text());
             QMessageBox::critical(this, "Unable to initialize Database",
                     "Error initializing database: " + err.text());
-            qApp->exit(0);
+            qApp->exit(1);
             return;
         }
 
@@ -70,6 +72,7 @@ namespace PenyaManager {
         MemberPtr pCurrMemberPtr = Singletons::m_pDAO->getMemberById(this->m_memberId);
         if (!pCurrMemberPtr)
         {
+            QLOG_INFO() << QString("[LoginFailed] User %1 does not exist").arg(this->m_memberId);
             // User could not be found
             QMessageBox::about(this, "Login failed",
                     QString("User not registered in the system: %1").arg(this->m_memberId));
@@ -79,6 +82,7 @@ namespace PenyaManager {
         QString hashedPwd = Utils::hashSHA256asHex(this->m_password);
         if (pCurrMemberPtr->m_pwd != hashedPwd)
         {
+            QLOG_INFO() << QString("[LoginFailed] User %1 pass check failed").arg(this->m_memberId);
             // User not active
             QMessageBox::about(this, "Login failed",
                     "Password incorrect");
@@ -87,6 +91,7 @@ namespace PenyaManager {
 
         if (!pCurrMemberPtr->m_active)
         {
+            QLOG_INFO() << QString("[LoginFailed] User %1 not active").arg(this->m_memberId);
             // User not active
             QMessageBox::about(this, "Login failed",
                     QString("User not active in the system: %1").arg(this->m_memberId));
@@ -101,6 +106,7 @@ namespace PenyaManager {
         }
 
         // login granted
+        QLOG_INFO() << QString("[LoginSucess] User %1").arg(this->m_memberId);
         // assign user
         Singletons::m_pCurrMember = pCurrMemberPtr;
         switchWindow(WindowKey::kMainWindowKey);
