@@ -95,7 +95,7 @@ DROP TABLE IF EXISTS `alegria`.`product_family` ;
 CREATE TABLE IF NOT EXISTS `alegria`.`product_family` (
   `idproduct_family` INT(11) NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
-  `image` VARCHAR(300) NOT NULL,
+  `image` VARCHAR(300) NULL,
   `active` TINYINT(1) NOT NULL,
   `reg_date` DATETIME NOT NULL,
   PRIMARY KEY (`idproduct_family`))
