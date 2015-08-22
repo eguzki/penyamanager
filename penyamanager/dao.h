@@ -129,13 +129,13 @@ namespace PenyaManager {
             //
             void updateProductItem(const ProductItemPtr &pProductItemPtr);
             //
-            void createProductItem(const ProductItemPtr &pProductItemPtr);
+            Uint32 createProductItem(const ProductItemPtr &pProductItemPtr);
             //
             ProductFamilyPtr getProductFamily(Int32 familyId);
             //
             void updateProductFamilyItem(const ProductFamilyPtr &pFamilyPtr);
             //
-            void createProductFamilyItem(const ProductFamilyPtr &pFamilyPtr);
+            Uint32 createProductFamilyItem(const ProductFamilyPtr &pFamilyPtr);
             //
             InvoiceProductItemListPtr getProductExpensesList(const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count);
             //

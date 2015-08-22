@@ -4,6 +4,8 @@
 #include <QFileDialog>
 #include <QDateTime>
 
+#include <QsLog.h>
+
 #include "guiutils.h"
 #include "utils.h"
 #include "singletons.h"
@@ -124,6 +126,7 @@ namespace PenyaManager {
                 QFile oldFile(oldImagePath);
                 oldFile.remove();
             }
+            QLOG_INFO() << QString("[EditItem] ID %1").arg(pProductPtr->m_id);
         } else {
             // new item
             pProductPtr = ProductItemPtr(new ProductItem);
@@ -157,7 +160,8 @@ namespace PenyaManager {
             // stock -> no change
             pProductPtr->m_stock = 0;
             // create in ddbb
-            Singletons::m_pDAO->createProductItem(pProductPtr);
+            Uint32 itemId = Singletons::m_pDAO->createProductItem(pProductPtr);
+            QLOG_INFO() << QString("[NewItem] ID %1").arg(itemId);
         }
 
         // reset var

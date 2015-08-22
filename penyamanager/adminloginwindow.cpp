@@ -3,6 +3,8 @@
 #include <QDebug>
 #include <QMessageBox>
 
+#include <QsLog.h>
+
 #include "utils.h"
 #include "constants.h"
 #include "singletons.h"
@@ -37,9 +39,10 @@ namespace PenyaManager {
 
         if (!Singletons::m_pDAO->isOpen()) {
             QSqlError err = Singletons::m_pDAO->lastError();
+            QLOG_ERROR() << QString("[FATAL] Unable to initialize Database: %1").arg(err.text());
             QMessageBox::critical(this, "Unable to initialize Database",
                     "Error initializing database: " + err.text());
-            qApp->exit(0);
+            qApp->exit(1);
             return;
         }
 
@@ -54,9 +57,11 @@ namespace PenyaManager {
     void AdminLoginWindow::on_loginButton_clicked()
     {
         // Loading user Profile
-        MemberPtr pCurrMemberPtr = Singletons::m_pDAO->getMemberById(this->ui->loginInput->text().toInt());
+        QString loginName = this->ui->loginInput->text();
+        MemberPtr pCurrMemberPtr = Singletons::m_pDAO->getMemberById(loginName.toInt());
         if (!pCurrMemberPtr)
         {
+            QLOG_INFO() << QString("[LoginFailed] User %1 does not exist").arg(loginName);
             // User could not be found
             QMessageBox::about(this, "Login failed",
                     "User not registered in the system: " + this->ui->loginInput->text());
@@ -67,6 +72,7 @@ namespace PenyaManager {
         QString hashedPwd = Utils::hashSHA256asHex(plainPwd);
         if (pCurrMemberPtr->m_pwd != hashedPwd)
         {
+            QLOG_INFO() << QString("[LoginFailed] User %1 pass check failed").arg(loginName);
             // User not active
             QMessageBox::about(this, "Login failed",
                     "Password incorrect");
@@ -75,6 +81,7 @@ namespace PenyaManager {
 
         if (!pCurrMemberPtr->m_active)
         {
+            QLOG_INFO() << QString("[LoginFailed] User %1 not active").arg(loginName);
             // User not active
             QMessageBox::about(this, "Login failed",
                     "User not active in the system: " + this->ui->loginInput->text());
@@ -83,6 +90,7 @@ namespace PenyaManager {
 
         if (!pCurrMemberPtr->m_isAdmin)
         {
+            QLOG_INFO() << QString("[LoginFailed] User %1 not admin").arg(loginName);
             // User not admin
             QMessageBox::about(this, "Login failed",
                     "User does not have permissions to login");
@@ -90,6 +98,9 @@ namespace PenyaManager {
         }
 
         // login granted
+        QLOG_INFO() << QString("[LoginSucess] User %1").arg(loginName);
+
+        // switch
         this->hide();
         // assign user
         Singletons::m_pCurrMember = pCurrMemberPtr;

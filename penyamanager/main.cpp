@@ -4,6 +4,9 @@
 #include <QTranslator>
 #include <QMessageBox>
 
+#include <QsLogDest.h>
+#include <QsLog.h>
+
 #include "constants.h"
 #include "mainwindow.h"
 #include "loginwindow.h"
@@ -36,11 +39,29 @@ int main(int argc, char *argv[])
         return 1;
     }
 
+    // LOGGING
+    // init the logging mechanism
+    QsLogging::Logger& logger = QsLogging::Logger::instance();
+    // set minimum log level and file name
+    logger.setLoggingLevel(QsLogging::InfoLevel);
+    const QString sLogPath(QDir(app.applicationDirPath()).filePath("penyamanager.log"));
+
+    // Create log destinations
+    QsLogging::DestinationPtr fileDestination( QsLogging::DestinationFactory::MakeFileDestination(
+                sLogPath,
+                QsLogging::LogRotationOption::EnableLogRotation,
+                QsLogging::MaxSizeBytes(PenyaManager::Constants::kLogMaxSizeBytes)
+                ));
+    // set log destinations on the logger
+    logger.addDestination(fileDestination);
+
+    QLOG_INFO() << "Program started";
     // Singletons initialization
     // Includes ddbb connection
     PenyaManager::Singletons::Create(&settings);
 
     if (!PenyaManager::Singletons::m_pDAO->isOpen()) {
+        QLOG_ERROR() << QString("[FATAL] Database connection failed");
         QMessageBox::critical(NULL, "Error", "Database connection failed. Call the stupid administrator and complain for incompetence");
         return 1;
     }
@@ -55,7 +76,6 @@ int main(int argc, char *argv[])
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kTableReservationViewWindowKey, new PenyaManager::TableReservationView);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kInvoiceListWindoKey, new PenyaManager::InvoiceListWindow);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kInvoiceDetailsWindowKey, new PenyaManager::InvoiceDetailsWindow);
-
     // entry point -> login window
     PenyaManager::IPartner* pLoginPartner = PenyaManager::Singletons::m_pParnetFinder->getPartner(PenyaManager::WindowKey::kLoginWindowKey);
     pLoginPartner->init();
@@ -66,5 +86,6 @@ int main(int argc, char *argv[])
     // destroy singletons
     PenyaManager::Singletons::Destroy();
 
+    QLOG_INFO() << "Program exited";
     return returnValue;
 }

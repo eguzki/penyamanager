@@ -17,6 +17,9 @@ QMAKE_CXXFLAGS += -std=c++11
 TARGET = penyamanageradmin
 TEMPLATE = app
 
+include(libs/QsLog2/QsLog.pri)
+include(libs/simplecrypt/simplecrypt.pro)
+
 RESOURCES = penyamanager.qrc
 
 SOURCES += adminmain.cpp\
@@ -56,7 +59,6 @@ SOURCES += adminmain.cpp\
     accountbalanceview.cpp \
     memberlistview.cpp \
     memberview.cpp \
-    libs/simplecrypt.cpp\
     passchangedialog.cpp \
     guiutils.cpp
 
@@ -96,7 +98,6 @@ HEADERS  += singletons.h\
     accountbalanceview.h \
     memberlistview.h \
     memberview.h \
-    libs/simplecrypt.h\
     passchangedialog.h \
     guiutils.h
 

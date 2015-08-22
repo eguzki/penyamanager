@@ -3,6 +3,8 @@
 #include <QMessageBox>
 #include <QFileDialog>
 
+#include <QsLog.h>
+
 #include "guiutils.h"
 #include "utils.h"
 #include "singletons.h"
@@ -192,6 +194,7 @@ namespace PenyaManager {
                 QFile oldFile(oldImagePath);
                 oldFile.remove();
             }
+            QLOG_INFO() << QString("[EditMember] ID %1").arg(pMemberPtr->m_id);
         } else {
             // new item
             pMemberPtr = MemberPtr(new Member);
@@ -252,6 +255,7 @@ namespace PenyaManager {
 
             // create account
             Singletons::m_pServices->createAccountTransaction(memberId, 0.0, "new account", TransactionType::DepositFix);
+            QLOG_INFO() << QString("[NewMember] ID %1").arg(memberId);
         }
 
         // reset var
@@ -360,6 +364,7 @@ namespace PenyaManager {
         // save new password in ddbb
         Singletons::m_pDAO->changeMemberPassword(Singletons::m_currentMemberId, pwdHash, QDateTime::currentDateTime());
 
+        QLOG_INFO() << QString("[PassChange] ID %1").arg(Singletons::m_currentMemberId);
         QMessageBox::information(this, "Change password", "Password changed successfully");
     }
 }

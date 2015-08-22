@@ -4,6 +4,8 @@
 #include <QPushButton>
 #include <QMessageBox>
 
+#include <QsLog.h>
+
 #include "singletons.h"
 #include "depositlistview.h"
 #include "ui_depositlistview.h"
@@ -120,6 +122,7 @@ namespace PenyaManager {
         }
         // close deposit
         Singletons::m_pDAO->closeDeposit(depositId);
+        QLOG_INFO() << QString("[DepositCheck] deposit ID %1 member ID %2 total %3€ diff %4€").arg(depositId).arg(memberId).arg(total).arg(amount);
         QMessageBox::information(this, "Deposit checked", QString("Difference: %1").arg(amount));
         showUncheckedDeposits();
     }

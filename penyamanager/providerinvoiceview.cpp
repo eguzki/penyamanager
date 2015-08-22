@@ -5,6 +5,8 @@
 #include <QSpacerItem>
 #include <QMessageBox>
 
+#include <QsLog.h>
+
 #include "guiutils.h"
 #include "singletons.h"
 #include "providerinvoiceview.h"
@@ -80,12 +82,13 @@ namespace PenyaManager {
             }
 
             Int32 productId = pProductItem->data(Constants::kIdRole).toInt();
-            // only those qith non zero count
+            // only those with non zero count
             if (pCountSpinBox->value() > 0)
             {
                 Singletons::m_pDAO->createProviderInvoiceProduct(pProviderInvoicePtr->m_id, productId, pCountSpinBox->value());
             }
         }
+        QLOG_INFO() << QString("[ProviderInvoice] ID %1 providerID %2").arg(pProviderInvoicePtr->m_id).arg(pProviderInvoicePtr->m_providerid);
         QMessageBox::information(this, "New provider invoice", "Saved Successfully");
         initialize();
     }
