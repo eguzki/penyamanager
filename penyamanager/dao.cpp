@@ -1598,7 +1598,7 @@ namespace PenyaManager {
         m_updateProductItemQuery.finish();
     }
     //
-    void DAO::createProductItem(const ProductItemPtr &pProductPtr)
+    Uint32 DAO::createProductItem(const ProductItemPtr &pProductPtr)
     {
         m_createProductItemQuery.bindValue(":name", pProductPtr->m_name);
         m_createProductItemQuery.bindValue(":image", pProductPtr->m_imagePath);
@@ -1613,6 +1613,16 @@ namespace PenyaManager {
             qDebug() << m_createProductItemQuery.lastError();
         }
         m_createProductItemQuery.finish();
+
+        // For LAST_INSERT_ID(), the most recently generated ID is maintained in the server on a per-connection basis
+        if (!m_getLastIdQuery.exec())
+        {
+            qDebug() << m_getLastIdQuery.lastError();
+        }
+        m_getLastIdQuery.next();
+        Uint32 itemId = m_getLastIdQuery.value(0).toUInt();
+        m_getLastIdQuery.finish();
+        return itemId;
     }
     //
     ProductFamilyPtr DAO::getProductFamily(Int32 familyId)
@@ -1647,7 +1657,7 @@ namespace PenyaManager {
         m_updateProductFamilyItemQuery.finish();
     }
     //
-    void DAO::createProductFamilyItem(const ProductFamilyPtr &pFamilyPtr)
+    Uint32 DAO::createProductFamilyItem(const ProductFamilyPtr &pFamilyPtr)
     {
         m_createProductFamilyItemQuery.bindValue(":name", pFamilyPtr->m_name);
         m_createProductFamilyItemQuery.bindValue(":image", pFamilyPtr->m_imagePath);
@@ -1658,6 +1668,16 @@ namespace PenyaManager {
             qDebug() << m_createProductFamilyItemQuery.lastError();
         }
         m_createProductFamilyItemQuery.finish();
+
+        // For LAST_INSERT_ID(), the most recently generated ID is maintained in the server on a per-connection basis
+        if (!m_getLastIdQuery.exec())
+        {
+            qDebug() << m_getLastIdQuery.lastError();
+        }
+        m_getLastIdQuery.next();
+        Uint32 familyId = m_getLastIdQuery.value(0).toUInt();
+        m_getLastIdQuery.finish();
+        return familyId;
     }
     //
     InvoiceProductItemListPtr DAO::getProductExpensesList(const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count)

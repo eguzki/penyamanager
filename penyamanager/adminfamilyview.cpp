@@ -4,6 +4,8 @@
 #include <QFileDialog>
 #include <QDateTime>
 
+#include <QsLog.h>
+
 #include "utils.h"
 #include "guiutils.h"
 #include "singletons.h"
@@ -99,6 +101,7 @@ namespace PenyaManager {
                 QFile oldFile(oldImagePath);
                 oldFile.remove();
             }
+            QLOG_INFO() << QString("[EditFamily] ID %1").arg(pFamilyPtr->m_id);
         } else {
             // new item
             pFamilyPtr = ProductFamilyPtr(new ProductFamily);
@@ -124,7 +127,8 @@ namespace PenyaManager {
             // regDate
             pFamilyPtr->m_regDate = QDateTime::currentDateTime();
             // create in ddbb
-            Singletons::m_pDAO->createProductFamilyItem(pFamilyPtr);
+            Uint32 familyId = Singletons::m_pDAO->createProductFamilyItem(pFamilyPtr);
+            QLOG_INFO() << QString("[NewFamily] ID %1").arg(familyId);
         }
 
         // reset var

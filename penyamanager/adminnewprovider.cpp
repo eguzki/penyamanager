@@ -6,6 +6,8 @@
 #include <QDateTime>
 #include <QDebug>
 
+#include <QsLog.h>
+
 #include "guiutils.h"
 #include "constants.h"
 #include "singletons.h"
@@ -103,6 +105,8 @@ namespace PenyaManager {
 
         // save in ddbb
         Singletons::m_pDAO->createProvider(providerName, destFileName, this->ui->phoneLineEdit->text());
+        QLOG_INFO() << QString("[NewProvider] name %1").arg(providerName);
+        QMessageBox::information(this, tr("New Provider"), tr("Provider created successfully"));
 
         // reset var
         this->m_providerImageFilename.clear();
