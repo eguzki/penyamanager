@@ -19,6 +19,7 @@ TEMPLATE = app
 
 include(libs/QsLog2/QsLog.pri)
 include(libs/simplecrypt/simplecrypt.pro)
+include(libs/mustache/mustache.pro)
 
 RESOURCES = penyamanager.qrc
 

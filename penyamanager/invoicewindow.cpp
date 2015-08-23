@@ -91,6 +91,8 @@ namespace PenyaManager {
         Singletons::m_pServices->closeInvoice(pCurrMember, pInvoicePtr->m_id);
         QLOG_INFO() << QString("[Invoice] User %1 Invoice ID %2").arg(pCurrMember->m_id).arg(pInvoicePtr->m_id);
 
+        // print invoice
+
         // call main window
         switchWindow(WindowKey::kMainWindowKey);
     }
