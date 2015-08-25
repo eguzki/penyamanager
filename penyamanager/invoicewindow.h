@@ -29,6 +29,8 @@ namespace PenyaManager {
         private:
             //
             void fillInvoiceData(const MemberPtr &pMemberPtr, const InvoicePtr &pInvoicePtr);
+            //
+            void printInvoice();
 
         private slots:
             //

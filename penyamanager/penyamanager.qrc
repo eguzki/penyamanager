@@ -4,5 +4,6 @@
         <file>images/alegrialogo.jpg</file>
         <file>images/espanola.jpg</file>
         <file>images/ikurrina.png</file>
+        <file>resources/invoice.html</file>
     </qresource>
 </RCC>
