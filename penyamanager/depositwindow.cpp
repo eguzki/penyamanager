@@ -4,7 +4,7 @@
 
 #include <QsLog.h>
 
-#include "utils.h"
+#include "guiutils.h"
 #include "singletons.h"
 #include "depositwindow.h"
 #include "ui_depositwindow.h"
@@ -85,6 +85,8 @@ namespace PenyaManager {
             QString description = QString("deposit id: %1").arg(pDepositPtr->m_id);
             Singletons::m_pServices->createAccountTransaction(pCurrMemberPtr->m_id, deposit, description, TransactionType::Deposit);
             QLOG_INFO() << QString("[Deposit] User %1 deposit ID %2").arg(pCurrMemberPtr->m_id).arg(pDepositPtr->m_id);
+            // print deposit
+            printDeposit();
             QMessageBox::information(this, "Deposit", tr("Deposit done"));
         }
 
@@ -131,5 +133,17 @@ namespace PenyaManager {
     {
         this->ui->depositLabel->setText("");
         updateNewBalanceLabel(0.0);
+    }
+    //
+    void DepositWindow::printDeposit()
+    {
+        QFile depositTemplateFile(":resources/deposit.html");
+        if (!depositTemplateFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            QLOG_ERROR() << QString("[Deposit] deposit.html not found");
+            return;
+        }
+        QTextStream depositTemplateStream(&depositTemplateFile);
+        QString depositTemplate = depositTemplateStream.readAll();
+        GuiUtils::printText(depositTemplate);
     }
 }

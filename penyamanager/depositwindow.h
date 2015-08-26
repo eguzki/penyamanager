@@ -30,6 +30,8 @@ namespace PenyaManager {
         private:
             //
             void updateNewBalanceLabel(double deposit);
+            //
+            void printDeposit();
 
         private slots:
             //

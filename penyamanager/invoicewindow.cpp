@@ -91,9 +91,6 @@ namespace PenyaManager {
         Singletons::m_pServices->closeInvoice(pCurrMember, pInvoicePtr->m_id);
         QLOG_INFO() << QString("[Invoice] User %1 Invoice ID %2").arg(pCurrMember->m_id).arg(pInvoicePtr->m_id);
 
-        // print invoice
-        printInvoice();
-
         // call main window
         switchWindow(WindowKey::kMainWindowKey);
     }
@@ -144,18 +141,6 @@ namespace PenyaManager {
         Float newBalance = pMemberPtr->m_balance;
         newBalance -= totalInvoice;
         this->ui->newBalanceInfoLabel->setText(QString("%1 €").arg(newBalance));
-    }
-    //
-    void InvoiceWindow::printInvoice()
-    {
-        QFile invoiceTemplateFile(":resources/invoice.html");
-        if (!invoiceTemplateFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            QLOG_ERROR() << QString("[InvoiceWindow] invoice.html not found");
-            return;
-        }
-        QTextStream invoiceTemplateStream(&invoiceTemplateFile);
-        QString invoiceTemplate = invoiceTemplateStream.readAll();
-        GuiUtils::printText(invoiceTemplate);
     }
 }
 
