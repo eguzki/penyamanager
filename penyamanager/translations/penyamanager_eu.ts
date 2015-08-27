@@ -556,7 +556,7 @@
     <message>
         <location filename="../invoicelistwindow.cpp" line="102"/>
         <source>page %1 out of %2</source>
-        <translation type="unfinished">%2 tik, %1 orrialdea</translation>
+        <translation type="unfinished">%2 tik, %1. orrialdea</translation>
     </message>
     <message>
         <location filename="../invoicelistwindow.cpp" line="105"/>
@@ -585,7 +585,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="197"/>
         <source>Invoice (Ref #%1) on (%2)</source>
-        <translation type="unfinished">%2 ko %1 go/garren ordainagiria</translation>
+        <translation type="unfinished">%2 ko %1. ordainagiria</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="224"/>

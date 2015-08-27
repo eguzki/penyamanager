@@ -262,7 +262,7 @@
     <message>
         <location filename="../invoicelistwindow.ui" line="343"/>
         <source>page X out of Y</source>
-        <translation type="unfinished">	página X de Y</translation>
+        <translation type="unfinished">página X de Y</translation>
     </message>
     <message>
         <location filename="../invoicelistwindow.ui" line="350"/>
