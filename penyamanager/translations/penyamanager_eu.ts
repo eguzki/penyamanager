@@ -131,7 +131,7 @@
     <message>
         <location filename="../depositwindow.ui" line="374"/>
         <source>New Balance</source>
-        <translation type="unfinished">Balantze berria</translation>
+        <translation>Balantze berria</translation>
     </message>
 </context>
 <context>
@@ -221,7 +221,7 @@
     <message>
         <location filename="../invoicelistwindow.ui" line="175"/>
         <source>Total Invoices:</source>
-        <translation>Ordainagiri kopurua:</translation>
+        <translation>Ordainagiri zki kopurua:</translation>
     </message>
     <message>
         <location filename="../invoicelistwindow.ui" line="194"/>
@@ -275,7 +275,7 @@
     <message>
         <location filename="../invoicewindow.ui" line="20"/>
         <source>Invoice Window</source>
-        <translation>Ordainagiri leihoa</translation>
+        <translation>Ordainagiria</translation>
     </message>
     <message>
         <location filename="../invoicewindow.ui" line="56"/>
@@ -415,7 +415,7 @@
     <message>
         <location filename="../mainwindow.ui" line="351"/>
         <source>Reset</source>
-        <translation>Garbitu</translation>
+        <translation>Ordainagiria garbitu</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="358"/>
@@ -428,7 +428,7 @@
     <message>
         <location filename="../memberprofilegroupbox.ui" line="26"/>
         <source>GroupBox</source>
-        <translation>Bazkidea</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../memberprofilegroupbox.ui" line="29"/>
@@ -446,7 +446,7 @@
     <message>
         <location filename="../memberprofilegroupbox.ui" line="112"/>
         <source>ID:</source>
-        <translation>Zkia:</translation>
+        <translation>Zenbakia:</translation>
     </message>
     <message>
         <location filename="../memberprofilegroupbox.ui" line="147"/>
@@ -459,7 +459,7 @@
     <message>
         <location filename="../numitemdialog.ui" line="29"/>
         <source>Num items</source>
-        <translation></translation>
+        <translation type="unfinished">Teklatua</translation>
     </message>
     <message>
         <location filename="../numitemdialog.ui" line="47"/>
@@ -524,7 +524,7 @@
     <message>
         <location filename="../numitemdialog.ui" line="206"/>
         <source>Done</source>
-        <translation></translation>
+        <translation>Onartu</translation>
     </message>
 </context>
 <context>
@@ -533,7 +533,7 @@
         <location filename="../accountview.cpp" line="91"/>
         <location filename="../accountview.cpp" line="92"/>
         <source>%1 €</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -542,13 +542,13 @@
         <location filename="../invoicedetailswidget.cpp" line="79"/>
         <location filename="../invoicedetailswidget.cpp" line="82"/>
         <source>%1 €</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../invoicedetailswidget.cpp" line="80"/>
         <location filename="../invoicedetailswidget.cpp" line="93"/>
         <source>%1</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -556,13 +556,13 @@
     <message>
         <location filename="../invoicelistwindow.cpp" line="102"/>
         <source>page %1 out of %2</source>
-        <translation>%2 tik, %1 orrialdea</translation>
+        <translation type="unfinished">%2 tik, %1 orrialdea</translation>
     </message>
     <message>
         <location filename="../invoicelistwindow.cpp" line="105"/>
         <location filename="../invoicelistwindow.cpp" line="142"/>
         <source>%1 €</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -571,13 +571,13 @@
         <location filename="../invoicewindow.cpp" line="118"/>
         <location filename="../invoicewindow.cpp" line="121"/>
         <source>%1 €</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../invoicewindow.cpp" line="119"/>
         <location filename="../invoicewindow.cpp" line="134"/>
         <source>%1</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -591,12 +591,12 @@
         <location filename="../mainwindow.cpp" line="224"/>
         <location filename="../mainwindow.cpp" line="227"/>
         <source>%1 €</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="225"/>
         <source>%1</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
