@@ -1,7 +1,7 @@
 //
 
 #include <QMessageBox>
-
+#include <mustache.h>
 #include <QsLog.h>
 
 #include "guiutils.h"
@@ -86,7 +86,7 @@ namespace PenyaManager {
             Singletons::m_pServices->createAccountTransaction(pCurrMemberPtr->m_id, deposit, description, TransactionType::Deposit);
             QLOG_INFO() << QString("[Deposit] User %1 deposit ID %2").arg(pCurrMemberPtr->m_id).arg(pDepositPtr->m_id);
             // print deposit
-            printDeposit();
+            printDeposit(pCurrMemberPtr, pDepositPtr);
             QMessageBox::information(this, "Deposit", tr("Deposit done"));
         }
 
@@ -135,7 +135,7 @@ namespace PenyaManager {
         updateNewBalanceLabel(0.0);
     }
     //
-    void DepositWindow::printDeposit()
+    void DepositWindow::printDeposit(const MemberPtr &pMemberPtr, const DepositPtr &pDepositPtr)
     {
         QFile depositTemplateFile(":resources/deposit.html");
         if (!depositTemplateFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -144,6 +144,27 @@ namespace PenyaManager {
         }
         QTextStream depositTemplateStream(&depositTemplateFile);
         QString depositTemplate = depositTemplateStream.readAll();
-        GuiUtils::printText(depositTemplate);
+        QString depositHtml = renderDepositTemplate(depositTemplate, pMemberPtr, pDepositPtr);
+        GuiUtils::printText(depositHtml);
+        QLOG_INFO() << QString("[Print] print deposit user %1 deposit %2").arg(pMemberPtr->m_id).arg(pDepositPtr->m_id);
+    }
+    //
+    QString DepositWindow::renderDepositTemplate(const QString &depositTemplate, const MemberPtr &pMemberPtr, const DepositPtr &pDepositPtr)
+    {
+        QVariantHash depositData;
+        // Label
+        depositData["depositLabel"] = tr("Deposit Id");
+        depositData["memberidLabel"] = tr("Member Id");
+        depositData["memberNameLabel"] = tr("Member Name");
+        depositData["dateLabel"] = tr("Date");
+        depositData["depositTotalLabel"] = tr("Deposit Total");
+        // deposit info
+        depositData["depositId"] = pDepositPtr->m_id;
+        depositData["memberid"] = pMemberPtr->m_id;
+        depositData["memberName"] = QString("%1 %2").arg(pMemberPtr->m_name).arg(pMemberPtr->m_surname);
+        depositData["dateValue"] = pDepositPtr->m_date;
+        depositData["depositTotal"] = pDepositPtr->m_total;
+        QString depositHtml = Mustache::renderTemplate(depositTemplate, depositData);
+        return depositHtml; 
     }
 }

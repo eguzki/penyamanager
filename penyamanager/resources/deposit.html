@@ -5,7 +5,8 @@
 #header {
     padding:10px;
 }
-#invoice {
+#deposit {
+    font-size: 7pt
 }
 #items {
 }
@@ -18,57 +19,46 @@
     <img src=":images/alegrialogo.jpg" width="100" height="100">
     <p>SDRC Alegría de Iruñea KKAE</p>
 </div>
-<div id="invoice" align="center">
-    <p>Nota: 20072</p>
-    <p>Bazkide zbkia: 20072</p>
-    <p>Eguzki Astiz Lezaun</p>
-    <p>Data: 05/10/2015 20:52:32</p>
-</div>
-<div id="items">
-    <table width="100%" cellpadding="10" cellspacing="0" border="0">
+<div id="deposit">
+    <table width="220" cellpadding="10" cellspacing="0" border="0">
         <tr>
-            <td width="60%" align="center">
-                <b>Artikulua</b>
-            </td>
-            <td width="10%" align="right">
-                <b>Kopurua</b>
+            <td width="70%" align="left">
+                {{depositLabel}}
             </td>
             <td width="30%" align="right">
-                <b>Zenbat</b>
+                {{depositId}}
             </td>
         </tr>
         <tr>
-            <td width="60%" align="left">
-                BUDVAR
-            </td>
-            <td width="10%" align="right">
-                2
+            <td width="70%" align="left">
+                {{memberidLabel}}
             </td>
             <td width="30%" align="right">
-                3.40€
+                {{memberid}}
             </td>
         </tr>
         <tr>
-            <td width="60%" align="left">
-                COCACOLA
+            <td width="50%" align="left">
+                {{memberNameLabel}}
             </td>
-            <td width="10%" align="right">
-                2
-            </td>
-            <td width="30%" align="right">
-                3.40€
+            <td width="50%" align="right">
+                {{memberName}}
             </td>
         </tr>
-    </table>
-</div>
-<div id="totals">
-    <table width="100%" cellpadding="10" cellspacing="0" border="0">
         <tr>
-            <td width="70%" align="right">
-                <b>NOTAREN TOTALA</b>
+            <td width="50%" align="left">
+                {{dateLabel}}
+            </td>
+            <td width="50%" align="right">
+                {{dateValue}}
+            </td>
+        </tr>
+        <tr>
+            <td width="70%" align="left">
+                {{depositTotalLabel}}
             </td>
             <td width="30%" align="right">
-                <b>53.50€</b>
+                <b>{{depositTotal}}€</b>
             </td>
         </tr>
     </table>
