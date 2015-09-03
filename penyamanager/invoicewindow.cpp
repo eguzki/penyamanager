@@ -4,7 +4,7 @@
 
 #include <QsLog.h>
 
-#include "utils.h"
+#include "guiutils.h"
 #include "constants.h"
 #include "singletons.h"
 #include "invoicewindow.h"

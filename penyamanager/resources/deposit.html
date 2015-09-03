@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+#header {
+    padding:1px;
+    font-size: 3pt;
+}
+#deposit {
+    font-size: 2px;
+}
+#items {
+}
+#totals{
+}
+</style>
+</head>
+<body>
+<div id="header" align="center">
+    <img src=":images/alegrialogo.jpg" width="25" height="25">
+    <p>SDRC Alegría de Iruñea KKAE</p>
+</div>
+<div id="deposit">
+    <table width="70" cellpadding="1" cellspacing="0" border="0">
+        <tr>
+            <td width="40%" align="left">
+                {{depositLabel}}
+            </td>
+            <td width="60%" align="right">
+                {{depositId}}
+            </td>
+        </tr>
+        <tr>
+            <td align="left">
+                {{memberidLabel}}
+            </td>
+            <td align="right">
+                {{memberid}}
+            </td>
+        </tr>
+        <tr>
+            <td align="left">
+                {{memberNameLabel}}
+            </td>
+            <td align="right">
+                {{memberName}}
+            </td>
+        </tr>
+        <tr>
+            <td align="left">
+                {{dateLabel}}
+            </td>
+            <td align="right">
+                {{dateValue}}
+            </td>
+        </tr>
+        <tr>
+            <td align="left">
+                {{depositTotalLabel}}
+            </td>
+            <td align="right">
+                <b>{{depositTotal}}€</b>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

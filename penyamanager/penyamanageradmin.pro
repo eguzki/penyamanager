@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui
+QT       += printsupport
 QT       += sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -19,6 +20,7 @@ TEMPLATE = app
 
 include(libs/QsLog2/QsLog.pri)
 include(libs/simplecrypt/simplecrypt.pro)
+include(libs/mustache/mustache.pro)
 
 RESOURCES = penyamanager.qrc
 

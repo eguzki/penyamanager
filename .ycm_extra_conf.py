@@ -78,6 +78,7 @@ flags = [
     '-I', '/usr/include/qt5',
     '-I', '/usr/include/qt5/QtConcurrent',
     '-I', '/usr/include/qt5/QtCore',
+    '-I', '/usr/include/qt5/QtPrintSupport',
     '-I', '/usr/include/qt5/QtDBus',
     '-I', '/usr/include/qt5/QtGui',
     '-I', '/usr/include/qt5/QtHelp',
@@ -103,6 +104,7 @@ flags = [
     '-I', 'penyamanager',
     '-I', 'penyamanager/libs/simplecrypt',
     '-I', 'penyamanager/libs/QsLog2',
+    '-I', 'penyamanager/libs/mustache',
     '-I', 'dist'
 ]
 
