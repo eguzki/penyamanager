@@ -228,7 +228,7 @@ namespace PenyaManager {
         NumItemDialog numItemDialog(this);
         numItemDialog.exec();
         Uint32 guestNum = numItemDialog.getKey();
-        if (guestNum == 0) 
+        if (guestNum == 0)
         {
             return;
         }
@@ -255,7 +255,8 @@ namespace PenyaManager {
         QLOG_INFO() << QString("[%1] User %2 item %3").arg(title).arg(pCurrMemberPtr->m_id).arg(itemId);
         QMessageBox::information(this, title, "Reservation done");
         // call main window
-        switchWindow(WindowKey::kMainWindowKey);
+        init();
+        //switchWindow(WindowKey::kMainWindowKey);
     }
     //
     void TableReservationView::on_cancelButton_clicked(int reservationId, ReservationItemType itemType)
