@@ -260,8 +260,8 @@ namespace PenyaManager {
         QLOG_INFO() << QString("[%1] User %2 item %3").arg(title).arg(pCurrMemberPtr->m_id).arg(itemId);
         QMessageBox::information(this, title, "Reservation done");
         // call main window
-        init();
         //switchWindow(WindowKey::kMainWindowKey);
+        fillTableReservations(pCurrMemberPtr, date, reservationType);
     }
     //
     void TableReservationView::on_cancelButton_clicked(int reservationId, ReservationItemType itemType)
