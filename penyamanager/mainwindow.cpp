@@ -24,13 +24,29 @@ namespace PenyaManager {
 
         this->connect(this->ui->familyListWidget, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(familyItemClicked(QListWidgetItem*)));
         this->connect(this->ui->productListWidget, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(productItemClicked(QListWidgetItem*)));
+        initializeTable();
     }
-
     //
     MainWindow::~MainWindow()
     {
         m_rowProductIdMap.clear();
         delete ui;
+    }
+    //
+    void MainWindow::initializeTable()
+    {
+        this->ui->invoiceTableWidget->setColumnCount(4);
+        // table Header
+        QStringList headers;
+        headers.append(tr("article"));
+        headers.append(tr("price/u"));
+        headers.append(tr("count"));
+        headers.append(tr("total"));
+        this->ui->invoiceTableWidget->setHorizontalHeaderLabels(headers);
+        this->ui->invoiceTableWidget->setColumnWidth(0, 300);
+        this->ui->invoiceTableWidget->setColumnWidth(1, 150);
+        this->ui->invoiceTableWidget->setColumnWidth(2, 100);
+        this->ui->invoiceTableWidget->setColumnWidth(3, 150);
     }
     //
     void MainWindow::init()
@@ -200,16 +216,8 @@ namespace PenyaManager {
         InvoiceProductItemListPtr pInvoiceProductItemListPtr = Singletons::m_pDAO->getInvoiceProductItems(pInvoicePtr->m_id);
 
         // table
-        this->ui->invoiceTableWidget->setColumnCount(4);
         this->ui->invoiceTableWidget->setRowCount(pInvoiceProductItemListPtr->size());
 
-        // invoice table Header
-        QStringList headers;
-        headers.append("article");
-        headers.append("price/u");
-        headers.append("count");
-        headers.append("total");
-        this->ui->invoiceTableWidget->setHorizontalHeaderLabels(headers);
         // invoice table reset
         this->ui->invoiceTableWidget->clearContents();
         // internal data structure reset
@@ -240,6 +248,12 @@ namespace PenyaManager {
     //
     void MainWindow::on_invoiceCloseButton_clicked()
     {
+        // check invoice is not empty
+        if (!this->ui->invoiceTableWidget->rowCount()) {
+            QMessageBox::information(this, tr("Note"),
+                    tr("Current invoice is empty"));
+            return;
+        }
         switchWindow(WindowKey::kInvoiceWindowKey);
     }
     //

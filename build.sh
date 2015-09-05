@@ -33,9 +33,10 @@ set -e # Returns error if any command returns error
 # ... you can store you local modifications on a 'build.local' file
 
 checkBinary "which"
-checkBinary "qmake"
+#checkBinary "qmake"
 checkBinary "make"
-QMAKE=$(which qmake)
+#QMAKE=$(which qmake)
+QMAKE="/opt/Qt5.5.0/5.5/gcc_64/bin/qmake"
 MAKE=$(which make)
 LRELEASE=$(which lrelease)
 

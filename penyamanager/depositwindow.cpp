@@ -87,11 +87,10 @@ namespace PenyaManager {
             QLOG_INFO() << QString("[Deposit] User %1 deposit ID %2").arg(pCurrMemberPtr->m_id).arg(pDepositPtr->m_id);
             // print deposit
             printDeposit(pCurrMemberPtr, pDepositPtr);
-            QMessageBox::information(this, "Deposit", tr("Deposit done"));
+            QMessageBox::information(this, tr("Deposit"), tr("Deposit done"));
+            // Go to main window
+            switchWindow(WindowKey::kMainWindowKey);
         }
-
-        // Go to main window
-        switchWindow(WindowKey::kMainWindowKey);
     }
     //
     void DepositWindow::updateNewBalanceLabel(double deposit)

@@ -225,12 +225,17 @@ namespace PenyaManager {
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
         QDate date = this->ui->calendarWidget->selectedDate();
         ReservationType reservationType = static_cast<ReservationType>(this->ui->reservationTypeButtonGroup->checkedId());
-        NumItemDialog numItemDialog(this);
-        numItemDialog.exec();
-        Uint32 guestNum = numItemDialog.getKey();
-        if (guestNum == 0) 
+
+        Uint32 guestNum = 0;
+        if (itemType == ReservationItemType::LunchTableType)
         {
-            return;
+            NumItemDialog numItemDialog(this);
+            numItemDialog.exec();
+            guestNum = numItemDialog.getKey();
+            if (guestNum == 0)
+            {
+                return;
+            }
         }
 
         QString title;
@@ -242,11 +247,11 @@ namespace PenyaManager {
                 break;
             case ReservationItemType::OvenType:
                 title = "Oven reservation";
-                Singletons::m_pDAO->makeOvenReservation(date, reservationType, guestNum, pCurrMemberPtr->m_id, itemId);
+                Singletons::m_pDAO->makeOvenReservation(date, reservationType, pCurrMemberPtr->m_id, itemId);
                 break;
             case ReservationItemType::FireplaceType:
                 title = "Fireplace reservation";
-                Singletons::m_pDAO->makeFireplaceReservation(date, reservationType, guestNum, pCurrMemberPtr->m_id, itemId);
+                Singletons::m_pDAO->makeFireplaceReservation(date, reservationType, pCurrMemberPtr->m_id, itemId);
                 break;
             default:
                 break;
@@ -255,7 +260,8 @@ namespace PenyaManager {
         QLOG_INFO() << QString("[%1] User %2 item %3").arg(title).arg(pCurrMemberPtr->m_id).arg(itemId);
         QMessageBox::information(this, title, "Reservation done");
         // call main window
-        switchWindow(WindowKey::kMainWindowKey);
+        //switchWindow(WindowKey::kMainWindowKey);
+        fillTableReservations(pCurrMemberPtr, date, reservationType);
     }
     //
     void TableReservationView::on_cancelButton_clicked(int reservationId, ReservationItemType itemType)
