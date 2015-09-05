@@ -15,6 +15,8 @@ QMAKE_CXXFLAGS += -std=c++11
 
 TEMPLATE = app
 
+RC_ICONS = images/alegrialogo.ico
+
 include(libs/simplecrypt/simplecrypt.pro)
 
 SOURCES +=  confmain.cpp \

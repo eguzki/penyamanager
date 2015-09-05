@@ -23,6 +23,8 @@ include(libs/mustache/mustache.pro)
 
 RESOURCES = penyamanager.qrc
 
+RC_ICONS = images/alegrialogo.ico
+
 SOURCES += main.cpp\
         singletons.cpp\
         dao.cpp\
