@@ -16,6 +16,7 @@ namespace PenyaManager {
         ui(new Ui::SlowPayersView)
     {
         ui->setupUi(this);
+        initializeTable();
     }
     //
     SlowPayersView::~SlowPayersView()
@@ -32,6 +33,20 @@ namespace PenyaManager {
         //
 
         show();
+    }
+    //
+    void SlowPayersView::initializeTable()
+    {
+        // table Header
+        this->ui->slowPayersTableWidget->setColumnCount(3);
+        QStringList headers;
+        headers.append(tr("Member Id"));
+        headers.append(tr("Name"));
+        headers.append(tr("Balance"));
+        this->ui->slowPayersTableWidget->setHorizontalHeaderLabels(headers);
+        this->ui->slowPayersTableWidget->setColumnWidth(0, 100);
+        this->ui->slowPayersTableWidget->setColumnWidth(1, 400);
+        this->ui->slowPayersTableWidget->setColumnWidth(2, 200);
     }
     //
     void SlowPayersView::retranslate()
@@ -54,18 +69,8 @@ namespace PenyaManager {
         }
 
         // table
-        this->ui->slowPayersTableWidget->setColumnCount(3);
         this->ui->slowPayersTableWidget->setRowCount(pMemberListPtr->size());
 
-        // table Header
-        QStringList headers;
-        headers.append("Member Id");
-        headers.append("Name");
-        headers.append("Balance");
-        this->ui->slowPayersTableWidget->setHorizontalHeaderLabels(headers);
-        this->ui->slowPayersTableWidget->setColumnWidth(0, 100);
-        this->ui->slowPayersTableWidget->setColumnWidth(1, 400);
-        this->ui->slowPayersTableWidget->setColumnWidth(2, 200);
         // invoice table reset
         this->ui->slowPayersTableWidget->clearContents();
 
