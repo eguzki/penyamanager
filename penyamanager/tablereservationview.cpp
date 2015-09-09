@@ -29,6 +29,7 @@ namespace PenyaManager {
         this->ui->reservationTypeButtonGroup->setId(this->ui->dinnerButton, static_cast<Int32>(ReservationType::Dinner));
         this->ui->reservationTypeButtonGroup->setId(this->ui->lunchButton, static_cast<Int32>(ReservationType::Lunch));
         initializeTable();
+        this->ui->calendarWidget->setLocale(Singletons::m_translationManager.getLocale());
     }
     //
     TableReservationView::~TableReservationView()
@@ -39,13 +40,12 @@ namespace PenyaManager {
     void TableReservationView::retranslate()
     {
         this->ui->retranslateUi(this);
+        translateTable();
+        this->ui->calendarWidget->setLocale(Singletons::m_translationManager.getLocale());
     }
     //
-    void TableReservationView::initializeTable()
+    void TableReservationView::translateTable()
     {
-        // table
-        this->ui->tableReservationTableWidget->setColumnCount(6);
-
         // table reservation table Header
         QStringList headers;
         headers.append("Type");
@@ -54,9 +54,15 @@ namespace PenyaManager {
         headers.append("Reserved By Guest");
         headers.append("# reserved");
         headers.append("Action");
-
-        Uint32 column = 0;
         this->ui->tableReservationTableWidget->setHorizontalHeaderLabels(headers);
+    }
+    //
+    void TableReservationView::initializeTable()
+    {
+        // table
+        this->ui->tableReservationTableWidget->setColumnCount(6);
+        translateTable();
+        Uint32 column = 0;
         this->ui->tableReservationTableWidget->setColumnWidth(column++, 200);
         this->ui->tableReservationTableWidget->setColumnWidth(column++, 250);
         this->ui->tableReservationTableWidget->setColumnWidth(column++, 80);

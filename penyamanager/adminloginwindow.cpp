@@ -112,9 +112,9 @@ namespace PenyaManager {
     {
         // change translator
         qApp->removeTranslator(m_pTranslator);
-        Singletons::m_currentLangIndex = (Singletons::m_currentLangIndex + 1)%Singletons::m_numLangs;
+        Singletons::m_translationManager.switchLanguage();
         // load new dictionary
-        m_pTranslator->load(QString("penyamanageradmin_%1").arg(Singletons::m_pLanguagesPrefixArray[Singletons::m_currentLangIndex]));
+        m_pTranslator->load(Singletons::m_translationManager.getAdminTranslationFile());
         // installTranslator() will create a change event which will be sent to every single widget
         qApp->installTranslator(m_pTranslator);
     }

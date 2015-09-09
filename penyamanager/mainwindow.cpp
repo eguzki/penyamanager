@@ -210,7 +210,8 @@ namespace PenyaManager {
         }
 
         // Invoice header
-        this->ui->invoiceGroupBox->setTitle(tr("Invoice (Ref #%1) on (%2)").arg(pInvoicePtr->m_id).arg(pInvoicePtr->m_date.toString()));
+        QString invoiceDateLocalized = Singletons::m_translationManager.getLocale().toString(pInvoicePtr->m_date);
+        this->ui->invoiceGroupBox->setTitle(tr("Invoice (Ref #%1) on (%2)").arg(pInvoicePtr->m_id).arg(invoiceDateLocalized));
 
         // get invoice products
         InvoiceProductItemListPtr pInvoiceProductItemListPtr = Singletons::m_pDAO->getInvoiceProductItems(pInvoicePtr->m_id);
