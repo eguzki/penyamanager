@@ -26,22 +26,26 @@ namespace PenyaManager {
     {
         // table
         this->ui->memberTableWidget->setColumnCount(6);
-
-        // invoice table Header
-        QStringList headers;
-        headers.append("Image");
-        headers.append("Surnames");
-        headers.append("Name");
-        headers.append("MemberID");
-        headers.append("Email");
-        headers.append("Active");
+        translateTable();
         Uint32 column = 0;
-        this->ui->memberTableWidget->setHorizontalHeaderLabels(headers);
         this->ui->memberTableWidget->setColumnWidth(column++, Constants::kFamilyImageWidth);
         this->ui->memberTableWidget->setColumnWidth(column++, 300);
         this->ui->memberTableWidget->setColumnWidth(column++, 150);
         this->ui->memberTableWidget->setColumnWidth(column++, 100);
         this->ui->memberTableWidget->setColumnWidth(column++, 300);
+    }
+    //
+    void MemberListView::translateTable()
+    {
+        // invoice table Header
+        QStringList headers;
+        headers.append(tr("Image"));
+        headers.append(tr("Surnames"));
+        headers.append(tr("Name"));
+        headers.append(tr("MemberID"));
+        headers.append(tr("Email"));
+        headers.append(tr("Active"));
+        this->ui->memberTableWidget->setHorizontalHeaderLabels(headers);
     }
     //
     void MemberListView::init()
@@ -62,6 +66,7 @@ namespace PenyaManager {
     void MemberListView::retranslate()
     {
         this->ui->retranslateUi(this);
+        translateTable();
     }
     //
     void MemberListView::updateResults()

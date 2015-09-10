@@ -25,23 +25,27 @@ namespace PenyaManager {
         delete ui;
     }
     //
+    void StockManagementWindow::translateTable()
+    {
+        // invoice table Header
+        QStringList headers;
+        headers.append(tr("Image"));
+        headers.append(tr("Ref#"));
+        headers.append(tr("name"));
+        headers.append(tr("active"));
+        headers.append(tr("registration date"));
+        headers.append(tr("price/unit"));
+        headers.append(tr("familyId"));
+        headers.append(tr("providerId"));
+        headers.append(tr("# units"));
+        this->ui->productsTableWidget->setHorizontalHeaderLabels(headers);
+    }
+    //
     void StockManagementWindow::initializeTable()
     {
         // table
         this->ui->productsTableWidget->setColumnCount(9);
-        // invoice table Header
-        QStringList headers;
-        headers.append("Image");
-        headers.append("Ref#");
-        headers.append("name");
-        headers.append("active");
-        headers.append("registration date");
-        headers.append("price/unit");
-        headers.append("familyId");
-        headers.append("providerId");
-        headers.append("# units");
-
-        this->ui->productsTableWidget->setHorizontalHeaderLabels(headers);
+        translateTable();
         this->ui->productsTableWidget->setColumnWidth(0, Constants::kFamilyImageWidth);
         this->ui->productsTableWidget->setColumnWidth(1, 100);
         this->ui->productsTableWidget->setColumnWidth(2, 300);
@@ -70,6 +74,7 @@ namespace PenyaManager {
     void StockManagementWindow::retranslate()
     {
         this->ui->retranslateUi(this);
+        translateTable();
     }
     //
     void StockManagementWindow::on_csvPushButton_clicked()
@@ -101,11 +106,6 @@ namespace PenyaManager {
         QMessageBox::information(this, "export stock CSV", "Stock exported to " + filename);
     }
     //
-    void StockManagementWindow::on_printPushButton_clicked()
-    {
-        //TODO
-    }
-    //
     void StockManagementWindow::on_prevPagePushButton_clicked()
     {
         m_currentPage--;
@@ -134,13 +134,7 @@ namespace PenyaManager {
         // fill product list
         fillProductList(pfListPtr);
         //
-        if (pfListPtr->size() > 0) {
-            this->ui->csvPushButton->setEnabled(true);
-            this->ui->printPushButton->setEnabled(true);
-        } else {
-            this->ui->csvPushButton->setEnabled(false);
-            this->ui->printPushButton->setEnabled(false);
-        }
+        this->ui->csvPushButton->setEnabled(pfListPtr->size() > 0);
     }
     //
     void StockManagementWindow::fillProductList(const ProductItemListPtr &pProductItemListPtr)
@@ -168,7 +162,8 @@ namespace PenyaManager {
             //  product active status
             this->ui->productsTableWidget->setItem(rowCount, 3, new QTableWidgetItem((pProductPtr->m_active)?(QString::number(1)):(QString::number(0))));
             //  product reg date
-            this->ui->productsTableWidget->setItem(rowCount, 4, new QTableWidgetItem(pProductPtr->m_regDate.toString()));
+            QString dateLocalized = Singletons::m_translationManager.getLocale().toString(pProductPtr->m_regDate);
+            this->ui->productsTableWidget->setItem(rowCount, 4, new QTableWidgetItem(dateLocalized));
             //  product price
             this->ui->productsTableWidget->setItem(rowCount, 5, new QTableWidgetItem(QString::number(pProductPtr->m_price)));
             //  product familyid

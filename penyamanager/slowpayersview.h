@@ -35,6 +35,8 @@ namespace PenyaManager {
 
     private:
             //
+            void translateTable();
+            //
             void fillSlowPayersData();
             //
             void initializeTable();

@@ -3,6 +3,7 @@
 #include <QApplication>
 #include <QTranslator>
 #include <QMessageBox>
+#include <QLocale>
 
 #include <QsLogDest.h>
 #include <QsLog.h>
@@ -24,12 +25,6 @@ int main(int argc, char *argv[])
     QApplication::setStyle("windows");
     // Main QApplication object
     QApplication app(argc, argv);
-
-    // Translators
-    QTranslator penyamanagerTranslator;
-    // Initial dictionary
-    penyamanagerTranslator.load("penyamanager_eu");
-    app.installTranslator(&penyamanagerTranslator);
 
     // Settings
     QSettings settings(PenyaManager::Constants::kOrganizationName, PenyaManager::Constants::kApplicationName);
@@ -56,6 +51,7 @@ int main(int argc, char *argv[])
     logger.addDestination(fileDestination);
 
     QLOG_INFO() << "Program started";
+
     // Singletons initialization
     // Includes ddbb connection
     PenyaManager::Singletons::Create(&settings);
@@ -65,6 +61,12 @@ int main(int argc, char *argv[])
         QMessageBox::critical(NULL, "Error", "Database connection failed. Call the stupid administrator and complain for incompetence");
         return 1;
     }
+
+    // Translators
+    QTranslator penyamanagerTranslator;
+    // Initial dictionary
+    penyamanagerTranslator.load(PenyaManager::Singletons::m_translationManager.getTranslationFile());
+    app.installTranslator(&penyamanagerTranslator);
 
     // Fill views
     PenyaManager::LoginWindow *pLoginWindow = new PenyaManager::LoginWindow(NULL, &penyamanagerTranslator);

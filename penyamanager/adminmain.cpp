@@ -34,12 +34,7 @@ int main(int argc, char *argv[])
     QApplication::setStyle("windows");
     QApplication app(argc, argv);
 
-    // Translators
-    QTranslator penyamanagerTranslator;
-    // Initial dictionary
-    penyamanagerTranslator.load("penyamanageradmin_eu");
-    app.installTranslator(&penyamanagerTranslator);
-
+    // Settings
     QSettings settings(PenyaManager::Constants::kOrganizationName, PenyaManager::Constants::kApplicationName);
     if (!settings.contains(PenyaManager::Constants::kResourcePathKey))
     {
@@ -65,6 +60,8 @@ int main(int argc, char *argv[])
 
     QLOG_INFO() << "Program started";
 
+    // Singletons initialization
+    // Includes ddbb connection
     PenyaManager::Singletons::Create(&settings);
 
     if (!PenyaManager::Singletons::m_pDAO->isOpen()) {
@@ -72,6 +69,12 @@ int main(int argc, char *argv[])
         QMessageBox::critical(NULL, "Error", "Database connection failed. Call the stupid administrator and complain for incompetence");
         return 1;
     }
+
+    // Translators
+    QTranslator penyamanagerTranslator;
+    // Initial dictionary
+    penyamanagerTranslator.load(PenyaManager::Singletons::m_translationManager.getAdminTranslationFile());
+    app.installTranslator(&penyamanagerTranslator);
 
     PenyaManager::AdminMainWindow adminMainWindow;
 

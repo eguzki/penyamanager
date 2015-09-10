@@ -38,22 +38,14 @@ namespace PenyaManager {
     void DepositListView::retranslate()
     {
         this->ui->retranslateUi(this);
+        translateTable();
     }
     //
     void DepositListView::initializeTable()
     {
         // table
         this->ui->depositTableWidget->setColumnCount(6);
-
-        // invoice table Header
-        QStringList headers;
-        headers.append("ID");
-        headers.append("date");
-        headers.append("memberid");
-        headers.append("Total");
-        headers.append("Cash");
-        headers.append("Action");
-        this->ui->depositTableWidget->setHorizontalHeaderLabels(headers);
+        translateTable();
         Uint32 column = 0;
         this->ui->depositTableWidget->setColumnWidth(column++, 100);
         this->ui->depositTableWidget->setColumnWidth(column++, 200);
@@ -61,6 +53,19 @@ namespace PenyaManager {
         this->ui->depositTableWidget->setColumnWidth(column++, 100);
         this->ui->depositTableWidget->setColumnWidth(column++, 200);
         this->ui->depositTableWidget->setColumnWidth(column++, 200);
+    }
+    //
+    void DepositListView::translateTable()
+    {
+        // invoice table Header
+        QStringList headers;
+        headers.append(tr("ID"));
+        headers.append(tr("date"));
+        headers.append(tr("memberid"));
+        headers.append(tr("Total"));
+        headers.append(tr("Cash"));
+        headers.append(tr("Action"));
+        this->ui->depositTableWidget->setHorizontalHeaderLabels(headers);
     }
     //
     void DepositListView::showUncheckedDeposits()
@@ -80,7 +85,8 @@ namespace PenyaManager {
             QTableWidgetItem *pTableItem = new QTableWidgetItem(QString::number(pDepositPtr->m_id));
             pTableItem->setData(Qt::UserRole, pDepositPtr->m_id);
             this->ui->depositTableWidget->setItem(rowCount, column++, pTableItem);
-            this->ui->depositTableWidget->setItem(rowCount, column++, new QTableWidgetItem(pDepositPtr->m_date.toString()));
+            QString dateLocalized = Singletons::m_translationManager.getLocale().toString(pDepositPtr->m_date);
+            this->ui->depositTableWidget->setItem(rowCount, column++, new QTableWidgetItem(dateLocalized));
             pTableItem = new QTableWidgetItem(QString::number(pDepositPtr->m_memberId));
             pTableItem->setData(Qt::UserRole, pDepositPtr->m_memberId);
             this->ui->depositTableWidget->setItem(rowCount, column++, pTableItem);

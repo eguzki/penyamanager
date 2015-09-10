@@ -36,6 +36,15 @@ namespace PenyaManager {
     void MainWindow::initializeTable()
     {
         this->ui->invoiceTableWidget->setColumnCount(4);
+        translateTable();
+        this->ui->invoiceTableWidget->setColumnWidth(0, 300);
+        this->ui->invoiceTableWidget->setColumnWidth(1, 150);
+        this->ui->invoiceTableWidget->setColumnWidth(2, 100);
+        this->ui->invoiceTableWidget->setColumnWidth(3, 150);
+    }
+    //
+    void MainWindow::translateTable()
+    {
         // table Header
         QStringList headers;
         headers.append(tr("article"));
@@ -43,10 +52,6 @@ namespace PenyaManager {
         headers.append(tr("count"));
         headers.append(tr("total"));
         this->ui->invoiceTableWidget->setHorizontalHeaderLabels(headers);
-        this->ui->invoiceTableWidget->setColumnWidth(0, 300);
-        this->ui->invoiceTableWidget->setColumnWidth(1, 150);
-        this->ui->invoiceTableWidget->setColumnWidth(2, 100);
-        this->ui->invoiceTableWidget->setColumnWidth(3, 150);
     }
     //
     void MainWindow::init()
@@ -99,6 +104,7 @@ namespace PenyaManager {
     void MainWindow::retranslate()
     {
         this->ui->retranslateUi(this);
+        translateTable();
     }
     //
     void MainWindow::createProductItemWidget(const ProductItemPtr &pfPtr, QListWidget *pList)
@@ -210,7 +216,8 @@ namespace PenyaManager {
         }
 
         // Invoice header
-        this->ui->invoiceGroupBox->setTitle(tr("Invoice (Ref #%1) on (%2)").arg(pInvoicePtr->m_id).arg(pInvoicePtr->m_date.toString()));
+        QString invoiceDateLocalized = Singletons::m_translationManager.getLocale().toString(pInvoicePtr->m_date);
+        this->ui->invoiceGroupBox->setTitle(tr("Invoice (Ref #%1) on (%2)").arg(pInvoicePtr->m_id).arg(invoiceDateLocalized));
 
         // get invoice products
         InvoiceProductItemListPtr pInvoiceProductItemListPtr = Singletons::m_pDAO->getInvoiceProductItems(pInvoicePtr->m_id);

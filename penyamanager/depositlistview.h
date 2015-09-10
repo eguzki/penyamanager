@@ -28,6 +28,8 @@ namespace PenyaManager {
 
         private:
             //
+            void translateTable();
+            //
             void showUncheckedDeposits();
             //
             void initializeTable();

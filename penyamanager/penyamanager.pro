@@ -55,7 +55,8 @@ SOURCES += main.cpp\
         invoicedetailswidget.cpp \
         memberprofilegroupbox.cpp \
     invoicedetailswindow.cpp \
-    guiutils.cpp
+    guiutils.cpp \
+    translationmanager.cpp
 
 HEADERS  += mainwindow.h\
         singletons.h\
@@ -86,7 +87,8 @@ HEADERS  += mainwindow.h\
         invoicedetailswidget.h \
         memberprofilegroupbox.h \
     invoicedetailswindow.h \
-    guiutils.h
+    guiutils.h \
+    translationmanager.h
 
 FORMS    += mainwindow.ui\
         loginwindow.ui \
