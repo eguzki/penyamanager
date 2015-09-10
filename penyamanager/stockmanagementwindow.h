@@ -29,6 +29,8 @@ namespace PenyaManager {
 
         private:
             //
+            void translateTable();
+            //
             void updateResults();
             //
             void fillProductList(const ProductItemListPtr &pProductItemListPtr);
@@ -39,10 +41,8 @@ namespace PenyaManager {
             //
             void on_csvPushButton_clicked();
             //
-            void on_printPushButton_clicked();
-
             void on_prevPagePushButton_clicked();
-
+            //
             void on_nextPagePushButton_clicked();
 
         private:

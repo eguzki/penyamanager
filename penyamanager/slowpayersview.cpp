@@ -39,19 +39,26 @@ namespace PenyaManager {
     {
         // table Header
         this->ui->slowPayersTableWidget->setColumnCount(3);
-        QStringList headers;
-        headers.append(tr("Member Id"));
-        headers.append(tr("Name"));
-        headers.append(tr("Balance"));
-        this->ui->slowPayersTableWidget->setHorizontalHeaderLabels(headers);
+        translateTable();
         this->ui->slowPayersTableWidget->setColumnWidth(0, 100);
         this->ui->slowPayersTableWidget->setColumnWidth(1, 400);
         this->ui->slowPayersTableWidget->setColumnWidth(2, 200);
     }
     //
+    void SlowPayersView::translateTable()
+    {
+        // table reservation table Header
+        QStringList headers;
+        headers.append(tr("Member Id"));
+        headers.append(tr("Name"));
+        headers.append(tr("Balance"));
+        this->ui->slowPayersTableWidget->setHorizontalHeaderLabels(headers);
+    }
+    //
     void SlowPayersView::retranslate()
     {
         this->ui->retranslateUi(this);
+        translateTable();
     }
     //
     void SlowPayersView::fillSlowPayersData()

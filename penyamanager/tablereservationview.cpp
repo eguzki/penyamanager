@@ -48,12 +48,12 @@ namespace PenyaManager {
     {
         // table reservation table Header
         QStringList headers;
-        headers.append("Type");
-        headers.append("Name");
-        headers.append("Size");
-        headers.append("Reserved By Guest");
-        headers.append("# reserved");
-        headers.append("Action");
+        headers.append(tr("Type"));
+        headers.append(tr("Name"));
+        headers.append(tr("Size"));
+        headers.append(tr("Reserved By Guest"));
+        headers.append(tr("# reserved"));
+        headers.append(tr("Action"));
         this->ui->tableReservationTableWidget->setHorizontalHeaderLabels(headers);
     }
     //

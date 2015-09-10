@@ -19,7 +19,9 @@ namespace PenyaManager {
         // from 30 days before
         QDate fromIntialDate = toInitialDate.addDays(-30);
 
+        this->ui->fromCalendarWidget->setLocale(Singletons::m_translationManager.getLocale());
         this->ui->fromCalendarWidget->setSelectedDate(fromIntialDate);
+        this->ui->toCalendarWidget->setLocale(Singletons::m_translationManager.getLocale());
         this->ui->toCalendarWidget->setSelectedDate(toInitialDate);
 
         this->ui->fromDateResultValueLabel->clear();
@@ -48,23 +50,30 @@ namespace PenyaManager {
         show();
     }
     //
+    void AccountBalanceView::translateTable()
+    {
+        // table reservation table Header
+        QStringList headers;
+        headers.append(tr("date"));
+        headers.append(tr("memberid"));
+        headers.append(tr("description"));
+        headers.append(tr("amount"));
+        this->ui->transactionsTableWidget->setHorizontalHeaderLabels(headers);
+    }
+    //
     void AccountBalanceView::retranslate()
     {
         this->ui->retranslateUi(this);
+        translateTable();
+        this->ui->fromCalendarWidget->setLocale(Singletons::m_translationManager.getLocale());
+        this->ui->toCalendarWidget->setLocale(Singletons::m_translationManager.getLocale());
     }
     //
     void AccountBalanceView::initializeTable()
     {
         // table
         this->ui->transactionsTableWidget->setColumnCount(4);
-
-        // invoice table Header
-        QStringList headers;
-        headers.append("date");
-        headers.append("memberid");
-        headers.append("description");
-        headers.append("amount");
-        this->ui->transactionsTableWidget->setHorizontalHeaderLabels(headers);
+        translateTable();
         Uint32 column = 0;
         this->ui->transactionsTableWidget->setColumnWidth(column++, 200);
         this->ui->transactionsTableWidget->setColumnWidth(column++, 100);
@@ -78,11 +87,6 @@ namespace PenyaManager {
         this->m_firstTime = false;
         m_currentPage = 0;
         updateResults();
-    }
-    //
-    void AccountBalanceView::on_printPushButton_clicked()
-    {
-        // TODO
     }
     //
     void AccountBalanceView::on_prevPagePushButton_clicked()
@@ -115,7 +119,8 @@ namespace PenyaManager {
         {
             Uint32 column = 0;
             TransactionPtr pTransactionPtr = *iter;
-            this->ui->transactionsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(pTransactionPtr->m_date.toString()));
+            QString dateLocalized = Singletons::m_translationManager.getLocale().toString(pTransactionPtr->m_date);
+            this->ui->transactionsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(dateLocalized));
             this->ui->transactionsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(QString::number(pTransactionPtr->m_memberId)));
             this->ui->transactionsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(pTransactionPtr->m_descr));
             this->ui->transactionsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(tr("%1 €").arg(pTransactionPtr->m_amount)));
@@ -155,8 +160,10 @@ namespace PenyaManager {
         this->ui->totalInvoicesValueLabel->setText(tr("%1 €").arg(pTransactionListStatsPtr->m_totalInvoices));
         this->ui->totalBankChargesValueLabel->setText(tr("%1 €").arg(pTransactionListStatsPtr->m_totalBankCharges));
         // fill dates used for query
-        this->ui->fromDateResultValueLabel->setText(fromDate.toString());
-        this->ui->toDateResultValueLabel->setText(toDate.addDays(-1).toString());
+        QString dateLocalized = Singletons::m_translationManager.getLocale().toString(fromDate);
+        this->ui->fromDateResultValueLabel->setText(dateLocalized);
+        dateLocalized = Singletons::m_translationManager.getLocale().toString(toDate.addDays(-1));
+        this->ui->toDateResultValueLabel->setText(dateLocalized);
         // fill transaction list
         fillTransactionList(pTransactionListPtr);
     }
