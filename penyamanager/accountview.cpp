@@ -65,8 +65,8 @@ namespace PenyaManager {
 
         // invoice table Header
         QStringList headers;
-        headers.append("Date");
-        headers.append("Description");
+        headers.append(tr("Date"));
+        headers.append(tr("Description"));
         headers.append("Amount");
         headers.append("Balance");
         headers.append("Type");
