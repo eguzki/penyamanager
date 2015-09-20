@@ -17,8 +17,7 @@ namespace PenyaManager {
     Int32 Singletons::m_currentProductId = 0;
     Int32 Singletons::m_currentFamilyId = 0;
     Int32 Singletons::m_currentMemberId = 0;
-    Uint16 Singletons::m_currentLangIndex = 0; // initial index -> eu
-    QString Singletons::m_pLanguagesPrefixArray[] = {"eu", "es"};
+    TranslationManager Singletons::m_translationManager;
 
     void Singletons::Create(QSettings *pSettings)
     {

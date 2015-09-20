@@ -23,6 +23,8 @@ include(libs/mustache/mustache.pro)
 
 RESOURCES = penyamanager.qrc
 
+RC_ICONS = images/alegrialogo.ico
+
 SOURCES += main.cpp\
         singletons.cpp\
         dao.cpp\
@@ -53,7 +55,8 @@ SOURCES += main.cpp\
         invoicedetailswidget.cpp \
         memberprofilegroupbox.cpp \
     invoicedetailswindow.cpp \
-    guiutils.cpp
+    guiutils.cpp \
+    translationmanager.cpp
 
 HEADERS  += mainwindow.h\
         singletons.h\
@@ -84,7 +87,8 @@ HEADERS  += mainwindow.h\
         invoicedetailswidget.h \
         memberprofilegroupbox.h \
     invoicedetailswindow.h \
-    guiutils.h
+    guiutils.h \
+    translationmanager.h
 
 FORMS    += mainwindow.ui\
         loginwindow.ui \

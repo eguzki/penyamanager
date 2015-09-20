@@ -105,8 +105,8 @@ penyamanager
 
 ## Developed using:
 * Vim 7.4 [customized](https://github.com/eguzki/eguzki-vim-environment)
-* QT Creator 3.0.1
-* QT 5.2.1
+* QT Creator 3.4.2
+* QT 5.5.0
 * GCC 4.8.4, 64 bit
 
 ## Translations

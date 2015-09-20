@@ -296,7 +296,6 @@ DROP TABLE IF EXISTS `alegria`.`ovens` ;
 CREATE TABLE IF NOT EXISTS `alegria`.`ovens` (
   `idoven` INT(11) NOT NULL,
   `name` VARCHAR(45) NOT NULL,
-  `guestnum` SMALLINT NOT NULL,
   PRIMARY KEY (`idoven`))
 ENGINE = InnoDB;
 
@@ -310,7 +309,6 @@ CREATE TABLE IF NOT EXISTS `alegria`.`ovenreservation` (
   `idreservation` INT NOT NULL AUTO_INCREMENT,
   `date` DATE NOT NULL,
   `reservationtype` TINYINT NOT NULL,
-  `guestnum` SMALLINT NOT NULL,
   `idmember` INT(11) NOT NULL,
   `idoven` INT(11) NOT NULL,
   PRIMARY KEY (`idreservation`),
@@ -337,7 +335,6 @@ DROP TABLE IF EXISTS `alegria`.`fireplaces` ;
 CREATE TABLE IF NOT EXISTS `alegria`.`fireplaces` (
   `idfireplace` INT(11) NOT NULL,
   `name` VARCHAR(45) NOT NULL,
-  `guestnum` SMALLINT NOT NULL,
   PRIMARY KEY (`idfireplace`))
 ENGINE = InnoDB;
 
@@ -351,7 +348,6 @@ CREATE TABLE IF NOT EXISTS `alegria`.`fireplacereservation` (
   `idreservation` INT NOT NULL AUTO_INCREMENT,
   `date` DATE NOT NULL,
   `reservationtype` TINYINT NOT NULL,
-  `guestnum` SMALLINT NOT NULL,
   `idmember` INT(11) NOT NULL,
   `idfireplace` INT(11) NOT NULL,
   PRIMARY KEY (`idreservation`),

@@ -35,6 +35,8 @@ namespace PenyaManager {
             void updateResults();
             //
             void initializeTable();
+            //
+            void translateTable();
 
         private slots:
             //

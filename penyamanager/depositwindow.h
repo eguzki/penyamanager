@@ -4,6 +4,7 @@
 #include <QWidget>
 
 #include "objs/Member.h"
+#include "objs/Deposit.h"
 #include "memberprofilegroupbox.h"
 #include "IPartner.h"
 
@@ -31,7 +32,9 @@ namespace PenyaManager {
             //
             void updateNewBalanceLabel(double deposit);
             //
-            void printDeposit();
+            void printDeposit(const MemberPtr &pMemberPtr, const DepositPtr &pDepositPtr);
+            //
+            QString renderDepositTemplate(const QString &depositTemplate, const MemberPtr &pMemberPtr, const DepositPtr &pDepositPtr);
 
         private slots:
             //

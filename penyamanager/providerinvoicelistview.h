@@ -29,6 +29,8 @@ namespace PenyaManager {
 
         private:
             //
+            void translateTable();
+            //
             void fillInvoiceList(ProviderInvoiceListPtr pProviderInvoiceListPtr);
             //
             void updateResults();

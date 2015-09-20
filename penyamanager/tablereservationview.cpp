@@ -29,6 +29,7 @@ namespace PenyaManager {
         this->ui->reservationTypeButtonGroup->setId(this->ui->dinnerButton, static_cast<Int32>(ReservationType::Dinner));
         this->ui->reservationTypeButtonGroup->setId(this->ui->lunchButton, static_cast<Int32>(ReservationType::Lunch));
         initializeTable();
+        this->ui->calendarWidget->setLocale(Singletons::m_translationManager.getLocale());
     }
     //
     TableReservationView::~TableReservationView()
@@ -39,24 +40,29 @@ namespace PenyaManager {
     void TableReservationView::retranslate()
     {
         this->ui->retranslateUi(this);
+        translateTable();
+        this->ui->calendarWidget->setLocale(Singletons::m_translationManager.getLocale());
+    }
+    //
+    void TableReservationView::translateTable()
+    {
+        // table reservation table Header
+        QStringList headers;
+        headers.append(tr("Type"));
+        headers.append(tr("Name"));
+        headers.append(tr("Size"));
+        headers.append(tr("Reserved By Guest"));
+        headers.append(tr("# reserved"));
+        headers.append(tr("Action"));
+        this->ui->tableReservationTableWidget->setHorizontalHeaderLabels(headers);
     }
     //
     void TableReservationView::initializeTable()
     {
         // table
         this->ui->tableReservationTableWidget->setColumnCount(6);
-
-        // table reservation table Header
-        QStringList headers;
-        headers.append("Type");
-        headers.append("Name");
-        headers.append("Size");
-        headers.append("Reserved By Guest");
-        headers.append("# reserved");
-        headers.append("Action");
-
+        translateTable();
         Uint32 column = 0;
-        this->ui->tableReservationTableWidget->setHorizontalHeaderLabels(headers);
         this->ui->tableReservationTableWidget->setColumnWidth(column++, 200);
         this->ui->tableReservationTableWidget->setColumnWidth(column++, 250);
         this->ui->tableReservationTableWidget->setColumnWidth(column++, 80);
@@ -225,12 +231,17 @@ namespace PenyaManager {
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
         QDate date = this->ui->calendarWidget->selectedDate();
         ReservationType reservationType = static_cast<ReservationType>(this->ui->reservationTypeButtonGroup->checkedId());
-        NumItemDialog numItemDialog(this);
-        numItemDialog.exec();
-        Uint32 guestNum = numItemDialog.getKey();
-        if (guestNum == 0) 
+
+        Uint32 guestNum = 0;
+        if (itemType == ReservationItemType::LunchTableType)
         {
-            return;
+            NumItemDialog numItemDialog(this);
+            numItemDialog.exec();
+            guestNum = numItemDialog.getKey();
+            if (guestNum == 0)
+            {
+                return;
+            }
         }
 
         QString title;
@@ -242,11 +253,11 @@ namespace PenyaManager {
                 break;
             case ReservationItemType::OvenType:
                 title = "Oven reservation";
-                Singletons::m_pDAO->makeOvenReservation(date, reservationType, guestNum, pCurrMemberPtr->m_id, itemId);
+                Singletons::m_pDAO->makeOvenReservation(date, reservationType, pCurrMemberPtr->m_id, itemId);
                 break;
             case ReservationItemType::FireplaceType:
                 title = "Fireplace reservation";
-                Singletons::m_pDAO->makeFireplaceReservation(date, reservationType, guestNum, pCurrMemberPtr->m_id, itemId);
+                Singletons::m_pDAO->makeFireplaceReservation(date, reservationType, pCurrMemberPtr->m_id, itemId);
                 break;
             default:
                 break;
@@ -255,7 +266,8 @@ namespace PenyaManager {
         QLOG_INFO() << QString("[%1] User %2 item %3").arg(title).arg(pCurrMemberPtr->m_id).arg(itemId);
         QMessageBox::information(this, title, "Reservation done");
         // call main window
-        switchWindow(WindowKey::kMainWindowKey);
+        //switchWindow(WindowKey::kMainWindowKey);
+        fillTableReservations(pCurrMemberPtr, date, reservationType);
     }
     //
     void TableReservationView::on_cancelButton_clicked(int reservationId, ReservationItemType itemType)

@@ -18,6 +18,7 @@ namespace PenyaManager {
         m_passMode(passMode)
     {
         ui->setupUi(this);
+        this->setWindowFlags(Qt::Dialog|Qt::FramelessWindowHint);
         this->connect(this->ui->toolButton_0, &QToolButton::clicked, std::bind(&NumItemDialog::onButtonClick, this, 0));
         this->connect(this->ui->toolButton_1, &QToolButton::clicked, std::bind(&NumItemDialog::onButtonClick, this, 1));
         this->connect(this->ui->toolButton_2, &QToolButton::clicked, std::bind(&NumItemDialog::onButtonClick, this, 2));

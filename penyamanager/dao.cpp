@@ -266,7 +266,7 @@ namespace PenyaManager {
                 );
         // oven reservation list for a given moment (date and reservationtype)
         m_ovenReservationListQuery.prepare(
-                "SELECT ovenreservation.idreservation, ovenreservation.idoven, member.name, member.surname, ovenreservation.idmember, ovenreservation.guestnum "
+                "SELECT ovenreservation.idreservation, ovenreservation.idoven, member.name, member.surname, ovenreservation.idmember "
                 "FROM ovenreservation "
                 "INNER JOIN member ON ovenreservation.idmember=member.idmember "
                 "WHERE date=:dateid "
@@ -274,7 +274,7 @@ namespace PenyaManager {
                 );
         // oven reservation list for a given moment (date and reservationtype)
         m_fireplaceReservationListQuery.prepare(
-                "SELECT fireplacereservation.idreservation, fireplacereservation.idfireplace, member.name, member.surname, fireplacereservation.idmember, fireplacereservation.guestnum "
+                "SELECT fireplacereservation.idreservation, fireplacereservation.idfireplace, member.name, member.surname, fireplacereservation.idmember "
                 "FROM fireplacereservation "
                 "INNER JOIN member ON fireplacereservation.idmember=member.idmember "
                 "WHERE date=:dateid "
@@ -287,12 +287,12 @@ namespace PenyaManager {
                 );
         // oven list
         m_ovenListQuery.prepare(
-                "SELECT idoven, name, guestnum "
+                "SELECT idoven, name "
                 "FROM ovens"
                 );
         // fireplace list
         m_fireplaceListQuery.prepare(
-                "SELECT idfireplace, name, guestnum "
+                "SELECT idfireplace, name "
                 "FROM fireplaces"
                 );
         // insert table reservation
@@ -309,8 +309,8 @@ namespace PenyaManager {
         // insert oven reservation
         m_insertOvenReservationQuery.prepare(
                 "INSERT INTO ovenreservation "
-                "(date, reservationtype, guestnum, idmember, idoven) "
-                "VALUES (:date, :reservationtype, :guestnum, :idmember, :idoven)"
+                "(date, reservationtype, idmember, idoven) "
+                "VALUES (:date, :reservationtype, :idmember, :idoven)"
                 );
         // cancel oven reservation
         m_cancelOvenReservationQuery.prepare(
@@ -320,8 +320,8 @@ namespace PenyaManager {
         // insert fireplace reservation
         m_insertFireplaceReservationQuery.prepare(
                 "INSERT INTO fireplacereservation "
-                "(date, reservationtype, guestnum, idmember, idfireplace) "
-                "VALUES (:date, :reservationtype, :guestnum, :idmember, :idfireplace)"
+                "(date, reservationtype, idmember, idfireplace) "
+                "VALUES (:date, :reservationtype, :idmember, :idfireplace)"
                 );
         // cancel fireplace reservation
         m_cancelFireplaceReservationQuery.prepare(
@@ -1141,7 +1141,7 @@ namespace PenyaManager {
             pReservationPtr->m_memberName = m_ovenReservationListQuery.value(2).toString();
             pReservationPtr->m_memberSurname = m_ovenReservationListQuery.value(3).toString();
             pReservationPtr->m_idMember = m_ovenReservationListQuery.value(4).toInt();
-            pReservationPtr->m_guestNum = m_ovenReservationListQuery.value(5).toUInt();
+            pReservationPtr->m_guestNum = 0;
             pReservationListPtr->push_back(pReservationPtr);
         }
         m_ovenReservationListQuery.finish();
@@ -1167,7 +1167,7 @@ namespace PenyaManager {
             pReservationPtr->m_memberName = m_fireplaceReservationListQuery.value(2).toString();
             pReservationPtr->m_memberSurname = m_fireplaceReservationListQuery.value(3).toString();
             pReservationPtr->m_idMember = m_fireplaceReservationListQuery.value(4).toInt();
-            pReservationPtr->m_guestNum = m_fireplaceReservationListQuery.value(5).toUInt();
+            pReservationPtr->m_guestNum = 0;
             pReservationListPtr->push_back(pReservationPtr);
         }
         m_fireplaceReservationListQuery.finish();
@@ -1208,7 +1208,7 @@ namespace PenyaManager {
                 pReservationItemPtr->m_itemType = ReservationItemType::OvenType;
                 pReservationItemPtr->m_idItem = m_ovenListQuery.value(0).toInt();
                 pReservationItemPtr->m_itemName = m_ovenListQuery.value(1).toString();
-                pReservationItemPtr->m_guestNum = m_ovenListQuery.value(2).toUInt();
+                pReservationItemPtr->m_guestNum = 0;
                 pReservationItemListPtr->push_back(pReservationItemPtr);
             }
         }
@@ -1229,7 +1229,7 @@ namespace PenyaManager {
                 pReservationItemPtr->m_itemType = ReservationItemType::FireplaceType;
                 pReservationItemPtr->m_idItem = m_fireplaceListQuery.value(0).toInt();
                 pReservationItemPtr->m_itemName = m_fireplaceListQuery.value(1).toString();
-                pReservationItemPtr->m_guestNum = m_fireplaceListQuery.value(2).toUInt();
+                pReservationItemPtr->m_guestNum = 0;
                 pReservationItemListPtr->push_back(pReservationItemPtr);
             }
         }
@@ -1261,11 +1261,10 @@ namespace PenyaManager {
         m_cancelTableReservationQuery.finish();
     }
     //
-    void DAO::makeOvenReservation(const QDate &date, ReservationType reservationType, Uint16 guestNum, Int32 memberId, Int32 idOven)
+    void DAO::makeOvenReservation(const QDate &date, ReservationType reservationType, Int32 memberId, Int32 idOven)
     {
         m_insertOvenReservationQuery.bindValue(":date", date);
         m_insertOvenReservationQuery.bindValue(":reservationtype", static_cast<Uint16>(reservationType));
-        m_insertOvenReservationQuery.bindValue(":guestnum", guestNum);
         m_insertOvenReservationQuery.bindValue(":idmember", memberId);
         m_insertOvenReservationQuery.bindValue(":idoven", idOven);
         if (!m_insertOvenReservationQuery.exec())
@@ -1285,11 +1284,10 @@ namespace PenyaManager {
         m_cancelOvenReservationQuery.finish();
     }
     //
-    void DAO::makeFireplaceReservation(const QDate &date, ReservationType reservationType, Uint16 guestNum, Int32 memberId, Int32 idFireplace)
+    void DAO::makeFireplaceReservation(const QDate &date, ReservationType reservationType, Int32 memberId, Int32 idFireplace)
     {
         m_insertFireplaceReservationQuery.bindValue(":date", date);
         m_insertFireplaceReservationQuery.bindValue(":reservationtype", static_cast<Uint16>(reservationType));
-        m_insertFireplaceReservationQuery.bindValue(":guestnum", guestNum);
         m_insertFireplaceReservationQuery.bindValue(":idmember", memberId);
         m_insertFireplaceReservationQuery.bindValue(":idfireplace", idFireplace);
         if (!m_insertFireplaceReservationQuery.exec())

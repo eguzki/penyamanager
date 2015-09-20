@@ -27,7 +27,9 @@ namespace PenyaManager {
         // from 30 days before
         QDate fromIntialDate = toInitialDate.addDays(-30);
 
+        this->ui->fromCalendarWidget->setLocale(Singletons::m_translationManager.getLocale());
         this->ui->fromCalendarWidget->setSelectedDate(fromIntialDate);
+        this->ui->toCalendarWidget->setLocale(Singletons::m_translationManager.getLocale());
         this->ui->toCalendarWidget->setSelectedDate(toInitialDate);
 
         this->ui->fromDateResultValueLabel->clear();
@@ -52,23 +54,30 @@ namespace PenyaManager {
         show();
     }
     //
+    void ProductExpensesView::translateTable()
+    {
+        QStringList headers;
+        headers.append(tr("Icon"));
+        headers.append(tr("Name"));
+        headers.append(tr("Count"));
+        headers.append(tr("Total"));
+        this->ui->productTableWidget->setHorizontalHeaderLabels(headers);
+    }
+    //
     void ProductExpensesView::retranslate()
     {
         this->ui->retranslateUi(this);
+        translateTable();
+        this->ui->fromCalendarWidget->setLocale(Singletons::m_translationManager.getLocale());
+        this->ui->toCalendarWidget->setLocale(Singletons::m_translationManager.getLocale());
     }
     //
     void ProductExpensesView::initializeTable()
     {
         // table
         this->ui->productTableWidget->setColumnCount(4);
-
+        translateTable();
         // invoice table Header
-        QStringList headers;
-        headers.append("Icon");
-        headers.append("Name");
-        headers.append("Count");
-        headers.append("Total");
-        this->ui->productTableWidget->setHorizontalHeaderLabels(headers);
         this->ui->productTableWidget->setColumnWidth(0, Constants::kFamilyImageWidth);
         this->ui->productTableWidget->setColumnWidth(1, 300);
         this->ui->productTableWidget->setColumnWidth(2, 100);
@@ -160,8 +169,10 @@ namespace PenyaManager {
         // fill total stats view
         this->ui->totalProductsValueLabel->setText(QString::number(pInvoiceProductItemStatsPtr->m_totalProducts));
         // fill dates used for query
-        this->ui->fromDateResultValueLabel->setText(fromDate.toString());
-        this->ui->toDateResultValueLabel->setText(toDate.addDays(-1).toString());
+        QString dateLocalized = Singletons::m_translationManager.getLocale().toString(fromDate);
+        this->ui->fromDateResultValueLabel->setText(dateLocalized);
+        dateLocalized = Singletons::m_translationManager.getLocale().toString(toDate.addDays(-1));
+        this->ui->toDateResultValueLabel->setText(dateLocalized);
         // fill invoice list
         fillProductList(pInvoiceProductItemListPtr);
     }

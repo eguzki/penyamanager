@@ -29,6 +29,8 @@ namespace PenyaManager {
 
         private:
             //
+            void translateTable();
+            //
             void retranslate();
             //
             void fillFamilyProducts(const ProductFamilyListPtr &pflPtr);
@@ -42,6 +44,8 @@ namespace PenyaManager {
             void fillInvoiceData(const InvoicePtr &pInvoicePtr);
             //
             void readNumItems(Int32 productId);
+            //
+            void initializeTable();
 
         private:
             //

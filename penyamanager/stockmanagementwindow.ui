@@ -87,13 +87,6 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
         </property>
        </widget>
       </item>
-      <item>
-       <widget class="QPushButton" name="printPushButton">
-        <property name="text">
-         <string>print</string>
-        </property>
-       </widget>
-      </item>
      </layout>
     </widget>
    </item>

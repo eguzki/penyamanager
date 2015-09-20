@@ -27,6 +27,8 @@ namespace PenyaManager {
 
         private:
             //
+            void translateTable();
+            //
             void updateResults();
             //
             void fillMemberList(const MemberListPtr &pMemberListPtr);

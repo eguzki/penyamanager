@@ -28,6 +28,8 @@ namespace PenyaManager {
 
         private:
             //
+            void translateTable();
+            //
             void initializeTable();
             //
             void fillTransactionList(TransactionListPtr pTransactionListPtr);
@@ -37,8 +39,6 @@ namespace PenyaManager {
         private slots:
             //
             void on_searchPushButton_clicked();
-            //
-            void on_printPushButton_clicked();
             //
             void on_prevPagePushButton_clicked();
             //
