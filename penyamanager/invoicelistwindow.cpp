@@ -99,7 +99,7 @@ namespace PenyaManager {
         this->ui->prevPagePushButton->setEnabled(m_currentPage > 0);
         this->ui->nextPagePushButton->setEnabled(m_currentPage < numPages-1);
         // fill page view
-        this->ui->pageInfoLabel->setText(tr("page %1 out of %2").arg(m_currentPage+1).arg(numPages));
+        this->ui->pageInfoLabel->setText(QString("%1 / %2").arg(m_currentPage+1).arg(numPages));
         // fill total stats view
         this->ui->totalInvoicesValueLabel->setText(QString::number(pInvoiceListStats->m_totalNumInvoices));
         this->ui->totalCountValueLabel->setText(tr("%1 €").arg(pInvoiceListStats->m_totalAmount));

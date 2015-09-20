@@ -512,11 +512,6 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../numitemdialog.ui" line="177"/>
-        <source>TextLabel</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../numitemdialog.ui" line="193"/>
         <source>C</source>
         <translation></translation>
@@ -529,6 +524,16 @@
 </context>
 <context>
     <name>PenyaManager::AccountView</name>
+    <message>
+        <location filename="../accountview.cpp" line="68"/>
+        <source>Date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../accountview.cpp" line="69"/>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message>
         <location filename="../accountview.cpp" line="91"/>
         <location filename="../accountview.cpp" line="92"/>

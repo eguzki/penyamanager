@@ -174,7 +174,7 @@
       </size>
      </property>
      <property name="text">
-      <string>TextLabel</string>
+      <string notr="true">TextLabel</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
