@@ -28,7 +28,11 @@ namespace PenyaManager {
 
         private:
             //
+            void translateTable();
+            //
             void fillAccountData(Int32 memberId, const QDate &fromDate, const QDate &toDate);
+            //
+            void initializeTable();
 
         private slots:
             //
