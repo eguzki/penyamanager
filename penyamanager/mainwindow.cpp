@@ -3,6 +3,7 @@
 #include <QLabel>
 #include <QDateTime>
 #include <QMessageBox>
+#include <QsLog.h>
 
 #include "constants.h"
 #include "guiutils.h"
@@ -58,9 +59,10 @@ namespace PenyaManager {
     {
         if (!Singletons::m_pDAO->isOpen()) {
             QSqlError err = Singletons::m_pDAO->lastError();
+            QLOG_ERROR() << QString("[FATAL] Unable to initialize Database: %1").arg(err.text());
             QMessageBox::critical(this, "Unable to initialize Database",
                     "Error initializing database: " + err.text());
-            qApp->exit(0);
+            qApp->exit(1);
             return;
         }
 

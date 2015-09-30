@@ -31,9 +31,10 @@ namespace PenyaManager {
     {
         if (!Singletons::m_pDAO->isOpen()) {
             QSqlError err = Singletons::m_pDAO->lastError();
+            QLOG_ERROR() << QString("[FATAL] Unable to initialize Database: %1").arg(err.text());
             QMessageBox::critical(this, "Unable to initialize Database",
                     "Error initializing database: " + err.text());
-            qApp->exit(0);
+            qApp->exit(1);
             return;
         }
 
@@ -82,6 +83,7 @@ namespace PenyaManager {
         InvoicePtr pInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
         if (!pInvoicePtr) {
             QMessageBox::critical(this, "No active invoice found.", "Program will exit");
+            QLOG_ERROR() << QString("[FATAL] No active invoice found.: %1").arg(pCurrMember->m_id);
             qApp->exit(0);
             return;
         }
