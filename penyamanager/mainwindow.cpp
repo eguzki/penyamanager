@@ -3,6 +3,7 @@
 #include <QLabel>
 #include <QDateTime>
 #include <QMessageBox>
+#include <QsLog.h>
 
 #include "constants.h"
 #include "guiutils.h"
@@ -21,9 +22,6 @@ namespace PenyaManager {
     {
         ui->setupUi(this);
         this->ui->topPanelWidget->layout()->addWidget(m_pMemberProfileGroupBox);
-
-        this->connect(this->ui->familyListWidget, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(familyItemClicked(QListWidgetItem*)));
-        this->connect(this->ui->productListWidget, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(productItemClicked(QListWidgetItem*)));
         initializeTable();
     }
     //
@@ -37,10 +35,11 @@ namespace PenyaManager {
     {
         this->ui->invoiceTableWidget->setColumnCount(4);
         translateTable();
-        this->ui->invoiceTableWidget->setColumnWidth(0, 300);
-        this->ui->invoiceTableWidget->setColumnWidth(1, 150);
-        this->ui->invoiceTableWidget->setColumnWidth(2, 100);
-        this->ui->invoiceTableWidget->setColumnWidth(3, 150);
+        Uint32 column = 0;
+        this->ui->invoiceTableWidget->setColumnWidth(column++, 210);
+        this->ui->invoiceTableWidget->setColumnWidth(column++, 75);
+        this->ui->invoiceTableWidget->setColumnWidth(column++, 75);
+        this->ui->invoiceTableWidget->setColumnWidth(column++, 100);
     }
     //
     void MainWindow::translateTable()
@@ -58,9 +57,10 @@ namespace PenyaManager {
     {
         if (!Singletons::m_pDAO->isOpen()) {
             QSqlError err = Singletons::m_pDAO->lastError();
+            QLOG_ERROR() << QString("[FATAL] Unable to initialize Database: %1").arg(err.text());
             QMessageBox::critical(this, "Unable to initialize Database",
                     "Error initializing database: " + err.text());
-            qApp->exit(0);
+            qApp->exit(1);
             return;
         }
 
@@ -175,7 +175,6 @@ namespace PenyaManager {
         pFamilyWidget->setLayout(pLayout);
         pFamilyItem->setSizeHint(pLayout->minimumSize());
         pFamilyItem->setFlags(Qt::ItemIsSelectable);
-        pFamilyItem->setBackgroundColor(pList->count() % 2 == 0 ? (Qt::lightGray) : (Qt::darkGray));
         pList->setItemWidget(pFamilyItem, pFamilyWidget);
     }
     //
@@ -201,11 +200,12 @@ namespace PenyaManager {
             createProductItemWidget(*iter, this->ui->productListWidget);
         }
     }
-
-    //
-    void MainWindow::familyItemClicked(QListWidgetItem* item)
+    void MainWindow::on_familyListWidget_itemClicked(QListWidgetItem *item)
     {
         Int32 familyId = item->data(Constants::kIdRole).toInt();
+        // highlight clicked item and un-highlight others
+        this->ui->familyListWidget->setCurrentItem(item);
+        // fill product of the family
         fillProductItems(familyId);
     }
     //
@@ -216,8 +216,7 @@ namespace PenyaManager {
         }
 
         // Invoice header
-        QString invoiceDateLocalized = Singletons::m_translationManager.getLocale().toString(pInvoicePtr->m_date);
-        this->ui->invoiceGroupBox->setTitle(tr("Invoice (Ref #%1) on (%2)").arg(pInvoicePtr->m_id).arg(invoiceDateLocalized));
+        this->ui->invoiceGroupBox->setTitle(tr("Invoice (Ref #%1) on (%2)").arg(pInvoicePtr->m_id).arg(pInvoicePtr->m_date.toString(Qt::ISODate)));
 
         // get invoice products
         InvoiceProductItemListPtr pInvoiceProductItemListPtr = Singletons::m_pDAO->getInvoiceProductItems(pInvoicePtr->m_id);
@@ -245,12 +244,6 @@ namespace PenyaManager {
             rowCount++;
         }
         this->ui->totalDisplayLabel->setText(QString("%1 €").arg(totalInvoice));
-    }
-    //
-    void MainWindow::productItemClicked(QListWidgetItem* item)
-    {
-        Int32 productId = item->data(Constants::kIdRole).toInt();
-        this->readNumItems(productId);
     }
     //
     void MainWindow::on_invoiceCloseButton_clicked()
@@ -335,6 +328,11 @@ namespace PenyaManager {
         // call table reservation window
         switchWindow(WindowKey::kInvoiceListWindoKey);
     }
+    //
+    void MainWindow::on_productListWidget_itemClicked(QListWidgetItem *item)
+    {
+        Int32 productId = item->data(Constants::kIdRole).toInt();
+        this->readNumItems(productId);
+    }
 }
-
 

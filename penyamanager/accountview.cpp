@@ -16,6 +16,7 @@ namespace PenyaManager {
     {
         ui->setupUi(this);
         this->ui->topPanelWidget->layout()->addWidget(m_pMemberProfileGroupBox);
+        initializeTable();
     }
     //
     AccountView::~AccountView()
@@ -23,12 +24,24 @@ namespace PenyaManager {
         delete ui;
     }
     //
+    void AccountView::initializeTable()
+    {
+        // table
+        this->ui->accountTableWidget->setColumnCount(5);
+        translateTable();
+        Uint32 column = 0;
+        this->ui->accountTableWidget->setColumnWidth(column++, 200);
+        this->ui->accountTableWidget->setColumnWidth(column++, 400);
+        this->ui->accountTableWidget->setColumnWidth(column++, 200);
+        this->ui->accountTableWidget->setColumnWidth(column++, 200);
+        this->ui->accountTableWidget->setColumnWidth(column++, 130);
+    }
+    //
     void AccountView::init()
     {
         //
         // Loading User profile
         //
-
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
         this->m_pMemberProfileGroupBox->init(pCurrMemberPtr);
 
@@ -52,6 +65,19 @@ namespace PenyaManager {
     void AccountView::retranslate()
     {
         this->ui->retranslateUi(this);
+        translateTable();
+    }
+    //
+    void AccountView::translateTable()
+    {
+        // invoice table Header
+        QStringList headers;
+        headers.append(tr("Date"));
+        headers.append(tr("Description"));
+        headers.append(tr("Amount"));
+        headers.append(tr("Balance"));
+        headers.append(tr("Type"));
+        this->ui->accountTableWidget->setHorizontalHeaderLabels(headers);
     }
     //
     void AccountView::fillAccountData(Int32 memberId, const QDate &fromDate, const QDate &toDate)
@@ -59,24 +85,8 @@ namespace PenyaManager {
         // fetch data
         TransactionListPtr pTransactionListPtr = Singletons::m_pDAO->getAccountListByMemberId(memberId, fromDate, toDate, 0, 9999);
 
-        // table
-        this->ui->accountTableWidget->setColumnCount(5);
+        // num rows
         this->ui->accountTableWidget->setRowCount(pTransactionListPtr->size());
-
-        // invoice table Header
-        QStringList headers;
-        headers.append(tr("Date"));
-        headers.append(tr("Description"));
-        headers.append("Amount");
-        headers.append("Balance");
-        headers.append("Type");
-        Uint32 column = 0;
-        this->ui->accountTableWidget->setHorizontalHeaderLabels(headers);
-        this->ui->accountTableWidget->setColumnWidth(column++, 200);
-        this->ui->accountTableWidget->setColumnWidth(column++, 400);
-        this->ui->accountTableWidget->setColumnWidth(column++, 200);
-        this->ui->accountTableWidget->setColumnWidth(column++, 200);
-        this->ui->accountTableWidget->setColumnWidth(column++, 130);
         // invoice table reset
         this->ui->accountTableWidget->clearContents();
 
@@ -113,5 +123,4 @@ namespace PenyaManager {
         }
     }
 }
-
 
