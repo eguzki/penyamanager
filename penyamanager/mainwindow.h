@@ -59,10 +59,6 @@ namespace PenyaManager {
             //
             void init();
             //
-            void familyItemClicked(QListWidgetItem* item);
-            //
-            void productItemClicked(QListWidgetItem* item);
-            //
             void on_invoiceCloseButton_clicked();
             //
             void on_invoiceResetButton_clicked();
@@ -78,6 +74,10 @@ namespace PenyaManager {
             void on_tableReservationButton_clicked();
             //
             void on_invoicesPushButton_clicked();
+            //
+            void on_familyListWidget_itemClicked(QListWidgetItem *item);
+            //
+            void on_productListWidget_itemClicked(QListWidgetItem *item);
     };
 }
 

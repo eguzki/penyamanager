@@ -216,6 +216,12 @@
         <layout class="QVBoxLayout" name="horizontalLayout_3">
          <item>
           <widget class="QListWidget" name="familyListWidget">
+           <property name="styleSheet">
+            <string notr="true">selection-background-color: rgba(229, 92, 92, 122);</string>
+           </property>
+           <property name="alternatingRowColors">
+            <bool>true</bool>
+           </property>
            <property name="movement">
             <enum>QListView::Static</enum>
            </property>
