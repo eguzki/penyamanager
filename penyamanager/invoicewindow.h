@@ -35,8 +35,10 @@ namespace PenyaManager {
             void on_backPushButton_clicked();
             //
             void on_confirmPushButton_clicked();
+            //
+            void on_printPushButton_clicked();
 
-        private:
+    private:
             //
             Ui::InvoiceWindow *ui;
             //

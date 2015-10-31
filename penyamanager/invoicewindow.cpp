@@ -143,5 +143,51 @@ namespace PenyaManager {
         newBalance -= totalInvoice;
         this->ui->newBalanceInfoLabel->setText(QString("%1 €").arg(newBalance));
     }
+    //
+    void InvoiceWindow::on_printPushButton_clicked()
+    {
+        // use static global variable to get invoiceId
+        MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
+
+        // Loading Current Invoice
+        InvoicePtr pInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMemberPtr->m_id);
+        // Loading Current Invoice products
+        InvoiceProductItemListPtr pInvoiceProductItemListPtr = Singletons::m_pDAO->getInvoiceProductItems(pInvoicePtr->m_id);
+
+        QVariantHash invoiceData;
+        // Label
+        invoiceData["invoiceLabel"] = tr("Invoice");
+        invoiceData["memberidLabel"] = tr("Member Id");
+        invoiceData["productLabel"] = tr("Product");
+        invoiceData["countLabel"] = tr("Count");
+        invoiceData["productTotalLabel"] = tr("Total");
+        invoiceData["invoiceTotalLabel"] = tr("Invoice Total");
+
+        // invoice general info
+        invoiceData["invoiceId"] = pInvoicePtr->m_id;
+        invoiceData["memberid"] = pCurrMemberPtr->m_id;
+        invoiceData["memberName"] = QString("%1 %2").arg(pCurrMemberPtr->m_name).arg(pCurrMemberPtr->m_surname);
+        invoiceData["dateValue"] = pInvoicePtr->m_date;
+        invoiceData["invoiceTotal"] = QString("%1 €").arg(QString::number(pInvoicePtr->m_total, 'f', 2));
+
+        // invoice products info
+        QVariantList productList;
+        for (InvoiceProductItemList::iterator iter = pInvoiceProductItemListPtr->begin(); iter != pInvoiceProductItemListPtr->end(); ++iter)
+        {
+            InvoiceProductItemPtr pInvoiceProductItemPtr = *iter;
+            QVariantHash productData;
+            productData["productName"] = pInvoiceProductItemPtr->m_productname;
+            productData["productCount"] = pInvoiceProductItemPtr->m_count;
+            Float totalPrice = pInvoiceProductItemPtr->m_priceperunit * pInvoiceProductItemPtr->m_count;
+            productData["productTotal"] = QString("%1 €").arg(QString::number(totalPrice, 'f', 2));
+            productList.push_back(productData);
+        }
+        invoiceData["products"] = productList;
+        // print invoice
+        GuiUtils::printInvoice(invoiceData, pCurrMemberPtr->m_id, pInvoicePtr->m_id);
+        QMessageBox::information(this, tr("Print Invoice"), tr("Invoice #%1 sent to printer").arg(QString::number(pInvoicePtr->m_id)));
+
+    }
 }
+
 

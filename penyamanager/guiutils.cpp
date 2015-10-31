@@ -3,7 +3,8 @@
 #include <QPrinter>
 #include <QPrinterInfo>
 #include <QTextDocument>
-
+#include <QFile>
+#include <mustache.h>
 #include <QsLog.h>
 
 #include "guiutils.h"
@@ -51,5 +52,19 @@ namespace PenyaManager {
         textDocument.setPageSize(pageSize); // the document needs a valid PageSize
         textDocument.setHtml(html);
         textDocument.print(&printer);
+    }
+    //
+    void GuiUtils::printInvoice(QVariantHash &invoiceData, Int32 memberId, Int32 invoiceId)
+    {
+        QFile invoiceTemplateFile(":resources/invoice.html");
+        if (!invoiceTemplateFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            QLOG_ERROR() << QString("[Invoice] invoice.html not found");
+            return;
+        }
+        QTextStream invoiceTemplateStream(&invoiceTemplateFile);
+        QString invoiceTemplate = invoiceTemplateStream.readAll();
+        QString invoiceHtml = Mustache::renderTemplate(invoiceTemplate, invoiceData);
+        GuiUtils::printText(invoiceHtml);
+        QLOG_INFO() << QString("[Print] print invoice user %1 invoice %2").arg(memberId).arg(invoiceId);
     }
 }

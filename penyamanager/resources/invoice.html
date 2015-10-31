@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+#header {
+    padding:1px;
+    font-size: 3pt;
+}
+.invoice {
+    font-size: 4px;
+}
+.headers {
+    font-size: 3px;
+}
+</style>
+</head>
+<body>
+<div width="90%" id="header" align="center">
+    <img src=":images/alegrialogo.jpg" width="40" height="40">
+    <p>SDRC Alegrí­a de Iruñea KKAE</p>
+</div>
+<div>
+    <table class="invoice" width="90%" cellpadding="1" cellspacing="1" border="0">
+        <tr>
+            <td class="headers" align="center" >
+                {{invoiceLabel}}
+            </td>
+            <td align="center" >
+                {{invoiceId}}
+            </td>
+        </tr>
+        <tr>
+            <td class="headers" align="center" >
+                {{memberidLabel}}
+            </td>
+            <td align="center">
+                {{memberid}}
+            </td>
+        </tr>
+        <tr>
+            <td align="center">
+                {{memberName}}
+            </td>
+        </tr>
+        <tr>
+            <td align="center">
+                {{dateValue}}
+            </td>
+        </tr>
+        <tr>
+            <td align="center">
+                <table class="products" width="90%" cellpadding="1" cellspacing="1" border="0">
+                    <tr>
+                        <td align="center">
+                            {{productLabel}}
+                        </td>
+                        <td align="center">
+                            {{countLabel}}
+                        </td>
+                        <td align="center">
+                            {{productTotalLabel}}
+                        </td>
+                    </tr>
+                    {{#products}}
+                    <tr>
+                        <td align="center">
+                            {{productName}}
+                        </td>
+                        <td align="center">
+                            {{productCount}}
+                        </td>
+                        <td align="center">
+                            {{productTotal}}
+                        </td>
+                    </tr>
+                    {{/products}}
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td class="headers" align="center">
+                {{invoiceTotalLabel}}
+            </td>
+        </tr>
+        <tr>
+            <td align="center">
+                <b>{{invoiceTotal}}</b>
+            </td>
+        </tr>
+    </table>
+</div>
+<div width="90%" align="center">
+    ---------------
+</div>
+</body>
+</html>

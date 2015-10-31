@@ -13,6 +13,8 @@ namespace PenyaManager {
             // get image
             static QPixmap getImage(const QString& filename);
             //
+            static void printInvoice(QVariantHash &invoiceData, Int32 memberId, Int32 invoiceId);
+            //
             static void printText(const QString& html);
 
         private:
