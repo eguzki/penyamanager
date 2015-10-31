@@ -90,7 +90,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>Confirm</string>
+            <string>Make Deposit</string>
            </property>
           </widget>
          </item>

@@ -98,8 +98,8 @@ namespace PenyaManager {
             TransactionPtr pTransactionPtr = *iter;
             this->ui->accountTableWidget->setItem(rowCount, column++, new QTableWidgetItem(pTransactionPtr->m_date.toString()));
             this->ui->accountTableWidget->setItem(rowCount, column++, new QTableWidgetItem(pTransactionPtr->m_descr));
-            this->ui->accountTableWidget->setItem(rowCount, column++, new QTableWidgetItem(tr("%1 €").arg(pTransactionPtr->m_amount)));
-            this->ui->accountTableWidget->setItem(rowCount, column++, new QTableWidgetItem(tr("%1 €").arg(pTransactionPtr->m_balance)));
+            this->ui->accountTableWidget->setItem(rowCount, column++, new QTableWidgetItem(QString("%1 €").arg(pTransactionPtr->m_amount)));
+            this->ui->accountTableWidget->setItem(rowCount, column++, new QTableWidgetItem(QString("%1 €").arg(pTransactionPtr->m_balance)));
             this->ui->accountTableWidget->setItem(rowCount, column++, new QTableWidgetItem(getStringFromTransactionTypeEnum(pTransactionPtr->m_type)));
             rowCount++;
         }
