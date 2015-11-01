@@ -22,19 +22,21 @@ namespace PenyaManager {
     //
     void GuiUtils::printText(const QString& html)
     {
-        /*
-         * PDF
-        //QPrinter printer(QPrinter::HighResolution);
-        //printer.setOutputFormat(QPrinter::PdfFormat);
-        //printer.setOutputFileName("deposit.pdf");
-        */
-        QSizeF paperSize(80, 297);
         QPrinterInfo defaultPrinter = QPrinterInfo::defaultPrinter();
         if (defaultPrinter.isNull()) {
             QLOG_INFO() << QString("[PrintFailed] default printer is null");
             return;
         }
         QPrinter printer( defaultPrinter);
+
+        /*
+         * PDF
+        QPrinter printer(QPrinter::HighResolution);
+        printer.setOutputFormat(QPrinter::PdfFormat);
+        printer.setOutputFileName("/home/eguzki/printer.pdf");
+        */
+
+        QSizeF paperSize(80, 297);
         printer.setPaperSize(paperSize, QPrinter::Millimeter);
         if (!printer.isValid()) {
             QLOG_ERROR() << QString("[PrintFailed] pdf printer not valid");
@@ -51,6 +53,7 @@ namespace PenyaManager {
         // Use tables for layout
         textDocument.setPageSize(pageSize); // the document needs a valid PageSize
         textDocument.setHtml(html);
+        QLOG_INFO() << QString("[Print] print");
         textDocument.print(&printer);
     }
     //
