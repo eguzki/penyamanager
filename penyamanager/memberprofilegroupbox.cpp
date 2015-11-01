@@ -32,6 +32,6 @@ namespace PenyaManager {
         this->ui->memberImageLabel->setScaledContents(true);
         this->ui->nameLabel->setText(pMemberPtr->m_name + " " + pMemberPtr->m_surname);
         this->ui->memberIdValueLabel->setText(QString::number(pMemberPtr->m_id));
-        this->ui->memberAccountValueLabel->setText(QString::number(pMemberPtr->m_balance, 'f', 2));
+        this->ui->memberAccountValueLabel->setText(QString("%1 €").arg(QString::number(pMemberPtr->m_balance, 'f', 2)));
     }
 }

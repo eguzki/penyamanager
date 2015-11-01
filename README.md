@@ -32,9 +32,10 @@ penyamanager
   * Active, pwd check
 * Member invoice window
   * unfinished invoice is loaded
-* Member invoice confirmation window
+* Member invoice detail window
   * invoices are always applied to account. No need to verify.
   * items count substracted from stock
+  * optionally can be printed
 * Member table reservation window
   * members can cancel
   * members can only reserve one table in a given date (date, lunch/dinner)
@@ -46,6 +47,7 @@ penyamanager
   * members can only reserve one fireplace in a given date (date, lunch/dinner)
 * Member deposit window
   * Deposits are applied to balance on creation. Admin has to verify.
+  * Deposit ticket is printed
 * Member account view
 * Member invoice list window
   * invoices can be clicked -> invoice details

@@ -46,7 +46,7 @@ namespace PenyaManager {
 
         // Current deposit reset
         this->ui->depositLabel->setText("");
-        this->ui->newBalanceLabel->setText(QString::number(pCurrMemberPtr->m_balance, 'f', 2));
+        this->ui->newBalanceLabel->setText(QString("%1 €").arg(QString::number(pCurrMemberPtr->m_balance, 'f', 2)));
 
         //
         // Show
@@ -70,33 +70,48 @@ namespace PenyaManager {
         bool ok;
         double deposit = this->ui->depositLabel->text().toDouble(&ok);
 
-        if (ok)
-        {
-            MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
-            // Create deposit info
-            DepositPtr pDepositPtr = Singletons::m_pServices->createDeposit(pCurrMemberPtr, deposit);
-            if (!pDepositPtr) {
-                // TODO handle error
-                QMessageBox::warning(this, "Could not create deposit", "Contact administrator");
-                return;
-            }
-
-            // Update member balance
-            QString description = QString("deposit id: %1").arg(pDepositPtr->m_id);
-            Singletons::m_pServices->createAccountTransaction(pCurrMemberPtr->m_id, deposit, description, TransactionType::Deposit);
-            QLOG_INFO() << QString("[Deposit] User %1 deposit ID %2").arg(pCurrMemberPtr->m_id).arg(pDepositPtr->m_id);
-            // print deposit
-            printDeposit(pCurrMemberPtr, pDepositPtr);
-            QMessageBox::information(this, tr("Deposit"), tr("Deposit done"));
-            // Go to main window
-            switchWindow(WindowKey::kMainWindowKey);
+        if (!ok){
+            QMessageBox::warning(this, tr("deposit not valid"), tr("this is a bug, should not happen"));
+            return;
         }
+
+        if (deposit <= 0){
+            QMessageBox::warning(this, tr("deposit not valid"), tr("deposit should be more than 0€"));
+            return;
+        }
+
+        QMessageBox::StandardButton reply = QMessageBox::question(this, tr("Create Deposit"),
+                tr("Create deposit for %1 €?").arg(QString::number(deposit, 'f', 2)),
+                QMessageBox::Yes|QMessageBox::No);
+
+        if (reply == QMessageBox::No){
+            return;
+        }
+
+        MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
+        // Create deposit info
+        DepositPtr pDepositPtr = Singletons::m_pServices->createDeposit(pCurrMemberPtr, deposit);
+        if (!pDepositPtr) {
+            // TODO handle error
+            QMessageBox::warning(this, "Could not create deposit", "Contact administrator");
+            return;
+        }
+
+        // Update member balance
+        QString description = QString("deposit id: %1").arg(pDepositPtr->m_id);
+        Singletons::m_pServices->createAccountTransaction(pCurrMemberPtr->m_id, deposit, description, TransactionType::Deposit);
+        QLOG_INFO() << QString("[Deposit] User %1 deposit ID %2").arg(pCurrMemberPtr->m_id).arg(pDepositPtr->m_id);
+        // print deposit
+        printDeposit(pCurrMemberPtr, pDepositPtr);
+        QMessageBox::information(this, tr("Deposit"), tr("Deposit for %1 € created sucessfully").arg(QString::number(deposit, 'f', 2)));
+        // Go to main window
+        switchWindow(WindowKey::kMainWindowKey);
     }
     //
     void DepositWindow::updateNewBalanceLabel(double deposit)
     {
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
-        this->ui->newBalanceLabel->setText(QString::number(pCurrMemberPtr->m_balance + deposit, 'f', 2));
+        this->ui->newBalanceLabel->setText(QString("%1 €").arg(QString::number(pCurrMemberPtr->m_balance + deposit, 'f', 2)));
     }
     //
     void DepositWindow::on_pushButton_number_clicked(Uint32 num)
@@ -162,8 +177,8 @@ namespace PenyaManager {
         depositData["memberid"] = pMemberPtr->m_id;
         depositData["memberName"] = QString("%1 %2").arg(pMemberPtr->m_name).arg(pMemberPtr->m_surname);
         depositData["dateValue"] = pDepositPtr->m_date;
-        depositData["depositTotal"] = pDepositPtr->m_total;
+        depositData["depositTotal"] = QString("%1 €").arg(QString::number(pDepositPtr->m_total, 'f', 2));
         QString depositHtml = Mustache::renderTemplate(depositTemplate, depositData);
-        return depositHtml; 
+        return depositHtml;
     }
 }

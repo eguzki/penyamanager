@@ -29,18 +29,22 @@ namespace PenyaManager {
         private:
             //
             void fillInvoiceData(const MemberPtr &pMemberPtr, const InvoicePtr &pInvoicePtr);
+            //
+            void initializeTable();
+            //
+            void translateTable();
 
         private slots:
             //
             void on_backPushButton_clicked();
             //
             void on_confirmPushButton_clicked();
+            //
+            void on_printPushButton_clicked();
 
-        private:
+    private:
             //
             Ui::InvoiceWindow *ui;
-            //
-            Float               m_cachedInvoiceTotal;
             //
             MemberProfileGroupBox       *m_pMemberProfileGroupBox;
     };
