@@ -157,6 +157,7 @@ namespace PenyaManager {
             return;
         }
         QTextStream depositTemplateStream(&depositTemplateFile);
+        depositTemplateStream.setCodec("UTF-8");
         QString depositTemplate = depositTemplateStream.readAll();
         QString depositHtml = renderDepositTemplate(depositTemplate, pMemberPtr, pDepositPtr);
         GuiUtils::printText(depositHtml);

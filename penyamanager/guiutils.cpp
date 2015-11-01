@@ -65,6 +65,7 @@ namespace PenyaManager {
             return;
         }
         QTextStream invoiceTemplateStream(&invoiceTemplateFile);
+        invoiceTemplateStream.setCodec("UTF-8");
         QString invoiceTemplate = invoiceTemplateStream.readAll();
         QString invoiceHtml = Mustache::renderTemplate(invoiceTemplate, invoiceData);
         GuiUtils::printText(invoiceHtml);
