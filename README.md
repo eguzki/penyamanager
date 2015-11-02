@@ -25,6 +25,11 @@ penyamanager
 # Howto install
 * Network partition for resources
 * Mysql driver install (TODO)
+  * Windows mysql plugin
+    * Install mysql connector.
+    * Mysql connector arch (x64 or x86) must match compiler arch (x64 or x86)
+    * Add to $PATH
+
 * Configure application settings using [configuration application](ConfApp.md)
 
 # Features
