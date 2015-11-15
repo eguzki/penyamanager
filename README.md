@@ -22,14 +22,13 @@ penyamanager
 * Admin manage Members
 * Configuration Application
 
-# Howto install
+# Howto install. Windows deployment
 * Network partition for resources
-* Mysql driver install (TODO)
+* Mysql driver install
   * Windows mysql plugin
-    * Install mysql connector.
+    * Install mysql C connector.
     * Mysql connector arch (x64 or x86) must match compiler arch (x64 or x86)
     * Add to $PATH
-
 * Configure application settings using [configuration application](ConfApp.md)
 
 # Features
@@ -115,6 +114,51 @@ penyamanager
 * QT Creator 3.4.2
 * QT 5.5.0
 * GCC 4.8.4, 64 bit
+
+## Package deployment for windows 7
+
+### Windows 7 32 bits
+* Compile using mingw 4.9.2 32bits compiler
+* Necessary elements:
+  * Application main exe (penyamanager.exe)
+  * Translation files (e.g. penyamanager_eu.qm). Check doc to know how to generate them out of source code.
+  * QT and system shared libreries (dll's)
+
+```Shell
+$ ls -R -l
+.:
+total 19444
+-rwxrwxrwx 1 1026 users  200704 oct 25  2014 IEShims.dll
+-rwxrwxrwx 1 1026 users  119822 dic 21  2014 libgcc_s_dw2-1.dll
+-rwxrwxrwx 1 1026 users 1026062 dic 21  2014 libstdc++-6.dll
+-rwxrwxrwx 1 1026 users   49152 dic 21  2014 libwinpthread-1.dll
+-rwxrwxrwx 1 1026 users      94 nov 15 18:56 penya.bat
+-rwxrwxrwx 1 1026 users  599552 nov 15 14:23 penyamanager.exe
+drwxrwxrwx 2 1026 users    4096 nov 15 20:04 platforms
+-rwxrwxrwx 1 1026 users 5391360 nov 15 14:02 Qt5Core.dll
+-rwxrwxrwx 1 1026 users 5334528 oct 12 21:31 Qt5Gui.dll
+-rwxrwxrwx 1 1026 users  357888 oct 12 21:42 Qt5PrintSupport.dll
+-rwxrwxrwx 1 1026 users  259072 oct 12 21:25 Qt5Sql.dll
+-rwxrwxrwx 1 1026 users 6541824 oct 12 21:37 Qt5Widgets.dll
+
+./platforms:
+total 1384
+-rwxrwxrwx 1 1026 users 1413632 oct 12 21:46 qwindows.dll
+```
+
+**penya.bat** file content:
+
+```Shell
+SET PATH=%cd%;%PATH%
+
+SET QT_QPA_PLATFORM_PLUGIN_PATH=%cd%\platforms
+
+%cd%\penyamanager.exe
+```
+
+* Most dll's can be found at
+  * QT_PATH/5.5/mingw492_32/bin
+  * C:\Program Files\Internet Explorer\IEShims.dll
 
 ## Translations
 * Use lupdate to create/update Translation Sources (.ts)
