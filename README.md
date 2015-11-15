@@ -117,18 +117,18 @@ penyamanager
 
 ## Package deployment for windows 7
 
-### Windows 7 32 bits
-* Compile using mingw 4.9.2 32bits compiler
+### Windows 7 32/64 bits
+* Compile using mingw 4.9.2 32bits compiler (currently QT 5.5 only supports mingw 4.9.2 32 bits but not 64 bits)
 * Necessary elements:
   * Application main exe (penyamanager.exe)
   * Translation files (e.g. penyamanager_eu.qm). Check doc to know how to generate them out of source code.
   * QT and system shared libreries (dll's)
+    * dll path: QT_PATH/5.5/mingw492_32/bin
 
 ```Shell
 $ ls -R -l
 .:
 total 19444
--rwxrwxrwx 1 1026 users  200704 oct 25  2014 IEShims.dll
 -rwxrwxrwx 1 1026 users  119822 dic 21  2014 libgcc_s_dw2-1.dll
 -rwxrwxrwx 1 1026 users 1026062 dic 21  2014 libstdc++-6.dll
 -rwxrwxrwx 1 1026 users   49152 dic 21  2014 libwinpthread-1.dll
@@ -156,10 +156,6 @@ SET QT_QPA_PLATFORM_PLUGIN_PATH=%cd%\platforms
 %cd%\penyamanager.exe
 ```
 
-* Most dll's can be found at
-  * QT_PATH/5.5/mingw492_32/bin
-  * C:\Program Files\Internet Explorer\IEShims.dll
-
 ## Translations
 * Use lupdate to create/update Translation Sources (.ts)
   * lupdate -noobsolete penyamanager.pro penyamanageradmin.pro
@@ -168,3 +164,4 @@ SET QT_QPA_PLATFORM_PLUGIN_PATH=%cd%\platforms
 * Use lrelease to create translation binary (.qm)
   * at release time, do not include qm file in git
   * deploy .qm files in the same path as binary files
+
