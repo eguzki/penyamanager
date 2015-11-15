@@ -95,8 +95,10 @@ namespace PenyaManager {
         this->ui->totalInvoicesValueLabel->setText(QString::number(pInvoiceListStats->m_totalNumInvoices));
         this->ui->totalCountValueLabel->setText(tr("%1 €").arg(pInvoiceListStats->m_totalAmount));
         // fill dates used for query
-        this->ui->fromDateResultValueLabel->setText(fromDate.toString());
-        this->ui->toDateResultValueLabel->setText(toDate.addDays(-1).toString());
+        QString dateLocalized = Singletons::m_translationManager.getLocale().toString(fromDate);
+        this->ui->fromDateResultValueLabel->setText(dateLocalized);
+        dateLocalized = Singletons::m_translationManager.getLocale().toString(toDate.addDays(-1));
+        this->ui->toDateResultValueLabel->setText(dateLocalized);
         // fill invoice list
         fillInvoiceList(pInvoiceList);
     }

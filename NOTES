@@ -1,5 +1,3 @@
-* highligth family icon when selected
-
 * User profile view -> change email or account num
 ** On email or account change -> send email to alegria@yahoo.es
 
@@ -19,8 +17,3 @@ $ wget http://files.directadmin.com/services/debian_5.0_64/libmysqlclient.so.16
 $ sudo cp libmysqlclient.so.16 /usr/lib/x86_64-linux-gnu/
 $ sudo ln -s /usr/lib/x86_64-linux-gnu/libmysqlclient.so.16 /usr/lib/x86_64-linux-gnu/libmysqlclient_r.so.16
 ```
-
-* Windows mysql plugin
-Install mysql connector. 
-Mysql connector arch (x64 or x86) must match compiler arch (x64 or x86)
-Add to PATH
