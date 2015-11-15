@@ -1,0 +1,19 @@
+* User profile view -> change email or account num
+** On email or account change -> send email to alegria@yahoo.es
+
+* translations
+  * Default use: load some tranlation files and LANG system env turns out to be the language to be shown
+  * We will have language switch control -> change language dynamically
+  * installTranslator() will create a change event which will be sent to every single widget
+
+* Run with debug option
+```
+QT_DEBUG_PLUGINS=1 ./dist/penyamanager 2>&1 | grep -i mysql
+```
+
+* QT 5.5 dependes on libmysqlclient 16 and ubuntu 14.04 ships with 18.
+```
+$ wget http://files.directadmin.com/services/debian_5.0_64/libmysqlclient.so.16
+$ sudo cp libmysqlclient.so.16 /usr/lib/x86_64-linux-gnu/
+$ sudo ln -s /usr/lib/x86_64-linux-gnu/libmysqlclient.so.16 /usr/lib/x86_64-linux-gnu/libmysqlclient_r.so.16
+```

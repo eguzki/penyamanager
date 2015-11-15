@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/no-image.gif</file>
+        <file>images/alegrialogo.jpg</file>
+        <file>images/espanola.jpg</file>
+        <file>images/ikurrina.png</file>
+        <file>resources/deposit.html</file>
+        <file>resources/invoice.html</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,4 @@
+* AdminProductItem
+** new item when provider list is empty
+** new item when family list is empty
+** check ald image is deleted when -> edit item -> item has old image -> new image is selected
