@@ -2,6 +2,7 @@
 #define MEMBER_H
 
 #include <QString>
+#include <QSharedPointer>
 #include <QDateTime>
 #include <QDate>
 #include <DataTypes.h>
@@ -65,11 +66,11 @@ namespace PenyaManager
     };
 
     //
-    typedef std::shared_ptr<Member> MemberPtr;
+    typedef QSharedPointer<Member> MemberPtr;
     //
     typedef std::vector<MemberPtr> MemberList;
     //
-    typedef std::shared_ptr<MemberList> MemberListPtr;
+    typedef QSharedPointer<MemberList> MemberListPtr;
 
     //
     class MemberListStats
@@ -86,7 +87,7 @@ namespace PenyaManager
     };
 
     //
-    typedef std::shared_ptr<MemberListStats> MemberListStatsPtr;
+    typedef QSharedPointer<MemberListStats> MemberListStatsPtr;
 }
 
 #endif // MEMBER_H

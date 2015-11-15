@@ -1,6 +1,7 @@
 #ifndef DEPOSIT_H
 #define DEPOSIT_H
 
+#include <QSharedPointer>
 #include <QString>
 #include <QDateTime>
 #include <DataTypes.h>
@@ -40,11 +41,11 @@ namespace PenyaManager
     };
 
     //
-    typedef std::shared_ptr<Deposit> DepositPtr;
+    typedef QSharedPointer<Deposit> DepositPtr;
     //
     typedef std::vector<DepositPtr> DepositList;
     //
-    typedef std::shared_ptr<DepositList> DepositListPtr;
+    typedef QSharedPointer<DepositList> DepositListPtr;
 }
 
 #endif // DEPOSIT_H

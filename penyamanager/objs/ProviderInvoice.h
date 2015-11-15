@@ -1,6 +1,7 @@
 #ifndef PROVIDERINVOICE_H
 #define PROVIDERINVOICE_H
 
+#include <QSharedPointer>
 #include <QString>
 #include <QDateTime>
 #include <DataTypes.h>
@@ -30,11 +31,11 @@ namespace PenyaManager
     };
 
     //
-    typedef std::shared_ptr<ProviderInvoice> ProviderInvoicePtr;
+    typedef QSharedPointer<ProviderInvoice> ProviderInvoicePtr;
     //
     typedef std::vector<ProviderInvoicePtr> ProviderInvoiceList;
     //
-    typedef std::shared_ptr<ProviderInvoiceList> ProviderInvoiceListPtr;
+    typedef QSharedPointer<ProviderInvoiceList> ProviderInvoiceListPtr;
 
     //
     class ProviderInvoiceListStats
@@ -55,7 +56,7 @@ namespace PenyaManager
     };
 
     //
-    typedef std::shared_ptr<ProviderInvoiceListStats> ProviderInvoiceListStatsPtr;
+    typedef QSharedPointer<ProviderInvoiceListStats> ProviderInvoiceListStatsPtr;
 }
 
 #endif // PROVIDERINVOICE_H

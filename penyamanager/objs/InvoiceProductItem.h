@@ -1,6 +1,7 @@
 #ifndef INVOICEPRODUCTITEM_H
 #define INVOICEPRODUCTITEM_H
 
+#include <QSharedPointer>
 #include <QString>
 
 #include <DataTypes.h>
@@ -32,11 +33,11 @@ namespace PenyaManager
     };
 
     //
-    typedef std::shared_ptr<InvoiceProductItem> InvoiceProductItemPtr;
+    typedef QSharedPointer<InvoiceProductItem> InvoiceProductItemPtr;
     //
     typedef std::vector<InvoiceProductItemPtr> InvoiceProductItemList;
     //
-    typedef std::shared_ptr<InvoiceProductItemList> InvoiceProductItemListPtr;
+    typedef QSharedPointer<InvoiceProductItemList> InvoiceProductItemListPtr;
 
     //
     class InvoiceProductItemStats
@@ -55,7 +56,7 @@ namespace PenyaManager
     };
 
     //
-    typedef std::shared_ptr<InvoiceProductItemStats> InvoiceProductItemStatsPtr;
+    typedef QSharedPointer<InvoiceProductItemStats> InvoiceProductItemStatsPtr;
 }
 
 #endif // INVOICEPRODUCTITEM_H

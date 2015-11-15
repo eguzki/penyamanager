@@ -1,6 +1,7 @@
 #ifndef TRANSACTION_H
 #define TRANSACTION_H
 
+#include <QSharedPointer>
 #include <QString>
 #include <QDateTime>
 
@@ -47,11 +48,11 @@ namespace PenyaManager
     };
 
     //
-    typedef std::shared_ptr<Transaction> TransactionPtr;
+    typedef QSharedPointer<Transaction> TransactionPtr;
     //
     typedef std::vector<TransactionPtr> TransactionList;
     //
-    typedef std::shared_ptr<TransactionList> TransactionListPtr;
+    typedef QSharedPointer<TransactionList> TransactionListPtr;
 
     //
     class TransactionListStats
@@ -74,7 +75,7 @@ namespace PenyaManager
     };
 
     //
-    typedef std::shared_ptr<TransactionListStats> TransactionListStatsPtr;
+    typedef QSharedPointer<TransactionListStats> TransactionListStatsPtr;
 }
 
 #endif // TRANSACTION_H

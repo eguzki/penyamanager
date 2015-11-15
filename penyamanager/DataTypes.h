@@ -22,7 +22,6 @@
 #include <algorithm>
 #include <time.h>
 #include <functional>
-#include <tr1/memory>
 #include <cstdlib>
 
 using namespace std::placeholders;  // for _1, _2, _3...

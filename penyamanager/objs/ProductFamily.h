@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QDateTime>
+#include <QSharedPointer>
 
 #include <DataTypes.h>
 
@@ -33,11 +34,11 @@ namespace PenyaManager
     };
 
     //
-    typedef std::shared_ptr<ProductFamily> ProductFamilyPtr;
+    typedef QSharedPointer<ProductFamily> ProductFamilyPtr;
     //
     typedef std::vector<ProductFamilyPtr> ProductFamilyList;
     //
-    typedef std::shared_ptr<ProductFamilyList> ProductFamilyListPtr;
+    typedef QSharedPointer<ProductFamilyList> ProductFamilyListPtr;
 }
 
 #endif // PRODUCTFAMILY_H
