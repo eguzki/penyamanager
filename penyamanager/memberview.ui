@@ -39,6 +39,10 @@ border: none;
 background: white;
 }
 
+#topFrame QLabel {
+color: #fff;
+}
+
 #topFrame QPushButton {
 color: #333;
 border: 2px solid #555;
@@ -79,6 +83,13 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QLabel" name="titleLabel">
+        <property name="text">
+         <string>Member Detail View</string>
+        </property>
+       </widget>
+      </item>
       <item>
        <spacer name="horizontalSpacer">
         <property name="orientation">
