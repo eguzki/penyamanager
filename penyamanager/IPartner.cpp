@@ -12,6 +12,7 @@ namespace PenyaManager {
         // call next window
         IPartner* pPartner = Singletons::m_pParnetFinder->getPartner(key);
         pPartner->init();
+
     }
     //
     void IPartner::changeEvent(QEvent* event)

@@ -59,7 +59,7 @@ namespace PenyaManager {
         // Show
         //
 
-        show();
+        showFullScreen();
     }
     //
     void AccountView::retranslate()

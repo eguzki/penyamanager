@@ -46,7 +46,7 @@ namespace PenyaManager {
             return;
         }
 
-        show();
+        showFullScreen();
     }
     //
     void LoginWindow::retranslate()

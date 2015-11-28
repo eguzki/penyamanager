@@ -45,7 +45,7 @@ namespace PenyaManager {
         // Show
         //
 
-        show();
+        showFullScreen();
     }
     //
     void InvoiceDetailsWindow::retranslate()

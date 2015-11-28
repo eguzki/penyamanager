@@ -98,7 +98,7 @@ namespace PenyaManager {
         // Show
         //
 
-        show();
+        showFullScreen();
     }
     //
     void MainWindow::retranslate()

@@ -52,7 +52,7 @@ namespace PenyaManager {
         // Show
         //
 
-        show();
+        showFullScreen();
     }
     //
     void DepositWindow::retranslate()

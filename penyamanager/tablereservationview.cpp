@@ -87,7 +87,7 @@ namespace PenyaManager {
         //
         // Show
         //
-        show();
+        showFullScreen();
     }
     //
     void TableReservationView::on_backButton_clicked()

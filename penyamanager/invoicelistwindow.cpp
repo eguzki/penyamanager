@@ -50,7 +50,7 @@ namespace PenyaManager {
         // Show
         //
 
-        show();
+        showFullScreen();
     }
     //
     void InvoiceListWindow::retranslate()
