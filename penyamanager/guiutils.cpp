@@ -14,6 +14,7 @@ namespace PenyaManager {
     QPixmap GuiUtils::getImage(const QString& filename)
     {
         QPixmap image(filename);
+        QLOG_INFO() << filename;
         if (image.isNull()) {
             image = QPixmap(":images/no-image.gif");
         }
@@ -36,8 +37,6 @@ namespace PenyaManager {
         printer.setOutputFileName("/home/eguzki/printer.pdf");
         */
 
-        QSizeF paperSize(80, 297);
-        printer.setPaperSize(paperSize, QPrinter::Millimeter);
         if (!printer.isValid()) {
             QLOG_ERROR() << QString("[PrintFailed] pdf printer not valid");
             return;

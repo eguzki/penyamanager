@@ -125,7 +125,7 @@ penyamanager
   * QT and system shared libreries (dll's)
     * QT dll's path: QT_PATH/5.5/mingw492_32/bin
     * QT plugins dll's path: QT_PATH/5.5/mingw492_32/plugins
-    * Qt plugins: imageformats, platforms, sqldrivers
+    * Qt plugins: imageformats, platforms, sqldrivers, printsupport
 
 ```Shell
 $ ls -R -l
@@ -142,6 +142,7 @@ drwxrwxrwx 2 1026 users    4096 nov 16 21:28 imageformats
 -rwxrwxrwx 1 1026 users  599552 nov 16 20:53 penyamanager.exe
 -rwxrwxrwx 1 1026 users      95 nov 16 21:28 penyamanager.log
 drwxrwxrwx 2 1026 users    4096 nov 15 21:14 platforms
+drwxrwxrwx 2 1026 users    4096 nov 16 20:22 printsupport
 -rwxrwxrwx 1 1026 users 5391360 nov 15 20:40 Qt5Core.dll
 -rwxrwxrwx 1 1026 users 5334528 oct 12 21:31 Qt5Gui.dll
 -rwxrwxrwx 1 1026 users  357888 oct 12 21:42 Qt5PrintSupport.dll
@@ -167,6 +168,11 @@ total 2156
 ./platforms:
 total 1384
 -rwxrwxrwx 1 1026 users 1413632 oct 12 21:46 qwindows.dll
+
+./printsupport:
+total 1384
+-rwxrwxrwx 1 1026 users 1413632 oct 11 14:23 windowsprintersupport.dll
+
 
 ./sqldrivers:
 total 72
