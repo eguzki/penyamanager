@@ -83,9 +83,11 @@ namespace PenyaManager {
 
             Int32 productId = pProductItem->data(Constants::kIdRole).toInt();
             // only those with non zero count
-            if (pCountSpinBox->value() > 0)
-            {
+            if (pCountSpinBox->value() > 0) {
+                // create provider invoice product item
                 Singletons::m_pDAO->createProviderInvoiceProduct(pProviderInvoicePtr->m_id, productId, pCountSpinBox->value());
+                // update stock
+                Singletons::m_pDAO->updateStock(productId, pCountSpinBox->value());
             }
         }
         QLOG_INFO() << QString("[ProviderInvoice] ID %1 providerID %2").arg(pProviderInvoicePtr->m_id).arg(pProviderInvoicePtr->m_providerid);
