@@ -71,7 +71,7 @@ namespace PenyaManager {
         double deposit = this->ui->depositLabel->text().toDouble(&ok);
 
         if (!ok){
-            QMessageBox::warning(this, tr("deposit not valid"), tr("this is a bug, should not happen"));
+            QMessageBox::warning(this, tr("deposit not valid"), tr("Enter some valid deposit value"));
             return;
         }
 
