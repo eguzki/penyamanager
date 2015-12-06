@@ -33,6 +33,7 @@ namespace PenyaManager {
         this->ui->memberTableWidget->setColumnWidth(column++, 150);
         this->ui->memberTableWidget->setColumnWidth(column++, 100);
         this->ui->memberTableWidget->setColumnWidth(column++, 300);
+        this->ui->memberTableWidget->setColumnWidth(column++, 100);
     }
     //
     void MemberListView::translateTable()
