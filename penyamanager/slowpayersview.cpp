@@ -108,6 +108,8 @@ namespace PenyaManager {
             return;
         }
         QTextStream out(&f);
+        // print header
+        out << tr("Name") << "," << tr("Balance") << "\n";
 
         // fetch data
         MemberListPtr pMemberListPtr = Singletons::m_pDAO->getSlowPayersList();
