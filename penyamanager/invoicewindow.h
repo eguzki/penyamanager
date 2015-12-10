@@ -18,7 +18,7 @@ namespace PenyaManager {
 
         public:
             //
-            explicit InvoiceWindow(QWidget *parent = 0);
+            explicit InvoiceWindow(QWidget *parent, const CentralWidgetCallback &callback);
             //
             ~InvoiceWindow();
             //
@@ -42,11 +42,13 @@ namespace PenyaManager {
             //
             void on_printPushButton_clicked();
 
-    private:
+        private:
             //
             Ui::InvoiceWindow *ui;
             //
             MemberProfileGroupBox       *m_pMemberProfileGroupBox;
+            //
+            CentralWidgetCallback       m_switchCentralWidgetCallback;
     };
 
 }

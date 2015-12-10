@@ -20,7 +20,7 @@ namespace PenyaManager {
 
         public:
             //
-            explicit DepositWindow(QWidget *parent = 0);
+            explicit DepositWindow(QWidget *parent, const CentralWidgetCallback &callback);
             //
             ~DepositWindow();
             //
@@ -53,6 +53,8 @@ namespace PenyaManager {
             Ui::DepositWindow *ui;
             //
             MemberProfileGroupBox       *m_pMemberProfileGroupBox;
+            //
+            CentralWidgetCallback       m_switchCentralWidgetCallback;
     };
 }
 

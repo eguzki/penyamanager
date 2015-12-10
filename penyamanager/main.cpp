@@ -10,6 +10,7 @@
 
 #include "constants.h"
 #include "mainwindow.h"
+#include "memberdashboardwindow.h"
 #include "loginwindow.h"
 #include "invoicewindow.h"
 #include "depositwindow.h"
@@ -68,19 +69,21 @@ int main(int argc, char *argv[])
     penyamanagerTranslator.load(PenyaManager::Singletons::m_translationManager.getTranslationFile());
     app.installTranslator(&penyamanagerTranslator);
 
+    PenyaManager::MainWindow mainWindow;
+    // central widgets need mainwindow callback to call each other
+    PenyaManager::CentralWidgetCallback mainWindowSwitchCallback = std::bind(&PenyaManager::MainWindow::switchCentralWidget, &mainWindow, _1);
     // Fill views
-    PenyaManager::LoginWindow *pLoginWindow = new PenyaManager::LoginWindow(NULL, &penyamanagerTranslator);
+    PenyaManager::LoginWindow *pLoginWindow = new PenyaManager::LoginWindow(&mainWindow, &penyamanagerTranslator, mainWindowSwitchCallback);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kLoginWindowKey, pLoginWindow);
-    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kMainWindowKey, new PenyaManager::MainWindow);
-    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kInvoiceWindowKey, new PenyaManager::InvoiceWindow);
-    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kDepositsWindowKey, new PenyaManager::DepositWindow);
-    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kAccountViewWindowKey, new PenyaManager::AccountView);
-    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kTableReservationViewWindowKey, new PenyaManager::TableReservationView);
-    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kInvoiceListWindoKey, new PenyaManager::InvoiceListWindow);
-    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kInvoiceDetailsWindowKey, new PenyaManager::InvoiceDetailsWindow);
-    // entry point -> login window
-    PenyaManager::IPartner* pLoginPartner = PenyaManager::Singletons::m_pParnetFinder->getPartner(PenyaManager::WindowKey::kLoginWindowKey);
-    pLoginPartner->init();
+    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kMemberDashboardWindowKey, new PenyaManager::MemberDashboardWindow(&mainWindow, mainWindowSwitchCallback));
+    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kInvoiceWindowKey, new PenyaManager::InvoiceWindow(&mainWindow, mainWindowSwitchCallback));
+    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kDepositsWindowKey, new PenyaManager::DepositWindow(&mainWindow, mainWindowSwitchCallback));
+    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kAccountViewWindowKey, new PenyaManager::AccountView(&mainWindow, mainWindowSwitchCallback));
+    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kTableReservationViewWindowKey, new PenyaManager::TableReservationView(&mainWindow, mainWindowSwitchCallback));
+    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kInvoiceListWindoKey, new PenyaManager::InvoiceListWindow(&mainWindow, mainWindowSwitchCallback));
+    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kInvoiceDetailsWindowKey, new PenyaManager::InvoiceDetailsWindow(&mainWindow, mainWindowSwitchCallback));
+
+    mainWindow.init();
 
     // run qt event loop
     int returnValue = app.exec();

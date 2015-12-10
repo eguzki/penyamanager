@@ -39,12 +39,6 @@ namespace PenyaManager {
         } else {
             initialize();
         }
-
-        //
-        // Show
-        //
-
-        show();
     }
     //
     void AdminFamilyView::retranslate()

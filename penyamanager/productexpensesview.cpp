@@ -46,12 +46,6 @@ namespace PenyaManager {
         if (this->m_firstTime) {
             updateResults();
         }
-
-        //
-        // Show
-        //
-
-        show();
     }
     //
     void ProductExpensesView::translateTable()

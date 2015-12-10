@@ -63,12 +63,6 @@ namespace PenyaManager {
         // Load initial list
         //
         updateResults();
-
-        //
-        // Show
-        //
-
-        show();
     }
     //
     void StockManagementWindow::retranslate()

@@ -21,8 +21,6 @@ namespace PenyaManager {
             //
             ~AdminMainWindow();
             //
-            void init();
-            //
             void switchCentralWidget(WindowKey key);
 
         private slots:

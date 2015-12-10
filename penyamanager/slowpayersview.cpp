@@ -27,12 +27,6 @@ namespace PenyaManager {
     void SlowPayersView::init()
     {
         fillSlowPayersData();
-
-        //
-        // Show
-        //
-
-        show();
     }
     //
     void SlowPayersView::initializeTable()

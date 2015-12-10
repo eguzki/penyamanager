@@ -12,10 +12,11 @@
 
 namespace PenyaManager {
     //
-    InvoiceWindow::InvoiceWindow(QWidget *parent) :
+    InvoiceWindow::InvoiceWindow(QWidget *parent, const CentralWidgetCallback &callback) :
         IPartner(parent),
         ui(new Ui::InvoiceWindow),
-        m_pMemberProfileGroupBox(new MemberProfileGroupBox)
+        m_pMemberProfileGroupBox(new MemberProfileGroupBox),
+        m_switchCentralWidgetCallback(callback)
     {
         ui->setupUi(this);
         this->ui->topPanelWidget->layout()->addWidget(m_pMemberProfileGroupBox);
@@ -66,12 +67,6 @@ namespace PenyaManager {
             return;
         }
         fillInvoiceData(pCurrMember, pInvoicePtr);
-
-        //
-        // Show
-        //
-
-        show();
     }
     //
     void InvoiceWindow::retranslate()
@@ -93,8 +88,8 @@ namespace PenyaManager {
     //
     void InvoiceWindow::on_backPushButton_clicked()
     {
-        // call main window
-        switchWindow(WindowKey::kMainWindowKey);
+        // Go to dashboard window
+        m_switchCentralWidgetCallback(WindowKey::kMemberDashboardWindowKey);
     }
     //
     void InvoiceWindow::on_confirmPushButton_clicked()
@@ -116,8 +111,8 @@ namespace PenyaManager {
         Singletons::m_pServices->closeInvoice(pCurrMember, pInvoicePtr->m_id);
         QLOG_INFO() << QString("[Invoice] User %1 Invoice ID %2").arg(pCurrMember->m_id).arg(pInvoicePtr->m_id);
 
-        // call main window
-        switchWindow(WindowKey::kMainWindowKey);
+        // Go to dashboard window
+        m_switchCentralWidgetCallback(WindowKey::kMemberDashboardWindowKey);
     }
     //
     void InvoiceWindow::fillInvoiceData(const MemberPtr &pMemberPtr, const InvoicePtr &pInvoicePtr)

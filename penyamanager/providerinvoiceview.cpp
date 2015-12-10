@@ -124,11 +124,6 @@ namespace PenyaManager {
     void ProviderInvoiceView::init()
     {
         initialize();
-        //
-        // Show
-        //
-
-        show();
     }
     //
     void ProviderInvoiceView::retranslate()
