@@ -51,26 +51,26 @@ namespace PenyaManager {
         // validate name is not empty
         QString productName = this->ui->nameLineEdit->text();
         if (productName.isEmpty()){
-            QMessageBox::warning(this, "Data missing", "Name cannot be empty");
+            QMessageBox::warning(this, tr("Data missing"), tr("Name cannot be empty"));
             return;
         }
 
         // validate price field
         Float price = this->ui->priceDoubleSpinBox->value();
         if (!price) {
-            QMessageBox::warning(this, "Data not valid", "price cannot be 0.0€");
+            QMessageBox::warning(this, tr("Data not valid"), tr("price cannot be 0.00€"));
             return;
         }
         // validate providers
         if (!this->ui->providerComboBox->count())
         {
-            QMessageBox::warning(this, "Data missing", "Providers list is empty. Add some providers first");
+            QMessageBox::warning(this, tr("Data missing"), tr("Providers list is empty. Add some providers first"));
             return;
         }
         // validate families
         if (!this->ui->familyComboBox->count())
         {
-            QMessageBox::warning(this, "Data missing", "Family list is empty. Add some families first");
+            QMessageBox::warning(this, tr("Data missing"), tr("Family list is empty. Add some families first"));
             return;
         }
 

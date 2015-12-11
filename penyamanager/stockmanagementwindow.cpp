@@ -97,7 +97,7 @@ namespace PenyaManager {
             out << pProductPtr->m_name << ", " << QString::number(pProductPtr->m_stock) << "\n";
         }
         f.close();
-        QMessageBox::information(this, "export stock CSV", "Stock exported to " + filename);
+        QMessageBox::information(this, tr("CSV export"), tr("Successfully exported. Filename: %1").arg(filename));
     }
     //
     void StockManagementWindow::on_prevPagePushButton_clicked()

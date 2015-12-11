@@ -85,7 +85,7 @@ namespace PenyaManager {
             pTableItem = new QTableWidgetItem(QString::number(pDepositPtr->m_memberId));
             pTableItem->setData(Qt::UserRole, pDepositPtr->m_memberId);
             this->ui->depositTableWidget->setItem(rowCount, column++, pTableItem);
-            pTableItem = new QTableWidgetItem(tr("%1 €").arg(pDepositPtr->m_total));
+            pTableItem = new QTableWidgetItem(QString("%1 €").arg(pDepositPtr->m_total, 0, 'f', 2));
             pTableItem->setData(Qt::UserRole, pDepositPtr->m_total);
             this->ui->depositTableWidget->setItem(rowCount, column++, pTableItem);
             QDoubleSpinBox *pQDoubleSpinBox = new QDoubleSpinBox(this->ui->depositTableWidget);
@@ -123,8 +123,8 @@ namespace PenyaManager {
         }
         // close deposit
         Singletons::m_pDAO->closeDeposit(depositId);
-        QLOG_INFO() << QString("[DepositCheck] deposit ID %1 member ID %2 total %3€ diff %4€").arg(depositId).arg(memberId).arg(total).arg(amount);
-        QMessageBox::information(this, "Deposit checked", QString("Difference: %1").arg(amount));
+        QLOG_INFO() << QString("[DepositCheck] deposit ID %1 member ID %2 total %3€ diff %4€").arg(depositId).arg(memberId).arg(total, 0, 'f', 2).arg(amount, 0, 'f', 2);
+        QMessageBox::information(this, tr("Deposit checked"), tr("Difference: %1 €").arg(amount, 0, 'f', 2));
         showUncheckedDeposits();
     }
 }

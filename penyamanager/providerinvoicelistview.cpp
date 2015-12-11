@@ -136,7 +136,7 @@ namespace PenyaManager {
         this->ui->pageInfoLabel->setText(tr("page %1 out of %2").arg(m_currentPage+1).arg(numPages));
         // fill total stats view
         this->ui->totalInvoicesValueLabel->setText(QString::number(pProviderInvoiceListStats->m_totalNumInvoices));
-        this->ui->totalCostValueLabel->setText(tr("%1 €").arg(pProviderInvoiceListStats->m_totalAmount));
+        this->ui->totalCostValueLabel->setText(QString("%1 €").arg(pProviderInvoiceListStats->m_totalAmount, 0, 'f', 2));
         // fill dates used for query
         QString dateLocalized = Singletons::m_translationManager.getLocale().toString(fromDate, QLocale::NarrowFormat);
         this->ui->fromDateResultValueLabel->setText(dateLocalized);
@@ -157,7 +157,7 @@ namespace PenyaManager {
         {
             ProviderInvoicePtr pInvoicePtr = *iter;
             this->ui->invoicesTableWidget->setItem(rowCount, 0, new QTableWidgetItem(pInvoicePtr->m_id));
-            this->ui->invoicesTableWidget->setItem(rowCount, 1, new QTableWidgetItem(tr("%1 €").arg(pInvoicePtr->m_total)));
+            this->ui->invoicesTableWidget->setItem(rowCount, 1, new QTableWidgetItem(QString("%1 €").arg(pInvoicePtr->m_total, 0, 'f', 2)));
             QString dateLocalized = Singletons::m_translationManager.getLocale().toString(pInvoicePtr->m_regDate, QLocale::NarrowFormat);
             this->ui->invoicesTableWidget->setItem(rowCount, 2, new QTableWidgetItem(dateLocalized));
             this->ui->invoicesTableWidget->setItem(rowCount, 3, new QTableWidgetItem(QString::number(pInvoicePtr->m_providerid)));

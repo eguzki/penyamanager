@@ -66,13 +66,13 @@ namespace PenyaManager {
         // check memberId input
         if (this->m_memberId < 0)
         {
-            QMessageBox::about(this, "Login failed", "MemberId not set");
+            QMessageBox::about(this, tr("Login failed"), tr("MemberId not set"));
             return;
         }
         // check password input
         if (this->m_password.isEmpty())
         {
-            QMessageBox::about(this, "Login failed", "Password not set");
+            QMessageBox::about(this, tr("Login failed"), tr("Password not set"));
             return;
         }
         // Loading user Profile
@@ -81,8 +81,8 @@ namespace PenyaManager {
         {
             QLOG_INFO() << QString("[LoginFailed] User %1 does not exist").arg(this->m_memberId);
             // User could not be found
-            QMessageBox::about(this, "Login failed",
-                    QString("User not registered in the system: %1").arg(this->m_memberId));
+            QMessageBox::about(this, tr("Login failed"),
+                    tr("User not registered in the system: %1").arg(this->m_memberId));
             return;
         }
 
@@ -91,8 +91,8 @@ namespace PenyaManager {
         {
             QLOG_INFO() << QString("[LoginFailed] User %1 pass check failed").arg(this->m_memberId);
             // User not active
-            QMessageBox::about(this, "Login failed",
-                    "Password incorrect");
+            QMessageBox::about(this, tr("Login failed"),
+                    tr("Password incorrect"));
             return;
         }
 
@@ -101,7 +101,7 @@ namespace PenyaManager {
             QLOG_INFO() << QString("[LoginFailed] User %1 not active").arg(this->m_memberId);
             // User not active
             QMessageBox::about(this, "Login failed",
-                    QString("User not active in the system: %1").arg(this->m_memberId));
+                    tr("User not active in the system: %1").arg(this->m_memberId));
             return;
         }
 
@@ -109,13 +109,16 @@ namespace PenyaManager {
         {
             // User is slow payer
             QMessageBox::warning(this, "Slow Payer",
-                    QString("Your current balance is negative: %1 €").arg(pCurrMemberPtr->m_balance));
+                    tr("Your current balance is negative: %1 €").arg(pCurrMemberPtr->m_balance, 0, 'f', 2));
         }
 
         // login granted
         QLOG_INFO() << QString("[LoginSucess] User %1").arg(this->m_memberId);
         // assign user
         Singletons::m_pCurrMember = pCurrMemberPtr;
+
+        // change last login date
+        Singletons::m_pDAO->changeMemberLastLogin(this->m_memberId, QDateTime::currentDateTime());
 
         // load main window
         m_switchCentralWidgetCallback(WindowKey::kMemberDashboardWindowKey);

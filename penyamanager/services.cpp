@@ -102,7 +102,7 @@ namespace PenyaManager {
         {
             MemberPtr pMemberPtr = *iter;
             createAccountTransaction(pMemberPtr->m_id, -pMemberPtr->m_balance, "reset account", TransactionType::AccountPayment);
-            QLOG_INFO() << QString("[ResetSlowPayer] member ID %1 amount %2€").arg(pMemberPtr->m_id).arg(-pMemberPtr->m_balance);
+            QLOG_INFO() << QString("[ResetSlowPayer] member ID %1 amount %2€").arg(pMemberPtr->m_id).arg(-pMemberPtr->m_balance, 0, 'f', 2);
         }
     }
     //

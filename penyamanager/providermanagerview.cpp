@@ -120,7 +120,7 @@ namespace PenyaManager {
         QVBoxLayout *pInfoLayout = new QVBoxLayout;
         QLabel *pTextLabel = new QLabel(pfPtr->m_name);
         pTextLabel->setFixedWidth(Constants::kFamilyWidgetWidth -  Constants::kFamilyImageWidth - 5);
-        QLabel *pProductPriceLabel = new QLabel(QString("%1 €").arg(pfPtr->m_price));
+        QLabel *pProductPriceLabel = new QLabel(QString("%1 €").arg(pfPtr->m_price, 0, 'f', 2));
         pInfoLayout->addWidget(pTextLabel);
         pInfoLayout->addWidget(pProductPriceLabel);
         pProductItemInfoWidget->setLayout(pInfoLayout);

@@ -61,11 +61,9 @@ namespace PenyaManager {
         MemberListPtr pMemberListPtr = Singletons::m_pDAO->getSlowPayersList();
         if (pMemberListPtr->size() > 0) {
             this->ui->csvPushButton->setEnabled(true);
-            this->ui->printPushButton->setEnabled(true);
             this->ui->resetAccountsPushButton->setEnabled(true);
         } else {
             this->ui->csvPushButton->setEnabled(false);
-            this->ui->printPushButton->setEnabled(false);
             this->ui->resetAccountsPushButton->setEnabled(false);
         }
 
@@ -82,7 +80,7 @@ namespace PenyaManager {
             MemberPtr pMemberPtr = *iter;
             this->ui->slowPayersTableWidget->setItem(rowCount, 0, new QTableWidgetItem(QString::number(pMemberPtr->m_id)));
             this->ui->slowPayersTableWidget->setItem(rowCount, 1, new QTableWidgetItem(pMemberPtr->m_name + " " + pMemberPtr->m_surname));
-            this->ui->slowPayersTableWidget->setItem(rowCount, 2, new QTableWidgetItem(tr("%1 €").arg(pMemberPtr->m_balance)));
+            this->ui->slowPayersTableWidget->setItem(rowCount, 2, new QTableWidgetItem(QString("%1 €").arg(pMemberPtr->m_balance, 0, 'f', 2)));
             rowCount++;
         }
     }
@@ -110,15 +108,10 @@ namespace PenyaManager {
         for (MemberList::iterator iter = pMemberListPtr->begin(); iter != pMemberListPtr->end(); ++iter)
         {
             MemberPtr pMemberPtr = *iter;
-            out << pMemberPtr->m_name << " " << pMemberPtr->m_surname << ", " << tr("%1 €").arg(pMemberPtr->m_balance) << "\n";
+            out << pMemberPtr->m_name << " " << pMemberPtr->m_surname << ", " << QString("%1 €").arg(pMemberPtr->m_balance, 0, 'f', 2) << "\n";
         }
         f.close();
-    }
-    //
-    void SlowPayersView::on_printPushButton_clicked()
-    {
-        // TODO
-
+        QMessageBox::information(this, tr("CSV export"), tr("Successfully exported. Filename: %1").arg(filename));
     }
     //
     void SlowPayersView::on_resetAccountsPushButton_clicked()

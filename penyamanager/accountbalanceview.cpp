@@ -26,7 +26,7 @@ namespace PenyaManager {
 
         this->ui->fromDateResultValueLabel->clear();
         this->ui->toDateResultValueLabel->clear();
-        this->ui->memberIdResValueLabel->setText(QString("ALL"));
+        this->ui->memberIdResValueLabel->setText(tr("ALL"));
         this->ui->totalRowsValueLabel->clear();
 
         initializeTable();
@@ -72,7 +72,7 @@ namespace PenyaManager {
         this->ui->transactionsTableWidget->setColumnWidth(column++, 200);
         this->ui->transactionsTableWidget->setColumnWidth(column++, 100);
         this->ui->transactionsTableWidget->setColumnWidth(column++, 300);
-        this->ui->transactionsTableWidget->setColumnWidth(column++, 100);
+        this->ui->transactionsTableWidget->setColumnWidth(column++, 200);
     }
     //
     void AccountBalanceView::on_searchPushButton_clicked()
@@ -117,7 +117,7 @@ namespace PenyaManager {
             this->ui->transactionsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(dateLocalized));
             this->ui->transactionsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(QString::number(pTransactionPtr->m_memberId)));
             this->ui->transactionsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(pTransactionPtr->m_descr));
-            this->ui->transactionsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(tr("%1 €").arg(pTransactionPtr->m_amount)));
+            this->ui->transactionsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(QString("%1 €").arg(pTransactionPtr->m_amount, 0, 'f', 2)));
             rowCount++;
         }
     }
@@ -150,9 +150,9 @@ namespace PenyaManager {
         this->ui->pageInfoLabel->setText(tr("page %1 out of %2").arg(m_currentPage+1).arg(numPages));
         // fill total stats view
         this->ui->totalRowsValueLabel->setText(QString::number(pTransactionListStatsPtr->m_totalNumTransactions));
-        this->ui->totalDepositsValueLabel->setText(tr("%1 €").arg(pTransactionListStatsPtr->m_totalDeposits));
-        this->ui->totalInvoicesValueLabel->setText(tr("%1 €").arg(pTransactionListStatsPtr->m_totalInvoices));
-        this->ui->totalBankChargesValueLabel->setText(tr("%1 €").arg(pTransactionListStatsPtr->m_totalBankCharges));
+        this->ui->totalDepositsValueLabel->setText(QString("%1 €").arg(pTransactionListStatsPtr->m_totalDeposits, 0, 'f', 2));
+        this->ui->totalInvoicesValueLabel->setText(QString("%1 €").arg(pTransactionListStatsPtr->m_totalInvoices, 0, 'f', 2));
+        this->ui->totalBankChargesValueLabel->setText(QString("%1 €").arg(pTransactionListStatsPtr->m_totalBankCharges, 0, 'f', 2));
         // fill dates used for query
         QString dateLocalized = Singletons::m_translationManager.getLocale().toString(fromDate, QLocale::NarrowFormat);
         this->ui->fromDateResultValueLabel->setText(dateLocalized);

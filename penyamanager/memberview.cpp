@@ -268,9 +268,11 @@ namespace PenyaManager {
         // memberId
         this->ui->memberIdValueLabel->setText(QString::number(pMemberPtr->m_id));
         // reg date
-        this->ui->regDateValueLabel->setText(pMemberPtr->m_regDate.toString());
+        QString dateLocalized = Singletons::m_translationManager.getLocale().toString(pMemberPtr->m_regDate, QLocale::NarrowFormat);
+        this->ui->regDateValueLabel->setText(dateLocalized);
         // last login date
-        this->ui->lastLoginValueLabel->setText(pMemberPtr->m_lastLogin.toString());
+        dateLocalized = Singletons::m_translationManager.getLocale().toString(pMemberPtr->m_lastLogin, QLocale::NarrowFormat);
+        this->ui->lastLoginValueLabel->setText(dateLocalized);
         // name
         this->ui->nameLineEdit->setText(pMemberPtr->m_name);
         // surname

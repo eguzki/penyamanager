@@ -161,15 +161,17 @@ namespace PenyaManager {
             //
             void closeDeposit(Int32 depositId);
             //
-            MemberListPtr getMemberList(Uint32 page, Uint32 count);
+            MemberListPtr getMemberList(bool onlyPostalSend, Uint32 page, Uint32 count);
             //
-            MemberListStatsPtr getMemberListStats();
+            MemberListStatsPtr getMemberListStats(bool onlyPostalSend);
             //
             void updateMember(const MemberPtr &pMemberPtr);
             //
             Int32 createMember(const MemberPtr &pMemberPtr);
             //
             void changeMemberPassword(Int32 memberId, const QString &pwdHash, const QDateTime &lastmodified);
+            //
+            void changeMemberLastLogin(Int32 memberId, const QDateTime &lastlogin);
 
         private:
             //
@@ -309,13 +311,19 @@ namespace PenyaManager {
             //
             QSqlQuery               m_memberListQuery;
             //
+            QSqlQuery               m_memberListFilteredQuery;
+            //
             QSqlQuery               m_memberListStatsQuery;
+            //
+            QSqlQuery               m_memberListFilteredStatsQuery;
             //
             QSqlQuery               m_updateMemberQuery;
             //
             QSqlQuery               m_createMemberQuery;
             //
             QSqlQuery               m_updateMemberPasswordQuery;
+            //
+            QSqlQuery               m_updateMemberLastLoginQuery;
     };
 }
 #endif // DAO_H
