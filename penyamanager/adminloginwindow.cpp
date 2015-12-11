@@ -2,7 +2,7 @@
 
 #include <QDebug>
 #include <QMessageBox>
-
+#include <QFile>
 #include <QsLog.h>
 
 #include "utils.h"
@@ -25,6 +25,14 @@ namespace PenyaManager {
         this->ui->loginInput->setValidator(pMemberIdIntValidator);
         QValidator *pPassIntValidator = new QIntValidator();
         this->ui->passInput->setValidator(pPassIntValidator);
+
+        // load code build
+        QFile versionFile(":VERSION");
+        versionFile.open(QIODevice::ReadOnly | QIODevice::Text);
+        QTextStream versionStream(&versionFile);
+        versionStream.setCodec("UTF-8");
+        QString versionStr = versionStream.readAll();
+        this->ui->versionLabel->setText(QString("code build %1").arg(versionStr));
     }
     //
     AdminLoginWindow::~AdminLoginWindow()

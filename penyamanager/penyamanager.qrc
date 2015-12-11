@@ -6,5 +6,6 @@
         <file>images/ikurrina.png</file>
         <file>resources/deposit.html</file>
         <file>resources/invoice.html</file>
+        <file>VERSION</file>
     </qresource>
 </RCC>
