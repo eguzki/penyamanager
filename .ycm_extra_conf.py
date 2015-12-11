@@ -58,6 +58,7 @@ flags = [
     # For a C project, you would set this to 'c' instead of 'c++'.
     '-x',
     'c++',
+    '-fPIC',
 
     '-DQT_CORE_LIB',
     '-DQT_GUI_LIB',
@@ -65,14 +66,6 @@ flags = [
     '-DQT_WIDGETS_LIB',
     '-DQT_PRINTSUPPORT_LIB',
     '-DQT_NETWORK_LIB',
-
-    '-I', '/usr/include/c++/5.2.1',
-    '-I', '/usr/include/x86_64-linux-gnu/c++/5.2.1',
-    '-I', '/usr/include/c++/5.2.1/backward',
-    '-I', '/usr/lib/gcc/x86_64-linux-gnu/5.2.1/include',
-    '-I', '/usr/lib/gcc/x86_64-linux-gnu/5.2.1/include-fixed',
-    '-I', '/usr/include/x86_64-linux-gnu',
-    '-I', '/usr/include',
 
     '-I', '/opt/Qt5.5.1/5.5/gcc_64/mkspecs/linux-g++',
     '-I', '/opt/Qt5.5.1/5.5/gcc_64/include',
