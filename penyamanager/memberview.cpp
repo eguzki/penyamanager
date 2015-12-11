@@ -88,12 +88,6 @@ namespace PenyaManager {
         } else {
             initialize();
         }
-
-        //
-        // Show
-        //
-
-        show();
     }
     //
     void MemberView::retranslate()
@@ -210,7 +204,7 @@ namespace PenyaManager {
             // imagePath (optional)
             if (!this->m_memberImageFilename.isEmpty()) {
                 // new image was selected
-                QString destFileName = Utils::newImageName("product", this->m_memberImageFilename);
+                QString destFileName = Utils::newImageName("member", this->m_memberImageFilename);
                 QString destFilePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(destFileName);
                 QFile::copy(this->m_memberImageFilename, destFilePath);
                 pMemberPtr->m_imagePath = destFileName;

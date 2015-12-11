@@ -30,7 +30,7 @@ RC_ICONS = images/alegrialogo.ico
 SOURCES += main.cpp\
         singletons.cpp\
         dao.cpp\
-        mainwindow.cpp\
+        memberdashboardwindow.cpp\
         utils.cpp\
         constants.cpp\
         services.cpp\
@@ -58,9 +58,10 @@ SOURCES += main.cpp\
         memberprofilegroupbox.cpp \
     invoicedetailswindow.cpp \
     guiutils.cpp \
-    translationmanager.cpp
+    translationmanager.cpp \
+    mainwindow.cpp
 
-HEADERS  += mainwindow.h\
+HEADERS  += memberdashboardwindow.h\
         singletons.h\
         dao.h\
         utils.h\
@@ -90,9 +91,10 @@ HEADERS  += mainwindow.h\
         memberprofilegroupbox.h \
     invoicedetailswindow.h \
     guiutils.h \
-    translationmanager.h
+    translationmanager.h \
+    mainwindow.h
 
-FORMS    += mainwindow.ui\
+FORMS    += memberdashboardwindow.ui\
         loginwindow.ui \
         numitemdialog.ui \
         invoicewindow.ui \
@@ -102,7 +104,8 @@ FORMS    += mainwindow.ui\
         invoicelistwindow.ui \
         invoicedetailswidget.ui \
         memberprofilegroupbox.ui \
-    invoicedetailswindow.ui
+    invoicedetailswindow.ui \
+    mainwindow.ui
 
 TRANSLATIONS += \
     translations/penyamanager_es.ts \

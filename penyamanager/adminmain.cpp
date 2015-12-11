@@ -112,6 +112,7 @@ int main(int argc, char *argv[])
     // entry point -> adminlogin window
     PenyaManager::IPartner* pAdminLoginPartner = PenyaManager::Singletons::m_pParnetFinder->getPartner(PenyaManager::WindowKey::kAdminLoginWindowKey);
     pAdminLoginPartner->init();
+    pAdminLoginPartner->show();
 
     int returnValue = app.exec();
 

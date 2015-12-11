@@ -37,12 +37,6 @@ namespace PenyaManager {
         this->ui->editFamilyPushButton->hide();
 
         fillFamilyProducts(pfListPtr);
-
-        //
-        // Show
-        //
-
-        show();
     }
     //
     void FamilyItemManagementWindow::retranslate()

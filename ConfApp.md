@@ -26,6 +26,6 @@ Options:
 # example
 
 ```
-$ penyamanagerconf -r 'C:\' --host 192.168.100.2 -n alegria -u someusername -p somepassword
+$ penyamanagerconf -r "C:\\somepath\\somepath" --host 192.168.100.2 -n alegria -u someusername -p somepassword
 Successful
 ```

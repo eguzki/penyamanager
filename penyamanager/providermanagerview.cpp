@@ -30,12 +30,6 @@ namespace PenyaManager {
         // Loading providers
         //
         fillProviders();
-
-        //
-        // Show
-        //
-
-        show();
     }
     //
     void ProviderManagerView::retranslate()

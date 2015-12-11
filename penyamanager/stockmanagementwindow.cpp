@@ -63,12 +63,6 @@ namespace PenyaManager {
         // Load initial list
         //
         updateResults();
-
-        //
-        // Show
-        //
-
-        show();
     }
     //
     void StockManagementWindow::retranslate()
@@ -93,7 +87,7 @@ namespace PenyaManager {
         }
         QTextStream out(&f);
         // print header
-        out << "name, stock" << "\n";
+        out << tr("name") << "," << tr("stock") << "\n";
 
         // fetch data
         ProductItemListPtr pfListPtr = Singletons::m_pDAO->getProductsList(0, 100000);
@@ -162,7 +156,7 @@ namespace PenyaManager {
             //  product active status
             this->ui->productsTableWidget->setItem(rowCount, 3, new QTableWidgetItem((pProductPtr->m_active)?(QString::number(1)):(QString::number(0))));
             //  product reg date
-            QString dateLocalized = Singletons::m_translationManager.getLocale().toString(pProductPtr->m_regDate);
+            QString dateLocalized = Singletons::m_translationManager.getLocale().toString(pProductPtr->m_regDate, QLocale::NarrowFormat);
             this->ui->productsTableWidget->setItem(rowCount, 4, new QTableWidgetItem(dateLocalized));
             //  product price
             this->ui->productsTableWidget->setItem(rowCount, 5, new QTableWidgetItem(QString::number(pProductPtr->m_price)));

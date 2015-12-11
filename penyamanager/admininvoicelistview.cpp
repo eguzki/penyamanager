@@ -37,12 +37,6 @@ namespace PenyaManager {
         if (this->m_firstTime) {
             updateResults();
         }
-
-        //
-        // Show
-        //
-
-        show();
     }
     //
     void AdminInvoiceListView::retranslate()
@@ -95,9 +89,9 @@ namespace PenyaManager {
         this->ui->totalInvoicesValueLabel->setText(QString::number(pInvoiceListStats->m_totalNumInvoices));
         this->ui->totalCountValueLabel->setText(tr("%1 €").arg(pInvoiceListStats->m_totalAmount));
         // fill dates used for query
-        QString dateLocalized = Singletons::m_translationManager.getLocale().toString(fromDate);
+        QString dateLocalized = Singletons::m_translationManager.getLocale().toString(fromDate, QLocale::NarrowFormat);
         this->ui->fromDateResultValueLabel->setText(dateLocalized);
-        dateLocalized = Singletons::m_translationManager.getLocale().toString(toDate.addDays(-1));
+        dateLocalized = Singletons::m_translationManager.getLocale().toString(toDate.addDays(-1), QLocale::NarrowFormat);
         this->ui->toDateResultValueLabel->setText(dateLocalized);
         // fill invoice list
         fillInvoiceList(pInvoiceList);

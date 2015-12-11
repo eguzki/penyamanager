@@ -46,12 +46,6 @@ namespace PenyaManager {
         if (this->m_firstTime) {
             updateResults();
         }
-
-        //
-        // Show
-        //
-
-        show();
     }
     //
     void ProductExpensesView::translateTable()
@@ -169,9 +163,9 @@ namespace PenyaManager {
         // fill total stats view
         this->ui->totalProductsValueLabel->setText(QString::number(pInvoiceProductItemStatsPtr->m_totalProducts));
         // fill dates used for query
-        QString dateLocalized = Singletons::m_translationManager.getLocale().toString(fromDate);
+        QString dateLocalized = Singletons::m_translationManager.getLocale().toString(fromDate, QLocale::NarrowFormat);
         this->ui->fromDateResultValueLabel->setText(dateLocalized);
-        dateLocalized = Singletons::m_translationManager.getLocale().toString(toDate.addDays(-1));
+        dateLocalized = Singletons::m_translationManager.getLocale().toString(toDate.addDays(-1), QLocale::NarrowFormat);
         this->ui->toDateResultValueLabel->setText(dateLocalized);
         // fill invoice list
         fillProductList(pInvoiceProductItemListPtr);
@@ -209,7 +203,7 @@ namespace PenyaManager {
         }
 
         // header
-        out << "product ID" << ", " << "name" << ", " << "count" << "\n";
+        out << tr("product ID") << ", " << tr("name") << ", " << tr("count") << "\n";
         // iterate over results
         for (InvoiceProductItemList::iterator iter = pInvoiceProductItemListPtr->begin(); iter != pInvoiceProductItemListPtr->end(); ++iter)
         {

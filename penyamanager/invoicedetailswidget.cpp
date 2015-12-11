@@ -31,12 +31,6 @@ namespace PenyaManager {
         InvoicePtr pInvoicePtr = Singletons::m_pDAO->getInvoice(invoiceId);
 
         fillInvoiceData(pInvoicePtr);
-
-        //
-        // Show
-        //
-
-        show();
     }
     //
     void InvoiceDetailsWidget::retranslate()

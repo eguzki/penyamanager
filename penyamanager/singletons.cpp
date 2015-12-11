@@ -37,7 +37,6 @@ namespace PenyaManager {
         //qDebug() << "user: " << ddbbUser;
         //qDebug() << "pass: " << ddbbPass;
         m_pDAO = new DAO(ddbbHost, ddbbName, ddbbUser, ddbbPass);
-        //m_pDAO = new DAO("192.168.1.254", "alegria", "root", "Urko&Eguzki");
         m_pServices = new Services;
         m_pParnetFinder = new PartnerFinder;
     }

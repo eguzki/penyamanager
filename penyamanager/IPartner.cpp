@@ -5,13 +5,12 @@
 
 namespace PenyaManager {
     //
-    void IPartner::switchWindow(WindowKey key)
+    IPartner::IPartner(QWidget *parent)
+        :
+            QWidget(parent)
     {
-        // hide current window
+        // hide current widget
         hide();
-        // call next window
-        IPartner* pPartner = Singletons::m_pParnetFinder->getPartner(key);
-        pPartner->init();
     }
     //
     void IPartner::changeEvent(QEvent* event)

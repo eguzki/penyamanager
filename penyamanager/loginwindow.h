@@ -19,7 +19,7 @@ namespace PenyaManager {
 
         public:
             //
-            explicit LoginWindow(QWidget *parent, QTranslator *pTranslator);
+            explicit LoginWindow(QWidget *parent, QTranslator *pTranslator, const CentralWidgetCallback &callback);
             //
             ~LoginWindow();
             //
@@ -37,17 +37,18 @@ namespace PenyaManager {
             //
             void on_languagePushButton_clicked();
 
-    private:
+        private:
             //
-            Ui::LoginWindow *ui;
+            Ui::LoginWindow             *ui;
             //
-            QString         m_password;
+            QString                     m_password;
             //
-            Int32           m_memberId;
+            Int32                       m_memberId;
             //
-            QTranslator     *m_pTranslator;
+            QTranslator                 *m_pTranslator;
+            //
+            CentralWidgetCallback       m_switchCentralWidgetCallback;
     };
-
 }
 
 #endif // LOGINWINDOW_H

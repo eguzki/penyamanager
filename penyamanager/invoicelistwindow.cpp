@@ -6,12 +6,13 @@
 
 namespace PenyaManager {
     //
-    InvoiceListWindow::InvoiceListWindow(QWidget *parent) :
+    InvoiceListWindow::InvoiceListWindow(QWidget *parent, const CentralWidgetCallback &callback) :
         IPartner(parent),
         ui(new Ui::InvoiceListWindow),
         m_pMemberProfileGroupBox(new MemberProfileGroupBox),
         m_currentPage(0),
-        m_firstTime(true)
+        m_firstTime(true),
+        m_switchCentralWidgetCallback(callback)
     {
         ui->setupUi(this);
         this->ui->topPanelWidget->layout()->addWidget(m_pMemberProfileGroupBox);
@@ -45,12 +46,6 @@ namespace PenyaManager {
         if (this->m_firstTime) {
             updateResults();
         }
-
-        //
-        // Show
-        //
-
-        show();
     }
     //
     void InvoiceListWindow::retranslate()
@@ -68,7 +63,8 @@ namespace PenyaManager {
     //
     void InvoiceListWindow::on_backPushButton_clicked()
     {
-        switchWindow(WindowKey::kMainWindowKey);
+        // Go to dashboard window
+        m_switchCentralWidgetCallback(WindowKey::kMemberDashboardWindowKey);
     }
     //
     void InvoiceListWindow::on_prevPagePushButton_clicked()
@@ -104,9 +100,9 @@ namespace PenyaManager {
         this->ui->totalInvoicesValueLabel->setText(QString::number(pInvoiceListStats->m_totalNumInvoices));
         this->ui->totalCountValueLabel->setText(tr("%1 €").arg(pInvoiceListStats->m_totalAmount));
         // fill dates used for query
-        QString dateLocalized = Singletons::m_translationManager.getLocale().toString(fromDate);
+        QString dateLocalized = Singletons::m_translationManager.getLocale().toString(fromDate, QLocale::NarrowFormat);
         this->ui->fromDateResultValueLabel->setText(dateLocalized);
-        dateLocalized = Singletons::m_translationManager.getLocale().toString(toDate.addDays(-1));
+        dateLocalized = Singletons::m_translationManager.getLocale().toString(toDate.addDays(-1), QLocale::NarrowFormat);
         this->ui->toDateResultValueLabel->setText(dateLocalized);
         // fill invoice list
         fillInvoiceList(pInvoiceList);
@@ -162,7 +158,7 @@ namespace PenyaManager {
         Singletons::m_currentInvoiceId = invoiceId;
 
         // call invoice details window
-        switchWindow(WindowKey::kInvoiceDetailsWindowKey);
+        m_switchCentralWidgetCallback(WindowKey::kInvoiceDetailsWindowKey);
     }
 }
 

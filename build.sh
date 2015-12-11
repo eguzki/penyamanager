@@ -36,9 +36,10 @@ checkBinary "which"
 #checkBinary "qmake"
 checkBinary "make"
 #QMAKE=$(which qmake)
-QMAKE="/opt/Qt5.5.0/5.5/gcc_64/bin/qmake"
+QMAKE="/opt/Qt5.5.1/5.5/gcc_64/bin/qmake"
 MAKE=$(which make)
-LRELEASE=$(which lrelease)
+#LRELEASE=$(which lrelease)
+LRELEASE="/opt/Qt5.5.1/5.5/gcc_64/bin/lrelease"
 
 PROJECT_NAME="penyamanager"
 CURRENT_PATH="$( cd "$( dirname "$0" )" && pwd )"

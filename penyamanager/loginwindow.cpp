@@ -14,12 +14,13 @@
 namespace PenyaManager {
 
     //
-    LoginWindow::LoginWindow(QWidget *parent, QTranslator *pTranslator) :
+    LoginWindow::LoginWindow(QWidget *parent, QTranslator *pTranslator, const CentralWidgetCallback &callback) :
         IPartner(parent),
         ui(new Ui::LoginWindow),
         m_password(),
         m_memberId(-1),
-        m_pTranslator(pTranslator)
+        m_pTranslator(pTranslator),
+        m_switchCentralWidgetCallback(callback)
     {
         ui->setupUi(this);
     }
@@ -45,8 +46,6 @@ namespace PenyaManager {
             qApp->exit(1);
             return;
         }
-
-        show();
     }
     //
     void LoginWindow::retranslate()
@@ -109,7 +108,9 @@ namespace PenyaManager {
         QLOG_INFO() << QString("[LoginSucess] User %1").arg(this->m_memberId);
         // assign user
         Singletons::m_pCurrMember = pCurrMemberPtr;
-        switchWindow(WindowKey::kMainWindowKey);
+
+        // load main window
+        m_switchCentralWidgetCallback(WindowKey::kMemberDashboardWindowKey);
     }
     //
     void LoginWindow::on_passwordPushButton_clicked()
