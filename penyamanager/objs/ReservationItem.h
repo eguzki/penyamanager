@@ -1,6 +1,7 @@
 #ifndef RESERVATIONITEMS_H
 #define RESERVATIONITEMS_H
 
+#include <QSharedPointer>
 #include <QString>
 #include <QDateTime>
 #include <DataTypes.h>
@@ -38,11 +39,11 @@ namespace PenyaManager
     };
 
     //
-    typedef std::shared_ptr<ReservationItem> ReservationItemPtr;
+    typedef QSharedPointer<ReservationItem> ReservationItemPtr;
     //
     typedef std::vector<ReservationItemPtr> ReservationItemList;
     //
-    typedef std::shared_ptr<ReservationItemList> ReservationItemListPtr;
+    typedef QSharedPointer<ReservationItemList> ReservationItemListPtr;
 }
 
 #endif // RESERVATIONITEMS_H

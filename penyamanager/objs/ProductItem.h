@@ -1,6 +1,7 @@
 #ifndef PRODUCTITEM_H
 #define PRODUCTITEM_H
 
+#include <QSharedPointer>
 #include <QString>
 #include <QDateTime>
 
@@ -41,11 +42,11 @@ namespace PenyaManager
     };
 
     //
-    typedef std::shared_ptr<ProductItem> ProductItemPtr;
+    typedef QSharedPointer<ProductItem> ProductItemPtr;
     //
     typedef std::vector<ProductItemPtr> ProductItemList;
     //
-    typedef std::shared_ptr<ProductItemList> ProductItemListPtr;
+    typedef QSharedPointer<ProductItemList> ProductItemListPtr;
 
     //
     class ProductListStats
@@ -64,7 +65,7 @@ namespace PenyaManager
     };
 
     //
-    typedef std::shared_ptr<ProductListStats> ProductListStatsPtr;
+    typedef QSharedPointer<ProductListStats> ProductListStatsPtr;
 }
 
 #endif // PRODUCTITEM_H

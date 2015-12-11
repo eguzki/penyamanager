@@ -1,6 +1,7 @@
 #ifndef PROVIDER_H
 #define PROVIDER_H
 
+#include <QSharedPointer>
 #include <QString>
 #include <QDateTime>
 #include <DataTypes.h>
@@ -32,11 +33,11 @@ namespace PenyaManager
     };
 
     //
-    typedef std::shared_ptr<Provider> ProviderPtr;
+    typedef QSharedPointer<Provider> ProviderPtr;
     //
     typedef std::vector<ProviderPtr> ProviderList;
     //
-    typedef std::shared_ptr<ProviderList> ProviderListPtr;
+    typedef QSharedPointer<ProviderList> ProviderListPtr;
 }
 
 #endif // PROVIDER_H
