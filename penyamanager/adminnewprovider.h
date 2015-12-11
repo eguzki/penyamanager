@@ -43,7 +43,7 @@ namespace PenyaManager {
 
         private:
             //
-            Ui::AdminNewProvider *ui;
+            Ui::AdminNewProvider        *ui;
             //
             CentralWidgetCallback       m_switchCentralWidgetCallback;
             //

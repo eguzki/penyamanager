@@ -35,12 +35,6 @@ namespace PenyaManager {
 
         // initialize
         initialize();
-
-        //
-        // Show
-        //
-
-        show();
     }
     //
     void AdminNewProvider::retranslate()

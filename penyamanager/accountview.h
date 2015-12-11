@@ -18,7 +18,7 @@ namespace PenyaManager {
 
         public:
             //
-            explicit AccountView(QWidget *parent = 0);
+            explicit AccountView(QWidget *parent, const CentralWidgetCallback &callback);
             //
             ~AccountView();
             //
@@ -45,6 +45,8 @@ namespace PenyaManager {
             Ui::AccountView *ui;
             //
             MemberProfileGroupBox       *m_pMemberProfileGroupBox;
+            //
+            CentralWidgetCallback       m_switchCentralWidgetCallback;
     };
 }
 

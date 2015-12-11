@@ -9,10 +9,11 @@
 
 namespace PenyaManager {
     //
-    AccountView::AccountView(QWidget *parent) :
+    AccountView::AccountView(QWidget *parent, const CentralWidgetCallback &callback) :
         IPartner(parent),
         ui(new Ui::AccountView),
-        m_pMemberProfileGroupBox(new MemberProfileGroupBox)
+        m_pMemberProfileGroupBox(new MemberProfileGroupBox),
+        m_switchCentralWidgetCallback(callback)
     {
         ui->setupUi(this);
         this->ui->topPanelWidget->layout()->addWidget(m_pMemberProfileGroupBox);
@@ -54,12 +55,6 @@ namespace PenyaManager {
 
         // add one day to "toDate" to be included
         fillAccountData(pCurrMemberPtr->m_id, fromIntialDate, toInitialDate.addDays(1));
-
-        //
-        // Show
-        //
-
-        show();
     }
     //
     void AccountView::retranslate()
@@ -107,8 +102,8 @@ namespace PenyaManager {
     //
     void AccountView::on_backPushButton_clicked()
     {
-        // call main window
-        switchWindow(WindowKey::kMainWindowKey);
+        // Go to dashboard window
+        m_switchCentralWidgetCallback(WindowKey::kMemberDashboardWindowKey);
     }
     //
     void AccountView::on_searchButton_clicked()

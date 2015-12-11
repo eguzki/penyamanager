@@ -74,6 +74,7 @@ flags = [
     '-I', '/usr/include/x86_64-linux-gnu',
     '-I', '/usr/include',
 
+    '-I', '/opt/Qt5.5.1/5.5/gcc_64/mkspecs/linux-g++',
     '-I', '/opt/Qt5.5.1/5.5/gcc_64/include',
     '-I', '/opt/Qt5.5.1/5.5/gcc_64/include/QtConcurrent',
     '-I', '/opt/Qt5.5.1/5.5/gcc_64/include/QtCore',

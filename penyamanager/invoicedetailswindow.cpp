@@ -9,11 +9,12 @@
 
 namespace PenyaManager {
     //
-    InvoiceDetailsWindow::InvoiceDetailsWindow(QWidget *parent) :
+    InvoiceDetailsWindow::InvoiceDetailsWindow(QWidget *parent, const CentralWidgetCallback &callback) :
         IPartner(parent),
         ui(new Ui::InvoiceDetailsWindow),
         m_pMemberProfileGroupBox(new MemberProfileGroupBox),
-        m_pInvoiceDetailsWidget(new InvoiceDetailsWidget)
+        m_pInvoiceDetailsWidget(new InvoiceDetailsWidget),
+        m_switchCentralWidgetCallback(callback)
     {
         ui->setupUi(this);
         this->ui->verticalLayout->addWidget(m_pInvoiceDetailsWidget);
@@ -40,12 +41,6 @@ namespace PenyaManager {
         //
 
         this->m_pInvoiceDetailsWidget->init();
-
-        //
-        // Show
-        //
-
-        show();
     }
     //
     void InvoiceDetailsWindow::retranslate()
@@ -55,7 +50,7 @@ namespace PenyaManager {
     //
     void InvoiceDetailsWindow::on_backPushButton_clicked()
     {
-        switchWindow(WindowKey::kInvoiceListWindoKey);
+        m_switchCentralWidgetCallback(WindowKey::kInvoiceListWindoKey);
     }
     //
     void InvoiceDetailsWindow::on_printButton_clicked()

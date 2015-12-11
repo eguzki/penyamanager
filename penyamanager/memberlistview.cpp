@@ -56,12 +56,6 @@ namespace PenyaManager {
         //
         m_currentPage = 0;
         updateResults();
-
-        //
-        // Show
-        //
-
-        show();
     }
     //
     void MemberListView::retranslate()
