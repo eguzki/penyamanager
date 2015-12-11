@@ -12,9 +12,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 QTPLUGIN += qsqlmysql
 
-!win32 {
-    QMAKE_CXXFLAGS += -std=c++11
-}
+QMAKE_CXXFLAGS += -std=c++11
 
 TARGET = penyamanageradmin
 TEMPLATE = app
