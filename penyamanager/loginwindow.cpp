@@ -23,6 +23,14 @@ namespace PenyaManager {
         m_switchCentralWidgetCallback(callback)
     {
         ui->setupUi(this);
+
+        // load code build
+        QFile versionFile(":VERSION");
+        versionFile.open(QIODevice::ReadOnly | QIODevice::Text);
+        QTextStream versionStream(&versionFile);
+        versionStream.setCodec("UTF-8");
+        QString versionStr = versionStream.readAll();
+        this->ui->versionLabel->setText(QString("code build %1").arg(versionStr));
     }
 
     //
