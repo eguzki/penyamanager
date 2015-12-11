@@ -9,6 +9,7 @@ namespace PenyaManager {
         :
             QWidget(parent)
     {
+        // hide current widget
         hide();
     }
     //

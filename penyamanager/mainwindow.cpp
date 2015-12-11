@@ -16,7 +16,6 @@ namespace PenyaManager {
     {
         ui->setupUi(this);
     }
-
     //
     MainWindow::~MainWindow()
     {
@@ -43,3 +42,4 @@ namespace PenyaManager {
         pPartner->show();
     }
 }
+
