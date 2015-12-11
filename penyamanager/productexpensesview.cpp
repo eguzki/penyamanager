@@ -203,12 +203,12 @@ namespace PenyaManager {
         }
 
         // header
-        out << tr("product ID") << ", " << tr("name") << ", " << tr("count") << "\n";
+        out << tr("product ID") << ", " << tr("name") << ", " << tr("count") << endl;
         // iterate over results
         for (InvoiceProductItemList::iterator iter = pInvoiceProductItemListPtr->begin(); iter != pInvoiceProductItemListPtr->end(); ++iter)
         {
             InvoiceProductItemPtr pInvoiceProductItem = *iter;
-            out << pInvoiceProductItem->m_productId << ", " << pInvoiceProductItem->m_productname << ", " << pInvoiceProductItem->m_count << "\n";
+            out << pInvoiceProductItem->m_productId << ", " << pInvoiceProductItem->m_productname << ", " << pInvoiceProductItem->m_count << endl;
         }
         f.close();
         QMessageBox::information(this, tr("CSV export"), tr("Successfully exported. Filename: %1").arg(filename));

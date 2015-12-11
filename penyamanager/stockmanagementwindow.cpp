@@ -87,14 +87,14 @@ namespace PenyaManager {
         }
         QTextStream out(&f);
         // print header
-        out << tr("name") << "," << tr("stock") << "\n";
+        out << tr("name") << "," << tr("stock") << endl;
 
         // fetch data
         ProductItemListPtr pfListPtr = Singletons::m_pDAO->getProductsList(0, 100000);
         for (ProductItemList::iterator iter = pfListPtr->begin(); iter != pfListPtr->end(); ++iter)
         {
             ProductItemPtr pProductPtr = *iter;
-            out << pProductPtr->m_name << ", " << QString::number(pProductPtr->m_stock) << "\n";
+            out << pProductPtr->m_name << ", " << QString::number(pProductPtr->m_stock) << endl;
         }
         f.close();
         QMessageBox::information(this, tr("CSV export"), tr("Successfully exported. Filename: %1").arg(filename));

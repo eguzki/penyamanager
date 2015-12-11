@@ -101,14 +101,14 @@ namespace PenyaManager {
         }
         QTextStream out(&f);
         // print header
-        out << tr("Name") << "," << tr("Balance") << "\n";
+        out << tr("Name") << "," << tr("Balance") << endl;
 
         // fetch data
         MemberListPtr pMemberListPtr = Singletons::m_pDAO->getSlowPayersList();
         for (MemberList::iterator iter = pMemberListPtr->begin(); iter != pMemberListPtr->end(); ++iter)
         {
             MemberPtr pMemberPtr = *iter;
-            out << pMemberPtr->m_name << " " << pMemberPtr->m_surname << ", " << QString("%1 €").arg(pMemberPtr->m_balance, 0, 'f', 2) << "\n";
+            out << pMemberPtr->m_name << " " << pMemberPtr->m_surname << ", " << QString("%1 €").arg(pMemberPtr->m_balance, 0, 'f', 2) << endl;
         }
         f.close();
         QMessageBox::information(this, tr("CSV export"), tr("Successfully exported. Filename: %1").arg(filename));
