@@ -29,8 +29,6 @@ namespace PenyaManager {
             //
             void on_csvPushButton_clicked();
             //
-            void on_printPushButton_clicked();
-            //
             void on_resetAccountsPushButton_clicked();
 
     private:

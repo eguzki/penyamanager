@@ -1,5 +1,8 @@
 //
 
+#include <QFileDialog>
+#include <QMessageBox>
+
 #include "guiutils.h"
 #include "singletons.h"
 #include "memberlistview.h"
@@ -25,13 +28,14 @@ namespace PenyaManager {
     void MemberListView::initializeTable()
     {
         // table
-        this->ui->memberTableWidget->setColumnCount(6);
+        this->ui->memberTableWidget->setColumnCount(7);
         translateTable();
         Uint32 column = 0;
         this->ui->memberTableWidget->setColumnWidth(column++, Constants::kFamilyImageWidth);
         this->ui->memberTableWidget->setColumnWidth(column++, 300);
         this->ui->memberTableWidget->setColumnWidth(column++, 150);
         this->ui->memberTableWidget->setColumnWidth(column++, 100);
+        this->ui->memberTableWidget->setColumnWidth(column++, 150);
         this->ui->memberTableWidget->setColumnWidth(column++, 300);
         this->ui->memberTableWidget->setColumnWidth(column++, 100);
     }
@@ -44,6 +48,7 @@ namespace PenyaManager {
         headers.append(tr("Surnames"));
         headers.append(tr("Name"));
         headers.append(tr("MemberID"));
+        headers.append(tr("Balance"));
         headers.append(tr("Email"));
         headers.append(tr("Active"));
         this->ui->memberTableWidget->setHorizontalHeaderLabels(headers);
@@ -69,8 +74,9 @@ namespace PenyaManager {
         MemberListPtr pMemberListPtr;
         MemberListStatsPtr pMemberListStatsPtr;
 
-        pMemberListPtr = Singletons::m_pDAO->getMemberList(m_currentPage, Constants::kInvoiceListPageCount);
-        pMemberListStatsPtr = Singletons::m_pDAO->getMemberListStats();
+        bool filterPostalSend = this->ui->filterPostalUsersCheckBox->checkState() == Qt::CheckState::Checked;
+        pMemberListPtr = Singletons::m_pDAO->getMemberList(filterPostalSend, m_currentPage, Constants::kInvoiceListPageCount);
+        pMemberListStatsPtr = Singletons::m_pDAO->getMemberListStats(filterPostalSend);
         // enable-disable pagination buttons
         // total num pages
         Uint32 numPages = (Uint32)ceil((Float)pMemberListStatsPtr->m_totalMembers/Constants::kInvoiceListPageCount);
@@ -106,6 +112,11 @@ namespace PenyaManager {
     //
     void MemberListView::fillMemberList(const MemberListPtr &pMemberListPtr)
     {
+        if (pMemberListPtr->size() > 0) {
+            this->ui->csvPushButton->setEnabled(true);
+        } else {
+            this->ui->csvPushButton->setEnabled(false);
+        }
         // num rows
         this->ui->memberTableWidget->setRowCount(pMemberListPtr->size());
         // member table reset
@@ -129,6 +140,7 @@ namespace PenyaManager {
             this->ui->memberTableWidget->setItem(rowCount, column++, new QTableWidgetItem(pMemberPtr->m_surname));
             this->ui->memberTableWidget->setItem(rowCount, column++, new QTableWidgetItem(pMemberPtr->m_name));
             this->ui->memberTableWidget->setItem(rowCount, column++, new QTableWidgetItem(QString::number(pMemberPtr->m_id)));
+            this->ui->memberTableWidget->setItem(rowCount, column++, new QTableWidgetItem(QString::number(pMemberPtr->m_balance, 'f', 2)));
             this->ui->memberTableWidget->setItem(rowCount, column++, new QTableWidgetItem(pMemberPtr->m_email));
             this->ui->memberTableWidget->setItem(rowCount, column++, new QTableWidgetItem((pMemberPtr->m_active)?(QString::number(1)):(QString::number(0))));
             this->m_rowProductIdMap[rowCount] = pMemberPtr->m_id;
@@ -151,6 +163,46 @@ namespace PenyaManager {
 
         // call invoice details window throw adminmainwindow
         m_switchCentralWidgetCallback(WindowKey::kMemberViewKey);
+    }
+    //
+    void MemberListView::on_csvPushButton_clicked()
+    {
+        // Assume member list is not empty (buttons should be disabled)
+        QString filename = QFileDialog::getSaveFileName(this, tr("Export CSV"));
+
+        if (filename.isNull()){
+            return;
+        }
+
+        QFile f(filename);
+        if (!f.open( QIODevice::WriteOnly )) {
+            QMessageBox::warning(this, "Unable to save file", "Error opening " + filename);
+            return;
+        }
+        QTextStream out(&f);
+
+        // header
+        // print header
+        out << tr("Name") << "," << tr("Balance") << "\n";
+
+        // fetch data
+        bool filterPostalSend = this->ui->filterPostalUsersCheckBox->checkState() == Qt::CheckState::Checked;
+        MemberListPtr pMemberListPtr;
+        // max 1M users
+        pMemberListPtr = Singletons::m_pDAO->getMemberList(filterPostalSend, 0, 1000000);
+        for (MemberList::iterator iter = pMemberListPtr->begin(); iter != pMemberListPtr->end(); ++iter)
+        {
+            MemberPtr pMemberPtr = *iter;
+            out << pMemberPtr->m_name << " " << pMemberPtr->m_surname << ", " << QString("%1 €").arg(pMemberPtr->m_balance, 0, 'f', 2) << "\n";
+        }
+        f.close();
+        QMessageBox::information(this, tr("CSV export"), tr("Successfully exported. Filename: %1").arg(filename));
+    }
+    //
+    void MemberListView::on_filterPostalUsersCheckBox_clicked()
+    {
+        qDebug() << "filter postal check clicked";
+        updateResults();
     }
 }
 

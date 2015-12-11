@@ -131,7 +131,7 @@ namespace PenyaManager {
             this->ui->productTableWidget->setItem(rowCount, 0, productImage);
             this->ui->productTableWidget->setItem(rowCount, 1, new QTableWidgetItem(pInvoiceProductItem->m_productname));
             this->ui->productTableWidget->setItem(rowCount, 2, new QTableWidgetItem(QString::number(pInvoiceProductItem->m_count)));
-            this->ui->productTableWidget->setItem(rowCount, 3, new QTableWidgetItem(tr("%1 €").arg(pInvoiceProductItem->m_count * pInvoiceProductItem->m_priceperunit)));
+            this->ui->productTableWidget->setItem(rowCount, 3, new QTableWidgetItem(QString("%1 €").arg(pInvoiceProductItem->m_count * pInvoiceProductItem->m_priceperunit, 0, 'f', 2)));
             rowCount++;
         }
     }
@@ -211,6 +211,7 @@ namespace PenyaManager {
             out << pInvoiceProductItem->m_productId << ", " << pInvoiceProductItem->m_productname << ", " << pInvoiceProductItem->m_count << "\n";
         }
         f.close();
+        QMessageBox::information(this, tr("CSV export"), tr("Successfully exported. Filename: %1").arg(filename));
     }
     //
     void ProductExpensesView::on_printPushButton_clicked()

@@ -45,7 +45,11 @@ namespace PenyaManager {
             //
             void on_memberTableWidget_cellDoubleClicked(int row, int column);
 
-        private:
+            void on_csvPushButton_clicked();
+
+            void on_filterPostalUsersCheckBox_clicked();
+
+    private:
             //
             Ui::MemberListView *ui;
             //

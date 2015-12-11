@@ -91,10 +91,11 @@ namespace PenyaManager {
         {
             Uint32 column = 0;
             TransactionPtr pTransactionPtr = *iter;
-            this->ui->accountTableWidget->setItem(rowCount, column++, new QTableWidgetItem(pTransactionPtr->m_date.toString()));
+            QString dateLocalized = Singletons::m_translationManager.getLocale().toString(pTransactionPtr->m_date, QLocale::NarrowFormat);
+            this->ui->accountTableWidget->setItem(rowCount, column++, new QTableWidgetItem(dateLocalized));
             this->ui->accountTableWidget->setItem(rowCount, column++, new QTableWidgetItem(pTransactionPtr->m_descr));
-            this->ui->accountTableWidget->setItem(rowCount, column++, new QTableWidgetItem(QString("%1 €").arg(pTransactionPtr->m_amount)));
-            this->ui->accountTableWidget->setItem(rowCount, column++, new QTableWidgetItem(QString("%1 €").arg(pTransactionPtr->m_balance)));
+            this->ui->accountTableWidget->setItem(rowCount, column++, new QTableWidgetItem(QString("%1 €").arg(pTransactionPtr->m_amount, 0, 'f', 2)));
+            this->ui->accountTableWidget->setItem(rowCount, column++, new QTableWidgetItem(QString("%1 €").arg(pTransactionPtr->m_balance, 0, 'f', 2)));
             this->ui->accountTableWidget->setItem(rowCount, column++, new QTableWidgetItem(getStringFromTransactionTypeEnum(pTransactionPtr->m_type)));
             rowCount++;
         }

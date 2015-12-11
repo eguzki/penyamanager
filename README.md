@@ -87,6 +87,7 @@ penyamanager
     * filter by memberId
 * Members
   * Member List paginated
+    * Filter to show only those to be mailed
   * member Info (can be edited)
   * Member create
 * Configuration Application

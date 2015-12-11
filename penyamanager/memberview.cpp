@@ -268,9 +268,9 @@ namespace PenyaManager {
         // memberId
         this->ui->memberIdValueLabel->setText(QString::number(pMemberPtr->m_id));
         // reg date
-        this->ui->regDateValueLabel->setText(pMemberPtr->m_regDate.toString());
+        this->ui->regDateValueLabel->setText(pMemberPtr->m_regDate.toString(Qt::ISODate));
         // last login date
-        this->ui->lastLoginValueLabel->setText(pMemberPtr->m_lastLogin.toString());
+        this->ui->lastLoginValueLabel->setText(pMemberPtr->m_lastLogin.toString(Qt::ISODate));
         // name
         this->ui->nameLineEdit->setText(pMemberPtr->m_name);
         // surname

@@ -78,7 +78,7 @@ namespace PenyaManager {
         invoiceData["memberid"] = pCurrMemberPtr->m_id;
         invoiceData["memberName"] = QString("%1 %2").arg(pCurrMemberPtr->m_name).arg(pCurrMemberPtr->m_surname);
         invoiceData["dateValue"] = pInvoicePtr->m_date;
-        invoiceData["invoiceTotal"] = QString("%1 €").arg(QString::number(pInvoicePtr->m_total, 'f', 2));
+        invoiceData["invoiceTotal"] = QString("%1 €").arg(pInvoicePtr->m_total, 0, 'f', 2);
 
         // invoice products info
         QVariantList productList;
@@ -89,7 +89,7 @@ namespace PenyaManager {
             productData["productName"] = pInvoiceProductItemPtr->m_productname;
             productData["productCount"] = pInvoiceProductItemPtr->m_count;
             Float totalPrice = pInvoiceProductItemPtr->m_priceperunit * pInvoiceProductItemPtr->m_count;
-            productData["productTotal"] = QString("%1 €").arg(QString::number(totalPrice, 'f', 2));
+            productData["productTotal"] = QString("%1 €").arg(totalPrice, 0, 'f', 2);
             productList.push_back(productData);
         }
         invoiceData["products"] = productList;

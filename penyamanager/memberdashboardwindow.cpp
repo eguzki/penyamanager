@@ -126,7 +126,7 @@ namespace PenyaManager {
         QLabel *pTextLabel = new QLabel(pfPtr->m_name);
         pTextLabel->setFixedWidth(Constants::kFamilyWidgetWidth -  Constants::kFamilyImageWidth - 5);
         //pTextLabel->setFixedHeight(Constants::kFamilyImageHeigth);
-        QLabel *pProductPriceLabel = new QLabel(QString("%1 €").arg(pfPtr->m_price));
+        QLabel *pProductPriceLabel = new QLabel(QString("%1 €").arg(pfPtr->m_price, 0, 'f', 2));
         pTextLabel->setFixedWidth(Constants::kFamilyWidgetWidth -  Constants::kFamilyImageWidth - 5);
         //pTextLabel->setFixedHeight(Constants::kFamilyImageHeigth);
         pInfoLayout->addWidget(pTextLabel);
@@ -230,10 +230,10 @@ namespace PenyaManager {
         {
             InvoiceProductItemPtr pInvoiceProductItemPtr = *iter;
             this->ui->invoiceTableWidget->setItem(rowCount, 0, new QTableWidgetItem(pInvoiceProductItemPtr->m_productname));
-            this->ui->invoiceTableWidget->setItem(rowCount, 1, new QTableWidgetItem(tr("%1 €").arg(pInvoiceProductItemPtr->m_priceperunit)));
-            this->ui->invoiceTableWidget->setItem(rowCount, 2, new QTableWidgetItem(tr("%1").arg(pInvoiceProductItemPtr->m_count)));
+            this->ui->invoiceTableWidget->setItem(rowCount, 1, new QTableWidgetItem(QString("%1 €").arg(pInvoiceProductItemPtr->m_priceperunit, 0, 'f', 2)));
+            this->ui->invoiceTableWidget->setItem(rowCount, 2, new QTableWidgetItem(QString("%1").arg(pInvoiceProductItemPtr->m_count)));
             Float totalPrice = pInvoiceProductItemPtr->m_priceperunit * pInvoiceProductItemPtr->m_count;
-            this->ui->invoiceTableWidget->setItem(rowCount, 3, new QTableWidgetItem(tr("%1 €").arg(totalPrice)));
+            this->ui->invoiceTableWidget->setItem(rowCount, 3, new QTableWidgetItem(QString("%1 €").arg(totalPrice, 0, 'f', 2)));
             totalInvoice += totalPrice;
             this->m_rowProductIdMap[rowCount] = pInvoiceProductItemPtr->m_productId;
             rowCount++;

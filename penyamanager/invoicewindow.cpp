@@ -132,10 +132,10 @@ namespace PenyaManager {
         {
             InvoiceProductItemPtr pInvoiceProductItemPtr = *iter;
             this->ui->invoiceProductTableWidget->setItem(rowCount, 0, new QTableWidgetItem(pInvoiceProductItemPtr->m_productname));
-            this->ui->invoiceProductTableWidget->setItem(rowCount, 1, new QTableWidgetItem(tr("%1 €").arg(pInvoiceProductItemPtr->m_priceperunit)));
-            this->ui->invoiceProductTableWidget->setItem(rowCount, 2, new QTableWidgetItem(tr("%1").arg(pInvoiceProductItemPtr->m_count)));
+            this->ui->invoiceProductTableWidget->setItem(rowCount, 1, new QTableWidgetItem(QString("%1 €").arg(pInvoiceProductItemPtr->m_priceperunit, 0, 'f', 2)));
+            this->ui->invoiceProductTableWidget->setItem(rowCount, 2, new QTableWidgetItem(QString("%1").arg(pInvoiceProductItemPtr->m_count)));
             Float totalPrice = pInvoiceProductItemPtr->m_priceperunit * pInvoiceProductItemPtr->m_count;
-            this->ui->invoiceProductTableWidget->setItem(rowCount, 3, new QTableWidgetItem(tr("%1 €").arg(totalPrice)));
+            this->ui->invoiceProductTableWidget->setItem(rowCount, 3, new QTableWidgetItem(QString("%1 €").arg(totalPrice, 0, 'f', 2)));
             totalInvoice += totalPrice;
             rowCount++;
         }
@@ -146,13 +146,14 @@ namespace PenyaManager {
         // ID
         this->ui->invoiceIdInfoLabel->setText(QString("%1").arg(pInvoicePtr->m_id));
         // Date
-        this->ui->invoiceDateInfoLabel->setText(tr("%1").arg(pInvoicePtr->m_date.toString()));
+        QString dateLocalized = Singletons::m_translationManager.getLocale().toString(pInvoicePtr->m_date, QLocale::NarrowFormat);
+        this->ui->invoiceDateInfoLabel->setText(dateLocalized);
         // Total
-        this->ui->invoiceTotalInfoLabel->setText(QString("%1 €").arg(totalInvoice));
+        this->ui->invoiceTotalInfoLabel->setText(QString("%1 €").arg(totalInvoice, 0, 'f', 2));
         // new balance
         Float newBalance = pMemberPtr->m_balance;
         newBalance -= totalInvoice;
-        this->ui->newBalanceInfoLabel->setText(QString("%1 €").arg(newBalance));
+        this->ui->newBalanceInfoLabel->setText(QString("%1 €").arg(newBalance, 0, 'f', 2));
     }
     //
     void InvoiceWindow::on_printPushButton_clicked()
@@ -195,12 +196,12 @@ namespace PenyaManager {
             productData["productCount"] = pInvoiceProductItemPtr->m_count;
             Float totalPrice = pInvoiceProductItemPtr->m_priceperunit * pInvoiceProductItemPtr->m_count;
             totalInvoice += totalPrice;
-            productData["productTotal"] = QString("%1 €").arg(QString::number(totalPrice, 'f', 2));
+            productData["productTotal"] = QString("%1 €").arg(totalPrice, 0, 'f', 2);
             productList.push_back(productData);
         }
         invoiceData["products"] = productList;
         // computed invoice total value
-        invoiceData["invoiceTotal"] = QString("%1 €").arg(QString::number(totalInvoice, 'f', 2));
+        invoiceData["invoiceTotal"] = QString("%1 €").arg(totalInvoice, 0, 'f', 2);
         // print invoice
         GuiUtils::printInvoice(invoiceData, pCurrMemberPtr->m_id, pInvoicePtr->m_id);
         QMessageBox::information(this, tr("Print Invoice"), tr("Invoice #%1 sent to printer").arg(QString::number(pInvoicePtr->m_id)));

@@ -70,10 +70,10 @@ namespace PenyaManager {
             this->ui->productTableWidget->setRowHeight(rowCount, Constants::kFamilyImageHeigth);
             this->ui->productTableWidget->setItem(rowCount, 0, productImage);
             this->ui->productTableWidget->setItem(rowCount, 1, new QTableWidgetItem(pInvoiceProductItemPtr->m_productname));
-            this->ui->productTableWidget->setItem(rowCount, 2, new QTableWidgetItem(tr("%1 €").arg(pInvoiceProductItemPtr->m_priceperunit)));
-            this->ui->productTableWidget->setItem(rowCount, 3, new QTableWidgetItem(tr("%1").arg(pInvoiceProductItemPtr->m_count)));
+            this->ui->productTableWidget->setItem(rowCount, 2, new QTableWidgetItem(QString("%1 €").arg(pInvoiceProductItemPtr->m_priceperunit, 0, 'f', 2)));
+            this->ui->productTableWidget->setItem(rowCount, 3, new QTableWidgetItem(QString("%1").arg(pInvoiceProductItemPtr->m_count)));
             Float totalPrice = pInvoiceProductItemPtr->m_priceperunit * pInvoiceProductItemPtr->m_count;
-            this->ui->productTableWidget->setItem(rowCount, 4, new QTableWidgetItem(tr("%1 €").arg(totalPrice)));
+            this->ui->productTableWidget->setItem(rowCount, 4, new QTableWidgetItem(QString("%1 €").arg(totalPrice, 0, 'f', 2)));
             totalInvoice += totalPrice;
             rowCount++;
         }
@@ -84,9 +84,10 @@ namespace PenyaManager {
         // ID
         this->ui->invoiceIdValueLabel->setText(QString("%1").arg(pInvoicePtr->m_id));
         // Date
-        this->ui->invoiceDateValueLabel->setText(tr("%1").arg(pInvoicePtr->m_date.toString()));
+        QString dateLocalized = Singletons::m_translationManager.getLocale().toString(pInvoicePtr->m_date, QLocale::NarrowFormat);
+        this->ui->invoiceDateValueLabel->setText(dateLocalized);
         // Total
-        this->ui->invoiceTotalValueLabel->setText(QString("%1 €").arg(totalInvoice));
+        this->ui->invoiceTotalValueLabel->setText(QString("%1 €").arg(totalInvoice, 0, 'f', 2));
         // memberid
         this->ui->memberIdValueLabel->setText(QString("%1").arg(pInvoicePtr->m_memberId));
     }

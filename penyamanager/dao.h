@@ -161,9 +161,9 @@ namespace PenyaManager {
             //
             void closeDeposit(Int32 depositId);
             //
-            MemberListPtr getMemberList(Uint32 page, Uint32 count);
+            MemberListPtr getMemberList(bool onlyPostalSend, Uint32 page, Uint32 count);
             //
-            MemberListStatsPtr getMemberListStats();
+            MemberListStatsPtr getMemberListStats(bool onlyPostalSend);
             //
             void updateMember(const MemberPtr &pMemberPtr);
             //
@@ -309,7 +309,11 @@ namespace PenyaManager {
             //
             QSqlQuery               m_memberListQuery;
             //
+            QSqlQuery               m_memberListFilteredQuery;
+            //
             QSqlQuery               m_memberListStatsQuery;
+            //
+            QSqlQuery               m_memberListFilteredStatsQuery;
             //
             QSqlQuery               m_updateMemberQuery;
             //

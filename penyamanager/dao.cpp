@@ -78,7 +78,9 @@ namespace PenyaManager {
             m_uncheckedDepositListQuery(),
             m_closeDepositQuery(),
             m_memberListQuery(),
+            m_memberListFilteredQuery(),
             m_memberListStatsQuery(),
+            m_memberListFilteredStatsQuery(),
             m_updateMemberQuery(),
             m_createMemberQuery(),
             m_updateMemberPasswordQuery()
@@ -521,14 +523,35 @@ namespace PenyaManager {
         m_memberListQuery.prepare(
                 "SELECT member.idmember, member.name, member.surname, member.image, member.lastmodified, member.reg_date, member.active, member.isAdmin, member.birth, "
                 "member.address, member.zip_code, member.town, member.state, member.tel, member.tel2, member.email, member.bank_account, member.postal_send, "
-                "member.notes "
-                "FROM member "
-                "ORDER BY surname ASC "
+                "member.notes, ac.balance "
+                "FROM account ac "
+                "INNER JOIN (SELECT account.idmember, MAX(account.date) AS MaxDate FROM account GROUP BY account.idmember) groupedAccount "
+                "ON ac.idmember = groupedAccount.idmember AND ac.date=groupedAccount.MaxDate "
+                "INNER JOIN member ON member.idmember=ac.idmember "
+                "ORDER BY member.surname ASC "
+                "LIMIT :limit OFFSET :offset"
+                );
+        // member filtered list
+        m_memberListFilteredQuery.prepare(
+                "SELECT member.idmember, member.name, member.surname, member.image, member.lastmodified, member.reg_date, member.active, member.isAdmin, member.birth, "
+                "member.address, member.zip_code, member.town, member.state, member.tel, member.tel2, member.email, member.bank_account, member.postal_send, "
+                "member.notes, ac.balance "
+                "FROM account ac "
+                "INNER JOIN (SELECT account.idmember, MAX(account.date) AS MaxDate FROM account GROUP BY account.idmember) groupedAccount "
+                "ON ac.idmember = groupedAccount.idmember AND ac.date=groupedAccount.MaxDate "
+                "INNER JOIN member ON member.idmember=ac.idmember "
+                "WHERE member.postal_send = 1 "
+                "ORDER BY member.surname ASC "
                 "LIMIT :limit OFFSET :offset"
                 );
         // member list stats
         m_memberListStatsQuery.prepare(
                 "SELECT COUNT(*) FROM member"
+                );
+        // member list filtered stats
+        m_memberListFilteredStatsQuery.prepare(
+                "SELECT COUNT(*) FROM member "
+                "WHERE postal_send = 1"
                 );
         // update  member
         m_updateMemberQuery.prepare(
@@ -1973,60 +1996,65 @@ namespace PenyaManager {
         m_closeDepositQuery.finish();
     }
     //
-    MemberListPtr DAO::getMemberList(Uint32 page, Uint32 count)
+    MemberListPtr DAO::getMemberList(bool onlyPostalSend, Uint32 page, Uint32 count)
     {
+        QSqlQuery *pQuery = onlyPostalSend?(&m_memberListFilteredQuery):(&m_memberListQuery);
+
         MemberListPtr pMemberListPtr(new MemberList);
-        m_memberListQuery.bindValue(":limit", count);
-        m_memberListQuery.bindValue(":offset", page * count);
-        if (!m_memberListQuery.exec())
+        pQuery->bindValue(":limit", count);
+        pQuery->bindValue(":offset", page * count);
+        if (!pQuery->exec())
         {
-            qDebug() << m_memberListQuery.lastError();
-            QLOG_ERROR() << m_memberListQuery.lastError();
+            qDebug() << pQuery->lastError();
+            QLOG_ERROR() << pQuery->lastError();
         } else {
-            while (m_memberListQuery.next()) {
+            while (pQuery->next()) {
                 Uint32 column = 0;
                 MemberPtr pMemberPtr(new Member);
-                pMemberPtr->m_id = m_memberListQuery.value(column++).toInt();
-                pMemberPtr->m_name = m_memberListQuery.value(column++).toString();
-                pMemberPtr->m_surname = m_memberListQuery.value(column++).toString();
-                pMemberPtr->m_imagePath = m_memberListQuery.value(column++).toString();
-                pMemberPtr->m_lastModified = m_memberListQuery.value(column++).toDateTime();
-                pMemberPtr->m_regDate = m_memberListQuery.value(column++).toDateTime();
-                pMemberPtr->m_active = m_memberListQuery.value(column++).toInt() == 1;
-                pMemberPtr->m_isAdmin = m_memberListQuery.value(column++).toInt() == 1;
-                pMemberPtr->m_birthdate = m_memberListQuery.value(column++).toDate();
-                pMemberPtr->m_address = m_memberListQuery.value(column++).toString();
-                pMemberPtr->m_zipCode = m_memberListQuery.value(column++).toString();
-                pMemberPtr->m_town = m_memberListQuery.value(column++).toString();
-                pMemberPtr->m_state = m_memberListQuery.value(column++).toString();
-                pMemberPtr->m_phone = m_memberListQuery.value(column++).toString();
-                pMemberPtr->m_phone2 = m_memberListQuery.value(column++).toString();
-                pMemberPtr->m_email = m_memberListQuery.value(column++).toString();
-                pMemberPtr->m_bank_account = m_memberListQuery.value(column++).toString();
-                pMemberPtr->m_postalSend = m_memberListQuery.value(column++).toInt() == 1;
-                pMemberPtr->m_notes = m_memberListQuery.value(column++).toString();
+                pMemberPtr->m_id = pQuery->value(column++).toInt();
+                pMemberPtr->m_name = pQuery->value(column++).toString();
+                pMemberPtr->m_surname = pQuery->value(column++).toString();
+                pMemberPtr->m_imagePath = pQuery->value(column++).toString();
+                pMemberPtr->m_lastModified = pQuery->value(column++).toDateTime();
+                pMemberPtr->m_regDate = pQuery->value(column++).toDateTime();
+                pMemberPtr->m_active = pQuery->value(column++).toInt() == 1;
+                pMemberPtr->m_isAdmin = pQuery->value(column++).toInt() == 1;
+                pMemberPtr->m_birthdate = pQuery->value(column++).toDate();
+                pMemberPtr->m_address = pQuery->value(column++).toString();
+                pMemberPtr->m_zipCode = pQuery->value(column++).toString();
+                pMemberPtr->m_town = pQuery->value(column++).toString();
+                pMemberPtr->m_state = pQuery->value(column++).toString();
+                pMemberPtr->m_phone = pQuery->value(column++).toString();
+                pMemberPtr->m_phone2 = pQuery->value(column++).toString();
+                pMemberPtr->m_email = pQuery->value(column++).toString();
+                pMemberPtr->m_bank_account = pQuery->value(column++).toString();
+                pMemberPtr->m_postalSend = pQuery->value(column++).toInt() == 1;
+                pMemberPtr->m_notes = pQuery->value(column++).toString();
+                pMemberPtr->m_balance =  pQuery->value(column++).toFloat();
                 pMemberListPtr->push_back(pMemberPtr);
             }
         }
 
-        m_memberListQuery.finish();
+        pQuery->finish();
         return pMemberListPtr;
     }
     //
-    MemberListStatsPtr DAO::getMemberListStats()
+    MemberListStatsPtr DAO::getMemberListStats(bool onlyPostalSend)
     {
         MemberListStatsPtr pMemberListStatsPtr(new MemberListStats);
         pMemberListStatsPtr->m_totalMembers = 0;
 
-        if (!m_memberListStatsQuery.exec())
+        QSqlQuery *pQuery = onlyPostalSend?(&m_memberListFilteredStatsQuery):(&m_memberListStatsQuery);
+
+        if (!pQuery->exec())
         {
-            qDebug() << m_memberListStatsQuery.lastError();
-            QLOG_ERROR() << m_memberListStatsQuery.lastError();
+            qDebug() << pQuery->lastError();
+            QLOG_ERROR() << pQuery->lastError();
         } else {
-            m_memberListStatsQuery.next();
-            pMemberListStatsPtr->m_totalMembers = m_memberListStatsQuery.value(0).toUInt();
+            pQuery->next();
+            pMemberListStatsPtr->m_totalMembers = pQuery->value(0).toUInt();
         }
-        m_memberListStatsQuery.finish();
+        pQuery->finish();
         return pMemberListStatsPtr;
     }
     //
