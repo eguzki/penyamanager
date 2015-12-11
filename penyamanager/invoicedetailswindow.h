@@ -19,7 +19,7 @@ namespace PenyaManager {
 
         public:
             //
-            explicit InvoiceDetailsWindow(QWidget *parent = 0);
+            explicit InvoiceDetailsWindow(QWidget *parent, const CentralWidgetCallback &callback);
             //
             ~InvoiceDetailsWindow();
             //
@@ -27,19 +27,21 @@ namespace PenyaManager {
             //
             void retranslate();
 
-    private slots:
+        private slots:
             //
             void on_backPushButton_clicked();
             //
             void on_printButton_clicked();
 
-    private:
+        private:
             //
             Ui::InvoiceDetailsWindow *ui;
             //
             MemberProfileGroupBox       *m_pMemberProfileGroupBox;
             //
             InvoiceDetailsWidget        *m_pInvoiceDetailsWidget;
+            //
+            CentralWidgetCallback       m_switchCentralWidgetCallback;
     };
 }
 

@@ -11,10 +11,11 @@
 
 namespace PenyaManager {
     //
-    DepositWindow::DepositWindow(QWidget *parent) :
+    DepositWindow::DepositWindow(QWidget *parent, const CentralWidgetCallback &callback) :
         IPartner(parent),
         ui(new Ui::DepositWindow),
-        m_pMemberProfileGroupBox(new MemberProfileGroupBox)
+        m_pMemberProfileGroupBox(new MemberProfileGroupBox),
+        m_switchCentralWidgetCallback(callback)
     {
         ui->setupUi(this);
         this->ui->topPanelWidget->layout()->addWidget(m_pMemberProfileGroupBox);
@@ -47,12 +48,6 @@ namespace PenyaManager {
         // Current deposit reset
         this->ui->depositLabel->setText("");
         this->ui->newBalanceLabel->setText(QString("%1 €").arg(QString::number(pCurrMemberPtr->m_balance, 'f', 2)));
-
-        //
-        // Show
-        //
-
-        showFullScreen();
     }
     //
     void DepositWindow::retranslate()
@@ -62,7 +57,8 @@ namespace PenyaManager {
     //
     void DepositWindow::on_backButton_clicked()
     {
-        switchWindow(WindowKey::kMainWindowKey);
+        // load main window
+        m_switchCentralWidgetCallback(WindowKey::kMemberDashboardWindowKey);
     }
     //
     void DepositWindow::on_confirmButton_clicked()
@@ -71,7 +67,7 @@ namespace PenyaManager {
         double deposit = this->ui->depositLabel->text().toDouble(&ok);
 
         if (!ok){
-            QMessageBox::warning(this, tr("deposit not valid"), tr("this is a bug, should not happen"));
+            QMessageBox::warning(this, tr("deposit not valid"), tr("Enter some valid deposit value"));
             return;
         }
 
@@ -104,8 +100,8 @@ namespace PenyaManager {
         // print deposit
         printDeposit(pCurrMemberPtr, pDepositPtr);
         QMessageBox::information(this, tr("Deposit"), tr("Deposit for %1 € created sucessfully").arg(QString::number(deposit, 'f', 2)));
-        // Go to main window
-        switchWindow(WindowKey::kMainWindowKey);
+        // Go to dashboard window
+        m_switchCentralWidgetCallback(WindowKey::kMemberDashboardWindowKey);
     }
     //
     void DepositWindow::updateNewBalanceLabel(double deposit)

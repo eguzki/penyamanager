@@ -63,12 +63,6 @@ namespace PenyaManager {
         // Load initial list
         //
         updateResults();
-
-        //
-        // Show
-        //
-
-        show();
     }
     //
     void StockManagementWindow::retranslate()
@@ -93,7 +87,7 @@ namespace PenyaManager {
         }
         QTextStream out(&f);
         // print header
-        out << "name, stock" << "\n";
+        out << tr("name") << "," << tr("stock") << "\n";
 
         // fetch data
         ProductItemListPtr pfListPtr = Singletons::m_pDAO->getProductsList(0, 100000);

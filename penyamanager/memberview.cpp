@@ -88,12 +88,6 @@ namespace PenyaManager {
         } else {
             initialize();
         }
-
-        //
-        // Show
-        //
-
-        show();
     }
     //
     void MemberView::retranslate()

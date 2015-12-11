@@ -46,12 +46,6 @@ namespace PenyaManager {
         if (this->m_firstTime) {
             updateResults();
         }
-
-        //
-        // Show
-        //
-
-        show();
     }
     //
     void ProductExpensesView::translateTable()
@@ -209,7 +203,7 @@ namespace PenyaManager {
         }
 
         // header
-        out << "product ID" << ", " << "name" << ", " << "count" << "\n";
+        out << tr("product ID") << ", " << tr("name") << ", " << tr("count") << "\n";
         // iterate over results
         for (InvoiceProductItemList::iterator iter = pInvoiceProductItemListPtr->begin(); iter != pInvoiceProductItemListPtr->end(); ++iter)
         {

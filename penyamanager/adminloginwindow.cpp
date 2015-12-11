@@ -36,17 +36,6 @@ namespace PenyaManager {
     {
         this->ui->passInput->clear();
         this->ui->loginInput->clear();
-
-        if (!Singletons::m_pDAO->isOpen()) {
-            QSqlError err = Singletons::m_pDAO->lastError();
-            QLOG_ERROR() << QString("[FATAL] Unable to initialize Database: %1").arg(err.text());
-            QMessageBox::critical(this, "Unable to initialize Database",
-                    "Error initializing database: " + err.text());
-            qApp->exit(1);
-            return;
-        }
-
-        show();
     }
     //
     void AdminLoginWindow::retranslate()
@@ -105,7 +94,7 @@ namespace PenyaManager {
         // assign user
         Singletons::m_pCurrMember = pCurrMemberPtr;
         // call admin main window
-        m_pAdminMainWindow->init();
+        m_pAdminMainWindow->show();
     }
     //
     void PenyaManager::AdminLoginWindow::on_languagePushButton_clicked()

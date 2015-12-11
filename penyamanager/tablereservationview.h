@@ -25,7 +25,7 @@ namespace PenyaManager {
 
         public:
             //
-            explicit TableReservationView(QWidget *parent = 0);
+            explicit TableReservationView(QWidget *parent, const CentralWidgetCallback &callback);
             //
             ~TableReservationView();
             //
@@ -61,11 +61,13 @@ namespace PenyaManager {
             //
             void on_dinnerButton_clicked(bool checked);
 
-    private:
+        private:
             //
             Ui::TableReservationView *ui;
             //
             MemberProfileGroupBox       *m_pMemberProfileGroupBox;
+            //
+            CentralWidgetCallback       m_switchCentralWidgetCallback;
     };
 }
 

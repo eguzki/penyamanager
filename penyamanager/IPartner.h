@@ -12,17 +12,11 @@ namespace PenyaManager {
     {
         public:
             //
-            explicit IPartner(QWidget *parent = 0)
-                :
-                    QWidget(parent)
-        {
-        }
+            explicit IPartner(QWidget *parent = NULL);
             //
             virtual ~IPartner(){}
             // called every time window is shown
             virtual void init() = 0;
-            //
-            virtual void switchWindow(WindowKey key);
             //
             virtual void retranslate() = 0;
             //

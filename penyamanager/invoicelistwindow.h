@@ -19,7 +19,7 @@ namespace PenyaManager {
 
         public:
             //
-            explicit InvoiceListWindow(QWidget *parent = 0);
+            explicit InvoiceListWindow(QWidget *parent, const CentralWidgetCallback &callback);
             //
             ~InvoiceListWindow();
             //
@@ -56,6 +56,8 @@ namespace PenyaManager {
             RowIdMap                    m_rowProductIdMap;
             //
             bool                        m_firstTime;
+            //
+            CentralWidgetCallback       m_switchCentralWidgetCallback;
     };
 }
 

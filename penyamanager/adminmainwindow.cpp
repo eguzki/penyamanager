@@ -35,26 +35,13 @@ namespace PenyaManager {
         delete ui;
     }
     //
-    void AdminMainWindow::init()
-    {
-        if (!Singletons::m_pDAO->isOpen()) {
-            QSqlError err = Singletons::m_pDAO->lastError();
-            QLOG_ERROR() << QString("[FATAL] Unable to initialize Database: %1").arg(err.text());
-            QMessageBox::critical(this, "Unable to initialize Database",
-                    "Error initializing database: " + err.text());
-            qApp->exit(1);
-            return;
-        }
-
-        show();
-    }
-    //
     void AdminMainWindow::on_exit_button_triggered()
     {
         // call admin login window
         hide();
         IPartner* pPartner = Singletons::m_pParnetFinder->getPartner(WindowKey::kAdminLoginWindowKey);
         pPartner->init();
+        pPartner->show();
     }
     //
     void AdminMainWindow::on_slow_payers_button_triggered()
@@ -98,6 +85,7 @@ namespace PenyaManager {
         IPartner* pPartner = Singletons::m_pParnetFinder->getPartner(key);
         pPartner->init();
         this->setCentralWidget(pPartner);
+        pPartner->show();
     }
     //
     void AdminMainWindow::on_product_expenses_button_triggered()

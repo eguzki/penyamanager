@@ -29,11 +29,6 @@ namespace PenyaManager {
             initialize();
             updateResults();
         }
-        //
-        // Show
-        //
-
-        show();
     }
     //
     void ProviderInvoiceListView::translateTable()

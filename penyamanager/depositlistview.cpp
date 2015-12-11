@@ -28,11 +28,6 @@ namespace PenyaManager {
     void DepositListView::init()
     {
         showUncheckedDeposits();
-        //
-        // Show
-        //
-
-        show();
     }
     //
     void DepositListView::retranslate()

@@ -12,10 +12,11 @@
 
 namespace PenyaManager {
     //
-    InvoiceWindow::InvoiceWindow(QWidget *parent) :
+    InvoiceWindow::InvoiceWindow(QWidget *parent, const CentralWidgetCallback &callback) :
         IPartner(parent),
         ui(new Ui::InvoiceWindow),
-        m_pMemberProfileGroupBox(new MemberProfileGroupBox)
+        m_pMemberProfileGroupBox(new MemberProfileGroupBox),
+        m_switchCentralWidgetCallback(callback)
     {
         ui->setupUi(this);
         this->ui->topPanelWidget->layout()->addWidget(m_pMemberProfileGroupBox);
@@ -66,12 +67,6 @@ namespace PenyaManager {
             return;
         }
         fillInvoiceData(pCurrMember, pInvoicePtr);
-
-        //
-        // Show
-        //
-
-        showFullScreen();
     }
     //
     void InvoiceWindow::retranslate()
@@ -93,8 +88,8 @@ namespace PenyaManager {
     //
     void InvoiceWindow::on_backPushButton_clicked()
     {
-        // call main window
-        switchWindow(WindowKey::kMainWindowKey);
+        // Go to dashboard window
+        m_switchCentralWidgetCallback(WindowKey::kMemberDashboardWindowKey);
     }
     //
     void InvoiceWindow::on_confirmPushButton_clicked()

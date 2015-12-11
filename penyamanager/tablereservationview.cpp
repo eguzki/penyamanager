@@ -19,10 +19,11 @@ namespace PenyaManager {
     // * Reservations can be cancelled
 
     //
-    TableReservationView::TableReservationView(QWidget *parent) :
+    TableReservationView::TableReservationView(QWidget *parent, const CentralWidgetCallback &callback) :
         IPartner(parent),
         ui(new Ui::TableReservationView),
-        m_pMemberProfileGroupBox(new MemberProfileGroupBox)
+        m_pMemberProfileGroupBox(new MemberProfileGroupBox),
+        m_switchCentralWidgetCallback(callback)
     {
         ui->setupUi(this);
         this->ui->topPanelWidget->layout()->addWidget(m_pMemberProfileGroupBox);
@@ -83,17 +84,12 @@ namespace PenyaManager {
         // Initial state
         //
         initializeTableReservations(pCurrMemberPtr);
-
-        //
-        // Show
-        //
-        showFullScreen();
     }
     //
     void TableReservationView::on_backButton_clicked()
     {
-        // call main window
-        switchWindow(WindowKey::kMainWindowKey);
+        // Go to dashboard window
+        m_switchCentralWidgetCallback(WindowKey::kMemberDashboardWindowKey);
     }
     //
     void TableReservationView::initializeTableReservations(const MemberPtr &pCurrMemberPtr)
@@ -265,8 +261,6 @@ namespace PenyaManager {
 
         QLOG_INFO() << QString("[%1] User %2 item %3").arg(title).arg(pCurrMemberPtr->m_id).arg(itemId);
         QMessageBox::information(this, title, "Reservation done");
-        // call main window
-        //switchWindow(WindowKey::kMainWindowKey);
         fillTableReservations(pCurrMemberPtr, date, reservationType);
     }
     //
@@ -291,8 +285,8 @@ namespace PenyaManager {
                 break;
         }
         QMessageBox::information(this, title, "Reservation cancelled");
-        // call main window
-        switchWindow(WindowKey::kMainWindowKey);
+        // Go to dashboard window
+        m_switchCentralWidgetCallback(WindowKey::kMemberDashboardWindowKey);
     }
     //
     void TableReservationView::on_lunchButton_clicked(bool checked)
