@@ -14,7 +14,6 @@ namespace PenyaManager {
     QPixmap GuiUtils::getImage(const QString& filename)
     {
         QPixmap image(filename);
-        QLOG_INFO() << filename;
         if (image.isNull()) {
             image = QPixmap(":images/no-image.gif");
         }
