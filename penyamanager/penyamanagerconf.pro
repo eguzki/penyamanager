@@ -11,7 +11,10 @@ QT       -= gui
 TARGET = penyamanagerconf
 CONFIG   += console
 CONFIG   -= app_bundle
-QMAKE_CXXFLAGS += -std=c++11
+
+!win32 {
+    QMAKE_CXXFLAGS += -std=c++11
+}
 
 TEMPLATE = app
 
