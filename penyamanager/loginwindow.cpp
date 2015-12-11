@@ -117,6 +117,9 @@ namespace PenyaManager {
         // assign user
         Singletons::m_pCurrMember = pCurrMemberPtr;
 
+        // change last login date
+        Singletons::m_pDAO->changeMemberLastLogin(this->m_memberId, QDateTime::currentDateTime());
+
         // load main window
         m_switchCentralWidgetCallback(WindowKey::kMemberDashboardWindowKey);
     }

@@ -83,7 +83,8 @@ namespace PenyaManager {
             m_memberListFilteredStatsQuery(),
             m_updateMemberQuery(),
             m_createMemberQuery(),
-            m_updateMemberPasswordQuery()
+            m_updateMemberPasswordQuery(),
+            m_updateMemberLastLoginQuery()
     {
         // configure db connection
         m_db.setHostName(hostname);
@@ -575,6 +576,12 @@ namespace PenyaManager {
         m_updateMemberPasswordQuery.prepare(
                 "UPDATE member "
                 "SET pwd=:pwd, lastmodified=:lastmodified "
+                "WHERE idmember = :memberid"
+                );
+        // update member lastlogin date
+        m_updateMemberLastLoginQuery.prepare(
+                "UPDATE member "
+                "SET lastlogin=:lastlogin "
                 "WHERE idmember = :memberid"
                 );
     }
@@ -2228,6 +2235,19 @@ namespace PenyaManager {
             QLOG_ERROR() << m_updateMemberPasswordQuery.lastError();
         }
         m_updateMemberPasswordQuery.finish();
+    }
+    //
+    void DAO::changeMemberLastLogin(Int32 memberId, const QDateTime &lastlogin)
+    {
+        m_updateMemberLastLoginQuery.bindValue(":lastlogin", lastlogin);
+        m_updateMemberLastLoginQuery.bindValue(":memberid", memberId);
+        // execute query
+        if (!m_updateMemberLastLoginQuery.exec())
+        {
+            qDebug() << m_updateMemberLastLoginQuery.lastError();
+            QLOG_ERROR() << m_updateMemberLastLoginQuery.lastError();
+        }
+        m_updateMemberLastLoginQuery.finish();
     }
 }
 
