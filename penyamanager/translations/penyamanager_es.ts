@@ -262,7 +262,7 @@
     <message>
         <location filename="../invoicelistwindow.ui" line="343"/>
         <source>page X out of Y</source>
-        <translation type="unfinished">página X de Y</translation>
+        <translation>página X de Y</translation>
     </message>
     <message>
         <location filename="../invoicelistwindow.ui" line="350"/>
@@ -527,18 +527,18 @@
     <message>
         <location filename="../accountview.cpp" line="68"/>
         <source>Date</source>
-        <translation type="unfinished"></translation>
+        <translation>Fecha</translation>
     </message>
     <message>
         <location filename="../accountview.cpp" line="69"/>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>Descripción</translation>
     </message>
     <message>
         <location filename="../accountview.cpp" line="91"/>
         <location filename="../accountview.cpp" line="92"/>
         <source>%1 €</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -546,37 +546,37 @@
     <message>
         <location filename="../depositwindow.cpp" line="90"/>
         <source>Deposit</source>
-        <translation type="unfinished">Ingreso</translation>
+        <translation>Ingreso</translation>
     </message>
     <message>
         <location filename="../depositwindow.cpp" line="90"/>
         <source>Deposit done</source>
-        <translation type="unfinished"></translation>
+        <translation>Ingreso realizado</translation>
     </message>
     <message>
         <location filename="../depositwindow.cpp" line="155"/>
         <source>Deposit Id</source>
-        <translation type="unfinished"></translation>
+        <translation>Id ingreso</translation>
     </message>
     <message>
         <location filename="../depositwindow.cpp" line="156"/>
         <source>Member Id</source>
-        <translation type="unfinished"></translation>
+        <translation>Id socio</translation>
     </message>
     <message>
         <location filename="../depositwindow.cpp" line="157"/>
         <source>Member Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombre socio</translation>
     </message>
     <message>
         <location filename="../depositwindow.cpp" line="158"/>
         <source>Date</source>
-        <translation type="unfinished"></translation>
+        <translation>Fecha</translation>
     </message>
     <message>
         <location filename="../depositwindow.cpp" line="159"/>
         <source>Deposit Total</source>
-        <translation type="unfinished"></translation>
+        <translation>Total ingreso</translation>
     </message>
 </context>
 <context>
@@ -585,13 +585,13 @@
         <location filename="../invoicedetailswidget.cpp" line="79"/>
         <location filename="../invoicedetailswidget.cpp" line="82"/>
         <source>%1 €</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../invoicedetailswidget.cpp" line="80"/>
         <location filename="../invoicedetailswidget.cpp" line="93"/>
         <source>%1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -599,13 +599,13 @@
     <message>
         <location filename="../invoicelistwindow.cpp" line="102"/>
         <source>page %1 out of %2</source>
-        <translation type="unfinished">página %1 de %2</translation>
+        <translation>página %1 de %2</translation>
     </message>
     <message>
         <location filename="../invoicelistwindow.cpp" line="105"/>
         <location filename="../invoicelistwindow.cpp" line="142"/>
         <source>%1 €</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 €</translation>
     </message>
 </context>
 <context>
@@ -614,13 +614,13 @@
         <location filename="../invoicewindow.cpp" line="120"/>
         <location filename="../invoicewindow.cpp" line="123"/>
         <source>%1 €</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 €</translation>
     </message>
     <message>
         <location filename="../invoicewindow.cpp" line="121"/>
         <location filename="../invoicewindow.cpp" line="136"/>
         <source>%1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1</translation>
     </message>
 </context>
 <context>
@@ -628,48 +628,48 @@
     <message>
         <location filename="../mainwindow.cpp" line="50"/>
         <source>article</source>
-        <translation type="unfinished"></translation>
+        <translation>Artículo</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="51"/>
         <source>price/u</source>
-        <translation type="unfinished"></translation>
+        <translation>precio/u</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="52"/>
         <source>count</source>
-        <translation type="unfinished"></translation>
+        <translation>cantidad</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="53"/>
         <source>total</source>
-        <translation type="unfinished"></translation>
+        <translation>total</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="220"/>
         <source>Invoice (Ref #%1) on (%2)</source>
-        <translation type="unfinished">Recibo %1 de %2</translation>
+        <translation>Recibo %1 de %2</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="239"/>
         <location filename="../mainwindow.cpp" line="242"/>
         <source>%1 €</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="240"/>
         <source>%1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="260"/>
         <source>Note</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="261"/>
         <source>Current invoice is empty</source>
-        <translation type="unfinished"></translation>
+        <translation>El recibo actual está vacío</translation>
     </message>
 </context>
 <context>
@@ -677,32 +677,32 @@
     <message>
         <location filename="../tablereservationview.cpp" line="51"/>
         <source>Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Tipo</translation>
     </message>
     <message>
         <location filename="../tablereservationview.cpp" line="52"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombre</translation>
     </message>
     <message>
         <location filename="../tablereservationview.cpp" line="53"/>
         <source>Size</source>
-        <translation type="unfinished"></translation>
+        <translation>Tamaño</translation>
     </message>
     <message>
         <location filename="../tablereservationview.cpp" line="54"/>
         <source>Reserved By Guest</source>
-        <translation type="unfinished"></translation>
+        <translation>Reservado por invitado</translation>
     </message>
     <message>
         <location filename="../tablereservationview.cpp" line="55"/>
         <source># reserved</source>
-        <translation type="unfinished"></translation>
+        <translation># reservado</translation>
     </message>
     <message>
         <location filename="../tablereservationview.cpp" line="56"/>
         <source>Action</source>
-        <translation type="unfinished"></translation>
+        <translation>Acción</translation>
     </message>
 </context>
 <context>
