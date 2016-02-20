@@ -212,7 +212,7 @@ namespace PenyaManager {
 
         // Invoice header
         QString dateLocalized = Singletons::m_translationManager.getLocale().toString(pInvoicePtr->m_date, QLocale::NarrowFormat);
-        this->ui->invoiceGroupBox->setTitle(tr("Invoice (Ref #%1) on (%2)").arg(pInvoicePtr->m_id).arg(dateLocalized));
+        this->ui->invoiceInfoLabel->setText(tr("Invoice (Ref #%1) on (%2)").arg(pInvoicePtr->m_id).arg(dateLocalized));
 
         // get invoice products
         InvoiceProductItemListPtr pInvoiceProductItemListPtr = Singletons::m_pDAO->getInvoiceProductItems(pInvoicePtr->m_id);

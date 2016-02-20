@@ -64,11 +64,11 @@ namespace PenyaManager {
         this->ui->tableReservationTableWidget->setColumnCount(6);
         translateTable();
         Uint32 column = 0;
+        this->ui->tableReservationTableWidget->setColumnWidth(column++, 150);
         this->ui->tableReservationTableWidget->setColumnWidth(column++, 200);
-        this->ui->tableReservationTableWidget->setColumnWidth(column++, 250);
         this->ui->tableReservationTableWidget->setColumnWidth(column++, 80);
-        this->ui->tableReservationTableWidget->setColumnWidth(column++, 300);
         this->ui->tableReservationTableWidget->setColumnWidth(column++, 200);
+        this->ui->tableReservationTableWidget->setColumnWidth(column++, 100);
         this->ui->tableReservationTableWidget->setColumnWidth(column++, 200);
     }
     //

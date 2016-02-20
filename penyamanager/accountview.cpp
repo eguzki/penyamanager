@@ -16,7 +16,7 @@ namespace PenyaManager {
         m_switchCentralWidgetCallback(callback)
     {
         ui->setupUi(this);
-        this->ui->topPanelWidget->layout()->addWidget(m_pMemberProfileGroupBox);
+        this->ui->topPanelwidget->layout()->addWidget(m_pMemberProfileGroupBox);
         initializeTable();
     }
     //
