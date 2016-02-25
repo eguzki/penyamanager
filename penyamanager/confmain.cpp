@@ -6,8 +6,8 @@
 #include <QDebug>
 #include <stdio.h>
 
-#include "utils.h"
-#include "constants.h"
+#include <commons/utils.h>
+#include <commons/constants.h>
 
 int main(int argc, char *argv[])
 {

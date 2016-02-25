@@ -5,7 +5,7 @@
 #include <QDateTime>
 #include <QSharedPointer>
 
-#include <DataTypes.h>
+#include <commons/DataTypes.h>
 
 namespace PenyaManager
 {

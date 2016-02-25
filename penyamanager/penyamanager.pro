@@ -26,14 +26,14 @@ RESOURCES = penyamanager.qrc
 RC_ICONS = images/alegrialogo.ico
 
 SOURCES += main.cpp\
-        singletons.cpp\
-        dao.cpp\
-        memberdashboardwindow.cpp\
-        utils.cpp\
-        constants.cpp\
-        services.cpp\
-        IPartner.cpp\
-        partnerfinder.cpp\
+        commons/singletons.cpp\
+        commons/dao.cpp\
+        user/memberdashboardwindow.cpp\
+        commons/utils.cpp\
+        commons/constants.cpp\
+        commons/services.cpp\
+        commons/IPartner.cpp\
+        commons/partnerfinder.cpp\
         objs/Transaction.cpp\
         objs/Invoice.cpp\
         objs/Deposit.cpp\
@@ -45,28 +45,28 @@ SOURCES += main.cpp\
         objs/ReservationItem.cpp\
         objs/Provider.cpp\
         objs/ProviderInvoice.cpp\
-        loginwindow.cpp \
-        numitemdialog.cpp \
-        invoicewindow.cpp \
-        depositwindow.cpp \
-        accountview.cpp \
-        tablereservationview.cpp \
-        invoicelistwindow.cpp \
-        invoicedetailswidget.cpp \
-        memberprofilegroupbox.cpp \
-    invoicedetailswindow.cpp \
-    guiutils.cpp \
-    translationmanager.cpp \
-    mainwindow.cpp
+        user/loginwindow.cpp \
+        user/numitemdialog.cpp \
+        user/invoicewindow.cpp \
+        user/depositwindow.cpp \
+        user/accountview.cpp \
+        user/tablereservationview.cpp \
+        user/invoicelistwindow.cpp \
+        commons/invoicedetailswidget.cpp \
+        user/memberprofilegroupbox.cpp \
+        user/invoicedetailswindow.cpp \
+        commons/guiutils.cpp \
+        commons/translationmanager.cpp \
+        user/mainwindow.cpp
 
-HEADERS  += memberdashboardwindow.h\
-        singletons.h\
-        dao.h\
-        utils.h\
-        constants.h\
-        services.h\
-        IPartner.h\
-        partnerfinder.h\
+HEADERS  += user/memberdashboardwindow.h\
+        commons/singletons.h\
+        commons/dao.h\
+        commons/utils.h\
+        commons/constants.h\
+        commons/services.h\
+        commons/IPartner.h\
+        commons/partnerfinder.h\
         objs/Transaction.h\
         objs/Invoice.h\
         objs/Deposit.h\
@@ -78,32 +78,33 @@ HEADERS  += memberdashboardwindow.h\
         objs/ReservationItem.h\
         objs/Provider.h\
         objs/ProviderInvoice.h\
-        loginwindow.h \
-        numitemdialog.h \
-        invoicewindow.h \
-        depositwindow.h \
-        accountview.h \
-        tablereservationview.h \
-        invoicelistwindow.h \
-        invoicedetailswidget.h \
-        memberprofilegroupbox.h \
-    invoicedetailswindow.h \
-    guiutils.h \
-    translationmanager.h \
-    mainwindow.h
+        user/loginwindow.h \
+        user/numitemdialog.h \
+        user/invoicewindow.h \
+        user/depositwindow.h \
+        user/accountview.h \
+        user/tablereservationview.h \
+        user/invoicelistwindow.h \
+        commons/invoicedetailswidget.h \
+        user/memberprofilegroupbox.h \
+        user/invoicedetailswindow.h \
+        commons/guiutils.h \
+        commons/translationmanager.h \
+        commons/DataTypes.h \
+        user/mainwindow.h
 
-FORMS    += memberdashboardwindow.ui\
-        loginwindow.ui \
-        numitemdialog.ui \
-        invoicewindow.ui \
-        depositwindow.ui \
-        accountview.ui \
-        tablereservationview.ui \
-        invoicelistwindow.ui \
-        invoicedetailswidget.ui \
-        memberprofilegroupbox.ui \
-    invoicedetailswindow.ui \
-    mainwindow.ui
+FORMS    += user/memberdashboardwindow.ui\
+        user/loginwindow.ui \
+        user/numitemdialog.ui \
+        user/invoicewindow.ui \
+        user/depositwindow.ui \
+        user/accountview.ui \
+        user/tablereservationview.ui \
+        user/invoicelistwindow.ui \
+        commons/invoicedetailswidget.ui \
+        user/memberprofilegroupbox.ui \
+        user/invoicedetailswindow.ui \
+        user/mainwindow.ui
 
 TRANSLATIONS += \
     translations/penyamanager_es.ts \

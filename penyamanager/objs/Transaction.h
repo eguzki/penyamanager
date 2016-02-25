@@ -5,8 +5,8 @@
 #include <QString>
 #include <QDateTime>
 
-#include <DataTypes.h>
-#include <constants.h>
+#include <commons/DataTypes.h>
+#include <commons/constants.h>
 
 namespace PenyaManager
 {
