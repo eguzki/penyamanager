@@ -31,10 +31,6 @@ namespace PenyaManager {
             //
             void on_loginPushButton_clicked();
             //
-            void on_passwordPushButton_clicked();
-            //
-            void on_memberIdPushButton_clicked();
-            //
             void on_languagePushButton_clicked();
 
         private:

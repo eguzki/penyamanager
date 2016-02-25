@@ -287,7 +287,7 @@ namespace PenyaManager {
     //
     void MemberDashboardWindow::readNumItems(Int32 productId)
     {
-        NumItemDialog numItemDialog(this);
+        NumItemDialog numItemDialog(this, tr("Enter number of items"));
         numItemDialog.exec();
         Uint32 count = numItemDialog.getKey();
         MemberPtr pCurrMember = Singletons::m_pCurrMember;

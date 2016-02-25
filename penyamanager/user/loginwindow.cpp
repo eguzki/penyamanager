@@ -41,8 +41,6 @@ namespace PenyaManager {
     //
     void LoginWindow::init()
     {
-        this->ui->memberIdLabel->clear();
-        this->ui->passwordLabel->clear();
         this->m_memberId = -1;
         this->m_password = QString();
 
@@ -63,18 +61,28 @@ namespace PenyaManager {
     //
     void LoginWindow::on_loginPushButton_clicked()
     {
+        // Ask for userId
+        NumItemDialog numItemDialog(this, tr("Enter member code"));
+        numItemDialog.exec();
+        this->m_memberId = numItemDialog.getKey();
         // check memberId input
         if (this->m_memberId < 0)
         {
             QMessageBox::about(this, tr("Login failed"), tr("MemberId not set"));
             return;
         }
+
+        // Ask for password
+        NumItemDialog passNumItemDialog(this, tr("Enter password"), true);
+        passNumItemDialog.exec();
+        this->m_password = passNumItemDialog.getKeyStr();
         // check password input
         if (this->m_password.isEmpty())
         {
             QMessageBox::about(this, tr("Login failed"), tr("Password not set"));
             return;
         }
+
         // Loading user Profile
         MemberPtr pCurrMemberPtr = Singletons::m_pDAO->getMemberById(this->m_memberId);
         if (!pCurrMemberPtr)
@@ -122,24 +130,6 @@ namespace PenyaManager {
 
         // load main window
         m_switchCentralWidgetCallback(WindowKey::kMemberDashboardWindowKey);
-    }
-    //
-    void LoginWindow::on_passwordPushButton_clicked()
-    {
-        NumItemDialog numItemDialog(this, true);
-        numItemDialog.exec();
-        this->m_password = numItemDialog.getKeyStr();
-        QString hiddenPassText(this->m_password);
-        hiddenPassText.replace(QRegExp("."), "*");
-        this->ui->passwordLabel->setText(hiddenPassText);
-    }
-    //
-    void LoginWindow::on_memberIdPushButton_clicked()
-    {
-        NumItemDialog numItemDialog(this);
-        numItemDialog.exec();
-        this->m_memberId = numItemDialog.getKey();
-        this->ui->memberIdLabel->setText(QString::number(this->m_memberId));
     }
     void LoginWindow::on_languagePushButton_clicked()
     {
