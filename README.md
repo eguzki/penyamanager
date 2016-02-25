@@ -97,6 +97,7 @@ penyamanager
   * Basque
   * Spanish
 * Activity logger
+* App designed for screen resolution 1024x768
 
 # Development
 

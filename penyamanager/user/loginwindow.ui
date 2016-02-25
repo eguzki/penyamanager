@@ -262,7 +262,7 @@
          <string notr="true"/>
         </property>
         <property name="icon">
-         <iconset resource="penyamanager.qrc">
+         <iconset resource="../penyamanager.qrc">
           <normaloff>:/images/ikurrina.png</normaloff>
           <normalon>:/images/espanola.jpg</normalon>:/images/ikurrina.png</iconset>
         </property>
@@ -360,7 +360,7 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
-  <include location="penyamanager.qrc"/>
+  <include location="../penyamanager.qrc"/>
  </resources>
  <connections/>
 </ui>
