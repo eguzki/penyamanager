@@ -25,7 +25,7 @@ namespace PenyaManager {
     void MainWindow::init()
     {
         switchCentralWidget(WindowKey::kLoginWindowKey);
-        showFullScreen();
+        show();
     }
     //
     void MainWindow::switchCentralWidget(WindowKey key)

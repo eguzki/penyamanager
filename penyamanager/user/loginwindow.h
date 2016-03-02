@@ -4,6 +4,8 @@
 #include <QTranslator>
 
 #include <commons/IPartner.h>
+#include <objs/Member.h>
+#include <objs/Invoice.h>
 
 namespace Ui {
     //
@@ -28,6 +30,14 @@ namespace PenyaManager {
         private slots:
             //
             void init();
+            //
+            void translateTable();
+            //
+            void initializeTable();
+            //
+            void fillLastInvoiceOwnerInfo(const MemberPtr &pLastInvoiceOwnerPtr);
+            //
+            void fillLastInvoiceInfo(const InvoicePtr &pLastInvoicePtr);
             //
             void on_loginPushButton_clicked();
             //

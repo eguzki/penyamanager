@@ -84,7 +84,8 @@ namespace PenyaManager {
             m_updateMemberQuery(),
             m_createMemberQuery(),
             m_updateMemberPasswordQuery(),
-            m_updateMemberLastLoginQuery()
+            m_updateMemberLastLoginQuery(),
+            m_lastInvoiceQuery()
     {
         // configure db connection
         m_db.setHostName(hostname);
@@ -583,6 +584,12 @@ namespace PenyaManager {
                 "UPDATE member "
                 "SET lastlogin=:lastlogin "
                 "WHERE idmember = :memberid"
+                );
+        // Get last invoice (closed or open)
+        m_lastInvoiceQuery.prepare(
+                "SELECT idinvoice, state, date, total, idmember FROM invoice "
+                "ORDER BY date DESC "
+                "LIMIT 1"
                 );
     }
 
@@ -2248,6 +2255,27 @@ namespace PenyaManager {
             QLOG_ERROR() << m_updateMemberLastLoginQuery.lastError();
         }
         m_updateMemberLastLoginQuery.finish();
+    }
+    //
+    InvoicePtr DAO::getLastInvoiceInfo()
+    {
+        InvoicePtr pInvoicePtr;
+        if (!m_lastInvoiceQuery.exec())
+        {
+            qDebug() << m_lastInvoiceQuery.lastError();
+            QLOG_ERROR() << m_lastInvoiceQuery.lastError();
+        } else if (m_lastInvoiceQuery.next())
+        {
+            pInvoicePtr = InvoicePtr(new Invoice());
+            pInvoicePtr->m_id = m_lastInvoiceQuery.value(0).toInt();;
+            pInvoicePtr->m_state = static_cast<InvoiceState>(m_lastInvoiceQuery.value(1).toUInt());
+            pInvoicePtr->m_date = m_lastInvoiceQuery.value(2).toDateTime();
+            pInvoicePtr->m_total = m_lastInvoiceQuery.value(3).toFloat();
+            pInvoicePtr->m_memberId = m_lastInvoiceQuery.value(4).toInt();
+        }
+        m_lastInvoiceQuery.finish();
+
+        return pInvoicePtr;
     }
 }
 

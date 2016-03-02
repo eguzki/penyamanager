@@ -3,18 +3,18 @@
 
 #include <QtSql>
 
+#include <objs/Transaction.h>
+#include <objs/Reservation.h>
+#include <objs/Member.h>
+#include <objs/Invoice.h>
+#include <objs/Deposit.h>
+#include <objs/Provider.h>
+#include <objs/ProductFamily.h>
+#include <objs/ProductItem.h>
+#include <objs/InvoiceProductItem.h>
+#include <objs/ReservationItem.h>
+#include <objs/ProviderInvoice.h>
 #include "DataTypes.h"
-#include "objs/Transaction.h"
-#include "objs/Reservation.h"
-#include "objs/Member.h"
-#include "objs/Invoice.h"
-#include "objs/Deposit.h"
-#include "objs/Provider.h"
-#include "objs/ProductFamily.h"
-#include "objs/ProductItem.h"
-#include "objs/InvoiceProductItem.h"
-#include "objs/ReservationItem.h"
-#include "objs/ProviderInvoice.h"
 
 namespace PenyaManager {
     //
@@ -172,6 +172,8 @@ namespace PenyaManager {
             void changeMemberPassword(Int32 memberId, const QString &pwdHash, const QDateTime &lastmodified);
             //
             void changeMemberLastLogin(Int32 memberId, const QDateTime &lastlogin);
+            //
+            InvoicePtr getLastInvoiceInfo();
 
         private:
             //
@@ -324,6 +326,8 @@ namespace PenyaManager {
             QSqlQuery               m_updateMemberPasswordQuery;
             //
             QSqlQuery               m_updateMemberLastLoginQuery;
+            //
+            QSqlQuery               m_lastInvoiceQuery;
     };
 }
 #endif // DAO_H
