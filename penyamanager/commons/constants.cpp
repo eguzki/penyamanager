@@ -21,11 +21,11 @@ namespace PenyaManager {
     //
     const QString   Constants::kDatabasePass                    = "pass";
     //
-    const Uint32    Constants::kFamilyWidgetWidth               = 300;
+    const Uint32    Constants::kFamilyWidgetWidth               = 80;
     //
-    const Uint32    Constants::kFamilyImageWidth                = 100;
+    const Uint32    Constants::kFamilyImageWidth                = 40;
     //
-    const Uint32    Constants::kFamilyImageHeigth               = 80;
+    const Uint32    Constants::kFamilyImageHeigth               = 40;
     //
     const Int32     Constants::kIdRole                          = 101;
     //

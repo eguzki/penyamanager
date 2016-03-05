@@ -28,6 +28,10 @@ namespace PenyaManager {
             TransactionListStatsPtr getAccountListStats(const QDate &fromDate, const QDate &toDate);
             //
             TransactionListStatsPtr getAccountListByMemberIdStats(Int32 memberId, const QDate &fromDate, const QDate &toDate);
+            //
+            void updateInvoiceInfo(Int32 invoiceId, Int32 productId, Uint32 count);
+            //
+            void removeInvoiceProductId(Int32 invoiceId, Int32 productId);
     };
 }
 

@@ -176,13 +176,13 @@
        <widget class="QGroupBox" name="familyGroupBox">
         <property name="minimumSize">
          <size>
-          <width>250</width>
+          <width>150</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>250</width>
+          <width>150</width>
           <height>16777215</height>
          </size>
         </property>
@@ -193,8 +193,28 @@
          <string>Families</string>
         </property>
         <layout class="QVBoxLayout" name="horizontalLayout_3">
+         <property name="spacing">
+          <number>10</number>
+         </property>
+         <property name="leftMargin">
+          <number>2</number>
+         </property>
+         <property name="topMargin">
+          <number>2</number>
+         </property>
+         <property name="rightMargin">
+          <number>2</number>
+         </property>
+         <property name="bottomMargin">
+          <number>2</number>
+         </property>
          <item>
           <widget class="QListWidget" name="familyListWidget">
+           <property name="font">
+            <font>
+             <pointsize>5</pointsize>
+            </font>
+           </property>
            <property name="styleSheet">
             <string notr="true">selection-background-color: rgba(229, 92, 92, 122);</string>
            </property>
@@ -222,13 +242,13 @@
        <widget class="QGroupBox" name="productGroupBox">
         <property name="minimumSize">
          <size>
-          <width>250</width>
+          <width>0</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>250</width>
+          <width>16777215</width>
           <height>16777215</height>
          </size>
         </property>
@@ -236,8 +256,28 @@
          <string>Products</string>
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <property name="spacing">
+          <number>10</number>
+         </property>
+         <property name="leftMargin">
+          <number>2</number>
+         </property>
+         <property name="topMargin">
+          <number>2</number>
+         </property>
+         <property name="rightMargin">
+          <number>2</number>
+         </property>
+         <property name="bottomMargin">
+          <number>2</number>
+         </property>
          <item>
           <widget class="QListWidget" name="productListWidget">
+           <property name="font">
+            <font>
+             <pointsize>7</pointsize>
+            </font>
+           </property>
            <property name="movement">
             <enum>QListView::Static</enum>
            </property>
@@ -259,22 +299,46 @@
        <widget class="QWidget" name="invoiceInfoWidget" native="true">
         <property name="minimumSize">
          <size>
-          <width>0</width>
+          <width>410</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>16777215</width>
+          <width>410</width>
           <height>16777215</height>
          </size>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_4">
+         <property name="spacing">
+          <number>10</number>
+         </property>
+         <property name="leftMargin">
+          <number>2</number>
+         </property>
          <property name="topMargin">
-          <number>0</number>
+          <number>2</number>
+         </property>
+         <property name="rightMargin">
+          <number>2</number>
+         </property>
+         <property name="bottomMargin">
+          <number>2</number>
          </property>
          <item>
           <widget class="QWidget" name="invoiceWidget" native="true">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <layout class="QVBoxLayout" name="verticalLayout_5">
             <property name="spacing">
              <number>10</number>
@@ -294,12 +358,17 @@
             <item>
              <widget class="QLabel" name="invoiceInfoLabel">
               <property name="text">
-               <string>TextLabel</string>
+               <string notr="true"/>
               </property>
              </widget>
             </item>
             <item>
              <widget class="QTableWidget" name="invoiceTableWidget">
+              <property name="font">
+               <font>
+                <pointsize>7</pointsize>
+               </font>
+              </property>
               <property name="editTriggers">
                <set>QAbstractItemView::NoEditTriggers</set>
               </property>

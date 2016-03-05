@@ -148,7 +148,7 @@ namespace PenyaManager {
                 if (!hasReservation) {
                     // show reservation action
                     // only when there is no reserved table for this (date, reservationType)
-                    QPushButton *pReservationButton = new QPushButton("Reserve", this->ui->tableReservationTableWidget);
+                    QPushButton *pReservationButton = new QPushButton(tr("Reserve"), this->ui->tableReservationTableWidget);
                     this->connect(pReservationButton, &QPushButton::clicked, std::bind(&TableReservationView::on_reservedButton_clicked, this, pReservationItemPtr->m_idItem, pReservationItemPtr->m_itemType));
                     this->ui->tableReservationTableWidget->setCellWidget(rowCount, 5, pReservationButton);
                 }
@@ -160,7 +160,7 @@ namespace PenyaManager {
                 this->ui->tableReservationTableWidget->setItem(rowCount, 4, new QTableWidgetItem(QString::number(pReservationPtr->m_guestNum)));
                 if (pReservationPtr->m_idMember == pMemberPtr->m_id) {
                     // show cancel button action
-                    QPushButton *pCancelButton = new QPushButton("Cancel", this->ui->tableReservationTableWidget);
+                    QPushButton *pCancelButton = new QPushButton(tr("Cancel"), this->ui->tableReservationTableWidget);
                     this->connect(pCancelButton, &QPushButton::clicked, std::bind(&TableReservationView::on_cancelButton_clicked, this, pReservationPtr->m_reservationId, pReservationItemPtr->m_itemType));
                     this->ui->tableReservationTableWidget->setCellWidget(rowCount, 5, pCancelButton);
                 }

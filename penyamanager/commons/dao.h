@@ -174,6 +174,8 @@ namespace PenyaManager {
             void changeMemberLastLogin(Int32 memberId, const QDateTime &lastlogin);
             //
             InvoicePtr getLastInvoiceInfo();
+            //
+            void updateInvoiceLastModDate(Int32 invoiceId, const QDateTime &lastModDate);
 
         private:
             //
@@ -328,6 +330,8 @@ namespace PenyaManager {
             QSqlQuery               m_updateMemberLastLoginQuery;
             //
             QSqlQuery               m_lastInvoiceQuery;
+            //
+            QSqlQuery               m_updateLastModInvoiceQuery;
     };
 }
 #endif // DAO_H

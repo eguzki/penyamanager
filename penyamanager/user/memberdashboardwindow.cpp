@@ -34,13 +34,14 @@ namespace PenyaManager {
     //
     void MemberDashboardWindow::initializeTable()
     {
-        this->ui->invoiceTableWidget->setColumnCount(4);
+        this->ui->invoiceTableWidget->setColumnCount(5);
         translateTable();
         Uint32 column = 0;
-        this->ui->invoiceTableWidget->setColumnWidth(column++, 210);
-        this->ui->invoiceTableWidget->setColumnWidth(column++, 75);
-        this->ui->invoiceTableWidget->setColumnWidth(column++, 75);
-        this->ui->invoiceTableWidget->setColumnWidth(column++, 100);
+        this->ui->invoiceTableWidget->setColumnWidth(column++, 150);
+        this->ui->invoiceTableWidget->setColumnWidth(column++, 70);
+        this->ui->invoiceTableWidget->setColumnWidth(column++, 30);
+        this->ui->invoiceTableWidget->setColumnWidth(column++, 70);
+        this->ui->invoiceTableWidget->setColumnWidth(column++, 50);
     }
     //
     void MemberDashboardWindow::translateTable()
@@ -49,8 +50,9 @@ namespace PenyaManager {
         QStringList headers;
         headers.append(tr("article"));
         headers.append(tr("price/u"));
-        headers.append(tr("count"));
+        headers.append("#");
         headers.append(tr("total"));
+        headers.append(tr("Remove"));
         this->ui->invoiceTableWidget->setHorizontalHeaderLabels(headers);
     }
     //
@@ -88,12 +90,12 @@ namespace PenyaManager {
         //
 
         InvoicePtr pInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMemberPtr->m_id);
-        if (!pInvoicePtr) {
+        if (pInvoicePtr) {
+            fillInvoiceData(pInvoicePtr);
             // there is no active invoice, create it!
-            pInvoicePtr = Singletons::m_pDAO->createInvoice(pCurrMemberPtr->m_id);
+//            pInvoicePtr = Singletons::m_pDAO->createInvoice(pCurrMemberPtr->m_id);
         }
 
-        fillInvoiceData(pInvoicePtr);
     }
     //
     void MemberDashboardWindow::retranslate()
@@ -123,17 +125,20 @@ namespace PenyaManager {
         // product info: name and price
         QWidget *pProductItemInfoWidget = new QWidget;
         QVBoxLayout *pInfoLayout = new QVBoxLayout;
+        pInfoLayout->setContentsMargins(2,2,2,2);
         QLabel *pTextLabel = new QLabel(pfPtr->m_name);
-        pTextLabel->setFixedWidth(Constants::kFamilyWidgetWidth -  Constants::kFamilyImageWidth - 5);
+        //pTextLabel->setFixedWidth(Constants::kFamilyWidgetWidth -  Constants::kFamilyImageWidth - 5);
         //pTextLabel->setFixedHeight(Constants::kFamilyImageHeigth);
         QLabel *pProductPriceLabel = new QLabel(QString("%1 €").arg(pfPtr->m_price, 0, 'f', 2));
-        pTextLabel->setFixedWidth(Constants::kFamilyWidgetWidth -  Constants::kFamilyImageWidth - 5);
+        //pProductPriceLabel->setFixedWidth(Constants::kFamilyWidgetWidth -  Constants::kFamilyImageWidth);
         //pTextLabel->setFixedHeight(Constants::kFamilyImageHeigth);
         pInfoLayout->addWidget(pTextLabel);
         pInfoLayout->addWidget(pProductPriceLabel);
         pProductItemInfoWidget->setLayout(pInfoLayout);
+        pProductItemInfoWidget->setFixedWidth(Constants::kFamilyWidgetWidth);
 
         QHBoxLayout *pLayout = new QHBoxLayout;
+        pLayout->setContentsMargins(2,2,2,2);
         pLayout->addWidget(pImageLabel);
         pLayout->addWidget(pProductItemInfoWidget);
         pProduceItemWidget->setLayout(pLayout);
@@ -161,10 +166,11 @@ namespace PenyaManager {
         pImageLabel->setScaledContents(true);
 
         QLabel *pTextLabel = new QLabel(pfPtr->m_name);
-        pTextLabel->setFixedWidth(Constants::kFamilyWidgetWidth -  Constants::kFamilyImageWidth - 5);
+        //pTextLabel->setFixedWidth(Constants::kFamilyWidgetWidth -  Constants::kFamilyImageWidth - 5);
         pTextLabel->setFixedHeight(Constants::kFamilyImageHeigth);
 
         QHBoxLayout *pLayout = new QHBoxLayout;
+        pLayout->setContentsMargins(2,2,2,2);
         pLayout->addWidget(pImageLabel);
         pLayout->addWidget(pTextLabel);
         pFamilyWidget->setLayout(pLayout);
@@ -212,7 +218,7 @@ namespace PenyaManager {
 
         // Invoice header
         QString dateLocalized = Singletons::m_translationManager.getLocale().toString(pInvoicePtr->m_date, QLocale::NarrowFormat);
-        this->ui->invoiceInfoLabel->setText(tr("Invoice (Ref #%1) on (%2)").arg(pInvoicePtr->m_id).arg(dateLocalized));
+        this->ui->invoiceInfoLabel->setText(tr("Created on %1").arg(dateLocalized));
 
         // get invoice products
         InvoiceProductItemListPtr pInvoiceProductItemListPtr = Singletons::m_pDAO->getInvoiceProductItems(pInvoicePtr->m_id);
@@ -237,6 +243,10 @@ namespace PenyaManager {
             this->ui->invoiceTableWidget->setItem(rowCount, 3, new QTableWidgetItem(QString("%1 €").arg(totalPrice, 0, 'f', 2)));
             totalInvoice += totalPrice;
             this->m_rowProductIdMap[rowCount] = pInvoiceProductItemPtr->m_productId;
+            // show remove action
+            QPushButton *pRemoveButton = new QPushButton(tr("Remove"), this->ui->invoiceTableWidget);
+            this->connect(pRemoveButton, &QPushButton::clicked, std::bind(&MemberDashboardWindow::on_productRemoveButton_clicked, this, pInvoiceProductItemPtr->m_productId));
+            this->ui->invoiceTableWidget->setCellWidget(rowCount, 4, pRemoveButton);
             rowCount++;
         }
         this->ui->totalDisplayLabel->setText(QString("%1 €").arg(totalInvoice));
@@ -296,10 +306,10 @@ namespace PenyaManager {
 
         if (!count) {
             // count was 0 -> remove item from invoice
-            Singletons::m_pDAO->removeProductInvoice(pInvoicePtr->m_id, productId);
+            Singletons::m_pServices->removeInvoiceProductId(pInvoicePtr->m_id, productId);
         } else {
             // count was not 0 -> update item from invoice
-            Singletons::m_pDAO->updateProductInvoice(pInvoicePtr->m_id, productId, count);
+            Singletons::m_pServices->updateInvoiceInfo(pInvoicePtr->m_id, productId, count);
         }
 
         // always fresh invoice
@@ -329,6 +339,10 @@ namespace PenyaManager {
     {
         Int32 productId = item->data(Constants::kIdRole).toInt();
         this->readNumItems(productId);
+    }
+    //
+    void MemberDashboardWindow::on_productRemoveButton_clicked(int productId)
+    {
     }
 }
 

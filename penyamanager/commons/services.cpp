@@ -55,6 +55,8 @@ namespace PenyaManager {
             totalInvoice += totalPrice;
         }
         pInvoicePtr->m_total = totalInvoice;
+        // invoice lastModified date: now
+        pInvoicePtr->m_lastModified = QDateTime::currentDateTime();
 
         // update invoice data
         Singletons::m_pDAO->updateInvoice(pInvoicePtr);
@@ -132,5 +134,19 @@ namespace PenyaManager {
         // query to get sum of bank charges
         pTransactionListStatsPtr->m_totalBankCharges = Singletons::m_pDAO->getAccountListByMemberIdBankChargesSum(memberId, fromDate, toDate);
         return pTransactionListStatsPtr;
+    }
+    //
+    void Services::updateInvoiceInfo(Int32 invoiceId, Int32 productId, Uint32 count)
+    {
+        // update product invoice and invoice's last modification date
+        Singletons::m_pDAO->updateProductInvoice(invoiceId, productId, count);
+        Singletons::m_pDAO->updateInvoiceLastModDate(invoiceId, QDateTime::currentDateTime());
+    }
+    //
+    void Services::removeInvoiceProductId(Int32 invoiceId, Int32 productId)
+    {
+        // update product invoice and invoice's last modification date
+        Singletons::m_pDAO->removeProductInvoice(invoiceId, productId);
+        Singletons::m_pDAO->updateInvoiceLastModDate(invoiceId, QDateTime::currentDateTime());
     }
 }
