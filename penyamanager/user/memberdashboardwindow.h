@@ -44,8 +44,6 @@ namespace PenyaManager {
             //
             void fillInvoiceData(const InvoicePtr &pInvoicePtr);
             //
-            void readNumItems(Int32 productId);
-            //
             void initializeTable();
             //
             void on_productRemoveButton_clicked(int productId);

@@ -180,7 +180,7 @@ CREATE TABLE IF NOT EXISTS `alegria`.`inv_prod` (
   CONSTRAINT `fk_invoice_has_product_item_invoice1`
     FOREIGN KEY (`idinvoice`)
     REFERENCES `alegria`.`invoice` (`idinvoice`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_invoice_has_product_item_product_item1`
     FOREIGN KEY (`idproduct_item`)

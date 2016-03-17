@@ -90,12 +90,8 @@ namespace PenyaManager {
         //
 
         InvoicePtr pInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMemberPtr->m_id);
-        if (pInvoicePtr) {
-            fillInvoiceData(pInvoicePtr);
-            // there is no active invoice, create it!
-//            pInvoicePtr = Singletons::m_pDAO->createInvoice(pCurrMemberPtr->m_id);
-        }
-
+        // pInvoicePtr could be null
+        fillInvoiceData(pInvoicePtr);
     }
     //
     void MemberDashboardWindow::retranslate()
@@ -213,6 +209,12 @@ namespace PenyaManager {
     void MemberDashboardWindow::fillInvoiceData(const InvoicePtr &pInvoicePtr)
     {
         if (!pInvoicePtr) {
+            // clean all
+            this->ui->invoiceInfoLabel->setText("");
+            // invoice table reset
+            this->ui->invoiceTableWidget->clearContents();
+            this->ui->invoiceTableWidget->setRowCount(0);
+            this->ui->totalDisplayLabel->setText("0 €");
             return;
         }
 
@@ -265,11 +267,20 @@ namespace PenyaManager {
     //
     void MemberDashboardWindow::on_invoiceResetButton_clicked()
     {
+        // ask for confirmation
+        QMessageBox::StandardButton answerButton = QMessageBox::question(this, tr("reset invoice"), tr("Are you sure?"));
+        if (answerButton != QMessageBox::Yes) {
+            return;
+        }
+        // reset invoice
         MemberPtr pCurrMember = Singletons::m_pCurrMember;
         // always fresh invoice
         InvoicePtr pInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
-        Singletons::m_pDAO->resetInvoiceProductItems(pInvoicePtr->m_id);
-        fillInvoiceData(pInvoicePtr);
+        if (pInvoicePtr) {
+            Singletons::m_pDAO->deleteInvoice(pInvoicePtr->m_id);
+        }
+        // nothing to fill
+        fillInvoiceData(InvoicePtr());
     }
     //
     void MemberDashboardWindow::on_exitButton_clicked()
@@ -292,29 +303,24 @@ namespace PenyaManager {
             return;
         }
         Int32 productId = rowMap->second;
-        this->readNumItems(productId);
-    }
-    //
-    void MemberDashboardWindow::readNumItems(Int32 productId)
-    {
-        NumItemDialog numItemDialog(this, tr("Enter number of items"));
-        numItemDialog.exec();
-        Uint32 count = numItemDialog.getKey();
         MemberPtr pCurrMember = Singletons::m_pCurrMember;
         // always fresh invoice
         InvoicePtr pInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
 
+        NumItemDialog numItemDialog(this, tr("Enter number of items"));
+        numItemDialog.exec();
+        Uint32 count = numItemDialog.getKey();
         if (!count) {
             // count was 0 -> remove item from invoice
             Singletons::m_pServices->removeInvoiceProductId(pInvoicePtr->m_id, productId);
+            // Check invoice was removed
+            InvoicePtr pNewInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
+            fillInvoiceData(pNewInvoicePtr);
         } else {
             // count was not 0 -> update item from invoice
             Singletons::m_pServices->updateInvoiceInfo(pInvoicePtr->m_id, productId, count);
+            fillInvoiceData(pInvoicePtr);
         }
-
-        // always fresh invoice
-        pInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
-        fillInvoiceData(pInvoicePtr);
     }
     //
     void MemberDashboardWindow::on_accountButton_clicked()
@@ -338,11 +344,38 @@ namespace PenyaManager {
     void MemberDashboardWindow::on_productListWidget_itemClicked(QListWidgetItem *item)
     {
         Int32 productId = item->data(Constants::kIdRole).toInt();
-        this->readNumItems(productId);
+        NumItemDialog numItemDialog(this, tr("Enter number of items"));
+        numItemDialog.exec();
+        Uint32 count = numItemDialog.getKey();
+        if (!count) {
+            // nothing to add or create
+            return;
+        }
+        MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
+        InvoicePtr pInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMemberPtr->m_id);
+        if (!pInvoicePtr) {
+            // there is no active invoice, create it!
+            pInvoicePtr = Singletons::m_pDAO->createInvoice(pCurrMemberPtr->m_id);
+        }
+        // increase product count
+        Singletons::m_pServices->increaseProductInvoice(pInvoicePtr->m_id, productId, count);
+        fillInvoiceData(pInvoicePtr);
     }
     //
     void MemberDashboardWindow::on_productRemoveButton_clicked(int productId)
     {
+        // ask for confirmation
+        QMessageBox::StandardButton answerButton = QMessageBox::question(this, tr("delete product item"), tr("Are you sure?"));
+        if (answerButton != QMessageBox::Yes) {
+            return;
+        }
+        MemberPtr pCurrMember = Singletons::m_pCurrMember;
+        // always fresh invoice
+        InvoicePtr pInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
+        Singletons::m_pServices->removeInvoiceProductId(pInvoicePtr->m_id, productId);
+        // Check invoice was removed
+        InvoicePtr pNewInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
+        fillInvoiceData(pNewInvoicePtr);
     }
 }
 

@@ -147,6 +147,23 @@ namespace PenyaManager {
     {
         // update product invoice and invoice's last modification date
         Singletons::m_pDAO->removeProductInvoice(invoiceId, productId);
+        // check if there are more products
+        Uint32 numProducts = Singletons::m_pDAO->countInvoiceProductItems(invoiceId);
+        if (numProducts) {
+            Singletons::m_pDAO->updateInvoiceLastModDate(invoiceId, QDateTime::currentDateTime());
+        } else {
+            // no products left, remove invoice
+            Singletons::m_pDAO->deleteInvoice(invoiceId);
+        }
+    }
+    //
+    void Services::increaseProductInvoice(Int32 invoiceId, Int32 productId, Int32 count)
+    {
+        Uint32 numRowsAffected = Singletons::m_pDAO->increaseProductInvoice(invoiceId, productId, count);
+        if (numRowsAffected <= 0) {
+            // product item does not exit, create it on invoice
+            Singletons::m_pDAO->updateProductInvoice(invoiceId, productId, count);
+        }
         Singletons::m_pDAO->updateInvoiceLastModDate(invoiceId, QDateTime::currentDateTime());
     }
 }

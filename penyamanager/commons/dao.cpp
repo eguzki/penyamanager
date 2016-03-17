@@ -18,10 +18,11 @@ namespace PenyaManager {
             m_memberActiveInvoiceQuery(),
             m_removeProductInvoiceQuery(),
             m_updateProductInvoiceQuery(),
+            m_increaseProductInvoiceQuery(),
             m_insertInvoiceQuery(),
             m_getLastIdQuery("SELECT LAST_INSERT_ID()"),
+            m_productInvoiceCountQuery(),
             m_productInvoiceItemsQuery(),
-            m_resetInvoiceProductItemsQuery(),
             m_updateInvoiceQuery(),
             m_memberLastAccountInfoQuery(),
             m_insertTransactionQuery(),
@@ -86,7 +87,8 @@ namespace PenyaManager {
             m_updateMemberPasswordQuery(),
             m_updateMemberLastLoginQuery(),
             m_lastInvoiceQuery(),
-            m_updateLastModInvoiceQuery()
+            m_updateLastModInvoiceQuery(),
+            m_removeInvoiceQuery()
     {
         // configure db connection
         m_db.setHostName(hostname);
@@ -146,7 +148,12 @@ namespace PenyaManager {
                 "(idinvoice, idproduct_item, count) "
                 "VALUES (:invoiceid, :productid, :count) "
                 "ON DUPLICATE KEY UPDATE "
-                "count=:newcount"
+                "count = :count"
+                );
+        // update product invoice by ID
+        m_increaseProductInvoiceQuery.prepare(
+                "UPDATE inv_prod SET count = count + :count "
+                "WHERE idinvoice = :invoiceid and idproduct_item = :productid"
                 );
 
         // insert new invoice
@@ -155,17 +162,17 @@ namespace PenyaManager {
                 "(idinvoice, state, date, total, idmember, last_modif) "
                 "VALUES (NULL, :state, :date, :total, :idmember, :lastmodified)"
                 );
-
+        // invoice product items by invoiceId
+        m_productInvoiceCountQuery.prepare(
+                "SELECT COUNT(*)  "
+                "FROM inv_prod "
+                "WHERE idinvoice=:invoiceid"
+                );
         // invoice product items by invoiceId
         m_productInvoiceItemsQuery.prepare(
                 "SELECT product_item.idproduct_item, product_item.name, product_item.image, product_item.price, inv_prod.count "
                 "FROM inv_prod INNER JOIN product_item ON inv_prod.idproduct_item=product_item.idproduct_item "
                 "WHERE idinvoice=:invoiceid"
-                );
-        // reset all products from invoice
-        m_resetInvoiceProductItemsQuery.prepare(
-                "DELETE FROM inv_prod "
-                "WHERE idinvoice = :invoiceid"
                 );
 
         // update existing invoice
@@ -598,6 +605,11 @@ namespace PenyaManager {
                 "SET last_modif=:lastmodified "
                 "WHERE idinvoice=:invoiceid"
                 );
+        // remove invoice
+        m_removeInvoiceQuery.prepare(
+                "DELETE FROM invoice "
+                "WHERE idinvoice=:invoiceid"
+                );
     }
 
     //
@@ -782,13 +794,28 @@ namespace PenyaManager {
         m_updateProductInvoiceQuery.bindValue(":invoiceid", invoiceId);
         m_updateProductInvoiceQuery.bindValue(":productid", productId);
         m_updateProductInvoiceQuery.bindValue(":count", count);
-        m_updateProductInvoiceQuery.bindValue(":newcount", count);
         if (!m_updateProductInvoiceQuery.exec())
         {
             qDebug() << m_updateProductInvoiceQuery.lastError();
             QLOG_ERROR() << m_updateProductInvoiceQuery.lastError();
         }
         m_updateProductInvoiceQuery.finish();
+    }
+    //
+    // Returns number of rows affected
+    Uint32 DAO::increaseProductInvoice(Int32 invoiceId, Int32 productId, Uint32 count)
+    {
+        m_increaseProductInvoiceQuery.bindValue(":invoiceid", invoiceId);
+        m_increaseProductInvoiceQuery.bindValue(":productid", productId);
+        m_increaseProductInvoiceQuery.bindValue(":count", count);
+        if (!m_increaseProductInvoiceQuery.exec())
+        {
+            qDebug() << m_increaseProductInvoiceQuery.lastError();
+            QLOG_ERROR() << m_increaseProductInvoiceQuery.lastError();
+        }
+        Int32 numRowsAffected = m_increaseProductInvoiceQuery.numRowsAffected();
+        m_increaseProductInvoiceQuery.finish();
+        return numRowsAffected;
     }
     //
     InvoicePtr DAO::createInvoice(Int32 memberId)
@@ -827,6 +854,22 @@ namespace PenyaManager {
         return pInvoicePtr;
     }
     //
+    Uint32 DAO::countInvoiceProductItems(Int32 invoiceId)
+    {
+        Uint32 count = 0;
+        m_productInvoiceCountQuery.bindValue(":invoiceid", invoiceId);
+        if (!m_productInvoiceCountQuery.exec())
+        {
+            qDebug() << m_productInvoiceCountQuery.lastError();
+            QLOG_ERROR() << m_productInvoiceCountQuery.lastError();
+        } else if (m_productInvoiceCountQuery.next())
+        {
+            count = m_productInvoiceCountQuery.value(0).toUInt();
+        }
+        m_productInvoiceCountQuery.finish();
+        return count;
+    }
+    //
     InvoiceProductItemListPtr DAO::getInvoiceProductItems(Int32 invoiceId)
     {
         // bind value
@@ -850,17 +893,6 @@ namespace PenyaManager {
         }
         m_productInvoiceItemsQuery.finish();
         return pIPIListPrt;
-    }
-    //
-    void DAO::resetInvoiceProductItems(Int32 invoiceId)
-    {
-        m_resetInvoiceProductItemsQuery.bindValue(":invoiceid", invoiceId);
-        if (!m_resetInvoiceProductItemsQuery.exec())
-        {
-            qDebug() << m_resetInvoiceProductItemsQuery.lastError();
-            QLOG_ERROR() << m_resetInvoiceProductItemsQuery.lastError();
-        }
-        m_resetInvoiceProductItemsQuery.finish();
     }
     //
     void DAO::updateInvoice(const InvoicePtr &pInvoicePtr)
@@ -2304,6 +2336,18 @@ namespace PenyaManager {
             QLOG_ERROR() << m_updateLastModInvoiceQuery.lastError();
         }
         m_updateLastModInvoiceQuery.finish();
+    }
+    //
+    void DAO::deleteInvoice(Int32 invoiceId)
+    {
+        // bind value
+        m_removeInvoiceQuery.bindValue(":invoiceid", invoiceId);
+        if (!m_removeInvoiceQuery.exec())
+        {
+            qDebug() << m_removeInvoiceQuery.lastError();
+            QLOG_ERROR() << m_removeInvoiceQuery.lastError();
+        }
+        m_removeInvoiceQuery.finish();
     }
 }
 

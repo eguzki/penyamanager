@@ -32,6 +32,8 @@ namespace PenyaManager {
             void updateInvoiceInfo(Int32 invoiceId, Int32 productId, Uint32 count);
             //
             void removeInvoiceProductId(Int32 invoiceId, Int32 productId);
+            //
+            void increaseProductInvoice(Int32 invoiceId, Int32 productId, Int32 count);
     };
 }
 

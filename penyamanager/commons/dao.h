@@ -47,9 +47,11 @@ namespace PenyaManager {
             //
             void updateProductInvoice(Int32 invoiceId, Int32 productId, Uint32 count);
             //
-            InvoiceProductItemListPtr getInvoiceProductItems(Int32 invoiceId);
+            Uint32 increaseProductInvoice(Int32 invoiceId, Int32 productId, Uint32 count);
             //
-            void resetInvoiceProductItems(Int32 invoiceId);
+            Uint32 countInvoiceProductItems(Int32 invoiceId);
+            //
+            InvoiceProductItemListPtr getInvoiceProductItems(Int32 invoiceId);
             //
             void updateInvoice(const InvoicePtr &pInvoicePtr);
             //
@@ -176,6 +178,8 @@ namespace PenyaManager {
             InvoicePtr getLastInvoiceInfo();
             //
             void updateInvoiceLastModDate(Int32 invoiceId, const QDateTime &lastModDate);
+            //
+            void deleteInvoice(Int32 invoiceIde);
 
         private:
             //
@@ -195,13 +199,15 @@ namespace PenyaManager {
             //
             QSqlQuery               m_updateProductInvoiceQuery;
             //
+            QSqlQuery               m_increaseProductInvoiceQuery;
+            //
             QSqlQuery               m_insertInvoiceQuery;
             //
             QSqlQuery               m_getLastIdQuery;
             //
-            QSqlQuery               m_productInvoiceItemsQuery;
+            QSqlQuery               m_productInvoiceCountQuery;
             //
-            QSqlQuery               m_resetInvoiceProductItemsQuery;
+            QSqlQuery               m_productInvoiceItemsQuery;
             //
             QSqlQuery               m_updateInvoiceQuery;
             //
@@ -332,6 +338,8 @@ namespace PenyaManager {
             QSqlQuery               m_lastInvoiceQuery;
             //
             QSqlQuery               m_updateLastModInvoiceQuery;
+            //
+            QSqlQuery               m_removeInvoiceQuery;
     };
 }
 #endif // DAO_H
