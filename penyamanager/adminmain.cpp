@@ -7,27 +7,27 @@
 #include <QsLogDest.h>
 #include <QsLog.h>
 
-#include "adminmainwindow.h"
-#include "adminloginwindow.h"
-#include "slowpayersview.h"
-#include "admininvoicelistview.h"
-#include "invoicedetailswidget.h"
-#include "providermanagerview.h"
-#include "adminnewprovider.h"
-#include "stockmanagementwindow.h"
-#include "familyitemmanagementwindow.h"
-#include "adminproductitem.h"
-#include "adminfamilyview.h"
-#include "productexpensesview.h"
-#include "providerinvoiceview.h"
-#include "providerinvoicelistview.h"
-#include "depositlistview.h"
-#include "accountbalanceview.h"
-#include "memberlistview.h"
-#include "memberview.h"
-#include "constants.h"
-#include "IPartner.h"
-#include "singletons.h"
+#include <commons/IPartner.h>
+#include <commons/invoicedetailswidget.h>
+#include <commons/constants.h>
+#include <commons/singletons.h>
+#include <admin/adminmainwindow.h>
+#include <admin/adminloginwindow.h>
+#include <admin/slowpayersview.h>
+#include <admin/admininvoicelistview.h>
+#include <admin/providermanagerview.h>
+#include <admin/adminnewprovider.h>
+#include <admin/stockmanagementwindow.h>
+#include <admin/familyitemmanagementwindow.h>
+#include <admin/adminproductitem.h>
+#include <admin/adminfamilyview.h>
+#include <admin/productexpensesview.h>
+#include <admin/providerinvoiceview.h>
+#include <admin/providerinvoicelistview.h>
+#include <admin/depositlistview.h>
+#include <admin/accountbalanceview.h>
+#include <admin/memberlistview.h>
+#include <admin/memberview.h>
 
 int main(int argc, char *argv[])
 {
@@ -112,7 +112,7 @@ int main(int argc, char *argv[])
     // entry point -> adminlogin window
     PenyaManager::IPartner* pAdminLoginPartner = PenyaManager::Singletons::m_pParnetFinder->getPartner(PenyaManager::WindowKey::kAdminLoginWindowKey);
     pAdminLoginPartner->init();
-    pAdminLoginPartner->show();
+    pAdminLoginPartner->showFullScreen();
 
     int returnValue = app.exec();
 

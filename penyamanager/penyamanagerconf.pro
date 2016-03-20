@@ -21,8 +21,8 @@ RC_ICONS = images/alegrialogo.ico
 include(libs/simplecrypt/simplecrypt.pro)
 
 SOURCES +=  confmain.cpp \
-            utils.cpp \
-            constants.cpp
+            commons/utils.cpp \
+            commons/constants.cpp
 
-HEADERS  += constants.h \
-            utils.h
+HEADERS  += commons/constants.h \
+            commons/utils.h

@@ -10,13 +10,14 @@ namespace PenyaManager
     }
 
     //
-    Invoice::Invoice(Int32 id, Int32 memberId, InvoiceState state, const QDateTime &date, Float total)
+    Invoice::Invoice(Int32 id, Int32 memberId, InvoiceState state, const QDateTime &date, Float total, const QDateTime &lastModified)
         :
             m_id(id),
             m_memberId(memberId),
             m_state(state),
             m_date(date),
-            m_total(total)
+            m_total(total),
+            m_lastModified(lastModified)
     {
     }
     //

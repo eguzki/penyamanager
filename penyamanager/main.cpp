@@ -4,22 +4,21 @@
 #include <QTranslator>
 #include <QMessageBox>
 #include <QLocale>
-
 #include <QsLogDest.h>
 #include <QsLog.h>
 
-#include "constants.h"
-#include "mainwindow.h"
-#include "memberdashboardwindow.h"
-#include "loginwindow.h"
-#include "invoicewindow.h"
-#include "depositwindow.h"
-#include "accountview.h"
-#include "tablereservationview.h"
-#include "invoicelistwindow.h"
-#include "invoicedetailswindow.h"
-#include "IPartner.h"
-#include "singletons.h"
+#include <commons/constants.h>
+#include <commons/IPartner.h>
+#include <commons/singletons.h>
+#include <user/mainwindow.h>
+#include <user/memberdashboardwindow.h>
+#include <user/loginwindow.h>
+#include <user/invoicewindow.h>
+#include <user/depositwindow.h>
+#include <user/accountview.h>
+#include <user/tablereservationview.h>
+#include <user/invoicelistwindow.h>
+#include <user/invoicedetailswindow.h>
 
 int main(int argc, char *argv[])
 {
