@@ -17,6 +17,8 @@ namespace PenyaManager {
             //
             virtual ~Services();
             //
+            InvoicePtr getMemberActiveInvoice(Int32 memberId);
+            //
             void closeInvoice(const MemberPtr &pMemberPtr, Int32 invoiceId);
             //
             void createAccountTransaction(Int32 memberId, Float amount, const QString &description, TransactionType type);

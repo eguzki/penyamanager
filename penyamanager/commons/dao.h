@@ -37,7 +37,7 @@ namespace PenyaManager {
             //
             MemberPtr getMemberById(Int32 memberId);
             //
-            InvoicePtr getMemberActiveInvoice(Int32 memberId);
+            InvoicePtr fetchMemberActiveInvoice(Int32 memberId);
             //
             InvoicePtr getInvoice(Int32 invoiceId);
             //

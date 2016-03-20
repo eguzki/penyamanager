@@ -43,5 +43,7 @@ namespace PenyaManager {
     const Uint16    Constants::kNumLangs                        = 2;
     // 1M
     const quint64   Constants::kLogMaxSizeBytes                 = 1048576;
+    // 
+    const Uint32 Constants::kOpenInvoiceTimeoutH                 = 12;
 
 }

@@ -166,4 +166,28 @@ namespace PenyaManager {
         }
         Singletons::m_pDAO->updateInvoiceLastModDate(invoiceId, QDateTime::currentDateTime());
     }
+    //
+    InvoicePtr Services::getMemberActiveInvoice(Int32 memberId)
+    {
+        InvoicePtr pInvoicePtr = Singletons::m_pDAO->fetchMemberActiveInvoice(memberId);
+        if (!pInvoicePtr)
+        {
+            return pInvoicePtr;
+        }
+
+        MemberPtr pCurrMember = Singletons::m_pCurrMember;
+        InvoicePtr returnInvoicePtr;
+        // check modified
+        QDateTime now = QDateTime::currentDateTime();
+        if (pInvoicePtr->m_lastModified.secsTo(now) > 60*60 * Constants::kOpenInvoiceTimeoutH) {
+            // invoice timed out
+            // close it
+            Singletons::m_pServices->closeInvoice(pCurrMember, pInvoicePtr->m_id);
+            QLOG_INFO() << QString("[Invoice][ONTIMEOUT] User %1 Invoice ID %2").arg(pCurrMember->m_id).arg(pInvoicePtr->m_id);
+            // leave returnInvoicePtr empty
+        } else {
+            returnInvoicePtr = pInvoicePtr;
+        }
+        return returnInvoicePtr;
+    }
 }

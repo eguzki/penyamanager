@@ -755,7 +755,7 @@ namespace PenyaManager {
         return pInvoicePtr;
     }
 
-    InvoicePtr DAO::getMemberActiveInvoice(Int32 memberId)
+    InvoicePtr DAO::fetchMemberActiveInvoice(Int32 memberId)
     {
         InvoicePtr pInvoicePtr;
         m_memberActiveInvoiceQuery.bindValue(":memberid", memberId);

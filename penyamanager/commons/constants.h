@@ -60,6 +60,8 @@ namespace PenyaManager {
             static const Uint16     kNumLangs;
             // Log file max size in bytes
             static const quint64    kLogMaxSizeBytes;
+            // Open invoice timeout in hours
+            static const Uint32     kOpenInvoiceTimeoutH;
 
         private:
             Constants() {}
