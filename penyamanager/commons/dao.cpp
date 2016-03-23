@@ -88,7 +88,8 @@ namespace PenyaManager {
             m_updateMemberLastLoginQuery(),
             m_lastInvoiceQuery(),
             m_updateLastModInvoiceQuery(),
-            m_removeInvoiceQuery()
+            m_removeInvoiceQuery(),
+            m_getActiveInvoiceListQuery()
     {
         // configure db connection
         m_db.setHostName(hostname);
@@ -610,6 +611,12 @@ namespace PenyaManager {
                 "DELETE FROM invoice "
                 "WHERE idinvoice=:invoiceid"
                 );
+        // active invoice list
+        m_getActiveInvoiceListQuery.prepare(
+                "SELECT idinvoice, state, date, total, idmember, last_modif "
+                "FROM invoice "
+                "WHERE state = :state"
+                );
     }
 
     //
@@ -755,7 +762,7 @@ namespace PenyaManager {
         return pInvoicePtr;
     }
 
-    InvoicePtr DAO::fetchMemberActiveInvoice(Int32 memberId)
+    InvoicePtr DAO::getMemberActiveInvoice(Int32 memberId)
     {
         InvoicePtr pInvoicePtr;
         m_memberActiveInvoiceQuery.bindValue(":memberid", memberId);
@@ -2348,6 +2355,34 @@ namespace PenyaManager {
             QLOG_ERROR() << m_removeInvoiceQuery.lastError();
         }
         m_removeInvoiceQuery.finish();
+    }
+    //
+    InvoiceListPtr DAO::getActiveInvoiceList()
+    {
+        // always return list object
+        InvoiceListPtr pActiveInvoiceList = InvoiceListPtr(new InvoiceList);
+
+        m_getActiveInvoiceListQuery.bindValue(":state", static_cast<Int32>(InvoiceState::Open));
+        // run query
+        if (!m_getActiveInvoiceListQuery.exec())
+        {
+            qDebug() << m_getActiveInvoiceListQuery.lastError();
+            QLOG_ERROR() << m_getActiveInvoiceListQuery.lastError();
+        } else {
+            while (m_getActiveInvoiceListQuery.next()) {
+                InvoicePtr pInvoicePtr = InvoicePtr(new Invoice());
+                pInvoicePtr->m_id = m_getActiveInvoiceListQuery.value(0).toInt();
+                pInvoicePtr->m_state = static_cast<InvoiceState>(m_getActiveInvoiceListQuery.value(1).toUInt());
+                pInvoicePtr->m_date = m_getActiveInvoiceListQuery.value(2).toDateTime();
+                pInvoicePtr->m_total = m_getActiveInvoiceListQuery.value(3).toFloat();
+                pInvoicePtr->m_memberId = m_getActiveInvoiceListQuery.value(4).toInt();
+                pInvoicePtr->m_lastModified = m_getActiveInvoiceListQuery.value(5).toDateTime();
+                pActiveInvoiceList->push_back(pInvoicePtr);
+            }
+        }
+
+        m_getActiveInvoiceListQuery.finish();
+        return pActiveInvoiceList;
     }
 }
 

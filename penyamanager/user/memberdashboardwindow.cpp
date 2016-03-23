@@ -89,7 +89,7 @@ namespace PenyaManager {
         // Loading Current Invoice (if it exists)
         //
 
-        InvoicePtr pInvoicePtr = Singletons::m_pServices->getMemberActiveInvoice(pCurrMemberPtr->m_id);
+        InvoicePtr pInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMemberPtr->m_id);
         // pInvoicePtr could be null
         fillInvoiceData(pInvoicePtr);
     }
@@ -275,7 +275,7 @@ namespace PenyaManager {
         // reset invoice
         MemberPtr pCurrMember = Singletons::m_pCurrMember;
         // always fresh invoice
-        InvoicePtr pInvoicePtr = Singletons::m_pServices->getMemberActiveInvoice(pCurrMember->m_id);
+        InvoicePtr pInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
         if (pInvoicePtr) {
             Singletons::m_pDAO->deleteInvoice(pInvoicePtr->m_id);
         }
@@ -305,7 +305,7 @@ namespace PenyaManager {
         Int32 productId = rowMap->second;
         MemberPtr pCurrMember = Singletons::m_pCurrMember;
         // always fresh invoice
-        InvoicePtr pInvoicePtr = Singletons::m_pServices->getMemberActiveInvoice(pCurrMember->m_id);
+        InvoicePtr pInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
         if (!pInvoicePtr) {
             return;
         }
@@ -317,7 +317,7 @@ namespace PenyaManager {
             // count was 0 -> remove item from invoice
             Singletons::m_pServices->removeInvoiceProductId(pInvoicePtr->m_id, productId);
             // Check invoice was removed
-            InvoicePtr pNewInvoicePtr = Singletons::m_pServices->getMemberActiveInvoice(pCurrMember->m_id);
+            InvoicePtr pNewInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
             fillInvoiceData(pNewInvoicePtr);
         } else {
             // count was not 0 -> update item from invoice
@@ -355,7 +355,7 @@ namespace PenyaManager {
             return;
         }
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
-        InvoicePtr pInvoicePtr = Singletons::m_pServices->getMemberActiveInvoice(pCurrMemberPtr->m_id);
+        InvoicePtr pInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMemberPtr->m_id);
         if (!pInvoicePtr) {
             // there is no active invoice, create it!
             pInvoicePtr = Singletons::m_pDAO->createInvoice(pCurrMemberPtr->m_id);
@@ -374,14 +374,14 @@ namespace PenyaManager {
         }
         MemberPtr pCurrMember = Singletons::m_pCurrMember;
         // always fresh invoice
-        InvoicePtr pInvoicePtr = Singletons::m_pServices->getMemberActiveInvoice(pCurrMember->m_id);
+        InvoicePtr pInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
         if (!pInvoicePtr)
         {
             return;
         }
         Singletons::m_pServices->removeInvoiceProductId(pInvoicePtr->m_id, productId);
         // Check invoice was removed
-        InvoicePtr pNewInvoicePtr = Singletons::m_pServices->getMemberActiveInvoice(pCurrMember->m_id);
+        InvoicePtr pNewInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
         fillInvoiceData(pNewInvoicePtr);
     }
 }

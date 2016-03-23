@@ -171,6 +171,11 @@ namespace PenyaManager {
 
         // login granted
         QLOG_INFO() << QString("[LoginSucess] User %1").arg(this->m_memberId);
+
+        // Every member login, outdated invoices are cleaned
+        // It is supossed that only few invoices would be open
+        Singletons::m_pServices->cleanOutdatedInvoices();
+
         // assign user
         Singletons::m_pCurrMember = pCurrMemberPtr;
 

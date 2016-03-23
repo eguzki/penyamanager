@@ -37,7 +37,9 @@ namespace PenyaManager {
             //
             MemberPtr getMemberById(Int32 memberId);
             //
-            InvoicePtr fetchMemberActiveInvoice(Int32 memberId);
+            InvoicePtr getMemberActiveInvoice(Int32 memberId);
+            //
+            InvoiceListPtr getActiveInvoiceList();
             //
             InvoicePtr getInvoice(Int32 invoiceId);
             //
@@ -340,6 +342,8 @@ namespace PenyaManager {
             QSqlQuery               m_updateLastModInvoiceQuery;
             //
             QSqlQuery               m_removeInvoiceQuery;
+            //
+            QSqlQuery               m_getActiveInvoiceListQuery;
     };
 }
 #endif // DAO_H

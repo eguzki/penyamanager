@@ -60,7 +60,7 @@ namespace PenyaManager {
         //
         // Loading Current Invoice
         //
-        InvoicePtr pInvoicePtr = Singletons::m_pServices->getMemberActiveInvoice(pCurrMember->m_id);
+        InvoicePtr pInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
         if (!pInvoicePtr) {
             QMessageBox::critical(this, "No active invoice found.", "Program will exit");
             qApp->exit(0);
@@ -99,7 +99,7 @@ namespace PenyaManager {
         // Loading Current Invoice
         //
         MemberPtr pCurrMember = Singletons::m_pCurrMember;
-        InvoicePtr pInvoicePtr = Singletons::m_pServices->getMemberActiveInvoice(pCurrMember->m_id);
+        InvoicePtr pInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
         if (!pInvoicePtr) {
             QMessageBox::critical(this, "No active invoice found.", "Program will exit");
             QLOG_ERROR() << QString("[FATAL] No active invoice found.: %1").arg(pCurrMember->m_id);
@@ -108,7 +108,7 @@ namespace PenyaManager {
         }
 
         // Update member balance
-        Singletons::m_pServices->closeInvoice(pCurrMember, pInvoicePtr->m_id);
+        Singletons::m_pServices->closeInvoice(pCurrMember->m_id, pInvoicePtr->m_id);
         QLOG_INFO() << QString("[Invoice] User %1 Invoice ID %2").arg(pCurrMember->m_id).arg(pInvoicePtr->m_id);
 
         // call dashboard window
@@ -163,7 +163,7 @@ namespace PenyaManager {
 
         // Loading Current Invoice
         // current invoice has not been closed. Some attr are missing
-        InvoicePtr pInvoicePtr = Singletons::m_pServices->getMemberActiveInvoice(pCurrMemberPtr->m_id);
+        InvoicePtr pInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMemberPtr->m_id);
         if (!pInvoicePtr) {
             QMessageBox::information(this, tr("Print Invoice"), tr("Could not get invoice"));
             return;
