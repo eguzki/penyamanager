@@ -49,6 +49,7 @@ namespace PenyaManager {
     void AdminLoginWindow::retranslate()
     {
         this->ui->retranslateUi(this);
+        this->ui->languagePushButton->setText(Singletons::m_translationManager.getLanguageLabel());
     }
     //
     void AdminLoginWindow::on_loginButton_clicked()

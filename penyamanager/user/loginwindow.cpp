@@ -83,6 +83,7 @@ namespace PenyaManager {
     {
         this->ui->retranslateUi(this);
         translateTable();
+        this->ui->languagePushButton->setText(Singletons::m_translationManager.getLanguageLabel());
     }
     //
     void LoginWindow::initializeTable()

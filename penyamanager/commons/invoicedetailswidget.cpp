@@ -26,11 +26,11 @@ namespace PenyaManager {
         this->ui->productTableWidget->setColumnCount(5);
         translateTable();
         Uint32 column = 0;
-        this->ui->productTableWidget->setColumnWidth(column++, 150);
-        this->ui->productTableWidget->setColumnWidth(column++, 70);
-        this->ui->productTableWidget->setColumnWidth(column++, 30);
-        this->ui->productTableWidget->setColumnWidth(column++, 30);
-        this->ui->productTableWidget->setColumnWidth(column++, 30);
+        this->ui->productTableWidget->setColumnWidth(column++, 100);
+        this->ui->productTableWidget->setColumnWidth(column++, 200);
+        this->ui->productTableWidget->setColumnWidth(column++, 100);
+        this->ui->productTableWidget->setColumnWidth(column++, 60);
+        this->ui->productTableWidget->setColumnWidth(column++, 100);
     }
     //
     void InvoiceDetailsWidget::translateTable()
@@ -40,7 +40,7 @@ namespace PenyaManager {
         headers.append(tr("icon"));
         headers.append(tr("article"));
         headers.append(tr("price/u"));
-        headers.append(tr("count"));
+        headers.append("#");
         headers.append(tr("total"));
         this->ui->productTableWidget->setHorizontalHeaderLabels(headers);
     }

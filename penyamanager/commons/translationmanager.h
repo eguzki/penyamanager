@@ -22,6 +22,8 @@ namespace PenyaManager {
             QString getAdminTranslationFile();
             //
             QLocale getLocale();
+            //
+            QString getLanguageLabel();
 
         private:
             //

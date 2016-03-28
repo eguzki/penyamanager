@@ -44,4 +44,13 @@ namespace PenyaManager {
     {
         return m_locale;
     }
+    //
+    QString TranslationManager::getLanguageLabel()
+    {
+        QString langLabel("Euskera");
+        if (m_pLanguagesPrefixArray[m_currentLangIndex] == "es") {
+            langLabel = "Gaztelania";
+        }
+        return langLabel;
+    }
 }

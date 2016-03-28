@@ -99,6 +99,7 @@ penyamanager
 * Activity logger
 * App designed for screen resolution 1280x1024
 * Outdated (last_modif) invoices (12 Hours) are closed on every login
+* Print invoices when closed
 
 # Development
 
