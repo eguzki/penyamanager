@@ -57,7 +57,7 @@
             </size>
            </property>
            <property name="text">
-            <string>1</string>
+            <string notr="true">1</string>
            </property>
           </widget>
          </item>
@@ -83,7 +83,7 @@
          <item>
           <widget class="QLabel" name="memberIdValueLabel">
            <property name="text">
-            <string>1</string>
+            <string notr="true">1</string>
            </property>
           </widget>
          </item>
@@ -123,6 +123,32 @@
        </widget>
       </item>
       <item>
+       <widget class="QFrame" name="invoiceLastModifFrame">
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_6">
+         <item>
+          <widget class="QLabel" name="invoiceLastModifLabel">
+           <property name="text">
+            <string>Last Modified:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="invoiceLastModifValueLabel">
+           <property name="text">
+            <string notr="true"/>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
        <widget class="QFrame" name="invoiceTotalFrame">
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
@@ -147,7 +173,7 @@
             </size>
            </property>
            <property name="text">
-            <string>0 €</string>
+            <string notr="true">0 €</string>
            </property>
           </widget>
          </item>

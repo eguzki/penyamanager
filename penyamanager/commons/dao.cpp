@@ -2325,7 +2325,7 @@ namespace PenyaManager {
             pInvoicePtr->m_date = m_lastInvoiceQuery.value(2).toDateTime();
             pInvoicePtr->m_total = m_lastInvoiceQuery.value(3).toFloat();
             pInvoicePtr->m_memberId = m_lastInvoiceQuery.value(4).toInt();
-            pInvoicePtr->m_lastModified = m_lastInvoiceQuery.value(4).toDateTime();
+            pInvoicePtr->m_lastModified = m_lastInvoiceQuery.value(5).toDateTime();
         }
         m_lastInvoiceQuery.finish();
 

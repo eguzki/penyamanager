@@ -30,6 +30,10 @@ namespace PenyaManager {
         private:
             //
             void fillInvoiceData(const InvoicePtr &pInvoicePtr);
+            //
+            void initializeTable();
+            //
+            void translateTable();
 
         private:
             //
