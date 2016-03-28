@@ -62,6 +62,8 @@ namespace PenyaManager {
             static const quint64    kLogMaxSizeBytes;
             // Open invoice timeout in hours
             static const Uint32     kOpenInvoiceTimeoutH;
+            // Credit limit
+            static const Float      kCreditLimit;
 
         private:
             Constants() {}

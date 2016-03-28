@@ -75,6 +75,7 @@ namespace PenyaManager {
         Singletons::m_pCurrMember = pCurrMemberPtr;
         this->m_pMemberProfileGroupBox->init(pCurrMemberPtr);
 
+
         //
         // Loading families
         //
@@ -92,6 +93,21 @@ namespace PenyaManager {
         InvoicePtr pInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMemberPtr->m_id);
         // pInvoicePtr could be null
         fillInvoiceData(pInvoicePtr);
+
+        //
+        // check credir limit
+        //
+        if (pCurrMemberPtr->m_balance < -Constants::kCreditLimit)
+        {
+            // User has gone over credit limit. Do not allow creating invoice
+            QMessageBox::warning(this, "Slow Payer",
+                    tr("Your current balance is over limit (%1 €): %2 €").arg(Constants::kCreditLimit, 0, 'f', 2).arg(pCurrMemberPtr->m_balance, 0, 'f', 2));
+            this->ui->familyListWidget->setDisabled(true);
+            this->ui->invoiceCloseButton->setDisabled(true);
+        } else {
+            this->ui->familyListWidget->setDisabled(false);
+            this->ui->invoiceCloseButton->setDisabled(false);
+        }
     }
     //
     void MemberDashboardWindow::retranslate()
@@ -183,6 +199,8 @@ namespace PenyaManager {
         {
             createFamilyWidget(*iter, this->ui->familyListWidget);
         }
+
+
     }
 
     //
