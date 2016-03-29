@@ -273,7 +273,7 @@ namespace PenyaManager {
                 );
         // table reservation list for a given moment (date and reservationtype)
         m_tableReservationListQuery.prepare(
-                "SELECT tablereservation.idreservation, tablereservation.idtable, member.name, member.surname, tablereservation.idmember, tablereservation.guestnum "
+                "SELECT tablereservation.idreservation, tablereservation.idtable, member.name, member.surname, tablereservation.idmember, tablereservation.guestnum, tablereservation.isadmin "
                 "FROM tablereservation "
                 "INNER JOIN member ON tablereservation.idmember=member.idmember "
                 "WHERE date=:dateid "
@@ -281,7 +281,7 @@ namespace PenyaManager {
                 );
         // oven reservation list for a given moment (date and reservationtype)
         m_ovenReservationListQuery.prepare(
-                "SELECT ovenreservation.idreservation, ovenreservation.idoven, member.name, member.surname, ovenreservation.idmember "
+                "SELECT ovenreservation.idreservation, ovenreservation.idoven, member.name, member.surname, ovenreservation.idmember, ovenreservation.isadmin "
                 "FROM ovenreservation "
                 "INNER JOIN member ON ovenreservation.idmember=member.idmember "
                 "WHERE date=:dateid "
@@ -289,7 +289,7 @@ namespace PenyaManager {
                 );
         // oven reservation list for a given moment (date and reservationtype)
         m_fireplaceReservationListQuery.prepare(
-                "SELECT fireplacereservation.idreservation, fireplacereservation.idfireplace, member.name, member.surname, fireplacereservation.idmember "
+                "SELECT fireplacereservation.idreservation, fireplacereservation.idfireplace, member.name, member.surname, fireplacereservation.idmember, fireplacereservation.isadmin "
                 "FROM fireplacereservation "
                 "INNER JOIN member ON fireplacereservation.idmember=member.idmember "
                 "WHERE date=:dateid "
@@ -1209,6 +1209,7 @@ namespace PenyaManager {
             pReservationPtr->m_memberSurname = m_tableReservationListQuery.value(3).toString();
             pReservationPtr->m_idMember = m_tableReservationListQuery.value(4).toInt();
             pReservationPtr->m_guestNum = m_tableReservationListQuery.value(5).toUInt();
+            pReservationPtr->m_isAdmin = m_tableReservationListQuery.value(6).toInt() == 1;
             pReservationListPtr->push_back(pReservationPtr);
         }
         m_tableReservationListQuery.finish();
@@ -1236,6 +1237,7 @@ namespace PenyaManager {
             pReservationPtr->m_memberSurname = m_ovenReservationListQuery.value(3).toString();
             pReservationPtr->m_idMember = m_ovenReservationListQuery.value(4).toInt();
             pReservationPtr->m_guestNum = 0;
+            pReservationPtr->m_isAdmin = m_ovenReservationListQuery.value(5).toInt() == 1;
             pReservationListPtr->push_back(pReservationPtr);
         }
         m_ovenReservationListQuery.finish();
@@ -1262,6 +1264,7 @@ namespace PenyaManager {
             pReservationPtr->m_memberName = m_fireplaceReservationListQuery.value(2).toString();
             pReservationPtr->m_memberSurname = m_fireplaceReservationListQuery.value(3).toString();
             pReservationPtr->m_idMember = m_fireplaceReservationListQuery.value(4).toInt();
+            pReservationPtr->m_isAdmin = m_fireplaceReservationListQuery.value(5).toInt() == 1;
             pReservationPtr->m_guestNum = 0;
             pReservationListPtr->push_back(pReservationPtr);
         }

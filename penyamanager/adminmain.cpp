@@ -28,6 +28,7 @@
 #include <admin/accountbalanceview.h>
 #include <admin/memberlistview.h>
 #include <admin/memberview.h>
+#include <admin/adminreservationswindow.h>
 
 int main(int argc, char *argv[])
 {
@@ -108,6 +109,7 @@ int main(int argc, char *argv[])
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kMemberListViewWindowKey, pMemberListView);
     PenyaManager::MemberView *pMemberView = new PenyaManager::MemberView(NULL, adminMainWindowSwitchCallback);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kMemberViewKey, pMemberView);
+    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kAdminReservationViewKey, new PenyaManager::AdminReservationsWindow);
 
     // entry point -> adminlogin window
     PenyaManager::IPartner* pAdminLoginPartner = PenyaManager::Singletons::m_pParnetFinder->getPartner(PenyaManager::WindowKey::kAdminLoginWindowKey);

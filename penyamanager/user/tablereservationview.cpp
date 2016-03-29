@@ -158,7 +158,8 @@ namespace PenyaManager {
                 QString guestName = QString("[%1] %2 %3").arg(pReservationPtr->m_idMember).arg(pReservationPtr->m_memberName).arg(pReservationPtr->m_memberSurname);
                 this->ui->tableReservationTableWidget->setItem(rowCount, 3, new QTableWidgetItem(guestName));
                 this->ui->tableReservationTableWidget->setItem(rowCount, 4, new QTableWidgetItem(QString::number(pReservationPtr->m_guestNum)));
-                if (pReservationPtr->m_idMember == pMemberPtr->m_id) {
+                // do not show cancel when reservation is from Admin
+                if (pReservationPtr->m_idMember == pMemberPtr->m_id && !pReservationPtr->m_isAdmin) {
                     // show cancel button action
                     QPushButton *pCancelButton = new QPushButton(tr("Cancel"), this->ui->tableReservationTableWidget);
                     this->connect(pCancelButton, &QPushButton::clicked, std::bind(&TableReservationView::on_cancelButton_clicked, this, pReservationPtr->m_reservationId, pReservationItemPtr->m_itemType));
@@ -208,7 +209,8 @@ namespace PenyaManager {
         {
             ReservationPtr pReservationPtr = *iter;
             tableReservationMap[pReservationPtr->m_idItem] = pReservationPtr;
-            if (pReservationPtr->m_idMember == pMemberPtr->m_id)
+            // has reservation when reservation is not Admin
+            if (pReservationPtr->m_idMember == pMemberPtr->m_id && !pReservationPtr->m_isAdmin)
             {
                 hasReservation = true;
             }

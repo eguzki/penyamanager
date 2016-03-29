@@ -17,8 +17,6 @@ class TableReservationView;
 
 namespace PenyaManager {
     //
-    typedef std::map<Uint32, ReservationPtr> ReservationMap;
-    //
     class TableReservationView : public IPartner
     {
         Q_OBJECT

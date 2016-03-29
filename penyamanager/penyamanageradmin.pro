@@ -64,7 +64,8 @@ SOURCES += adminmain.cpp\
         admin/memberview.cpp \
         admin/passchangedialog.cpp \
         commons/guiutils.cpp \
-        commons/translationmanager.cpp
+        commons/translationmanager.cpp \
+    admin/adminreservationswindow.cpp
 
 HEADERS  += commons/singletons.h\
         commons/dao.h\
@@ -105,7 +106,8 @@ HEADERS  += commons/singletons.h\
         admin/passchangedialog.h \
         commons/guiutils.h \
         commons/DataTypes.h \
-        commons/translationmanager.h
+        commons/translationmanager.h \
+    admin/adminreservationswindow.h
 
 FORMS    += admin/adminloginwindow.ui\
         admin/adminmainwindow.ui \
@@ -125,7 +127,8 @@ FORMS    += admin/adminloginwindow.ui\
         admin/accountbalanceview.ui \
         admin/memberlistview.ui \
         admin/memberview.ui \
-        admin/passchangedialog.ui
+        admin/passchangedialog.ui \
+    admin/adminreservationswindow.ui
 
 TRANSLATIONS += \
         translations/penyamanageradmin_es.ts \
