@@ -30,6 +30,8 @@ namespace PenyaManager {
 
         private:
             //
+            typedef std::function<void(Int32)>  ReservationCallback;
+            //
             void translateTable();
             //
             void initializeTable();
@@ -38,13 +40,28 @@ namespace PenyaManager {
             //
             void fillReservations(const QDate &date, ReservationType reservationType);
             //
-            void fillReservationsItems(const ReservationListPtr &pReservationListPtr, const ReservationItemListPtr &pReservationItemListPtr, Uint32 &rowCount);
+            void fillReservationsItems(
+                    const ReservationListPtr &pReservationListPtr,
+                    const ReservationItemListPtr &pReservationItemListPtr,
+                    Uint32 &rowCount,
+                    const ReservationCallback newReservationCallback,
+                    const ReservationCallback updateRervationCallback);
 
         private slots:
             //
             void on_calendarWidget_clicked(const QDate &date);
             //
-            void on_reservedButton_clicked(int itemId, ReservationItemType itemType);
+            void on_new_table_reservation_button_clicked(int itemId);
+            //
+            void on_update_table_reservation_button_clicked(int itemId);
+            //
+            void on_new_oven_reservation_button_clicked(int itemId);
+            //
+            void on_update_oven_reservation_button_clicked(int itemId);
+            //
+            void on_new_fireplace_reservation_button_clicked(int itemId);
+            //
+            void on_update_fireplace_reservation_button_clicked(int itemId);
             //
             void on_cancelButton_clicked(int reservationId, ReservationItemType itemType);
             //

@@ -295,8 +295,10 @@ namespace PenyaManager {
                 break;
         }
         QMessageBox::information(this, title, "Reservation cancelled");
-        // Go to dashboard window
-        m_switchCentralWidgetCallback(WindowKey::kMemberDashboardWindowKey);
+        MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
+        QDate date = this->ui->calendarWidget->selectedDate();
+        ReservationType reservationType = static_cast<ReservationType>(this->ui->reservationTypeButtonGroup->checkedId());
+        fillTableReservations(pCurrMemberPtr, date, reservationType);
     }
     //
     void TableReservationView::on_lunchButton_clicked(bool checked)

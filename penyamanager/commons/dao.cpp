@@ -44,10 +44,13 @@ namespace PenyaManager {
             m_ovenListQuery(),
             m_fireplaceListQuery(),
             m_insertTableReservationQuery(),
+            m_updateTableReservationQuery(),
             m_cancelTableReservationQuery(),
             m_insertOvenReservationQuery(),
+            m_updateOvenReservationQuery(),
             m_cancelOvenReservationQuery(),
             m_insertFireplaceReservationQuery(),
+            m_updateFireplaceReservationQuery(),
             m_cancelFireplaceReservationQuery(),
             m_slowPayersQuery(),
             m_invoiceListByMemberIdQuery(),
@@ -316,6 +319,12 @@ namespace PenyaManager {
                 "(date, reservationtype, guestnum, idmember, idtable, isadmin) "
                 "VALUES (:date, :reservationtype, :guestnum, :idmember, :idtable, :isadmin)"
                 );
+        // update table reservation
+        m_updateTableReservationQuery.prepare(
+                "UPDATE tablereservation "
+                "SET isadmin = :isadmin "
+                "WHERE idreservation = :idreservation"
+                );
         // cancel table reservation
         m_cancelTableReservationQuery.prepare(
                 "DELETE FROM tablereservation "
@@ -327,6 +336,12 @@ namespace PenyaManager {
                 "(date, reservationtype, idmember, idoven, isadmin) "
                 "VALUES (:date, :reservationtype, :idmember, :idoven, :isadmin)"
                 );
+        // update oven reservation
+        m_updateOvenReservationQuery.prepare(
+                "UPDATE ovenreservation "
+                "SET isadmin = :isadmin "
+                "WHERE idreservation = :idreservation"
+                );
         // cancel oven reservation
         m_cancelOvenReservationQuery.prepare(
                 "DELETE FROM ovenreservation "
@@ -337,6 +352,12 @@ namespace PenyaManager {
                 "INSERT INTO fireplacereservation "
                 "(date, reservationtype, idmember, idfireplace, isadmin) "
                 "VALUES (:date, :reservationtype, :idmember, :idfireplace, :isadmin)"
+                );
+        // update fireplace reservation
+        m_updateFireplaceReservationQuery.prepare(
+                "UPDATE fireplacereservation "
+                "SET isadmin = :isadmin "
+                "WHERE idreservation = :idreservation"
                 );
         // cancel fireplace reservation
         m_cancelFireplaceReservationQuery.prepare(
@@ -1354,6 +1375,18 @@ namespace PenyaManager {
         m_insertTableReservationQuery.finish();
     }
     //
+    void DAO::updateTableReservation(Int32 reservationId, bool isAdmin)
+    {
+        m_updateTableReservationQuery.bindValue(":idreservation", reservationId);
+        m_updateTableReservationQuery.bindValue(":isadmin", (isAdmin)?(1):(0));
+        if (!m_updateTableReservationQuery.exec())
+        {
+            qDebug() << m_updateTableReservationQuery.lastError();
+            QLOG_ERROR() << m_updateTableReservationQuery.lastError();
+        }
+        m_updateTableReservationQuery.finish();
+    }
+    //
     void DAO::cancelTableReservation(Int32 reservationId)
     {
         m_cancelTableReservationQuery.bindValue(":idreservation", reservationId);
@@ -1380,6 +1413,18 @@ namespace PenyaManager {
         m_insertOvenReservationQuery.finish();
     }
     //
+    void DAO::updateOvenReservation(Int32 reservationId, bool isAdmin)
+    {
+        m_updateOvenReservationQuery.bindValue(":idreservation", reservationId);
+        m_updateOvenReservationQuery.bindValue(":isadmin", (isAdmin)?(1):(0));
+        if (!m_updateOvenReservationQuery.exec())
+        {
+            qDebug() << m_updateOvenReservationQuery.lastError();
+            QLOG_ERROR() << m_updateOvenReservationQuery.lastError();
+        }
+        m_updateOvenReservationQuery.finish();
+    }
+    //
     void DAO::cancelOvenReservation(Int32 reservationId)
     {
         m_cancelOvenReservationQuery.bindValue(":idreservation", reservationId);
@@ -1389,6 +1434,18 @@ namespace PenyaManager {
             QLOG_ERROR() << m_cancelOvenReservationQuery.lastError();
         }
         m_cancelOvenReservationQuery.finish();
+    }
+    //
+    void DAO::updateFireplaceReservation(Int32 reservationId, bool isAdmin)
+    {
+        m_updateFireplaceReservationQuery.bindValue(":idreservation", reservationId);
+        m_updateFireplaceReservationQuery.bindValue(":isadmin", (isAdmin)?(1):(0));
+        if (!m_updateFireplaceReservationQuery.exec())
+        {
+            qDebug() << m_updateFireplaceReservationQuery.lastError();
+            QLOG_ERROR() << m_updateFireplaceReservationQuery.lastError();
+        }
+        m_updateFireplaceReservationQuery.finish();
     }
     //
     void DAO::makeFireplaceReservation(const QDate &date, ReservationType reservationType, Int32 memberId, Int32 idFireplace, bool isAdmin)

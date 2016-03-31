@@ -115,14 +115,31 @@ namespace PenyaManager {
         this->ui->tableReservationTableWidget->clearContents();
         Uint32 rowCount = 0;
         // fill table data
-        fillReservationsItems(pTableReservationListPtr, pTableListPtr, rowCount);
+        fillReservationsItems(pTableReservationListPtr, pTableListPtr, rowCount,
+                std::bind(&AdminReservationsWindow::on_new_table_reservation_button_clicked, this, _1),
+                std::bind(&AdminReservationsWindow::on_update_table_reservation_button_clicked, this, _1)
+                );
         // fill oven data
-        fillReservationsItems(pOvenReservationListPtr, pOvenListPtr, rowCount);
+        fillReservationsItems(pOvenReservationListPtr, pOvenListPtr, rowCount,
+                std::bind(&AdminReservationsWindow::on_new_oven_reservation_button_clicked, this, _1),
+                std::bind(&AdminReservationsWindow::on_update_oven_reservation_button_clicked, this, _1)
+                );
+
         // fill fireplace data
-        fillReservationsItems(pFireplaceReservationListPtr, pFireplaceListPtr, rowCount);
+        fillReservationsItems(pFireplaceReservationListPtr, pFireplaceListPtr, rowCount,
+                std::bind(&AdminReservationsWindow::on_new_fireplace_reservation_button_clicked, this, _1),
+                std::bind(&AdminReservationsWindow::on_update_fireplace_reservation_button_clicked, this, _1)
+                );
+
     }
     //
-    void AdminReservationsWindow::fillReservationsItems(const ReservationListPtr &pReservationListPtr, const ReservationItemListPtr &pReservationItemListPtr, Uint32 &rowCount)
+    void AdminReservationsWindow::fillReservationsItems(
+            const ReservationListPtr &pReservationListPtr,
+            const ReservationItemListPtr &pReservationItemListPtr,
+            Uint32 &rowCount,
+            ReservationCallback newReservationCallback,
+            ReservationCallback updateReservationCallback
+            )
     {
         ReservationMap tableReservationMap;
         for (auto iter = pReservationListPtr->begin(); iter != pReservationListPtr->end(); ++iter)
@@ -143,7 +160,7 @@ namespace PenyaManager {
                 // this table is not reserved
                 // show reservation action
                 QPushButton *pReservationButton = new QPushButton(tr("Reserve"), this->ui->tableReservationTableWidget);
-                this->connect(pReservationButton, &QPushButton::clicked, std::bind(&AdminReservationsWindow::on_reservedButton_clicked, this, pReservationItemPtr->m_idItem, pReservationItemPtr->m_itemType));
+                this->connect(pReservationButton, &QPushButton::clicked, std::bind(newReservationCallback, pReservationItemPtr->m_idItem));
                 this->ui->tableReservationTableWidget->setCellWidget(rowCount, 5, pReservationButton);
             } else {
                 // this table is reserved
@@ -160,7 +177,7 @@ namespace PenyaManager {
                     QString guestName = QString("[%1] %2 %3").arg(pReservationPtr->m_idMember).arg(pReservationPtr->m_memberName).arg(pReservationPtr->m_memberSurname);
                     this->ui->tableReservationTableWidget->setItem(rowCount, 3, new QTableWidgetItem(guestName));
                     QPushButton *pReservationButton = new QPushButton(tr("Reserve"), this->ui->tableReservationTableWidget);
-                    this->connect(pReservationButton, &QPushButton::clicked, std::bind(&AdminReservationsWindow::on_reservedButton_clicked, this, pReservationItemPtr->m_idItem, pReservationItemPtr->m_itemType));
+                    this->connect(pReservationButton, &QPushButton::clicked, std::bind(updateReservationCallback, pReservationPtr->m_reservationId));
                     this->ui->tableReservationTableWidget->setCellWidget(rowCount, 5, pReservationButton);
                 }
             }
@@ -194,46 +211,99 @@ namespace PenyaManager {
         fillReservations(date, reservationType);
     }
     //
-    void AdminReservationsWindow::on_reservedButton_clicked(int itemId, ReservationItemType itemType)
+    void AdminReservationsWindow::on_new_table_reservation_button_clicked(int itemId)
     {
-        QDate date = this->ui->calendarWidget->selectedDate();
         ReservationType reservationType = static_cast<ReservationType>(this->ui->reservationTypeButtonGroup->checkedId());
+        QDate date = this->ui->calendarWidget->selectedDate();
 
-        Uint32 guestNum = 0;
-        if (itemType == ReservationItemType::LunchTableType)
+        NumItemDialog numItemDialog(this, tr("Enter number of guests"));
+        numItemDialog.exec();
+        Uint32 guestNum = numItemDialog.getKey();
+        if (guestNum == 0)
         {
-            NumItemDialog numItemDialog(this, tr("Enter number of guests"));
-            numItemDialog.exec();
-            guestNum = numItemDialog.getKey();
-            if (guestNum == 0)
-            {
-                return;
-            }
+            return;
         }
 
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
         bool isAdmin = true;
-        QString title;
-        switch (itemType)
+        QString title = "Table";
+        Singletons::m_pDAO->makeTableReservation(date, reservationType, guestNum, pCurrMemberPtr->m_id, itemId, isAdmin);
+        QLOG_INFO() << QString("[%1][ADMIN] item %2").arg(title).arg(itemId);
+        QMessageBox::information(this, title, tr("Reservation done"));
+        fillReservations(date, reservationType);
+    }
+    //
+    void AdminReservationsWindow::on_update_table_reservation_button_clicked(int reservationId)
+    {
+        ReservationType reservationType = static_cast<ReservationType>(this->ui->reservationTypeButtonGroup->checkedId());
+        QDate date = this->ui->calendarWidget->selectedDate();
+
+        NumItemDialog numItemDialog(this, tr("Enter number of guests"));
+        numItemDialog.exec();
+        Uint32 guestNum = numItemDialog.getKey();
+        if (guestNum == 0)
         {
-            case ReservationItemType::LunchTableType:
-                title = "Table reservation";
-                Singletons::m_pDAO->makeTableReservation(date, reservationType, guestNum, pCurrMemberPtr->m_id, itemId, isAdmin);
-                break;
-            case ReservationItemType::OvenType:
-                title = "Oven reservation";
-                Singletons::m_pDAO->makeOvenReservation(date, reservationType, pCurrMemberPtr->m_id, itemId, isAdmin);
-                break;
-            case ReservationItemType::FireplaceType:
-                title = "Fireplace reservation";
-                Singletons::m_pDAO->makeFireplaceReservation(date, reservationType, pCurrMemberPtr->m_id, itemId, isAdmin);
-                break;
-            default:
-                break;
+            return;
         }
 
-        QLOG_INFO() << QString("[%1] User %2 item %3").arg(title).arg(pCurrMemberPtr->m_id).arg(itemId);
-        QMessageBox::information(this, title, "Reservation done");
+        bool isAdmin = true;
+        QString title = "Table";
+        Singletons::m_pDAO->updateTableReservation(reservationId, isAdmin);
+        QLOG_INFO() << QString("[%1][ADMIN][BLOCKED] reservationId: %2").arg(title).arg(reservationId);
+        QMessageBox::information(this, title, tr("Reservation done"));
+        fillReservations(date, reservationType);
+    }
+    //
+    void AdminReservationsWindow::on_new_fireplace_reservation_button_clicked(int itemId)
+    {
+        ReservationType reservationType = static_cast<ReservationType>(this->ui->reservationTypeButtonGroup->checkedId());
+        QDate date = this->ui->calendarWidget->selectedDate();
+
+        MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
+        bool isAdmin = true;
+        QString title = "Fireplace";
+        Singletons::m_pDAO->makeFireplaceReservation(date, reservationType, pCurrMemberPtr->m_id, itemId, isAdmin);
+        QLOG_INFO() << QString("[%1][ADMIN] item %2").arg(title).arg(itemId);
+        QMessageBox::information(this, title, tr("Reservation done"));
+        fillReservations(date, reservationType);
+    }
+    //
+    void AdminReservationsWindow::on_update_fireplace_reservation_button_clicked(int reservationId)
+    {
+        ReservationType reservationType = static_cast<ReservationType>(this->ui->reservationTypeButtonGroup->checkedId());
+        QDate date = this->ui->calendarWidget->selectedDate();
+        bool isAdmin = true;
+        QString title = "Fireplace";
+        Singletons::m_pDAO->updateFireplaceReservation(reservationId, isAdmin);
+        QLOG_INFO() << QString("[%1][ADMIN][BLOCKED] reservationId: %2").arg(title).arg(reservationId);
+        QMessageBox::information(this, title, tr("Reservation done"));
+        fillReservations(date, reservationType);
+    }
+    //
+    void AdminReservationsWindow::on_new_oven_reservation_button_clicked(int itemId)
+    {
+        ReservationType reservationType = static_cast<ReservationType>(this->ui->reservationTypeButtonGroup->checkedId());
+        QDate date = this->ui->calendarWidget->selectedDate();
+
+        MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
+        bool isAdmin = true;
+        QString title = "Oven";
+        Singletons::m_pDAO->makeOvenReservation(date, reservationType, pCurrMemberPtr->m_id, itemId, isAdmin);
+        QLOG_INFO() << QString("[%1][ADMIN] item %2").arg(title).arg(itemId);
+        QMessageBox::information(this, title, tr("Reservation done"));
+        fillReservations(date, reservationType);
+    }
+    //
+    void AdminReservationsWindow::on_update_oven_reservation_button_clicked(int reservationId)
+    {
+        ReservationType reservationType = static_cast<ReservationType>(this->ui->reservationTypeButtonGroup->checkedId());
+        QDate date = this->ui->calendarWidget->selectedDate();
+
+        bool isAdmin = true;
+        QString title = "Oven";
+        Singletons::m_pDAO->updateOvenReservation(reservationId, isAdmin);
+        QLOG_INFO() << QString("[%1][ADMIN][BLOCKED] reservationId: %2").arg(title).arg(reservationId);
+        QMessageBox::information(this, title, tr("Reservation done"));
         fillReservations(date, reservationType);
     }
     //

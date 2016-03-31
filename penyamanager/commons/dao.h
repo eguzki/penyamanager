@@ -97,13 +97,19 @@ namespace PenyaManager {
             //
             void makeTableReservation(const QDate &date, ReservationType reservationType, Uint16 guestNum, Int32 memberId, Int32 idtable, bool isAdmin);
             //
+            void updateTableReservation(Int32 reservationId, bool isAdmin);
+            //
             void cancelTableReservation(Int32 reservationId);
             //
             void makeOvenReservation(const QDate &date, ReservationType reservationType, Int32 memberId, Int32 idOven, bool isAdmin);
             //
+            void updateOvenReservation(Int32 reservationId, bool isAdmin);
+            //
             void cancelOvenReservation(Int32 reservationId);
             //
             void makeFireplaceReservation(const QDate &date, ReservationType reservationType, Int32 memberId, Int32 idFireplace, bool isAdmin);
+            //
+            void updateFireplaceReservation(Int32 reservationId, bool isAdmin);
             //
             void cancelFireplaceReservation(Int32 reservationId);
             //
@@ -253,13 +259,19 @@ namespace PenyaManager {
             //
             QSqlQuery               m_insertTableReservationQuery;
             //
+            QSqlQuery               m_updateTableReservationQuery;
+            //
             QSqlQuery               m_cancelTableReservationQuery;
             //
             QSqlQuery               m_insertOvenReservationQuery;
             //
+            QSqlQuery               m_updateOvenReservationQuery;
+            //
             QSqlQuery               m_cancelOvenReservationQuery;
             //
             QSqlQuery               m_insertFireplaceReservationQuery;
+            //
+            QSqlQuery               m_updateFireplaceReservationQuery;
             //
             QSqlQuery               m_cancelFireplaceReservationQuery;
             //
