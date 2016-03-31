@@ -8,7 +8,7 @@
 #include <commons/guiutils.h>
 #include <commons/constants.h>
 #include <commons/singletons.h>
-#include "numitemdialog.h"
+#include <commons/numitemdialog.h>
 #include "ui_loginwindow.h"
 #include "loginwindow.h"
 

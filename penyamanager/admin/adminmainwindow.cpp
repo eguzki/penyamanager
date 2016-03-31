@@ -28,6 +28,7 @@ namespace PenyaManager {
         this->connect(this->ui->actionDeposit_Check, &QAction::triggered, std::bind(&AdminMainWindow::on_deposit_list_button_triggered, this));
         this->connect(this->ui->actionAccount_Balance, &QAction::triggered, std::bind(&AdminMainWindow::on_account_balance_list_button_triggered, this));
         this->connect(this->ui->actionMember_management, &QAction::triggered, std::bind(&AdminMainWindow::on_member_list_view_button_triggered, this));
+        this->connect(this->ui->actionManager_reservations, &QAction::triggered, std::bind(&AdminMainWindow::on_reservation_view_button_triggered, this));
     }
     //
     AdminMainWindow::~AdminMainWindow()
@@ -122,5 +123,11 @@ namespace PenyaManager {
     {
         // call provider invoice window
         switchCentralWidget(WindowKey::kMemberListViewWindowKey);
+    }
+    //
+    void AdminMainWindow::on_reservation_view_button_triggered()
+    {
+        // call reservation window
+        switchCentralWidget(WindowKey::kAdminReservationViewKey);
     }
 }

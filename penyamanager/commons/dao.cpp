@@ -313,8 +313,8 @@ namespace PenyaManager {
         // insert table reservation
         m_insertTableReservationQuery.prepare(
                 "INSERT INTO tablereservation "
-                "(date, reservationtype, guestnum, idmember, idtable) "
-                "VALUES (:date, :reservationtype, :guestnum, :idmember, :idtable)"
+                "(date, reservationtype, guestnum, idmember, idtable, isadmin) "
+                "VALUES (:date, :reservationtype, :guestnum, :idmember, :idtable, :isadmin)"
                 );
         // cancel table reservation
         m_cancelTableReservationQuery.prepare(
@@ -324,8 +324,8 @@ namespace PenyaManager {
         // insert oven reservation
         m_insertOvenReservationQuery.prepare(
                 "INSERT INTO ovenreservation "
-                "(date, reservationtype, idmember, idoven) "
-                "VALUES (:date, :reservationtype, :idmember, :idoven)"
+                "(date, reservationtype, idmember, idoven, isadmin) "
+                "VALUES (:date, :reservationtype, :idmember, :idoven, :isadmin)"
                 );
         // cancel oven reservation
         m_cancelOvenReservationQuery.prepare(
@@ -335,8 +335,8 @@ namespace PenyaManager {
         // insert fireplace reservation
         m_insertFireplaceReservationQuery.prepare(
                 "INSERT INTO fireplacereservation "
-                "(date, reservationtype, idmember, idfireplace) "
-                "VALUES (:date, :reservationtype, :idmember, :idfireplace)"
+                "(date, reservationtype, idmember, idfireplace, isadmin) "
+                "VALUES (:date, :reservationtype, :idmember, :idfireplace, :isadmin)"
                 );
         // cancel fireplace reservation
         m_cancelFireplaceReservationQuery.prepare(
@@ -1338,13 +1338,14 @@ namespace PenyaManager {
         return pReservationItemListPtr;
     }
     //
-    void DAO::makeTableReservation(const QDate &date, ReservationType reservationType, Uint16 guestNum, Int32 memberId, Int32 idTable)
+    void DAO::makeTableReservation(const QDate &date, ReservationType reservationType, Uint16 guestNum, Int32 memberId, Int32 idTable, bool isAdmin)
     {
         m_insertTableReservationQuery.bindValue(":date", date);
         m_insertTableReservationQuery.bindValue(":reservationtype", static_cast<Uint16>(reservationType));
         m_insertTableReservationQuery.bindValue(":guestnum", guestNum);
         m_insertTableReservationQuery.bindValue(":idmember", memberId);
         m_insertTableReservationQuery.bindValue(":idtable", idTable);
+        m_insertTableReservationQuery.bindValue(":isadmin", (isAdmin)?(1):(0));
         if (!m_insertTableReservationQuery.exec())
         {
             qDebug() << m_insertTableReservationQuery.lastError();
@@ -1364,12 +1365,13 @@ namespace PenyaManager {
         m_cancelTableReservationQuery.finish();
     }
     //
-    void DAO::makeOvenReservation(const QDate &date, ReservationType reservationType, Int32 memberId, Int32 idOven)
+    void DAO::makeOvenReservation(const QDate &date, ReservationType reservationType, Int32 memberId, Int32 idOven, bool isAdmin)
     {
         m_insertOvenReservationQuery.bindValue(":date", date);
         m_insertOvenReservationQuery.bindValue(":reservationtype", static_cast<Uint16>(reservationType));
         m_insertOvenReservationQuery.bindValue(":idmember", memberId);
         m_insertOvenReservationQuery.bindValue(":idoven", idOven);
+        m_insertOvenReservationQuery.bindValue(":isadmin", (isAdmin)?(1):(0));
         if (!m_insertOvenReservationQuery.exec())
         {
             qDebug() << m_insertOvenReservationQuery.lastError();
@@ -1389,12 +1391,13 @@ namespace PenyaManager {
         m_cancelOvenReservationQuery.finish();
     }
     //
-    void DAO::makeFireplaceReservation(const QDate &date, ReservationType reservationType, Int32 memberId, Int32 idFireplace)
+    void DAO::makeFireplaceReservation(const QDate &date, ReservationType reservationType, Int32 memberId, Int32 idFireplace, bool isAdmin)
     {
         m_insertFireplaceReservationQuery.bindValue(":date", date);
         m_insertFireplaceReservationQuery.bindValue(":reservationtype", static_cast<Uint16>(reservationType));
         m_insertFireplaceReservationQuery.bindValue(":idmember", memberId);
         m_insertFireplaceReservationQuery.bindValue(":idfireplace", idFireplace);
+        m_insertFireplaceReservationQuery.bindValue(":isadmin", (isAdmin)?(1):(0));
         if (!m_insertFireplaceReservationQuery.exec())
         {
             qDebug() << m_insertFireplaceReservationQuery.lastError();

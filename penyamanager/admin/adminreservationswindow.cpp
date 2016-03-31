@@ -1,13 +1,13 @@
 //
 
+#include <QMessageBox>
 #include <QsLog.h>
+#include <commons/numitemdialog.h>
 #include <commons/singletons.h>
 #include "adminreservationswindow.h"
 #include "ui_adminreservationswindow.h"
 
 namespace PenyaManager {
-    //
-
     //
     AdminReservationsWindow::AdminReservationsWindow(QWidget *parent):
         IPartner(parent),
@@ -77,6 +77,8 @@ namespace PenyaManager {
         QDateTime nowDateTime = QDateTime::currentDateTime();
         QDate nowDate = nowDateTime.date();
         this->ui->calendarWidget->setSelectedDate(nowDate);
+        // set minimum selectable date
+        this->ui->calendarWidget->setMinimumDate(nowDate);
         // reservation type (lunch/dinner) buttons
         this->ui->lunchButton->setEnabled(true);
         this->ui->dinnerButton->setEnabled(true);
@@ -146,16 +148,17 @@ namespace PenyaManager {
             } else {
                 // this table is reserved
                 ReservationPtr pReservationPtr = tableReservationMapItem->second;
-                QString guestName = QString("[%1] %2 %3").arg(pReservationPtr->m_idMember).arg(pReservationPtr->m_memberName).arg(pReservationPtr->m_memberSurname);
-                this->ui->tableReservationTableWidget->setItem(rowCount, 3, new QTableWidgetItem(guestName));
                 this->ui->tableReservationTableWidget->setItem(rowCount, 4, new QTableWidgetItem(QString::number(pReservationPtr->m_guestNum)));
                 // do not show cancel when reservation is from Admin
                 if (pReservationPtr->m_isAdmin) {
+                    this->ui->tableReservationTableWidget->setItem(rowCount, 3, new QTableWidgetItem(QString(tr("BLOCKED"))));
                     // show cancel button action
                     QPushButton *pCancelButton = new QPushButton(tr("Cancel"), this->ui->tableReservationTableWidget);
                     this->connect(pCancelButton, &QPushButton::clicked, std::bind(&AdminReservationsWindow::on_cancelButton_clicked, this, pReservationPtr->m_reservationId, pReservationItemPtr->m_itemType));
                     this->ui->tableReservationTableWidget->setCellWidget(rowCount, 5, pCancelButton);
                 } else {
+                    QString guestName = QString("[%1] %2 %3").arg(pReservationPtr->m_idMember).arg(pReservationPtr->m_memberName).arg(pReservationPtr->m_memberSurname);
+                    this->ui->tableReservationTableWidget->setItem(rowCount, 3, new QTableWidgetItem(guestName));
                     QPushButton *pReservationButton = new QPushButton(tr("Reserve"), this->ui->tableReservationTableWidget);
                     this->connect(pReservationButton, &QPushButton::clicked, std::bind(&AdminReservationsWindow::on_reservedButton_clicked, this, pReservationItemPtr->m_idItem, pReservationItemPtr->m_itemType));
                     this->ui->tableReservationTableWidget->setCellWidget(rowCount, 5, pReservationButton);
@@ -164,4 +167,100 @@ namespace PenyaManager {
             rowCount++;
         }
     }
+    void AdminReservationsWindow::on_lunchButton_clicked(bool checked)
+    {
+        if (!checked) {
+            // discard event of unchecked button
+            return;
+        }
+
+        QDate date = this->ui->calendarWidget->selectedDate();
+        fillReservations(date, ReservationType::Lunch);
+    }
+
+    void AdminReservationsWindow::on_dinnerButton_clicked(bool checked)
+    {
+        if (!checked) {
+            // discard event of unchecked button
+            return;
+        }
+
+        QDate date = this->ui->calendarWidget->selectedDate();
+        fillReservations(date, ReservationType::Dinner);
+    }
+    void AdminReservationsWindow::on_calendarWidget_clicked(const QDate &date)
+    {
+        ReservationType reservationType = static_cast<ReservationType>(this->ui->reservationTypeButtonGroup->checkedId());
+        fillReservations(date, reservationType);
+    }
+    //
+    void AdminReservationsWindow::on_reservedButton_clicked(int itemId, ReservationItemType itemType)
+    {
+        QDate date = this->ui->calendarWidget->selectedDate();
+        ReservationType reservationType = static_cast<ReservationType>(this->ui->reservationTypeButtonGroup->checkedId());
+
+        Uint32 guestNum = 0;
+        if (itemType == ReservationItemType::LunchTableType)
+        {
+            NumItemDialog numItemDialog(this, tr("Enter number of guests"));
+            numItemDialog.exec();
+            guestNum = numItemDialog.getKey();
+            if (guestNum == 0)
+            {
+                return;
+            }
+        }
+
+        MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
+        bool isAdmin = true;
+        QString title;
+        switch (itemType)
+        {
+            case ReservationItemType::LunchTableType:
+                title = "Table reservation";
+                Singletons::m_pDAO->makeTableReservation(date, reservationType, guestNum, pCurrMemberPtr->m_id, itemId, isAdmin);
+                break;
+            case ReservationItemType::OvenType:
+                title = "Oven reservation";
+                Singletons::m_pDAO->makeOvenReservation(date, reservationType, pCurrMemberPtr->m_id, itemId, isAdmin);
+                break;
+            case ReservationItemType::FireplaceType:
+                title = "Fireplace reservation";
+                Singletons::m_pDAO->makeFireplaceReservation(date, reservationType, pCurrMemberPtr->m_id, itemId, isAdmin);
+                break;
+            default:
+                break;
+        }
+
+        QLOG_INFO() << QString("[%1] User %2 item %3").arg(title).arg(pCurrMemberPtr->m_id).arg(itemId);
+        QMessageBox::information(this, title, "Reservation done");
+        fillReservations(date, reservationType);
+    }
+    //
+    void AdminReservationsWindow::on_cancelButton_clicked(int reservationId, ReservationItemType itemType)
+    {
+        QDate date = this->ui->calendarWidget->selectedDate();
+        ReservationType reservationType = static_cast<ReservationType>(this->ui->reservationTypeButtonGroup->checkedId());
+        QString title;
+        switch (itemType)
+        {
+            case ReservationItemType::LunchTableType:
+                title = "Table reservation";
+                Singletons::m_pDAO->cancelTableReservation(reservationId);
+                break;
+            case ReservationItemType::OvenType:
+                title = "Oven reservation";
+                Singletons::m_pDAO->cancelOvenReservation(reservationId);
+                break;
+            case ReservationItemType::FireplaceType:
+                title = "Fireplace reservation";
+                Singletons::m_pDAO->cancelFireplaceReservation(reservationId);
+                break;
+            default:
+                break;
+        }
+        QMessageBox::information(this, title, "Reservation cancelled");
+        fillReservations(date, reservationType);
+    }
 }
+

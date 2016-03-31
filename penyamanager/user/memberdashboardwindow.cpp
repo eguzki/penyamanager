@@ -8,7 +8,7 @@
 #include <commons/constants.h>
 #include <commons/guiutils.h>
 #include <commons/singletons.h>
-#include "numitemdialog.h"
+#include <commons/numitemdialog.h>
 #include "memberdashboardwindow.h"
 #include "ui_memberdashboardwindow.h"
 

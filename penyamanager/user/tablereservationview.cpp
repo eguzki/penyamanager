@@ -7,7 +7,7 @@
 
 #include <commons/utils.h>
 #include <commons/singletons.h>
-#include "numitemdialog.h"
+#include <commons/numitemdialog.h>
 #include "tablereservationview.h"
 #include "ui_tablereservationview.h"
 
@@ -155,16 +155,23 @@ namespace PenyaManager {
             } else {
                 // this table is reserved
                 ReservationPtr pReservationPtr = tableReservationMapItem->second;
-                QString guestName = QString("[%1] %2 %3").arg(pReservationPtr->m_idMember).arg(pReservationPtr->m_memberName).arg(pReservationPtr->m_memberSurname);
-                this->ui->tableReservationTableWidget->setItem(rowCount, 3, new QTableWidgetItem(guestName));
                 this->ui->tableReservationTableWidget->setItem(rowCount, 4, new QTableWidgetItem(QString::number(pReservationPtr->m_guestNum)));
                 // do not show cancel when reservation is from Admin
-                if (pReservationPtr->m_idMember == pMemberPtr->m_id && !pReservationPtr->m_isAdmin) {
-                    // show cancel button action
-                    QPushButton *pCancelButton = new QPushButton(tr("Cancel"), this->ui->tableReservationTableWidget);
-                    this->connect(pCancelButton, &QPushButton::clicked, std::bind(&TableReservationView::on_cancelButton_clicked, this, pReservationPtr->m_reservationId, pReservationItemPtr->m_itemType));
-                    this->ui->tableReservationTableWidget->setCellWidget(rowCount, 5, pCancelButton);
+                if (pReservationPtr->m_isAdmin)
+                {
+                    this->ui->tableReservationTableWidget->setItem(rowCount, 3, new QTableWidgetItem(QString(tr("BLOCKED"))));
+                } else
+                {
+                    QString guestName = QString("[%1] %2 %3").arg(pReservationPtr->m_idMember).arg(pReservationPtr->m_memberName).arg(pReservationPtr->m_memberSurname);
+                    this->ui->tableReservationTableWidget->setItem(rowCount, 3, new QTableWidgetItem(guestName));
+                    if (pReservationPtr->m_idMember == pMemberPtr->m_id) {
+                        // show cancel button action
+                        QPushButton *pCancelButton = new QPushButton(tr("Cancel"), this->ui->tableReservationTableWidget);
+                        this->connect(pCancelButton, &QPushButton::clicked, std::bind(&TableReservationView::on_cancelButton_clicked, this, pReservationPtr->m_reservationId, pReservationItemPtr->m_itemType));
+                        this->ui->tableReservationTableWidget->setCellWidget(rowCount, 5, pCancelButton);
+                    }
                 }
+
             }
             rowCount++;
         }
@@ -242,20 +249,21 @@ namespace PenyaManager {
             }
         }
 
+        bool isAdmin = false;
         QString title;
         switch (itemType)
         {
             case ReservationItemType::LunchTableType:
                 title = "Table reservation";
-                Singletons::m_pDAO->makeTableReservation(date, reservationType, guestNum, pCurrMemberPtr->m_id, itemId);
+                Singletons::m_pDAO->makeTableReservation(date, reservationType, guestNum, pCurrMemberPtr->m_id, itemId, isAdmin);
                 break;
             case ReservationItemType::OvenType:
                 title = "Oven reservation";
-                Singletons::m_pDAO->makeOvenReservation(date, reservationType, pCurrMemberPtr->m_id, itemId);
+                Singletons::m_pDAO->makeOvenReservation(date, reservationType, pCurrMemberPtr->m_id, itemId, isAdmin);
                 break;
             case ReservationItemType::FireplaceType:
                 title = "Fireplace reservation";
-                Singletons::m_pDAO->makeFireplaceReservation(date, reservationType, pCurrMemberPtr->m_id, itemId);
+                Singletons::m_pDAO->makeFireplaceReservation(date, reservationType, pCurrMemberPtr->m_id, itemId, isAdmin);
                 break;
             default:
                 break;

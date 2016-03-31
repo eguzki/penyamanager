@@ -2,6 +2,8 @@
 #define ADMINRESERVATIONSWINDOW_H
 
 #include <QWidget>
+#include <objs/Reservation.h>
+#include <objs/ReservationItem.h>
 #include <commons/IPartner.h>
 #include <commons/utils.h>
 
@@ -37,6 +39,18 @@ namespace PenyaManager {
             void fillReservations(const QDate &date, ReservationType reservationType);
             //
             void fillReservationsItems(const ReservationListPtr &pReservationListPtr, const ReservationItemListPtr &pReservationItemListPtr, Uint32 &rowCount);
+
+        private slots:
+            //
+            void on_calendarWidget_clicked(const QDate &date);
+            //
+            void on_reservedButton_clicked(int itemId, ReservationItemType itemType);
+            //
+            void on_cancelButton_clicked(int reservationId, ReservationItemType itemType);
+            //
+            void on_lunchButton_clicked(bool checked);
+            //
+            void on_dinnerButton_clicked(bool checked);
 
         private:
             //

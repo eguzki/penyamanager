@@ -33,6 +33,7 @@ SOURCES += adminmain.cpp\
         commons/services.cpp\
         commons/IPartner.cpp\
         commons/partnerfinder.cpp\
+        commons/numitemdialog.cpp \
         objs/Transaction.cpp\
         objs/Invoice.cpp\
         objs/Deposit.cpp\
@@ -74,6 +75,7 @@ HEADERS  += commons/singletons.h\
         commons/services.h\
         commons/IPartner.h\
         commons/partnerfinder.h\
+        commons/numitemdialog.h \
         objs/Transaction.h\
         objs/Invoice.h\
         objs/Deposit.h\
@@ -114,6 +116,7 @@ FORMS    += admin/adminloginwindow.ui\
         admin/slowpayersview.ui \
         admin/admininvoicelistview.ui \
         commons/invoicedetailswidget.ui \
+        commons/numitemdialog.ui \
         admin/providermanagerview.ui \
         admin/adminnewprovider.ui \
         admin/stockmanagementwindow.ui \

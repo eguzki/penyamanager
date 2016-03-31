@@ -95,15 +95,15 @@ namespace PenyaManager {
             //
             ReservationItemListPtr getFireplaceList();
             //
-            void makeTableReservation(const QDate &date, ReservationType reservationType, Uint16 guestNum, Int32 memberId, Int32 idtable);
+            void makeTableReservation(const QDate &date, ReservationType reservationType, Uint16 guestNum, Int32 memberId, Int32 idtable, bool isAdmin);
             //
             void cancelTableReservation(Int32 reservationId);
             //
-            void makeOvenReservation(const QDate &date, ReservationType reservationType, Int32 memberId, Int32 idOven);
+            void makeOvenReservation(const QDate &date, ReservationType reservationType, Int32 memberId, Int32 idOven, bool isAdmin);
             //
             void cancelOvenReservation(Int32 reservationId);
             //
-            void makeFireplaceReservation(const QDate &date, ReservationType reservationType, Int32 memberId, Int32 idFireplace);
+            void makeFireplaceReservation(const QDate &date, ReservationType reservationType, Int32 memberId, Int32 idFireplace, bool isAdmin);
             //
             void cancelFireplaceReservation(Int32 reservationId);
             //

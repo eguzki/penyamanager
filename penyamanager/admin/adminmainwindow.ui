@@ -6,20 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1024</width>
-    <height>768</height>
+    <width>1280</width>
+    <height>1024</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>1024</width>
-    <height>768</height>
+    <width>1280</width>
+    <height>1024</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>1024</width>
-    <height>768</height>
+    <width>1280</width>
+    <height>1024</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -31,7 +31,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1024</width>
+     <width>1280</width>
      <height>25</height>
     </rect>
    </property>
@@ -78,12 +78,19 @@
     <addaction name="actionProvider_invoice"/>
     <addaction name="actionProvider_invoice_list"/>
    </widget>
+   <widget class="QMenu" name="menuReservations">
+    <property name="title">
+     <string>Reservations</string>
+    </property>
+    <addaction name="actionManager_reservations"/>
+   </widget>
    <addaction name="menuMain"/>
    <addaction name="menuMembers"/>
    <addaction name="menuInvoices"/>
    <addaction name="menuStock"/>
    <addaction name="menuAccount"/>
    <addaction name="menuProviders"/>
+   <addaction name="menuReservations"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionMember_management">
@@ -164,6 +171,11 @@
   <action name="actionProvider_invoice_list">
    <property name="text">
     <string>Provider Invoice List</string>
+   </property>
+  </action>
+  <action name="actionManager_reservations">
+   <property name="text">
+    <string>Manage reservations</string>
    </property>
   </action>
  </widget>
