@@ -21,8 +21,6 @@ namespace PenyaManager
             //
             Deposit();
             //
-            Deposit(Int32 id, Int32 memberId, DepositState state, const QDateTime &date, Float total, const QString &descr);
-            //
             virtual ~Deposit(){}
 
         public:
@@ -30,6 +28,8 @@ namespace PenyaManager
             Int32               m_id;
             //
             Int32               m_memberId;
+            //
+            Int32               m_memberUsername;
             //
             DepositState        m_state;
             //

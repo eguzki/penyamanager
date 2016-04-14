@@ -28,8 +28,6 @@ namespace PenyaManager
             //
             Transaction();
             //
-            Transaction(TransactionType type, Int32 memberId, Float amount, const QDateTime& date, Float balance, const QString &descr);
-            //
             virtual ~Transaction(){}
 
         public:
@@ -37,6 +35,8 @@ namespace PenyaManager
             TransactionType     m_type;
             //
             Int32               m_memberId;
+            //
+            Int32               m_memberUsername;
             //
             Float               m_amount;
             //

@@ -47,7 +47,7 @@ namespace PenyaManager {
         headers.append(tr("Image"));
         headers.append(tr("Surnames"));
         headers.append(tr("Name"));
-        headers.append(tr("MemberID"));
+        headers.append(tr("Username"));
         headers.append(tr("Balance"));
         headers.append(tr("Email"));
         headers.append(tr("Active"));
@@ -139,7 +139,7 @@ namespace PenyaManager {
             this->ui->memberTableWidget->setItem(rowCount, column++, memberImageWidget);
             this->ui->memberTableWidget->setItem(rowCount, column++, new QTableWidgetItem(pMemberPtr->m_surname));
             this->ui->memberTableWidget->setItem(rowCount, column++, new QTableWidgetItem(pMemberPtr->m_name));
-            this->ui->memberTableWidget->setItem(rowCount, column++, new QTableWidgetItem(QString::number(pMemberPtr->m_id)));
+            this->ui->memberTableWidget->setItem(rowCount, column++, new QTableWidgetItem(QString::number(pMemberPtr->m_username)));
             this->ui->memberTableWidget->setItem(rowCount, column++, new QTableWidgetItem(QString::number(pMemberPtr->m_balance, 'f', 2)));
             this->ui->memberTableWidget->setItem(rowCount, column++, new QTableWidgetItem(pMemberPtr->m_email));
             this->ui->memberTableWidget->setItem(rowCount, column++, new QTableWidgetItem((pMemberPtr->m_active)?(QString::number(1)):(QString::number(0))));
@@ -201,7 +201,6 @@ namespace PenyaManager {
     //
     void MemberListView::on_filterPostalUsersCheckBox_clicked()
     {
-        qDebug() << "filter postal check clicked";
         updateResults();
     }
 }

@@ -49,7 +49,7 @@ namespace PenyaManager {
             //
             QString                     m_password;
             //
-            Int32                       m_memberId;
+            Int32                       m_username;
             //
             QTranslator                 *m_pTranslator;
             //

@@ -35,7 +35,11 @@ namespace PenyaManager {
             //
             ProductItemListPtr getProductsFromFamily(Int32 familyId, bool onlyActive);
             //
-            MemberPtr getMemberById(Int32 memberId);
+            MemberPtr fetchMemberById(Int32 memberId);
+            //
+            MemberPtr fetchMemberByUsername(Int32 username);
+            //
+            FloatBoolPair getAccountBalance(Int32 memberId);
             //
             InvoicePtr getMemberActiveInvoice(Int32 memberId);
             //
@@ -188,6 +192,8 @@ namespace PenyaManager {
             void updateInvoiceLastModDate(Int32 invoiceId, const QDateTime &lastModDate);
             //
             void deleteInvoice(Int32 invoiceIde);
+            //
+            bool checkUsername(Int32 username);
 
         private:
             //
@@ -198,6 +204,10 @@ namespace PenyaManager {
             QSqlQuery               m_productItemsByFamilyQuery;
             //
             QSqlQuery               m_memberByIdQuery;
+            //
+            QSqlQuery               m_memberByUsernameQuery;
+            //
+            QSqlQuery               m_memberAccountBalanceQuery;
             //
             QSqlQuery               m_invoiceQuery;
             //
@@ -356,6 +366,8 @@ namespace PenyaManager {
             QSqlQuery               m_removeInvoiceQuery;
             //
             QSqlQuery               m_getActiveInvoiceListQuery;
+            //
+            QSqlQuery               m_checkUsernameQuery;
     };
 }
 #endif // DAO_H

@@ -149,8 +149,8 @@ namespace PenyaManager {
     void ProviderInvoiceListView::fillInvoiceList(ProviderInvoiceListPtr pProviderInvoiceListPtr)
     {
         // invoice table reset
-        this->ui->invoicesTableWidget->clearContents();
         this->ui->invoicesTableWidget->setRowCount(pProviderInvoiceListPtr->size());
+        this->ui->invoicesTableWidget->clearContents();
         // fill data
         Uint32 rowCount = 0;
         for (ProviderInvoiceList::iterator iter = pProviderInvoiceListPtr->begin(); iter != pProviderInvoiceListPtr->end(); ++iter)

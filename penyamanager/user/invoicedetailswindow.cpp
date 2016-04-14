@@ -75,7 +75,7 @@ namespace PenyaManager {
 
         // invoice general info
         invoiceData["invoiceId"] = invoiceId;
-        invoiceData["memberid"] = pCurrMemberPtr->m_id;
+        invoiceData["memberid"] = pCurrMemberPtr->m_username;
         invoiceData["memberName"] = QString("%1 %2").arg(pCurrMemberPtr->m_name).arg(pCurrMemberPtr->m_surname);
         invoiceData["dateValue"] = pInvoicePtr->m_date;
         invoiceData["invoiceTotal"] = QString("%1 €").arg(pInvoicePtr->m_total, 0, 'f', 2);

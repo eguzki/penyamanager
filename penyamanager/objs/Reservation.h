@@ -29,6 +29,8 @@ namespace PenyaManager
             //
             Int32               m_idItem;
             //
+            Int32               m_memberUsername;
+            //
             QString             m_memberName;
             //
             QString             m_memberSurname;

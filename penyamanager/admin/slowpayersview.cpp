@@ -43,7 +43,7 @@ namespace PenyaManager {
     {
         // table reservation table Header
         QStringList headers;
-        headers.append(tr("Member Id"));
+        headers.append(tr("Username"));
         headers.append(tr("Name"));
         headers.append(tr("Balance"));
         this->ui->slowPayersTableWidget->setHorizontalHeaderLabels(headers);
@@ -78,7 +78,7 @@ namespace PenyaManager {
         for (MemberList::iterator iter = pMemberListPtr->begin(); iter != pMemberListPtr->end(); ++iter)
         {
             MemberPtr pMemberPtr = *iter;
-            this->ui->slowPayersTableWidget->setItem(rowCount, 0, new QTableWidgetItem(QString::number(pMemberPtr->m_id)));
+            this->ui->slowPayersTableWidget->setItem(rowCount, 0, new QTableWidgetItem(QString::number(pMemberPtr->m_username)));
             this->ui->slowPayersTableWidget->setItem(rowCount, 1, new QTableWidgetItem(pMemberPtr->m_name + " " + pMemberPtr->m_surname));
             this->ui->slowPayersTableWidget->setItem(rowCount, 2, new QTableWidgetItem(QString("%1 €").arg(pMemberPtr->m_balance, 0, 'f', 2)));
             rowCount++;

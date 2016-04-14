@@ -171,7 +171,7 @@ namespace PenyaManager {
         depositData["depositTotalLabel"] = tr("Deposit Total");
         // deposit info
         depositData["depositId"] = pDepositPtr->m_id;
-        depositData["memberid"] = pMemberPtr->m_id;
+        depositData["memberid"] = pMemberPtr->m_username;
         depositData["memberName"] = QString("%1 %2").arg(pMemberPtr->m_name).arg(pMemberPtr->m_surname);
         depositData["dateValue"] = pDepositPtr->m_date;
         depositData["depositTotal"] = QString("%1 €").arg(QString::number(pDepositPtr->m_total, 'f', 2));

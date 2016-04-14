@@ -57,4 +57,10 @@ typedef std::vector<Uint64> Uint64Vector;
 //
 typedef std::map<Int32, Int32> RowIdMap;
 
+//
+typedef struct {
+    Float f;
+    bool b;
+}FloatBoolPair;
+
 #endif // DATATYPES_H

@@ -36,6 +36,10 @@ namespace PenyaManager {
             void removeInvoiceProductId(Int32 invoiceId, Int32 productId);
             //
             void increaseProductInvoice(Int32 invoiceId, Int32 productId, Int32 count);
+            //
+            MemberPtr getMemberById(Int32 memberId);
+            //
+            MemberPtr getMemberByUsername(Int32 username);
     };
 }
 

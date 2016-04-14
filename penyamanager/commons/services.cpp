@@ -181,8 +181,40 @@ namespace PenyaManager {
                 Singletons::m_pServices->closeInvoice(pInvoicePtr->m_memberId, pInvoicePtr->m_id);
                 QLOG_INFO() << QString("[Invoice][ONTIMEOUT] User %1 Invoice ID %2").arg(pInvoicePtr->m_memberId).arg(pInvoicePtr->m_id);
                 // leave returnInvoicePtr empty
-            } 
+            }
         }
+    }
+    //
+    MemberPtr Services::getMemberById(Int32 memberId)
+    {
+        MemberPtr pResult;
+        MemberPtr pMember = Singletons::m_pDAO->fetchMemberById(memberId);
+        if (pMember) {
+            FloatBoolPair pair = Singletons::m_pDAO->getAccountBalance(memberId);
+            if (pair.b) {
+                // exists
+                pResult = pMember;
+                pResult->m_balance = pair.f;
+            }
+        }
+        // if any of the queries fail, return null
+        return pResult;
+    }
+    //
+    MemberPtr Services::getMemberByUsername(Int32 username)
+    {
+        MemberPtr pResult;
+        MemberPtr pMember = Singletons::m_pDAO->fetchMemberByUsername(username);
+        if (pMember) {
+            FloatBoolPair pair = Singletons::m_pDAO->getAccountBalance(pMember->m_id);
+            if (pair.b) {
+                // exists
+                pResult = pMember;
+                pResult->m_balance = pair.f;
+            }
+        }
+        // if any of the queries fail, return null
+        return pResult;
     }
 }
 

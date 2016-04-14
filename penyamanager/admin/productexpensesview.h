@@ -49,8 +49,6 @@ namespace PenyaManager {
             void on_searchPushButton_clicked();
             //
             void on_csvPushButton_clicked();
-            //
-            void on_printPushButton_clicked();
 
     private:
             //

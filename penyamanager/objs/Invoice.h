@@ -21,8 +21,6 @@ namespace PenyaManager
             //
             Invoice();
             //
-            Invoice(Int32 id, Int32 memberId, InvoiceState state, const QDateTime &date, Float total, const QDateTime &lastModified);
-            //
             virtual ~Invoice(){}
 
         public:
@@ -30,6 +28,8 @@ namespace PenyaManager
             Int32               m_id;
             //
             Int32               m_memberId;
+            //
+            Int32               m_memberUsername;
             //
             InvoiceState        m_state;
             //
