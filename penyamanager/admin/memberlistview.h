@@ -44,10 +44,12 @@ namespace PenyaManager {
             void on_nextPagePushButton_clicked();
             //
             void on_memberTableWidget_cellDoubleClicked(int row, int column);
-
+            //
             void on_csvPushButton_clicked();
-
+            //
             void on_filterPostalUsersCheckBox_clicked();
+            //
+            void on_printPostalMembersPushButton_clicked();
 
     private:
             //

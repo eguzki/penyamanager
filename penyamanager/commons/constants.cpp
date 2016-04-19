@@ -15,6 +15,8 @@ namespace PenyaManager {
     //
     const QString   Constants::kDatabaseHost                    = "host";
     //
+    const QString   Constants::kLogLevel                        = "loglevel";
+    //
     const QString   Constants::kDatabaseName                    = "name";
     //
     const QString   Constants::kDatabaseUser                    = "user";

@@ -11,6 +11,7 @@
 #include <commons/invoicedetailswidget.h>
 #include <commons/constants.h>
 #include <commons/singletons.h>
+#include <commons/utils.h>
 #include <admin/adminmainwindow.h>
 #include <admin/adminloginwindow.h>
 #include <admin/slowpayersview.h>
@@ -46,8 +47,8 @@ int main(int argc, char *argv[])
     // LOGGING
     // init the logging mechanism
     QsLogging::Logger& logger = QsLogging::Logger::instance();
-    // set minimum log level and file name
-    logger.setLoggingLevel(QsLogging::InfoLevel);
+    // set log level and file name
+    logger.setLoggingLevel(PenyaManager::Utils::getLogLevel(settings.value(PenyaManager::Constants::kLogLevel, "info").toString()));
     const QString sLogPath(QDir(app.applicationDirPath()).filePath("penyamanageradmin.log"));
 
     // Create log destinations

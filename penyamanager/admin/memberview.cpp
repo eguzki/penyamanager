@@ -33,6 +33,8 @@ namespace PenyaManager {
     {
         // memberId
         this->ui->memberIdValueLabel->clear();
+        // member username
+        this->ui->usernameLineEdit->clear();
         // reg date
         this->ui->regDateValueLabel->setText(QDate::currentDate().toString());
         // reg date

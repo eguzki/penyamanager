@@ -3,6 +3,7 @@
 
 #include <QPixmap>
 
+#include <objs/Member.h>
 #include "DataTypes.h"
 
 namespace PenyaManager {
@@ -16,6 +17,8 @@ namespace PenyaManager {
             static void printInvoice(QVariantHash &invoiceData, Int32 memberId, Int32 invoiceId);
             //
             static void printText(const QString& html);
+            //
+            static void printPostalMembers(const MemberListPtr pMemberListPtr);
 
         private:
             //

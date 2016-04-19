@@ -98,6 +98,7 @@ penyamanager
 * Print invoices when closed
 * Credit limit. When over limit, do not allow creating invoices
 * Member username can be updated
+* Print post activated members
 
 # Development
 
@@ -116,6 +117,10 @@ penyamanager
 * QT Creator 3.4.2
 * QT 5.5.0
 * GCC 4.8.4, 64 bit
+
+## Log level:
+* QSettings key **loglevel** in General section
+* Valid values: debug, info, warn, error
 
 ## Package deployment for windows 7
 

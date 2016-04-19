@@ -92,6 +92,13 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
        </spacer>
       </item>
       <item>
+       <widget class="QPushButton" name="printPostalMembersPushButton">
+        <property name="text">
+         <string>print postal members</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="csvPushButton">
         <property name="text">
          <string>export to CSV</string>

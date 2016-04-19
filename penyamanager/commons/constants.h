@@ -38,6 +38,8 @@ namespace PenyaManager {
             static const QString    kDatabaseUser;
             // Config settings ddbb pass
             static const QString    kDatabasePass;
+            // Config settings log level
+            static const QString    kLogLevel;
             // FamilyWidget width
             static const Uint32     kFamilyWidgetWidth;
             // FamilyWidget image width
