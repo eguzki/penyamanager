@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `alegria`.`member` (
   `email` VARCHAR(45) NULL COMMENT '',
   `bank_account` VARCHAR(45) NOT NULL COMMENT '',
   `postal_send` TINYINT(1) NOT NULL COMMENT '',
-  `notes` VARCHAR(45) NULL COMMENT '',
+  `notes` VARCHAR(2000) NULL COMMENT '',
   `pwd` VARCHAR(128) NOT NULL COMMENT '',
   `lastlogin` DATETIME NOT NULL COMMENT '',
   PRIMARY KEY (`idmember`)  COMMENT '',

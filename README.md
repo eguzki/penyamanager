@@ -100,6 +100,7 @@ penyamanager
 * Member username can be updated
 * Print post activated members
 * Provider Invoice View from provider invoice list
+* Notes in member information
 
 # Development
 

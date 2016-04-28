@@ -36,9 +36,10 @@ namespace PenyaManager {
         // member username
         this->ui->usernameLineEdit->clear();
         // reg date
-        this->ui->regDateValueLabel->setText(QDate::currentDate().toString());
+        QString dateLocalized = Singletons::m_translationManager.getLocale().toString(QDate::currentDate(), QLocale::NarrowFormat);
+        this->ui->regDateValueLabel->setText(dateLocalized);
         // reg date
-        this->ui->lastLoginValueLabel->setText(QDate::currentDate().toString());
+        this->ui->lastLoginValueLabel->setText("-");
         // name
         this->ui->nameLineEdit->clear();
         // surname
@@ -75,7 +76,7 @@ namespace PenyaManager {
         // postal send
         this->ui->postalSendCheckBox->setChecked(false);
         // notes
-        this->ui->notesLineEdit->clear();
+        this->ui->notesTextEdit->clear();
     }
     //
     void MemberView::init()
@@ -187,7 +188,7 @@ namespace PenyaManager {
             // phone 2 (optional)
             pMemberPtr->m_phone2 = this->ui->phone2LineEdit->text();
             // notes (optional)
-            pMemberPtr->m_notes = this->ui->notesLineEdit->text();
+            pMemberPtr->m_notes = this->ui->notesTextEdit->toPlainText();
             // regDate -> no change
             // lastmodfies
             pMemberPtr->m_lastModified = QDateTime::currentDateTime();
@@ -257,7 +258,7 @@ namespace PenyaManager {
             // phone 2 (optional)
             pMemberPtr->m_phone2 = this->ui->phone2LineEdit->text();
             // notes (optional)
-            pMemberPtr->m_notes = this->ui->notesLineEdit->text();
+            pMemberPtr->m_notes = this->ui->notesTextEdit->toPlainText();
             // regDate
             pMemberPtr->m_regDate = QDateTime::currentDateTime();
             // lastmodfies
@@ -336,7 +337,7 @@ namespace PenyaManager {
         // postal send
         this->ui->postalSendCheckBox->setChecked(pMemberPtr->m_postalSend);
         // notes
-        this->ui->notesLineEdit->setText(pMemberPtr->m_notes);
+        this->ui->notesTextEdit->setPlainText(pMemberPtr->m_notes);
     }
     //
     void MemberView::on_imagePushButton_clicked()
