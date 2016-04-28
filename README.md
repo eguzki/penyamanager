@@ -99,6 +99,7 @@ penyamanager
 * Credit limit. When over limit, do not allow creating invoices
 * Member username can be updated
 * Print post activated members
+* Provider Invoice View from provider invoice list
 
 # Development
 

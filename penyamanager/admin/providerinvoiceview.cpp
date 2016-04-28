@@ -4,7 +4,6 @@
 #include <QSpinBox>
 #include <QSpacerItem>
 #include <QMessageBox>
-
 #include <QsLog.h>
 
 #include <commons/guiutils.h>
@@ -16,11 +15,10 @@ namespace PenyaManager {
     //
     ProviderInvoiceView::ProviderInvoiceView(QWidget *parent) :
         IPartner(parent),
-        ui(new Ui::ProviderInvoiceView),
-        m_currentProviderIndex(-1),
-        m_rowProviderIdMap()
+        ui(new Ui::ProviderInvoiceView)
     {
         ui->setupUi(this);
+        initializeTable();
     }
     //
     ProviderInvoiceView::~ProviderInvoiceView()
@@ -28,97 +26,49 @@ namespace PenyaManager {
         delete ui;
     }
     //
-    void ProviderInvoiceView::on_savePushButton_clicked()
+    void ProviderInvoiceView::initializeTable()
     {
-        // validate invoice id
-        QString invoiceId = this->ui->invoiceLineEdit->text();
-        if (invoiceId.isEmpty()){
-            QMessageBox::warning(this, "Data missing", "Invoice ID cannot be empty");
-            return;
-        }
-        // validate total
-        Float total = this->ui->totalDoubleSpinBox->value();
-        if ( total == 0.0 )
-        {
-            QMessageBox msgBox;
-            msgBox.setText("Invoice has 0.0 as total value");
-            msgBox.setInformativeText("Are you sure to continue?");
-            msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
-            msgBox.setDefaultButton(QMessageBox::Cancel);
-            int ret = msgBox.exec();
-            if (ret == QMessageBox::Cancel)
-            {
-                return;
-            }
-        }
-        // validate providerID
-        if (m_currentProviderIndex == -1)
-        {
-            QMessageBox::warning(this, "Data missing", "Select Provider");
-            return;
-        }
-
-        // create invoice
-        ProviderInvoicePtr pProviderInvoicePtr(new ProviderInvoice);
-        pProviderInvoicePtr->m_id = invoiceId;
-        pProviderInvoicePtr->m_regDate = QDate::currentDate();
-        pProviderInvoicePtr->m_total = total;
-        pProviderInvoicePtr->m_providerid = this->ui->providerComboBox->currentData().toInt();
-        Singletons::m_pDAO->createProviderInvoice(pProviderInvoicePtr);
-
-        // create invoice products
-        for (auto idx = 0; idx < this->ui->productsListWidget->count(); ++idx)
-        {
-            QListWidgetItem *pProductItem = this->ui->productsListWidget->item(idx);
-            QWidget *pProductItemWidget = this->ui->productsListWidget->itemWidget(pProductItem);
-            QLayout *pLayout = pProductItemWidget->layout();
-            // layout contains 4 elements, itemAt fourth
-            QWidget *pCountWidget = pLayout->itemAt(3)->widget();
-            QSpinBox *pCountSpinBox = qobject_cast<QSpinBox *>(pCountWidget);
-            if (pCountSpinBox == 0) {
-                QMessageBox::critical(this, "Unexpected error",
-                        "ProviderInvoiceView failed taking SpinBox");
-                return;
-            }
-
-            Int32 productId = pProductItem->data(Constants::kIdRole).toInt();
-            // only those with non zero count
-            if (pCountSpinBox->value() > 0) {
-                // create provider invoice product item
-                Singletons::m_pDAO->createProviderInvoiceProduct(pProviderInvoicePtr->m_id, productId, pCountSpinBox->value());
-                // update stock
-                Singletons::m_pDAO->updateStock(productId, pCountSpinBox->value());
-            }
-        }
-        QLOG_INFO() << QString("[ProviderInvoice] ID %1 providerID %2").arg(pProviderInvoicePtr->m_id).arg(pProviderInvoicePtr->m_providerid);
-        QMessageBox::information(this, "New provider invoice", "Saved Successfully");
-        initialize();
+        // table
+        this->ui->providerInvoiceTableWidget->setColumnCount(3);
+        translateTable();
+        Uint32 column = 0;
+        this->ui->providerInvoiceTableWidget->setColumnWidth(column++, Constants::kFamilyImageWidth);
+        this->ui->providerInvoiceTableWidget->setColumnWidth(column++, 300);
+        this->ui->providerInvoiceTableWidget->setColumnWidth(column++, 150);
+    }
+    //
+    void ProviderInvoiceView::translateTable()
+    {
+        // invoice table Header
+        QStringList headers;
+        headers.append(tr("Icon"));
+        headers.append(tr("Product"));
+        headers.append(tr("Count"));
+        this->ui->providerInvoiceTableWidget->setHorizontalHeaderLabels(headers);
     }
     //
     void ProviderInvoiceView::initialize()
     {
-        m_currentProviderIndex = -1;
-        this->ui->invoiceLineEdit->clear();
-        this->ui->totalDoubleSpinBox->setValue(0.0);
-        this->ui->providerComboBox->clear();
-        this->ui->productsListWidget->clear();
-
-        ProviderListPtr pProviderListPtr = Singletons::m_pDAO->getProviderList();
-
-        // internal data structure reset
-        this->m_rowProviderIdMap.clear();
-        Int32 idx = 0;
-        for (auto iter = pProviderListPtr->begin(); iter != pProviderListPtr->end(); ++iter)
-        {
-            ProviderPtr pProviderPtr = *iter;
-            QString providerImagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pProviderPtr->m_image);
-            QPixmap productPixmap = GuiUtils::getImage(providerImagePath);
-            this->ui->providerComboBox->insertItem(idx, QIcon(productPixmap), pProviderPtr->m_name, pProviderPtr->m_id);
-            this->m_rowProviderIdMap[idx] = pProviderPtr->m_id;
-            idx++;
+        QString providerInvoiceId(Singletons::m_currentProviderInvoiceId);
+        ProviderInvoicePtr providerInvoicePtr = Singletons::m_pDAO->getProviderInvoiceById(providerInvoiceId);
+        if (!providerInvoicePtr) {
+            QLOG_ERROR() << QString("[ERROR] provider invoice id {%1} not found in ddbb").arg(providerInvoiceId);
+            QMessageBox::warning(this, tr("Error"), tr("Unexpected error"));
+            return;
         }
-        // do not show any provider by default (-1)
-        this->ui->providerComboBox->setCurrentIndex(m_currentProviderIndex);
+        this->ui->invoiceIdValueLabel->setText(providerInvoiceId);
+        this->ui->invoiceTotalValueLabel->setText(QString("%1 €").arg(providerInvoicePtr->m_total, 0, 'f', 2));
+        QString dateLocalized = Singletons::m_translationManager.getLocale().toString(providerInvoicePtr->m_regDate, QLocale::NarrowFormat);
+        this->ui->providerInvoiceDateValueLabel->setText(dateLocalized);
+        this->ui->providerNameLabel->setText(providerInvoicePtr->m_providerName);
+        // provider image
+        QString imagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(providerInvoicePtr->m_providerImagePath);
+        QPixmap providerPixmap = GuiUtils::getImage(imagePath);
+        this->ui->providerImageLabel->setPixmap(providerPixmap);
+        this->ui->providerImageLabel->setFixedWidth(Constants::kFamilyImageWidth);
+        this->ui->providerImageLabel->setFixedHeight(Constants::kFamilyImageHeigth);
+        this->ui->providerImageLabel->setScaledContents(true);
+        fillProviderInvoiceProducts(providerInvoiceId);
     }
     //
     void ProviderInvoiceView::init()
@@ -129,74 +79,35 @@ namespace PenyaManager {
     void ProviderInvoiceView::retranslate()
     {
         this->ui->retranslateUi(this);
+        translateTable();
     }
     //
-    void ProviderInvoiceView::on_providerComboBox_activated(int index)
+    void ProviderInvoiceView::fillProviderInvoiceProducts(const QString &providerInvoiceId)
     {
-        if (index < 0 || index == m_currentProviderIndex){
-            return;
-        }
-        m_currentProviderIndex = index;
+        ProviderInvoiceProductItemListPtr pListPtr = Singletons::m_pDAO->getProviderInvoiceProductsByInvoiceId(providerInvoiceId);
+        // num rows
+        this->ui->providerInvoiceTableWidget->setRowCount(pListPtr->size());
+        // table reset
+        this->ui->providerInvoiceTableWidget->clearContents();
 
-        auto rowMap = m_rowProviderIdMap.find(m_currentProviderIndex);
-        if (rowMap == m_rowProviderIdMap.end()) {
-            //this should never happen
-            qDebug() << "[ERROR] providerId not found and should be in the map";
-            return;
-        }
-
-        // get provider ID
-        Int32 providerId = rowMap->second;
-
-        this->ui->productsListWidget->clear();
-
-        ProductItemListPtr pfListPtr = Singletons::m_pDAO->getProductsFromProvider(providerId);
-
-        for (ProductItemList::iterator iter = pfListPtr->begin(); iter != pfListPtr->end(); ++iter)
+        Uint32 rowCount = 0;
+        for (ProviderInvoiceProductItemList::iterator iter = pListPtr->begin(); iter != pListPtr->end(); ++iter)
         {
-            createProductItemRow(*iter);
+            ProviderInvoiceProductItemPtr pProductPtr = *iter;
+            Uint32 column = 0;
+            // icon image
+            QTableWidgetItem *productImageWidget = new QTableWidgetItem;
+            QString imagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pProductPtr->m_productImagePath);
+            QPixmap productItemPixmap = GuiUtils::getImage(imagePath).scaled(Constants::kFamilyImageWidth, Constants::kFamilyImageHeigth);
+            productImageWidget->setData(Qt::DecorationRole, productItemPixmap);
+            this->ui->providerInvoiceTableWidget->setRowHeight(rowCount, Constants::kFamilyImageHeigth);
+            this->ui->providerInvoiceTableWidget->setItem(rowCount, column++, productImageWidget);
+            // product name
+            this->ui->providerInvoiceTableWidget->setItem(rowCount, column++, new QTableWidgetItem(pProductPtr->m_productName));
+            // count
+            this->ui->providerInvoiceTableWidget->setItem(rowCount, column++, new QTableWidgetItem(QString::number(pProductPtr->m_count)));
+            rowCount++;
         }
-    }
-    //
-    void ProviderInvoiceView::createProductItemRow(const ProductItemPtr &pIPtr)
-    {
-        QListWidgetItem *pProductItem = new QListWidgetItem(this->ui->productsListWidget);
-        pProductItem->setData(Constants::kIdRole, pIPtr->m_id);
-        this->ui->productsListWidget->addItem(pProductItem);
-
-        // main product widget
-        QWidget *pProduceItemWidget = new QWidget(this);
-        // load product image
-        QLabel *pImageLabel = new QLabel;
-        QString imagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pIPtr->m_imagePath);
-        QPixmap productItemPixmap = GuiUtils::getImage(imagePath);
-        pImageLabel->setPixmap(productItemPixmap);
-        pImageLabel->setFixedWidth(Constants::kFamilyImageWidth);
-        pImageLabel->setFixedHeight(Constants::kFamilyImageHeigth);
-        pImageLabel->setScaledContents(true);
-
-        // name
-        QLabel *pTextLabel = new QLabel(pIPtr->m_name);
-        pTextLabel->setFixedWidth(250);
-
-        // count widget
-        QSpinBox *pCountWidget = new QSpinBox;
-        pCountWidget->setFixedWidth(150);
-        // Default max is only 99
-        pCountWidget->setMaximum(99999);
-        // layout
-        QHBoxLayout *pLayout = new QHBoxLayout(pProduceItemWidget);
-        // layout must have 4 elements.
-        // Later, 4th element will be fetched
-        pLayout->addWidget(pImageLabel);
-        pLayout->addWidget(pTextLabel);
-        QSpacerItem *pHorizontalSpacer = new QSpacerItem(200, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-        pLayout->addItem(pHorizontalSpacer);
-        pLayout->addWidget(pCountWidget);
-        pProduceItemWidget->setLayout(pLayout);
-        pProductItem->setSizeHint(pLayout->minimumSize());
-        pProductItem->setBackgroundColor(this->ui->productsListWidget->count() % 2 == 0 ? (Qt::lightGray) : (Qt::darkGray));
-        this->ui->productsListWidget->setItemWidget(pProductItem, pProduceItemWidget);
     }
 }
 

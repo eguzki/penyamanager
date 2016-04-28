@@ -15,8 +15,6 @@ namespace PenyaManager
             //
             ProviderInvoice();
             //
-            ProviderInvoice(QString id, Float total, const QDate &regDate, Int32 providerid);
-            //
             virtual ~ProviderInvoice(){}
 
         public:
@@ -28,6 +26,10 @@ namespace PenyaManager
             QDate               m_regDate;
             //
             Int32               m_providerid;
+            //
+            QString             m_providerName;
+            //
+            QString             m_providerImagePath;
     };
 
     //

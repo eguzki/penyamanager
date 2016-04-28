@@ -98,7 +98,7 @@ namespace PenyaManager {
     void AdminMainWindow::on_provider_invoice_button_triggered()
     {
         // call provider invoice window
-        switchCentralWidget(WindowKey::kProviderInvoiceViewKey);
+        switchCentralWidget(WindowKey::kNewProviderInvoiceViewKey);
     }
     //
     void AdminMainWindow::on_provider_invoice_list_button_triggered()

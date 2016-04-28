@@ -88,7 +88,6 @@ namespace PenyaManager {
         // Create deposit info
         DepositPtr pDepositPtr = Singletons::m_pServices->createDeposit(pCurrMemberPtr, deposit);
         if (!pDepositPtr) {
-            // TODO handle error
             QMessageBox::warning(this, "Could not create deposit", "Contact administrator");
             return;
         }

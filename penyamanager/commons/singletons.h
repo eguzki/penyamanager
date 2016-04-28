@@ -40,6 +40,8 @@ namespace PenyaManager {
             //
             static Int32                    m_currentMemberId;
             //
+            static QString                  m_currentProviderInvoiceId;
+            //
             static TranslationManager       m_translationManager;
     };
 }

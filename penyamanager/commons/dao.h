@@ -14,6 +14,7 @@
 #include <objs/InvoiceProductItem.h>
 #include <objs/ReservationItem.h>
 #include <objs/ProviderInvoice.h>
+#include <objs/ProviderInvoiceProductItem.h>
 #include "DataTypes.h"
 
 namespace PenyaManager {
@@ -194,6 +195,10 @@ namespace PenyaManager {
             void deleteInvoice(Int32 invoiceIde);
             //
             bool checkUsername(Int32 username);
+            //
+            ProviderInvoicePtr getProviderInvoiceById(const QString &providerInvoiceId);
+            //
+            ProviderInvoiceProductItemListPtr getProviderInvoiceProductsByInvoiceId(const QString &providerInvoiceId);
 
         private:
             //
@@ -368,6 +373,10 @@ namespace PenyaManager {
             QSqlQuery               m_getActiveInvoiceListQuery;
             //
             QSqlQuery               m_checkUsernameQuery;
+            //
+            QSqlQuery               m_providerInvoiceByIdQuery;
+            //
+            QSqlQuery               m_providerInvoiceProductsByInvoiceIdQuery;
     };
 }
 #endif // DAO_H

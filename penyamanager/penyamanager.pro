@@ -45,6 +45,7 @@ SOURCES += main.cpp\
         objs/ReservationItem.cpp\
         objs/Provider.cpp\
         objs/ProviderInvoice.cpp\
+        objs/ProviderInvoiceProductItem.cpp\
         user/loginwindow.cpp \
         commons/numitemdialog.cpp \
         user/invoicewindow.cpp \
@@ -78,6 +79,7 @@ HEADERS  += user/memberdashboardwindow.h\
         objs/ReservationItem.h\
         objs/Provider.h\
         objs/ProviderInvoice.h\
+        objs/ProviderInvoiceProductItem.h\
         user/loginwindow.h \
         commons/numitemdialog.h \
         user/invoicewindow.h \

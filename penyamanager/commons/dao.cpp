@@ -95,7 +95,9 @@ namespace PenyaManager {
             m_updateLastModInvoiceQuery(),
             m_removeInvoiceQuery(),
             m_getActiveInvoiceListQuery(),
-            m_checkUsernameQuery()
+            m_checkUsernameQuery(),
+            m_providerInvoiceByIdQuery(),
+            m_providerInvoiceProductsByInvoiceIdQuery()
     {
         // configure db connection
         m_db.setHostName(hostname);
@@ -668,6 +670,20 @@ namespace PenyaManager {
                 "SELECT COUNT(*) "
                 "FROM member "
                 "WHERE username = :username"
+                );
+        // get provider invoice by id
+        m_providerInvoiceByIdQuery.prepare(
+                "SELECT provider_invoices.date, provider_invoices.total, provider.name, provider.image "
+                "FROM provider_invoices "
+                "INNER JOIN provider ON provider.idprovider = provider_invoices.idprovider "
+                "WHERE provider_invoices.idprovider_invoices = :providerinvoicesid"
+                );
+        // get provider invoice product by invoice id
+        m_providerInvoiceProductsByInvoiceIdQuery.prepare(
+                "SELECT provider_invoices_product.product_item_idproduct_item, provider_invoices_product.count, product_item.name, product_item.image, product_item.price "
+                "FROM provider_invoices_product "
+                "INNER JOIN product_item ON product_item.idproduct_item = provider_invoices_product.product_item_idproduct_item "
+                "WHERE provider_invoices_product.provider_invoices_idprovider_invoices = :providerinvoicesid"
                 );
     }
 
@@ -2570,6 +2586,54 @@ namespace PenyaManager {
             usernameUsed = m_checkUsernameQuery.value(0).toInt() != 0;
         }
         return usernameUsed;
+    }
+    //
+    ProviderInvoicePtr DAO::getProviderInvoiceById(const QString &providerInvoiceId)
+    {
+        ProviderInvoicePtr pProviderInvoicePtr;
+        m_providerInvoiceByIdQuery.bindValue(":providerinvoicesid", providerInvoiceId);
+        if (!m_providerInvoiceByIdQuery.exec())
+        {
+            qDebug() << m_providerInvoiceByIdQuery.lastError();
+            QLOG_ERROR() << m_providerInvoiceByIdQuery.lastError();
+        } else if (m_providerInvoiceByIdQuery.next())
+        {
+            pProviderInvoicePtr = ProviderInvoicePtr(new ProviderInvoice);
+            Uint32 column = 0;
+            pProviderInvoicePtr->m_id = providerInvoiceId;
+            pProviderInvoicePtr->m_regDate = m_providerInvoiceByIdQuery.value(column++).toDate();
+            pProviderInvoicePtr->m_total = m_providerInvoiceByIdQuery.value(column++).toFloat();
+            pProviderInvoicePtr->m_providerName = m_providerInvoiceByIdQuery.value(column++).toString();
+            pProviderInvoicePtr->m_providerImagePath = m_providerInvoiceByIdQuery.value(column++).toString();
+        }
+        m_providerInvoiceByIdQuery.finish();
+        return pProviderInvoicePtr;
+    }
+    //
+    ProviderInvoiceProductItemListPtr DAO::getProviderInvoiceProductsByInvoiceId(const QString &providerInvoiceId)
+    {
+        ProviderInvoiceProductItemListPtr pListPtr = ProviderInvoiceProductItemListPtr(new ProviderInvoiceProductItemList);
+        // bind value
+        m_providerInvoiceProductsByInvoiceIdQuery.bindValue(":providerinvoicesid", providerInvoiceId);
+        // run query
+        if (!m_providerInvoiceProductsByInvoiceIdQuery.exec())
+        {
+            qDebug() << m_providerInvoiceProductsByInvoiceIdQuery.lastError();
+            QLOG_ERROR() << m_providerInvoiceProductsByInvoiceIdQuery.lastError();
+        } else {
+            while (m_providerInvoiceProductsByInvoiceIdQuery.next()) {
+                ProviderInvoiceProductItemPtr pProductPtr(new ProviderInvoiceProductItem);
+                Uint32 column = 0;
+                pProductPtr->m_productId = m_providerInvoiceProductsByInvoiceIdQuery.value(column++).toInt();
+                pProductPtr->m_count = m_providerInvoiceProductsByInvoiceIdQuery.value(column++).toInt();
+                pProductPtr->m_productName = m_providerInvoiceProductsByInvoiceIdQuery.value(column++).toString();
+                pProductPtr->m_productImagePath = m_providerInvoiceProductsByInvoiceIdQuery.value(column++).toString();
+                pProductPtr->m_productPrice = m_providerInvoiceProductsByInvoiceIdQuery.value(column++).toFloat();
+                pListPtr->push_back(pProductPtr);
+            }
+        }
+        m_providerInvoiceProductsByInvoiceIdQuery.finish();
+        return pListPtr;
     }
 }
 

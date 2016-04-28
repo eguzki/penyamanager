@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ProviderInvoiceView</class>
- <widget class="QWidget" name="ProviderInvoiceView">
+ <class>NewProviderInvoiceView</class>
+ <widget class="QWidget" name="NewProviderInvoiceView">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -9,18 +9,6 @@
     <width>800</width>
     <height>600</height>
    </rect>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>0</width>
-    <height>0</height>
-   </size>
-  </property>
-  <property name="maximumSize">
-   <size>
-    <width>16777215</width>
-    <height>16777215</height>
-   </size>
   </property>
   <property name="windowTitle">
    <string notr="true"/>
@@ -69,39 +57,80 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QFrame" name="frame">
+    <widget class="QFrame" name="topFrame">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
      </property>
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
+     <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <widget class="QWidget" name="InvoiceIdWidget" native="true">
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <widget class="QLabel" name="titleLabel">
+        <property name="text">
+         <string>New Provider Invoice</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>548</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="savePushButton">
+        <property name="text">
+         <string>Save</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="providerDataFrame">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_4">
+      <item>
+       <widget class="QWidget" name="nameFormWidget" native="true">
+        <layout class="QHBoxLayout" name="horizontalLayout_5">
          <item>
-          <widget class="QLabel" name="invoiceIdlabel">
+          <widget class="QLabel" name="invoiceabel">
            <property name="text">
             <string>InvoiceID:</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="invoiceIdValueLabel">
-           <property name="text">
-            <string notr="true">0</string>
-           </property>
-          </widget>
+          <widget class="QLineEdit" name="invoiceLineEdit"/>
          </item>
          <item>
-          <spacer name="horizontalSpacer_2">
+          <spacer name="horizontalSpacer_4">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
-             <width>653</width>
+             <width>332</width>
              <height>20</height>
             </size>
            </property>
@@ -111,52 +140,19 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
        </widget>
       </item>
       <item>
-       <widget class="QWidget" name="invoiceTotalWidget" native="true">
-        <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <widget class="QWidget" name="phoneFormWidget" native="true">
+        <layout class="QHBoxLayout" name="horizontalLayout_7">
          <item>
-          <widget class="QLabel" name="invoiceTotalLabel">
+          <widget class="QLabel" name="totalLabel">
            <property name="text">
-            <string>Total:</string>
+            <string>Total</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="invoiceTotalValueLabel">
-           <property name="text">
-            <string notr="true">0</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="horizontalSpacer_3">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>681</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item>
-       <widget class="QWidget" name="providerInvoiceDateWidget" native="true">
-        <layout class="QHBoxLayout" name="horizontalLayout_5">
-         <item>
-          <widget class="QLabel" name="providerInvoiceDateLabel">
-           <property name="text">
-            <string>Date:</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="providerInvoiceDateValueLabel">
-           <property name="text">
-            <string notr="true">TextLabel</string>
+          <widget class="QDoubleSpinBox" name="totalDoubleSpinBox">
+           <property name="maximum">
+            <double>999999.989999999990687</double>
            </property>
           </widget>
          </item>
@@ -167,7 +163,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
            </property>
            <property name="sizeHint" stdset="0">
             <size>
-             <width>625</width>
+             <width>330</width>
              <height>20</height>
             </size>
            </property>
@@ -177,30 +173,22 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
        </widget>
       </item>
       <item>
-       <widget class="QWidget" name="providerWidget" native="true">
-        <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <widget class="QGroupBox" name="providerGroupBox">
+        <property name="title">
+         <string>Provider</string>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_8">
          <item>
-          <widget class="QLabel" name="providerImageLabel">
-           <property name="text">
-            <string notr="true">ImageLabel</string>
-           </property>
-          </widget>
+          <widget class="QComboBox" name="providerComboBox"/>
          </item>
          <item>
-          <widget class="QLabel" name="providerNameLabel">
-           <property name="text">
-            <string notr="true">TextLabel</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="horizontalSpacer_4">
+          <spacer name="horizontalSpacer_7">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
-             <width>600</width>
+             <width>662</width>
              <height>20</height>
             </size>
            </property>
@@ -210,7 +198,11 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
        </widget>
       </item>
       <item>
-       <widget class="QTableWidget" name="providerInvoiceTableWidget"/>
+       <widget class="QListWidget" name="productsListWidget">
+        <property name="selectionMode">
+         <enum>QAbstractItemView::NoSelection</enum>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>

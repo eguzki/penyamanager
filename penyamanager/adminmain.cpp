@@ -24,6 +24,7 @@
 #include <admin/adminfamilyview.h>
 #include <admin/productexpensesview.h>
 #include <admin/providerinvoiceview.h>
+#include <admin/newproviderinvoiceview.h>
 #include <admin/providerinvoicelistview.h>
 #include <admin/depositlistview.h>
 #include <admin/accountbalanceview.h>
@@ -103,7 +104,10 @@ int main(int argc, char *argv[])
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kAdminFamilyViewKey, pAdminFamilyView);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kProductExpensesViewKey, new PenyaManager::ProductExpensesView);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kProviderInvoiceViewKey, new PenyaManager::ProviderInvoiceView);
-    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kProviderInvoiceListViewKey, new PenyaManager::ProviderInvoiceListView);
+    PenyaManager::NewProviderInvoiceView *pNewProviderInvoiceView = new PenyaManager::NewProviderInvoiceView(NULL, adminMainWindowSwitchCallback);
+    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kNewProviderInvoiceViewKey, pNewProviderInvoiceView);
+    PenyaManager::ProviderInvoiceListView *pProviderInvoiceListView = new PenyaManager::ProviderInvoiceListView(NULL, adminMainWindowSwitchCallback);
+    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kProviderInvoiceListViewKey, pProviderInvoiceListView);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kAdminDepositListViewKey, new PenyaManager::DepositListView);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kAdminAccountBalanceViewKey, new PenyaManager::AccountBalanceView);
     PenyaManager::MemberListView *pMemberListView = new PenyaManager::MemberListView(NULL, adminMainWindowSwitchCallback);
