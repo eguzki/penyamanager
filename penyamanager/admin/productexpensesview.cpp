@@ -140,18 +140,33 @@ namespace PenyaManager {
     {
         InvoiceProductItemListPtr pInvoiceProductItemListPtr;
         InvoiceProductItemStatsPtr pInvoiceProductItemStatsPtr;
-        bool ok;
-        Int32 memberId = this->ui->memberIdLineEdit->text().toInt(&ok);
         QDate fromDate = this->ui->fromCalendarWidget->selectedDate();
         // add one day to "toDate" to be included
         QDate toDate = this->ui->toCalendarWidget->selectedDate().addDays(1);
-        if (!ok) {
+
+        QString usernameStr = this->ui->memberIdLineEdit->text().trimmed();
+        if (usernameStr.isEmpty()) {
             this->ui->memberIdLineEdit->clear();
             pInvoiceProductItemListPtr = Singletons::m_pDAO->getProductExpensesList(fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
             pInvoiceProductItemStatsPtr = Singletons::m_pDAO->getProductExpensesListStats(fromDate, toDate);
         } else {
-            pInvoiceProductItemListPtr = Singletons::m_pDAO->getProductExpensesListByMemberId(memberId, fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
-            pInvoiceProductItemStatsPtr = Singletons::m_pDAO->getProductExpensesListByMemberIdStats(memberId, fromDate, toDate);
+            bool ok;
+            Int32 memberUsername = usernameStr.toInt(&ok);
+            if (!ok) {
+                this->ui->memberIdLineEdit->clear();
+                QMessageBox::about(this, tr("Invalid data"), tr("Username not valid"));
+                return;
+            } else {
+                MemberPtr pMemberPtr = Singletons::m_pServices->getMemberByUsername(memberUsername);
+                if (!pMemberPtr)
+                {
+                    // User could not be found
+                    QMessageBox::about(this, tr("Invalid data"), tr("Username found"));
+                    return;
+                }
+                pInvoiceProductItemListPtr = Singletons::m_pDAO->getProductExpensesListByMemberId(pMemberPtr->m_id, fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
+                pInvoiceProductItemStatsPtr = Singletons::m_pDAO->getProductExpensesListByMemberIdStats(pMemberPtr->m_id, fromDate, toDate);
+            }
         }
         // enable-disable pagination buttons
         // total num pages
@@ -185,23 +200,38 @@ namespace PenyaManager {
             QMessageBox::warning(this, "Unable to save file", "Error opening " + filename);
             return;
         }
-        QTextStream out(&f);
 
         // fetch data
         InvoiceProductItemListPtr pInvoiceProductItemListPtr;
         InvoiceProductItemStatsPtr pInvoiceProductItemStatsPtr;
-        bool ok;
-        Int32 memberId = this->ui->memberIdLineEdit->text().toInt(&ok);
         QDate fromDate = this->ui->fromCalendarWidget->selectedDate();
         // add one day to "toDate" to be included
         QDate toDate = this->ui->toCalendarWidget->selectedDate().addDays(1);
-        if (!ok) {
+        QString usernameStr = this->ui->memberIdLineEdit->text().trimmed();
+        if (usernameStr.isEmpty()) {
             this->ui->memberIdLineEdit->clear();
             pInvoiceProductItemListPtr = Singletons::m_pDAO->getProductExpensesList(fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
         } else {
-            pInvoiceProductItemListPtr = Singletons::m_pDAO->getProductExpensesListByMemberId(memberId, fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
+            bool ok;
+            Int32 memberUsername = usernameStr.toInt(&ok);
+            if (!ok) {
+                this->ui->memberIdLineEdit->clear();
+                QMessageBox::about(this, tr("Invalid data"), tr("Username not valid"));
+                return;
+            } else {
+                MemberPtr pMemberPtr = Singletons::m_pServices->getMemberByUsername(memberUsername);
+                if (!pMemberPtr)
+                {
+                    // User could not be found
+                    QMessageBox::about(this, tr("Invalid data"), tr("Username found"));
+                    return;
+                }
+                pInvoiceProductItemListPtr = Singletons::m_pDAO->getProductExpensesListByMemberId(pMemberPtr->m_id, fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
+            }
         }
 
+        // save to file
+        QTextStream out(&f);
         // header
         out << tr("product ID") << ", " << tr("name") << ", " << tr("count") << endl;
         // iterate over results
@@ -212,11 +242,6 @@ namespace PenyaManager {
         }
         f.close();
         QMessageBox::information(this, tr("CSV export"), tr("Successfully exported. Filename: %1").arg(filename));
-    }
-    //
-    void ProductExpensesView::on_printPushButton_clicked()
-    {
-        // TODO
     }
 }
 

@@ -13,7 +13,7 @@ namespace PenyaManager {
             kInvoiceDetailsWindowKey, kAdminProviderWindowKey, kAdminNewProviderKey, kStockManagementWindowKey,
             kFamilyItemManagementWindowKey, kAdminProductItemKey, kAdminFamilyViewKey, kProductExpensesViewKey,
             kProviderInvoiceViewKey, kProviderInvoiceListViewKey, kAdminDepositListViewKey, kAdminAccountBalanceViewKey,
-            kMemberViewKey
+            kMemberViewKey, kAdminReservationViewKey, kNewProviderInvoiceViewKey
     };
     //
     typedef std::function<void(WindowKey)>  CentralWidgetCallback;
@@ -38,6 +38,8 @@ namespace PenyaManager {
             static const QString    kDatabaseUser;
             // Config settings ddbb pass
             static const QString    kDatabasePass;
+            // Config settings log level
+            static const QString    kLogLevel;
             // FamilyWidget width
             static const Uint32     kFamilyWidgetWidth;
             // FamilyWidget image width
@@ -60,6 +62,10 @@ namespace PenyaManager {
             static const Uint16     kNumLangs;
             // Log file max size in bytes
             static const quint64    kLogMaxSizeBytes;
+            // Open invoice timeout in hours
+            static const Uint32     kOpenInvoiceTimeoutH;
+            // Credit limit
+            static const Float      kCreditLimit;
 
         private:
             Constants() {}

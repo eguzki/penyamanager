@@ -1,5 +1,7 @@
 //
 
+#include <QMessageBox>
+
 #include <commons/singletons.h>
 #include "accountbalanceview.h"
 #include "ui_accountbalanceview.h"
@@ -49,7 +51,7 @@ namespace PenyaManager {
         // table reservation table Header
         QStringList headers;
         headers.append(tr("date"));
-        headers.append(tr("memberid"));
+        headers.append(tr("username"));
         headers.append(tr("description"));
         headers.append(tr("amount"));
         this->ui->transactionsTableWidget->setHorizontalHeaderLabels(headers);
@@ -115,7 +117,7 @@ namespace PenyaManager {
             TransactionPtr pTransactionPtr = *iter;
             QString dateLocalized = Singletons::m_translationManager.getLocale().toString(pTransactionPtr->m_date, QLocale::NarrowFormat);
             this->ui->transactionsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(dateLocalized));
-            this->ui->transactionsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(QString::number(pTransactionPtr->m_memberId)));
+            this->ui->transactionsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(QString::number(pTransactionPtr->m_memberUsername)));
             this->ui->transactionsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(pTransactionPtr->m_descr));
             this->ui->transactionsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(QString("%1 €").arg(pTransactionPtr->m_amount, 0, 'f', 2)));
             rowCount++;
@@ -129,17 +131,31 @@ namespace PenyaManager {
         QDate fromDate = this->ui->fromCalendarWidget->selectedDate();
         // add one day to "toDate" to be included
         QDate toDate = this->ui->toCalendarWidget->selectedDate().addDays(1);
-        bool ok;
-        Int32 memberId = this->ui->memberIdLineEdit->text().toInt(&ok);
-        if (!ok) {
+        QString usernameStr = this->ui->memberIdLineEdit->text().trimmed();
+        if (usernameStr.isEmpty()) {
             this->ui->memberIdLineEdit->clear();
             this->ui->memberIdResValueLabel->setText(QString("ALL"));
             pTransactionListPtr = Singletons::m_pDAO->getAccountList(fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
             pTransactionListStatsPtr = Singletons::m_pServices->getAccountListStats(fromDate, toDate);
         } else {
-            pTransactionListPtr = Singletons::m_pDAO->getAccountListByMemberId(memberId, fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
-            pTransactionListStatsPtr = Singletons::m_pServices->getAccountListByMemberIdStats(memberId, fromDate, toDate);
-            this->ui->memberIdResValueLabel->setText(QString::number(memberId));
+            bool ok;
+            Int32 memberUsername = usernameStr.toInt(&ok);
+            if (!ok) {
+                this->ui->memberIdLineEdit->clear();
+                QMessageBox::about(this, tr("Invalid data"), tr("Username not valid"));
+                return;
+            } else {
+                MemberPtr pMemberPtr = Singletons::m_pServices->getMemberByUsername(memberUsername);
+                if (!pMemberPtr)
+                {
+                    // User could not be found
+                    QMessageBox::about(this, tr("Invalid data"), tr("Username found"));
+                    return;
+                }
+                pTransactionListPtr = Singletons::m_pDAO->getAccountListByMemberId(pMemberPtr->m_id, fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
+                pTransactionListStatsPtr = Singletons::m_pServices->getAccountListByMemberIdStats(pMemberPtr->m_id, fromDate, toDate);
+                this->ui->memberIdResValueLabel->setText(QString::number(memberUsername));
+            }
         }
         // enable-disable pagination buttons
         // total num pages

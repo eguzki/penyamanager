@@ -34,13 +34,13 @@ namespace PenyaManager {
         return Singletons::m_pDAO->createDeposit(pDepositPtr);
     }
     //
-    void Services::closeInvoice(const MemberPtr &pMemberPtr, Int32 invoiceId)
+    void Services::closeInvoice(Int32 memberId, Int32 invoiceId)
     {
         InvoicePtr pInvoicePtr(new Invoice());
         // id
         pInvoicePtr->m_id = invoiceId;
         // memberId
-        pInvoicePtr->m_memberId = pMemberPtr->m_id;
+        pInvoicePtr->m_memberId = memberId;
         // invoice date: now
         pInvoicePtr->m_date = QDateTime::currentDateTime();
         // state: closed
@@ -64,7 +64,7 @@ namespace PenyaManager {
         // create account register info
         QString description = QString("invoice ref %1").arg(invoiceId);
         // account transaction has totalInvoice as negative amount
-        this->createAccountTransaction(pMemberPtr->m_id, -totalInvoice, description, TransactionType::Invoice);
+        this->createAccountTransaction(memberId, -totalInvoice, description, TransactionType::Invoice);
         // Update stock
         for (InvoiceProductItemList::iterator iter = pInvoiceProductItemListPtr->begin(); iter != pInvoiceProductItemListPtr->end(); ++iter)
         {
@@ -166,4 +166,55 @@ namespace PenyaManager {
         }
         Singletons::m_pDAO->updateInvoiceLastModDate(invoiceId, QDateTime::currentDateTime());
     }
+    //
+    void Services::cleanOutdatedInvoices()
+    {
+        InvoiceListPtr pActiveInvoiceList = Singletons::m_pDAO->getActiveInvoiceList();
+
+        QDateTime now = QDateTime::currentDateTime();
+        for (InvoiceList::iterator iter = pActiveInvoiceList->begin(); iter != pActiveInvoiceList->end(); ++iter) {
+            InvoicePtr pInvoicePtr = *iter;
+            // check modified
+            if (pInvoicePtr->m_lastModified.secsTo(now) > 60*60 * Constants::kOpenInvoiceTimeoutH) {
+                // invoice timed out
+                // close it
+                Singletons::m_pServices->closeInvoice(pInvoicePtr->m_memberId, pInvoicePtr->m_id);
+                QLOG_INFO() << QString("[Invoice][ONTIMEOUT] User %1 Invoice ID %2").arg(pInvoicePtr->m_memberId).arg(pInvoicePtr->m_id);
+                // leave returnInvoicePtr empty
+            }
+        }
+    }
+    //
+    MemberPtr Services::getMemberById(Int32 memberId)
+    {
+        MemberPtr pResult;
+        MemberPtr pMember = Singletons::m_pDAO->fetchMemberById(memberId);
+        if (pMember) {
+            FloatBoolPair pair = Singletons::m_pDAO->getAccountBalance(memberId);
+            if (pair.b) {
+                // exists
+                pResult = pMember;
+                pResult->m_balance = pair.f;
+            }
+        }
+        // if any of the queries fail, return null
+        return pResult;
+    }
+    //
+    MemberPtr Services::getMemberByUsername(Int32 username)
+    {
+        MemberPtr pResult;
+        MemberPtr pMember = Singletons::m_pDAO->fetchMemberByUsername(username);
+        if (pMember) {
+            FloatBoolPair pair = Singletons::m_pDAO->getAccountBalance(pMember->m_id);
+            if (pair.b) {
+                // exists
+                pResult = pMember;
+                pResult->m_balance = pair.f;
+            }
+        }
+        // if any of the queries fail, return null
+        return pResult;
+    }
 }
+

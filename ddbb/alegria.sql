@@ -25,6 +25,7 @@ DROP TABLE IF EXISTS `alegria`.`member` ;
 
 CREATE TABLE IF NOT EXISTS `alegria`.`member` (
   `idmember` INT(11) NOT NULL AUTO_INCREMENT COMMENT '',
+  `username` INT(11) NOT NULL COMMENT '',
   `name` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_bin' NOT NULL COMMENT '',
   `surname` VARCHAR(100) NOT NULL COMMENT '',
   `image` VARCHAR(300) NULL COMMENT '',
@@ -42,10 +43,11 @@ CREATE TABLE IF NOT EXISTS `alegria`.`member` (
   `email` VARCHAR(45) NULL COMMENT '',
   `bank_account` VARCHAR(45) NOT NULL COMMENT '',
   `postal_send` TINYINT(1) NOT NULL COMMENT '',
-  `notes` VARCHAR(45) NULL COMMENT '',
+  `notes` VARCHAR(2000) NULL COMMENT '',
   `pwd` VARCHAR(128) NOT NULL COMMENT '',
   `lastlogin` DATETIME NOT NULL COMMENT '',
-  PRIMARY KEY (`idmember`)  COMMENT '')
+  PRIMARY KEY (`idmember`)  COMMENT '',
+  UNIQUE INDEX `username_UNIQUE` (`username` ASC)  COMMENT '')
 ENGINE = InnoDB
 AUTO_INCREMENT = 3
 DEFAULT CHARACTER SET = utf8;
@@ -240,6 +242,7 @@ CREATE TABLE IF NOT EXISTS `alegria`.`tablereservation` (
   `guestnum` SMALLINT NOT NULL COMMENT '',
   `idmember` INT(11) NOT NULL COMMENT '',
   `idtable` INT(11) NOT NULL COMMENT '',
+  `isadmin` TINYINT(1) NOT NULL COMMENT '',
   PRIMARY KEY (`idreservation`)  COMMENT '',
   INDEX `fk_tablereservation_member1_idx` (`idmember` ASC)  COMMENT '',
   INDEX `fk_tablereservation_lunchtables_idx` (`idtable` ASC)  COMMENT '',
@@ -324,6 +327,7 @@ CREATE TABLE IF NOT EXISTS `alegria`.`ovenreservation` (
   `reservationtype` TINYINT NOT NULL COMMENT '',
   `idmember` INT(11) NOT NULL COMMENT '',
   `idoven` INT(11) NOT NULL COMMENT '',
+  `isadmin` TINYINT(1) NOT NULL COMMENT '',
   PRIMARY KEY (`idreservation`)  COMMENT '',
   INDEX `fk_tablereservation_member1_idx` (`idmember` ASC)  COMMENT '',
   INDEX `fk_ovenreservation_oventables1_idx` (`idoven` ASC)  COMMENT '',
@@ -363,6 +367,7 @@ CREATE TABLE IF NOT EXISTS `alegria`.`fireplacereservation` (
   `reservationtype` TINYINT NOT NULL COMMENT '',
   `idmember` INT(11) NOT NULL COMMENT '',
   `idfireplace` INT(11) NOT NULL COMMENT '',
+  `isadmin` TINYINT(1) NOT NULL COMMENT '',
   PRIMARY KEY (`idreservation`)  COMMENT '',
   INDEX `fk_tablereservation_member1_idx` (`idmember` ASC)  COMMENT '',
   INDEX `fk_fireplacereservation_fireplacetables1_idx` (`idfireplace` ASC)  COMMENT '',

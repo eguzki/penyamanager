@@ -33,10 +33,13 @@ namespace PenyaManager {
     {
         // memberId
         this->ui->memberIdValueLabel->clear();
+        // member username
+        this->ui->usernameLineEdit->clear();
         // reg date
-        this->ui->regDateValueLabel->setText(QDate::currentDate().toString());
+        QString dateLocalized = Singletons::m_translationManager.getLocale().toString(QDate::currentDate(), QLocale::NarrowFormat);
+        this->ui->regDateValueLabel->setText(dateLocalized);
         // reg date
-        this->ui->lastLoginValueLabel->setText(QDate::currentDate().toString());
+        this->ui->lastLoginValueLabel->setText("-");
         // name
         this->ui->nameLineEdit->clear();
         // surname
@@ -73,7 +76,7 @@ namespace PenyaManager {
         // postal send
         this->ui->postalSendCheckBox->setChecked(false);
         // notes
-        this->ui->notesLineEdit->clear();
+        this->ui->notesTextEdit->clear();
     }
     //
     void MemberView::init()
@@ -98,23 +101,33 @@ namespace PenyaManager {
     void MemberView::on_savePushButton_clicked()
     {
         // Validate not empty fields
+        // username
+        QString memberUsernameStr = this->ui->usernameLineEdit->text();
+        bool usernameOk = false;
+        if (!memberUsernameStr.isEmpty()){
+            memberUsernameStr.toInt(&usernameOk);
+        }
+        if (!usernameOk) {
+            QMessageBox::warning(this, tr("Data missing"), tr("Username must be correct number"));
+            return;
+        }
         // name
         QString memberName = this->ui->nameLineEdit->text();
         if (memberName.isEmpty()){
-            QMessageBox::warning(this, "Data missing", "Name cannot be empty");
+            QMessageBox::warning(this, tr("Data missing"), tr("Name cannot be empty"));
             return;
         }
         // surname
         QString memberSurname = this->ui->memberSurnameLineEdit->text();
         if (memberSurname.isEmpty()){
-            QMessageBox::warning(this, "Data missing", "Surname cannot be empty");
+            QMessageBox::warning(this, tr("Data missing"), tr("Surname cannot be empty"));
             return;
         }
         // bank_account
         // TODO check bank account format
         QString bankAccount = this->ui->bankAccountLineEdit->text();
         if (bankAccount.isEmpty()){
-            QMessageBox::warning(this, "Data missing", "Bank Account cannot be empty");
+            QMessageBox::warning(this, tr("Data missing"), tr("Bank Account cannot be empty"));
             return;
         }
 
@@ -122,7 +135,7 @@ namespace PenyaManager {
         MemberPtr pMemberPtr;
         if (Singletons::m_currentMemberId >= 0) {
             // edit previous item
-            pMemberPtr = Singletons::m_pDAO->getMemberById(Singletons::m_currentMemberId);
+            pMemberPtr = Singletons::m_pServices->getMemberById(Singletons::m_currentMemberId);
             if (!pMemberPtr) {
                 QMessageBox::warning(this, "Unexpected state", QString("Editing item [id: %1] not found in ddbb").arg(Singletons::m_currentMemberId));
                 return;
@@ -137,6 +150,8 @@ namespace PenyaManager {
             // id -> no change
             // name
             pMemberPtr->m_name = this->ui->nameLineEdit->text();
+            // username
+            pMemberPtr->m_username = this->ui->usernameLineEdit->text().toInt();
             // surname
             pMemberPtr->m_surname = this->ui->memberSurnameLineEdit->text();
             // imagePath (optional)
@@ -173,7 +188,7 @@ namespace PenyaManager {
             // phone 2 (optional)
             pMemberPtr->m_phone2 = this->ui->phone2LineEdit->text();
             // notes (optional)
-            pMemberPtr->m_notes = this->ui->notesLineEdit->text();
+            pMemberPtr->m_notes = this->ui->notesTextEdit->toPlainText();
             // regDate -> no change
             // lastmodfies
             pMemberPtr->m_lastModified = QDateTime::currentDateTime();
@@ -197,6 +212,14 @@ namespace PenyaManager {
             //
 
             // id -> no needed
+            // username
+            pMemberPtr->m_username = this->ui->usernameLineEdit->text().toInt();
+            // Check username is not in use
+            bool usernameUsed = Singletons::m_pDAO->checkUsername(pMemberPtr->m_username);
+            if (usernameUsed) {
+                QMessageBox::warning(this, tr("Wrong username"), tr("username already in use"));
+                return;
+            }
             // name
             pMemberPtr->m_name = this->ui->nameLineEdit->text();
             // surname
@@ -235,7 +258,7 @@ namespace PenyaManager {
             // phone 2 (optional)
             pMemberPtr->m_phone2 = this->ui->phone2LineEdit->text();
             // notes (optional)
-            pMemberPtr->m_notes = this->ui->notesLineEdit->text();
+            pMemberPtr->m_notes = this->ui->notesTextEdit->toPlainText();
             // regDate
             pMemberPtr->m_regDate = QDateTime::currentDateTime();
             // lastmodfies
@@ -246,7 +269,6 @@ namespace PenyaManager {
             pMemberPtr->m_pwd = Utils::hashSHA256asHex("0000");
             // create in ddbb
             Int32 memberId = Singletons::m_pDAO->createMember(pMemberPtr);
-
             // create account
             Singletons::m_pServices->createAccountTransaction(memberId, 0.0, "new account", TransactionType::DepositFix);
             QLOG_INFO() << QString("[NewMember] ID %1").arg(memberId);
@@ -261,7 +283,7 @@ namespace PenyaManager {
     //
     void MemberView::fillMemberInfo(Int32 memberId)
     {
-        MemberPtr pMemberPtr = Singletons::m_pDAO->getMemberById(memberId);
+        MemberPtr pMemberPtr = Singletons::m_pServices->getMemberById(memberId);
         if (!pMemberPtr){
             return;
         }
@@ -273,6 +295,8 @@ namespace PenyaManager {
         // last login date
         dateLocalized = Singletons::m_translationManager.getLocale().toString(pMemberPtr->m_lastLogin, QLocale::NarrowFormat);
         this->ui->lastLoginValueLabel->setText(dateLocalized);
+        // username
+        this->ui->usernameLineEdit->setText(QString::number(pMemberPtr->m_username));
         // name
         this->ui->nameLineEdit->setText(pMemberPtr->m_name);
         // surname
@@ -313,7 +337,7 @@ namespace PenyaManager {
         // postal send
         this->ui->postalSendCheckBox->setChecked(pMemberPtr->m_postalSend);
         // notes
-        this->ui->notesLineEdit->setText(pMemberPtr->m_notes);
+        this->ui->notesTextEdit->setPlainText(pMemberPtr->m_notes);
     }
     //
     void MemberView::on_imagePushButton_clicked()

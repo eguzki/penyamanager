@@ -1,5 +1,6 @@
 //
 
+#include <QMessageBox>
 #include <commons/singletons.h>
 #include "admininvoicelistview.h"
 #include "ui_admininvoicelistview.h"
@@ -65,18 +66,31 @@ namespace PenyaManager {
     {
         InvoiceListPtr pInvoiceList;
         InvoiceListStatsPtr pInvoiceListStats;
-        bool ok;
-        Int32 memberId = this->ui->memberIdLineEdit->text().toInt(&ok);
         QDate fromDate = this->ui->fromCalendarWidget->selectedDate();
         // add one day to "toDate" to be included
         QDate toDate = this->ui->toCalendarWidget->selectedDate().addDays(1);
-        if (!ok) {
+        QString memberUsernameStr = this->ui->memberIdLineEdit->text().trimmed();
+        if (memberUsernameStr.isEmpty()) {
             this->ui->memberIdLineEdit->clear();
             pInvoiceList = Singletons::m_pDAO->getInvoiceList(fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
             pInvoiceListStats = Singletons::m_pDAO->getInvoiceListStats(fromDate, toDate);
         } else {
-            pInvoiceList = Singletons::m_pDAO->getInvoiceListByMemberId(memberId, fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
-            pInvoiceListStats = Singletons::m_pDAO->getInvoiceListByMemberIdStats(memberId, fromDate, toDate);
+            bool ok;
+            Int32 memberUsername = memberUsernameStr.toInt(&ok);
+            if (!ok) {
+                QMessageBox::about(this, tr("Invalid data"), tr("Username not valid"));
+                return;
+            } else {
+                MemberPtr pMemberPtr = Singletons::m_pServices->getMemberByUsername(memberUsername);
+                if (!pMemberPtr)
+                {
+                    // User could not be found
+                    QMessageBox::about(this, tr("Invalid data"), tr("Username found"));
+                    return;
+                }
+                pInvoiceList = Singletons::m_pDAO->getInvoiceListByMemberId(pMemberPtr->m_id, fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
+                pInvoiceListStats = Singletons::m_pDAO->getInvoiceListByMemberIdStats(pMemberPtr->m_id, fromDate, toDate);
+            }
         }
         // enable-disable pagination buttons
         // total num pages
@@ -112,10 +126,10 @@ namespace PenyaManager {
 
         // invoice table Header
         QStringList headers;
-        headers.append("Ref#");
-        headers.append("Date");
-        headers.append("Total");
-        headers.append("idMember");
+        headers.append(tr("Ref#"));
+        headers.append(tr("Date"));
+        headers.append(tr("Total"));
+        headers.append(tr("Username"));
         this->ui->invoicesTableWidget->setHorizontalHeaderLabels(headers);
         this->ui->invoicesTableWidget->setColumnWidth(0, 100);
         this->ui->invoicesTableWidget->setColumnWidth(1, 300);
@@ -137,7 +151,7 @@ namespace PenyaManager {
             QString dateLocalized = Singletons::m_translationManager.getLocale().toString(pInvoicePtr->m_date, QLocale::NarrowFormat);
             this->ui->invoicesTableWidget->setItem(rowCount, 1, new QTableWidgetItem(dateLocalized));
             this->ui->invoicesTableWidget->setItem(rowCount, 2, new QTableWidgetItem(QString("%1 €").arg(pInvoicePtr->m_total, 0, 'f', 2)));
-            this->ui->invoicesTableWidget->setItem(rowCount, 3, new QTableWidgetItem(QString::number(pInvoicePtr->m_memberId)));
+            this->ui->invoicesTableWidget->setItem(rowCount, 3, new QTableWidgetItem(QString::number(pInvoicePtr->m_memberUsername)));
             this->m_rowProductIdMap[rowCount] = pInvoicePtr->m_id;
             rowCount++;
         }

@@ -30,23 +30,17 @@ namespace PenyaManager {
 
         private:
             //
+            void translateTable();
+            //
             void initialize();
             //
-            void createProductItemRow(const ProductItemPtr &pfPtr);
-
-        private slots:
+            void fillProviderInvoiceProducts(const QString &providerInvoiceId);
             //
-            void on_savePushButton_clicked();
-            //
-            void on_providerComboBox_activated(int index);
+            void initializeTable();
 
     private:
             //
             Ui::ProviderInvoiceView *ui;
-            //
-            Int32                       m_currentProviderIndex;
-            //
-            RowIdMap                    m_rowProviderIdMap;
     };
 }
 

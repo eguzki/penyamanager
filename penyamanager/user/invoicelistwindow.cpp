@@ -116,10 +116,10 @@ namespace PenyaManager {
 
         // invoice table Header
         QStringList headers;
-        headers.append("Ref#");
-        headers.append("Date");
-        headers.append("Total");
-        headers.append("idMember");
+        headers.append(tr("Ref#"));
+        headers.append(tr("Date"));
+        headers.append(tr("Total"));
+        headers.append(tr("Surename"));
         this->ui->invoicesTableWidget->setHorizontalHeaderLabels(headers);
         this->ui->invoicesTableWidget->setColumnWidth(0, 100);
         this->ui->invoicesTableWidget->setColumnWidth(1, 300);
@@ -139,7 +139,7 @@ namespace PenyaManager {
             QString dateLocalized = Singletons::m_translationManager.getLocale().toString(pInvoicePtr->m_date, QLocale::NarrowFormat);
             this->ui->invoicesTableWidget->setItem(rowCount, 1, new QTableWidgetItem(dateLocalized));
             this->ui->invoicesTableWidget->setItem(rowCount, 2, new QTableWidgetItem(QString("%1 €").arg(pInvoicePtr->m_total, 0, 'f', 2)));
-            this->ui->invoicesTableWidget->setItem(rowCount, 3, new QTableWidgetItem(QString::number(pInvoicePtr->m_memberId)));
+            this->ui->invoicesTableWidget->setItem(rowCount, 3, new QTableWidgetItem(QString::number(pInvoicePtr->m_memberUsername)));
             this->m_rowProductIdMap[rowCount] = pInvoicePtr->m_id;
             rowCount++;
         }

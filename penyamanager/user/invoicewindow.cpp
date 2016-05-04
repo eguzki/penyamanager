@@ -108,8 +108,10 @@ namespace PenyaManager {
         }
 
         // Update member balance
-        Singletons::m_pServices->closeInvoice(pCurrMember, pInvoicePtr->m_id);
+        Singletons::m_pServices->closeInvoice(pCurrMember->m_id, pInvoicePtr->m_id);
         QLOG_INFO() << QString("[Invoice] User %1 Invoice ID %2").arg(pCurrMember->m_id).arg(pInvoicePtr->m_id);
+
+        printInvoice(pCurrMember, pInvoicePtr);
 
         // call dashboard window
         m_switchCentralWidgetCallback(WindowKey::kMemberDashboardWindowKey);
@@ -156,14 +158,9 @@ namespace PenyaManager {
         this->ui->newBalanceInfoLabel->setText(QString("%1 €").arg(newBalance, 0, 'f', 2));
     }
     //
-    void InvoiceWindow::on_printPushButton_clicked()
+    void InvoiceWindow::printInvoice(const MemberPtr &pMemberPtr, const InvoicePtr &pInvoicePtr)
     {
-        // use static global variable to get invoiceId
-        MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
-
         // Loading Current Invoice
-        // current invoice has not been closed. Some attr are missing
-        InvoicePtr pInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMemberPtr->m_id);
         // Loading Current Invoice products
         InvoiceProductItemListPtr pInvoiceProductItemListPtr = Singletons::m_pDAO->getInvoiceProductItems(pInvoicePtr->m_id);
 
@@ -178,8 +175,8 @@ namespace PenyaManager {
 
         // invoice general info
         invoiceData["invoiceId"] = pInvoicePtr->m_id;
-        invoiceData["memberid"] = pCurrMemberPtr->m_id;
-        invoiceData["memberName"] = QString("%1 %2").arg(pCurrMemberPtr->m_name).arg(pCurrMemberPtr->m_surname);
+        invoiceData["memberid"] = pMemberPtr->m_username;
+        invoiceData["memberName"] = QString("%1 %2").arg(pMemberPtr->m_name).arg(pMemberPtr->m_surname);
         // invoice date is invoice creation date
         // Can be old (e.g. an unclosed invoice created some days ago)
         // print current date
@@ -203,7 +200,7 @@ namespace PenyaManager {
         // computed invoice total value
         invoiceData["invoiceTotal"] = QString("%1 €").arg(totalInvoice, 0, 'f', 2);
         // print invoice
-        GuiUtils::printInvoice(invoiceData, pCurrMemberPtr->m_id, pInvoicePtr->m_id);
+        GuiUtils::printInvoice(invoiceData, pMemberPtr->m_id, pInvoicePtr->m_id);
         QMessageBox::information(this, tr("Print Invoice"), tr("Invoice #%1 sent to printer").arg(QString::number(pInvoicePtr->m_id)));
     }
 }

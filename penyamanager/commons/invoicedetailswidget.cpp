@@ -13,11 +13,36 @@ namespace PenyaManager {
         ui(new Ui::InvoiceDetailsWidget)
     {
         ui->setupUi(this);
+        initializeTable();
     }
     //
     InvoiceDetailsWidget::~InvoiceDetailsWidget()
     {
         delete ui;
+    }
+    //
+    void InvoiceDetailsWidget::initializeTable()
+    {
+        this->ui->productTableWidget->setColumnCount(5);
+        translateTable();
+        Uint32 column = 0;
+        this->ui->productTableWidget->setColumnWidth(column++, 100);
+        this->ui->productTableWidget->setColumnWidth(column++, 200);
+        this->ui->productTableWidget->setColumnWidth(column++, 100);
+        this->ui->productTableWidget->setColumnWidth(column++, 60);
+        this->ui->productTableWidget->setColumnWidth(column++, 100);
+    }
+    //
+    void InvoiceDetailsWidget::translateTable()
+    {
+        // table Header
+        QStringList headers;
+        headers.append(tr("icon"));
+        headers.append(tr("article"));
+        headers.append(tr("price/u"));
+        headers.append("#");
+        headers.append(tr("total"));
+        this->ui->productTableWidget->setHorizontalHeaderLabels(headers);
     }
     //
     void InvoiceDetailsWidget::init()
@@ -37,6 +62,7 @@ namespace PenyaManager {
     void InvoiceDetailsWidget::retranslate()
     {
         this->ui->retranslateUi(this);
+        translateTable();
     }
     //
     void InvoiceDetailsWidget::fillInvoiceData(const InvoicePtr &pInvoicePtr)
@@ -45,16 +71,7 @@ namespace PenyaManager {
         // Product List
         //
         InvoiceProductItemListPtr pInvoiceProductItemListPtr = Singletons::m_pDAO->getInvoiceProductItems(pInvoicePtr->m_id);
-        this->ui->productTableWidget->setColumnCount(5);
         this->ui->productTableWidget->setRowCount(pInvoiceProductItemListPtr->size());
-        // invoice table Header
-        QStringList headers;
-        headers.append("icon");
-        headers.append("article");
-        headers.append("price/u");
-        headers.append("count");
-        headers.append("total");
-        this->ui->productTableWidget->setHorizontalHeaderLabels(headers);
         // invoice table reset
         this->ui->productTableWidget->clearContents();
         Uint32 rowCount = 0;
@@ -87,6 +104,9 @@ namespace PenyaManager {
         // Date
         QString dateLocalized = Singletons::m_translationManager.getLocale().toString(pInvoicePtr->m_date, QLocale::NarrowFormat);
         this->ui->invoiceDateValueLabel->setText(dateLocalized);
+        // LastModified
+        dateLocalized = Singletons::m_translationManager.getLocale().toString(pInvoicePtr->m_lastModified, QLocale::NarrowFormat);
+        this->ui->invoiceLastModifValueLabel->setText(dateLocalized);
         // Total
         this->ui->invoiceTotalValueLabel->setText(QString("%1 €").arg(totalInvoice, 0, 'f', 2));
         // memberid

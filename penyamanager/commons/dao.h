@@ -14,6 +14,7 @@
 #include <objs/InvoiceProductItem.h>
 #include <objs/ReservationItem.h>
 #include <objs/ProviderInvoice.h>
+#include <objs/ProviderInvoiceProductItem.h>
 #include "DataTypes.h"
 
 namespace PenyaManager {
@@ -35,9 +36,15 @@ namespace PenyaManager {
             //
             ProductItemListPtr getProductsFromFamily(Int32 familyId, bool onlyActive);
             //
-            MemberPtr getMemberById(Int32 memberId);
+            MemberPtr fetchMemberById(Int32 memberId);
+            //
+            MemberPtr fetchMemberByUsername(Int32 username);
+            //
+            FloatBoolPair getAccountBalance(Int32 memberId);
             //
             InvoicePtr getMemberActiveInvoice(Int32 memberId);
+            //
+            InvoiceListPtr getActiveInvoiceList();
             //
             InvoicePtr getInvoice(Int32 invoiceId);
             //
@@ -93,15 +100,21 @@ namespace PenyaManager {
             //
             ReservationItemListPtr getFireplaceList();
             //
-            void makeTableReservation(const QDate &date, ReservationType reservationType, Uint16 guestNum, Int32 memberId, Int32 idtable);
+            void makeTableReservation(const QDate &date, ReservationType reservationType, Uint16 guestNum, Int32 memberId, Int32 idtable, bool isAdmin);
+            //
+            void updateTableReservation(Int32 reservationId, bool isAdmin);
             //
             void cancelTableReservation(Int32 reservationId);
             //
-            void makeOvenReservation(const QDate &date, ReservationType reservationType, Int32 memberId, Int32 idOven);
+            void makeOvenReservation(const QDate &date, ReservationType reservationType, Int32 memberId, Int32 idOven, bool isAdmin);
+            //
+            void updateOvenReservation(Int32 reservationId, bool isAdmin);
             //
             void cancelOvenReservation(Int32 reservationId);
             //
-            void makeFireplaceReservation(const QDate &date, ReservationType reservationType, Int32 memberId, Int32 idFireplace);
+            void makeFireplaceReservation(const QDate &date, ReservationType reservationType, Int32 memberId, Int32 idFireplace, bool isAdmin);
+            //
+            void updateFireplaceReservation(Int32 reservationId, bool isAdmin);
             //
             void cancelFireplaceReservation(Int32 reservationId);
             //
@@ -180,6 +193,12 @@ namespace PenyaManager {
             void updateInvoiceLastModDate(Int32 invoiceId, const QDateTime &lastModDate);
             //
             void deleteInvoice(Int32 invoiceIde);
+            //
+            bool checkUsername(Int32 username);
+            //
+            ProviderInvoicePtr getProviderInvoiceById(const QString &providerInvoiceId);
+            //
+            ProviderInvoiceProductItemListPtr getProviderInvoiceProductsByInvoiceId(const QString &providerInvoiceId);
 
         private:
             //
@@ -190,6 +209,10 @@ namespace PenyaManager {
             QSqlQuery               m_productItemsByFamilyQuery;
             //
             QSqlQuery               m_memberByIdQuery;
+            //
+            QSqlQuery               m_memberByUsernameQuery;
+            //
+            QSqlQuery               m_memberAccountBalanceQuery;
             //
             QSqlQuery               m_invoiceQuery;
             //
@@ -251,13 +274,19 @@ namespace PenyaManager {
             //
             QSqlQuery               m_insertTableReservationQuery;
             //
+            QSqlQuery               m_updateTableReservationQuery;
+            //
             QSqlQuery               m_cancelTableReservationQuery;
             //
             QSqlQuery               m_insertOvenReservationQuery;
             //
+            QSqlQuery               m_updateOvenReservationQuery;
+            //
             QSqlQuery               m_cancelOvenReservationQuery;
             //
             QSqlQuery               m_insertFireplaceReservationQuery;
+            //
+            QSqlQuery               m_updateFireplaceReservationQuery;
             //
             QSqlQuery               m_cancelFireplaceReservationQuery;
             //
@@ -340,6 +369,14 @@ namespace PenyaManager {
             QSqlQuery               m_updateLastModInvoiceQuery;
             //
             QSqlQuery               m_removeInvoiceQuery;
+            //
+            QSqlQuery               m_getActiveInvoiceListQuery;
+            //
+            QSqlQuery               m_checkUsernameQuery;
+            //
+            QSqlQuery               m_providerInvoiceByIdQuery;
+            //
+            QSqlQuery               m_providerInvoiceProductsByInvoiceIdQuery;
     };
 }
 #endif // DAO_H

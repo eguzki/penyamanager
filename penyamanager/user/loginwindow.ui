@@ -218,7 +218,7 @@
             </size>
            </property>
            <property name="text">
-            <string>TextLabel</string>
+            <string notr="true">picture</string>
            </property>
           </widget>
          </item>
@@ -345,10 +345,10 @@
          </size>
         </property>
         <property name="text">
-         <string notr="true"/>
+         <string notr="true">Euskera</string>
         </property>
         <property name="icon">
-         <iconset resource="../penyamanager.qrc">
+         <iconset>
           <normaloff>:/images/ikurrina.png</normaloff>
           <normalon>:/images/espanola.jpg</normalon>:/images/ikurrina.png</iconset>
         </property>
@@ -445,8 +445,6 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources>
-  <include location="../penyamanager.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

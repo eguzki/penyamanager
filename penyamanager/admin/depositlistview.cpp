@@ -56,7 +56,7 @@ namespace PenyaManager {
         QStringList headers;
         headers.append(tr("ID"));
         headers.append(tr("date"));
-        headers.append(tr("memberid"));
+        headers.append(tr("Username"));
         headers.append(tr("Total"));
         headers.append(tr("Cash"));
         headers.append(tr("Action"));
@@ -82,7 +82,7 @@ namespace PenyaManager {
             this->ui->depositTableWidget->setItem(rowCount, column++, pTableItem);
             QString dateLocalized = Singletons::m_translationManager.getLocale().toString(pDepositPtr->m_date, QLocale::NarrowFormat);
             this->ui->depositTableWidget->setItem(rowCount, column++, new QTableWidgetItem(dateLocalized));
-            pTableItem = new QTableWidgetItem(QString::number(pDepositPtr->m_memberId));
+            pTableItem = new QTableWidgetItem(QString::number(pDepositPtr->m_memberUsername));
             pTableItem->setData(Qt::UserRole, pDepositPtr->m_memberId);
             this->ui->depositTableWidget->setItem(rowCount, column++, pTableItem);
             pTableItem = new QTableWidgetItem(QString("%1 €").arg(pDepositPtr->m_total, 0, 'f', 2));

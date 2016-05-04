@@ -180,7 +180,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
          <item>
           <widget class="QLabel" name="memberIdLabel">
            <property name="text">
-            <string>MemberId:</string>
+            <string>Username</string>
            </property>
           </widget>
          </item>

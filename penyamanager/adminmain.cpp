@@ -11,6 +11,7 @@
 #include <commons/invoicedetailswidget.h>
 #include <commons/constants.h>
 #include <commons/singletons.h>
+#include <commons/utils.h>
 #include <admin/adminmainwindow.h>
 #include <admin/adminloginwindow.h>
 #include <admin/slowpayersview.h>
@@ -23,11 +24,13 @@
 #include <admin/adminfamilyview.h>
 #include <admin/productexpensesview.h>
 #include <admin/providerinvoiceview.h>
+#include <admin/newproviderinvoiceview.h>
 #include <admin/providerinvoicelistview.h>
 #include <admin/depositlistview.h>
 #include <admin/accountbalanceview.h>
 #include <admin/memberlistview.h>
 #include <admin/memberview.h>
+#include <admin/adminreservationswindow.h>
 
 int main(int argc, char *argv[])
 {
@@ -45,8 +48,8 @@ int main(int argc, char *argv[])
     // LOGGING
     // init the logging mechanism
     QsLogging::Logger& logger = QsLogging::Logger::instance();
-    // set minimum log level and file name
-    logger.setLoggingLevel(QsLogging::InfoLevel);
+    // set log level and file name
+    logger.setLoggingLevel(PenyaManager::Utils::getLogLevel(settings.value(PenyaManager::Constants::kLogLevel, "info").toString()));
     const QString sLogPath(QDir(app.applicationDirPath()).filePath("penyamanageradmin.log"));
 
     // Create log destinations
@@ -101,18 +104,22 @@ int main(int argc, char *argv[])
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kAdminFamilyViewKey, pAdminFamilyView);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kProductExpensesViewKey, new PenyaManager::ProductExpensesView);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kProviderInvoiceViewKey, new PenyaManager::ProviderInvoiceView);
-    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kProviderInvoiceListViewKey, new PenyaManager::ProviderInvoiceListView);
+    PenyaManager::NewProviderInvoiceView *pNewProviderInvoiceView = new PenyaManager::NewProviderInvoiceView(NULL, adminMainWindowSwitchCallback);
+    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kNewProviderInvoiceViewKey, pNewProviderInvoiceView);
+    PenyaManager::ProviderInvoiceListView *pProviderInvoiceListView = new PenyaManager::ProviderInvoiceListView(NULL, adminMainWindowSwitchCallback);
+    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kProviderInvoiceListViewKey, pProviderInvoiceListView);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kAdminDepositListViewKey, new PenyaManager::DepositListView);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kAdminAccountBalanceViewKey, new PenyaManager::AccountBalanceView);
     PenyaManager::MemberListView *pMemberListView = new PenyaManager::MemberListView(NULL, adminMainWindowSwitchCallback);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kMemberListViewWindowKey, pMemberListView);
     PenyaManager::MemberView *pMemberView = new PenyaManager::MemberView(NULL, adminMainWindowSwitchCallback);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kMemberViewKey, pMemberView);
+    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kAdminReservationViewKey, new PenyaManager::AdminReservationsWindow);
 
     // entry point -> adminlogin window
     PenyaManager::IPartner* pAdminLoginPartner = PenyaManager::Singletons::m_pParnetFinder->getPartner(PenyaManager::WindowKey::kAdminLoginWindowKey);
     pAdminLoginPartner->init();
-    pAdminLoginPartner->showFullScreen();
+    pAdminLoginPartner->show();
 
     int returnValue = app.exec();
 

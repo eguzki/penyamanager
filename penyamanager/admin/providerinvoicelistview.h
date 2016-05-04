@@ -19,7 +19,7 @@ namespace PenyaManager {
 
         public:
             //
-            explicit ProviderInvoiceListView(QWidget *parent = 0);
+            explicit ProviderInvoiceListView(QWidget *parent, const CentralWidgetCallback &callback);
             //
             ~ProviderInvoiceListView();
             //
@@ -47,13 +47,19 @@ namespace PenyaManager {
             //
             void on_nextPagePushButton_clicked();
 
+            void on_invoicesTableWidget_cellDoubleClicked(int row, int column);
+
     private:
             //
             Ui::ProviderInvoiceListView *ui;
             //
+            CentralWidgetCallback       m_switchCentralWidgetCallback;
+            //
             Uint32                      m_currentPage;
             //
             bool                        m_firstTime;
+            //
+            RowIdStrMap                 m_rowProviderInvoiceIdMap;
     };
 
 }

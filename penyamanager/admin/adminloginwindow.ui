@@ -140,7 +140,7 @@
          <item row="0" column="0">
           <widget class="QLabel" name="loginLabel">
            <property name="text">
-            <string>Member ID</string>
+            <string>Username</string>
            </property>
           </widget>
          </item>
@@ -187,23 +187,18 @@
           <widget class="QPushButton" name="languagePushButton">
            <property name="minimumSize">
             <size>
-             <width>60</width>
-             <height>50</height>
+             <width>0</width>
+             <height>0</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>60</width>
-             <height>50</height>
+             <width>16777215</width>
+             <height>16777215</height>
             </size>
            </property>
            <property name="text">
-            <string notr="true"/>
-           </property>
-           <property name="icon">
-            <iconset resource="../penyamanager.qrc">
-             <normaloff>:/images/ikurrina.png</normaloff>
-             <normalon>:/images/espanola.jpg</normalon>:/images/ikurrina.png</iconset>
+            <string notr="true">Euskera</string>
            </property>
            <property name="iconSize">
             <size>
@@ -302,8 +297,6 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources>
-  <include location="../penyamanager.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

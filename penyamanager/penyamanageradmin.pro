@@ -33,6 +33,10 @@ SOURCES += adminmain.cpp\
         commons/services.cpp\
         commons/IPartner.cpp\
         commons/partnerfinder.cpp\
+        commons/numitemdialog.cpp \
+        commons/invoicedetailswidget.cpp \
+        commons/guiutils.cpp \
+        commons/translationmanager.cpp \
         objs/Transaction.cpp\
         objs/Invoice.cpp\
         objs/Deposit.cpp\
@@ -44,11 +48,11 @@ SOURCES += adminmain.cpp\
         objs/ReservationItem.cpp\
         objs/Provider.cpp\
         objs/ProviderInvoice.cpp\
+        objs/ProviderInvoiceProductItem.cpp\
         admin/adminloginwindow.cpp\
         admin/adminmainwindow.cpp \
         admin/slowpayersview.cpp \
         admin/admininvoicelistview.cpp \
-        commons/invoicedetailswidget.cpp \
         admin/providermanagerview.cpp \
         admin/adminnewprovider.cpp \
         admin/stockmanagementwindow.cpp \
@@ -56,23 +60,28 @@ SOURCES += adminmain.cpp\
         admin/adminproductitem.cpp \
         admin/adminfamilyview.cpp \
         admin/productexpensesview.cpp \
-        admin/providerinvoiceview.cpp \
+        admin/newproviderinvoiceview.cpp \
         admin/providerinvoicelistview.cpp \
         admin/depositlistview.cpp \
         admin/accountbalanceview.cpp \
         admin/memberlistview.cpp \
         admin/memberview.cpp \
         admin/passchangedialog.cpp \
-        commons/guiutils.cpp \
-        commons/translationmanager.cpp
+        admin/adminreservationswindow.cpp \
+        admin/providerinvoiceview.cpp
 
-HEADERS  += commons/singletons.h\
+HEADERS += commons/singletons.h\
         commons/dao.h\
         commons/utils.h\
         commons/constants.h\
         commons/services.h\
         commons/IPartner.h\
         commons/partnerfinder.h\
+        commons/numitemdialog.h \
+        commons/DataTypes.h \
+        commons/invoicedetailswidget.h \
+        commons/guiutils.h \
+        commons/translationmanager.h \
         objs/Transaction.h\
         objs/Invoice.h\
         objs/Deposit.h\
@@ -84,11 +93,11 @@ HEADERS  += commons/singletons.h\
         objs/ReservationItem.h\
         objs/Provider.h\
         objs/ProviderInvoice.h\
+        objs/ProviderInvoiceProductItem.h\
         admin/adminloginwindow.h\
         admin/adminmainwindow.h \
         admin/slowpayersview.h \
         admin/admininvoicelistview.h \
-        commons/invoicedetailswidget.h \
         admin/providermanagerview.h \
         admin/adminnewprovider.h \
         admin/stockmanagementwindow.h \
@@ -96,22 +105,22 @@ HEADERS  += commons/singletons.h\
         admin/adminproductitem.h \
         admin/adminfamilyview.h \
         admin/productexpensesview.h \
-        admin/providerinvoiceview.h \
+        admin/newproviderinvoiceview.h \
         admin/providerinvoicelistview.h \
         admin/depositlistview.h \
         admin/accountbalanceview.h \
         admin/memberlistview.h \
         admin/memberview.h \
         admin/passchangedialog.h \
-        commons/guiutils.h \
-        commons/DataTypes.h \
-        commons/translationmanager.h
+        admin/adminreservationswindow.h \
+        admin/providerinvoiceview.h
 
-FORMS    += admin/adminloginwindow.ui\
+FORMS   += admin/adminloginwindow.ui\
         admin/adminmainwindow.ui \
         admin/slowpayersview.ui \
         admin/admininvoicelistview.ui \
         commons/invoicedetailswidget.ui \
+        commons/numitemdialog.ui \
         admin/providermanagerview.ui \
         admin/adminnewprovider.ui \
         admin/stockmanagementwindow.ui \
@@ -119,13 +128,15 @@ FORMS    += admin/adminloginwindow.ui\
         admin/adminproductitem.ui \
         admin/adminfamilyview.ui \
         admin/productexpensesview.ui \
-        admin/providerinvoiceview.ui \
         admin/providerinvoicelistview.ui \
         admin/depositlistview.ui \
+        admin/newproviderinvoiceview.ui \
         admin/accountbalanceview.ui \
         admin/memberlistview.ui \
         admin/memberview.ui \
-        admin/passchangedialog.ui
+        admin/passchangedialog.ui \
+        admin/adminreservationswindow.ui \
+        admin/providerinvoiceview.ui
 
 TRANSLATIONS += \
         translations/penyamanageradmin_es.ts \

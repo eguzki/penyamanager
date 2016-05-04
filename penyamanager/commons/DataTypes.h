@@ -24,6 +24,8 @@
 #include <functional>
 #include <cstdlib>
 
+#include <QString>
+
 using namespace std::placeholders;  // for _1, _2, _3...
 
 // macro to remove unused parameter warnings
@@ -56,5 +58,12 @@ typedef std::vector<Uint64> Uint64Vector;
 
 //
 typedef std::map<Int32, Int32> RowIdMap;
+typedef std::map<Int32, QString> RowIdStrMap;
+
+//
+typedef struct {
+    Float f;
+    bool b;
+}FloatBoolPair;
 
 #endif // DATATYPES_H

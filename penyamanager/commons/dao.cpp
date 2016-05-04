@@ -14,6 +14,8 @@ namespace PenyaManager {
             m_productFamiliesQuery(),
             m_productItemsByFamilyQuery(),
             m_memberByIdQuery(),
+            m_memberByUsernameQuery(),
+            m_memberAccountBalanceQuery(),
             m_invoiceQuery(),
             m_memberActiveInvoiceQuery(),
             m_removeProductInvoiceQuery(),
@@ -44,10 +46,13 @@ namespace PenyaManager {
             m_ovenListQuery(),
             m_fireplaceListQuery(),
             m_insertTableReservationQuery(),
+            m_updateTableReservationQuery(),
             m_cancelTableReservationQuery(),
             m_insertOvenReservationQuery(),
+            m_updateOvenReservationQuery(),
             m_cancelOvenReservationQuery(),
             m_insertFireplaceReservationQuery(),
+            m_updateFireplaceReservationQuery(),
             m_cancelFireplaceReservationQuery(),
             m_slowPayersQuery(),
             m_invoiceListByMemberIdQuery(),
@@ -88,7 +93,11 @@ namespace PenyaManager {
             m_updateMemberLastLoginQuery(),
             m_lastInvoiceQuery(),
             m_updateLastModInvoiceQuery(),
-            m_removeInvoiceQuery()
+            m_removeInvoiceQuery(),
+            m_getActiveInvoiceListQuery(),
+            m_checkUsernameQuery(),
+            m_providerInvoiceByIdQuery(),
+            m_providerInvoiceProductsByInvoiceIdQuery()
     {
         // configure db connection
         m_db.setHostName(hostname);
@@ -111,16 +120,29 @@ namespace PenyaManager {
         // for filterinf only active, fetch all and filter with code
         m_productItemsByFamilyQuery.prepare("SELECT idproduct_item, name, image, active, reg_date, price, idprovider FROM product_item WHERE idproduct_family = :familyId");
 
-        // Member by name
+        // Member by id
         m_memberByIdQuery.prepare(
-                "SELECT member.name, member.surname, member.image, member.lastmodified, member.reg_date, member.active, member.isAdmin, member.birth, "
+                "SELECT member.name, member.username, member.surname, member.image, member.lastmodified, member.reg_date, member.active, member.isAdmin, member.birth, "
                 "member.address, member.zip_code, member.town, member.state, member.tel, member.tel2, member.email, member.bank_account, member.postal_send, "
-                "member.notes, member.pwd, member.lastlogin, account.balance "
-                "FROM account "
-                "INNER JOIN member "
-                "ON account.idmember=member.idmember "
-                "WHERE account.idmember=:memberid "
-                "ORDER BY account.date DESC LIMIT 1 "
+                "member.notes, member.pwd, member.lastlogin "
+                "FROM member "
+                "WHERE member.idmember=:memberid"
+                );
+
+        // Member by id
+        m_memberByUsernameQuery.prepare(
+                "SELECT member.idmember, member.name, member.surname, member.image, member.lastmodified, member.reg_date, member.active, member.isAdmin, member.birth, "
+                "member.address, member.zip_code, member.town, member.state, member.tel, member.tel2, member.email, member.bank_account, member.postal_send, "
+                "member.notes, member.pwd, member.lastlogin "
+                "FROM member "
+                "WHERE member.username=:username"
+                );
+
+        // Member account balance
+        m_memberAccountBalanceQuery.prepare(
+                "SELECT balance FROM account "
+                "WHERE idmember=:memberid "
+                "ORDER BY date DESC LIMIT 1 "
                 );
 
         // Invoice by member ID
@@ -184,10 +206,11 @@ namespace PenyaManager {
 
         // member's last account transaction
         m_memberLastAccountInfoQuery.prepare(
-                "SELECT amount, date, balance, description, type "
+                "SELECT member.username, account.amount, account.date, account.balance, account.description, account.type "
                 "FROM account "
-                "WHERE idmember=:memberid "
-                "ORDER BY date DESC "
+                "INNER JOIN member ON member.idmember = account.idmember "
+                "WHERE account.idmember=:memberid "
+                "ORDER BY account.date DESC "
                 "LIMIT 1"
                 );
 
@@ -205,17 +228,19 @@ namespace PenyaManager {
                 );
         // member's account transaction list
         m_memberAccountListQuery.prepare(
-                "SELECT amount, date, description, balance, type "
+                "SELECT member.username, account.amount, account.date, account.description, account.balance, account.type "
                 "FROM account "
-                "WHERE idmember=:memberid "
-                "AND date BETWEEN :fromDate AND :toDate "
-                "ORDER BY date DESC "
+                "INNER JOIN member ON member.idmember = account.idmember "
+                "WHERE account.idmember=:memberid "
+                "AND account.date BETWEEN :fromDate AND :toDate "
+                "ORDER BY account.date DESC "
                 "LIMIT :limit OFFSET :offset"
                 );
         // member's account transaction list
         m_accountListQuery.prepare(
-                "SELECT idmember, amount, date, description, balance, type "
+                "SELECT account.idmember, member.username, account.amount, account.date, account.description, account.balance, account.type "
                 "FROM account "
+                "INNER JOIN member ON member.idmember = account.idmember "
                 "WHERE date BETWEEN :fromDate AND :toDate "
                 "ORDER BY date DESC "
                 "LIMIT :limit OFFSET :offset"
@@ -272,7 +297,7 @@ namespace PenyaManager {
                 );
         // table reservation list for a given moment (date and reservationtype)
         m_tableReservationListQuery.prepare(
-                "SELECT tablereservation.idreservation, tablereservation.idtable, member.name, member.surname, tablereservation.idmember, tablereservation.guestnum "
+                "SELECT tablereservation.idreservation, tablereservation.idtable, member.username, member.name, member.surname, tablereservation.idmember, tablereservation.guestnum, tablereservation.isadmin "
                 "FROM tablereservation "
                 "INNER JOIN member ON tablereservation.idmember=member.idmember "
                 "WHERE date=:dateid "
@@ -280,7 +305,7 @@ namespace PenyaManager {
                 );
         // oven reservation list for a given moment (date and reservationtype)
         m_ovenReservationListQuery.prepare(
-                "SELECT ovenreservation.idreservation, ovenreservation.idoven, member.name, member.surname, ovenreservation.idmember "
+                "SELECT ovenreservation.idreservation, ovenreservation.idoven, member.username, member.name, member.surname, ovenreservation.idmember, ovenreservation.isadmin "
                 "FROM ovenreservation "
                 "INNER JOIN member ON ovenreservation.idmember=member.idmember "
                 "WHERE date=:dateid "
@@ -288,7 +313,7 @@ namespace PenyaManager {
                 );
         // oven reservation list for a given moment (date and reservationtype)
         m_fireplaceReservationListQuery.prepare(
-                "SELECT fireplacereservation.idreservation, fireplacereservation.idfireplace, member.name, member.surname, fireplacereservation.idmember "
+                "SELECT fireplacereservation.idreservation, fireplacereservation.idfireplace, member.username, member.name, member.surname, fireplacereservation.idmember, fireplacereservation.isadmin "
                 "FROM fireplacereservation "
                 "INNER JOIN member ON fireplacereservation.idmember=member.idmember "
                 "WHERE date=:dateid "
@@ -312,8 +337,14 @@ namespace PenyaManager {
         // insert table reservation
         m_insertTableReservationQuery.prepare(
                 "INSERT INTO tablereservation "
-                "(date, reservationtype, guestnum, idmember, idtable) "
-                "VALUES (:date, :reservationtype, :guestnum, :idmember, :idtable)"
+                "(date, reservationtype, guestnum, idmember, idtable, isadmin) "
+                "VALUES (:date, :reservationtype, :guestnum, :idmember, :idtable, :isadmin)"
+                );
+        // update table reservation
+        m_updateTableReservationQuery.prepare(
+                "UPDATE tablereservation "
+                "SET isadmin = :isadmin "
+                "WHERE idreservation = :idreservation"
                 );
         // cancel table reservation
         m_cancelTableReservationQuery.prepare(
@@ -323,8 +354,14 @@ namespace PenyaManager {
         // insert oven reservation
         m_insertOvenReservationQuery.prepare(
                 "INSERT INTO ovenreservation "
-                "(date, reservationtype, idmember, idoven) "
-                "VALUES (:date, :reservationtype, :idmember, :idoven)"
+                "(date, reservationtype, idmember, idoven, isadmin) "
+                "VALUES (:date, :reservationtype, :idmember, :idoven, :isadmin)"
+                );
+        // update oven reservation
+        m_updateOvenReservationQuery.prepare(
+                "UPDATE ovenreservation "
+                "SET isadmin = :isadmin "
+                "WHERE idreservation = :idreservation"
                 );
         // cancel oven reservation
         m_cancelOvenReservationQuery.prepare(
@@ -334,8 +371,14 @@ namespace PenyaManager {
         // insert fireplace reservation
         m_insertFireplaceReservationQuery.prepare(
                 "INSERT INTO fireplacereservation "
-                "(date, reservationtype, idmember, idfireplace) "
-                "VALUES (:date, :reservationtype, :idmember, :idfireplace)"
+                "(date, reservationtype, idmember, idfireplace, isadmin) "
+                "VALUES (:date, :reservationtype, :idmember, :idfireplace, :isadmin)"
+                );
+        // update fireplace reservation
+        m_updateFireplaceReservationQuery.prepare(
+                "UPDATE fireplacereservation "
+                "SET isadmin = :isadmin "
+                "WHERE idreservation = :idreservation"
                 );
         // cancel fireplace reservation
         m_cancelFireplaceReservationQuery.prepare(
@@ -348,7 +391,7 @@ namespace PenyaManager {
         // First INNER JOIN on the same table (account) gets balance for the row with last (newest) account date
         // Second INNER JOIN on members table get member information
         m_slowPayersQuery.prepare(
-                "SELECT ac.idmember, member.name, member.surname, member.image, ac.balance, member.lastmodified, member.reg_date "
+                "SELECT ac.idmember, member.username, member.name, member.surname, member.image, ac.balance, member.lastmodified, member.reg_date "
                 "FROM account ac "
                 "INNER JOIN (SELECT account.idmember, MAX(account.date) AS MaxDate FROM account GROUP BY account.idmember) groupedAccount "
                 "ON ac.idmember = groupedAccount.idmember AND ac.date=groupedAccount.MaxDate "
@@ -357,9 +400,11 @@ namespace PenyaManager {
                 );
         // active invoice list by memberId
         m_invoiceListByMemberIdQuery.prepare(
-                "SELECT idinvoice, date, total, last_modif FROM invoice "
-                "WHERE idmember = :memberid AND state = :stateid "
-                "AND date BETWEEN :fromDate AND :toDate "
+                "SELECT member.username, invoice.idinvoice, invoice.date, invoice.total, invoice.last_modif "
+                "FROM invoice "
+                "INNER JOIN member ON member.idmember = invoice.idmember "
+                "WHERE invoice.idmember = :memberid AND invoice.state = :stateid "
+                "AND invoice.date BETWEEN :fromDate AND :toDate "
                 "ORDER BY date DESC "
                 "LIMIT :limit OFFSET :offset"
                 );
@@ -371,10 +416,12 @@ namespace PenyaManager {
                 );
         // active invoice list
         m_invoiceListQuery.prepare(
-                "SELECT idinvoice, idmember, date, total, last_modif FROM invoice "
-                "WHERE state = :stateid "
-                "AND date BETWEEN :fromDate AND :toDate "
-                "ORDER BY date DESC "
+                "SELECT member.username, invoice.idinvoice, invoice.idmember, invoice.date, invoice.total, invoice.last_modif "
+                "FROM invoice "
+                "INNER JOIN member ON invoice.idmember=member.idmember "
+                "WHERE invoice.state = :stateid "
+                "AND invoice.date BETWEEN :fromDate AND :toDate "
+                "ORDER BY invoice.date DESC "
                 "LIMIT :limit OFFSET :offset"
                 );
         // active invoice list stats
@@ -520,8 +567,10 @@ namespace PenyaManager {
                 );
         // unchecked deposit list
         m_uncheckedDepositListQuery.prepare(
-                "SELECT iddeposit, date, total, description, idmember FROM deposit "
-                "WHERE state = 0"
+                "SELECT member.username, deposit.iddeposit, deposit.date, deposit.total, deposit.description, deposit.idmember "
+                "FROM deposit "
+                "INNER JOIN member ON member.idmember = deposit.idmember "
+                "WHERE deposit.state = 0"
                 );
         // close deposit
         m_closeDepositQuery.prepare(
@@ -531,7 +580,7 @@ namespace PenyaManager {
                 );
         // member list
         m_memberListQuery.prepare(
-                "SELECT member.idmember, member.name, member.surname, member.image, member.lastmodified, member.reg_date, member.active, member.isAdmin, member.birth, "
+                "SELECT member.idmember, member.username, member.name, member.surname, member.image, member.lastmodified, member.reg_date, member.active, member.isAdmin, member.birth, "
                 "member.address, member.zip_code, member.town, member.state, member.tel, member.tel2, member.email, member.bank_account, member.postal_send, "
                 "member.notes, ac.balance "
                 "FROM account ac "
@@ -543,7 +592,7 @@ namespace PenyaManager {
                 );
         // member filtered list
         m_memberListFilteredQuery.prepare(
-                "SELECT member.idmember, member.name, member.surname, member.image, member.lastmodified, member.reg_date, member.active, member.isAdmin, member.birth, "
+                "SELECT member.idmember, member.username, member.name, member.surname, member.image, member.lastmodified, member.reg_date, member.active, member.isAdmin, member.birth, "
                 "member.address, member.zip_code, member.town, member.state, member.tel, member.tel2, member.email, member.bank_account, member.postal_send, "
                 "member.notes, ac.balance "
                 "FROM account ac "
@@ -566,7 +615,7 @@ namespace PenyaManager {
         // update  member
         m_updateMemberQuery.prepare(
                 "UPDATE member "
-                "SET name=:name, surname=:surname, image=:image, lastmodified=:lastmodified, active=:active, isAdmin=:isadmin, birth=:birth, "
+                "SET username=:username, name=:name, surname=:surname, image=:image, lastmodified=:lastmodified, active=:active, isAdmin=:isadmin, birth=:birth, "
                 "address=:address, zip_code=:zip_code, town=:town, state=:state, tel=:tel, tel2=:tel2, email=:email, bank_account=:bank_account, postal_send=:postal_send, "
                 "notes=:notes "
                 "WHERE idmember = :memberid"
@@ -574,10 +623,10 @@ namespace PenyaManager {
         // create member
         m_createMemberQuery.prepare(
                 "INSERT INTO member "
-                "(name, surname, image, lastmodified, reg_date, active, isAdmin, birth, "
+                "(username, name, surname, image, lastmodified, reg_date, active, isAdmin, birth, "
                 "address, zip_code, town, state, tel, tel2, email, bank_account, postal_send, "
                 "notes, pwd, lastlogin) "
-                "VALUES (:name, :surname, :image, :lastmodified, :reg_date, :active, :isadmin, :birth, "
+                "VALUES (:username, :name, :surname, :image, :lastmodified, :reg_date, :active, :isadmin, :birth, "
                 ":address, :zip_code, :town, :state, :tel, :tel2, :email, :bank_account, :postal_send, "
                 ":notes, :pwd, :lastlogin)"
                 );
@@ -609,6 +658,32 @@ namespace PenyaManager {
         m_removeInvoiceQuery.prepare(
                 "DELETE FROM invoice "
                 "WHERE idinvoice=:invoiceid"
+                );
+        // active invoice list
+        m_getActiveInvoiceListQuery.prepare(
+                "SELECT idinvoice, state, date, total, idmember, last_modif "
+                "FROM invoice "
+                "WHERE state = :state"
+                );
+        // check username
+        m_checkUsernameQuery.prepare(
+                "SELECT COUNT(*) "
+                "FROM member "
+                "WHERE username = :username"
+                );
+        // get provider invoice by id
+        m_providerInvoiceByIdQuery.prepare(
+                "SELECT provider_invoices.date, provider_invoices.total, provider.name, provider.image "
+                "FROM provider_invoices "
+                "INNER JOIN provider ON provider.idprovider = provider_invoices.idprovider "
+                "WHERE provider_invoices.idprovider_invoices = :providerinvoicesid"
+                );
+        // get provider invoice product by invoice id
+        m_providerInvoiceProductsByInvoiceIdQuery.prepare(
+                "SELECT provider_invoices_product.product_item_idproduct_item, provider_invoices_product.count, product_item.name, product_item.image, product_item.price "
+                "FROM provider_invoices_product "
+                "INNER JOIN product_item ON product_item.idproduct_item = provider_invoices_product.product_item_idproduct_item "
+                "WHERE provider_invoices_product.provider_invoices_idprovider_invoices = :providerinvoicesid"
                 );
     }
 
@@ -692,7 +767,7 @@ namespace PenyaManager {
         return pfListPrt;
     }
     //
-    MemberPtr DAO::getMemberById(Int32 memberId)
+    MemberPtr DAO::fetchMemberById(Int32 memberId)
     {
         MemberPtr pMemberPtr;
         // member and balance
@@ -707,6 +782,7 @@ namespace PenyaManager {
             Uint32 column = 0;
             pMemberPtr->m_id = memberId;
             pMemberPtr->m_name = m_memberByIdQuery.value(column++).toString();
+            pMemberPtr->m_username = m_memberByIdQuery.value(column++).toInt();
             pMemberPtr->m_surname = m_memberByIdQuery.value(column++).toString();
             pMemberPtr->m_imagePath = m_memberByIdQuery.value(column++).toString();
             pMemberPtr->m_lastModified = m_memberByIdQuery.value(column++).toDateTime();
@@ -726,10 +802,67 @@ namespace PenyaManager {
             pMemberPtr->m_notes = m_memberByIdQuery.value(column++).toString();
             pMemberPtr->m_pwd = m_memberByIdQuery.value(column++).toString();
             pMemberPtr->m_lastLogin = m_memberByIdQuery.value(column++).toDateTime();
-            pMemberPtr->m_balance = m_memberByIdQuery.value(column++).toFloat();
         }
         m_memberByIdQuery.finish();
         return pMemberPtr;
+    }
+    //
+    MemberPtr DAO::fetchMemberByUsername(Int32 username)
+    {
+        MemberPtr pMemberPtr;
+        // member and balance
+        m_memberByUsernameQuery.bindValue(":username", username);
+        if (!m_memberByUsernameQuery.exec())
+        {
+            qDebug() << m_memberByUsernameQuery.lastError();
+            QLOG_ERROR() << m_memberByUsernameQuery.lastError();
+        } else if (m_memberByUsernameQuery.next())
+        {
+            pMemberPtr = MemberPtr(new Member);
+            Uint32 column = 0;
+            pMemberPtr->m_id = m_memberByUsernameQuery.value(column++).toInt();
+            pMemberPtr->m_name = m_memberByUsernameQuery.value(column++).toString();
+            pMemberPtr->m_username = username;
+            pMemberPtr->m_surname = m_memberByUsernameQuery.value(column++).toString();
+            pMemberPtr->m_imagePath = m_memberByUsernameQuery.value(column++).toString();
+            pMemberPtr->m_lastModified = m_memberByUsernameQuery.value(column++).toDateTime();
+            pMemberPtr->m_regDate = m_memberByUsernameQuery.value(column++).toDateTime();
+            pMemberPtr->m_active = m_memberByUsernameQuery.value(column++).toInt() == 1;
+            pMemberPtr->m_isAdmin = m_memberByUsernameQuery.value(column++).toInt() == 1;
+            pMemberPtr->m_birthdate = m_memberByUsernameQuery.value(column++).toDate();
+            pMemberPtr->m_address = m_memberByUsernameQuery.value(column++).toString();
+            pMemberPtr->m_zipCode = m_memberByUsernameQuery.value(column++).toString();
+            pMemberPtr->m_town = m_memberByUsernameQuery.value(column++).toString();
+            pMemberPtr->m_state = m_memberByUsernameQuery.value(column++).toString();
+            pMemberPtr->m_phone = m_memberByUsernameQuery.value(column++).toString();
+            pMemberPtr->m_phone2 = m_memberByUsernameQuery.value(column++).toString();
+            pMemberPtr->m_email = m_memberByUsernameQuery.value(column++).toString();
+            pMemberPtr->m_bank_account = m_memberByUsernameQuery.value(column++).toString();
+            pMemberPtr->m_postalSend = m_memberByUsernameQuery.value(column++).toInt() == 1;
+            pMemberPtr->m_notes = m_memberByUsernameQuery.value(column++).toString();
+            pMemberPtr->m_pwd = m_memberByUsernameQuery.value(column++).toString();
+            pMemberPtr->m_lastLogin = m_memberByUsernameQuery.value(column++).toDateTime();
+        }
+        m_memberByUsernameQuery.finish();
+        return pMemberPtr;
+    }
+    //
+    FloatBoolPair DAO::getAccountBalance(Int32 memberId)
+    {
+        FloatBoolPair result = {0.0, false};
+        // member and balance
+        m_memberAccountBalanceQuery.bindValue(":memberid", memberId);
+        if (!m_memberAccountBalanceQuery.exec())
+        {
+            qDebug() << m_memberAccountBalanceQuery.lastError();
+            QLOG_ERROR() << m_memberAccountBalanceQuery.lastError();
+        } else if (m_memberAccountBalanceQuery.next())
+        {
+            result.b = true;
+            result.f = m_memberAccountBalanceQuery.value(0).toFloat();
+        }
+        m_memberAccountBalanceQuery.finish();
+        return result;
     }
     //
     InvoicePtr DAO::getInvoice(Int32 invoiceId)
@@ -820,14 +953,13 @@ namespace PenyaManager {
     //
     InvoicePtr DAO::createInvoice(Int32 memberId)
     {
-        InvoicePtr pInvoicePtr(new Invoice(
-                    0,
-                    memberId,
-                    InvoiceState::Open,
-                    QDateTime::currentDateTime(),
-                    0.0,
-                    QDateTime::currentDateTime()
-                    ));
+        InvoicePtr pInvoicePtr(new Invoice);
+        pInvoicePtr->m_id = 0;
+        pInvoicePtr->m_memberId = memberId;
+        pInvoicePtr->m_state = InvoiceState::Open;
+        pInvoicePtr->m_date = QDateTime::currentDateTime();
+        pInvoicePtr->m_total = 0.0;
+        pInvoicePtr->m_lastModified = QDateTime::currentDateTime();
 
         m_insertInvoiceQuery.bindValue(":state", static_cast<Int32>(pInvoicePtr->m_state));
         m_insertInvoiceQuery.bindValue(":date", pInvoicePtr->m_date);
@@ -921,13 +1053,15 @@ namespace PenyaManager {
             QLOG_ERROR() << m_memberLastAccountInfoQuery.lastError();
         } else if (m_memberLastAccountInfoQuery.next())
         {
+            Uint32 column = 0;
             pLastAccountInfoPtr = TransactionPtr(new Transaction);
             pLastAccountInfoPtr->m_memberId = memberId;
-            pLastAccountInfoPtr->m_amount = m_memberLastAccountInfoQuery.value(0).toFloat();
-            pLastAccountInfoPtr->m_date = m_memberLastAccountInfoQuery.value(1).toDateTime();
-            pLastAccountInfoPtr->m_balance = m_memberLastAccountInfoQuery.value(2).toFloat();
-            pLastAccountInfoPtr->m_descr = m_memberLastAccountInfoQuery.value(3).toString();
-            pLastAccountInfoPtr->m_type = static_cast<TransactionType>(m_memberLastAccountInfoQuery.value(4).toUInt());
+            pLastAccountInfoPtr->m_memberUsername = m_memberLastAccountInfoQuery.value(column++).toInt();
+            pLastAccountInfoPtr->m_amount = m_memberLastAccountInfoQuery.value(column++).toFloat();
+            pLastAccountInfoPtr->m_date = m_memberLastAccountInfoQuery.value(column++).toDateTime();
+            pLastAccountInfoPtr->m_balance = m_memberLastAccountInfoQuery.value(column++).toFloat();
+            pLastAccountInfoPtr->m_descr = m_memberLastAccountInfoQuery.value(column++).toString();
+            pLastAccountInfoPtr->m_type = static_cast<TransactionType>(m_memberLastAccountInfoQuery.value(column++).toUInt());
         }
         m_memberLastAccountInfoQuery.finish();
         return pLastAccountInfoPtr;
@@ -996,6 +1130,7 @@ namespace PenyaManager {
                 Uint32 value = 0;
                 TransactionPtr pTransactionPtr(new Transaction());
                 pTransactionPtr->m_memberId = m_accountListQuery.value(value++).toInt();
+                pTransactionPtr->m_memberUsername = m_accountListQuery.value(value++).toInt();
                 pTransactionPtr->m_amount = m_accountListQuery.value(value++).toFloat();
                 pTransactionPtr->m_date = m_accountListQuery.value(value++).toDateTime();
                 pTransactionPtr->m_descr = m_accountListQuery.value(value++).toString();
@@ -1168,6 +1303,7 @@ namespace PenyaManager {
                 Uint32 value = 0;
                 TransactionPtr pTransactionPtr(new Transaction());
                 pTransactionPtr->m_memberId = memberId;
+                pTransactionPtr->m_memberUsername = m_memberAccountListQuery.value(value++).toInt();
                 pTransactionPtr->m_amount = m_memberAccountListQuery.value(value++).toFloat();
                 pTransactionPtr->m_date = m_memberAccountListQuery.value(value++).toDateTime();
                 pTransactionPtr->m_descr = m_memberAccountListQuery.value(value++).toString();
@@ -1196,12 +1332,15 @@ namespace PenyaManager {
         ReservationListPtr pReservationListPtr(new ReservationList);
         while (m_tableReservationListQuery.next()) {
             ReservationPtr pReservationPtr(new Reservation);
-            pReservationPtr->m_reservationId = m_tableReservationListQuery.value(0).toInt();
-            pReservationPtr->m_idItem = m_tableReservationListQuery.value(1).toInt();
-            pReservationPtr->m_memberName = m_tableReservationListQuery.value(2).toString();
-            pReservationPtr->m_memberSurname = m_tableReservationListQuery.value(3).toString();
-            pReservationPtr->m_idMember = m_tableReservationListQuery.value(4).toInt();
-            pReservationPtr->m_guestNum = m_tableReservationListQuery.value(5).toUInt();
+            Uint32 column = 0;
+            pReservationPtr->m_reservationId = m_tableReservationListQuery.value(column++).toInt();
+            pReservationPtr->m_idItem = m_tableReservationListQuery.value(column++).toInt();
+            pReservationPtr->m_memberUsername = m_tableReservationListQuery.value(column++).toInt();
+            pReservationPtr->m_memberName = m_tableReservationListQuery.value(column++).toString();
+            pReservationPtr->m_memberSurname = m_tableReservationListQuery.value(column++).toString();
+            pReservationPtr->m_idMember = m_tableReservationListQuery.value(column++).toInt();
+            pReservationPtr->m_guestNum = m_tableReservationListQuery.value(column++).toUInt();
+            pReservationPtr->m_isAdmin = m_tableReservationListQuery.value(column++).toInt() == 1;
             pReservationListPtr->push_back(pReservationPtr);
         }
         m_tableReservationListQuery.finish();
@@ -1223,12 +1362,15 @@ namespace PenyaManager {
         ReservationListPtr pReservationListPtr(new ReservationList);
         while (m_ovenReservationListQuery.next()) {
             ReservationPtr pReservationPtr(new Reservation);
-            pReservationPtr->m_reservationId = m_ovenReservationListQuery.value(0).toInt();
-            pReservationPtr->m_idItem = m_ovenReservationListQuery.value(1).toInt();
-            pReservationPtr->m_memberName = m_ovenReservationListQuery.value(2).toString();
-            pReservationPtr->m_memberSurname = m_ovenReservationListQuery.value(3).toString();
-            pReservationPtr->m_idMember = m_ovenReservationListQuery.value(4).toInt();
+            Uint32 column = 0;
+            pReservationPtr->m_reservationId = m_ovenReservationListQuery.value(column++).toInt();
+            pReservationPtr->m_idItem = m_ovenReservationListQuery.value(column++).toInt();
+            pReservationPtr->m_memberUsername = m_ovenReservationListQuery.value(column++).toInt();
+            pReservationPtr->m_memberName = m_ovenReservationListQuery.value(column++).toString();
+            pReservationPtr->m_memberSurname = m_ovenReservationListQuery.value(column++).toString();
+            pReservationPtr->m_idMember = m_ovenReservationListQuery.value(column++).toInt();
             pReservationPtr->m_guestNum = 0;
+            pReservationPtr->m_isAdmin = m_ovenReservationListQuery.value(column++).toInt() == 1;
             pReservationListPtr->push_back(pReservationPtr);
         }
         m_ovenReservationListQuery.finish();
@@ -1250,11 +1392,14 @@ namespace PenyaManager {
         ReservationListPtr pReservationListPtr(new ReservationList);
         while (m_fireplaceReservationListQuery.next()) {
             ReservationPtr pReservationPtr(new Reservation);
-            pReservationPtr->m_reservationId = m_fireplaceReservationListQuery.value(0).toInt();
-            pReservationPtr->m_idItem = m_fireplaceReservationListQuery.value(1).toInt();
-            pReservationPtr->m_memberName = m_fireplaceReservationListQuery.value(2).toString();
-            pReservationPtr->m_memberSurname = m_fireplaceReservationListQuery.value(3).toString();
-            pReservationPtr->m_idMember = m_fireplaceReservationListQuery.value(4).toInt();
+            Uint32 column = 0;
+            pReservationPtr->m_reservationId = m_fireplaceReservationListQuery.value(column++).toInt();
+            pReservationPtr->m_idItem = m_fireplaceReservationListQuery.value(column++).toInt();
+            pReservationPtr->m_memberUsername = m_fireplaceReservationListQuery.value(column++).toInt();
+            pReservationPtr->m_memberName = m_fireplaceReservationListQuery.value(column++).toString();
+            pReservationPtr->m_memberSurname = m_fireplaceReservationListQuery.value(column++).toString();
+            pReservationPtr->m_idMember = m_fireplaceReservationListQuery.value(column++).toInt();
+            pReservationPtr->m_isAdmin = m_fireplaceReservationListQuery.value(column++).toInt() == 1;
             pReservationPtr->m_guestNum = 0;
             pReservationListPtr->push_back(pReservationPtr);
         }
@@ -1328,19 +1473,32 @@ namespace PenyaManager {
         return pReservationItemListPtr;
     }
     //
-    void DAO::makeTableReservation(const QDate &date, ReservationType reservationType, Uint16 guestNum, Int32 memberId, Int32 idTable)
+    void DAO::makeTableReservation(const QDate &date, ReservationType reservationType, Uint16 guestNum, Int32 memberId, Int32 idTable, bool isAdmin)
     {
         m_insertTableReservationQuery.bindValue(":date", date);
         m_insertTableReservationQuery.bindValue(":reservationtype", static_cast<Uint16>(reservationType));
         m_insertTableReservationQuery.bindValue(":guestnum", guestNum);
         m_insertTableReservationQuery.bindValue(":idmember", memberId);
         m_insertTableReservationQuery.bindValue(":idtable", idTable);
+        m_insertTableReservationQuery.bindValue(":isadmin", (isAdmin)?(1):(0));
         if (!m_insertTableReservationQuery.exec())
         {
             qDebug() << m_insertTableReservationQuery.lastError();
             QLOG_ERROR() << m_insertTableReservationQuery.lastError();
         }
         m_insertTableReservationQuery.finish();
+    }
+    //
+    void DAO::updateTableReservation(Int32 reservationId, bool isAdmin)
+    {
+        m_updateTableReservationQuery.bindValue(":idreservation", reservationId);
+        m_updateTableReservationQuery.bindValue(":isadmin", (isAdmin)?(1):(0));
+        if (!m_updateTableReservationQuery.exec())
+        {
+            qDebug() << m_updateTableReservationQuery.lastError();
+            QLOG_ERROR() << m_updateTableReservationQuery.lastError();
+        }
+        m_updateTableReservationQuery.finish();
     }
     //
     void DAO::cancelTableReservation(Int32 reservationId)
@@ -1354,18 +1512,31 @@ namespace PenyaManager {
         m_cancelTableReservationQuery.finish();
     }
     //
-    void DAO::makeOvenReservation(const QDate &date, ReservationType reservationType, Int32 memberId, Int32 idOven)
+    void DAO::makeOvenReservation(const QDate &date, ReservationType reservationType, Int32 memberId, Int32 idOven, bool isAdmin)
     {
         m_insertOvenReservationQuery.bindValue(":date", date);
         m_insertOvenReservationQuery.bindValue(":reservationtype", static_cast<Uint16>(reservationType));
         m_insertOvenReservationQuery.bindValue(":idmember", memberId);
         m_insertOvenReservationQuery.bindValue(":idoven", idOven);
+        m_insertOvenReservationQuery.bindValue(":isadmin", (isAdmin)?(1):(0));
         if (!m_insertOvenReservationQuery.exec())
         {
             qDebug() << m_insertOvenReservationQuery.lastError();
             QLOG_ERROR() << m_insertOvenReservationQuery.lastError();
         }
         m_insertOvenReservationQuery.finish();
+    }
+    //
+    void DAO::updateOvenReservation(Int32 reservationId, bool isAdmin)
+    {
+        m_updateOvenReservationQuery.bindValue(":idreservation", reservationId);
+        m_updateOvenReservationQuery.bindValue(":isadmin", (isAdmin)?(1):(0));
+        if (!m_updateOvenReservationQuery.exec())
+        {
+            qDebug() << m_updateOvenReservationQuery.lastError();
+            QLOG_ERROR() << m_updateOvenReservationQuery.lastError();
+        }
+        m_updateOvenReservationQuery.finish();
     }
     //
     void DAO::cancelOvenReservation(Int32 reservationId)
@@ -1379,12 +1550,25 @@ namespace PenyaManager {
         m_cancelOvenReservationQuery.finish();
     }
     //
-    void DAO::makeFireplaceReservation(const QDate &date, ReservationType reservationType, Int32 memberId, Int32 idFireplace)
+    void DAO::updateFireplaceReservation(Int32 reservationId, bool isAdmin)
+    {
+        m_updateFireplaceReservationQuery.bindValue(":idreservation", reservationId);
+        m_updateFireplaceReservationQuery.bindValue(":isadmin", (isAdmin)?(1):(0));
+        if (!m_updateFireplaceReservationQuery.exec())
+        {
+            qDebug() << m_updateFireplaceReservationQuery.lastError();
+            QLOG_ERROR() << m_updateFireplaceReservationQuery.lastError();
+        }
+        m_updateFireplaceReservationQuery.finish();
+    }
+    //
+    void DAO::makeFireplaceReservation(const QDate &date, ReservationType reservationType, Int32 memberId, Int32 idFireplace, bool isAdmin)
     {
         m_insertFireplaceReservationQuery.bindValue(":date", date);
         m_insertFireplaceReservationQuery.bindValue(":reservationtype", static_cast<Uint16>(reservationType));
         m_insertFireplaceReservationQuery.bindValue(":idmember", memberId);
         m_insertFireplaceReservationQuery.bindValue(":idfireplace", idFireplace);
+        m_insertFireplaceReservationQuery.bindValue(":isadmin", (isAdmin)?(1):(0));
         if (!m_insertFireplaceReservationQuery.exec())
         {
             qDebug() << m_insertFireplaceReservationQuery.lastError();
@@ -1415,13 +1599,15 @@ namespace PenyaManager {
         } else {
             while (m_slowPayersQuery.next()) {
                 MemberPtr pMemberPtr(new Member);
-                pMemberPtr->m_id =  m_slowPayersQuery.value(0).toInt();
-                pMemberPtr->m_name =  m_slowPayersQuery.value(1).toString();
-                pMemberPtr->m_surname =  m_slowPayersQuery.value(2).toString();
-                pMemberPtr->m_imagePath =  m_slowPayersQuery.value(3).toString();
-                pMemberPtr->m_balance =  m_slowPayersQuery.value(4).toFloat();
-                pMemberPtr->m_lastModified =  m_slowPayersQuery.value(5).toDateTime();
-                pMemberPtr->m_regDate =  m_slowPayersQuery.value(6).toDateTime();
+                Uint32 column = 0;
+                pMemberPtr->m_id =  m_slowPayersQuery.value(column++).toInt();
+                pMemberPtr->m_username =  m_slowPayersQuery.value(column++).toInt();
+                pMemberPtr->m_name =  m_slowPayersQuery.value(column++).toString();
+                pMemberPtr->m_surname =  m_slowPayersQuery.value(column++).toString();
+                pMemberPtr->m_imagePath =  m_slowPayersQuery.value(column++).toString();
+                pMemberPtr->m_balance =  m_slowPayersQuery.value(column++).toFloat();
+                pMemberPtr->m_lastModified =  m_slowPayersQuery.value(column++).toDateTime();
+                pMemberPtr->m_regDate =  m_slowPayersQuery.value(column++).toDateTime();
                 pMemberListPtr->push_back(pMemberPtr);
             }
         }
@@ -1446,13 +1632,15 @@ namespace PenyaManager {
         } else {
             pInvoiceListPtr = InvoiceListPtr(new InvoiceList);
             while (m_invoiceListByMemberIdQuery.next()) {
+                Uint32 column = 0;
                 InvoicePtr pInvoicePtr(new Invoice);
-                pInvoicePtr->m_id =  m_invoiceListByMemberIdQuery.value(0).toInt();
+                pInvoicePtr->m_memberUsername = m_invoiceListByMemberIdQuery.value(column++).toInt();
+                pInvoicePtr->m_id =  m_invoiceListByMemberIdQuery.value(column++).toInt();
                 pInvoicePtr->m_memberId =  memberId;
                 pInvoicePtr->m_state =  InvoiceState::Closed;
-                pInvoicePtr->m_date =  m_invoiceListByMemberIdQuery.value(1).toDateTime();
-                pInvoicePtr->m_total =  m_invoiceListByMemberIdQuery.value(2).toFloat();
-                pInvoicePtr->m_lastModified =  m_invoiceListByMemberIdQuery.value(3).toDateTime();
+                pInvoicePtr->m_date =  m_invoiceListByMemberIdQuery.value(column++).toDateTime();
+                pInvoicePtr->m_total =  m_invoiceListByMemberIdQuery.value(column++).toFloat();
+                pInvoicePtr->m_lastModified =  m_invoiceListByMemberIdQuery.value(column++).toDateTime();
                 pInvoiceListPtr->push_back(pInvoicePtr);
             }
         }
@@ -1501,12 +1689,14 @@ namespace PenyaManager {
             pInvoiceListPtr = InvoiceListPtr(new InvoiceList);
             while (m_invoiceListQuery.next()) {
                 InvoicePtr pInvoicePtr(new Invoice);
-                pInvoicePtr->m_id =  m_invoiceListQuery.value(0).toInt();
-                pInvoicePtr->m_memberId =  m_invoiceListQuery.value(1).toInt();
-                pInvoicePtr->m_state =  InvoiceState::Closed;
-                pInvoicePtr->m_date =  m_invoiceListQuery.value(2).toDateTime();
-                pInvoicePtr->m_total =  m_invoiceListQuery.value(3).toFloat();
-                pInvoicePtr->m_lastModified =  m_invoiceListQuery.value(4).toDateTime();
+                Uint32 column = 0;
+                pInvoicePtr->m_memberUsername = m_invoiceListQuery.value(column++).toInt();
+                pInvoicePtr->m_id = m_invoiceListQuery.value(column++).toInt();
+                pInvoicePtr->m_memberId = m_invoiceListQuery.value(column++).toInt();
+                pInvoicePtr->m_state = InvoiceState::Closed;
+                pInvoicePtr->m_date = m_invoiceListQuery.value(column++).toDateTime();
+                pInvoicePtr->m_total = m_invoiceListQuery.value(column++).toFloat();
+                pInvoicePtr->m_lastModified = m_invoiceListQuery.value(column++).toDateTime();
                 pInvoiceListPtr->push_back(pInvoicePtr);
             }
         }
@@ -2031,12 +2221,14 @@ namespace PenyaManager {
             QLOG_ERROR() << m_uncheckedDepositListQuery.lastError();
         } else {
             while (m_uncheckedDepositListQuery.next()) {
+                Uint32 column = 0;
                 DepositPtr pDepositPtr(new Deposit);
-                pDepositPtr->m_id = m_uncheckedDepositListQuery.value(0).toInt();
-                pDepositPtr->m_date = m_uncheckedDepositListQuery.value(1).toDateTime();
-                pDepositPtr->m_total = m_uncheckedDepositListQuery.value(2).toFloat();
-                pDepositPtr->m_descr = m_uncheckedDepositListQuery.value(3).toString();
-                pDepositPtr->m_memberId = m_uncheckedDepositListQuery.value(4).toInt();
+                pDepositPtr->m_memberUsername = m_uncheckedDepositListQuery.value(column++).toInt();
+                pDepositPtr->m_id = m_uncheckedDepositListQuery.value(column++).toInt();
+                pDepositPtr->m_date = m_uncheckedDepositListQuery.value(column++).toDateTime();
+                pDepositPtr->m_total = m_uncheckedDepositListQuery.value(column++).toFloat();
+                pDepositPtr->m_descr = m_uncheckedDepositListQuery.value(column++).toString();
+                pDepositPtr->m_memberId = m_uncheckedDepositListQuery.value(column++).toInt();
                 pDepositListPtr->push_back(pDepositPtr);
             }
         }
@@ -2072,6 +2264,7 @@ namespace PenyaManager {
                 Uint32 column = 0;
                 MemberPtr pMemberPtr(new Member);
                 pMemberPtr->m_id = pQuery->value(column++).toInt();
+                pMemberPtr->m_username = pQuery->value(column++).toInt();
                 pMemberPtr->m_name = pQuery->value(column++).toString();
                 pMemberPtr->m_surname = pQuery->value(column++).toString();
                 pMemberPtr->m_imagePath = pQuery->value(column++).toString();
@@ -2122,6 +2315,7 @@ namespace PenyaManager {
     {
         // obligatory
         m_updateMemberQuery.bindValue(":memberid", pMemberPtr->m_id);
+        m_updateMemberQuery.bindValue(":username", pMemberPtr->m_username);
         m_updateMemberQuery.bindValue(":name", pMemberPtr->m_name);
         m_updateMemberQuery.bindValue(":surname", pMemberPtr->m_surname);
         m_updateMemberQuery.bindValue(":lastmodified", pMemberPtr->m_lastModified);
@@ -2192,6 +2386,7 @@ namespace PenyaManager {
     Int32 DAO::createMember(const MemberPtr &pMemberPtr)
     {
         // obligatory
+        m_createMemberQuery.bindValue(":username", pMemberPtr->m_username);
         m_createMemberQuery.bindValue(":name", pMemberPtr->m_name);
         m_createMemberQuery.bindValue(":surname", pMemberPtr->m_surname);
         m_createMemberQuery.bindValue(":lastmodified", pMemberPtr->m_lastModified);
@@ -2318,7 +2513,7 @@ namespace PenyaManager {
             pInvoicePtr->m_date = m_lastInvoiceQuery.value(2).toDateTime();
             pInvoicePtr->m_total = m_lastInvoiceQuery.value(3).toFloat();
             pInvoicePtr->m_memberId = m_lastInvoiceQuery.value(4).toInt();
-            pInvoicePtr->m_lastModified = m_lastInvoiceQuery.value(4).toDateTime();
+            pInvoicePtr->m_lastModified = m_lastInvoiceQuery.value(5).toDateTime();
         }
         m_lastInvoiceQuery.finish();
 
@@ -2348,6 +2543,97 @@ namespace PenyaManager {
             QLOG_ERROR() << m_removeInvoiceQuery.lastError();
         }
         m_removeInvoiceQuery.finish();
+    }
+    //
+    InvoiceListPtr DAO::getActiveInvoiceList()
+    {
+        // always return list object
+        InvoiceListPtr pActiveInvoiceList = InvoiceListPtr(new InvoiceList);
+
+        m_getActiveInvoiceListQuery.bindValue(":state", static_cast<Int32>(InvoiceState::Open));
+        // run query
+        if (!m_getActiveInvoiceListQuery.exec())
+        {
+            qDebug() << m_getActiveInvoiceListQuery.lastError();
+            QLOG_ERROR() << m_getActiveInvoiceListQuery.lastError();
+        } else {
+            while (m_getActiveInvoiceListQuery.next()) {
+                InvoicePtr pInvoicePtr = InvoicePtr(new Invoice());
+                pInvoicePtr->m_id = m_getActiveInvoiceListQuery.value(0).toInt();
+                pInvoicePtr->m_state = static_cast<InvoiceState>(m_getActiveInvoiceListQuery.value(1).toUInt());
+                pInvoicePtr->m_date = m_getActiveInvoiceListQuery.value(2).toDateTime();
+                pInvoicePtr->m_total = m_getActiveInvoiceListQuery.value(3).toFloat();
+                pInvoicePtr->m_memberId = m_getActiveInvoiceListQuery.value(4).toInt();
+                pInvoicePtr->m_lastModified = m_getActiveInvoiceListQuery.value(5).toDateTime();
+                pActiveInvoiceList->push_back(pInvoicePtr);
+            }
+        }
+
+        m_getActiveInvoiceListQuery.finish();
+        return pActiveInvoiceList;
+    }
+    //
+    bool DAO::checkUsername(Int32 username)
+    {
+        bool usernameUsed = true;
+        m_checkUsernameQuery.bindValue(":username", username);
+        if (!m_checkUsernameQuery.exec())
+        {
+            qDebug() << m_checkUsernameQuery.lastError();
+            QLOG_ERROR() << m_checkUsernameQuery.lastError();
+        } else {
+            m_checkUsernameQuery.next();
+            usernameUsed = m_checkUsernameQuery.value(0).toInt() != 0;
+        }
+        return usernameUsed;
+    }
+    //
+    ProviderInvoicePtr DAO::getProviderInvoiceById(const QString &providerInvoiceId)
+    {
+        ProviderInvoicePtr pProviderInvoicePtr;
+        m_providerInvoiceByIdQuery.bindValue(":providerinvoicesid", providerInvoiceId);
+        if (!m_providerInvoiceByIdQuery.exec())
+        {
+            qDebug() << m_providerInvoiceByIdQuery.lastError();
+            QLOG_ERROR() << m_providerInvoiceByIdQuery.lastError();
+        } else if (m_providerInvoiceByIdQuery.next())
+        {
+            pProviderInvoicePtr = ProviderInvoicePtr(new ProviderInvoice);
+            Uint32 column = 0;
+            pProviderInvoicePtr->m_id = providerInvoiceId;
+            pProviderInvoicePtr->m_regDate = m_providerInvoiceByIdQuery.value(column++).toDate();
+            pProviderInvoicePtr->m_total = m_providerInvoiceByIdQuery.value(column++).toFloat();
+            pProviderInvoicePtr->m_providerName = m_providerInvoiceByIdQuery.value(column++).toString();
+            pProviderInvoicePtr->m_providerImagePath = m_providerInvoiceByIdQuery.value(column++).toString();
+        }
+        m_providerInvoiceByIdQuery.finish();
+        return pProviderInvoicePtr;
+    }
+    //
+    ProviderInvoiceProductItemListPtr DAO::getProviderInvoiceProductsByInvoiceId(const QString &providerInvoiceId)
+    {
+        ProviderInvoiceProductItemListPtr pListPtr = ProviderInvoiceProductItemListPtr(new ProviderInvoiceProductItemList);
+        // bind value
+        m_providerInvoiceProductsByInvoiceIdQuery.bindValue(":providerinvoicesid", providerInvoiceId);
+        // run query
+        if (!m_providerInvoiceProductsByInvoiceIdQuery.exec())
+        {
+            qDebug() << m_providerInvoiceProductsByInvoiceIdQuery.lastError();
+            QLOG_ERROR() << m_providerInvoiceProductsByInvoiceIdQuery.lastError();
+        } else {
+            while (m_providerInvoiceProductsByInvoiceIdQuery.next()) {
+                ProviderInvoiceProductItemPtr pProductPtr(new ProviderInvoiceProductItem);
+                Uint32 column = 0;
+                pProductPtr->m_productId = m_providerInvoiceProductsByInvoiceIdQuery.value(column++).toInt();
+                pProductPtr->m_count = m_providerInvoiceProductsByInvoiceIdQuery.value(column++).toInt();
+                pProductPtr->m_productName = m_providerInvoiceProductsByInvoiceIdQuery.value(column++).toString();
+                pProductPtr->m_productImagePath = m_providerInvoiceProductsByInvoiceIdQuery.value(column++).toString();
+                pProductPtr->m_productPrice = m_providerInvoiceProductsByInvoiceIdQuery.value(column++).toFloat();
+                pListPtr->push_back(pProductPtr);
+            }
+        }
+        m_providerInvoiceProductsByInvoiceIdQuery.finish();
+        return pListPtr;
     }
 }
 

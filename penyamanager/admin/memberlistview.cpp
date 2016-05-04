@@ -2,6 +2,7 @@
 
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QsLog.h>
 
 #include <commons/guiutils.h>
 #include <commons/singletons.h>
@@ -47,7 +48,7 @@ namespace PenyaManager {
         headers.append(tr("Image"));
         headers.append(tr("Surnames"));
         headers.append(tr("Name"));
-        headers.append(tr("MemberID"));
+        headers.append(tr("Username"));
         headers.append(tr("Balance"));
         headers.append(tr("Email"));
         headers.append(tr("Active"));
@@ -139,7 +140,7 @@ namespace PenyaManager {
             this->ui->memberTableWidget->setItem(rowCount, column++, memberImageWidget);
             this->ui->memberTableWidget->setItem(rowCount, column++, new QTableWidgetItem(pMemberPtr->m_surname));
             this->ui->memberTableWidget->setItem(rowCount, column++, new QTableWidgetItem(pMemberPtr->m_name));
-            this->ui->memberTableWidget->setItem(rowCount, column++, new QTableWidgetItem(QString::number(pMemberPtr->m_id)));
+            this->ui->memberTableWidget->setItem(rowCount, column++, new QTableWidgetItem(QString::number(pMemberPtr->m_username)));
             this->ui->memberTableWidget->setItem(rowCount, column++, new QTableWidgetItem(QString::number(pMemberPtr->m_balance, 'f', 2)));
             this->ui->memberTableWidget->setItem(rowCount, column++, new QTableWidgetItem(pMemberPtr->m_email));
             this->ui->memberTableWidget->setItem(rowCount, column++, new QTableWidgetItem((pMemberPtr->m_active)?(QString::number(1)):(QString::number(0))));
@@ -154,7 +155,7 @@ namespace PenyaManager {
         auto rowMap = m_rowProductIdMap.find(row);
         if (rowMap == m_rowProductIdMap.end()) {
             //this should never happen
-            qDebug() << "[ERROR] memberID not found and should be in the map";
+            QLOG_ERROR() << "[ERROR] memberID not found and should be in the map";
             return;
         }
         Int32 memberId = rowMap->second;
@@ -176,7 +177,7 @@ namespace PenyaManager {
 
         QFile f(filename);
         if (!f.open( QIODevice::WriteOnly )) {
-            QMessageBox::warning(this, "Unable to save file", "Error opening " + filename);
+            QMessageBox::warning(this, tr("Unable to save file"), tr("Error opening %1").arg(filename));
             return;
         }
         QTextStream out(&f);
@@ -201,8 +202,20 @@ namespace PenyaManager {
     //
     void MemberListView::on_filterPostalUsersCheckBox_clicked()
     {
-        qDebug() << "filter postal check clicked";
         updateResults();
+    }
+    //
+    void MemberListView::on_printPostalMembersPushButton_clicked()
+    {
+        // get post activated members
+        MemberListPtr pMemberListPtr = Singletons::m_pDAO->getMemberList(true, 0, 1000000);
+        if (pMemberListPtr->size() == 0) {
+            QMessageBox::information(this, tr("Unable to print"), tr("There are no users with postsend activated"));
+            return;
+        }
+        // print post activated member list
+        GuiUtils::printPostalMembers(pMemberListPtr);
+        QMessageBox::information(this, tr("Print postal members"), tr("suxesfrul"));
     }
 }
 

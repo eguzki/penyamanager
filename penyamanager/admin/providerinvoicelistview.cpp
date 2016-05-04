@@ -1,6 +1,8 @@
 //
 
 #include <QDebug>
+#include <QsLog.h>
+
 #include <commons/guiutils.h>
 #include <commons/singletons.h>
 #include "providerinvoicelistview.h"
@@ -8,9 +10,10 @@
 
 namespace PenyaManager {
     //
-    ProviderInvoiceListView::ProviderInvoiceListView(QWidget *parent) :
+    ProviderInvoiceListView::ProviderInvoiceListView(QWidget *parent, const CentralWidgetCallback &callback) :
         IPartner(parent),
         ui(new Ui::ProviderInvoiceListView),
+        m_switchCentralWidgetCallback(callback),
         m_currentPage(0),
         m_firstTime(true)
     {
@@ -149,8 +152,10 @@ namespace PenyaManager {
     void ProviderInvoiceListView::fillInvoiceList(ProviderInvoiceListPtr pProviderInvoiceListPtr)
     {
         // invoice table reset
-        this->ui->invoicesTableWidget->clearContents();
         this->ui->invoicesTableWidget->setRowCount(pProviderInvoiceListPtr->size());
+        this->ui->invoicesTableWidget->clearContents();
+        // internal data structure reset
+        this->m_rowProviderInvoiceIdMap.clear();
         // fill data
         Uint32 rowCount = 0;
         for (ProviderInvoiceList::iterator iter = pProviderInvoiceListPtr->begin(); iter != pProviderInvoiceListPtr->end(); ++iter)
@@ -161,8 +166,27 @@ namespace PenyaManager {
             QString dateLocalized = Singletons::m_translationManager.getLocale().toString(pInvoicePtr->m_regDate, QLocale::NarrowFormat);
             this->ui->invoicesTableWidget->setItem(rowCount, 2, new QTableWidgetItem(dateLocalized));
             this->ui->invoicesTableWidget->setItem(rowCount, 3, new QTableWidgetItem(QString::number(pInvoicePtr->m_providerid)));
+            this->m_rowProviderInvoiceIdMap[rowCount] = pInvoicePtr->m_id;
             rowCount++;
         }
     }
+    //
+    void ProviderInvoiceListView::on_invoicesTableWidget_cellDoubleClicked(int row, int column)
+    {
+        UNUSEDPARAMETER(column);
+        auto rowMap = m_rowProviderInvoiceIdMap.find(row);
+        if (rowMap == m_rowProviderInvoiceIdMap.end()) {
+            //this should never happen
+            QLOG_ERROR() << "[ERROR] provider invoice Id not found and should be in the map";
+            return;
+        }
+        QString providerInvoiceId = rowMap->second;
+        // use static global variable to pass argument
+        Singletons::m_currentProviderInvoiceId = providerInvoiceId;
+
+        // call invoice details window throw adminmainwindow
+        m_switchCentralWidgetCallback(WindowKey::kProviderInvoiceViewKey);
+    }
 }
+
 

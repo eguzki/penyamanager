@@ -19,6 +19,7 @@ TEMPLATE = app
 RC_ICONS = images/alegrialogo.ico
 
 include(libs/simplecrypt/simplecrypt.pro)
+include(libs/QsLog2/QsLog.pri)
 
 SOURCES +=  confmain.cpp \
             commons/utils.cpp \

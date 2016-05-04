@@ -2,10 +2,11 @@
     <qresource prefix="/">
         <file>images/no-image.gif</file>
         <file>images/alegrialogo.jpg</file>
-        <file>images/espanola.jpg</file>
-        <file>images/ikurrina.png</file>
         <file>resources/deposit.html</file>
         <file>resources/invoice.html</file>
+        <file>resources/members.html</file>
+        <file>resources/singlemember.html</file>
+        <file>resources/doublemember.html</file>
         <file>VERSION</file>
     </qresource>
 </RCC>

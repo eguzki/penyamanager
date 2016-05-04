@@ -40,15 +40,11 @@ penyamanager
   * invoices are always applied to account. No need to verify.
   * items count substracted from stock
   * optionally can be printed
-* Member table reservation window
+* Reservations
+  * three types: tables, ovens and fireplaces
+  * members can only reserve one reservation type in a given date (date, lunch/dinner)
   * members can cancel
-  * members can only reserve one table in a given date (date, lunch/dinner)
-* Member oven reservation window
-  * members can cancel
-  * members can only reserve one oven in a given date (date, lunch/dinner)
-* Member fireplace reservation window
-  * members can cancel
-  * members can only reserve one fireplace in a given date (date, lunch/dinner)
+  * admin can block/unblock reservations. Make its own reservation.
 * Member deposit window
   * Deposits are applied to balance on creation. Admin has to verify.
   * Deposit ticket is printed
@@ -97,7 +93,14 @@ penyamanager
   * Basque
   * Spanish
 * Activity logger
-* App designed for screen resolution 1024x768
+* App designed for screen resolution 1280x1024
+* Outdated (last_modif) invoices (12 Hours) are closed on every login
+* Print invoices when closed
+* Credit limit. When over limit, do not allow creating invoices
+* Member username can be updated
+* Print post activated members
+* Provider Invoice View from provider invoice list
+* Notes in member information
 
 # Development
 
@@ -116,6 +119,10 @@ penyamanager
 * QT Creator 3.4.2
 * QT 5.5.0
 * GCC 4.8.4, 64 bit
+
+## Log level:
+* QSettings key **loglevel** in General section
+* Valid values: debug, info, warn, error
 
 ## Package deployment for windows 7
 

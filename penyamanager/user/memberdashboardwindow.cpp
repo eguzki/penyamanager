@@ -8,7 +8,7 @@
 #include <commons/constants.h>
 #include <commons/guiutils.h>
 #include <commons/singletons.h>
-#include "numitemdialog.h"
+#include <commons/numitemdialog.h>
 #include "memberdashboardwindow.h"
 #include "ui_memberdashboardwindow.h"
 
@@ -71,9 +71,10 @@ namespace PenyaManager {
         // Loading User profile
         //
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
-        pCurrMemberPtr = Singletons::m_pDAO->getMemberById(pCurrMemberPtr->m_id);
+        pCurrMemberPtr = Singletons::m_pServices->getMemberById(pCurrMemberPtr->m_id);
         Singletons::m_pCurrMember = pCurrMemberPtr;
         this->m_pMemberProfileGroupBox->init(pCurrMemberPtr);
+
 
         //
         // Loading families
@@ -92,6 +93,21 @@ namespace PenyaManager {
         InvoicePtr pInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMemberPtr->m_id);
         // pInvoicePtr could be null
         fillInvoiceData(pInvoicePtr);
+
+        //
+        // check credir limit
+        //
+        if (pCurrMemberPtr->m_balance < -Constants::kCreditLimit)
+        {
+            // User has gone over credit limit. Do not allow creating invoice
+            QMessageBox::warning(this, "Slow Payer",
+                    tr("Your current balance is over limit (%1 €): %2 €").arg(Constants::kCreditLimit, 0, 'f', 2).arg(pCurrMemberPtr->m_balance, 0, 'f', 2));
+            this->ui->familyListWidget->setDisabled(true);
+            this->ui->invoiceCloseButton->setDisabled(true);
+        } else {
+            this->ui->familyListWidget->setDisabled(false);
+            this->ui->invoiceCloseButton->setDisabled(false);
+        }
     }
     //
     void MemberDashboardWindow::retranslate()
@@ -183,6 +199,8 @@ namespace PenyaManager {
         {
             createFamilyWidget(*iter, this->ui->familyListWidget);
         }
+
+
     }
 
     //
@@ -220,7 +238,8 @@ namespace PenyaManager {
 
         // Invoice header
         QString dateLocalized = Singletons::m_translationManager.getLocale().toString(pInvoicePtr->m_date, QLocale::NarrowFormat);
-        this->ui->invoiceInfoLabel->setText(tr("Created on %1").arg(dateLocalized));
+        QString lastModifDateLocalized = Singletons::m_translationManager.getLocale().toString(pInvoicePtr->m_lastModified, QLocale::NarrowFormat);
+        this->ui->invoiceInfoLabel->setText(QString("%1: %2     %3: %4").arg(tr("Created on")).arg(dateLocalized).arg(tr("Modified on")).arg(lastModifDateLocalized));
 
         // get invoice products
         InvoiceProductItemListPtr pInvoiceProductItemListPtr = Singletons::m_pDAO->getInvoiceProductItems(pInvoicePtr->m_id);
@@ -306,6 +325,9 @@ namespace PenyaManager {
         MemberPtr pCurrMember = Singletons::m_pCurrMember;
         // always fresh invoice
         InvoicePtr pInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
+        if (!pInvoicePtr) {
+            return;
+        }
 
         NumItemDialog numItemDialog(this, tr("Enter number of items"));
         numItemDialog.exec();
@@ -372,6 +394,10 @@ namespace PenyaManager {
         MemberPtr pCurrMember = Singletons::m_pCurrMember;
         // always fresh invoice
         InvoicePtr pInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
+        if (!pInvoicePtr)
+        {
+            return;
+        }
         Singletons::m_pServices->removeInvoiceProductId(pInvoicePtr->m_id, productId);
         // Check invoice was removed
         InvoicePtr pNewInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);

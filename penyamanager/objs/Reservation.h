@@ -29,6 +29,8 @@ namespace PenyaManager
             //
             Int32               m_idItem;
             //
+            Int32               m_memberUsername;
+            //
             QString             m_memberName;
             //
             QString             m_memberSurname;
@@ -36,6 +38,8 @@ namespace PenyaManager
             Int32               m_idMember;
             //
             Uint16              m_guestNum;
+            //
+            bool                m_isAdmin;
     };
 
     //
@@ -44,6 +48,8 @@ namespace PenyaManager
     typedef std::vector<ReservationPtr> ReservationList;
     //
     typedef QSharedPointer<ReservationList> ReservationListPtr;
+    //
+    typedef std::map<Uint32, ReservationPtr> ReservationMap;
 }
 
 #endif // RESERVATIONS_H

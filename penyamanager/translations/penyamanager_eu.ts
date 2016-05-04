@@ -4,132 +4,111 @@
 <context>
     <name>AccountView</name>
     <message>
-        <location filename="../accountview.ui" line="20"/>
+        <location filename="../user/accountview.ui" line="26"/>
         <source>Account View</source>
         <translation>Bazkide kontua </translation>
     </message>
     <message>
-        <location filename="../accountview.ui" line="41"/>
-        <source>Options</source>
-        <translation>Aukerak</translation>
-    </message>
-    <message>
-        <location filename="../accountview.ui" line="53"/>
+        <location filename="../user/accountview.ui" line="65"/>
         <source>Back</source>
         <translation>Atzera</translation>
     </message>
     <message>
-        <location filename="../accountview.ui" line="78"/>
-        <location filename="../accountview.ui" line="152"/>
+        <location filename="../user/accountview.ui" line="78"/>
         <source>Search</source>
         <translation>Bilatu</translation>
-    </message>
-    <message>
-        <location filename="../accountview.ui" line="90"/>
-        <source>From</source>
-        <translation>Noiztik</translation>
-    </message>
-    <message>
-        <location filename="../accountview.ui" line="121"/>
-        <source>To</source>
-        <translation>Noiz arte</translation>
     </message>
 </context>
 <context>
     <name>DepositWindow</name>
     <message>
-        <location filename="../depositwindow.ui" line="26"/>
+        <location filename="../user/depositwindow.ui" line="26"/>
         <source>Form</source>
         <translation>Diru sarrerak</translation>
     </message>
     <message>
-        <location filename="../depositwindow.ui" line="68"/>
-        <source>Options</source>
-        <translation>Aukerak</translation>
-    </message>
-    <message>
-        <location filename="../depositwindow.ui" line="80"/>
+        <location filename="../user/depositwindow.ui" line="68"/>
         <source>Back</source>
         <translation>Atzera</translation>
     </message>
     <message>
-        <location filename="../depositwindow.ui" line="93"/>
-        <source>Confirm</source>
-        <translation>Onartu</translation>
+        <location filename="../user/depositwindow.ui" line="81"/>
+        <source>Make Deposit</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../depositwindow.ui" line="106"/>
+        <location filename="../user/depositwindow.ui" line="91"/>
         <source>Deposit</source>
         <translation>Diru sarrera</translation>
     </message>
     <message>
-        <location filename="../depositwindow.ui" line="139"/>
+        <location filename="../user/depositwindow.ui" line="124"/>
         <source>1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../depositwindow.ui" line="158"/>
+        <location filename="../user/depositwindow.ui" line="143"/>
         <source>5</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../depositwindow.ui" line="177"/>
+        <location filename="../user/depositwindow.ui" line="162"/>
         <source>7</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../depositwindow.ui" line="196"/>
+        <location filename="../user/depositwindow.ui" line="181"/>
         <source>9</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../depositwindow.ui" line="215"/>
+        <location filename="../user/depositwindow.ui" line="200"/>
         <source>4</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../depositwindow.ui" line="234"/>
+        <location filename="../user/depositwindow.ui" line="219"/>
         <source>2</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../depositwindow.ui" line="253"/>
+        <location filename="../user/depositwindow.ui" line="238"/>
         <source>3</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../depositwindow.ui" line="272"/>
+        <location filename="../user/depositwindow.ui" line="257"/>
         <source>6</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../depositwindow.ui" line="291"/>
+        <location filename="../user/depositwindow.ui" line="276"/>
         <source>8</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../depositwindow.ui" line="310"/>
+        <location filename="../user/depositwindow.ui" line="295"/>
         <source>,</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../depositwindow.ui" line="329"/>
+        <location filename="../user/depositwindow.ui" line="314"/>
         <source>0</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../depositwindow.ui" line="348"/>
+        <location filename="../user/depositwindow.ui" line="333"/>
         <source>C</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../depositwindow.ui" line="361"/>
-        <location filename="../depositwindow.ui" line="380"/>
+        <location filename="../user/depositwindow.ui" line="346"/>
+        <location filename="../user/depositwindow.ui" line="365"/>
         <source>TextLabel</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../depositwindow.ui" line="374"/>
+        <location filename="../user/depositwindow.ui" line="359"/>
         <source>New Balance</source>
         <translation>Balantze berria</translation>
     </message>
@@ -137,61 +116,60 @@
 <context>
     <name>InvoiceDetailsWidget</name>
     <message>
-        <location filename="../invoicedetailswidget.ui" line="14"/>
+        <location filename="../commons/invoicedetailswidget.ui" line="20"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Diru sarrerak</translation>
     </message>
     <message>
-        <location filename="../invoicedetailswidget.ui" line="41"/>
+        <location filename="../commons/invoicedetailswidget.ui" line="47"/>
         <source>#ref:</source>
         <translation>Ordainagiri zkia:</translation>
     </message>
     <message>
-        <location filename="../invoicedetailswidget.ui" line="54"/>
-        <location filename="../invoicedetailswidget.ui" line="80"/>
-        <source>1</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../invoicedetailswidget.ui" line="73"/>
+        <location filename="../commons/invoicedetailswidget.ui" line="79"/>
         <source>MemberId:</source>
         <translation>Bazkide zkia:</translation>
     </message>
     <message>
-        <location filename="../invoicedetailswidget.ui" line="99"/>
+        <location filename="../commons/invoicedetailswidget.ui" line="105"/>
         <source>Date:</source>
         <translation>Data:</translation>
     </message>
     <message>
-        <location filename="../invoicedetailswidget.ui" line="112"/>
+        <location filename="../commons/invoicedetailswidget.ui" line="118"/>
         <source>01/05/2015</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../invoicedetailswidget.ui" line="131"/>
-        <source>Total:</source>
-        <translation>Guztira:</translation>
+        <location filename="../commons/invoicedetailswidget.ui" line="137"/>
+        <source>Last Modified:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../invoicedetailswidget.ui" line="144"/>
-        <source>0 €</source>
-        <translation></translation>
+        <location filename="../commons/invoicedetailswidget.ui" line="163"/>
+        <source>Total:</source>
+        <translation>Guztira:</translation>
     </message>
 </context>
 <context>
     <name>InvoiceDetailsWindow</name>
     <message>
-        <location filename="../invoicedetailswindow.ui" line="14"/>
-        <source>Form</source>
+        <location filename="../user/invoicedetailswindow.ui" line="26"/>
+        <source>Invoice Details</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../invoicedetailswindow.ui" line="35"/>
+        <location filename="../user/invoicedetailswindow.ui" line="47"/>
         <source>Options</source>
         <translation type="unfinished">Aukerak</translation>
     </message>
     <message>
-        <location filename="../invoicedetailswindow.ui" line="47"/>
+        <location filename="../user/invoicedetailswindow.ui" line="59"/>
+        <source>Print Invoice</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../user/invoicedetailswindow.ui" line="72"/>
         <source>Back</source>
         <translation>Atzera</translation>
     </message>
@@ -199,73 +177,63 @@
 <context>
     <name>InvoiceListWindow</name>
     <message>
-        <location filename="../invoicelistwindow.ui" line="20"/>
+        <location filename="../user/invoicelistwindow.ui" line="26"/>
         <source>Invoice List</source>
         <translation>Ordainagiri bilaketa</translation>
     </message>
     <message>
-        <location filename="../invoicelistwindow.ui" line="41"/>
-        <source>Options</source>
-        <translation>Aukerak</translation>
-    </message>
-    <message>
-        <location filename="../invoicelistwindow.ui" line="53"/>
+        <location filename="../user/invoicelistwindow.ui" line="81"/>
         <source>Search</source>
         <translation>Bilatu</translation>
     </message>
     <message>
-        <location filename="../invoicelistwindow.ui" line="66"/>
+        <location filename="../user/invoicelistwindow.ui" line="68"/>
         <source>Back</source>
         <translation>Atzera</translation>
     </message>
     <message>
-        <location filename="../invoicelistwindow.ui" line="175"/>
+        <location filename="../user/invoicelistwindow.ui" line="175"/>
         <source>Total Invoices:</source>
         <translation>Ordainagiri zki kopurua:</translation>
     </message>
     <message>
-        <location filename="../invoicelistwindow.ui" line="194"/>
+        <location filename="../user/invoicelistwindow.ui" line="194"/>
         <source>0</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../invoicelistwindow.ui" line="214"/>
+        <location filename="../user/invoicelistwindow.ui" line="214"/>
         <source>Total:</source>
         <translation>Guztira:</translation>
     </message>
     <message>
-        <location filename="../invoicelistwindow.ui" line="233"/>
+        <location filename="../user/invoicelistwindow.ui" line="233"/>
         <source>0 €</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../invoicelistwindow.ui" line="255"/>
+        <location filename="../user/invoicelistwindow.ui" line="252"/>
         <source>From:</source>
         <translation>Noiztik:</translation>
     </message>
     <message>
-        <location filename="../invoicelistwindow.ui" line="274"/>
-        <location filename="../invoicelistwindow.ui" line="316"/>
+        <location filename="../user/invoicelistwindow.ui" line="271"/>
+        <location filename="../user/invoicelistwindow.ui" line="313"/>
         <source>10-10-2015</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../invoicelistwindow.ui" line="297"/>
+        <location filename="../user/invoicelistwindow.ui" line="294"/>
         <source>To:</source>
         <translation>Noiz arte:</translation>
     </message>
     <message>
-        <location filename="../invoicelistwindow.ui" line="336"/>
+        <location filename="../user/invoicelistwindow.ui" line="333"/>
         <source>&lt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../invoicelistwindow.ui" line="343"/>
-        <source>page X out of Y</source>
-        <translation>Y ko X go/garren orrialdea</translation>
-    </message>
-    <message>
-        <location filename="../invoicelistwindow.ui" line="350"/>
+        <location filename="../user/invoicelistwindow.ui" line="347"/>
         <source>&gt;</source>
         <translation></translation>
     </message>
@@ -273,60 +241,50 @@
 <context>
     <name>InvoiceWindow</name>
     <message>
-        <location filename="../invoicewindow.ui" line="20"/>
+        <location filename="../user/invoicewindow.ui" line="26"/>
         <source>Invoice Window</source>
         <translation>Ordainagiria</translation>
     </message>
     <message>
-        <location filename="../invoicewindow.ui" line="56"/>
-        <source>Options</source>
-        <translation>Aukerak</translation>
-    </message>
-    <message>
-        <location filename="../invoicewindow.ui" line="68"/>
+        <location filename="../user/invoicewindow.ui" line="68"/>
         <source>Back</source>
         <translation>Atzera</translation>
     </message>
     <message>
-        <location filename="../invoicewindow.ui" line="81"/>
+        <location filename="../user/invoicewindow.ui" line="81"/>
         <source>Confirm</source>
         <translation>Onartu</translation>
     </message>
     <message>
-        <location filename="../invoicewindow.ui" line="109"/>
-        <source>Article List</source>
-        <translation>Artikuluen zerrenda</translation>
-    </message>
-    <message>
-        <location filename="../invoicewindow.ui" line="131"/>
+        <location filename="../user/invoicewindow.ui" line="119"/>
         <source>Invoice Information</source>
         <translation>Ordainagiriaren informazioa</translation>
     </message>
     <message>
-        <location filename="../invoicewindow.ui" line="140"/>
+        <location filename="../user/invoicewindow.ui" line="128"/>
         <source>ID:</source>
         <translation>Bazkide zkia:</translation>
     </message>
     <message>
-        <location filename="../invoicewindow.ui" line="147"/>
-        <location filename="../invoicewindow.ui" line="167"/>
-        <location filename="../invoicewindow.ui" line="187"/>
-        <location filename="../invoicewindow.ui" line="207"/>
+        <location filename="../user/invoicewindow.ui" line="135"/>
+        <location filename="../user/invoicewindow.ui" line="155"/>
+        <location filename="../user/invoicewindow.ui" line="175"/>
+        <location filename="../user/invoicewindow.ui" line="195"/>
         <source>TextLabel</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../invoicewindow.ui" line="160"/>
+        <location filename="../user/invoicewindow.ui" line="148"/>
         <source>Date:</source>
         <translation>Data:</translation>
     </message>
     <message>
-        <location filename="../invoicewindow.ui" line="180"/>
+        <location filename="../user/invoicewindow.ui" line="168"/>
         <source>Total invoice:</source>
         <translation>Ordainagiri totala:</translation>
     </message>
     <message>
-        <location filename="../invoicewindow.ui" line="200"/>
+        <location filename="../user/invoicewindow.ui" line="188"/>
         <source>New Balance:</source>
         <translation>Balantze berria:</translation>
     </message>
@@ -334,18 +292,7 @@
 <context>
     <name>LoginWindow</name>
     <message>
-        <location filename="../loginwindow.ui" line="119"/>
-        <source>Insert Member ID</source>
-        <extracomment>memberid button</extracomment>
-        <translation>Bazkide zenbakia</translation>
-    </message>
-    <message>
-        <location filename="../loginwindow.ui" line="145"/>
-        <source>Insert Password</source>
-        <translation>Pasahitza</translation>
-    </message>
-    <message>
-        <location filename="../loginwindow.ui" line="240"/>
+        <location filename="../user/loginwindow.ui" line="387"/>
         <source>Login</source>
         <translation>Sartu</translation>
     </message>
@@ -353,103 +300,96 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../mainwindow.ui" line="20"/>
-        <source>MainWindow</source>
-        <translation>Menu Nagusia</translation>
+        <location filename="../user/mainwindow.ui" line="26"/>
+        <source>Penyamanager</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>MemberDashboardWindow</name>
     <message>
-        <location filename="../mainwindow.ui" line="59"/>
-        <source>Options</source>
-        <translation>Aukerak</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="89"/>
+        <location filename="../user/memberdashboardwindow.ui" line="71"/>
         <source>Reservations</source>
-        <translation>Erreserbak</translation>
+        <translation type="unfinished">Erreserbak</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="102"/>
+        <location filename="../user/memberdashboardwindow.ui" line="84"/>
         <source>Invoices</source>
-        <translation>Ordainagiriak</translation>
+        <translation type="unfinished">Ordainagiriak</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="115"/>
+        <location filename="../user/memberdashboardwindow.ui" line="97"/>
         <source>Account</source>
-        <translation>Bazkide kontua</translation>
+        <translation type="unfinished">Bazkide kontua</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="140"/>
+        <location filename="../user/memberdashboardwindow.ui" line="122"/>
         <source>Deposits</source>
-        <translation>Diru sarrerak</translation>
+        <translation type="unfinished">Diru sarrerak</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="168"/>
+        <location filename="../user/memberdashboardwindow.ui" line="150"/>
         <source>Exit</source>
-        <translation>Irten</translation>
+        <translation type="unfinished">Irten</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="214"/>
+        <location filename="../user/memberdashboardwindow.ui" line="193"/>
         <source>Families</source>
-        <translation>Familiak</translation>
+        <translation type="unfinished">Familiak</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="239"/>
+        <location filename="../user/memberdashboardwindow.ui" line="256"/>
         <source>Products</source>
-        <translation>Produktoak</translation>
+        <translation type="unfinished">Produktoak</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="282"/>
-        <source>Invoice</source>
-        <translation>Ordainagiria</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="328"/>
+        <location filename="../user/memberdashboardwindow.ui" line="409"/>
         <source>Total:</source>
-        <translation>Guztira:</translation>
+        <translation type="unfinished">Guztira:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="335"/>
+        <location filename="../user/memberdashboardwindow.ui" line="416"/>
         <source>TextLabel</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="351"/>
+        <location filename="../user/memberdashboardwindow.ui" line="465"/>
         <source>Reset</source>
-        <translation>Ordainagiria garbitu</translation>
+        <translation type="unfinished">Ordainagiria garbitu</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="358"/>
+        <location filename="../user/memberdashboardwindow.ui" line="478"/>
         <source>Close</source>
-        <translation>Ordainagiria itxi</translation>
+        <translation type="unfinished">Ordainagiria itxi</translation>
     </message>
 </context>
 <context>
     <name>MemberProfileGroupBox</name>
     <message>
-        <location filename="../memberprofilegroupbox.ui" line="26"/>
+        <location filename="../user/memberprofilegroupbox.ui" line="26"/>
         <source>GroupBox</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../memberprofilegroupbox.ui" line="29"/>
+        <location filename="../user/memberprofilegroupbox.ui" line="29"/>
         <source>Member</source>
         <translation>Bazkidea</translation>
     </message>
     <message>
-        <location filename="../memberprofilegroupbox.ui" line="62"/>
-        <location filename="../memberprofilegroupbox.ui" line="87"/>
-        <location filename="../memberprofilegroupbox.ui" line="119"/>
-        <location filename="../memberprofilegroupbox.ui" line="154"/>
+        <location filename="../user/memberprofilegroupbox.ui" line="62"/>
+        <location filename="../user/memberprofilegroupbox.ui" line="87"/>
+        <location filename="../user/memberprofilegroupbox.ui" line="119"/>
+        <location filename="../user/memberprofilegroupbox.ui" line="154"/>
         <source>TextLabel</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../memberprofilegroupbox.ui" line="112"/>
+        <location filename="../user/memberprofilegroupbox.ui" line="112"/>
         <source>ID:</source>
         <translation>Zenbakia:</translation>
     </message>
     <message>
-        <location filename="../memberprofilegroupbox.ui" line="147"/>
+        <location filename="../user/memberprofilegroupbox.ui" line="147"/>
         <source>Balance:</source>
         <translation>Balantzea:</translation>
     </message>
@@ -457,124 +397,154 @@
 <context>
     <name>NumItemDialog</name>
     <message>
-        <location filename="../numitemdialog.ui" line="29"/>
-        <source>Num items</source>
-        <translation type="unfinished">Teklatua</translation>
-    </message>
-    <message>
-        <location filename="../numitemdialog.ui" line="47"/>
-        <source>7</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../numitemdialog.ui" line="60"/>
-        <source>5</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../numitemdialog.ui" line="73"/>
-        <source>3</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../numitemdialog.ui" line="86"/>
-        <source>6</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../numitemdialog.ui" line="99"/>
-        <source>9</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../numitemdialog.ui" line="112"/>
-        <source>4</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../numitemdialog.ui" line="125"/>
-        <source>1</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../numitemdialog.ui" line="138"/>
-        <source>2</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../numitemdialog.ui" line="151"/>
+        <location filename="../commons/numitemdialog.ui" line="73"/>
         <source>8</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../numitemdialog.ui" line="164"/>
-        <source>0</source>
-        <translation></translation>
+        <location filename="../commons/numitemdialog.ui" line="86"/>
+        <source>1</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../numitemdialog.ui" line="193"/>
+        <location filename="../commons/numitemdialog.ui" line="99"/>
+        <source>2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../commons/numitemdialog.ui" line="112"/>
+        <source>3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../commons/numitemdialog.ui" line="125"/>
+        <source>4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../commons/numitemdialog.ui" line="138"/>
+        <source>5</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../commons/numitemdialog.ui" line="151"/>
+        <source>6</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../commons/numitemdialog.ui" line="164"/>
+        <source>9</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../commons/numitemdialog.ui" line="177"/>
+        <source>7</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../commons/numitemdialog.ui" line="190"/>
         <source>C</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../numitemdialog.ui" line="206"/>
+        <location filename="../commons/numitemdialog.ui" line="203"/>
         <source>Done</source>
-        <translation>Onartu</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../commons/numitemdialog.ui" line="216"/>
+        <source>0</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>PenyaManager::AccountView</name>
     <message>
-        <location filename="../accountview.cpp" line="68"/>
+        <location filename="../user/accountview.cpp" line="70"/>
         <source>Date</source>
         <translation>Data</translation>
     </message>
     <message>
-        <location filename="../accountview.cpp" line="69"/>
+        <location filename="../user/accountview.cpp" line="71"/>
         <source>Description</source>
         <translation>Deskripzioa</translation>
     </message>
     <message>
-        <location filename="../accountview.cpp" line="91"/>
-        <location filename="../accountview.cpp" line="92"/>
-        <source>%1 €</source>
-        <translation></translation>
+        <location filename="../user/accountview.cpp" line="72"/>
+        <source>Amount</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../user/accountview.cpp" line="73"/>
+        <source>Balance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../user/accountview.cpp" line="74"/>
+        <source>Type</source>
+        <translation type="unfinished">Mota</translation>
     </message>
 </context>
 <context>
     <name>PenyaManager::DepositWindow</name>
     <message>
-        <location filename="../depositwindow.cpp" line="90"/>
+        <location filename="../user/depositwindow.cpp" line="102"/>
         <source>Deposit</source>
         <translation>Diru sarrera</translation>
     </message>
     <message>
-        <location filename="../depositwindow.cpp" line="90"/>
-        <source>Deposit done</source>
-        <translation>Diru sarrera egina</translation>
+        <location filename="../user/depositwindow.cpp" line="70"/>
+        <location filename="../user/depositwindow.cpp" line="75"/>
+        <source>deposit not valid</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../depositwindow.cpp" line="155"/>
+        <location filename="../user/depositwindow.cpp" line="70"/>
+        <source>Enter some valid deposit value</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../user/depositwindow.cpp" line="75"/>
+        <source>deposit should be more than 0€</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../user/depositwindow.cpp" line="79"/>
+        <source>Create Deposit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../user/depositwindow.cpp" line="80"/>
+        <source>Create deposit for %1 €?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../user/depositwindow.cpp" line="102"/>
+        <source>Deposit for %1 € created sucessfully</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../user/depositwindow.cpp" line="167"/>
         <source>Deposit Id</source>
         <translation>Diru sarrera Id-a</translation>
     </message>
     <message>
-        <location filename="../depositwindow.cpp" line="156"/>
+        <location filename="../user/depositwindow.cpp" line="168"/>
         <source>Member Id</source>
         <translation>Bazkide Id-a</translation>
     </message>
     <message>
-        <location filename="../depositwindow.cpp" line="157"/>
+        <location filename="../user/depositwindow.cpp" line="169"/>
         <source>Member Name</source>
         <translation>Bazkide izena</translation>
     </message>
     <message>
-        <location filename="../depositwindow.cpp" line="158"/>
+        <location filename="../user/depositwindow.cpp" line="170"/>
         <source>Date</source>
         <translation>Data</translation>
     </message>
     <message>
-        <location filename="../depositwindow.cpp" line="159"/>
+        <location filename="../user/depositwindow.cpp" line="171"/>
         <source>Deposit Total</source>
         <translation>Diru sarreraren guztira</translation>
     </message>
@@ -582,158 +552,356 @@
 <context>
     <name>PenyaManager::InvoiceDetailsWidget</name>
     <message>
-        <location filename="../invoicedetailswidget.cpp" line="79"/>
-        <location filename="../invoicedetailswidget.cpp" line="82"/>
-        <source>%1 €</source>
-        <translation></translation>
+        <location filename="../commons/invoicedetailswidget.cpp" line="40"/>
+        <source>icon</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../invoicedetailswidget.cpp" line="80"/>
-        <location filename="../invoicedetailswidget.cpp" line="93"/>
-        <source>%1</source>
-        <translation></translation>
+        <location filename="../commons/invoicedetailswidget.cpp" line="41"/>
+        <source>article</source>
+        <translation type="unfinished">Artikulu</translation>
+    </message>
+    <message>
+        <location filename="../commons/invoicedetailswidget.cpp" line="42"/>
+        <source>price/u</source>
+        <translation type="unfinished">u-ko/prezioa</translation>
+    </message>
+    <message>
+        <location filename="../commons/invoicedetailswidget.cpp" line="44"/>
+        <source>total</source>
+        <translation type="unfinished">guztira</translation>
     </message>
 </context>
 <context>
-    <name>PenyaManager::InvoiceListWindow</name>
+    <name>PenyaManager::InvoiceDetailsWindow</name>
     <message>
-        <location filename="../invoicelistwindow.cpp" line="102"/>
-        <source>page %1 out of %2</source>
-        <translation>%2 tik, %1. orrialdea</translation>
+        <location filename="../user/invoicedetailswindow.cpp" line="69"/>
+        <source>Invoice</source>
+        <translation type="unfinished">Ordainagiria</translation>
     </message>
     <message>
-        <location filename="../invoicelistwindow.cpp" line="105"/>
-        <location filename="../invoicelistwindow.cpp" line="142"/>
-        <source>%1 €</source>
-        <translation>%1 €</translation>
+        <location filename="../user/invoicedetailswindow.cpp" line="70"/>
+        <source>Member Id</source>
+        <translation type="unfinished">Bazkide Id-a</translation>
+    </message>
+    <message>
+        <location filename="../user/invoicedetailswindow.cpp" line="71"/>
+        <source>Product</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../user/invoicedetailswindow.cpp" line="72"/>
+        <source>Count</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../user/invoicedetailswindow.cpp" line="73"/>
+        <source>Total</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../user/invoicedetailswindow.cpp" line="74"/>
+        <source>Invoice Total</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../user/invoicedetailswindow.cpp" line="98"/>
+        <source>Print Invoice</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../user/invoicedetailswindow.cpp" line="98"/>
+        <source>Invoice #%1 sent to printer</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>PenyaManager::InvoiceWindow</name>
     <message>
-        <location filename="../invoicewindow.cpp" line="120"/>
-        <location filename="../invoicewindow.cpp" line="123"/>
-        <source>%1 €</source>
-        <translation>%1 €</translation>
+        <location filename="../user/invoicewindow.cpp" line="82"/>
+        <source>article</source>
+        <translation type="unfinished">Artikulu</translation>
     </message>
     <message>
-        <location filename="../invoicewindow.cpp" line="121"/>
-        <location filename="../invoicewindow.cpp" line="136"/>
-        <source>%1</source>
-        <translation>%1</translation>
+        <location filename="../user/invoicewindow.cpp" line="83"/>
+        <source>price/u</source>
+        <translation type="unfinished">u-ko/prezioa</translation>
+    </message>
+    <message>
+        <location filename="../user/invoicewindow.cpp" line="84"/>
+        <source>count</source>
+        <translation type="unfinished">kopurua</translation>
+    </message>
+    <message>
+        <location filename="../user/invoicewindow.cpp" line="85"/>
+        <source>total</source>
+        <translation type="unfinished">guztira</translation>
+    </message>
+    <message>
+        <location filename="../user/invoicewindow.cpp" line="169"/>
+        <source>Invoice</source>
+        <translation type="unfinished">Ordainagiria</translation>
+    </message>
+    <message>
+        <location filename="../user/invoicewindow.cpp" line="170"/>
+        <source>Member Id</source>
+        <translation type="unfinished">Bazkide Id-a</translation>
+    </message>
+    <message>
+        <location filename="../user/invoicewindow.cpp" line="171"/>
+        <source>Product</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../user/invoicewindow.cpp" line="172"/>
+        <source>Count</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../user/invoicewindow.cpp" line="173"/>
+        <source>Total</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../user/invoicewindow.cpp" line="174"/>
+        <source>Invoice Total</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../user/invoicewindow.cpp" line="204"/>
+        <source>Print Invoice</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../user/invoicewindow.cpp" line="204"/>
+        <source>Invoice #%1 sent to printer</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>PenyaManager::MainWindow</name>
+    <name>PenyaManager::LoginWindow</name>
     <message>
-        <location filename="../mainwindow.cpp" line="50"/>
+        <location filename="../user/loginwindow.cpp" line="105"/>
         <source>article</source>
-        <translation>Artikulu</translation>
+        <translation type="unfinished">Artikulu</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="51"/>
+        <location filename="../user/loginwindow.cpp" line="106"/>
         <source>price/u</source>
-        <translation>u-ko/prezioa</translation>
+        <translation type="unfinished">u-ko/prezioa</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="52"/>
+        <location filename="../user/loginwindow.cpp" line="107"/>
         <source>count</source>
-        <translation>kopurua</translation>
+        <translation type="unfinished">kopurua</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="53"/>
+        <location filename="../user/loginwindow.cpp" line="108"/>
         <source>total</source>
-        <translation>guztira</translation>
+        <translation type="unfinished">guztira</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="220"/>
-        <source>Invoice (Ref #%1) on (%2)</source>
-        <translation>%2 ko %1. ordainagiria</translation>
+        <location filename="../user/loginwindow.cpp" line="115"/>
+        <source>Enter member code</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="239"/>
-        <location filename="../mainwindow.cpp" line="242"/>
-        <source>%1 €</source>
-        <translation></translation>
+        <location filename="../user/loginwindow.cpp" line="121"/>
+        <location filename="../user/loginwindow.cpp" line="132"/>
+        <location filename="../user/loginwindow.cpp" line="142"/>
+        <location filename="../user/loginwindow.cpp" line="152"/>
+        <source>Login failed</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="240"/>
-        <source>%1</source>
-        <translation></translation>
+        <location filename="../user/loginwindow.cpp" line="121"/>
+        <source>MemberId not set</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="260"/>
+        <location filename="../user/loginwindow.cpp" line="126"/>
+        <source>Enter password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../user/loginwindow.cpp" line="132"/>
+        <source>Password not set</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../user/loginwindow.cpp" line="143"/>
+        <source>User not registered in the system: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../user/loginwindow.cpp" line="153"/>
+        <source>Password incorrect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../user/loginwindow.cpp" line="162"/>
+        <source>User not active in the system: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../user/loginwindow.cpp" line="170"/>
+        <source>Your current balance is negative: %1 €</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../user/loginwindow.cpp" line="248"/>
+        <source>Created on</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../user/loginwindow.cpp" line="248"/>
+        <source>Modified on</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PenyaManager::MemberDashboardWindow</name>
+    <message>
+        <location filename="../user/memberdashboardwindow.cpp" line="51"/>
+        <source>article</source>
+        <translation type="unfinished">Artikulu</translation>
+    </message>
+    <message>
+        <location filename="../user/memberdashboardwindow.cpp" line="52"/>
+        <source>price/u</source>
+        <translation type="unfinished">u-ko/prezioa</translation>
+    </message>
+    <message>
+        <location filename="../user/memberdashboardwindow.cpp" line="54"/>
+        <source>total</source>
+        <translation type="unfinished">guztira</translation>
+    </message>
+    <message>
+        <location filename="../user/memberdashboardwindow.cpp" line="55"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="268"/>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../user/memberdashboardwindow.cpp" line="104"/>
+        <source>Your current balance is over limit (%1 €): %2 €</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../user/memberdashboardwindow.cpp" line="242"/>
+        <source>Created on</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../user/memberdashboardwindow.cpp" line="242"/>
+        <source>Modified on</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../user/memberdashboardwindow.cpp" line="280"/>
         <source>Note</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="261"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="281"/>
         <source>Current invoice is empty</source>
-        <translation>Eguneroko ordainagiria hutsik dago</translation>
+        <translation type="unfinished">Eguneroko ordainagiria hutsik dago</translation>
+    </message>
+    <message>
+        <location filename="../user/memberdashboardwindow.cpp" line="290"/>
+        <source>reset invoice</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../user/memberdashboardwindow.cpp" line="290"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="390"/>
+        <source>Are you sure?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../user/memberdashboardwindow.cpp" line="332"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="369"/>
+        <source>Enter number of items</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../user/memberdashboardwindow.cpp" line="390"/>
+        <source>delete product item</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>PenyaManager::TableReservationView</name>
     <message>
-        <location filename="../tablereservationview.cpp" line="51"/>
+        <location filename="../user/tablereservationview.cpp" line="52"/>
         <source>Type</source>
         <translation>Mota</translation>
     </message>
     <message>
-        <location filename="../tablereservationview.cpp" line="52"/>
+        <location filename="../user/tablereservationview.cpp" line="53"/>
         <source>Name</source>
         <translation>Izena</translation>
     </message>
     <message>
-        <location filename="../tablereservationview.cpp" line="53"/>
+        <location filename="../user/tablereservationview.cpp" line="54"/>
         <source>Size</source>
         <translation>Tamaina</translation>
     </message>
     <message>
-        <location filename="../tablereservationview.cpp" line="54"/>
+        <location filename="../user/tablereservationview.cpp" line="55"/>
         <source>Reserved By Guest</source>
         <translation>Gonbidatutakoak erreserbatua</translation>
     </message>
     <message>
-        <location filename="../tablereservationview.cpp" line="55"/>
+        <location filename="../user/tablereservationview.cpp" line="56"/>
         <source># reserved</source>
         <translation># erreserbatua</translation>
     </message>
     <message>
-        <location filename="../tablereservationview.cpp" line="56"/>
+        <location filename="../user/tablereservationview.cpp" line="57"/>
         <source>Action</source>
         <translation>Akzioa</translation>
+    </message>
+    <message>
+        <location filename="../user/tablereservationview.cpp" line="151"/>
+        <source>Reserve</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../user/tablereservationview.cpp" line="162"/>
+        <source>BLOCKED</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../user/tablereservationview.cpp" line="169"/>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../user/tablereservationview.cpp" line="243"/>
+        <source>Enter number of guests</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>TableReservationView</name>
     <message>
-        <location filename="../tablereservationview.ui" line="26"/>
-        <source>Form</source>
-        <translation>Erreserba</translation>
-    </message>
-    <message>
-        <location filename="../tablereservationview.ui" line="68"/>
-        <source>Options</source>
-        <translation>Aukerak</translation>
-    </message>
-    <message>
-        <location filename="../tablereservationview.ui" line="80"/>
+        <location filename="../user/tablereservationview.ui" line="68"/>
         <source>Back</source>
         <translation>Atzera</translation>
     </message>
     <message>
-        <location filename="../tablereservationview.ui" line="105"/>
-        <source>Search</source>
-        <translation>Data aukera</translation>
+        <location filename="../user/tablereservationview.ui" line="26"/>
+        <source>Reservations</source>
+        <translation type="unfinished">Erreserbak</translation>
     </message>
     <message>
-        <location filename="../tablereservationview.ui" line="148"/>
+        <location filename="../user/tablereservationview.ui" line="164"/>
         <source>Lunch</source>
         <translation>Bazkaria</translation>
     </message>
     <message>
-        <location filename="../tablereservationview.ui" line="164"/>
+        <location filename="../user/tablereservationview.ui" line="192"/>
         <source>Diner</source>
         <translation>Afaria</translation>
     </message>
