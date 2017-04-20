@@ -62,7 +62,29 @@ min-width: 50px;
 max-width: 800px;
 min-height: 13px;
 max-height: 120px;
-}</string>
+}
+
+#lastInvoiceInfoWidget {
+border: 3px solid gray;
+border-radius: 40px;
+background: white;
+}
+
+#memberIdLabel {
+font-weight: bold;
+font-size: 15px;
+}
+
+#memberNameLabel {
+font-weight: bold;
+font-size: 15px;
+}
+
+#lastInvoiceTotalLabel {
+font-weight: bold;
+font-size: 15px;
+}
+</string>
   </property>
   <property name="locale">
    <locale language="Spanish" country="Spain"/>
@@ -265,7 +287,7 @@ max-height: 120px;
        </widget>
       </item>
       <item>
-       <widget class="QWidget" name="lastInvoiceWidget" native="true">
+       <widget class="QWidget" name="lastInvoiceInfoWidget" native="true">
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>
           <widget class="QLabel" name="lastInvoiceDateLabel">
