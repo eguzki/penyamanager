@@ -25,6 +25,11 @@
   <property name="windowTitle">
    <string>Penyamanager</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">#MainWindow {
+background: gray
+}</string>
+  </property>
   <property name="locale">
    <locale language="Spanish" country="Spain"/>
   </property>
