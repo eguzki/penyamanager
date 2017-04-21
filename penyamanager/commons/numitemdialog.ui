@@ -46,7 +46,7 @@ background: white;
 
 #numDisplayLabel {
 font-weight: bold;
-font-size: 15px;
+font-size: 50px;
 }
 
 QToolButton {
@@ -57,7 +57,8 @@ border-color: #339;
 border-style: solid;
 border-radius: 7;
 padding: 3px;
-font-size: 15px;
+font-size: 60px;
+font: bold;
 padding-left: 5px;
 padding-right: 5px;
 min-width: 95px;
@@ -241,7 +242,7 @@ max-height: 95px;
          </size>
         </property>
         <property name="text">
-         <string>Done</string>
+         <string>Ok</string>
         </property>
        </widget>
       </item>
