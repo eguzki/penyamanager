@@ -32,30 +32,71 @@
    <iconset resource="../penyamanager.qrc">
     <normaloff>:/images/alegrialogo.jpg</normaloff>:/images/alegrialogo.jpg</iconset>
   </property>
+  <property name="styleSheet">
+   <string notr="true">#NumItemDialog {
+background: gray;
+}
+
+#numDisplayWidget {
+border: 3px solid gray;
+border-radius: 20px;
+background: white;
+
+}
+
+#numDisplayLabel {
+font-weight: bold;
+font-size: 15px;
+}
+
+QToolButton {
+color: white;
+background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #88d, stop: 0.1 #99e, stop: 0.49 #77c, stop: 0.5 #66b, stop: 1 #77c);
+border-width: 1px;
+border-color: #339;
+border-style: solid;
+border-radius: 7;
+padding: 3px;
+font-size: 15px;
+padding-left: 5px;
+padding-right: 5px;
+min-width: 95px;
+max-width: 95px;
+min-height: 95px;
+max-height: 95px;
+}
+</string>
+  </property>
   <property name="modal">
    <bool>true</bool>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QLabel" name="numDisplayLabel">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>50</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>50</height>
-      </size>
-     </property>
-     <property name="text">
-      <string notr="true">TextLabel</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
+    <widget class="QWidget" name="numDisplayWidget" native="true">
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QLabel" name="numDisplayLabel">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="text">
+         <string notr="true">TextLabel</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
    <item>
@@ -65,8 +106,8 @@
        <widget class="QToolButton" name="toolButton_8">
         <property name="minimumSize">
          <size>
-          <width>100</width>
-          <height>100</height>
+          <width>107</width>
+          <height>103</height>
          </size>
         </property>
         <property name="text">
@@ -78,8 +119,8 @@
        <widget class="QToolButton" name="toolButton_1">
         <property name="minimumSize">
          <size>
-          <width>100</width>
-          <height>100</height>
+          <width>107</width>
+          <height>103</height>
          </size>
         </property>
         <property name="text">
@@ -91,8 +132,8 @@
        <widget class="QToolButton" name="toolButton_2">
         <property name="minimumSize">
          <size>
-          <width>100</width>
-          <height>100</height>
+          <width>107</width>
+          <height>103</height>
          </size>
         </property>
         <property name="text">
@@ -104,8 +145,8 @@
        <widget class="QToolButton" name="toolButton_3">
         <property name="minimumSize">
          <size>
-          <width>100</width>
-          <height>100</height>
+          <width>107</width>
+          <height>103</height>
          </size>
         </property>
         <property name="text">
@@ -117,8 +158,8 @@
        <widget class="QToolButton" name="toolButton_4">
         <property name="minimumSize">
          <size>
-          <width>100</width>
-          <height>100</height>
+          <width>107</width>
+          <height>103</height>
          </size>
         </property>
         <property name="text">
@@ -130,8 +171,8 @@
        <widget class="QToolButton" name="toolButton_5">
         <property name="minimumSize">
          <size>
-          <width>100</width>
-          <height>100</height>
+          <width>107</width>
+          <height>103</height>
          </size>
         </property>
         <property name="text">
@@ -143,8 +184,8 @@
        <widget class="QToolButton" name="toolButton_6">
         <property name="minimumSize">
          <size>
-          <width>100</width>
-          <height>100</height>
+          <width>107</width>
+          <height>103</height>
          </size>
         </property>
         <property name="text">
@@ -156,8 +197,8 @@
        <widget class="QToolButton" name="toolButton_9">
         <property name="minimumSize">
          <size>
-          <width>100</width>
-          <height>100</height>
+          <width>107</width>
+          <height>103</height>
          </size>
         </property>
         <property name="text">
@@ -169,8 +210,8 @@
        <widget class="QToolButton" name="toolButton_7">
         <property name="minimumSize">
          <size>
-          <width>100</width>
-          <height>100</height>
+          <width>107</width>
+          <height>103</height>
          </size>
         </property>
         <property name="text">
@@ -182,8 +223,8 @@
        <widget class="QToolButton" name="toolButton_C">
         <property name="minimumSize">
          <size>
-          <width>100</width>
-          <height>100</height>
+          <width>107</width>
+          <height>103</height>
          </size>
         </property>
         <property name="text">
@@ -195,8 +236,8 @@
        <widget class="QToolButton" name="toolButton_Done">
         <property name="minimumSize">
          <size>
-          <width>100</width>
-          <height>100</height>
+          <width>107</width>
+          <height>103</height>
          </size>
         </property>
         <property name="text">
@@ -208,8 +249,8 @@
        <widget class="QToolButton" name="toolButton_0">
         <property name="minimumSize">
          <size>
-          <width>100</width>
-          <height>100</height>
+          <width>107</width>
+          <height>103</height>
          </size>
         </property>
         <property name="text">
