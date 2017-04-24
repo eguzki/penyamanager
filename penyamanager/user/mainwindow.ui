@@ -27,7 +27,20 @@
   </property>
   <property name="styleSheet">
    <string notr="true">#MainWindow {
-background: gray
+background: rgb(66, 66, 66);
+}
+QPushButton {
+color: white;
+background-color: rgb(198, 40, 40);
+border-width: 1px;
+border-color: rgb(183, 28, 28);
+border-style: solid;
+border-radius: 0;
+padding: 3px;
+font-size: 27px;
+padding-left: 5px;
+padding-right: 5px;
+
 }</string>
   </property>
   <property name="locale">
