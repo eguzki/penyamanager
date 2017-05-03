@@ -90,8 +90,13 @@ namespace PenyaManager {
         out << tr("name") << "," << tr("stock") << endl;
 
         // fetch data
-        ProductItemListPtr pfListPtr = Singletons::m_pDAO->getProductsList(0, 100000);
-        for (ProductItemList::iterator iter = pfListPtr->begin(); iter != pfListPtr->end(); ++iter)
+        ProductItemResultPtr pfListPtr = Singletons::m_pDAO->getProductsList(0, 100000);
+        if (pfListPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
+
+        for (ProductItemList::iterator iter = pfListPtr->m_list->begin(); iter != pfListPtr->m_list->end(); ++iter)
         {
             ProductItemPtr pProductPtr = *iter;
             out << pProductPtr->m_name << ", " << QString::number(pProductPtr->m_stock) << endl;
@@ -114,7 +119,11 @@ namespace PenyaManager {
     //
     void StockManagementWindow::updateResults()
     {
-        ProductItemListPtr pfListPtr = Singletons::m_pDAO->getProductsList(m_currentPage, Constants::kProductListPageCount);
+        ProductItemResultPtr pfListPtr = Singletons::m_pDAO->getProductsList(m_currentPage, Constants::kProductListPageCount);
+        if (pfListPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
         ProductListStatsPtr pProductListStats = Singletons::m_pDAO->getProductsListStats();
         // enable-disable pagination buttons
         // total num pages
@@ -126,9 +135,9 @@ namespace PenyaManager {
         // fill total stats view
         this->ui->totalProductsValueLabel->setText(QString::number(pProductListStats->m_totalNumProducts));
         // fill product list
-        fillProductList(pfListPtr);
+        fillProductList(pfListPtr->m_list);
         //
-        this->ui->csvPushButton->setEnabled(pfListPtr->size() > 0);
+        this->ui->csvPushButton->setEnabled(pfListPtr->m_list->size() > 0);
     }
     //
     void StockManagementWindow::fillProductList(const ProductItemListPtr &pProductItemListPtr)

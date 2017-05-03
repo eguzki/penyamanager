@@ -80,11 +80,15 @@ namespace PenyaManager {
         // Loading families
         //
 
-        ProductFamilyListPtr pfListPtr = Singletons::m_pDAO->getProductFamilies(true);
+        ProductFamilyResultPtr pfListPtr = Singletons::m_pDAO->getProductFamilies(true);
+        if (pfListPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
 
         this->ui->productListWidget->clear();
 
-        fillFamilyProducts(pfListPtr);
+        fillFamilyProducts(pfListPtr->m_list);
 
         //
         // Loading Current Invoice (if it exists)
@@ -208,9 +212,13 @@ namespace PenyaManager {
     {
         this->ui->productListWidget->clear();
 
-        ProductItemListPtr pfListPtr = Singletons::m_pDAO->getProductsFromFamily(familyId, true);
+        ProductItemResultPtr pfListPtr = Singletons::m_pDAO->getProductsFromFamily(familyId, true);
+        if (pfListPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
 
-        for (ProductItemList::iterator iter = pfListPtr->begin(); iter != pfListPtr->end(); ++iter)
+        for (ProductItemList::iterator iter = pfListPtr->m_list->begin(); iter != pfListPtr->m_list->end(); ++iter)
         {
             createProductItemWidget(*iter, this->ui->productListWidget);
         }

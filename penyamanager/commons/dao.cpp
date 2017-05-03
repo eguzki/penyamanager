@@ -709,16 +709,18 @@ namespace PenyaManager {
     }
 
     //
-    ProductFamilyListPtr DAO::getProductFamilies(bool onlyActive)
+    ProductFamilyResultPtr DAO::getProductFamilies(bool onlyActive)
     {
-        ProductFamilyListPtr pfListPrt(new ProductFamilyList);
+        ProductFamilyResultPtr pfListPrt(new ProductFamilyResult);
 
         // run query
         if (!m_productFamiliesQuery.exec())
         {
             qDebug() << m_productFamiliesQuery.lastError();
             QLOG_ERROR() << m_productFamiliesQuery.lastError();
+            pfListPrt->m_error = 1;
         } else {
+            pfListPrt->m_list = ProductFamilyListPtr(new ProductFamilyList);
             while (m_productFamiliesQuery.next()) {
                 ProductFamilyPtr pfPtr(new ProductFamily);
                 pfPtr->m_id = m_productFamiliesQuery.value(0).toUInt();
@@ -727,7 +729,7 @@ namespace PenyaManager {
                 pfPtr->m_active = m_productFamiliesQuery.value(3).toInt() == 1;
                 // discard when onlyActive filter is on and family is not active
                 if (!onlyActive || pfPtr->m_active) {
-                    pfListPrt->push_back(pfPtr);
+                    pfListPrt->m_list->push_back(pfPtr);
                 }
             }
         }
@@ -736,10 +738,9 @@ namespace PenyaManager {
     }
 
     //
-    ProductItemListPtr DAO::getProductsFromFamily(Int32 familyId, bool onlyActive)
+    ProductItemResultPtr DAO::getProductsFromFamily(Int32 familyId, bool onlyActive)
     {
-        ProductItemListPtr pfListPrt(new ProductItemList);
-
+        ProductItemResultPtr pfListPtr(new ProductItemResult);
         // bind value
         m_productItemsByFamilyQuery.bindValue(":familyId", familyId);
         // run query
@@ -747,7 +748,9 @@ namespace PenyaManager {
         {
             qDebug() << m_productItemsByFamilyQuery.lastError();
             QLOG_ERROR() << m_productItemsByFamilyQuery.lastError();
+            pfListPtr->m_error = 1;
         } else {
+            pfListPtr->m_list = ProductItemListPtr(new ProductItemList);
             while (m_productItemsByFamilyQuery.next()) {
                 ProductItemPtr pfPtr(new ProductItem);
                 pfPtr->m_id = m_productItemsByFamilyQuery.value(0).toUInt();
@@ -759,12 +762,12 @@ namespace PenyaManager {
                 pfPtr->m_providerId = m_productItemsByFamilyQuery.value(6).toInt();
                 // discard when onlyActive filter is on and product is not active
                 if (!onlyActive || pfPtr->m_active) {
-                    pfListPrt->push_back(pfPtr);
+                    pfListPtr->m_list->push_back(pfPtr);
                 }
             }
         }
         m_productFamiliesQuery.finish();
-        return pfListPrt;
+        return pfListPtr;
     }
     //
     MemberPtr DAO::fetchMemberById(Int32 memberId)
@@ -1751,9 +1754,9 @@ namespace PenyaManager {
         return pProviderListPtr;
     }
     //
-    ProductItemListPtr DAO::getProductsFromProvider(Int32 providerId)
+    ProductItemResultPtr DAO::getProductsFromProvider(Int32 providerId)
     {
-        ProductItemListPtr pfListPrt;
+        ProductItemResultPtr pfListPtr(new ProductItemResult);
         // bind value
         m_productItemsByProviderQuery.bindValue(":providerId", providerId);
         // run query
@@ -1761,8 +1764,10 @@ namespace PenyaManager {
         {
             qDebug() << m_productItemsByProviderQuery.lastError();
             QLOG_ERROR() << m_productItemsByProviderQuery.lastError();
+            pfListPtr->m_error = 1;
+
         } else {
-            pfListPrt = ProductItemListPtr(new ProductItemList);
+            pfListPtr->m_list = ProductItemListPtr(new ProductItemList);
             while (m_productItemsByProviderQuery.next()) {
                 ProductItemPtr pfPtr(new ProductItem);
                 pfPtr->m_id = m_productItemsByProviderQuery.value(0).toUInt();
@@ -1772,11 +1777,11 @@ namespace PenyaManager {
                 pfPtr->m_regDate = m_productItemsByProviderQuery.value(3).toDateTime();
                 pfPtr->m_familyId = m_productItemsByProviderQuery.value(4).toInt();
                 pfPtr->m_price = m_productItemsByProviderQuery.value(5).toFloat();
-                pfListPrt->push_back(pfPtr);
+                pfListPtr->m_list->push_back(pfPtr);
             }
         }
         m_productFamiliesQuery.finish();
-        return pfListPrt;
+        return pfListPtr;
     }
     //
     void DAO::createProvider(const QString &name, const QString &imageFileName, const QString &phone)
@@ -1802,9 +1807,9 @@ namespace PenyaManager {
         m_createProviderQuery.finish();
     }
     //
-    ProductItemListPtr DAO::getProductsList(Uint32 page, Uint32 count)
+    ProductItemResultPtr DAO::getProductsList(Uint32 page, Uint32 count)
     {
-        ProductItemListPtr pProductItemListPtr;
+        ProductItemResultPtr pfListPtr(new ProductItemResult);
         // only active invoices
         m_productItemListQuery.bindValue(":limit", count);
         m_productItemListQuery.bindValue(":offset", page * count);
@@ -1812,8 +1817,9 @@ namespace PenyaManager {
         {
             qDebug() << m_productItemListQuery.lastError();
             QLOG_ERROR() << m_productItemListQuery.lastError();
+            pfListPtr->m_error = 1;
         } else {
-            pProductItemListPtr = ProductItemListPtr(new ProductItemList);
+            pfListPtr->m_list = ProductItemListPtr(new ProductItemList);
             while (m_productItemListQuery.next()) {
                 ProductItemPtr pProductItemPtr(new ProductItem);
                 pProductItemPtr->m_id =  m_productItemListQuery.value(0).toInt();
@@ -1825,12 +1831,12 @@ namespace PenyaManager {
                 pProductItemPtr->m_familyId =  m_productItemListQuery.value(6).toInt();
                 pProductItemPtr->m_providerId =  m_productItemListQuery.value(7).toInt();
                 pProductItemPtr->m_stock =  m_productItemListQuery.value(8).toInt();
-                pProductItemListPtr->push_back(pProductItemPtr);
+                pfListPtr->m_list->push_back(pProductItemPtr);
             }
         }
 
         m_productItemListQuery.finish();
-        return pProductItemListPtr;
+        return pfListPtr;
     }
     //
     ProductListStatsPtr DAO::getProductsListStats()

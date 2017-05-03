@@ -30,11 +30,13 @@ namespace PenyaManager {
             //
             bool isOpen();
             //
+            QSqlError exec(QSqlQuery&);
+            //
             QSqlError lastError() const;
             //
-            ProductFamilyListPtr getProductFamilies(bool onlyActive);
+            ProductFamilyResultPtr getProductFamilies(bool onlyActive);
             //
-            ProductItemListPtr getProductsFromFamily(Int32 familyId, bool onlyActive);
+            ProductItemResultPtr getProductsFromFamily(Int32 familyId, bool onlyActive);
             //
             MemberPtr fetchMemberById(Int32 memberId);
             //
@@ -130,11 +132,11 @@ namespace PenyaManager {
             //
             ProviderListPtr getProviderList();
             //
-            ProductItemListPtr getProductsFromProvider(Int32 providerId);
+            ProductItemResultPtr getProductsFromProvider(Int32 providerId);
             //
             void createProvider(const QString &name, const QString &imageFileName, const QString &phone);
             //
-            ProductItemListPtr getProductsList(Uint32 page, Uint32 count);
+            ProductItemResultPtr getProductsList(Uint32 page, Uint32 count);
             //
             ProductListStatsPtr getProductsListStats();
             //

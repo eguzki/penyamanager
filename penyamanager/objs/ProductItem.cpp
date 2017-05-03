@@ -32,4 +32,10 @@ namespace PenyaManager
             m_totalNumProducts(totalNumProducts)
     {
     }
+    //
+    ProductItemResult::ProductItemResult()
+        :
+            m_error(0)
+    {
+    }
 }

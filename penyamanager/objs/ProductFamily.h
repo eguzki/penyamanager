@@ -39,6 +39,23 @@ namespace PenyaManager
     typedef std::vector<ProductFamilyPtr> ProductFamilyList;
     //
     typedef QSharedPointer<ProductFamilyList> ProductFamilyListPtr;
+    //
+    class ProductFamilyResult
+    {
+        public:
+            //
+            ProductFamilyResult();
+            //
+            virtual ~ProductFamilyResult(){}
+
+        public:
+            //
+            Int32                   m_error;
+            //
+            ProductFamilyListPtr    m_list;
+    };
+    //
+    typedef QSharedPointer<ProductFamilyResult> ProductFamilyResultPtr;
 }
 
 #endif // PRODUCTFAMILY_H

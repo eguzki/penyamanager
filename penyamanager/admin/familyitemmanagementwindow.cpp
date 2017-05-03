@@ -1,6 +1,7 @@
 //
 
 #include <QLabel>
+#include <QMessageBox>
 
 #include <commons/guiutils.h>
 #include <commons/singletons.h>
@@ -30,13 +31,17 @@ namespace PenyaManager {
         // Loading families
         //
 
-        ProductFamilyListPtr pfListPtr = Singletons::m_pDAO->getProductFamilies(false);
+        ProductFamilyResultPtr pfListPtr = Singletons::m_pDAO->getProductFamilies(false);
+        if (pfListPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
 
         this->ui->productListWidget->clear();
 
         this->ui->editFamilyPushButton->hide();
 
-        fillFamilyProducts(pfListPtr);
+        fillFamilyProducts(pfListPtr->m_list);
     }
     //
     void FamilyItemManagementWindow::retranslate()
@@ -120,9 +125,13 @@ namespace PenyaManager {
     {
         this->ui->productListWidget->clear();
 
-        ProductItemListPtr pfListPtr = Singletons::m_pDAO->getProductsFromFamily(familyId, false);
+        ProductItemResultPtr pfListPtr = Singletons::m_pDAO->getProductsFromFamily(familyId, false);
+        if (pfListPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
 
-        for (ProductItemList::iterator iter = pfListPtr->begin(); iter != pfListPtr->end(); ++iter)
+        for (ProductItemList::iterator iter = pfListPtr->m_list->begin(); iter != pfListPtr->m_list->end(); ++iter)
         {
             createProductItemWidget(*iter, this->ui->productListWidget);
         }

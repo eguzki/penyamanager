@@ -201,10 +201,14 @@ namespace PenyaManager {
         this->ui->providerComboBox->setCurrentIndex(productProviderIndex);
         // family
         this->ui->familyComboBox->clear();
-        ProductFamilyListPtr pfListPtr = Singletons::m_pDAO->getProductFamilies(false);
+        ProductFamilyResultPtr pfListPtr = Singletons::m_pDAO->getProductFamilies(false);
+        if (pfListPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
         currentIndex = 0;
         Int32 productFamilyIndex = -1;
-        for (auto iter = pfListPtr->begin(); iter != pfListPtr->end(); ++iter)
+        for (auto iter = pfListPtr->m_list->begin(); iter != pfListPtr->m_list->end(); ++iter)
         {
             ProductFamilyPtr pFamilyPtr = *iter;
             QString providerImagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pFamilyPtr->m_imagePath);
@@ -248,9 +252,13 @@ namespace PenyaManager {
         }
         // family
         this->ui->familyComboBox->clear();
-        ProductFamilyListPtr pfListPtr = Singletons::m_pDAO->getProductFamilies(false);
+        ProductFamilyResultPtr pfListPtr = Singletons::m_pDAO->getProductFamilies(false);
+        if (pfListPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
         currentIndex = 0;
-        for (auto iter = pfListPtr->begin(); iter != pfListPtr->end(); ++iter)
+        for (auto iter = pfListPtr->m_list->begin(); iter != pfListPtr->m_list->end(); ++iter)
         {
             ProductFamilyPtr pFamilyPtr = *iter;
             QString providerImagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pFamilyPtr->m_imagePath);

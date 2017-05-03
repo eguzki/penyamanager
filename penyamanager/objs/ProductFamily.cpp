@@ -18,4 +18,11 @@ namespace PenyaManager
             m_regDate(regDate)
     {
     }
+
+    //
+    ProductFamilyResult::ProductFamilyResult()
+        :
+            m_error(0)
+    {
+    }
 }

@@ -154,9 +154,13 @@ namespace PenyaManager {
 
         this->ui->productsListWidget->clear();
 
-        ProductItemListPtr pfListPtr = Singletons::m_pDAO->getProductsFromProvider(providerId);
+        ProductItemResultPtr pfListPtr = Singletons::m_pDAO->getProductsFromProvider(providerId);
+        if (pfListPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
 
-        for (ProductItemList::iterator iter = pfListPtr->begin(); iter != pfListPtr->end(); ++iter)
+        for (ProductItemList::iterator iter = pfListPtr->m_list->begin(); iter != pfListPtr->m_list->end(); ++iter)
         {
             createProductItemRow(*iter);
         }
