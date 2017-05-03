@@ -7,12 +7,11 @@
 QT       += core gui
 QT       += printsupport
 QT       += sql
-
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+QT       += widgets
 
 QTPLUGIN += qsqlmysql
 
-QMAKE_CXXFLAGS += -std=c++11
+CONFIG += c++11
 
 TARGET = penyamanageradmin
 TEMPLATE = app
