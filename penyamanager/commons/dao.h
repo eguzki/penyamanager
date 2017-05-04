@@ -38,19 +38,19 @@ namespace PenyaManager {
             //
             ProductItemResultPtr getProductsFromFamily(Int32 familyId, bool onlyActive);
             //
-            MemberPtr fetchMemberById(Int32 memberId);
+            MemberResultPtr fetchMemberById(Int32 memberId);
             //
-            MemberPtr fetchMemberByUsername(Int32 username);
+            MemberResultPtr fetchMemberByUsername(Int32 username);
             //
-            FloatBoolPair getAccountBalance(Int32 memberId);
+            FloatBoolPairResultPtr getAccountBalance(Int32 memberId);
             //
-            InvoicePtr getMemberActiveInvoice(Int32 memberId);
+            InvoiceResultPtr getMemberActiveInvoice(Int32 memberId);
             //
-            InvoiceListPtr getActiveInvoiceList();
+            InvoiceListResultPtr getActiveInvoiceList();
             //
-            InvoicePtr getInvoice(Int32 invoiceId);
+            InvoiceResultPtr getInvoice(Int32 invoiceId);
             //
-            InvoicePtr createInvoice(Int32 memberId);
+            InvoiceResultPtr createInvoice(Int32 memberId);
             //
             void removeProductInvoice(Int32 invoiceId, Int32 productId);
             //

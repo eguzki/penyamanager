@@ -167,12 +167,15 @@ namespace PenyaManager {
         Singletons::m_pDAO->updateInvoiceLastModDate(invoiceId, QDateTime::currentDateTime());
     }
     //
-    void Services::cleanOutdatedInvoices()
+    bool Services::cleanOutdatedInvoices()
     {
-        InvoiceListPtr pActiveInvoiceList = Singletons::m_pDAO->getActiveInvoiceList();
+        InvoiceListResultPtr pActiveInvoiceList = Singletons::m_pDAO->getActiveInvoiceList();
+        if (pActiveInvoiceList->m_error) {
+            return 1;
+        }
 
         QDateTime now = QDateTime::currentDateTime();
-        for (InvoiceList::iterator iter = pActiveInvoiceList->begin(); iter != pActiveInvoiceList->end(); ++iter) {
+        for (InvoiceList::iterator iter = pActiveInvoiceList->m_list->begin(); iter != pActiveInvoiceList->m_list->end(); ++iter) {
             InvoicePtr pInvoicePtr = *iter;
             // check modified
             if (pInvoicePtr->m_lastModified.secsTo(now) > 60*60 * Constants::kOpenInvoiceTimeoutH) {
@@ -183,37 +186,50 @@ namespace PenyaManager {
                 // leave returnInvoicePtr empty
             }
         }
+        return 0;
     }
     //
-    MemberPtr Services::getMemberById(Int32 memberId)
+    MemberResultPtr Services::getMemberById(Int32 memberId)
     {
-        MemberPtr pResult;
-        MemberPtr pMember = Singletons::m_pDAO->fetchMemberById(memberId);
-        if (pMember) {
-            FloatBoolPair pair = Singletons::m_pDAO->getAccountBalance(memberId);
-            if (pair.b) {
+        MemberResultPtr pResult = Singletons::m_pDAO->fetchMemberById(memberId);
+        if (pResult->m_error) {
+            return pResult;
+        }
+        if (pResult->m_member) {
+            FloatBoolPairResultPtr pair = Singletons::m_pDAO->getAccountBalance(memberId);
+            if (pair->m_error) {
+                pResult->m_error = 1;
+                return pResult;
+            }
+
+            if (pair->m_pair.b) {
                 // exists
-                pResult = pMember;
-                pResult->m_balance = pair.f;
+                pResult->m_member->m_balance = pair->m_pair.f;
             }
         }
-        // if any of the queries fail, return null
+
         return pResult;
     }
     //
-    MemberPtr Services::getMemberByUsername(Int32 username)
+    MemberResultPtr Services::getMemberByUsername(Int32 username)
     {
-        MemberPtr pResult;
-        MemberPtr pMember = Singletons::m_pDAO->fetchMemberByUsername(username);
-        if (pMember) {
-            FloatBoolPair pair = Singletons::m_pDAO->getAccountBalance(pMember->m_id);
-            if (pair.b) {
+        MemberResultPtr pResult = Singletons::m_pDAO->fetchMemberByUsername(username);
+        if (pResult->m_error) {
+            return pResult;
+        }
+
+        if (pResult->m_member) {
+            FloatBoolPairResultPtr pair = Singletons::m_pDAO->getAccountBalance(pResult->m_member->m_id);
+            if (pair->m_error) {
+                pResult->m_error = 1;
+                return pResult;
+            }
+
+            if (pair->m_pair.b) {
                 // exists
-                pResult = pMember;
-                pResult->m_balance = pair.f;
+                pResult->m_member->m_balance = pair->m_pair.f;
             }
         }
-        // if any of the queries fail, return null
         return pResult;
     }
 }

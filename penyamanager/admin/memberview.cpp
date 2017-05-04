@@ -132,16 +132,19 @@ namespace PenyaManager {
         }
 
         // save in ddbb
-        MemberPtr pMemberPtr;
         if (Singletons::m_currentMemberId >= 0) {
             // edit previous item
-            pMemberPtr = Singletons::m_pServices->getMemberById(Singletons::m_currentMemberId);
-            if (!pMemberPtr) {
-                QMessageBox::warning(this, "Unexpected state", QString("Editing item [id: %1] not found in ddbb").arg(Singletons::m_currentMemberId));
+            MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberById(Singletons::m_currentMemberId);
+            if (pMemberResultPtr->m_error) {
+                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                return;
+            }
+            if (!pMemberResultPtr->m_member) {
+                QMessageBox::warning(this, tr("Unexpected state"), QString(tr("Editing item [id: %1] not found in ddbb")).arg(Singletons::m_currentMemberId));
                 return;
             }
             // save old image in case we need to delete it
-            QString oldImage = pMemberPtr->m_imagePath;
+            QString oldImage = pMemberResultPtr->m_member->m_imagePath;
 
             //
             // get new attribute values
@@ -149,52 +152,52 @@ namespace PenyaManager {
 
             // id -> no change
             // name
-            pMemberPtr->m_name = this->ui->nameLineEdit->text();
+            pMemberResultPtr->m_member->m_name = this->ui->nameLineEdit->text();
             // username
-            pMemberPtr->m_username = this->ui->usernameLineEdit->text().toInt();
+            pMemberResultPtr->m_member->m_username = this->ui->usernameLineEdit->text().toInt();
             // surname
-            pMemberPtr->m_surname = this->ui->memberSurnameLineEdit->text();
+            pMemberResultPtr->m_member->m_surname = this->ui->memberSurnameLineEdit->text();
             // imagePath (optional)
             if (!this->m_memberImageFilename.isEmpty()) {
                 QString destFileName = Utils::newImageName("member", this->m_memberImageFilename);
                 QString destFilePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(destFileName);
                 QFile::copy(this->m_memberImageFilename, destFilePath);
                 // new image was selected
-                pMemberPtr->m_imagePath = destFileName;
+                pMemberResultPtr->m_member->m_imagePath = destFileName;
             }
             // active
-            pMemberPtr->m_active = this->ui->activeCheckBox->isChecked();
+            pMemberResultPtr->m_member->m_active = this->ui->activeCheckBox->isChecked();
             // isAdmin
-            pMemberPtr->m_isAdmin = this->ui->isAdminCheckBox->isChecked();
+            pMemberResultPtr->m_member->m_isAdmin = this->ui->isAdminCheckBox->isChecked();
             // bank account
-            pMemberPtr->m_bank_account = this->ui->bankAccountLineEdit->text();
+            pMemberResultPtr->m_member->m_bank_account = this->ui->bankAccountLineEdit->text();
             // birthdate
             QDate birthdate = this->ui->birthdateDateEdit->date();
-            pMemberPtr->m_birthdate = (birthdate == this->m_minDate)?(QDate()):(birthdate);
+            pMemberResultPtr->m_member->m_birthdate = (birthdate == this->m_minDate)?(QDate()):(birthdate);
             // postal send
-            pMemberPtr->m_postalSend = this->ui->postalSendCheckBox->isChecked();
+            pMemberResultPtr->m_member->m_postalSend = this->ui->postalSendCheckBox->isChecked();
             // email (optional)
-            pMemberPtr->m_email = this->ui->emailLineEdit->text();
+            pMemberResultPtr->m_member->m_email = this->ui->emailLineEdit->text();
             // address (optional)
-            pMemberPtr->m_address = this->ui->addressLineEdit->text();
+            pMemberResultPtr->m_member->m_address = this->ui->addressLineEdit->text();
             // zip code (optional)
-            pMemberPtr->m_zipCode = this->ui->zipCodeLineEdit->text();
+            pMemberResultPtr->m_member->m_zipCode = this->ui->zipCodeLineEdit->text();
             // town (optional)
-            pMemberPtr->m_town = this->ui->townLineEdit->text();
+            pMemberResultPtr->m_member->m_town = this->ui->townLineEdit->text();
             // state (optional)
             QString state = this->ui->stateLineEdit->text();
             // phone (optional)
-            pMemberPtr->m_phone = this->ui->phoneLineEdit->text();
+            pMemberResultPtr->m_member->m_phone = this->ui->phoneLineEdit->text();
             // phone 2 (optional)
-            pMemberPtr->m_phone2 = this->ui->phone2LineEdit->text();
+            pMemberResultPtr->m_member->m_phone2 = this->ui->phone2LineEdit->text();
             // notes (optional)
-            pMemberPtr->m_notes = this->ui->notesTextEdit->toPlainText();
+            pMemberResultPtr->m_member->m_notes = this->ui->notesTextEdit->toPlainText();
             // regDate -> no change
             // lastmodfies
-            pMemberPtr->m_lastModified = QDateTime::currentDateTime();
+            pMemberResultPtr->m_member->m_lastModified = QDateTime::currentDateTime();
 
             // update in ddbb
-            Singletons::m_pDAO->updateMember(pMemberPtr);
+            Singletons::m_pDAO->updateMember(pMemberResultPtr->m_member);
             // if there is previously one image, and it has been changed -> delete it
             // make sure it is after being updated in ddbb
             if (!this->m_memberImageFilename.isEmpty() && !oldImage.isEmpty()) {
@@ -203,10 +206,10 @@ namespace PenyaManager {
                 QFile oldFile(oldImagePath);
                 oldFile.remove();
             }
-            QLOG_INFO() << QString("[EditMember] ID %1").arg(pMemberPtr->m_id);
+            QLOG_INFO() << QString("[EditMember] ID %1").arg(pMemberResultPtr->m_member->m_id);
         } else {
             // new item
-            pMemberPtr = MemberPtr(new Member);
+            MemberPtr pMemberPtr(new Member);
             //
             // get new attribute values
             //
@@ -283,61 +286,65 @@ namespace PenyaManager {
     //
     void MemberView::fillMemberInfo(Int32 memberId)
     {
-        MemberPtr pMemberPtr = Singletons::m_pServices->getMemberById(memberId);
-        if (!pMemberPtr){
+        MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberById(memberId);
+        if (pMemberResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
+        if (!pMemberResultPtr->m_member){
             return;
         }
         // memberId
-        this->ui->memberIdValueLabel->setText(QString::number(pMemberPtr->m_id));
+        this->ui->memberIdValueLabel->setText(QString::number(pMemberResultPtr->m_member->m_id));
         // reg date
-        QString dateLocalized = Singletons::m_translationManager.getLocale().toString(pMemberPtr->m_regDate, QLocale::NarrowFormat);
+        QString dateLocalized = Singletons::m_translationManager.getLocale().toString(pMemberResultPtr->m_member->m_regDate, QLocale::NarrowFormat);
         this->ui->regDateValueLabel->setText(dateLocalized);
         // last login date
-        dateLocalized = Singletons::m_translationManager.getLocale().toString(pMemberPtr->m_lastLogin, QLocale::NarrowFormat);
+        dateLocalized = Singletons::m_translationManager.getLocale().toString(pMemberResultPtr->m_member->m_lastLogin, QLocale::NarrowFormat);
         this->ui->lastLoginValueLabel->setText(dateLocalized);
         // username
-        this->ui->usernameLineEdit->setText(QString::number(pMemberPtr->m_username));
+        this->ui->usernameLineEdit->setText(QString::number(pMemberResultPtr->m_member->m_username));
         // name
-        this->ui->nameLineEdit->setText(pMemberPtr->m_name);
+        this->ui->nameLineEdit->setText(pMemberResultPtr->m_member->m_name);
         // surname
-        this->ui->memberSurnameLineEdit->setText(pMemberPtr->m_surname);
+        this->ui->memberSurnameLineEdit->setText(pMemberResultPtr->m_member->m_surname);
         // show image
-        QString imagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pMemberPtr->m_imagePath);
+        QString imagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pMemberResultPtr->m_member->m_imagePath);
         QPixmap productPixmap = GuiUtils::getImage(imagePath);
         this->ui->imageLabel->setPixmap(productPixmap);
         this->ui->imageLabel->setFixedWidth(Constants::kMemberImageWidth);
         this->ui->imageLabel->setFixedHeight(Constants::kMemberImageHeigth);
         this->ui->imageLabel->setScaledContents(true);
         // active
-        this->ui->activeCheckBox->setChecked(pMemberPtr->m_active);
+        this->ui->activeCheckBox->setChecked(pMemberResultPtr->m_member->m_active);
         // isAdmin
-        this->ui->isAdminCheckBox->setChecked(pMemberPtr->m_isAdmin);
+        this->ui->isAdminCheckBox->setChecked(pMemberResultPtr->m_member->m_isAdmin);
         // bank account
-        this->ui->bankAccountLineEdit->setText(pMemberPtr->m_bank_account);
+        this->ui->bankAccountLineEdit->setText(pMemberResultPtr->m_member->m_bank_account);
         // birthdate
-        if (pMemberPtr->m_birthdate.isValid()) {
-            this->ui->birthdateDateEdit->setDate(pMemberPtr->m_birthdate);
+        if (pMemberResultPtr->m_member->m_birthdate.isValid()) {
+            this->ui->birthdateDateEdit->setDate(pMemberResultPtr->m_member->m_birthdate);
         } else {
             this->ui->birthdateDateEdit->setDate(this->m_minDate);
         }
         // email
-        this->ui->emailLineEdit->setText(pMemberPtr->m_email);
+        this->ui->emailLineEdit->setText(pMemberResultPtr->m_member->m_email);
         // address
-        this->ui->addressLineEdit->setText(pMemberPtr->m_address);
+        this->ui->addressLineEdit->setText(pMemberResultPtr->m_member->m_address);
         // zip code
-        this->ui->zipCodeLineEdit->setText(pMemberPtr->m_zipCode);
+        this->ui->zipCodeLineEdit->setText(pMemberResultPtr->m_member->m_zipCode);
         // town
-        this->ui->townLineEdit->setText(pMemberPtr->m_town);
+        this->ui->townLineEdit->setText(pMemberResultPtr->m_member->m_town);
         // state
-        this->ui->stateLineEdit->setText(pMemberPtr->m_state);
+        this->ui->stateLineEdit->setText(pMemberResultPtr->m_member->m_state);
         // phone
-        this->ui->phoneLineEdit->setText(pMemberPtr->m_phone);
+        this->ui->phoneLineEdit->setText(pMemberResultPtr->m_member->m_phone);
         // phone 2
-        this->ui->phone2LineEdit->setText(pMemberPtr->m_phone2);
+        this->ui->phone2LineEdit->setText(pMemberResultPtr->m_member->m_phone2);
         // postal send
-        this->ui->postalSendCheckBox->setChecked(pMemberPtr->m_postalSend);
+        this->ui->postalSendCheckBox->setChecked(pMemberResultPtr->m_member->m_postalSend);
         // notes
-        this->ui->notesTextEdit->setPlainText(pMemberPtr->m_notes);
+        this->ui->notesTextEdit->setPlainText(pMemberResultPtr->m_member->m_notes);
     }
     //
     void MemberView::on_imagePushButton_clicked()

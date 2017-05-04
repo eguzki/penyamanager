@@ -17,7 +17,7 @@ namespace PenyaManager {
             //
             virtual ~Services();
             //
-            void cleanOutdatedInvoices();
+            bool cleanOutdatedInvoices();
             //
             void closeInvoice(Int32 memberId, Int32 invoiceId);
             //
@@ -37,9 +37,9 @@ namespace PenyaManager {
             //
             void increaseProductInvoice(Int32 invoiceId, Int32 productId, Int32 count);
             //
-            MemberPtr getMemberById(Int32 memberId);
+            MemberResultPtr getMemberById(Int32 memberId);
             //
-            MemberPtr getMemberByUsername(Int32 username);
+            MemberResultPtr getMemberByUsername(Int32 username);
     };
 }
 

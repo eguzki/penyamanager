@@ -66,13 +66,17 @@ namespace PenyaManager {
         //
         // Loading Last Invoice's owner profile
         //
-        MemberPtr pLastInvoiceOwnerPtr = Singletons::m_pServices->getMemberById(pLastInvoicePtr->m_memberId);
-        if (!pLastInvoiceOwnerPtr) {
+        MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberById(pLastInvoicePtr->m_memberId);
+        if (pMemberResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
+        if (!pMemberResultPtr->m_member) {
             // member not found, should not happen
             QLOG_ERROR() << QString("[WARN] unable to find last invoice's owner by id: %1").arg(pLastInvoicePtr->m_memberId);
             return;
         }
-        fillLastInvoiceOwnerInfo(pLastInvoiceOwnerPtr);
+        fillLastInvoiceOwnerInfo(pMemberResultPtr->m_member);
         //
         // Loading Last Invoice info
         //
@@ -134,8 +138,12 @@ namespace PenyaManager {
         }
 
         // Loading user Profile
-        MemberPtr pCurrMemberPtr = Singletons::m_pServices->getMemberByUsername(this->m_username);
-        if (!pCurrMemberPtr)
+        MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberByUsername(this->m_username);
+        if (pMemberResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
+        if (!pMemberResultPtr->m_member)
         {
             QLOG_INFO() << QString("[LoginFailed] username %1 does not exist").arg(this->m_username);
             // User could not be found
@@ -145,42 +153,46 @@ namespace PenyaManager {
         }
 
         QString hashedPwd = Utils::hashSHA256asHex(this->m_password);
-        if (pCurrMemberPtr->m_pwd != hashedPwd)
+        if (pMemberResultPtr->m_member->m_pwd != hashedPwd)
         {
-            QLOG_INFO() << QString("[LoginFailed] id %1 username %2 pass check failed").arg(pCurrMemberPtr->m_id).arg(this->m_username);
+            QLOG_INFO() << QString("[LoginFailed] id %1 username %2 pass check failed").arg(pMemberResultPtr->m_member->m_id).arg(this->m_username);
             // User not active
             QMessageBox::about(this, tr("Login failed"), tr("Password incorrect"));
             return;
         }
 
-        if (!pCurrMemberPtr->m_active)
+        if (!pMemberResultPtr->m_member->m_active)
         {
-            QLOG_INFO() << QString("[LoginFailed] User id %1 not active").arg(pCurrMemberPtr->m_id);
+            QLOG_INFO() << QString("[LoginFailed] User id %1 not active").arg(pMemberResultPtr->m_member->m_id);
             // User not active
             QMessageBox::about(this, "Login failed",
-                    tr("User not active in the system: %1").arg(pCurrMemberPtr->m_id));
+                    tr("User not active in the system: %1").arg(pMemberResultPtr->m_member->m_id));
             return;
         }
 
-        if (pCurrMemberPtr->m_balance < 0)
+        if (pMemberResultPtr->m_member->m_balance < 0)
         {
             // User is slow payer
             QMessageBox::warning(this, "Slow Payer",
-                    tr("Your current balance is negative: %1 €").arg(pCurrMemberPtr->m_balance, 0, 'f', 2));
+                    tr("Your current balance is negative: %1 €").arg(pMemberResultPtr->m_member->m_balance, 0, 'f', 2));
         }
 
         // login granted
-        QLOG_INFO() << QString("[LoginSucess] User %1").arg(pCurrMemberPtr->m_id);
+        QLOG_INFO() << QString("[LoginSucess] User %1").arg(pMemberResultPtr->m_member->m_id);
 
         // Every member login, outdated invoices are cleaned
         // It is supossed that only few invoices would be open
-        Singletons::m_pServices->cleanOutdatedInvoices();
+        bool error = Singletons::m_pServices->cleanOutdatedInvoices();
+        if (error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
 
         // assign user
-        Singletons::m_pCurrMember = pCurrMemberPtr;
+        Singletons::m_pCurrMember = pMemberResultPtr->m_member;
 
         // change last login date
-        Singletons::m_pDAO->changeMemberLastLogin(pCurrMemberPtr->m_id, QDateTime::currentDateTime());
+        Singletons::m_pDAO->changeMemberLastLogin(pMemberResultPtr->m_member->m_id, QDateTime::currentDateTime());
 
         // load main window
         m_switchCentralWidgetCallback(WindowKey::kMemberDashboardWindowKey);

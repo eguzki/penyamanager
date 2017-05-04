@@ -70,8 +70,19 @@ namespace PenyaManager {
         //
         // Loading User profile
         //
-        MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
-        pCurrMemberPtr = Singletons::m_pServices->getMemberById(pCurrMemberPtr->m_id);
+        MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberById(Singletons::m_pCurrMember->m_id);
+        if (pMemberResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
+        if (!pMemberResultPtr->m_member) {
+            // member not found, should not happen
+            QLOG_ERROR() << QString("[WARN] unable to find owner by id: %1").arg(Singletons::m_pCurrMember->m_id);
+            qDebug() << QString("[WARN] unable to find owner by id: %1").arg(Singletons::m_pCurrMember->m_id);
+            return;
+        }
+
+        MemberPtr pCurrMemberPtr = pMemberResultPtr->m_member;
         Singletons::m_pCurrMember = pCurrMemberPtr;
         this->m_pMemberProfileGroupBox->init(pCurrMemberPtr);
 
@@ -79,7 +90,6 @@ namespace PenyaManager {
         //
         // Loading families
         //
-
         ProductFamilyResultPtr pfListPtr = Singletons::m_pDAO->getProductFamilies(true);
         if (pfListPtr->m_error) {
             QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
@@ -93,10 +103,13 @@ namespace PenyaManager {
         //
         // Loading Current Invoice (if it exists)
         //
-
-        InvoicePtr pInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMemberPtr->m_id);
+        InvoiceResultPtr pInvoiceResultPtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMemberPtr->m_id);
+        if (pInvoiceResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
         // pInvoicePtr could be null
-        fillInvoiceData(pInvoicePtr);
+        fillInvoiceData(pInvoiceResultPtr->m_pInvoice);
 
         //
         // check credir limit
@@ -104,7 +117,7 @@ namespace PenyaManager {
         if (pCurrMemberPtr->m_balance < -Constants::kCreditLimit)
         {
             // User has gone over credit limit. Do not allow creating invoice
-            QMessageBox::warning(this, "Slow Payer",
+            QMessageBox::warning(this, tr("Slow Payer"),
                     tr("Your current balance is over limit (%1 €): %2 €").arg(Constants::kCreditLimit, 0, 'f', 2).arg(pCurrMemberPtr->m_balance, 0, 'f', 2));
             this->ui->familyListWidget->setDisabled(true);
             this->ui->invoiceCloseButton->setDisabled(true);
@@ -302,9 +315,13 @@ namespace PenyaManager {
         // reset invoice
         MemberPtr pCurrMember = Singletons::m_pCurrMember;
         // always fresh invoice
-        InvoicePtr pInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
-        if (pInvoicePtr) {
-            Singletons::m_pDAO->deleteInvoice(pInvoicePtr->m_id);
+        InvoiceResultPtr pInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
+        if (pInvoicePtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
+        if (pInvoicePtr->m_pInvoice) {
+            Singletons::m_pDAO->deleteInvoice(pInvoicePtr->m_pInvoice->m_id);
         }
         // nothing to fill
         fillInvoiceData(InvoicePtr());
@@ -332,8 +349,12 @@ namespace PenyaManager {
         Int32 productId = rowMap->second;
         MemberPtr pCurrMember = Singletons::m_pCurrMember;
         // always fresh invoice
-        InvoicePtr pInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
-        if (!pInvoicePtr) {
+        InvoiceResultPtr pInvoiceResultPtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
+        if (pInvoiceResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
+        if (!pInvoiceResultPtr->m_pInvoice) {
             return;
         }
 
@@ -342,14 +363,14 @@ namespace PenyaManager {
         Uint32 count = numItemDialog.getKey();
         if (!count) {
             // count was 0 -> remove item from invoice
-            Singletons::m_pServices->removeInvoiceProductId(pInvoicePtr->m_id, productId);
+            Singletons::m_pServices->removeInvoiceProductId(pInvoiceResultPtr->m_pInvoice->m_id, productId);
             // Check invoice was removed
-            InvoicePtr pNewInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
-            fillInvoiceData(pNewInvoicePtr);
+            InvoiceResultPtr pNewInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
+            fillInvoiceData(pNewInvoicePtr->m_pInvoice);
         } else {
             // count was not 0 -> update item from invoice
-            Singletons::m_pServices->updateInvoiceInfo(pInvoicePtr->m_id, productId, count);
-            fillInvoiceData(pInvoicePtr);
+            Singletons::m_pServices->updateInvoiceInfo(pInvoiceResultPtr->m_pInvoice->m_id, productId, count);
+            fillInvoiceData(pInvoiceResultPtr->m_pInvoice);
         }
     }
     //
@@ -382,14 +403,22 @@ namespace PenyaManager {
             return;
         }
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
-        InvoicePtr pInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMemberPtr->m_id);
-        if (!pInvoicePtr) {
+        InvoiceResultPtr pInvoiceResultPtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMemberPtr->m_id);
+        if (pInvoiceResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
+        if (!pInvoiceResultPtr->m_pInvoice) {
             // there is no active invoice, create it!
-            pInvoicePtr = Singletons::m_pDAO->createInvoice(pCurrMemberPtr->m_id);
+            pInvoiceResultPtr = Singletons::m_pDAO->createInvoice(pCurrMemberPtr->m_id);
+            if (pInvoiceResultPtr->m_error) {
+                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                return;
+            }
         }
         // increase product count
-        Singletons::m_pServices->increaseProductInvoice(pInvoicePtr->m_id, productId, count);
-        fillInvoiceData(pInvoicePtr);
+        Singletons::m_pServices->increaseProductInvoice(pInvoiceResultPtr->m_pInvoice->m_id, productId, count);
+        fillInvoiceData(pInvoiceResultPtr->m_pInvoice);
     }
     //
     void MemberDashboardWindow::on_productRemoveButton_clicked(int productId)
@@ -401,15 +430,23 @@ namespace PenyaManager {
         }
         MemberPtr pCurrMember = Singletons::m_pCurrMember;
         // always fresh invoice
-        InvoicePtr pInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
-        if (!pInvoicePtr)
+        InvoiceResultPtr pInvoiceResultPtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
+        if (pInvoiceResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
+        if (!pInvoiceResultPtr->m_pInvoice)
         {
             return;
         }
-        Singletons::m_pServices->removeInvoiceProductId(pInvoicePtr->m_id, productId);
+        Singletons::m_pServices->removeInvoiceProductId(pInvoiceResultPtr->m_pInvoice->m_id, productId);
         // Check invoice was removed
-        InvoicePtr pNewInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
-        fillInvoiceData(pNewInvoicePtr);
+        InvoiceResultPtr pNewInvoiceResultPtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
+        if (pNewInvoiceResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
+        fillInvoiceData(pNewInvoiceResultPtr->m_pInvoice);
     }
 }
 

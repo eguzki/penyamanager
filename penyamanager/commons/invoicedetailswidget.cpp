@@ -1,5 +1,8 @@
 //
 
+#include <QMessageBox>
+#include <QsLog.h>
+
 #include "guiutils.h"
 #include "constants.h"
 #include "singletons.h"
@@ -53,9 +56,18 @@ namespace PenyaManager {
         //
         // Loading Current Invoice
         //
-        InvoicePtr pInvoicePtr = Singletons::m_pDAO->getInvoice(invoiceId);
+        InvoiceResultPtr pInvoicePtr = Singletons::m_pDAO->getInvoice(invoiceId);
+        if (pInvoicePtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
+        if (pInvoicePtr->m_pInvoice) {
+            // invoice not found, should not happen
+            QLOG_ERROR() << QString("[WARN] unable to find expected invoice by id: %1").arg(invoiceId);
+            return;
+        }
 
-        fillInvoiceData(pInvoicePtr);
+        fillInvoiceData(pInvoicePtr->m_pInvoice);
         show();
     }
     //

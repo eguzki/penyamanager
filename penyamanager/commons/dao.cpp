@@ -770,18 +770,19 @@ namespace PenyaManager {
         return pfListPtr;
     }
     //
-    MemberPtr DAO::fetchMemberById(Int32 memberId)
+    MemberResultPtr DAO::fetchMemberById(Int32 memberId)
     {
-        MemberPtr pMemberPtr;
+        MemberResultPtr pMemberResultPtr(new MemberResult);
         // member and balance
         m_memberByIdQuery.bindValue(":memberid", memberId);
         if (!m_memberByIdQuery.exec())
         {
             qDebug() << m_memberByIdQuery.lastError();
             QLOG_ERROR() << m_memberByIdQuery.lastError();
+            pMemberResultPtr->m_error = 1;
         } else if (m_memberByIdQuery.next())
         {
-            pMemberPtr = MemberPtr(new Member);
+            MemberPtr pMemberPtr(new Member);
             Uint32 column = 0;
             pMemberPtr->m_id = memberId;
             pMemberPtr->m_name = m_memberByIdQuery.value(column++).toString();
@@ -805,23 +806,25 @@ namespace PenyaManager {
             pMemberPtr->m_notes = m_memberByIdQuery.value(column++).toString();
             pMemberPtr->m_pwd = m_memberByIdQuery.value(column++).toString();
             pMemberPtr->m_lastLogin = m_memberByIdQuery.value(column++).toDateTime();
+            pMemberResultPtr->m_member = pMemberPtr;
         }
         m_memberByIdQuery.finish();
-        return pMemberPtr;
+        return pMemberResultPtr;
     }
     //
-    MemberPtr DAO::fetchMemberByUsername(Int32 username)
+    MemberResultPtr DAO::fetchMemberByUsername(Int32 username)
     {
-        MemberPtr pMemberPtr;
+        MemberResultPtr pMemberResultPtr(new MemberResult);
         // member and balance
         m_memberByUsernameQuery.bindValue(":username", username);
         if (!m_memberByUsernameQuery.exec())
         {
             qDebug() << m_memberByUsernameQuery.lastError();
             QLOG_ERROR() << m_memberByUsernameQuery.lastError();
+            pMemberResultPtr->m_error = 1;
         } else if (m_memberByUsernameQuery.next())
         {
-            pMemberPtr = MemberPtr(new Member);
+            MemberPtr pMemberPtr(new Member);
             Uint32 column = 0;
             pMemberPtr->m_id = m_memberByUsernameQuery.value(column++).toInt();
             pMemberPtr->m_name = m_memberByUsernameQuery.value(column++).toString();
@@ -845,72 +848,78 @@ namespace PenyaManager {
             pMemberPtr->m_notes = m_memberByUsernameQuery.value(column++).toString();
             pMemberPtr->m_pwd = m_memberByUsernameQuery.value(column++).toString();
             pMemberPtr->m_lastLogin = m_memberByUsernameQuery.value(column++).toDateTime();
+            pMemberResultPtr->m_member = pMemberPtr;
         }
         m_memberByUsernameQuery.finish();
-        return pMemberPtr;
+        return pMemberResultPtr;
     }
     //
-    FloatBoolPair DAO::getAccountBalance(Int32 memberId)
+    FloatBoolPairResultPtr DAO::getAccountBalance(Int32 memberId)
     {
-        FloatBoolPair result = {0.0, false};
+        FloatBoolPairResultPtr pResult(new FloatBoolPairResult);
         // member and balance
         m_memberAccountBalanceQuery.bindValue(":memberid", memberId);
         if (!m_memberAccountBalanceQuery.exec())
         {
             qDebug() << m_memberAccountBalanceQuery.lastError();
             QLOG_ERROR() << m_memberAccountBalanceQuery.lastError();
+            pResult->m_error = 1;
         } else if (m_memberAccountBalanceQuery.next())
         {
-            result.b = true;
-            result.f = m_memberAccountBalanceQuery.value(0).toFloat();
+            pResult->m_pair.b = true;
+            pResult->m_pair.f = m_memberAccountBalanceQuery.value(0).toFloat();
         }
         m_memberAccountBalanceQuery.finish();
-        return result;
+        return pResult;
     }
     //
-    InvoicePtr DAO::getInvoice(Int32 invoiceId)
+    InvoiceResultPtr DAO::getInvoice(Int32 invoiceId)
     {
-        InvoicePtr pInvoicePtr;
+        InvoiceResultPtr pInvoiceResultPtr(new InvoiceResult);
         m_invoiceQuery.bindValue(":invoiceid", invoiceId);
         if (!m_invoiceQuery.exec())
         {
             qDebug() << m_invoiceQuery.lastError();
             QLOG_ERROR() << m_invoiceQuery.lastError();
+            pInvoiceResultPtr->m_error = 1;
         } else if (m_invoiceQuery.next())
         {
-            pInvoicePtr = InvoicePtr(new Invoice());
+            InvoicePtr pInvoicePtr(new Invoice());
             pInvoicePtr->m_id = invoiceId;
             pInvoicePtr->m_state = static_cast<InvoiceState>(m_invoiceQuery.value(0).toUInt());
             pInvoicePtr->m_date = m_invoiceQuery.value(1).toDateTime();
             pInvoicePtr->m_total = m_invoiceQuery.value(2).toFloat();
             pInvoicePtr->m_memberId = m_invoiceQuery.value(3).toInt();
             pInvoicePtr->m_lastModified = m_invoiceQuery.value(4).toDateTime();
+            pInvoiceResultPtr->m_pInvoice = pInvoicePtr;
         }
         m_invoiceQuery.finish();
 
-        return pInvoicePtr;
+        return pInvoiceResultPtr;
     }
 
-    InvoicePtr DAO::getMemberActiveInvoice(Int32 memberId)
+    InvoiceResultPtr DAO::getMemberActiveInvoice(Int32 memberId)
     {
-        InvoicePtr pInvoicePtr;
+        InvoiceResultPtr pInvoiceResultPtr;
         m_memberActiveInvoiceQuery.bindValue(":memberid", memberId);
         m_memberActiveInvoiceQuery.bindValue(":stateid", static_cast<Int32>(InvoiceState::Open));
         if (!m_memberActiveInvoiceQuery.exec())
         {
             qDebug() << m_memberActiveInvoiceQuery.lastError();
             QLOG_ERROR() << m_memberActiveInvoiceQuery.lastError();
+            pInvoiceResultPtr->m_error = 1;
         } else if (m_memberActiveInvoiceQuery.next())
         {
-            pInvoicePtr = InvoicePtr(new Invoice());
+            InvoicePtr pInvoicePtr(new Invoice());
             pInvoicePtr->m_id = m_memberActiveInvoiceQuery.value(0).toUInt();
             pInvoicePtr->m_state = static_cast<InvoiceState>(m_memberActiveInvoiceQuery.value(1).toUInt());
             pInvoicePtr->m_date = m_memberActiveInvoiceQuery.value(2).toDateTime();
             pInvoicePtr->m_total = m_memberActiveInvoiceQuery.value(3).toFloat();
             pInvoicePtr->m_lastModified = m_memberActiveInvoiceQuery.value(4).toDateTime();
+            pInvoiceResultPtr->m_pInvoice = pInvoicePtr;
         }
         m_memberActiveInvoiceQuery.finish();
-        return pInvoicePtr;
+        return pInvoiceResultPtr;
     }
     //
     void DAO::removeProductInvoice(Int32 invoiceId, Int32 productId)
@@ -954,8 +963,9 @@ namespace PenyaManager {
         return numRowsAffected;
     }
     //
-    InvoicePtr DAO::createInvoice(Int32 memberId)
+    InvoiceResultPtr DAO::createInvoice(Int32 memberId)
     {
+        InvoiceResultPtr pInvoiceResultPtr(new InvoiceResult);
         InvoicePtr pInvoicePtr(new Invoice);
         pInvoicePtr->m_id = 0;
         pInvoicePtr->m_memberId = memberId;
@@ -963,6 +973,7 @@ namespace PenyaManager {
         pInvoicePtr->m_date = QDateTime::currentDateTime();
         pInvoicePtr->m_total = 0.0;
         pInvoicePtr->m_lastModified = QDateTime::currentDateTime();
+        pInvoiceResultPtr->m_pInvoice = pInvoicePtr;
 
         m_insertInvoiceQuery.bindValue(":state", static_cast<Int32>(pInvoicePtr->m_state));
         m_insertInvoiceQuery.bindValue(":date", pInvoicePtr->m_date);
@@ -973,20 +984,25 @@ namespace PenyaManager {
         {
             qDebug() << m_insertInvoiceQuery.lastError();
             QLOG_ERROR() << m_insertInvoiceQuery.lastError();
+            pInvoiceResultPtr->m_error = 1;
         }
         m_insertInvoiceQuery.finish();
+        if (pInvoiceResultPtr->m_error) {
+            return pInvoiceResultPtr;
+        }
 
         // For LAST_INSERT_ID(), the most recently generated ID is maintained in the server on a per-connection basis
         if (!m_getLastIdQuery.exec())
         {
             qDebug() << m_getLastIdQuery.lastError();
             QLOG_ERROR() << m_getLastIdQuery.lastError();
+            pInvoiceResultPtr->m_error = 1;
         } else if (m_getLastIdQuery.next())
         {
-            pInvoicePtr->m_id = m_getLastIdQuery.value(0).toUInt();
+            pInvoiceResultPtr->m_pInvoice->m_id = m_getLastIdQuery.value(0).toUInt();
         }
         m_getLastIdQuery.finish();
-        return pInvoicePtr;
+        return pInvoiceResultPtr;
     }
     //
     Uint32 DAO::countInvoiceProductItems(Int32 invoiceId)
@@ -2551,10 +2567,10 @@ namespace PenyaManager {
         m_removeInvoiceQuery.finish();
     }
     //
-    InvoiceListPtr DAO::getActiveInvoiceList()
+    InvoiceListResultPtr DAO::getActiveInvoiceList()
     {
         // always return list object
-        InvoiceListPtr pActiveInvoiceList = InvoiceListPtr(new InvoiceList);
+        InvoiceListResultPtr pInvoiceListResultPtr(new InvoiceListResult);
 
         m_getActiveInvoiceListQuery.bindValue(":state", static_cast<Int32>(InvoiceState::Open));
         // run query
@@ -2562,7 +2578,9 @@ namespace PenyaManager {
         {
             qDebug() << m_getActiveInvoiceListQuery.lastError();
             QLOG_ERROR() << m_getActiveInvoiceListQuery.lastError();
+            pInvoiceListResultPtr->m_error = 1;
         } else {
+            pInvoiceListResultPtr->m_list = InvoiceListPtr(new InvoiceList);
             while (m_getActiveInvoiceListQuery.next()) {
                 InvoicePtr pInvoicePtr = InvoicePtr(new Invoice());
                 pInvoicePtr->m_id = m_getActiveInvoiceListQuery.value(0).toInt();
@@ -2571,12 +2589,12 @@ namespace PenyaManager {
                 pInvoicePtr->m_total = m_getActiveInvoiceListQuery.value(3).toFloat();
                 pInvoicePtr->m_memberId = m_getActiveInvoiceListQuery.value(4).toInt();
                 pInvoicePtr->m_lastModified = m_getActiveInvoiceListQuery.value(5).toDateTime();
-                pActiveInvoiceList->push_back(pInvoicePtr);
+                pInvoiceListResultPtr->m_list->push_back(pInvoicePtr);
             }
         }
 
         m_getActiveInvoiceListQuery.finish();
-        return pActiveInvoiceList;
+        return pInvoiceListResultPtr;
     }
     //
     bool DAO::checkUsername(Int32 username)

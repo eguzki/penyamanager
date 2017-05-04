@@ -81,15 +81,19 @@ namespace PenyaManager {
                 QMessageBox::about(this, tr("Invalid data"), tr("Username not valid"));
                 return;
             } else {
-                MemberPtr pMemberPtr = Singletons::m_pServices->getMemberByUsername(memberUsername);
-                if (!pMemberPtr)
+                MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberByUsername(memberUsername);
+                if (pMemberResultPtr->m_error) {
+                    QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                    return;
+                }
+                if (!pMemberResultPtr->m_member)
                 {
                     // User could not be found
                     QMessageBox::about(this, tr("Invalid data"), tr("Username found"));
                     return;
                 }
-                pInvoiceList = Singletons::m_pDAO->getInvoiceListByMemberId(pMemberPtr->m_id, fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
-                pInvoiceListStats = Singletons::m_pDAO->getInvoiceListByMemberIdStats(pMemberPtr->m_id, fromDate, toDate);
+                pInvoiceList = Singletons::m_pDAO->getInvoiceListByMemberId(pMemberResultPtr->m_member->m_id, fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
+                pInvoiceListStats = Singletons::m_pDAO->getInvoiceListByMemberIdStats(pMemberResultPtr->m_member->m_id, fromDate, toDate);
             }
         }
         // enable-disable pagination buttons

@@ -12,4 +12,11 @@ namespace PenyaManager
     MemberListStats::MemberListStats()
     {
     }
+    //
+    MemberResult::MemberResult()
+        :
+            m_error(0)
+    {
+
+    }
 }

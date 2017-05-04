@@ -60,13 +60,17 @@ namespace PenyaManager {
         //
         // Loading Current Invoice
         //
-        InvoicePtr pInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
-        if (!pInvoicePtr) {
-            QMessageBox::critical(this, "No active invoice found.", "Program will exit");
+        InvoiceResultPtr pInvoiceResultPtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
+        if (pInvoiceResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
+        if (!pInvoiceResultPtr->m_pInvoice) {
+            QMessageBox::critical(this, tr("No active invoice found."), tr("Program will exit"));
             qApp->exit(0);
             return;
         }
-        fillInvoiceData(pCurrMember, pInvoicePtr);
+        fillInvoiceData(pCurrMember, pInvoiceResultPtr->m_pInvoice);
     }
     //
     void InvoiceWindow::retranslate()
@@ -99,8 +103,12 @@ namespace PenyaManager {
         // Loading Current Invoice
         //
         MemberPtr pCurrMember = Singletons::m_pCurrMember;
-        InvoicePtr pInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
-        if (!pInvoicePtr) {
+        InvoiceResultPtr pInvoiceResultPtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
+        if (pInvoiceResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
+        if (!pInvoiceResultPtr->m_pInvoice) {
             QMessageBox::critical(this, "No active invoice found.", "Program will exit");
             QLOG_ERROR() << QString("[FATAL] No active invoice found.: %1").arg(pCurrMember->m_id);
             qApp->exit(0);
@@ -108,10 +116,10 @@ namespace PenyaManager {
         }
 
         // Update member balance
-        Singletons::m_pServices->closeInvoice(pCurrMember->m_id, pInvoicePtr->m_id);
-        QLOG_INFO() << QString("[Invoice] User %1 Invoice ID %2").arg(pCurrMember->m_id).arg(pInvoicePtr->m_id);
+        Singletons::m_pServices->closeInvoice(pCurrMember->m_id, pInvoiceResultPtr->m_pInvoice->m_id);
+        QLOG_INFO() << QString("[Invoice] User %1 Invoice ID %2").arg(pCurrMember->m_id).arg(pInvoiceResultPtr->m_pInvoice->m_id);
 
-        printInvoice(pCurrMember, pInvoicePtr);
+        printInvoice(pCurrMember, pInvoiceResultPtr->m_pInvoice);
 
         // call dashboard window
         m_switchCentralWidgetCallback(WindowKey::kMemberDashboardWindowKey);

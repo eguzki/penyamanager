@@ -145,15 +145,19 @@ namespace PenyaManager {
                 QMessageBox::about(this, tr("Invalid data"), tr("Username not valid"));
                 return;
             } else {
-                MemberPtr pMemberPtr = Singletons::m_pServices->getMemberByUsername(memberUsername);
-                if (!pMemberPtr)
+                MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberByUsername(memberUsername);
+                if (pMemberResultPtr->m_error) {
+                    QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                    return;
+                }
+                if (!pMemberResultPtr->m_member)
                 {
                     // User could not be found
                     QMessageBox::about(this, tr("Invalid data"), tr("Username found"));
                     return;
                 }
-                pTransactionListPtr = Singletons::m_pDAO->getAccountListByMemberId(pMemberPtr->m_id, fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
-                pTransactionListStatsPtr = Singletons::m_pServices->getAccountListByMemberIdStats(pMemberPtr->m_id, fromDate, toDate);
+                pTransactionListPtr = Singletons::m_pDAO->getAccountListByMemberId(pMemberResultPtr->m_member->m_id, fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
+                pTransactionListStatsPtr = Singletons::m_pServices->getAccountListByMemberIdStats(pMemberResultPtr->m_member->m_id, fromDate, toDate);
                 this->ui->memberIdResValueLabel->setText(QString::number(memberUsername));
             }
         }

@@ -19,4 +19,14 @@ namespace PenyaManager
             m_totalAmount(totalAmount)
     {
     }
+    //
+    InvoiceResult::InvoiceResult()
+        :
+            m_error(0)
+    {}
+    //
+    InvoiceListResult::InvoiceListResult()
+        :
+            m_error(0)
+    {}
 }

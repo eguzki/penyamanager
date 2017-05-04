@@ -157,15 +157,18 @@ namespace PenyaManager {
                 QMessageBox::about(this, tr("Invalid data"), tr("Username not valid"));
                 return;
             } else {
-                MemberPtr pMemberPtr = Singletons::m_pServices->getMemberByUsername(memberUsername);
-                if (!pMemberPtr)
-                {
+                MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberByUsername(memberUsername);
+                if (pMemberResultPtr->m_error) {
+                    QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                    return;
+                }
+                if (!pMemberResultPtr->m_member) {
                     // User could not be found
                     QMessageBox::about(this, tr("Invalid data"), tr("Username found"));
                     return;
                 }
-                pInvoiceProductItemListPtr = Singletons::m_pDAO->getProductExpensesListByMemberId(pMemberPtr->m_id, fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
-                pInvoiceProductItemStatsPtr = Singletons::m_pDAO->getProductExpensesListByMemberIdStats(pMemberPtr->m_id, fromDate, toDate);
+                pInvoiceProductItemListPtr = Singletons::m_pDAO->getProductExpensesListByMemberId(pMemberResultPtr->m_member->m_id, fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
+                pInvoiceProductItemStatsPtr = Singletons::m_pDAO->getProductExpensesListByMemberIdStats(pMemberResultPtr->m_member->m_id, fromDate, toDate);
             }
         }
         // enable-disable pagination buttons
@@ -219,14 +222,18 @@ namespace PenyaManager {
                 QMessageBox::about(this, tr("Invalid data"), tr("Username not valid"));
                 return;
             } else {
-                MemberPtr pMemberPtr = Singletons::m_pServices->getMemberByUsername(memberUsername);
-                if (!pMemberPtr)
+                MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberByUsername(memberUsername);
+                if (pMemberResultPtr->m_error) {
+                    QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                    return;
+                }
+                if (!pMemberResultPtr->m_member)
                 {
                     // User could not be found
                     QMessageBox::about(this, tr("Invalid data"), tr("Username found"));
                     return;
                 }
-                pInvoiceProductItemListPtr = Singletons::m_pDAO->getProductExpensesListByMemberId(pMemberPtr->m_id, fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
+                pInvoiceProductItemListPtr = Singletons::m_pDAO->getProductExpensesListByMemberId(pMemberResultPtr->m_member->m_id, fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
             }
         }
 
