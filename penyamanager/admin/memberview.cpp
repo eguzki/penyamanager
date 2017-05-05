@@ -273,7 +273,11 @@ namespace PenyaManager {
             // create in ddbb
             Int32 memberId = Singletons::m_pDAO->createMember(pMemberPtr);
             // create account
-            Singletons::m_pServices->createAccountTransaction(memberId, 0.0, "new account", TransactionType::DepositFix);
+            bool ok = Singletons::m_pServices->createAccountTransaction(memberId, 0.0, "new account", TransactionType::DepositFix);
+            if (!ok) {
+                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                return;
+            }
             QLOG_INFO() << QString("[NewMember] ID %1").arg(memberId);
         }
 

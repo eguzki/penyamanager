@@ -28,5 +28,15 @@ namespace PenyaManager {
             m_totalBankCharges(0.0)
     {
     }
-
+    //
+    TransactionResult::TransactionResult()
+        :
+            m_error(0)
+    {}
+    //
+    TransactionListResult::TransactionListResult()
+        :
+            m_error(0)
+    {}
 }
+

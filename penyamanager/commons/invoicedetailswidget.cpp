@@ -82,13 +82,17 @@ namespace PenyaManager {
         //
         // Product List
         //
-        InvoiceProductItemListPtr pInvoiceProductItemListPtr = Singletons::m_pDAO->getInvoiceProductItems(pInvoicePtr->m_id);
-        this->ui->productTableWidget->setRowCount(pInvoiceProductItemListPtr->size());
+        InvoiceProductItemListResultPtr pInvoiceProductItemListResultPtr = Singletons::m_pDAO->getInvoiceProductItems(pInvoicePtr->m_id);
+        if (pInvoiceProductItemListResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
+        this->ui->productTableWidget->setRowCount(pInvoiceProductItemListResultPtr->m_list->size());
         // invoice table reset
         this->ui->productTableWidget->clearContents();
         Uint32 rowCount = 0;
         Float totalInvoice = 0.0;
-        for (InvoiceProductItemList::iterator iter = pInvoiceProductItemListPtr->begin(); iter != pInvoiceProductItemListPtr->end(); ++iter)
+        for (InvoiceProductItemList::iterator iter = pInvoiceProductItemListResultPtr->m_list->begin(); iter != pInvoiceProductItemListResultPtr->m_list->end(); ++iter)
         {
             InvoiceProductItemPtr pInvoiceProductItemPtr = *iter;
 

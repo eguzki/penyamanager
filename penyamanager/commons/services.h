@@ -19,23 +19,23 @@ namespace PenyaManager {
             //
             bool cleanOutdatedInvoices();
             //
-            void closeInvoice(Int32 memberId, Int32 invoiceId);
+            bool closeInvoice(Int32 memberId, Int32 invoiceId);
             //
-            void createAccountTransaction(Int32 memberId, Float amount, const QString &description, TransactionType type);
+            bool createAccountTransaction(Int32 memberId, Float amount, const QString &description, TransactionType type);
             //
-            DepositPtr createDeposit(const MemberPtr &pMemberPtr, Float amount);
+            DepositResultPtr createDeposit(const MemberPtr &pMemberPtr, Float amount);
             //
-            void resetSlowPayersBalance();
+            bool resetSlowPayersBalance();
             //
             TransactionListStatsPtr getAccountListStats(const QDate &fromDate, const QDate &toDate);
             //
             TransactionListStatsPtr getAccountListByMemberIdStats(Int32 memberId, const QDate &fromDate, const QDate &toDate);
             //
-            void updateInvoiceInfo(Int32 invoiceId, Int32 productId, Uint32 count);
+            bool updateInvoiceInfo(Int32 invoiceId, Int32 productId, Uint32 count);
             //
-            void removeInvoiceProductId(Int32 invoiceId, Int32 productId);
+            bool removeInvoiceProductId(Int32 invoiceId, Int32 productId);
             //
-            void increaseProductInvoice(Int32 invoiceId, Int32 productId, Int32 count);
+            bool increaseProductInvoice(Int32 invoiceId, Int32 productId, Int32 count);
             //
             MemberResultPtr getMemberById(Int32 memberId);
             //

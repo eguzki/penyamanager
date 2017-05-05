@@ -78,16 +78,20 @@ namespace PenyaManager {
     void AccountView::fillAccountData(Int32 memberId, const QDate &fromDate, const QDate &toDate)
     {
         // fetch data
-        TransactionListPtr pTransactionListPtr = Singletons::m_pDAO->getAccountListByMemberId(memberId, fromDate, toDate, 0, 9999);
+        TransactionListResultPtr pTransactionListResultPtr = Singletons::m_pDAO->getAccountListByMemberId(memberId, fromDate, toDate, 0, 9999);
+        if (pTransactionListResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
 
         // num rows
-        this->ui->accountTableWidget->setRowCount(pTransactionListPtr->size());
+        this->ui->accountTableWidget->setRowCount(pTransactionListResultPtr->m_list->size());
         // invoice table reset
         this->ui->accountTableWidget->clearContents();
 
         // fill data
         Uint32 rowCount = 0;
-        for (TransactionList::iterator iter = pTransactionListPtr->begin(); iter != pTransactionListPtr->end(); ++iter)
+        for (TransactionList::iterator iter = pTransactionListResultPtr->m_list->begin(); iter != pTransactionListResultPtr->m_list->end(); ++iter)
         {
             Uint32 column = 0;
             TransactionPtr pTransactionPtr = *iter;

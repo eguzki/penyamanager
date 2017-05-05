@@ -116,7 +116,11 @@ namespace PenyaManager {
         }
 
         // Update member balance
-        Singletons::m_pServices->closeInvoice(pCurrMember->m_id, pInvoiceResultPtr->m_pInvoice->m_id);
+        bool ok = Singletons::m_pServices->closeInvoice(pCurrMember->m_id, pInvoiceResultPtr->m_pInvoice->m_id);
+        if (!ok) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
         QLOG_INFO() << QString("[Invoice] User %1 Invoice ID %2").arg(pCurrMember->m_id).arg(pInvoiceResultPtr->m_pInvoice->m_id);
 
         printInvoice(pCurrMember, pInvoiceResultPtr->m_pInvoice);
@@ -130,15 +134,19 @@ namespace PenyaManager {
         //
         // Product List
         //
-        InvoiceProductItemListPtr pInvoiceProductItemListPtr = Singletons::m_pDAO->getInvoiceProductItems(pInvoicePtr->m_id);
-        this->ui->invoiceProductTableWidget->setRowCount(pInvoiceProductItemListPtr->size());
+        InvoiceProductItemListResultPtr pInvoiceProductItemListResultPtr = Singletons::m_pDAO->getInvoiceProductItems(pInvoicePtr->m_id);
+        if (pInvoiceProductItemListResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
+        this->ui->invoiceProductTableWidget->setRowCount(pInvoiceProductItemListResultPtr->m_list->size());
         // invoice table reset
         this->ui->invoiceProductTableWidget->clearContents();
 
         //fill data
         Uint32 rowCount = 0;
         Float totalInvoice = 0.0;
-        for (InvoiceProductItemList::iterator iter = pInvoiceProductItemListPtr->begin(); iter != pInvoiceProductItemListPtr->end(); ++iter)
+        for (InvoiceProductItemList::iterator iter = pInvoiceProductItemListResultPtr->m_list->begin(); iter != pInvoiceProductItemListResultPtr->m_list->end(); ++iter)
         {
             InvoiceProductItemPtr pInvoiceProductItemPtr = *iter;
             this->ui->invoiceProductTableWidget->setItem(rowCount, 0, new QTableWidgetItem(pInvoiceProductItemPtr->m_productname));
@@ -170,7 +178,11 @@ namespace PenyaManager {
     {
         // Loading Current Invoice
         // Loading Current Invoice products
-        InvoiceProductItemListPtr pInvoiceProductItemListPtr = Singletons::m_pDAO->getInvoiceProductItems(pInvoicePtr->m_id);
+        InvoiceProductItemListResultPtr pInvoiceProductItemListResultPtr = Singletons::m_pDAO->getInvoiceProductItems(pInvoicePtr->m_id);
+        if (pInvoiceProductItemListResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
 
         QVariantHash invoiceData;
         // Label
@@ -193,7 +205,7 @@ namespace PenyaManager {
         // invoice products info
         QVariantList productList;
         Float totalInvoice = 0.0;
-        for (InvoiceProductItemList::iterator iter = pInvoiceProductItemListPtr->begin(); iter != pInvoiceProductItemListPtr->end(); ++iter)
+        for (InvoiceProductItemList::iterator iter = pInvoiceProductItemListResultPtr->m_list->begin(); iter != pInvoiceProductItemListResultPtr->m_list->end(); ++iter)
         {
             InvoiceProductItemPtr pInvoiceProductItemPtr = *iter;
             QVariantHash productData;
@@ -212,5 +224,4 @@ namespace PenyaManager {
         QMessageBox::information(this, tr("Print Invoice"), tr("Invoice #%1 sent to printer").arg(QString::number(pInvoicePtr->m_id)));
     }
 }
-
 

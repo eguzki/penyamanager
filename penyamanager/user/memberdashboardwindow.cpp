@@ -263,10 +263,14 @@ namespace PenyaManager {
         this->ui->invoiceInfoLabel->setText(QString("%1: %2     %3: %4").arg(tr("Created on")).arg(dateLocalized).arg(tr("Modified on")).arg(lastModifDateLocalized));
 
         // get invoice products
-        InvoiceProductItemListPtr pInvoiceProductItemListPtr = Singletons::m_pDAO->getInvoiceProductItems(pInvoicePtr->m_id);
+        InvoiceProductItemListResultPtr pInvoiceProductItemListResultPtr = Singletons::m_pDAO->getInvoiceProductItems(pInvoicePtr->m_id);
+        if (pInvoiceProductItemListResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
 
         // table
-        this->ui->invoiceTableWidget->setRowCount(pInvoiceProductItemListPtr->size());
+        this->ui->invoiceTableWidget->setRowCount(pInvoiceProductItemListResultPtr->m_list->size());
 
         // invoice table reset
         this->ui->invoiceTableWidget->clearContents();
@@ -275,7 +279,7 @@ namespace PenyaManager {
 
         Uint32 rowCount = 0;
         Float totalInvoice = 0.0;
-        for (InvoiceProductItemList::iterator iter = pInvoiceProductItemListPtr->begin(); iter != pInvoiceProductItemListPtr->end(); ++iter)
+        for (InvoiceProductItemList::iterator iter = pInvoiceProductItemListResultPtr->m_list->begin(); iter != pInvoiceProductItemListResultPtr->m_list->end(); ++iter)
         {
             InvoiceProductItemPtr pInvoiceProductItemPtr = *iter;
             this->ui->invoiceTableWidget->setItem(rowCount, 0, new QTableWidgetItem(pInvoiceProductItemPtr->m_productname));
@@ -363,13 +367,21 @@ namespace PenyaManager {
         Uint32 count = numItemDialog.getKey();
         if (!count) {
             // count was 0 -> remove item from invoice
-            Singletons::m_pServices->removeInvoiceProductId(pInvoiceResultPtr->m_pInvoice->m_id, productId);
+            bool ok = Singletons::m_pServices->removeInvoiceProductId(pInvoiceResultPtr->m_pInvoice->m_id, productId);
+            if (!ok) {
+                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                return;
+            }
             // Check invoice was removed
             InvoiceResultPtr pNewInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
             fillInvoiceData(pNewInvoicePtr->m_pInvoice);
         } else {
             // count was not 0 -> update item from invoice
-            Singletons::m_pServices->updateInvoiceInfo(pInvoiceResultPtr->m_pInvoice->m_id, productId, count);
+            bool ok = Singletons::m_pServices->updateInvoiceInfo(pInvoiceResultPtr->m_pInvoice->m_id, productId, count);
+            if (!ok) {
+                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                return;
+            }
             fillInvoiceData(pInvoiceResultPtr->m_pInvoice);
         }
     }
@@ -417,7 +429,11 @@ namespace PenyaManager {
             }
         }
         // increase product count
-        Singletons::m_pServices->increaseProductInvoice(pInvoiceResultPtr->m_pInvoice->m_id, productId, count);
+        bool ok = Singletons::m_pServices->increaseProductInvoice(pInvoiceResultPtr->m_pInvoice->m_id, productId, count);
+        if (!ok) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
         fillInvoiceData(pInvoiceResultPtr->m_pInvoice);
     }
     //
@@ -439,7 +455,11 @@ namespace PenyaManager {
         {
             return;
         }
-        Singletons::m_pServices->removeInvoiceProductId(pInvoiceResultPtr->m_pInvoice->m_id, productId);
+        bool ok = Singletons::m_pServices->removeInvoiceProductId(pInvoiceResultPtr->m_pInvoice->m_id, productId);
+        if (!ok) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
         // Check invoice was removed
         InvoiceResultPtr pNewInvoiceResultPtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
         if (pNewInvoiceResultPtr->m_error) {

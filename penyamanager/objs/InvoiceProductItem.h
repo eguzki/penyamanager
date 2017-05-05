@@ -38,6 +38,23 @@ namespace PenyaManager
     typedef std::vector<InvoiceProductItemPtr> InvoiceProductItemList;
     //
     typedef QSharedPointer<InvoiceProductItemList> InvoiceProductItemListPtr;
+    //
+    class InvoiceProductItemListResult
+    {
+        public:
+            //
+            InvoiceProductItemListResult();
+            //
+            virtual ~InvoiceProductItemListResult(){}
+
+        public:
+            //
+            Int32                       m_error;
+            //
+            InvoiceProductItemListPtr   m_list;
+    };
+    //
+    typedef QSharedPointer<InvoiceProductItemListResult> InvoiceProductItemListResultPtr;
 
     //
     class InvoiceProductItemStats

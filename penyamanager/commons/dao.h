@@ -52,25 +52,25 @@ namespace PenyaManager {
             //
             InvoiceResultPtr createInvoice(Int32 memberId);
             //
-            void removeProductInvoice(Int32 invoiceId, Int32 productId);
+            bool removeProductInvoice(Int32 invoiceId, Int32 productId);
             //
-            void updateProductInvoice(Int32 invoiceId, Int32 productId, Uint32 count);
+            bool updateProductInvoice(Int32 invoiceId, Int32 productId, Uint32 count);
             //
-            Uint32 increaseProductInvoice(Int32 invoiceId, Int32 productId, Uint32 count);
+            Int32 increaseProductInvoice(Int32 invoiceId, Int32 productId, Uint32 count);
             //
-            Uint32 countInvoiceProductItems(Int32 invoiceId);
+            Int32 countInvoiceProductItems(Int32 invoiceId);
             //
-            InvoiceProductItemListPtr getInvoiceProductItems(Int32 invoiceId);
+            InvoiceProductItemListResultPtr getInvoiceProductItems(Int32 invoiceId);
             //
-            void updateInvoice(const InvoicePtr &pInvoicePtr);
+            bool updateInvoice(const InvoicePtr &pInvoicePtr);
             //
-            TransactionPtr getLastAccountInfo(Int32 memberId);
+            TransactionResultPtr getLastAccountInfo(Int32 memberId);
             //
-            void insertTransaction(const TransactionPtr &pTransactionPtr);
+            bool insertTransaction(const TransactionPtr &pTransactionPtr);
             //
-            DepositPtr createDeposit(const DepositPtr &pDepositPtr);
+            DepositResultPtr createDeposit(const DepositPtr &pDepositPtr);
             //
-            TransactionListPtr getAccountList(const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count);
+            TransactionListResultPtr getAccountList(const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count);
             //
             Uint32 getAccountListCount(const QDate &fromDate, const QDate &toDate);
             //
@@ -80,7 +80,7 @@ namespace PenyaManager {
             //
             Float getAccountListBankChargesSum(const QDate &fromDate, const QDate &toDate);
             //
-            TransactionListPtr getAccountListByMemberId(Int32 memberId, const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count);
+            TransactionListResultPtr getAccountListByMemberId(Int32 memberId, const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count);
             //
             Uint32 getAccountListByMemberIdCount(Int32 memberId, const QDate &fromDate, const QDate &toDate);
             //
@@ -192,9 +192,9 @@ namespace PenyaManager {
             //
             InvoicePtr getLastInvoiceInfo();
             //
-            void updateInvoiceLastModDate(Int32 invoiceId, const QDateTime &lastModDate);
+            bool updateInvoiceLastModDate(Int32 invoiceId, const QDateTime &lastModDate);
             //
-            void deleteInvoice(Int32 invoiceIde);
+            bool deleteInvoice(Int32 invoiceIde);
             //
             bool checkUsername(Int32 username);
             //

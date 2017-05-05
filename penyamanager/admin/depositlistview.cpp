@@ -119,7 +119,11 @@ namespace PenyaManager {
         if (amount != 0) {
             // create account entry with difference when not equal
             QString descr = QString("deposit fix. Ref: %1").arg(depositId);
-            Singletons::m_pServices->createAccountTransaction(memberId, amount, descr, TransactionType::DepositFix);
+            bool ok = Singletons::m_pServices->createAccountTransaction(memberId, amount, descr, TransactionType::DepositFix);
+            if (!ok) {
+                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                return;
+            }
         }
         // close deposit
         Singletons::m_pDAO->closeDeposit(depositId);

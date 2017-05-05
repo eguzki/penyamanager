@@ -126,7 +126,7 @@ namespace PenyaManager {
     //
     void AccountBalanceView::updateResults()
     {
-        TransactionListPtr pTransactionListPtr;
+        TransactionListResultPtr pTransactionListResultPtr;
         TransactionListStatsPtr pTransactionListStatsPtr;
         QDate fromDate = this->ui->fromCalendarWidget->selectedDate();
         // add one day to "toDate" to be included
@@ -135,7 +135,11 @@ namespace PenyaManager {
         if (usernameStr.isEmpty()) {
             this->ui->memberIdLineEdit->clear();
             this->ui->memberIdResValueLabel->setText(QString("ALL"));
-            pTransactionListPtr = Singletons::m_pDAO->getAccountList(fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
+            pTransactionListResultPtr = Singletons::m_pDAO->getAccountList(fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
+            if (pTransactionListResultPtr->m_error) {
+                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                return;
+            }
             pTransactionListStatsPtr = Singletons::m_pServices->getAccountListStats(fromDate, toDate);
         } else {
             bool ok;
@@ -156,7 +160,11 @@ namespace PenyaManager {
                     QMessageBox::about(this, tr("Invalid data"), tr("Username found"));
                     return;
                 }
-                pTransactionListPtr = Singletons::m_pDAO->getAccountListByMemberId(pMemberResultPtr->m_member->m_id, fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
+                pTransactionListResultPtr = Singletons::m_pDAO->getAccountListByMemberId(pMemberResultPtr->m_member->m_id, fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
+                if (pTransactionListResultPtr->m_error) {
+                    QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                    return;
+                }
                 pTransactionListStatsPtr = Singletons::m_pServices->getAccountListByMemberIdStats(pMemberResultPtr->m_member->m_id, fromDate, toDate);
                 this->ui->memberIdResValueLabel->setText(QString::number(memberUsername));
             }
@@ -179,6 +187,6 @@ namespace PenyaManager {
         dateLocalized = Singletons::m_translationManager.getLocale().toString(toDate.addDays(-1), QLocale::NarrowFormat);
         this->ui->toDateResultValueLabel->setText(dateLocalized);
         // fill transaction list
-        fillTransactionList(pTransactionListPtr);
+        fillTransactionList(pTransactionListResultPtr->m_list);
     }
 }
