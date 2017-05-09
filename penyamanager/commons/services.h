@@ -27,9 +27,9 @@ namespace PenyaManager {
             //
             bool resetSlowPayersBalance();
             //
-            TransactionListStatsPtr getAccountListStats(const QDate &fromDate, const QDate &toDate);
+            TransactionListStatsResultPtr getAccountListStats(const QDate &fromDate, const QDate &toDate);
             //
-            TransactionListStatsPtr getAccountListByMemberIdStats(Int32 memberId, const QDate &fromDate, const QDate &toDate);
+            TransactionListStatsResultPtr getAccountListByMemberIdStats(Int32 memberId, const QDate &fromDate, const QDate &toDate);
             //
             bool updateInvoiceInfo(Int32 invoiceId, Int32 productId, Uint32 count);
             //

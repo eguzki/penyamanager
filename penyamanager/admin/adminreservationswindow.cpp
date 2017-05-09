@@ -93,21 +93,45 @@ namespace PenyaManager {
     void AdminReservationsWindow::fillReservations(const QDate &date, ReservationType reservationType)
     {
         // fetch table reservation data
-        ReservationListPtr pTableReservationListPtr = Singletons::m_pDAO->getTableReservation(reservationType, date);
+        ReservationListResultPtr pTableReservationListResultPtr = Singletons::m_pDAO->getTableReservation(reservationType, date);
+        if (pTableReservationListResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
         // fetch tables data
-        ReservationItemListPtr pTableListPtr = Singletons::m_pDAO->getLunchTableList();
+        ReservationItemListResultPtr pTableListResultPtr = Singletons::m_pDAO->getLunchTableList();
+        if (pTableListResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
 
         // fetch oven reservation data
-        ReservationListPtr pOvenReservationListPtr = Singletons::m_pDAO->getOvenReservation(reservationType, date);
+        ReservationListResultPtr pOvenReservationListResultPtr = Singletons::m_pDAO->getOvenReservation(reservationType, date);
+        if (pOvenReservationListResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
         // fetch oven data
-        ReservationItemListPtr pOvenListPtr = Singletons::m_pDAO->getOvenList();
+        ReservationItemListResultPtr pOvenListResultPtr = Singletons::m_pDAO->getOvenList();
+        if (pOvenListResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
 
         // fetch fireplace reservation data
-        ReservationListPtr pFireplaceReservationListPtr = Singletons::m_pDAO->getFireplaceReservation(reservationType, date);
+        ReservationListResultPtr pFireplaceReservationListResultPtr = Singletons::m_pDAO->getFireplaceReservation(reservationType, date);
+        if (pFireplaceReservationListResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
         // fetch fireplace data
-        ReservationItemListPtr pFireplaceListPtr = Singletons::m_pDAO->getFireplaceList();
+        ReservationItemListResultPtr pFireplaceListResultPtr = Singletons::m_pDAO->getFireplaceList();
+        if (pFireplaceListResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
 
-        Uint32 totalSize = pTableListPtr->size() + pOvenListPtr->size() + pFireplaceListPtr->size();
+        Uint32 totalSize = pTableListResultPtr->m_list->size() + pOvenListResultPtr->m_list->size() + pFireplaceReservationListResultPtr->m_list->size();
         // table
         this->ui->tableReservationTableWidget->setRowCount(totalSize);
 
@@ -115,18 +139,18 @@ namespace PenyaManager {
         this->ui->tableReservationTableWidget->clearContents();
         Uint32 rowCount = 0;
         // fill table data
-        fillReservationsItems(pTableReservationListPtr, pTableListPtr, rowCount,
+        fillReservationsItems(pTableReservationListResultPtr->m_list, pTableListResultPtr->m_list, rowCount,
                 std::bind(&AdminReservationsWindow::on_new_table_reservation_button_clicked, this, _1),
                 std::bind(&AdminReservationsWindow::on_update_table_reservation_button_clicked, this, _1)
                 );
         // fill oven data
-        fillReservationsItems(pOvenReservationListPtr, pOvenListPtr, rowCount,
+        fillReservationsItems(pOvenReservationListResultPtr->m_list, pOvenListResultPtr->m_list, rowCount,
                 std::bind(&AdminReservationsWindow::on_new_oven_reservation_button_clicked, this, _1),
                 std::bind(&AdminReservationsWindow::on_update_oven_reservation_button_clicked, this, _1)
                 );
 
         // fill fireplace data
-        fillReservationsItems(pFireplaceReservationListPtr, pFireplaceListPtr, rowCount,
+        fillReservationsItems(pFireplaceReservationListResultPtr->m_list, pFireplaceListResultPtr->m_list, rowCount,
                 std::bind(&AdminReservationsWindow::on_new_fireplace_reservation_button_clicked, this, _1),
                 std::bind(&AdminReservationsWindow::on_update_fireplace_reservation_button_clicked, this, _1)
                 );
@@ -227,7 +251,11 @@ namespace PenyaManager {
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
         bool isAdmin = true;
         QString title = "Table";
-        Singletons::m_pDAO->makeTableReservation(date, reservationType, guestNum, pCurrMemberPtr->m_id, itemId, isAdmin);
+        bool ok = Singletons::m_pDAO->makeTableReservation(date, reservationType, guestNum, pCurrMemberPtr->m_id, itemId, isAdmin);
+        if (!ok) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
         QLOG_INFO() << QString("[%1][ADMIN] item %2").arg(title).arg(itemId);
         QMessageBox::information(this, title, tr("Reservation done"));
         fillReservations(date, reservationType);
@@ -248,7 +276,11 @@ namespace PenyaManager {
 
         bool isAdmin = true;
         QString title = "Table";
-        Singletons::m_pDAO->updateTableReservation(reservationId, isAdmin);
+        bool ok = Singletons::m_pDAO->updateTableReservation(reservationId, isAdmin);
+        if (!ok) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
         QLOG_INFO() << QString("[%1][ADMIN][BLOCKED] reservationId: %2").arg(title).arg(reservationId);
         QMessageBox::information(this, title, tr("Reservation done"));
         fillReservations(date, reservationType);
@@ -262,7 +294,11 @@ namespace PenyaManager {
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
         bool isAdmin = true;
         QString title = "Fireplace";
-        Singletons::m_pDAO->makeFireplaceReservation(date, reservationType, pCurrMemberPtr->m_id, itemId, isAdmin);
+        bool ok = Singletons::m_pDAO->makeFireplaceReservation(date, reservationType, pCurrMemberPtr->m_id, itemId, isAdmin);
+        if (!ok) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
         QLOG_INFO() << QString("[%1][ADMIN] item %2").arg(title).arg(itemId);
         QMessageBox::information(this, title, tr("Reservation done"));
         fillReservations(date, reservationType);
@@ -274,7 +310,11 @@ namespace PenyaManager {
         QDate date = this->ui->calendarWidget->selectedDate();
         bool isAdmin = true;
         QString title = "Fireplace";
-        Singletons::m_pDAO->updateFireplaceReservation(reservationId, isAdmin);
+        bool ok = Singletons::m_pDAO->updateFireplaceReservation(reservationId, isAdmin);
+        if (!ok) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
         QLOG_INFO() << QString("[%1][ADMIN][BLOCKED] reservationId: %2").arg(title).arg(reservationId);
         QMessageBox::information(this, title, tr("Reservation done"));
         fillReservations(date, reservationType);
@@ -288,7 +328,11 @@ namespace PenyaManager {
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
         bool isAdmin = true;
         QString title = "Oven";
-        Singletons::m_pDAO->makeOvenReservation(date, reservationType, pCurrMemberPtr->m_id, itemId, isAdmin);
+        bool ok = Singletons::m_pDAO->makeOvenReservation(date, reservationType, pCurrMemberPtr->m_id, itemId, isAdmin);
+        if (!ok) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
         QLOG_INFO() << QString("[%1][ADMIN] item %2").arg(title).arg(itemId);
         QMessageBox::information(this, title, tr("Reservation done"));
         fillReservations(date, reservationType);
@@ -301,7 +345,11 @@ namespace PenyaManager {
 
         bool isAdmin = true;
         QString title = "Oven";
-        Singletons::m_pDAO->updateOvenReservation(reservationId, isAdmin);
+        bool ok = Singletons::m_pDAO->updateOvenReservation(reservationId, isAdmin);
+        if (!ok) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
         QLOG_INFO() << QString("[%1][ADMIN][BLOCKED] reservationId: %2").arg(title).arg(reservationId);
         QMessageBox::information(this, title, tr("Reservation done"));
         fillReservations(date, reservationType);
@@ -312,22 +360,27 @@ namespace PenyaManager {
         QDate date = this->ui->calendarWidget->selectedDate();
         ReservationType reservationType = static_cast<ReservationType>(this->ui->reservationTypeButtonGroup->checkedId());
         QString title;
+        bool ok = false;
         switch (itemType)
         {
             case ReservationItemType::LunchTableType:
                 title = "Table reservation";
-                Singletons::m_pDAO->cancelTableReservation(reservationId);
+                ok = Singletons::m_pDAO->cancelTableReservation(reservationId);
                 break;
             case ReservationItemType::OvenType:
                 title = "Oven reservation";
-                Singletons::m_pDAO->cancelOvenReservation(reservationId);
+                ok = Singletons::m_pDAO->cancelOvenReservation(reservationId);
                 break;
             case ReservationItemType::FireplaceType:
                 title = "Fireplace reservation";
-                Singletons::m_pDAO->cancelFireplaceReservation(reservationId);
+                ok = Singletons::m_pDAO->cancelFireplaceReservation(reservationId);
                 break;
             default:
                 break;
+        }
+        if (!ok) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
         }
         QMessageBox::information(this, title, "Reservation cancelled");
         fillReservations(date, reservationType);

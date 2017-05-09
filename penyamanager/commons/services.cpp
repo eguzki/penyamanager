@@ -113,8 +113,11 @@ namespace PenyaManager {
     bool Services::resetSlowPayersBalance()
     {
         // fetch data
-        MemberListPtr pMemberListPtr = Singletons::m_pDAO->getSlowPayersList();
-        for (MemberList::iterator iter = pMemberListPtr->begin(); iter != pMemberListPtr->end(); ++iter)
+        MemberListResultPtr pMemberListResultPtr = Singletons::m_pDAO->getSlowPayersList();
+        if (pMemberListResultPtr->m_error) {
+            return false;
+        }
+        for (MemberList::iterator iter = pMemberListResultPtr->m_list->begin(); iter != pMemberListResultPtr->m_list->end(); ++iter)
         {
             MemberPtr pMemberPtr = *iter;
             bool ok = createAccountTransaction(pMemberPtr->m_id, -pMemberPtr->m_balance, "reset account", TransactionType::AccountPayment);
@@ -126,32 +129,75 @@ namespace PenyaManager {
         return true;
     }
     //
-    TransactionListStatsPtr Services::getAccountListStats(const QDate &fromDate, const QDate &toDate)
+    TransactionListStatsResultPtr Services::getAccountListStats(const QDate &fromDate, const QDate &toDate)
     {
-        TransactionListStatsPtr pTransactionListStatsPtr(new TransactionListStats);
+        TransactionListStatsResultPtr pTransactionListStatsResultPtr(new TransactionListStatsResult);
         // query to get total num of transactions
-        pTransactionListStatsPtr->m_totalNumTransactions = Singletons::m_pDAO->getAccountListCount(fromDate, toDate);
+        Int32 totalNumTransactions = Singletons::m_pDAO->getAccountListCount(fromDate, toDate);
+        if (totalNumTransactions < 0) {
+            pTransactionListStatsResultPtr->m_error = 1;
+            return pTransactionListStatsResultPtr;
+        }
         // query to get sum of invoices
-        pTransactionListStatsPtr->m_totalInvoices = Singletons::m_pDAO->getAccountListInvoicesSum(fromDate, toDate);
+        Float totalInvoices = Singletons::m_pDAO->getAccountListInvoicesSum(fromDate, toDate);
+        if (totalInvoices < 0) {
+            pTransactionListStatsResultPtr->m_error = 1;
+            return pTransactionListStatsResultPtr;
+        }
         // query to get sum of deposits
-        pTransactionListStatsPtr->m_totalDeposits = Singletons::m_pDAO->getAccountListDepositsSum(fromDate, toDate);
+        Float totalDeposits = Singletons::m_pDAO->getAccountListDepositsSum(fromDate, toDate);
+        if (totalDeposits < 0) {
+            pTransactionListStatsResultPtr->m_error = 1;
+            return pTransactionListStatsResultPtr;
+        }
         // query to get sum of bank charges
-        pTransactionListStatsPtr->m_totalBankCharges = Singletons::m_pDAO->getAccountListBankChargesSum(fromDate, toDate);
-        return pTransactionListStatsPtr;
+        Float totalBankCharges = Singletons::m_pDAO->getAccountListBankChargesSum(fromDate, toDate);
+        if (totalBankCharges < 0) {
+            pTransactionListStatsResultPtr->m_error = 1;
+            return pTransactionListStatsResultPtr;
+        }
+        pTransactionListStatsResultPtr->m_listStats = TransactionListStatsPtr(new TransactionListStats);
+        pTransactionListStatsResultPtr->m_listStats->m_totalBankCharges = totalBankCharges;
+        pTransactionListStatsResultPtr->m_listStats->m_totalNumTransactions = totalNumTransactions;
+        pTransactionListStatsResultPtr->m_listStats->m_totalInvoices = totalInvoices;
+        pTransactionListStatsResultPtr->m_listStats->m_totalDeposits = totalDeposits;
+        return pTransactionListStatsResultPtr;
     }
     //
-    TransactionListStatsPtr Services::getAccountListByMemberIdStats(Int32 memberId, const QDate &fromDate, const QDate &toDate)
+    TransactionListStatsResultPtr Services::getAccountListByMemberIdStats(Int32 memberId, const QDate &fromDate, const QDate &toDate)
     {
-        TransactionListStatsPtr pTransactionListStatsPtr(new TransactionListStats);
+        TransactionListStatsResultPtr pTransactionListStatsResultPtr(new TransactionListStatsResult);
         // query to get total num of transactions
-        pTransactionListStatsPtr->m_totalNumTransactions = Singletons::m_pDAO->getAccountListByMemberIdCount(memberId, fromDate, toDate);
+        Int32 totalNumTransactions = Singletons::m_pDAO->getAccountListByMemberIdCount(memberId, fromDate, toDate);
+        if (totalNumTransactions < 0) {
+            pTransactionListStatsResultPtr->m_error = 1;
+            return pTransactionListStatsResultPtr;
+        }
         // query to get sum of invoices
-        pTransactionListStatsPtr->m_totalInvoices = Singletons::m_pDAO->getAccountListByMemberIdInvoicesSum(memberId, fromDate, toDate);
+        Float totalInvoices = Singletons::m_pDAO->getAccountListByMemberIdInvoicesSum(memberId, fromDate, toDate);
+        if (totalInvoices < 0) {
+            pTransactionListStatsResultPtr->m_error = 1;
+            return pTransactionListStatsResultPtr;
+        }
         // query to get sum of deposits
-        pTransactionListStatsPtr->m_totalDeposits = Singletons::m_pDAO->getAccountListByMemberIdDepositsSum(memberId, fromDate, toDate);
+        Float totalDeposits = Singletons::m_pDAO->getAccountListByMemberIdDepositsSum(memberId, fromDate, toDate);
+        if (totalDeposits < 0) {
+            pTransactionListStatsResultPtr->m_error = 1;
+            return pTransactionListStatsResultPtr;
+        }
         // query to get sum of bank charges
-        pTransactionListStatsPtr->m_totalBankCharges = Singletons::m_pDAO->getAccountListByMemberIdBankChargesSum(memberId, fromDate, toDate);
-        return pTransactionListStatsPtr;
+        Float totalBankCharges = Singletons::m_pDAO->getAccountListByMemberIdBankChargesSum(memberId, fromDate, toDate);
+        if (totalBankCharges < 0) {
+            pTransactionListStatsResultPtr->m_error = 1;
+            return pTransactionListStatsResultPtr;
+        }
+
+        pTransactionListStatsResultPtr->m_listStats = TransactionListStatsPtr(new TransactionListStats);
+        pTransactionListStatsResultPtr->m_listStats->m_totalNumTransactions = totalNumTransactions;
+        pTransactionListStatsResultPtr->m_listStats->m_totalInvoices = totalInvoices;
+        pTransactionListStatsResultPtr->m_listStats->m_totalDeposits = totalDeposits;
+        pTransactionListStatsResultPtr->m_listStats->m_totalBankCharges = totalBankCharges;
+        return pTransactionListStatsResultPtr;
     }
     //
     bool Services::updateInvoiceInfo(Int32 invoiceId, Int32 productId, Uint32 count)

@@ -29,4 +29,9 @@ namespace PenyaManager
         :
             m_error(0)
     {}
+    //
+    InvoiceListStatsResult::InvoiceListStatsResult()
+        :
+            m_error(0)
+    {}
 }

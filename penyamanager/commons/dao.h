@@ -72,7 +72,7 @@ namespace PenyaManager {
             //
             TransactionListResultPtr getAccountList(const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count);
             //
-            Uint32 getAccountListCount(const QDate &fromDate, const QDate &toDate);
+            Int32 getAccountListCount(const QDate &fromDate, const QDate &toDate);
             //
             Float getAccountListInvoicesSum(const QDate &fromDate, const QDate &toDate);
             //
@@ -82,7 +82,7 @@ namespace PenyaManager {
             //
             TransactionListResultPtr getAccountListByMemberId(Int32 memberId, const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count);
             //
-            Uint32 getAccountListByMemberIdCount(Int32 memberId, const QDate &fromDate, const QDate &toDate);
+            Int32 getAccountListByMemberIdCount(Int32 memberId, const QDate &fromDate, const QDate &toDate);
             //
             Float getAccountListByMemberIdInvoicesSum(Int32 memberId, const QDate &fromDate, const QDate &toDate);
             //
@@ -90,45 +90,45 @@ namespace PenyaManager {
             //
             Float getAccountListByMemberIdBankChargesSum(Int32 memberId, const QDate &fromDate, const QDate &toDate);
             //
-            ReservationListPtr getTableReservation(ReservationType reservationType, const QDate &now);
+            ReservationListResultPtr getTableReservation(ReservationType reservationType, const QDate &now);
             //
-            ReservationListPtr getOvenReservation(ReservationType reservationType, const QDate &now);
+            ReservationListResultPtr getOvenReservation(ReservationType reservationType, const QDate &now);
             //
-            ReservationListPtr getFireplaceReservation(ReservationType reservationType, const QDate &now);
+            ReservationListResultPtr getFireplaceReservation(ReservationType reservationType, const QDate &now);
             //
-            ReservationItemListPtr getLunchTableList();
+            ReservationItemListResultPtr getLunchTableList();
             //
-            ReservationItemListPtr getOvenList();
+            ReservationItemListResultPtr getOvenList();
             //
-            ReservationItemListPtr getFireplaceList();
+            ReservationItemListResultPtr getFireplaceList();
             //
-            void makeTableReservation(const QDate &date, ReservationType reservationType, Uint16 guestNum, Int32 memberId, Int32 idtable, bool isAdmin);
+            bool makeTableReservation(const QDate &date, ReservationType reservationType, Uint16 guestNum, Int32 memberId, Int32 idtable, bool isAdmin);
             //
-            void updateTableReservation(Int32 reservationId, bool isAdmin);
+            bool updateTableReservation(Int32 reservationId, bool isAdmin);
             //
-            void cancelTableReservation(Int32 reservationId);
+            bool cancelTableReservation(Int32 reservationId);
             //
-            void makeOvenReservation(const QDate &date, ReservationType reservationType, Int32 memberId, Int32 idOven, bool isAdmin);
+            bool makeOvenReservation(const QDate &date, ReservationType reservationType, Int32 memberId, Int32 idOven, bool isAdmin);
             //
-            void updateOvenReservation(Int32 reservationId, bool isAdmin);
+            bool updateOvenReservation(Int32 reservationId, bool isAdmin);
             //
-            void cancelOvenReservation(Int32 reservationId);
+            bool cancelOvenReservation(Int32 reservationId);
             //
-            void makeFireplaceReservation(const QDate &date, ReservationType reservationType, Int32 memberId, Int32 idFireplace, bool isAdmin);
+            bool makeFireplaceReservation(const QDate &date, ReservationType reservationType, Int32 memberId, Int32 idFireplace, bool isAdmin);
             //
-            void updateFireplaceReservation(Int32 reservationId, bool isAdmin);
+            bool updateFireplaceReservation(Int32 reservationId, bool isAdmin);
             //
-            void cancelFireplaceReservation(Int32 reservationId);
+            bool cancelFireplaceReservation(Int32 reservationId);
             //
-            MemberListPtr getSlowPayersList();
+            MemberListResultPtr getSlowPayersList();
             //
-            InvoiceListPtr getInvoiceListByMemberId(Int32 memberId, const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count);
+            InvoiceListResultPtr getInvoiceListByMemberId(Int32 memberId, const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count);
             //
-            InvoiceListStatsPtr getInvoiceListByMemberIdStats(Int32 memberId, const QDate &fromDate, const QDate &toDate);
+            InvoiceListStatsResultPtr getInvoiceListByMemberIdStats(Int32 memberId, const QDate &fromDate, const QDate &toDate);
             //
-            InvoiceListPtr getInvoiceList(const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count);
+            InvoiceListResultPtr getInvoiceList(const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count);
             //
-            InvoiceListStatsPtr getInvoiceListStats(const QDate &fromDate, const QDate &toDate);
+            InvoiceListStatsResultPtr getInvoiceListStats(const QDate &fromDate, const QDate &toDate);
             //
             ProviderListPtr getProviderList();
             //

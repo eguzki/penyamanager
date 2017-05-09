@@ -110,6 +110,23 @@ namespace PenyaManager
 
     //
     typedef QSharedPointer<TransactionListStats> TransactionListStatsPtr;
+    //
+    class TransactionListStatsResult
+    {
+        public:
+            //
+            TransactionListStatsResult();
+            //
+            virtual ~TransactionListStatsResult(){}
+
+        public:
+            //
+            Int32                   m_error;
+            //
+            TransactionListStatsPtr m_listStats;
+    };
+    //
+    typedef QSharedPointer<TransactionListStatsResult> TransactionListStatsResultPtr;
 }
 
 #endif // TRANSACTION_H

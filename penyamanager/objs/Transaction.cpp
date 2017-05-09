@@ -38,5 +38,10 @@ namespace PenyaManager {
         :
             m_error(0)
     {}
+    //
+    TransactionListStatsResult::TransactionListStatsResult()
+        :
+            m_error(0)
+    {}
 }
 

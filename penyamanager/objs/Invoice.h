@@ -98,9 +98,25 @@ namespace PenyaManager
             //
             Float               m_totalAmount;
     };
-
     //
     typedef QSharedPointer<InvoiceListStats> InvoiceListStatsPtr;
+    //
+    class InvoiceListStatsResult
+    {
+        public:
+            //
+            InvoiceListStatsResult();
+            //
+            virtual ~InvoiceListStatsResult(){}
+
+        public:
+            //
+            Int32                   m_error;
+            //
+            InvoiceListStatsPtr     m_stats;
+    };
+    //
+    typedef QSharedPointer<InvoiceListStatsResult> InvoiceListStatsResultPtr;
 }
 
 #endif // INVOICE_H
