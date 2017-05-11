@@ -138,8 +138,8 @@ namespace PenyaManager {
     //
     void ProductExpensesView::updateResults()
     {
-        InvoiceProductItemListPtr pInvoiceProductItemListPtr;
-        InvoiceProductItemStatsPtr pInvoiceProductItemStatsPtr;
+        InvoiceProductItemListResultPtr pInvoiceProductItemListResultPtr;
+        InvoiceProductItemStatsResultPtr pInvoiceProductItemStatsResultPtr;
         QDate fromDate = this->ui->fromCalendarWidget->selectedDate();
         // add one day to "toDate" to be included
         QDate toDate = this->ui->toCalendarWidget->selectedDate().addDays(1);
@@ -147,8 +147,16 @@ namespace PenyaManager {
         QString usernameStr = this->ui->memberIdLineEdit->text().trimmed();
         if (usernameStr.isEmpty()) {
             this->ui->memberIdLineEdit->clear();
-            pInvoiceProductItemListPtr = Singletons::m_pDAO->getProductExpensesList(fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
-            pInvoiceProductItemStatsPtr = Singletons::m_pDAO->getProductExpensesListStats(fromDate, toDate);
+            pInvoiceProductItemListResultPtr = Singletons::m_pDAO->getProductExpensesList(fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
+            if (pInvoiceProductItemListResultPtr->m_error) {
+                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                return;
+            }
+            pInvoiceProductItemStatsResultPtr = Singletons::m_pDAO->getProductExpensesListStats(fromDate, toDate);
+            if (pInvoiceProductItemStatsResultPtr->m_error) {
+                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                return;
+            }
         } else {
             bool ok;
             Int32 memberUsername = usernameStr.toInt(&ok);
@@ -167,26 +175,34 @@ namespace PenyaManager {
                     QMessageBox::about(this, tr("Invalid data"), tr("Username found"));
                     return;
                 }
-                pInvoiceProductItemListPtr = Singletons::m_pDAO->getProductExpensesListByMemberId(pMemberResultPtr->m_member->m_id, fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
-                pInvoiceProductItemStatsPtr = Singletons::m_pDAO->getProductExpensesListByMemberIdStats(pMemberResultPtr->m_member->m_id, fromDate, toDate);
+                pInvoiceProductItemListResultPtr = Singletons::m_pDAO->getProductExpensesListByMemberId(pMemberResultPtr->m_member->m_id, fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
+                if (pInvoiceProductItemListResultPtr->m_error) {
+                    QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                    return;
+                }
+                pInvoiceProductItemStatsResultPtr = Singletons::m_pDAO->getProductExpensesListByMemberIdStats(pMemberResultPtr->m_member->m_id, fromDate, toDate);
+                if (pInvoiceProductItemStatsResultPtr->m_error) {
+                    QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                    return;
+                }
             }
         }
         // enable-disable pagination buttons
         // total num pages
-        Uint32 numPages = (Uint32)ceil((Float)pInvoiceProductItemStatsPtr->m_totalProducts/Constants::kInvoiceListPageCount);
+        Uint32 numPages = (Uint32)ceil((Float)pInvoiceProductItemStatsResultPtr->m_stats->m_totalProducts/Constants::kInvoiceListPageCount);
         this->ui->prevPagePushButton->setEnabled(m_currentPage > 0);
         this->ui->nextPagePushButton->setEnabled(m_currentPage < numPages-1);
         // fill page view
         this->ui->pageInfoLabel->setText(tr("page %1 out of %2").arg(m_currentPage+1).arg(numPages));
         // fill total stats view
-        this->ui->totalProductsValueLabel->setText(QString::number(pInvoiceProductItemStatsPtr->m_totalProducts));
+        this->ui->totalProductsValueLabel->setText(QString::number(pInvoiceProductItemStatsResultPtr->m_stats->m_totalProducts));
         // fill dates used for query
         QString dateLocalized = Singletons::m_translationManager.getLocale().toString(fromDate, QLocale::NarrowFormat);
         this->ui->fromDateResultValueLabel->setText(dateLocalized);
         dateLocalized = Singletons::m_translationManager.getLocale().toString(toDate.addDays(-1), QLocale::NarrowFormat);
         this->ui->toDateResultValueLabel->setText(dateLocalized);
         // fill invoice list
-        fillProductList(pInvoiceProductItemListPtr);
+        fillProductList(pInvoiceProductItemListResultPtr->m_list);
     }
     //
     void ProductExpensesView::on_csvPushButton_clicked()
@@ -205,15 +221,19 @@ namespace PenyaManager {
         }
 
         // fetch data
-        InvoiceProductItemListPtr pInvoiceProductItemListPtr;
-        InvoiceProductItemStatsPtr pInvoiceProductItemStatsPtr;
+        InvoiceProductItemListResultPtr pInvoiceProductItemListResultPtr;
+        InvoiceProductItemStatsResultPtr pInvoiceProductItemStatsResultPtr;
         QDate fromDate = this->ui->fromCalendarWidget->selectedDate();
         // add one day to "toDate" to be included
         QDate toDate = this->ui->toCalendarWidget->selectedDate().addDays(1);
         QString usernameStr = this->ui->memberIdLineEdit->text().trimmed();
         if (usernameStr.isEmpty()) {
             this->ui->memberIdLineEdit->clear();
-            pInvoiceProductItemListPtr = Singletons::m_pDAO->getProductExpensesList(fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
+            pInvoiceProductItemListResultPtr = Singletons::m_pDAO->getProductExpensesList(fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
+            if (pInvoiceProductItemListResultPtr->m_error) {
+                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                return;
+            }
         } else {
             bool ok;
             Int32 memberUsername = usernameStr.toInt(&ok);
@@ -233,7 +253,11 @@ namespace PenyaManager {
                     QMessageBox::about(this, tr("Invalid data"), tr("Username found"));
                     return;
                 }
-                pInvoiceProductItemListPtr = Singletons::m_pDAO->getProductExpensesListByMemberId(pMemberResultPtr->m_member->m_id, fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
+                pInvoiceProductItemListResultPtr = Singletons::m_pDAO->getProductExpensesListByMemberId(pMemberResultPtr->m_member->m_id, fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
+                if (pInvoiceProductItemListResultPtr->m_error) {
+                    QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                    return;
+                }
             }
         }
 
@@ -242,7 +266,7 @@ namespace PenyaManager {
         // header
         out << tr("product ID") << ", " << tr("name") << ", " << tr("count") << endl;
         // iterate over results
-        for (InvoiceProductItemList::iterator iter = pInvoiceProductItemListPtr->begin(); iter != pInvoiceProductItemListPtr->end(); ++iter)
+        for (InvoiceProductItemList::iterator iter = pInvoiceProductItemListResultPtr->m_list->begin(); iter != pInvoiceProductItemListResultPtr->m_list->end(); ++iter)
         {
             InvoiceProductItemPtr pInvoiceProductItem = *iter;
             out << pInvoiceProductItem->m_productId << ", " << pInvoiceProductItem->m_productname << ", " << pInvoiceProductItem->m_count << endl;
@@ -251,5 +275,4 @@ namespace PenyaManager {
         QMessageBox::information(this, tr("CSV export"), tr("Successfully exported. Filename: %1").arg(filename));
     }
 }
-
 

@@ -35,9 +35,43 @@ namespace PenyaManager
     //
     typedef QSharedPointer<ProviderInvoice> ProviderInvoicePtr;
     //
+    class ProviderInvoiceResult
+    {
+        public:
+            //
+            ProviderInvoiceResult();
+            //
+            virtual ~ProviderInvoiceResult(){}
+
+        public:
+            //
+            Int32                   m_error;
+            //
+            ProviderInvoicePtr      m_pProviderInvoice;
+    };
+    //
+    typedef QSharedPointer<ProviderInvoiceResult> ProviderInvoiceResultPtr;
+    //
     typedef std::vector<ProviderInvoicePtr> ProviderInvoiceList;
     //
     typedef QSharedPointer<ProviderInvoiceList> ProviderInvoiceListPtr;
+    //
+    class ProviderInvoiceListResult
+    {
+        public:
+            //
+            ProviderInvoiceListResult();
+            //
+            virtual ~ProviderInvoiceListResult(){}
+
+        public:
+            //
+            Int32                   m_error;
+            //
+            ProviderInvoiceListPtr  m_list;
+    };
+    //
+    typedef QSharedPointer<ProviderInvoiceListResult> ProviderInvoiceListResultPtr;
 
     //
     class ProviderInvoiceListStats
@@ -59,6 +93,23 @@ namespace PenyaManager
 
     //
     typedef QSharedPointer<ProviderInvoiceListStats> ProviderInvoiceListStatsPtr;
+    //
+    class ProviderInvoiceListStatsResult
+    {
+        public:
+            //
+            ProviderInvoiceListStatsResult();
+            //
+            virtual ~ProviderInvoiceListStatsResult(){}
+
+        public:
+            //
+            Int32                           m_error;
+            //
+            ProviderInvoiceListStatsPtr     m_stats;
+    };
+    //
+    typedef QSharedPointer<ProviderInvoiceListStatsResult> ProviderInvoiceListStatsResultPtr;
 }
 
 #endif // PROVIDERINVOICE_H

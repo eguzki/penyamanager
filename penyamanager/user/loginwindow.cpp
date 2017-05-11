@@ -56,8 +56,14 @@ namespace PenyaManager {
         //
         // Loading Last Invoice
         //
-        InvoicePtr pLastInvoicePtr = Singletons::m_pDAO->getLastInvoiceInfo();
-        if (!pLastInvoicePtr) {
+        InvoiceResultPtr pLastInvoiceResultPtr = Singletons::m_pDAO->getLastInvoiceInfo();
+        if (pLastInvoiceResultPtr->m_error) {
+            // Last invoice not found
+            QLOG_INFO() << QString("Last invoice not found");
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
+        if (!pLastInvoiceResultPtr->m_pInvoice) {
             // Last invoice not found
             QLOG_INFO() << QString("Last invoice not found");
             return;
@@ -66,21 +72,21 @@ namespace PenyaManager {
         //
         // Loading Last Invoice's owner profile
         //
-        MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberById(pLastInvoicePtr->m_memberId);
+        MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberById(pLastInvoiceResultPtr->m_pInvoice->m_memberId);
         if (pMemberResultPtr->m_error) {
             QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
             return;
         }
         if (!pMemberResultPtr->m_member) {
             // member not found, should not happen
-            QLOG_ERROR() << QString("[WARN] unable to find last invoice's owner by id: %1").arg(pLastInvoicePtr->m_memberId);
+            QLOG_ERROR() << QString("[WARN] unable to find last invoice's owner by id: %1").arg(pLastInvoiceResultPtr->m_pInvoice->m_memberId);
             return;
         }
         fillLastInvoiceOwnerInfo(pMemberResultPtr->m_member);
         //
         // Loading Last Invoice info
         //
-        fillLastInvoiceInfo(pLastInvoicePtr);
+        fillLastInvoiceInfo(pLastInvoiceResultPtr->m_pInvoice);
     }
     //
     void LoginWindow::retranslate()
@@ -192,7 +198,11 @@ namespace PenyaManager {
         Singletons::m_pCurrMember = pMemberResultPtr->m_member;
 
         // change last login date
-        Singletons::m_pDAO->changeMemberLastLogin(pMemberResultPtr->m_member->m_id, QDateTime::currentDateTime());
+        ok = Singletons::m_pDAO->changeMemberLastLogin(pMemberResultPtr->m_member->m_id, QDateTime::currentDateTime());
+        if (!ok) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
 
         // load main window
         m_switchCentralWidgetCallback(WindowKey::kMemberDashboardWindowKey);

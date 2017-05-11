@@ -50,19 +50,23 @@ namespace PenyaManager {
     void ProviderInvoiceView::initialize()
     {
         QString providerInvoiceId(Singletons::m_currentProviderInvoiceId);
-        ProviderInvoicePtr providerInvoicePtr = Singletons::m_pDAO->getProviderInvoiceById(providerInvoiceId);
-        if (!providerInvoicePtr) {
-            QLOG_ERROR() << QString("[ERROR] provider invoice id {%1} not found in ddbb").arg(providerInvoiceId);
-            QMessageBox::warning(this, tr("Error"), tr("Unexpected error"));
+        ProviderInvoiceResultPtr providerInvoiceResultPtr = Singletons::m_pDAO->getProviderInvoiceById(providerInvoiceId);
+        if (providerInvoiceResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
+        if (!providerInvoiceResultPtr->m_pProviderInvoice) {
+            QLOG_WARN() << QString("[ERROR] provider invoice id {%1} not found in ddbb").arg(providerInvoiceId);
+            QMessageBox::warning(this, tr("Unexpected state"), tr("Operation not performed. Contact administrator"));
             return;
         }
         this->ui->invoiceIdValueLabel->setText(providerInvoiceId);
-        this->ui->invoiceTotalValueLabel->setText(QString("%1 €").arg(providerInvoicePtr->m_total, 0, 'f', 2));
-        QString dateLocalized = Singletons::m_translationManager.getLocale().toString(providerInvoicePtr->m_regDate, QLocale::NarrowFormat);
+        this->ui->invoiceTotalValueLabel->setText(QString("%1 €").arg(providerInvoiceResultPtr->m_pProviderInvoice->m_total, 0, 'f', 2));
+        QString dateLocalized = Singletons::m_translationManager.getLocale().toString(providerInvoiceResultPtr->m_pProviderInvoice->m_regDate, QLocale::NarrowFormat);
         this->ui->providerInvoiceDateValueLabel->setText(dateLocalized);
-        this->ui->providerNameLabel->setText(providerInvoicePtr->m_providerName);
+        this->ui->providerNameLabel->setText(providerInvoiceResultPtr->m_pProviderInvoice->m_providerName);
         // provider image
-        QString imagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(providerInvoicePtr->m_providerImagePath);
+        QString imagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(providerInvoiceResultPtr->m_pProviderInvoice->m_providerImagePath);
         QPixmap providerPixmap = GuiUtils::getImage(imagePath);
         this->ui->providerImageLabel->setPixmap(providerPixmap);
         this->ui->providerImageLabel->setFixedWidth(Constants::kFamilyImageWidth);
@@ -84,14 +88,18 @@ namespace PenyaManager {
     //
     void ProviderInvoiceView::fillProviderInvoiceProducts(const QString &providerInvoiceId)
     {
-        ProviderInvoiceProductItemListPtr pListPtr = Singletons::m_pDAO->getProviderInvoiceProductsByInvoiceId(providerInvoiceId);
+        ProviderInvoiceProductItemListResultPtr pListResultPtr = Singletons::m_pDAO->getProviderInvoiceProductsByInvoiceId(providerInvoiceId);
+        if (pListResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
         // num rows
-        this->ui->providerInvoiceTableWidget->setRowCount(pListPtr->size());
+        this->ui->providerInvoiceTableWidget->setRowCount(pListResultPtr->m_list->size());
         // table reset
         this->ui->providerInvoiceTableWidget->clearContents();
 
         Uint32 rowCount = 0;
-        for (ProviderInvoiceProductItemList::iterator iter = pListPtr->begin(); iter != pListPtr->end(); ++iter)
+        for (ProviderInvoiceProductItemList::iterator iter = pListResultPtr->m_list->begin(); iter != pListResultPtr->m_list->end(); ++iter)
         {
             ProviderInvoiceProductItemPtr pProductPtr = *iter;
             Uint32 column = 0;

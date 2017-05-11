@@ -709,9 +709,9 @@ namespace PenyaManager {
     }
 
     //
-    ProductFamilyResultPtr DAO::getProductFamilies(bool onlyActive)
+    ProductFamilyListResultPtr DAO::getProductFamilies(bool onlyActive)
     {
-        ProductFamilyResultPtr pfListPrt(new ProductFamilyResult);
+        ProductFamilyListResultPtr pfListPrt(new ProductFamilyListResult);
 
         // run query
         if (!m_productFamiliesQuery.exec())
@@ -738,9 +738,9 @@ namespace PenyaManager {
     }
 
     //
-    ProductItemResultPtr DAO::getProductsFromFamily(Int32 familyId, bool onlyActive)
+    ProductItemListResultPtr DAO::getProductsFromFamily(Int32 familyId, bool onlyActive)
     {
-        ProductItemResultPtr pfListPtr(new ProductItemResult);
+        ProductItemListResultPtr pIListResultPtr(new ProductItemListResult);
         // bind value
         m_productItemsByFamilyQuery.bindValue(":familyId", familyId);
         // run query
@@ -748,9 +748,9 @@ namespace PenyaManager {
         {
             qDebug() << m_productItemsByFamilyQuery.lastError();
             QLOG_ERROR() << m_productItemsByFamilyQuery.lastError();
-            pfListPtr->m_error = 1;
+            pIListResultPtr->m_error = 1;
         } else {
-            pfListPtr->m_list = ProductItemListPtr(new ProductItemList);
+            pIListResultPtr->m_list = ProductItemListPtr(new ProductItemList);
             while (m_productItemsByFamilyQuery.next()) {
                 ProductItemPtr pfPtr(new ProductItem);
                 pfPtr->m_id = m_productItemsByFamilyQuery.value(0).toUInt();
@@ -762,12 +762,12 @@ namespace PenyaManager {
                 pfPtr->m_providerId = m_productItemsByFamilyQuery.value(6).toInt();
                 // discard when onlyActive filter is on and product is not active
                 if (!onlyActive || pfPtr->m_active) {
-                    pfListPtr->m_list->push_back(pfPtr);
+                    pIListResultPtr->m_list->push_back(pfPtr);
                 }
             }
         }
         m_productFamiliesQuery.finish();
-        return pfListPtr;
+        return pIListResultPtr;
     }
     //
     MemberResultPtr DAO::fetchMemberById(Int32 memberId)
@@ -1799,16 +1799,17 @@ namespace PenyaManager {
         return pInvoiceListStatsResultPtr;
     }
     //
-    ProviderListPtr DAO::getProviderList()
+    ProviderListResultPtr DAO::getProviderList()
     {
-        ProviderListPtr pProviderListPtr;
+        ProviderListResultPtr pProviderListResultPtr(new ProviderListResult);
         // run query
         if (!m_providerListQuery.exec())
         {
             qDebug() << m_providerListQuery.lastError();
             QLOG_ERROR() << m_providerListQuery.lastError();
+            pProviderListResultPtr->m_error = 1;
         } else {
-            pProviderListPtr = ProviderListPtr(new ProviderList);
+            pProviderListResultPtr->m_list = ProviderListPtr(new ProviderList);
             while (m_providerListQuery.next()) {
                 ProviderPtr pProviderPtr(new Provider);
                 pProviderPtr->m_id = m_providerListQuery.value(0).toInt();
@@ -1816,16 +1817,16 @@ namespace PenyaManager {
                 pProviderPtr->m_image = m_providerListQuery.value(2).toString();
                 pProviderPtr->m_regDate = m_providerListQuery.value(3).toDateTime();
                 pProviderPtr->m_phone = m_providerListQuery.value(4).toString();
-                pProviderListPtr->push_back(pProviderPtr);
+                pProviderListResultPtr->m_list->push_back(pProviderPtr);
             }
         }
         m_providerListQuery.finish();
-        return pProviderListPtr;
+        return pProviderListResultPtr;
     }
     //
-    ProductItemResultPtr DAO::getProductsFromProvider(Int32 providerId)
+    ProductItemListResultPtr DAO::getProductsFromProvider(Int32 providerId)
     {
-        ProductItemResultPtr pfListPtr(new ProductItemResult);
+        ProductItemListResultPtr pIListResultPtr(new ProductItemListResult);
         // bind value
         m_productItemsByProviderQuery.bindValue(":providerId", providerId);
         // run query
@@ -1833,10 +1834,10 @@ namespace PenyaManager {
         {
             qDebug() << m_productItemsByProviderQuery.lastError();
             QLOG_ERROR() << m_productItemsByProviderQuery.lastError();
-            pfListPtr->m_error = 1;
+            pIListResultPtr->m_error = 1;
 
         } else {
-            pfListPtr->m_list = ProductItemListPtr(new ProductItemList);
+            pIListResultPtr->m_list = ProductItemListPtr(new ProductItemList);
             while (m_productItemsByProviderQuery.next()) {
                 ProductItemPtr pfPtr(new ProductItem);
                 pfPtr->m_id = m_productItemsByProviderQuery.value(0).toUInt();
@@ -1846,14 +1847,14 @@ namespace PenyaManager {
                 pfPtr->m_regDate = m_productItemsByProviderQuery.value(3).toDateTime();
                 pfPtr->m_familyId = m_productItemsByProviderQuery.value(4).toInt();
                 pfPtr->m_price = m_productItemsByProviderQuery.value(5).toFloat();
-                pfListPtr->m_list->push_back(pfPtr);
+                pIListResultPtr->m_list->push_back(pfPtr);
             }
         }
         m_productFamiliesQuery.finish();
-        return pfListPtr;
+        return pIListResultPtr;
     }
     //
-    void DAO::createProvider(const QString &name, const QString &imageFileName, const QString &phone)
+    bool DAO::createProvider(const QString &name, const QString &imageFileName, const QString &phone)
     {
         QDate today(QDateTime::currentDateTime().date());
         m_createProviderQuery.bindValue(":name", name);
@@ -1868,17 +1869,18 @@ namespace PenyaManager {
         } else {
             m_createProviderQuery.bindValue(":phone", phone);
         }
-        if (!m_createProviderQuery.exec())
-        {
+        bool ok = m_createProviderQuery.exec();
+        if (!ok) {
             qDebug() << m_createProviderQuery.lastError();
             QLOG_ERROR() << m_createProviderQuery.lastError();
         }
         m_createProviderQuery.finish();
+        return ok;
     }
     //
-    ProductItemResultPtr DAO::getProductsList(Uint32 page, Uint32 count)
+    ProductItemListResultPtr DAO::getProductsList(Uint32 page, Uint32 count)
     {
-        ProductItemResultPtr pfListPtr(new ProductItemResult);
+        ProductItemListResultPtr pIListResultPtr(new ProductItemListResult);
         // only active invoices
         m_productItemListQuery.bindValue(":limit", count);
         m_productItemListQuery.bindValue(":offset", page * count);
@@ -1886,9 +1888,9 @@ namespace PenyaManager {
         {
             qDebug() << m_productItemListQuery.lastError();
             QLOG_ERROR() << m_productItemListQuery.lastError();
-            pfListPtr->m_error = 1;
+            pIListResultPtr->m_error = 1;
         } else {
-            pfListPtr->m_list = ProductItemListPtr(new ProductItemList);
+            pIListResultPtr->m_list = ProductItemListPtr(new ProductItemList);
             while (m_productItemListQuery.next()) {
                 ProductItemPtr pProductItemPtr(new ProductItem);
                 pProductItemPtr->m_id =  m_productItemListQuery.value(0).toInt();
@@ -1900,52 +1902,54 @@ namespace PenyaManager {
                 pProductItemPtr->m_familyId =  m_productItemListQuery.value(6).toInt();
                 pProductItemPtr->m_providerId =  m_productItemListQuery.value(7).toInt();
                 pProductItemPtr->m_stock =  m_productItemListQuery.value(8).toInt();
-                pfListPtr->m_list->push_back(pProductItemPtr);
+                pIListResultPtr->m_list->push_back(pProductItemPtr);
             }
         }
-
         m_productItemListQuery.finish();
-        return pfListPtr;
+        return pIListResultPtr;
     }
     //
-    ProductListStatsPtr DAO::getProductsListStats()
+    ProductListStatsResultPtr DAO::getProductsListStats()
     {
-        ProductListStatsPtr pProductListStatsPtr(new ProductListStats);
-        pProductListStatsPtr->m_totalNumProducts = 0;
+        ProductListStatsResultPtr pProductListStatsResultPtr(new ProductListStatsResult);
         if (!m_productItemsStatsQuery.exec())
         {
             qDebug() << m_productItemsStatsQuery.lastError();
             QLOG_ERROR() << m_productItemsStatsQuery.lastError();
+            pProductListStatsResultPtr->m_error = 1;
         } else {
+            pProductListStatsResultPtr->m_stats = ProductListStatsPtr(new ProductListStats);
             m_productItemsStatsQuery.next();
-            pProductListStatsPtr->m_totalNumProducts = m_productItemsStatsQuery.value(0).toUInt();
+            pProductListStatsResultPtr->m_stats->m_totalNumProducts = m_productItemsStatsQuery.value(0).toUInt();
         }
         m_productItemsStatsQuery.finish();
-        return pProductListStatsPtr;
+        return pProductListStatsResultPtr;
     }
     //
-    void DAO::updateStock(Int32 productItemId, Int32 count)
+    bool DAO::updateStock(Int32 productItemId, Int32 count)
     {
         m_updateStockQuery.bindValue(":count", count);
         m_updateStockQuery.bindValue(":productid", productItemId);
-        if (!m_updateStockQuery.exec())
-        {
+        bool ok = m_updateStockQuery.exec();
+        if (!ok) {
             qDebug() << m_updateStockQuery.lastError();
             QLOG_ERROR() << m_updateStockQuery.lastError();
         }
         m_updateStockQuery.finish();
+        return ok;
     }
     //
-    ProductItemPtr DAO::getProductItem(Int32 productItemId)
+    ProductItemResultPtr DAO::getProductItem(Int32 productItemId)
     {
-        ProductItemPtr pProductItemPtr;
+        ProductItemResultPtr pProductItemResultPtr(new ProductItemResult);
         m_productItemQuery.bindValue(":productid", productItemId);
         if (!m_productItemQuery.exec())
         {
             qDebug() << m_productItemQuery.lastError();
             QLOG_ERROR() << m_productItemQuery.lastError();
+            pProductItemResultPtr->m_error = 1;
         } else {
-            pProductItemPtr = ProductItemPtr(new ProductItem);
+            ProductItemPtr pProductItemPtr(new ProductItem);
             m_productItemQuery.next();
             pProductItemPtr->m_id = productItemId;
             pProductItemPtr->m_name = m_productItemQuery.value(0).toString();
@@ -1956,12 +1960,13 @@ namespace PenyaManager {
             pProductItemPtr->m_familyId = m_productItemQuery.value(5).toInt();
             pProductItemPtr->m_providerId = m_productItemQuery.value(6).toInt();
             pProductItemPtr->m_stock = m_productItemQuery.value(7).toInt();
+            pProductItemResultPtr->m_item = pProductItemPtr;
         }
         m_productItemQuery.finish();
-        return pProductItemPtr;
+        return pProductItemResultPtr;
     }
     //
-    void DAO::updateProductItem(const ProductItemPtr &pProductPtr)
+    bool DAO::updateProductItem(const ProductItemPtr &pProductPtr)
     {
         m_updateProductItemQuery.bindValue(":name", pProductPtr->m_name);
         m_updateProductItemQuery.bindValue(":image", pProductPtr->m_imagePath);
@@ -1971,17 +1976,18 @@ namespace PenyaManager {
         m_updateProductItemQuery.bindValue(":providerid", pProductPtr->m_providerId);
         m_updateProductItemQuery.bindValue(":stock", pProductPtr->m_stock);
         m_updateProductItemQuery.bindValue(":productid", pProductPtr->m_id);
-        if (!m_updateProductItemQuery.exec())
-        {
+        bool ok = m_updateProductItemQuery.exec();
+        if (!ok) {
             qDebug() << m_updateProductItemQuery.lastError();
             QLOG_ERROR() << m_updateProductItemQuery.lastError();
         }
         m_updateProductItemQuery.finish();
+        return ok;
     }
     //
-    Uint32 DAO::createProductItem(const ProductItemPtr &pProductPtr)
+    Int32 DAO::createProductItem(const ProductItemPtr &pProductPtr)
     {
-        Uint32 itemId = 0;
+        Int32 itemId = -1;
         m_createProductItemQuery.bindValue(":name", pProductPtr->m_name);
         m_createProductItemQuery.bindValue(":image", pProductPtr->m_imagePath);
         m_createProductItemQuery.bindValue(":active", (pProductPtr->m_active)?(1):(0));
@@ -1990,90 +1996,99 @@ namespace PenyaManager {
         m_createProductItemQuery.bindValue(":price", pProductPtr->m_price);
         m_createProductItemQuery.bindValue(":providerid", pProductPtr->m_providerId);
         m_createProductItemQuery.bindValue(":stock", pProductPtr->m_stock);
-        if (!m_createProductItemQuery.exec())
-        {
+        bool ok = m_createProductItemQuery.exec();
+        if (!ok) {
             qDebug() << m_createProductItemQuery.lastError();
             QLOG_ERROR() << m_createProductItemQuery.lastError();
         }
         m_createProductItemQuery.finish();
-
-        // For LAST_INSERT_ID(), the most recently generated ID is maintained in the server on a per-connection basis
-        if (!m_getLastIdQuery.exec())
-        {
-            qDebug() << m_getLastIdQuery.lastError();
-            QLOG_ERROR() << m_getLastIdQuery.lastError();
-        } else {
-            m_getLastIdQuery.next();
-            itemId = m_getLastIdQuery.value(0).toUInt();
+        if (ok) {
+            // For LAST_INSERT_ID(), the most recently generated ID is maintained in the server on a per-connection basis
+            ok = m_getLastIdQuery.exec();
+            if (!ok) {
+                qDebug() << m_getLastIdQuery.lastError();
+                QLOG_ERROR() << m_getLastIdQuery.lastError();
+            } else {
+                m_getLastIdQuery.next();
+                itemId = m_getLastIdQuery.value(0).toUInt();
+            }
+            m_getLastIdQuery.finish();
         }
-        m_getLastIdQuery.finish();
+
         return itemId;
     }
     //
-    ProductFamilyPtr DAO::getProductFamily(Int32 familyId)
+    ProductFamilyResultPtr DAO::getProductFamily(Int32 familyId)
     {
-        ProductFamilyPtr pProductFamilyPtr(new ProductFamily);
+        ProductFamilyResultPtr pProductFamilyResultPtr(new ProductFamilyResult);
         m_productFamilyItemQuery.bindValue(":familyid", familyId);
         if (!m_productFamilyItemQuery.exec())
         {
             qDebug() << m_productFamilyItemQuery.lastError();
             QLOG_ERROR() << m_productFamilyItemQuery.lastError();
+            pProductFamilyResultPtr->m_error = 1;
         } else {
+            ProductFamilyPtr pProductFamilyPtr(new ProductFamily);
             m_productFamilyItemQuery.next();
             pProductFamilyPtr->m_id = familyId;
             pProductFamilyPtr->m_name = m_productFamilyItemQuery.value(0).toString();
             pProductFamilyPtr->m_active =  m_productFamilyItemQuery.value(1).toInt() == 1;
             pProductFamilyPtr->m_imagePath = m_productFamilyItemQuery.value(2).toString();
             pProductFamilyPtr->m_regDate = m_productFamilyItemQuery.value(3).toDateTime();
+            pProductFamilyResultPtr->m_family = pProductFamilyPtr;
         }
         m_productFamilyItemQuery.finish();
-        return pProductFamilyPtr;
+        return pProductFamilyResultPtr;
     }
     //
-    void DAO::updateProductFamilyItem(const ProductFamilyPtr &pFamilyPtr)
+    bool DAO::updateProductFamilyItem(const ProductFamilyPtr &pFamilyPtr)
     {
         m_updateProductFamilyItemQuery.bindValue(":name", pFamilyPtr->m_name);
         m_updateProductFamilyItemQuery.bindValue(":image", pFamilyPtr->m_imagePath);
         m_updateProductFamilyItemQuery.bindValue(":active", (pFamilyPtr->m_active)?(1):(0));
         m_updateProductFamilyItemQuery.bindValue(":familyid", pFamilyPtr->m_id);
-        if (!m_updateProductFamilyItemQuery.exec())
-        {
+        bool ok = m_updateProductFamilyItemQuery.exec();
+        if (!ok) {
             qDebug() << m_updateProductFamilyItemQuery.lastError();
             QLOG_ERROR() << m_updateProductFamilyItemQuery.lastError();
         }
         m_updateProductFamilyItemQuery.finish();
+        return ok;
     }
     //
-    Uint32 DAO::createProductFamilyItem(const ProductFamilyPtr &pFamilyPtr)
+    Int32 DAO::createProductFamilyItem(const ProductFamilyPtr &pFamilyPtr)
     {
+        Int32 familyId = -1;
         m_createProductFamilyItemQuery.bindValue(":name", pFamilyPtr->m_name);
         m_createProductFamilyItemQuery.bindValue(":image", pFamilyPtr->m_imagePath);
         m_createProductFamilyItemQuery.bindValue(":active", (pFamilyPtr->m_active)?(1):(0));
         m_createProductFamilyItemQuery.bindValue(":reg_date", pFamilyPtr->m_regDate);
-        if (!m_createProductFamilyItemQuery.exec())
-        {
+        bool ok = m_createProductFamilyItemQuery.exec();
+        if (!ok) {
             qDebug() << m_createProductFamilyItemQuery.lastError();
             QLOG_ERROR() << m_createProductFamilyItemQuery.lastError();
         }
         m_createProductFamilyItemQuery.finish();
 
-        Uint32 familyId = 0;
-        // For LAST_INSERT_ID(), the most recently generated ID is maintained in the server on a per-connection basis
-        if (!m_getLastIdQuery.exec())
-        {
-            qDebug() << m_getLastIdQuery.lastError();
-            QLOG_ERROR() << m_getLastIdQuery.lastError();
-        } else {
-            m_getLastIdQuery.next();
-            familyId = m_getLastIdQuery.value(0).toUInt();
+        if (ok) {
+            // For LAST_INSERT_ID(), the most recently generated ID is maintained in the server on a per-connection basis
+            if (!m_getLastIdQuery.exec())
+            {
+                qDebug() << m_getLastIdQuery.lastError();
+                QLOG_ERROR() << m_getLastIdQuery.lastError();
+            } else {
+                m_getLastIdQuery.next();
+                familyId = m_getLastIdQuery.value(0).toUInt();
+            }
+            m_getLastIdQuery.finish();
         }
-        m_getLastIdQuery.finish();
+
         return familyId;
     }
     //
-    InvoiceProductItemListPtr DAO::getProductExpensesList(const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count)
+    InvoiceProductItemListResultPtr DAO::getProductExpensesList(const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count)
     {
-        InvoiceProductItemListPtr pInvoiceProductItemListPtr;
+        InvoiceProductItemListResultPtr pInvoiceProductItemListResultPtr(new InvoiceProductItemListResult);
         // only active invoices
         m_productExpensesListQuery.bindValue(":fromDate", fromDate);
         m_productExpensesListQuery.bindValue(":toDate", toDate);
@@ -2083,8 +2098,9 @@ namespace PenyaManager {
         {
             qDebug() << m_productExpensesListQuery.lastError();
             QLOG_ERROR() << m_productExpensesListQuery.lastError();
+            pInvoiceProductItemListResultPtr->m_error = 1;
         } else {
-            pInvoiceProductItemListPtr = InvoiceProductItemListPtr(new InvoiceProductItemList);
+            pInvoiceProductItemListResultPtr->m_list = InvoiceProductItemListPtr(new InvoiceProductItemList);
             while (m_productExpensesListQuery.next()) {
                 InvoiceProductItemPtr pInvoiceProductItemPtr(new InvoiceProductItem);
                 pInvoiceProductItemPtr->m_productId =  m_productExpensesListQuery.value(0).toInt();
@@ -2092,34 +2108,35 @@ namespace PenyaManager {
                 pInvoiceProductItemPtr->m_imagePath =  m_productExpensesListQuery.value(2).toString();
                 pInvoiceProductItemPtr->m_priceperunit =  m_productExpensesListQuery.value(3).toFloat();
                 pInvoiceProductItemPtr->m_count =  m_productExpensesListQuery.value(4).toUInt();
-                pInvoiceProductItemListPtr->push_back(pInvoiceProductItemPtr);
+                pInvoiceProductItemListResultPtr->m_list->push_back(pInvoiceProductItemPtr);
             }
         }
         m_productExpensesListQuery.finish();
-        return pInvoiceProductItemListPtr;
+        return pInvoiceProductItemListResultPtr;
     }
     //
-    InvoiceProductItemStatsPtr DAO::getProductExpensesListStats(const QDate &fromDate, const QDate &toDate)
+    InvoiceProductItemStatsResultPtr DAO::getProductExpensesListStats(const QDate &fromDate, const QDate &toDate)
     {
+        InvoiceProductItemStatsResultPtr pIPISResultPtr(new InvoiceProductItemStatsResult);
         m_productExpensesListStatsQuery.bindValue(":fromDate", fromDate);
         m_productExpensesListStatsQuery.bindValue(":toDate", toDate);
-        InvoiceProductItemStatsPtr pInvoiceProductItemStatsPtr(new InvoiceProductItemStats);
-        pInvoiceProductItemStatsPtr->m_totalProducts = 0;
         if (!m_productExpensesListStatsQuery.exec())
         {
             qDebug() << m_productExpensesListStatsQuery.lastError();
             QLOG_ERROR() << m_productExpensesListStatsQuery.lastError();
+            pIPISResultPtr->m_error = 1;
         } else {
+            pIPISResultPtr->m_stats = InvoiceProductItemStatsPtr(new InvoiceProductItemStats);
             m_productExpensesListStatsQuery.next();
-            pInvoiceProductItemStatsPtr->m_totalProducts = m_productExpensesListStatsQuery.value(0).toUInt();
+            pIPISResultPtr->m_stats->m_totalProducts = m_productExpensesListStatsQuery.value(0).toUInt();
         }
         m_productExpensesListStatsQuery.finish();
-        return pInvoiceProductItemStatsPtr;
+        return pIPISResultPtr;
     }
     //
-    InvoiceProductItemListPtr DAO::getProductExpensesListByMemberId(Int32 memberId, const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count)
+    InvoiceProductItemListResultPtr DAO::getProductExpensesListByMemberId(Int32 memberId, const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count)
     {
-        InvoiceProductItemListPtr pInvoiceProductItemListPtr;
+        InvoiceProductItemListResultPtr pIPILResult(new InvoiceProductItemListResult);
         m_productExpensesListByMemberIdQuery.bindValue(":memberid", memberId);
         m_productExpensesListByMemberIdQuery.bindValue(":fromDate", fromDate);
         m_productExpensesListByMemberIdQuery.bindValue(":toDate", toDate);
@@ -2129,8 +2146,9 @@ namespace PenyaManager {
         {
             qDebug() << m_productExpensesListByMemberIdQuery.lastError();
             QLOG_ERROR() << m_productExpensesListByMemberIdQuery.lastError();
+            pIPILResult->m_error = 1;
         } else {
-            pInvoiceProductItemListPtr = InvoiceProductItemListPtr(new InvoiceProductItemList);
+            pIPILResult->m_list = InvoiceProductItemListPtr(new InvoiceProductItemList);
             while (m_productExpensesListByMemberIdQuery.next()) {
                 InvoiceProductItemPtr pInvoiceProductItemPtr(new InvoiceProductItem);
                 pInvoiceProductItemPtr->m_productId =  m_productExpensesListByMemberIdQuery.value(0).toInt();
@@ -2138,62 +2156,65 @@ namespace PenyaManager {
                 pInvoiceProductItemPtr->m_imagePath =  m_productExpensesListByMemberIdQuery.value(2).toString();
                 pInvoiceProductItemPtr->m_priceperunit =  m_productExpensesListByMemberIdQuery.value(3).toFloat();
                 pInvoiceProductItemPtr->m_count =  m_productExpensesListByMemberIdQuery.value(4).toUInt();
-                pInvoiceProductItemListPtr->push_back(pInvoiceProductItemPtr);
+                pIPILResult->m_list->push_back(pInvoiceProductItemPtr);
             }
         }
         m_productExpensesListByMemberIdQuery.finish();
-        return pInvoiceProductItemListPtr;
+        return pIPILResult;
     }
     //
-    InvoiceProductItemStatsPtr DAO::getProductExpensesListByMemberIdStats(Int32 memberId, const QDate &fromDate, const QDate &toDate)
+    InvoiceProductItemStatsResultPtr DAO::getProductExpensesListByMemberIdStats(Int32 memberId, const QDate &fromDate, const QDate &toDate)
     {
-        InvoiceProductItemStatsPtr pInvoiceProductItemStatsPtr(new InvoiceProductItemStats);
+        InvoiceProductItemStatsResultPtr pIPISResult(new InvoiceProductItemStatsResult);
         m_productExpensesListByMemberIdStatsQuery.bindValue(":memberid", memberId);
         m_productExpensesListByMemberIdStatsQuery.bindValue(":fromDate", fromDate);
         m_productExpensesListByMemberIdStatsQuery.bindValue(":toDate", toDate);
-        pInvoiceProductItemStatsPtr->m_totalProducts = 0;
         if (!m_productExpensesListByMemberIdStatsQuery.exec())
         {
             qDebug() << m_productExpensesListByMemberIdStatsQuery.lastError();
             QLOG_ERROR() << m_productExpensesListByMemberIdStatsQuery.lastError();
+            pIPISResult->m_error = 1;
         } else {
+            pIPISResult->m_stats = InvoiceProductItemStatsPtr(new InvoiceProductItemStats);
             m_productExpensesListByMemberIdStatsQuery.next();
-            pInvoiceProductItemStatsPtr->m_totalProducts = m_productExpensesListByMemberIdStatsQuery.value(0).toUInt();
+            pIPISResult->m_stats->m_totalProducts = m_productExpensesListByMemberIdStatsQuery.value(0).toUInt();
         }
         m_productExpensesListByMemberIdStatsQuery.finish();
-        return pInvoiceProductItemStatsPtr;
+        return pIPISResult;
     }
     //
-    void DAO::createProviderInvoice(const ProviderInvoicePtr &pProviderInvoicePtr)
+    bool DAO::createProviderInvoice(const ProviderInvoicePtr &pProviderInvoicePtr)
     {
         m_createProviderInvoiceQuery.bindValue(":id", pProviderInvoicePtr->m_id);
         m_createProviderInvoiceQuery.bindValue(":date", pProviderInvoicePtr->m_regDate);
         m_createProviderInvoiceQuery.bindValue(":total", pProviderInvoicePtr->m_total);
         m_createProviderInvoiceQuery.bindValue(":providerid", pProviderInvoicePtr->m_providerid);
-        if (!m_createProviderInvoiceQuery.exec())
-        {
+        bool ok = m_createProviderInvoiceQuery.exec();
+        if (!ok) {
             qDebug() << m_createProviderInvoiceQuery.lastError();
             QLOG_ERROR() << m_createProviderInvoiceQuery.lastError();
         }
         m_createProviderInvoiceQuery.finish();
+        return ok;
     }
     //
-    void DAO::createProviderInvoiceProduct(const QString &invoiceId, Int32 productId, Uint32 count)
+    bool DAO::createProviderInvoiceProduct(const QString &invoiceId, Int32 productId, Uint32 count)
     {
         m_createProviderInvoiceProductQuery.bindValue(":providerinvoiceid", invoiceId);
         m_createProviderInvoiceProductQuery.bindValue(":productid", productId);
         m_createProviderInvoiceProductQuery.bindValue(":count", count);
-        if (!m_createProviderInvoiceProductQuery.exec())
-        {
+        bool ok = m_createProviderInvoiceProductQuery.exec();
+        if (!ok) {
             qDebug() << m_createProviderInvoiceProductQuery.lastError();
             QLOG_ERROR() << m_createProviderInvoiceProductQuery.lastError();
         }
         m_createProviderInvoiceProductQuery.finish();
+        return ok;
     }
     //
-    ProviderInvoiceListPtr DAO::getProviderInvoiceList(const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count)
+    ProviderInvoiceListResultPtr DAO::getProviderInvoiceList(const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count)
     {
-        ProviderInvoiceListPtr pInvoiceListPtr(new ProviderInvoiceList);
+        ProviderInvoiceListResultPtr pInvoiceListResultPtr(new ProviderInvoiceListResult);
         m_providerInvoiceListQuery.bindValue(":fromDate", fromDate);
         m_providerInvoiceListQuery.bindValue(":toDate", toDate);
         m_providerInvoiceListQuery.bindValue(":limit", count);
@@ -2202,45 +2223,46 @@ namespace PenyaManager {
         {
             qDebug() << m_providerInvoiceListQuery.lastError();
             QLOG_ERROR() << m_providerInvoiceListQuery.lastError();
+            pInvoiceListResultPtr->m_error = 1;
         } else {
+            pInvoiceListResultPtr->m_list = ProviderInvoiceListPtr(new ProviderInvoiceList);
             while (m_providerInvoiceListQuery.next()) {
                 ProviderInvoicePtr pInvoicePtr(new ProviderInvoice);
                 pInvoicePtr->m_id = m_providerInvoiceListQuery.value(0).toString();
                 pInvoicePtr->m_regDate = m_providerInvoiceListQuery.value(1).toDate();
                 pInvoicePtr->m_total = m_providerInvoiceListQuery.value(2).toFloat();
                 pInvoicePtr->m_providerid = m_providerInvoiceListQuery.value(3).toInt();
-                pInvoiceListPtr->push_back(pInvoicePtr);
+                pInvoiceListResultPtr->m_list->push_back(pInvoicePtr);
             }
         }
 
         m_providerInvoiceListQuery.finish();
-        return pInvoiceListPtr;
+        return pInvoiceListResultPtr;
     }
     //
-    ProviderInvoiceListStatsPtr DAO::getProviderInvoiceListStats(const QDate &fromDate, const QDate &toDate)
+    ProviderInvoiceListStatsResultPtr DAO::getProviderInvoiceListStats(const QDate &fromDate, const QDate &toDate)
     {
-        ProviderInvoiceListStatsPtr pInvoiceListStatsPtr(new ProviderInvoiceListStats);
-        pInvoiceListStatsPtr->m_totalNumInvoices= 0;
-        pInvoiceListStatsPtr->m_totalAmount = 0;
-
+        ProviderInvoiceListStatsResultPtr pInvoiceListStatsResultPtr(new ProviderInvoiceListStatsResult);
         m_providerInvoiceListStatsQuery.bindValue(":fromDate", fromDate);
         m_providerInvoiceListStatsQuery.bindValue(":toDate", toDate);
         if (!m_providerInvoiceListStatsQuery.exec())
         {
             qDebug() << m_providerInvoiceListStatsQuery.lastError();
             QLOG_ERROR() << m_providerInvoiceListStatsQuery.lastError();
+            pInvoiceListStatsResultPtr->m_error = 1;
         } else {
+            pInvoiceListStatsResultPtr->m_stats = ProviderInvoiceListStatsPtr(new ProviderInvoiceListStats);
             m_providerInvoiceListStatsQuery.next();
-            pInvoiceListStatsPtr->m_totalNumInvoices = m_providerInvoiceListStatsQuery.value(0).toUInt();
-            pInvoiceListStatsPtr->m_totalAmount = m_providerInvoiceListStatsQuery.value(1).toFloat();
+            pInvoiceListStatsResultPtr->m_stats->m_totalNumInvoices = m_providerInvoiceListStatsQuery.value(0).toUInt();
+            pInvoiceListStatsResultPtr->m_stats->m_totalAmount = m_providerInvoiceListStatsQuery.value(1).toFloat();
         }
         m_providerInvoiceListStatsQuery.finish();
-        return pInvoiceListStatsPtr;
+        return pInvoiceListStatsResultPtr;
     }
     //
-    ProviderInvoiceListPtr DAO::getProviderInvoiceListByProviderId(Int32 providerId, const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count)
+    ProviderInvoiceListResultPtr DAO::getProviderInvoiceListByProviderId(Int32 providerId, const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count)
     {
-        ProviderInvoiceListPtr pInvoiceListPtr(new ProviderInvoiceList);
+        ProviderInvoiceListResultPtr pInvoiceListResultPtr(new ProviderInvoiceListResult);
         m_providerInvoiceListByProviderIdQuery.bindValue(":providerid", providerId);
         m_providerInvoiceListByProviderIdQuery.bindValue(":fromDate", fromDate);
         m_providerInvoiceListByProviderIdQuery.bindValue(":toDate", toDate);
@@ -2250,27 +2272,26 @@ namespace PenyaManager {
         {
             qDebug() << m_providerInvoiceListByProviderIdQuery.lastError();
             QLOG_ERROR() << m_providerInvoiceListByProviderIdQuery.lastError();
+            pInvoiceListResultPtr->m_error = 1;
         } else {
+            pInvoiceListResultPtr->m_list = ProviderInvoiceListPtr(new ProviderInvoiceList);
             while (m_providerInvoiceListByProviderIdQuery.next()) {
                 ProviderInvoicePtr pInvoicePtr(new ProviderInvoice);
                 pInvoicePtr->m_id = m_providerInvoiceListByProviderIdQuery.value(0).toString();
                 pInvoicePtr->m_regDate = m_providerInvoiceListByProviderIdQuery.value(1).toDate();
                 pInvoicePtr->m_total = m_providerInvoiceListByProviderIdQuery.value(2).toFloat();
                 pInvoicePtr->m_providerid = m_providerInvoiceListByProviderIdQuery.value(3).toInt();
-                pInvoiceListPtr->push_back(pInvoicePtr);
+                pInvoiceListResultPtr->m_list->push_back(pInvoicePtr);
             }
         }
 
         m_providerInvoiceListByProviderIdQuery.finish();
-        return pInvoiceListPtr;
+        return pInvoiceListResultPtr;
     }
     //
-    ProviderInvoiceListStatsPtr DAO::getProviderInvoiceListByProviderIdStats(Int32 providerId, const QDate &fromDate, const QDate &toDate)
+    ProviderInvoiceListStatsResultPtr DAO::getProviderInvoiceListByProviderIdStats(Int32 providerId, const QDate &fromDate, const QDate &toDate)
     {
-        ProviderInvoiceListStatsPtr pInvoiceListStatsPtr(new ProviderInvoiceListStats);
-        pInvoiceListStatsPtr->m_totalNumInvoices= 0;
-        pInvoiceListStatsPtr->m_totalAmount = 0;
-
+        ProviderInvoiceListStatsResultPtr pInvoiceListStatsResultPtr(new ProviderInvoiceListStatsResult);
         m_providerInvoiceListByProviderIdStatsQuery.bindValue(":providerid", providerId);
         m_providerInvoiceListByProviderIdStatsQuery.bindValue(":fromDate", fromDate);
         m_providerInvoiceListByProviderIdStatsQuery.bindValue(":toDate", toDate);
@@ -2278,23 +2299,27 @@ namespace PenyaManager {
         {
             qDebug() << m_providerInvoiceListByProviderIdStatsQuery.lastError();
             QLOG_ERROR() << m_providerInvoiceListByProviderIdStatsQuery.lastError();
+            pInvoiceListStatsResultPtr->m_error = 1;
         } else {
+            pInvoiceListStatsResultPtr->m_stats = ProviderInvoiceListStatsPtr(new ProviderInvoiceListStats);
             m_providerInvoiceListByProviderIdStatsQuery.next();
-            pInvoiceListStatsPtr->m_totalNumInvoices = m_providerInvoiceListByProviderIdStatsQuery.value(0).toUInt();
-            pInvoiceListStatsPtr->m_totalAmount = m_providerInvoiceListByProviderIdStatsQuery.value(1).toFloat();
+            pInvoiceListStatsResultPtr->m_stats->m_totalNumInvoices = m_providerInvoiceListByProviderIdStatsQuery.value(0).toUInt();
+            pInvoiceListStatsResultPtr->m_stats->m_totalAmount = m_providerInvoiceListByProviderIdStatsQuery.value(1).toFloat();
         }
         m_providerInvoiceListByProviderIdStatsQuery.finish();
-        return pInvoiceListStatsPtr;
+        return pInvoiceListStatsResultPtr;
     }
     //
-    DepositListPtr DAO::getUncheckedDeposits()
+    DepositListResultPtr DAO::getUncheckedDeposits()
     {
-        DepositListPtr pDepositListPtr(new DepositList);
+        DepositListResultPtr pDepositListResultPtr(new DepositListResult);
         if (!m_uncheckedDepositListQuery.exec())
         {
             qDebug() << m_uncheckedDepositListQuery.lastError();
             QLOG_ERROR() << m_uncheckedDepositListQuery.lastError();
+            pDepositListResultPtr->m_error = 1;
         } else {
+            pDepositListResultPtr->m_list = DepositListPtr(new DepositList);
             while (m_uncheckedDepositListQuery.next()) {
                 Uint32 column = 0;
                 DepositPtr pDepositPtr(new Deposit);
@@ -2304,37 +2329,40 @@ namespace PenyaManager {
                 pDepositPtr->m_total = m_uncheckedDepositListQuery.value(column++).toFloat();
                 pDepositPtr->m_descr = m_uncheckedDepositListQuery.value(column++).toString();
                 pDepositPtr->m_memberId = m_uncheckedDepositListQuery.value(column++).toInt();
-                pDepositListPtr->push_back(pDepositPtr);
+                pDepositListResultPtr->m_list->push_back(pDepositPtr);
             }
         }
 
         m_uncheckedDepositListQuery.finish();
-        return pDepositListPtr;
+        return pDepositListResultPtr;
     }
     //
-    void DAO::closeDeposit(Int32 depositId)
+    bool DAO::closeDeposit(Int32 depositId)
     {
         m_closeDepositQuery.bindValue(":depositid", depositId);
-        if (!m_closeDepositQuery.exec())
-        {
+        bool ok = m_closeDepositQuery.exec();
+        if (!ok) {
             qDebug() << m_closeDepositQuery.lastError();
             QLOG_ERROR() << m_closeDepositQuery.lastError();
         }
         m_closeDepositQuery.finish();
+        return ok;
     }
     //
-    MemberListPtr DAO::getMemberList(bool onlyPostalSend, Uint32 page, Uint32 count)
+    MemberListResultPtr DAO::getMemberList(bool onlyPostalSend, Uint32 page, Uint32 count)
     {
         QSqlQuery *pQuery = onlyPostalSend?(&m_memberListFilteredQuery):(&m_memberListQuery);
 
-        MemberListPtr pMemberListPtr(new MemberList);
+        MemberListResultPtr pMemberListResultPtr(new MemberListResult);
         pQuery->bindValue(":limit", count);
         pQuery->bindValue(":offset", page * count);
         if (!pQuery->exec())
         {
             qDebug() << pQuery->lastError();
             QLOG_ERROR() << pQuery->lastError();
+            pMemberListResultPtr->m_error = 1;
         } else {
+            pMemberListResultPtr->m_list = MemberListPtr(new MemberList);
             while (pQuery->next()) {
                 Uint32 column = 0;
                 MemberPtr pMemberPtr(new Member);
@@ -2359,18 +2387,17 @@ namespace PenyaManager {
                 pMemberPtr->m_postalSend = pQuery->value(column++).toInt() == 1;
                 pMemberPtr->m_notes = pQuery->value(column++).toString();
                 pMemberPtr->m_balance =  pQuery->value(column++).toFloat();
-                pMemberListPtr->push_back(pMemberPtr);
+                pMemberListResultPtr->m_list->push_back(pMemberPtr);
             }
         }
 
         pQuery->finish();
-        return pMemberListPtr;
+        return pMemberListResultPtr;
     }
     //
-    MemberListStatsPtr DAO::getMemberListStats(bool onlyPostalSend)
+    MemberListStatsResultPtr DAO::getMemberListStats(bool onlyPostalSend)
     {
-        MemberListStatsPtr pMemberListStatsPtr(new MemberListStats);
-        pMemberListStatsPtr->m_totalMembers = 0;
+        MemberListStatsResultPtr pMemberListStatsResultPtr(new MemberListStatsResult);
 
         QSqlQuery *pQuery = onlyPostalSend?(&m_memberListFilteredStatsQuery):(&m_memberListStatsQuery);
 
@@ -2378,15 +2405,17 @@ namespace PenyaManager {
         {
             qDebug() << pQuery->lastError();
             QLOG_ERROR() << pQuery->lastError();
+            pMemberListStatsResultPtr->m_error = 1;
         } else {
+            pMemberListStatsResultPtr->m_stats = MemberListStatsPtr(new MemberListStats);
             pQuery->next();
-            pMemberListStatsPtr->m_totalMembers = pQuery->value(0).toUInt();
+            pMemberListStatsResultPtr->m_stats->m_totalMembers = pQuery->value(0).toUInt();
         }
         pQuery->finish();
-        return pMemberListStatsPtr;
+        return pMemberListStatsResultPtr;
     }
     //
-    void DAO::updateMember(const MemberPtr &pMemberPtr)
+    bool DAO::updateMember(const MemberPtr &pMemberPtr)
     {
         // obligatory
         m_updateMemberQuery.bindValue(":memberid", pMemberPtr->m_id);
@@ -2450,12 +2479,13 @@ namespace PenyaManager {
             m_updateMemberQuery.bindValue(":notes", pMemberPtr->m_notes);
         }
         // execute query
-        if (!m_updateMemberQuery.exec())
-        {
+        bool ok = m_updateMemberQuery.exec();
+        if (!ok) {
             qDebug() << m_updateMemberQuery.lastError();
             QLOG_ERROR() << m_updateMemberQuery.lastError();
         }
         m_updateMemberQuery.finish();
+        return ok;
     }
     //
     Int32 DAO::createMember(const MemberPtr &pMemberPtr)
@@ -2546,53 +2576,57 @@ namespace PenyaManager {
         return memberId;
     }
     //
-    void DAO::changeMemberPassword(Int32 memberId, const QString &pwdHash, const QDateTime &lastmodified)
+    bool DAO::changeMemberPassword(Int32 memberId, const QString &pwdHash, const QDateTime &lastmodified)
     {
         m_updateMemberPasswordQuery.bindValue(":pwd", pwdHash);
         m_updateMemberPasswordQuery.bindValue(":lastmodified", lastmodified);
         m_updateMemberPasswordQuery.bindValue(":memberid", memberId);
         // execute query
-        if (!m_updateMemberPasswordQuery.exec())
-        {
+        bool ok = m_updateMemberPasswordQuery.exec();
+        if (!ok) {
             qDebug() << m_updateMemberPasswordQuery.lastError();
             QLOG_ERROR() << m_updateMemberPasswordQuery.lastError();
         }
         m_updateMemberPasswordQuery.finish();
+        return ok;
     }
     //
-    void DAO::changeMemberLastLogin(Int32 memberId, const QDateTime &lastlogin)
+    bool DAO::changeMemberLastLogin(Int32 memberId, const QDateTime &lastlogin)
     {
         m_updateMemberLastLoginQuery.bindValue(":lastlogin", lastlogin);
         m_updateMemberLastLoginQuery.bindValue(":memberid", memberId);
         // execute query
-        if (!m_updateMemberLastLoginQuery.exec())
-        {
+        bool ok = m_updateMemberLastLoginQuery.exec();
+        if (!ok) {
             qDebug() << m_updateMemberLastLoginQuery.lastError();
             QLOG_ERROR() << m_updateMemberLastLoginQuery.lastError();
         }
         m_updateMemberLastLoginQuery.finish();
+        return ok;
     }
     //
-    InvoicePtr DAO::getLastInvoiceInfo()
+    InvoiceResultPtr DAO::getLastInvoiceInfo()
     {
-        InvoicePtr pInvoicePtr;
+        InvoiceResultPtr pInvoiceResultPtr(new InvoiceResult);
         if (!m_lastInvoiceQuery.exec())
         {
             qDebug() << m_lastInvoiceQuery.lastError();
             QLOG_ERROR() << m_lastInvoiceQuery.lastError();
+            pInvoiceResultPtr->m_error = 1;
         } else if (m_lastInvoiceQuery.next())
         {
-            pInvoicePtr = InvoicePtr(new Invoice());
+            InvoicePtr pInvoicePtr(new Invoice());
             pInvoicePtr->m_id = m_lastInvoiceQuery.value(0).toInt();;
             pInvoicePtr->m_state = static_cast<InvoiceState>(m_lastInvoiceQuery.value(1).toUInt());
             pInvoicePtr->m_date = m_lastInvoiceQuery.value(2).toDateTime();
             pInvoicePtr->m_total = m_lastInvoiceQuery.value(3).toFloat();
             pInvoicePtr->m_memberId = m_lastInvoiceQuery.value(4).toInt();
             pInvoicePtr->m_lastModified = m_lastInvoiceQuery.value(5).toDateTime();
+            pInvoiceResultPtr->m_pInvoice = pInvoicePtr;
         }
         m_lastInvoiceQuery.finish();
 
-        return pInvoicePtr;
+        return pInvoiceResultPtr;
     }
     //
     bool DAO::updateInvoiceLastModDate(Int32 invoiceId, const QDateTime &lastModDate)
@@ -2667,31 +2701,33 @@ namespace PenyaManager {
         return usernameUsed;
     }
     //
-    ProviderInvoicePtr DAO::getProviderInvoiceById(const QString &providerInvoiceId)
+    ProviderInvoiceResultPtr DAO::getProviderInvoiceById(const QString &providerInvoiceId)
     {
-        ProviderInvoicePtr pProviderInvoicePtr;
+        ProviderInvoiceResultPtr pProviderInvoiceResultPtr(new ProviderInvoiceResult);
         m_providerInvoiceByIdQuery.bindValue(":providerinvoicesid", providerInvoiceId);
         if (!m_providerInvoiceByIdQuery.exec())
         {
             qDebug() << m_providerInvoiceByIdQuery.lastError();
             QLOG_ERROR() << m_providerInvoiceByIdQuery.lastError();
+            pProviderInvoiceResultPtr->m_error = 1;
         } else if (m_providerInvoiceByIdQuery.next())
         {
-            pProviderInvoicePtr = ProviderInvoicePtr(new ProviderInvoice);
+            ProviderInvoicePtr pProviderInvoicePtr(new ProviderInvoice);
             Uint32 column = 0;
             pProviderInvoicePtr->m_id = providerInvoiceId;
             pProviderInvoicePtr->m_regDate = m_providerInvoiceByIdQuery.value(column++).toDate();
             pProviderInvoicePtr->m_total = m_providerInvoiceByIdQuery.value(column++).toFloat();
             pProviderInvoicePtr->m_providerName = m_providerInvoiceByIdQuery.value(column++).toString();
             pProviderInvoicePtr->m_providerImagePath = m_providerInvoiceByIdQuery.value(column++).toString();
+            pProviderInvoiceResultPtr->m_pProviderInvoice = pProviderInvoicePtr;
         }
         m_providerInvoiceByIdQuery.finish();
-        return pProviderInvoicePtr;
+        return pProviderInvoiceResultPtr;
     }
     //
-    ProviderInvoiceProductItemListPtr DAO::getProviderInvoiceProductsByInvoiceId(const QString &providerInvoiceId)
+    ProviderInvoiceProductItemListResultPtr DAO::getProviderInvoiceProductsByInvoiceId(const QString &providerInvoiceId)
     {
-        ProviderInvoiceProductItemListPtr pListPtr = ProviderInvoiceProductItemListPtr(new ProviderInvoiceProductItemList);
+        ProviderInvoiceProductItemListResultPtr pListResultPtr = ProviderInvoiceProductItemListResultPtr(new ProviderInvoiceProductItemListResult);
         // bind value
         m_providerInvoiceProductsByInvoiceIdQuery.bindValue(":providerinvoicesid", providerInvoiceId);
         // run query
@@ -2699,7 +2735,9 @@ namespace PenyaManager {
         {
             qDebug() << m_providerInvoiceProductsByInvoiceIdQuery.lastError();
             QLOG_ERROR() << m_providerInvoiceProductsByInvoiceIdQuery.lastError();
+            pListResultPtr->m_error = 1;
         } else {
+            pListResultPtr->m_list = ProviderInvoiceProductItemListPtr(new ProviderInvoiceProductItemList);
             while (m_providerInvoiceProductsByInvoiceIdQuery.next()) {
                 ProviderInvoiceProductItemPtr pProductPtr(new ProviderInvoiceProductItem);
                 Uint32 column = 0;
@@ -2708,11 +2746,11 @@ namespace PenyaManager {
                 pProductPtr->m_productName = m_providerInvoiceProductsByInvoiceIdQuery.value(column++).toString();
                 pProductPtr->m_productImagePath = m_providerInvoiceProductsByInvoiceIdQuery.value(column++).toString();
                 pProductPtr->m_productPrice = m_providerInvoiceProductsByInvoiceIdQuery.value(column++).toFloat();
-                pListPtr->push_back(pProductPtr);
+                pListResultPtr->m_list->push_back(pProductPtr);
             }
         }
         m_providerInvoiceProductsByInvoiceIdQuery.finish();
-        return pListPtr;
+        return pListResultPtr;
     }
 }
 

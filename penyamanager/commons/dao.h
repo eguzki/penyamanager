@@ -34,9 +34,9 @@ namespace PenyaManager {
             //
             QSqlError lastError() const;
             //
-            ProductFamilyResultPtr getProductFamilies(bool onlyActive);
+            ProductFamilyListResultPtr getProductFamilies(bool onlyActive);
             //
-            ProductItemResultPtr getProductsFromFamily(Int32 familyId, bool onlyActive);
+            ProductItemListResultPtr getProductsFromFamily(Int32 familyId, bool onlyActive);
             //
             MemberResultPtr fetchMemberById(Int32 memberId);
             //
@@ -130,67 +130,67 @@ namespace PenyaManager {
             //
             InvoiceListStatsResultPtr getInvoiceListStats(const QDate &fromDate, const QDate &toDate);
             //
-            ProviderListPtr getProviderList();
+            ProviderListResultPtr getProviderList();
             //
-            ProductItemResultPtr getProductsFromProvider(Int32 providerId);
+            ProductItemListResultPtr getProductsFromProvider(Int32 providerId);
             //
-            void createProvider(const QString &name, const QString &imageFileName, const QString &phone);
+            bool createProvider(const QString &name, const QString &imageFileName, const QString &phone);
             //
-            ProductItemResultPtr getProductsList(Uint32 page, Uint32 count);
+            ProductItemListResultPtr getProductsList(Uint32 page, Uint32 count);
             //
-            ProductListStatsPtr getProductsListStats();
+            ProductListStatsResultPtr getProductsListStats();
             //
-            void updateStock(Int32 productItemId, Int32 count);
+            bool updateStock(Int32 productItemId, Int32 count);
             //
-            ProductItemPtr getProductItem(Int32 productItemId);
+            ProductItemResultPtr getProductItem(Int32 productItemId);
             //
-            void updateProductItem(const ProductItemPtr &pProductItemPtr);
+            bool updateProductItem(const ProductItemPtr &pProductItemPtr);
             //
-            Uint32 createProductItem(const ProductItemPtr &pProductItemPtr);
+            Int32 createProductItem(const ProductItemPtr &pProductItemPtr);
             //
-            ProductFamilyPtr getProductFamily(Int32 familyId);
+            ProductFamilyResultPtr getProductFamily(Int32 familyId);
             //
-            void updateProductFamilyItem(const ProductFamilyPtr &pFamilyPtr);
+            bool updateProductFamilyItem(const ProductFamilyPtr &pFamilyPtr);
             //
-            Uint32 createProductFamilyItem(const ProductFamilyPtr &pFamilyPtr);
+            Int32 createProductFamilyItem(const ProductFamilyPtr &pFamilyPtr);
             //
-            InvoiceProductItemListPtr getProductExpensesList(const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count);
+            InvoiceProductItemListResultPtr getProductExpensesList(const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count);
             //
-            InvoiceProductItemStatsPtr getProductExpensesListStats(const QDate &fromDate, const QDate &toDate);
+            InvoiceProductItemStatsResultPtr getProductExpensesListStats(const QDate &fromDate, const QDate &toDate);
             //
-            InvoiceProductItemListPtr getProductExpensesListByMemberId(Int32 memberId, const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count);
+            InvoiceProductItemListResultPtr getProductExpensesListByMemberId(Int32 memberId, const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count);
             //
-            InvoiceProductItemStatsPtr getProductExpensesListByMemberIdStats(Int32 memberId, const QDate &fromDate, const QDate &toDate);
+            InvoiceProductItemStatsResultPtr getProductExpensesListByMemberIdStats(Int32 memberId, const QDate &fromDate, const QDate &toDate);
             //
-            void createProviderInvoice(const ProviderInvoicePtr &pProviderInvoicePtr);
+            bool createProviderInvoice(const ProviderInvoicePtr &pProviderInvoicePtr);
             //
-            void createProviderInvoiceProduct(const QString &invoiceId, Int32 productId, Uint32 count);
+            bool createProviderInvoiceProduct(const QString &invoiceId, Int32 productId, Uint32 count);
             //
-            ProviderInvoiceListPtr getProviderInvoiceList(const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count);
+            ProviderInvoiceListResultPtr getProviderInvoiceList(const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count);
             //
-            ProviderInvoiceListStatsPtr getProviderInvoiceListStats(const QDate &fromDate, const QDate &toDate);
+            ProviderInvoiceListStatsResultPtr getProviderInvoiceListStats(const QDate &fromDate, const QDate &toDate);
             //
-            ProviderInvoiceListPtr getProviderInvoiceListByProviderId(Int32 providerId, const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count);
+            ProviderInvoiceListResultPtr getProviderInvoiceListByProviderId(Int32 providerId, const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count);
             //
-            ProviderInvoiceListStatsPtr getProviderInvoiceListByProviderIdStats(Int32 providerId, const QDate &fromDate, const QDate &toDate);
+            ProviderInvoiceListStatsResultPtr getProviderInvoiceListByProviderIdStats(Int32 providerId, const QDate &fromDate, const QDate &toDate);
             //
-            DepositListPtr getUncheckedDeposits();
+            DepositListResultPtr getUncheckedDeposits();
             //
-            void closeDeposit(Int32 depositId);
+            bool closeDeposit(Int32 depositId);
             //
-            MemberListPtr getMemberList(bool onlyPostalSend, Uint32 page, Uint32 count);
+            MemberListResultPtr getMemberList(bool onlyPostalSend, Uint32 page, Uint32 count);
             //
-            MemberListStatsPtr getMemberListStats(bool onlyPostalSend);
+            MemberListStatsResultPtr getMemberListStats(bool onlyPostalSend);
             //
-            void updateMember(const MemberPtr &pMemberPtr);
+            bool updateMember(const MemberPtr &pMemberPtr);
             //
             Int32 createMember(const MemberPtr &pMemberPtr);
             //
-            void changeMemberPassword(Int32 memberId, const QString &pwdHash, const QDateTime &lastmodified);
+            bool changeMemberPassword(Int32 memberId, const QString &pwdHash, const QDateTime &lastmodified);
             //
-            void changeMemberLastLogin(Int32 memberId, const QDateTime &lastlogin);
+            bool changeMemberLastLogin(Int32 memberId, const QDateTime &lastlogin);
             //
-            InvoicePtr getLastInvoiceInfo();
+            InvoiceResultPtr getLastInvoiceInfo();
             //
             bool updateInvoiceLastModDate(Int32 invoiceId, const QDateTime &lastModDate);
             //
@@ -198,9 +198,9 @@ namespace PenyaManager {
             //
             bool checkUsername(Int32 username);
             //
-            ProviderInvoicePtr getProviderInvoiceById(const QString &providerInvoiceId);
+            ProviderInvoiceResultPtr getProviderInvoiceById(const QString &providerInvoiceId);
             //
-            ProviderInvoiceProductItemListPtr getProviderInvoiceProductsByInvoiceId(const QString &providerInvoiceId);
+            ProviderInvoiceProductItemListResultPtr getProviderInvoiceProductsByInvoiceId(const QString &providerInvoiceId);
 
         private:
             //

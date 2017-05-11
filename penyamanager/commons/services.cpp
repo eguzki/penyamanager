@@ -79,7 +79,10 @@ namespace PenyaManager {
         {
             InvoiceProductItemPtr pInvoiceProductItemPtr = *iter;
             // count as negative addition
-            Singletons::m_pDAO->updateStock(pInvoiceProductItemPtr->m_productId,-pInvoiceProductItemPtr->m_count);
+            ok = Singletons::m_pDAO->updateStock(pInvoiceProductItemPtr->m_productId,-pInvoiceProductItemPtr->m_count);
+            if (!ok) {
+                return false;
+            }
         }
         return true;
     }

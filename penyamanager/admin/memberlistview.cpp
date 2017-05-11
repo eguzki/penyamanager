@@ -72,23 +72,31 @@ namespace PenyaManager {
     //
     void MemberListView::updateResults()
     {
-        MemberListPtr pMemberListPtr;
-        MemberListStatsPtr pMemberListStatsPtr;
+        MemberListResultPtr pMemberListResultPtr;
+        MemberListStatsResultPtr pMemberListStatsResultPtr;
 
         bool filterPostalSend = this->ui->filterPostalUsersCheckBox->checkState() == Qt::CheckState::Checked;
-        pMemberListPtr = Singletons::m_pDAO->getMemberList(filterPostalSend, m_currentPage, Constants::kInvoiceListPageCount);
-        pMemberListStatsPtr = Singletons::m_pDAO->getMemberListStats(filterPostalSend);
+        pMemberListResultPtr = Singletons::m_pDAO->getMemberList(filterPostalSend, m_currentPage, Constants::kInvoiceListPageCount);
+        if (pMemberListResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
+        pMemberListStatsResultPtr = Singletons::m_pDAO->getMemberListStats(filterPostalSend);
+        if (pMemberListStatsResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
         // enable-disable pagination buttons
         // total num pages
-        Uint32 numPages = (Uint32)ceil((Float)pMemberListStatsPtr->m_totalMembers/Constants::kInvoiceListPageCount);
+        Uint32 numPages = (Uint32)ceil((Float)pMemberListStatsResultPtr->m_stats->m_totalMembers/Constants::kInvoiceListPageCount);
         this->ui->prevPagePushButton->setEnabled(m_currentPage > 0);
         this->ui->nextPagePushButton->setEnabled(m_currentPage < numPages-1);
         // fill page view
         this->ui->pageInfoLabel->setText(tr("page %1 out of %2").arg(m_currentPage+1).arg(numPages));
         // fill total stats view
-        this->ui->totalMembersValueLabel->setText(QString::number(pMemberListStatsPtr->m_totalMembers));
+        this->ui->totalMembersValueLabel->setText(QString::number(pMemberListStatsResultPtr->m_stats->m_totalMembers));
         // fill invoice list
-        fillMemberList(pMemberListPtr);
+        fillMemberList(pMemberListResultPtr->m_list);
     }
     //
     void MemberListView::on_newMemberPushButton_clicked()
@@ -175,6 +183,15 @@ namespace PenyaManager {
             return;
         }
 
+        // fetch data
+        bool filterPostalSend = this->ui->filterPostalUsersCheckBox->checkState() == Qt::CheckState::Checked;
+        // max 1M users
+        MemberListResultPtr pMemberListResultPtr = Singletons::m_pDAO->getMemberList(filterPostalSend, 0, 1000000);
+        if (pMemberListResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
+
         QFile f(filename);
         if (!f.open( QIODevice::WriteOnly )) {
             QMessageBox::warning(this, tr("Unable to save file"), tr("Error opening %1").arg(filename));
@@ -186,12 +203,7 @@ namespace PenyaManager {
         // print header
         out << tr("Name") << "," << tr("Balance") << endl;
 
-        // fetch data
-        bool filterPostalSend = this->ui->filterPostalUsersCheckBox->checkState() == Qt::CheckState::Checked;
-        MemberListPtr pMemberListPtr;
-        // max 1M users
-        pMemberListPtr = Singletons::m_pDAO->getMemberList(filterPostalSend, 0, 1000000);
-        for (MemberList::iterator iter = pMemberListPtr->begin(); iter != pMemberListPtr->end(); ++iter)
+        for (MemberList::iterator iter = pMemberListResultPtr->m_list->begin(); iter != pMemberListResultPtr->m_list->end(); ++iter)
         {
             MemberPtr pMemberPtr = *iter;
             out << pMemberPtr->m_name << " " << pMemberPtr->m_surname << ", " << QString("%1 €").arg(pMemberPtr->m_balance, 0, 'f', 2) << endl;
@@ -208,13 +220,17 @@ namespace PenyaManager {
     void MemberListView::on_printPostalMembersPushButton_clicked()
     {
         // get post activated members
-        MemberListPtr pMemberListPtr = Singletons::m_pDAO->getMemberList(true, 0, 1000000);
-        if (pMemberListPtr->size() == 0) {
+        MemberListResultPtr pMemberListResultPtr = Singletons::m_pDAO->getMemberList(true, 0, 1000000);
+        if (pMemberListResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
+        if (pMemberListResultPtr->m_list->size() == 0) {
             QMessageBox::information(this, tr("Unable to print"), tr("There are no users with postsend activated"));
             return;
         }
         // print post activated member list
-        GuiUtils::printPostalMembers(pMemberListPtr);
+        GuiUtils::printPostalMembers(pMemberListResultPtr->m_list);
         QMessageBox::information(this, tr("Print postal members"), tr("suxesfrul"));
     }
 }

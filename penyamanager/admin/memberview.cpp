@@ -140,7 +140,8 @@ namespace PenyaManager {
                 return;
             }
             if (!pMemberResultPtr->m_member) {
-                QMessageBox::warning(this, tr("Unexpected state"), QString(tr("Editing item [id: %1] not found in ddbb")).arg(Singletons::m_currentMemberId));
+                QLOG_WARN() << QString("Editing item [id: %1] not found in ddbb").arg(Singletons::m_currentMemberId);
+                QMessageBox::warning(this, tr("Unexpected state"), tr("Operation not performed. Contact administrator"));
                 return;
             }
             // save old image in case we need to delete it
@@ -197,7 +198,11 @@ namespace PenyaManager {
             pMemberResultPtr->m_member->m_lastModified = QDateTime::currentDateTime();
 
             // update in ddbb
-            Singletons::m_pDAO->updateMember(pMemberResultPtr->m_member);
+            bool ok = Singletons::m_pDAO->updateMember(pMemberResultPtr->m_member);
+            if (!ok) {
+                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                return;
+            }
             // if there is previously one image, and it has been changed -> delete it
             // make sure it is after being updated in ddbb
             if (!this->m_memberImageFilename.isEmpty() && !oldImage.isEmpty()) {
@@ -393,7 +398,11 @@ namespace PenyaManager {
         QString pwdHash = Utils::hashSHA256asHex(passChangeDialg.getPassword());
 
         // save new password in ddbb
-        Singletons::m_pDAO->changeMemberPassword(Singletons::m_currentMemberId, pwdHash, QDateTime::currentDateTime());
+        bool ok = Singletons::m_pDAO->changeMemberPassword(Singletons::m_currentMemberId, pwdHash, QDateTime::currentDateTime());
+        if (!ok) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
 
         QLOG_INFO() << QString("[PassChange] ID %1").arg(Singletons::m_currentMemberId);
         QMessageBox::information(this, "Change password", "Password changed successfully");

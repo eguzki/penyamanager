@@ -25,4 +25,10 @@ namespace PenyaManager
             m_error(0)
     {
     }
+    //
+    ProductFamilyListResult::ProductFamilyListResult()
+        :
+            m_error(0)
+    {
+    }
 }

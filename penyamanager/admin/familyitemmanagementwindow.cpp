@@ -31,7 +31,7 @@ namespace PenyaManager {
         // Loading families
         //
 
-        ProductFamilyResultPtr pfListPtr = Singletons::m_pDAO->getProductFamilies(false);
+        ProductFamilyListResultPtr pfListPtr = Singletons::m_pDAO->getProductFamilies(false);
         if (pfListPtr->m_error) {
             QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
             return;
@@ -125,7 +125,7 @@ namespace PenyaManager {
     {
         this->ui->productListWidget->clear();
 
-        ProductItemResultPtr pfListPtr = Singletons::m_pDAO->getProductsFromFamily(familyId, false);
+        ProductItemListResultPtr pfListPtr = Singletons::m_pDAO->getProductsFromFamily(familyId, false);
         if (pfListPtr->m_error) {
             QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
             return;

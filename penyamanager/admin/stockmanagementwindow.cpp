@@ -80,21 +80,22 @@ namespace PenyaManager {
             return;
         }
 
+        // fetch data
+        ProductItemListResultPtr pfListPtr = Singletons::m_pDAO->getProductsList(0, 100000);
+        if (pfListPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
+
         QFile f(filename);
         if (!f.open( QIODevice::WriteOnly )) {
             QMessageBox::warning(this, "Unable to save file", "Error opening " + filename);
             return;
         }
+
         QTextStream out(&f);
         // print header
         out << tr("name") << "," << tr("stock") << endl;
-
-        // fetch data
-        ProductItemResultPtr pfListPtr = Singletons::m_pDAO->getProductsList(0, 100000);
-        if (pfListPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
-            return;
-        }
 
         for (ProductItemList::iterator iter = pfListPtr->m_list->begin(); iter != pfListPtr->m_list->end(); ++iter)
         {
@@ -119,21 +120,25 @@ namespace PenyaManager {
     //
     void StockManagementWindow::updateResults()
     {
-        ProductItemResultPtr pfListPtr = Singletons::m_pDAO->getProductsList(m_currentPage, Constants::kProductListPageCount);
+        ProductItemListResultPtr pfListPtr = Singletons::m_pDAO->getProductsList(m_currentPage, Constants::kProductListPageCount);
         if (pfListPtr->m_error) {
             QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
             return;
         }
-        ProductListStatsPtr pProductListStats = Singletons::m_pDAO->getProductsListStats();
+        ProductListStatsResultPtr pProductListStatsResultPtr = Singletons::m_pDAO->getProductsListStats();
+        if (pProductListStatsResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
         // enable-disable pagination buttons
         // total num pages
-        Uint32 numPages = (Uint32)ceil((Float)pProductListStats->m_totalNumProducts/Constants::kProductListPageCount);
+        Uint32 numPages = (Uint32)ceil((Float)pProductListStatsResultPtr->m_stats->m_totalNumProducts/Constants::kProductListPageCount);
         this->ui->prevPagePushButton->setEnabled(m_currentPage > 0);
         this->ui->nextPagePushButton->setEnabled(m_currentPage < numPages-1);
         // fill page view
         this->ui->pageInfoLabel->setText(tr("page %1 out of %2").arg(m_currentPage+1).arg(numPages));
         // fill total stats view
-        this->ui->totalProductsValueLabel->setText(QString::number(pProductListStats->m_totalNumProducts));
+        this->ui->totalProductsValueLabel->setText(QString::number(pProductListStatsResultPtr->m_stats->m_totalNumProducts));
         // fill product list
         fillProductList(pfListPtr->m_list);
         //

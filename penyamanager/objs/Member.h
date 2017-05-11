@@ -126,6 +126,23 @@ namespace PenyaManager
 
     //
     typedef QSharedPointer<MemberListStats> MemberListStatsPtr;
+    //
+    class MemberListStatsResult
+    {
+        public:
+            //
+            MemberListStatsResult();
+            //
+            virtual ~MemberListStatsResult(){}
+
+        public:
+            //
+            Int32              m_error;
+            //
+            MemberListStatsPtr m_stats;
+    };
+    //
+    typedef QSharedPointer<MemberListStatsResult> MemberListStatsResultPtr;
 }
 
 #endif // MEMBER_H

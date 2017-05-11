@@ -74,6 +74,23 @@ namespace PenyaManager
 
     //
     typedef QSharedPointer<InvoiceProductItemStats> InvoiceProductItemStatsPtr;
+    //
+    class InvoiceProductItemStatsResult
+    {
+        public:
+            //
+            InvoiceProductItemStatsResult();
+            //
+            virtual ~InvoiceProductItemStatsResult(){}
+
+        public:
+            //
+            Int32                       m_error;
+            //
+            InvoiceProductItemStatsPtr  m_stats;
+    };
+    //
+    typedef QSharedPointer<InvoiceProductItemStatsResult> InvoiceProductItemStatsResultPtr;
 }
 
 #endif // INVOICEPRODUCTITEM_H
