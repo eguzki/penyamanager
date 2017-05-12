@@ -1020,6 +1020,7 @@ namespace PenyaManager {
         {
             qDebug() << m_productInvoiceCountQuery.lastError();
             QLOG_ERROR() << m_productInvoiceCountQuery.lastError();
+            count = -1;
         } else if (m_productInvoiceCountQuery.next())
         {
             count = m_productInvoiceCountQuery.value(0).toUInt();
@@ -1185,13 +1186,14 @@ namespace PenyaManager {
     //
     Int32 DAO::getAccountListCount(const QDate &fromDate, const QDate &toDate)
     {
-        Int32 count = -1;
+        Int32 count = 0.0;
         m_accountListCountQuery.bindValue(":fromDate", fromDate);
         m_accountListCountQuery.bindValue(":toDate", toDate);
         if (!m_accountListCountQuery.exec())
         {
             qDebug() << m_accountListCountQuery.lastError();
             QLOG_ERROR() << m_accountListCountQuery.lastError();
+            count = -1;
         } else if (m_accountListCountQuery.next())
         {
             count = m_accountListCountQuery.value(0).toUInt();
@@ -1202,13 +1204,14 @@ namespace PenyaManager {
     //
     Float DAO::getAccountListInvoicesSum(const QDate &fromDate, const QDate &toDate)
     {
-        Float count = -1.0;
+        Float count = 0.0;
         m_accountListInvoicesSumQuery.bindValue(":fromDate", fromDate);
         m_accountListInvoicesSumQuery.bindValue(":toDate", toDate);
         if (!m_accountListInvoicesSumQuery.exec())
         {
             qDebug() << m_accountListInvoicesSumQuery.lastError();
             QLOG_ERROR() << m_accountListInvoicesSumQuery.lastError();
+            count = -1;
         } else if (m_accountListInvoicesSumQuery.next())
         {
             count = m_accountListInvoicesSumQuery.value(0).toInt();
@@ -1219,13 +1222,14 @@ namespace PenyaManager {
     //
     Float DAO::getAccountListDepositsSum(const QDate &fromDate, const QDate &toDate)
     {
-        Float count = -1.0;
+        Float count = 0.0;
         m_accountListDepositsSumQuery.bindValue(":fromDate", fromDate);
         m_accountListDepositsSumQuery.bindValue(":toDate", toDate);
         if (!m_accountListDepositsSumQuery.exec())
         {
             qDebug() << m_accountListDepositsSumQuery.lastError();
             QLOG_ERROR() << m_accountListDepositsSumQuery.lastError();
+            count = -1;
         } else if (m_accountListDepositsSumQuery.next())
         {
             count = m_accountListDepositsSumQuery.value(0).toFloat();
@@ -1236,13 +1240,14 @@ namespace PenyaManager {
     //
     Float DAO::getAccountListBankChargesSum(const QDate &fromDate, const QDate &toDate)
     {
-        Float count = -1.0;
+        Float count = 0.0;
         m_accountListBankChargesSumQuery.bindValue(":fromDate", fromDate);
         m_accountListBankChargesSumQuery.bindValue(":toDate", toDate);
         if (!m_accountListBankChargesSumQuery.exec())
         {
             qDebug() << m_accountListBankChargesSumQuery.lastError();
             QLOG_ERROR() << m_accountListBankChargesSumQuery.lastError();
+            count = -1;
         } else if (m_accountListBankChargesSumQuery.next())
         {
             count = m_accountListBankChargesSumQuery.value(0).toFloat();
@@ -1253,7 +1258,7 @@ namespace PenyaManager {
     //
     Int32 DAO::getAccountListByMemberIdCount(Int32 memberId, const QDate &fromDate, const QDate &toDate)
     {
-        Uint32 count = -1;
+        Uint32 count = 0.0;
         m_accountListByMemberIdCountQuery.bindValue(":memberid", memberId);
         m_accountListByMemberIdCountQuery.bindValue(":fromDate", fromDate);
         m_accountListByMemberIdCountQuery.bindValue(":toDate", toDate);
@@ -1261,6 +1266,7 @@ namespace PenyaManager {
         {
             qDebug() << m_accountListByMemberIdCountQuery.lastError();
             QLOG_ERROR() << m_accountListByMemberIdCountQuery.lastError();
+            count = -1;
         } else if (m_accountListByMemberIdCountQuery.next())
         {
             count = m_accountListByMemberIdCountQuery.value(0).toUInt();
@@ -1279,6 +1285,7 @@ namespace PenyaManager {
         {
             qDebug() << m_accountListByMemberIdInvoicesSumQuery.lastError();
             QLOG_ERROR() << m_accountListByMemberIdInvoicesSumQuery.lastError();
+            count = -1;
         } else if (m_accountListByMemberIdInvoicesSumQuery.next())
         {
             count = m_accountListByMemberIdInvoicesSumQuery.value(0).toFloat();
@@ -1297,6 +1304,7 @@ namespace PenyaManager {
         {
             qDebug() << m_accountListByMemberIdDepositsSumQuery.lastError();
             QLOG_ERROR() << m_accountListByMemberIdDepositsSumQuery.lastError();
+            count = -1;
         } else if (m_accountListByMemberIdDepositsSumQuery.next())
         {
             count = m_accountListByMemberIdDepositsSumQuery.value(0).toFloat();
@@ -1315,6 +1323,7 @@ namespace PenyaManager {
         {
             qDebug() << m_accountListByMemberIdBankChargesSumQuery.lastError();
             QLOG_ERROR() << m_accountListByMemberIdBankChargesSumQuery.lastError();
+            count = -1;
         } else if (m_accountListByMemberIdBankChargesSumQuery.next())
         {
             count = m_accountListByMemberIdBankChargesSumQuery.value(0).toFloat();

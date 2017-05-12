@@ -109,8 +109,7 @@ namespace PenyaManager {
         pNewTransaction->m_balance = lastBalance + amount;
         pNewTransaction->m_descr = description;
         // update account balance info
-        bool ok = Singletons::m_pDAO->insertTransaction(pNewTransaction);
-        return ok;
+        return Singletons::m_pDAO->insertTransaction(pNewTransaction);
     }
     //
     bool Services::resetSlowPayersBalance()

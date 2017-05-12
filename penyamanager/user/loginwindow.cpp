@@ -65,7 +65,7 @@ namespace PenyaManager {
         }
         if (!pLastInvoiceResultPtr->m_pInvoice) {
             // Last invoice not found
-            QLOG_INFO() << QString("Last invoice not found");
+            QLOG_WARN() << QString("Last invoice not found");
             return;
         }
 
