@@ -89,4 +89,10 @@ class FloatBoolPairResult
 
 typedef QSharedPointer<FloatBoolPairResult> FloatBoolPairResultPtr;
 
+//
+typedef struct {
+    Int32 error;
+    bool result;
+}BoolResult;
+
 #endif // DATATYPES_H

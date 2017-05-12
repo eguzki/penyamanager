@@ -223,8 +223,12 @@ namespace PenyaManager {
             // username
             pMemberPtr->m_username = this->ui->usernameLineEdit->text().toInt();
             // Check username is not in use
-            bool usernameUsed = Singletons::m_pDAO->checkUsername(pMemberPtr->m_username);
-            if (usernameUsed) {
+            BoolResult usernameUsed = Singletons::m_pDAO->checkUsername(pMemberPtr->m_username);
+            if (usernameUsed.error) {
+                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                return;
+            }
+            if (usernameUsed.result) {
                 QMessageBox::warning(this, tr("Wrong username"), tr("username already in use"));
                 return;
             }

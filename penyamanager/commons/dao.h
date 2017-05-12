@@ -196,7 +196,7 @@ namespace PenyaManager {
             //
             bool deleteInvoice(Int32 invoiceIde);
             //
-            bool checkUsername(Int32 username);
+            BoolResult checkUsername(Int32 username);
             //
             ProviderInvoiceResultPtr getProviderInvoiceById(const QString &providerInvoiceId);
             //

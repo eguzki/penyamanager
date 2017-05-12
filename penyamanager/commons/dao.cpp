@@ -2857,20 +2857,21 @@ namespace PenyaManager {
         return pInvoiceListResultPtr;
     }
     //
-    bool DAO::checkUsername(Int32 username)
+    BoolResult DAO::checkUsername(Int32 username)
     {
-        bool usernameUsed = true;
+        BoolResult boolResult({0, true});
         m_checkUsernameQuery.bindValue(":username", username);
         if (!m_checkUsernameQuery.exec())
         {
             qDebug() << m_checkUsernameQuery.lastError();
             QLOG_ERROR() << QString("[ERROR] checkUsername: username: %1").arg(username);
             QLOG_ERROR() << m_checkUsernameQuery.lastError();
+            boolResult.error = 1;
         } else {
             m_checkUsernameQuery.next();
-            usernameUsed = m_checkUsernameQuery.value(0).toInt() != 0;
+            boolResult.result = m_checkUsernameQuery.value(0).toInt() != 0;
         }
-        return usernameUsed;
+        return boolResult;
     }
     //
     ProviderInvoiceResultPtr DAO::getProviderInvoiceById(const QString &providerInvoiceId)
