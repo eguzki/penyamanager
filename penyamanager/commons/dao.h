@@ -30,7 +30,7 @@ namespace PenyaManager {
             //
             bool isOpen();
             //
-            QSqlError exec(QSqlQuery&);
+            bool exec(QSqlQuery&);
             //
             QSqlError lastError() const;
             //
