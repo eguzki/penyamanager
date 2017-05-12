@@ -56,7 +56,7 @@ namespace PenyaManager {
             return;
         }
         if (!providerInvoiceResultPtr->m_pProviderInvoice) {
-            QLOG_WARN() << QString("[ERROR] provider invoice id {%1} not found in ddbb").arg(providerInvoiceId);
+            QLOG_WARN() << QString("provider invoice id {%1} not found in ddbb").arg(providerInvoiceId);
             QMessageBox::warning(this, tr("Unexpected state"), tr("Operation not performed. Contact administrator"));
             return;
         }

@@ -60,9 +60,8 @@ namespace PenyaManager {
     {
         if (!Singletons::m_pDAO->isOpen()) {
             QSqlError err = Singletons::m_pDAO->lastError();
-            QLOG_ERROR() << QString("[FATAL] Unable to initialize Database: %1").arg(err.text());
-            QMessageBox::critical(this, "Unable to initialize Database",
-                    "Error initializing database: " + err.text());
+            QLOG_ERROR() << QString("Unable to initialize Database: %1").arg(err.text());
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
             qApp->exit(1);
             return;
         }
@@ -77,8 +76,8 @@ namespace PenyaManager {
         }
         if (!pMemberResultPtr->m_member) {
             // member not found, should not happen
-            QLOG_ERROR() << QString("[WARN] unable to find owner by id: %1").arg(Singletons::m_pCurrMember->m_id);
-            qDebug() << QString("[WARN] unable to find owner by id: %1").arg(Singletons::m_pCurrMember->m_id);
+            QLOG_WARN() << QString("Unable to find owner by id: %1").arg(Singletons::m_pCurrMember->m_id);
+            qDebug() << QString("Unable to find owner by id: %1").arg(Singletons::m_pCurrMember->m_id);
             return;
         }
 

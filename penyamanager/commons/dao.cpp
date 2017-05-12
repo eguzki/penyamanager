@@ -717,6 +717,7 @@ namespace PenyaManager {
         if (!m_productFamiliesQuery.exec())
         {
             qDebug() << m_productFamiliesQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] getProductFamilies: onlyActive: %1").arg(onlyActive);
             QLOG_ERROR() << m_productFamiliesQuery.lastError();
             pfListPrt->m_error = 1;
         } else {
@@ -747,6 +748,7 @@ namespace PenyaManager {
         if (!m_productItemsByFamilyQuery.exec())
         {
             qDebug() << m_productItemsByFamilyQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] getProductsFromFamily: family: %1 onlyActive: %2").arg(familyId).arg(onlyActive);
             QLOG_ERROR() << m_productItemsByFamilyQuery.lastError();
             pIListResultPtr->m_error = 1;
         } else {
@@ -778,6 +780,7 @@ namespace PenyaManager {
         if (!m_memberByIdQuery.exec())
         {
             qDebug() << m_memberByIdQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] fetchMemberById: memberId: %1").arg(memberId);
             QLOG_ERROR() << m_memberByIdQuery.lastError();
             pMemberResultPtr->m_error = 1;
         } else if (m_memberByIdQuery.next())
@@ -820,6 +823,7 @@ namespace PenyaManager {
         if (!m_memberByUsernameQuery.exec())
         {
             qDebug() << m_memberByUsernameQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] fetchMemberByUsername: member: %1").arg(username);
             QLOG_ERROR() << m_memberByUsernameQuery.lastError();
             pMemberResultPtr->m_error = 1;
         } else if (m_memberByUsernameQuery.next())
@@ -862,6 +866,7 @@ namespace PenyaManager {
         if (!m_memberAccountBalanceQuery.exec())
         {
             qDebug() << m_memberAccountBalanceQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] getAccountBalance: member: %1").arg(memberId);
             QLOG_ERROR() << m_memberAccountBalanceQuery.lastError();
             pResult->m_error = 1;
         } else if (m_memberAccountBalanceQuery.next())
@@ -880,6 +885,7 @@ namespace PenyaManager {
         if (!m_invoiceQuery.exec())
         {
             qDebug() << m_invoiceQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] getInvoice: invoice: %1").arg(invoiceId);
             QLOG_ERROR() << m_invoiceQuery.lastError();
             pInvoiceResultPtr->m_error = 1;
         } else if (m_invoiceQuery.next())
@@ -906,6 +912,7 @@ namespace PenyaManager {
         if (!m_memberActiveInvoiceQuery.exec())
         {
             qDebug() << m_memberActiveInvoiceQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] getMemberActiveInvoice: member: %1").arg(memberId);
             QLOG_ERROR() << m_memberActiveInvoiceQuery.lastError();
             pInvoiceResultPtr->m_error = 1;
         } else if (m_memberActiveInvoiceQuery.next())
@@ -930,6 +937,7 @@ namespace PenyaManager {
         if (!ok)
         {
             qDebug() << m_removeProductInvoiceQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] removeProductInvoice: invoice: %1 product: %2").arg(invoiceId).arg(productId);
             QLOG_ERROR() << m_removeProductInvoiceQuery.lastError();
         }
         m_removeProductInvoiceQuery.finish();
@@ -945,6 +953,7 @@ namespace PenyaManager {
         if (!ok)
         {
             qDebug() << m_updateProductInvoiceQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] updateProductInvoice: invoice: %1 product: %2 count: %3").arg(invoiceId).arg(productId).arg(count);
             QLOG_ERROR() << m_updateProductInvoiceQuery.lastError();
         }
         m_updateProductInvoiceQuery.finish();
@@ -962,6 +971,7 @@ namespace PenyaManager {
         if (!m_increaseProductInvoiceQuery.exec())
         {
             qDebug() << m_increaseProductInvoiceQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] increaseProductInvoice: invoice: %1 product: %2 count: %3").arg(invoiceId).arg(productId).arg(count);
             QLOG_ERROR() << m_increaseProductInvoiceQuery.lastError();
         } else {
             numRowsAffected = m_increaseProductInvoiceQuery.numRowsAffected();
@@ -990,6 +1000,7 @@ namespace PenyaManager {
         if (!m_insertInvoiceQuery.exec())
         {
             qDebug() << m_insertInvoiceQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] createInvoice: member: %1").arg(memberId);
             QLOG_ERROR() << m_insertInvoiceQuery.lastError();
             pInvoiceResultPtr->m_error = 1;
         }
@@ -1002,6 +1013,7 @@ namespace PenyaManager {
         if (!m_getLastIdQuery.exec())
         {
             qDebug() << m_getLastIdQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] createInvoice: m_getLastIdQuery");
             QLOG_ERROR() << m_getLastIdQuery.lastError();
             pInvoiceResultPtr->m_error = 1;
         } else if (m_getLastIdQuery.next())
@@ -1019,6 +1031,7 @@ namespace PenyaManager {
         if (!m_productInvoiceCountQuery.exec())
         {
             qDebug() << m_productInvoiceCountQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] countInvoiceProductItems: invoiceId: %1").arg(invoiceId);
             QLOG_ERROR() << m_productInvoiceCountQuery.lastError();
             count = -1;
         } else if (m_productInvoiceCountQuery.next())
@@ -1038,6 +1051,7 @@ namespace PenyaManager {
         if (!m_productInvoiceItemsQuery.exec())
         {
             qDebug() << m_productInvoiceItemsQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] getInvoiceProductItems: invoiceId: %1").arg(invoiceId);
             QLOG_ERROR() << m_productInvoiceItemsQuery.lastError();
             pInvoicePILResult->m_error = 1;
         } else {
@@ -1068,6 +1082,7 @@ namespace PenyaManager {
         bool ok = m_updateInvoiceQuery.exec();
         if (!ok) {
             qDebug() << m_updateInvoiceQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] updateInvoice: invoiceId: %1").arg(pInvoicePtr->m_id);
             QLOG_ERROR() << m_updateInvoiceQuery.lastError();
         }
         m_updateInvoiceQuery.finish();
@@ -1081,6 +1096,7 @@ namespace PenyaManager {
         if (!m_memberLastAccountInfoQuery.exec())
         {
             qDebug() << m_memberLastAccountInfoQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] getLastAccountInfo: memberId: %1").arg(memberId);
             QLOG_ERROR() << m_memberLastAccountInfoQuery.lastError();
             pLastAccountInfoResultPtr->m_error = 1;
         } else if (m_memberLastAccountInfoQuery.next())
@@ -1111,6 +1127,7 @@ namespace PenyaManager {
         bool ok = m_insertTransactionQuery.exec();
         if (!ok) {
             qDebug() << m_insertTransactionQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] insertTransaction: memberId: %1").arg(pTransactionPtr->m_memberId);
             QLOG_ERROR() << m_insertTransactionQuery.lastError();
         }
         m_insertTransactionQuery.finish();
@@ -1128,6 +1145,7 @@ namespace PenyaManager {
         if (!m_insertDepositQuery.exec())
         {
             qDebug() << m_insertDepositQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] createDeposit: memberId: %1").arg(pDepositPtr->m_memberId);
             QLOG_ERROR() << m_insertDepositQuery.lastError();
             pNewDepositResultPtr->m_error = 1;
         }
@@ -1139,6 +1157,7 @@ namespace PenyaManager {
         if (!m_getLastIdQuery.exec())
         {
             qDebug() << m_getLastIdQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] createDeposit: lastQueryId");
             QLOG_ERROR() << m_getLastIdQuery.lastError();
             pNewDepositResultPtr->m_error = 1;
         } else {
@@ -1162,6 +1181,10 @@ namespace PenyaManager {
         if (!m_accountListQuery.exec())
         {
             qDebug() << m_accountListQuery.lastError();
+            QLocale locale;
+            QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
+            QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("[ERROR] getAccountList: fromDate: %1 toDate: %2 page: %3 count: %4").arg(fromDateLocalized).arg(toDateLocalized).arg(page).arg(count);
             QLOG_ERROR() << m_accountListQuery.lastError();
             pTransactionListResultPtr->m_error = 1;
         } else {
@@ -1192,6 +1215,10 @@ namespace PenyaManager {
         if (!m_accountListCountQuery.exec())
         {
             qDebug() << m_accountListCountQuery.lastError();
+            QLocale locale;
+            QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
+            QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("[ERROR] getAccountListCount: fromDate: %1 toDate: %2").arg(fromDateLocalized).arg(toDateLocalized);
             QLOG_ERROR() << m_accountListCountQuery.lastError();
             count = -1;
         } else if (m_accountListCountQuery.next())
@@ -1210,6 +1237,10 @@ namespace PenyaManager {
         if (!m_accountListInvoicesSumQuery.exec())
         {
             qDebug() << m_accountListInvoicesSumQuery.lastError();
+            QLocale locale;
+            QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
+            QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("[ERROR] getAccountListInvoicesSum: fromDate: %1 toDate: %2").arg(fromDateLocalized).arg(toDateLocalized);
             QLOG_ERROR() << m_accountListInvoicesSumQuery.lastError();
             count = -1;
         } else if (m_accountListInvoicesSumQuery.next())
@@ -1228,6 +1259,10 @@ namespace PenyaManager {
         if (!m_accountListDepositsSumQuery.exec())
         {
             qDebug() << m_accountListDepositsSumQuery.lastError();
+            QLocale locale;
+            QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
+            QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("[ERROR] getAccountListDepositsSum: fromDate: %1 toDate: %2").arg(fromDateLocalized).arg(toDateLocalized);
             QLOG_ERROR() << m_accountListDepositsSumQuery.lastError();
             count = -1;
         } else if (m_accountListDepositsSumQuery.next())
@@ -1246,6 +1281,10 @@ namespace PenyaManager {
         if (!m_accountListBankChargesSumQuery.exec())
         {
             qDebug() << m_accountListBankChargesSumQuery.lastError();
+            QLocale locale;
+            QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
+            QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("[ERROR] getAccountListBankChargesSum: fromDate: %1 toDate: %2").arg(fromDateLocalized).arg(toDateLocalized);
             QLOG_ERROR() << m_accountListBankChargesSumQuery.lastError();
             count = -1;
         } else if (m_accountListBankChargesSumQuery.next())
@@ -1265,6 +1304,10 @@ namespace PenyaManager {
         if (!m_accountListByMemberIdCountQuery.exec())
         {
             qDebug() << m_accountListByMemberIdCountQuery.lastError();
+            QLocale locale;
+            QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
+            QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("[ERROR] getAccountListByMemberIdCount: memberId: %1 fromDate: %2 toDate: %3").arg(memberId).arg(fromDateLocalized).arg(toDateLocalized);
             QLOG_ERROR() << m_accountListByMemberIdCountQuery.lastError();
             count = -1;
         } else if (m_accountListByMemberIdCountQuery.next())
@@ -1284,6 +1327,10 @@ namespace PenyaManager {
         if (!m_accountListByMemberIdInvoicesSumQuery.exec())
         {
             qDebug() << m_accountListByMemberIdInvoicesSumQuery.lastError();
+            QLocale locale;
+            QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
+            QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("[ERROR] getAccountListByMemberIdInvoicesSum: memberId: %1 fromDate: %2 toDate: %3").arg(memberId).arg(fromDateLocalized).arg(toDateLocalized);
             QLOG_ERROR() << m_accountListByMemberIdInvoicesSumQuery.lastError();
             count = -1;
         } else if (m_accountListByMemberIdInvoicesSumQuery.next())
@@ -1303,6 +1350,10 @@ namespace PenyaManager {
         if (!m_accountListByMemberIdDepositsSumQuery.exec())
         {
             qDebug() << m_accountListByMemberIdDepositsSumQuery.lastError();
+            QLocale locale;
+            QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
+            QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("[ERROR] getAccountListByMemberIdDepositsSum: memberId: %1 fromDate: %2 toDate: %3").arg(memberId).arg(fromDateLocalized).arg(toDateLocalized);
             QLOG_ERROR() << m_accountListByMemberIdDepositsSumQuery.lastError();
             count = -1;
         } else if (m_accountListByMemberIdDepositsSumQuery.next())
@@ -1322,6 +1373,10 @@ namespace PenyaManager {
         if (!m_accountListByMemberIdBankChargesSumQuery.exec())
         {
             qDebug() << m_accountListByMemberIdBankChargesSumQuery.lastError();
+            QLocale locale;
+            QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
+            QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("[ERROR] getAccountListByMemberIdBankChargesSum: memberId: %1 fromDate: %2 toDate: %3").arg(memberId).arg(fromDateLocalized).arg(toDateLocalized);
             QLOG_ERROR() << m_accountListByMemberIdBankChargesSumQuery.lastError();
             count = -1;
         } else if (m_accountListByMemberIdBankChargesSumQuery.next())
@@ -1345,6 +1400,10 @@ namespace PenyaManager {
         if (!m_memberAccountListQuery.exec())
         {
             qDebug() << m_memberAccountListQuery.lastError();
+            QLocale locale;
+            QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
+            QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("[ERROR] getAccountListByMemberId: memberId: %1 fromDate: %2 toDate: %3").arg(memberId).arg(fromDateLocalized).arg(toDateLocalized);
             QLOG_ERROR() << m_memberAccountListQuery.lastError();
             pTransactionListResultPtr->m_error = 1;
         } else {
@@ -1376,6 +1435,9 @@ namespace PenyaManager {
         if (!m_tableReservationListQuery.exec())
         {
             qDebug() << m_tableReservationListQuery.lastError();
+            QLocale locale;
+            QString nowDateLocalized = locale.toString(now, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("[ERROR] getTableReservation: reservationType: %1 now: %2").arg(static_cast<Uint16>(reservationType)).arg(nowDateLocalized);
             QLOG_ERROR() << m_tableReservationListQuery.lastError();
             pReservationListResultPtr->m_error = -1;
         } else {
@@ -1409,6 +1471,9 @@ namespace PenyaManager {
         if (!m_ovenReservationListQuery.exec())
         {
             qDebug() << m_ovenReservationListQuery.lastError();
+            QLocale locale;
+            QString nowDateLocalized = locale.toString(now, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("[ERROR] getOvenReservation: reservationType: %1 now: %2").arg(static_cast<Uint16>(reservationType)).arg(nowDateLocalized);
             QLOG_ERROR() << m_ovenReservationListQuery.lastError();
             pReservationListResultPtr->m_error = -1;
         } else {
@@ -1442,6 +1507,9 @@ namespace PenyaManager {
         if (!m_fireplaceReservationListQuery.exec())
         {
             qDebug() << m_fireplaceReservationListQuery.lastError();
+            QLocale locale;
+            QString nowDateLocalized = locale.toString(now, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("[ERROR] getFireplaceReservation: reservationType: %1 now: %2").arg(static_cast<Uint16>(reservationType)).arg(nowDateLocalized);
             QLOG_ERROR() << m_fireplaceReservationListQuery.lastError();
             pReservationListResultPtr->m_error = -1;
         } else {
@@ -1471,6 +1539,7 @@ namespace PenyaManager {
         if (!m_lunchTablesListQuery.exec())
         {
             qDebug() << m_lunchTablesListQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] getLunchTableList");
             QLOG_ERROR() << m_lunchTablesListQuery.lastError();
             pReservationItemListResultPtr->m_error = 1;
         } else {
@@ -1495,6 +1564,7 @@ namespace PenyaManager {
         if (!m_ovenListQuery.exec())
         {
             qDebug() << m_ovenListQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] getOvenList");
             QLOG_ERROR() << m_ovenListQuery.lastError();
             pReservationItemListResultPtr->m_error = 1;
         } else {
@@ -1519,6 +1589,7 @@ namespace PenyaManager {
         if (!m_fireplaceListQuery.exec())
         {
             qDebug() << m_fireplaceListQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] getFireplaceList");
             QLOG_ERROR() << m_fireplaceListQuery.lastError();
             pReservationItemListResultPtr->m_error = 1;
         } else {
@@ -1547,6 +1618,9 @@ namespace PenyaManager {
         bool ok = m_insertTableReservationQuery.exec();
         if (!ok) {
             qDebug() << m_insertTableReservationQuery.lastError();
+            QLocale locale;
+            QString dateLocalized = locale.toString(date, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("[ERROR] makeTableReservation: reservationType: %1 date: %2 memberId: %3").arg(static_cast<Uint16>(reservationType)).arg(dateLocalized).arg(memberId);
             QLOG_ERROR() << m_insertTableReservationQuery.lastError();
         }
         m_insertTableReservationQuery.finish();
@@ -1560,6 +1634,7 @@ namespace PenyaManager {
         bool ok = m_updateTableReservationQuery.exec();
         if (!ok) {
             qDebug() << m_updateTableReservationQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] updateTableReservation: reservationId: %1").arg(reservationId);
             QLOG_ERROR() << m_updateTableReservationQuery.lastError();
         }
         m_updateTableReservationQuery.finish();
@@ -1572,6 +1647,7 @@ namespace PenyaManager {
         bool ok = m_cancelTableReservationQuery.exec();
         if (!ok) {
             qDebug() << m_cancelTableReservationQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] cancelTableReservation: reservationId: %1").arg(reservationId);
             QLOG_ERROR() << m_cancelTableReservationQuery.lastError();
         }
         m_cancelTableReservationQuery.finish();
@@ -1588,6 +1664,9 @@ namespace PenyaManager {
         bool ok = m_insertOvenReservationQuery.exec();
         if (!ok) {
             qDebug() << m_insertOvenReservationQuery.lastError();
+            QLocale locale;
+            QString dateLocalized = locale.toString(date, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("[ERROR] makeOvenReservation: reservationType: %1 date: %2 memberId: %3").arg(static_cast<Uint16>(reservationType)).arg(dateLocalized).arg(memberId);
             QLOG_ERROR() << m_insertOvenReservationQuery.lastError();
         }
         m_insertOvenReservationQuery.finish();
@@ -1601,6 +1680,7 @@ namespace PenyaManager {
         bool ok = m_updateOvenReservationQuery.exec();
         if (!ok) {
             qDebug() << m_updateOvenReservationQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] updateOvenReservation: reservationId: %1").arg(reservationId);
             QLOG_ERROR() << m_updateOvenReservationQuery.lastError();
         }
         m_updateOvenReservationQuery.finish();
@@ -1613,6 +1693,7 @@ namespace PenyaManager {
         bool ok = m_cancelOvenReservationQuery.exec();
         if (!ok) {
             qDebug() << m_cancelOvenReservationQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] cancelOvenReservation: reservationId: %1").arg(reservationId);
             QLOG_ERROR() << m_cancelOvenReservationQuery.lastError();
         }
         m_cancelOvenReservationQuery.finish();
@@ -1626,6 +1707,7 @@ namespace PenyaManager {
         bool ok = m_updateFireplaceReservationQuery.exec();
         if (!ok) {
             qDebug() << m_updateFireplaceReservationQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] updateFireplaceReservation: reservationId: %1").arg(reservationId);
             QLOG_ERROR() << m_updateFireplaceReservationQuery.lastError();
         }
         m_updateFireplaceReservationQuery.finish();
@@ -1642,6 +1724,9 @@ namespace PenyaManager {
         bool ok = m_insertFireplaceReservationQuery.exec();
         if (!ok) {
             qDebug() << m_insertFireplaceReservationQuery.lastError();
+            QLocale locale;
+            QString dateLocalized = locale.toString(date, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("[ERROR] makeFireplaceReservation: reservationType: %1 date: %2 memberId: %3").arg(static_cast<Uint16>(reservationType)).arg(dateLocalized).arg(memberId);
             QLOG_ERROR() << m_insertFireplaceReservationQuery.lastError();
         }
         m_insertFireplaceReservationQuery.finish();
@@ -1654,6 +1739,7 @@ namespace PenyaManager {
         bool ok = m_cancelFireplaceReservationQuery.exec();
         if (!ok) {
             qDebug() << m_cancelFireplaceReservationQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] cancelFireplaceReservation: reservationId: %1").arg(reservationId);
             QLOG_ERROR() << m_cancelFireplaceReservationQuery.lastError();
         }
         m_cancelFireplaceReservationQuery.finish();
@@ -1667,6 +1753,7 @@ namespace PenyaManager {
         if (!m_slowPayersQuery.exec())
         {
             qDebug() << m_slowPayersQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] getSlowPayersList");
             QLOG_ERROR() << m_slowPayersQuery.lastError();
             pMemberListResultPtr->m_error = 1;
         } else {
@@ -1702,6 +1789,10 @@ namespace PenyaManager {
         if (!m_invoiceListByMemberIdQuery.exec())
         {
             qDebug() << m_invoiceListByMemberIdQuery.lastError();
+            QLocale locale;
+            QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
+            QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("[ERROR] getInvoiceListByMemberId: memberId: %1 fromDate: %2 toDate: %3").arg(memberId).arg(fromDateLocalized).arg(toDateLocalized);
             QLOG_ERROR() << m_invoiceListByMemberIdQuery.lastError();
             pInvoiceListResultPtr->m_error = 1;
         } else {
@@ -1736,6 +1827,10 @@ namespace PenyaManager {
         if (!m_invoiceListByMemberIdStatsQuery.exec())
         {
             qDebug() << m_invoiceListByMemberIdStatsQuery.lastError();
+            QLocale locale;
+            QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
+            QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("[ERROR] getInvoiceListByMemberIdStats: memberId: %1 fromDate: %2 toDate: %3").arg(memberId).arg(fromDateLocalized).arg(toDateLocalized);
             QLOG_ERROR() << m_invoiceListByMemberIdStatsQuery.lastError();
             pInvoiceListStatsResultPtr->m_error = 1;
         } else {
@@ -1762,6 +1857,10 @@ namespace PenyaManager {
         if (!m_invoiceListQuery.exec())
         {
             qDebug() << m_invoiceListQuery.lastError();
+            QLocale locale;
+            QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
+            QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("[ERROR] getInvoiceList: fromDate: %2 toDate: %3").arg(fromDateLocalized).arg(toDateLocalized);
             QLOG_ERROR() << m_invoiceListQuery.lastError();
             pInvoiceListResultPtr->m_error = 1;
         } else {
@@ -1794,6 +1893,10 @@ namespace PenyaManager {
         if (!m_invoiceListStatsQuery.exec())
         {
             qDebug() << m_invoiceListStatsQuery.lastError();
+            QLocale locale;
+            QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
+            QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("[ERROR] getInvoiceListStats: fromDate: %1 toDate: %2").arg(fromDateLocalized).arg(toDateLocalized);
             QLOG_ERROR() << m_invoiceListStatsQuery.lastError();
             pInvoiceListStatsResultPtr->m_error = 1;
         } else {
@@ -1815,6 +1918,7 @@ namespace PenyaManager {
         if (!m_providerListQuery.exec())
         {
             qDebug() << m_providerListQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] getProviderList");
             QLOG_ERROR() << m_providerListQuery.lastError();
             pProviderListResultPtr->m_error = 1;
         } else {
@@ -1842,9 +1946,9 @@ namespace PenyaManager {
         if (!m_productItemsByProviderQuery.exec())
         {
             qDebug() << m_productItemsByProviderQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] getProductsFromProvider: providerId: %1").arg(providerId);
             QLOG_ERROR() << m_productItemsByProviderQuery.lastError();
             pIListResultPtr->m_error = 1;
-
         } else {
             pIListResultPtr->m_list = ProductItemListPtr(new ProductItemList);
             while (m_productItemsByProviderQuery.next()) {
@@ -1881,6 +1985,7 @@ namespace PenyaManager {
         bool ok = m_createProviderQuery.exec();
         if (!ok) {
             qDebug() << m_createProviderQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] createProvider: name: %1 image: %2 phone: %3").arg(name).arg(imageFileName).arg(phone);
             QLOG_ERROR() << m_createProviderQuery.lastError();
         }
         m_createProviderQuery.finish();
@@ -1896,6 +2001,7 @@ namespace PenyaManager {
         if (!m_productItemListQuery.exec())
         {
             qDebug() << m_productItemListQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] getProductsList: page: %1 count: %2").arg(page).arg(count);
             QLOG_ERROR() << m_productItemListQuery.lastError();
             pIListResultPtr->m_error = 1;
         } else {
@@ -1924,6 +2030,7 @@ namespace PenyaManager {
         if (!m_productItemsStatsQuery.exec())
         {
             qDebug() << m_productItemsStatsQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] getProductsListStats");
             QLOG_ERROR() << m_productItemsStatsQuery.lastError();
             pProductListStatsResultPtr->m_error = 1;
         } else {
@@ -1942,6 +2049,7 @@ namespace PenyaManager {
         bool ok = m_updateStockQuery.exec();
         if (!ok) {
             qDebug() << m_updateStockQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] updateStock: productItemId: %1 count: %2").arg(productItemId).arg(count);
             QLOG_ERROR() << m_updateStockQuery.lastError();
         }
         m_updateStockQuery.finish();
@@ -1955,6 +2063,7 @@ namespace PenyaManager {
         if (!m_productItemQuery.exec())
         {
             qDebug() << m_productItemQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] getProductItem: productItemId: %1").arg(productItemId);
             QLOG_ERROR() << m_productItemQuery.lastError();
             pProductItemResultPtr->m_error = 1;
         } else {
@@ -1988,6 +2097,7 @@ namespace PenyaManager {
         bool ok = m_updateProductItemQuery.exec();
         if (!ok) {
             qDebug() << m_updateProductItemQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] updateProductItem: productId: %1").arg(pProductPtr->m_id);
             QLOG_ERROR() << m_updateProductItemQuery.lastError();
         }
         m_updateProductItemQuery.finish();
@@ -2008,6 +2118,7 @@ namespace PenyaManager {
         bool ok = m_createProductItemQuery.exec();
         if (!ok) {
             qDebug() << m_createProductItemQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] createProductItem: productItemName: %1").arg(pProductPtr->m_name);
             QLOG_ERROR() << m_createProductItemQuery.lastError();
         }
         m_createProductItemQuery.finish();
@@ -2016,6 +2127,7 @@ namespace PenyaManager {
             ok = m_getLastIdQuery.exec();
             if (!ok) {
                 qDebug() << m_getLastIdQuery.lastError();
+                QLOG_ERROR() << QString("[ERROR] createProductItem: getLastIdQuery");
                 QLOG_ERROR() << m_getLastIdQuery.lastError();
             } else {
                 m_getLastIdQuery.next();
@@ -2034,6 +2146,7 @@ namespace PenyaManager {
         if (!m_productFamilyItemQuery.exec())
         {
             qDebug() << m_productFamilyItemQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] getProductFamily: familyId: %1").arg(familyId);
             QLOG_ERROR() << m_productFamilyItemQuery.lastError();
             pProductFamilyResultPtr->m_error = 1;
         } else {
@@ -2059,6 +2172,7 @@ namespace PenyaManager {
         bool ok = m_updateProductFamilyItemQuery.exec();
         if (!ok) {
             qDebug() << m_updateProductFamilyItemQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] updateProductFamilyItem: familyId: %1").arg(pFamilyPtr->m_id);
             QLOG_ERROR() << m_updateProductFamilyItemQuery.lastError();
         }
         m_updateProductFamilyItemQuery.finish();
@@ -2075,6 +2189,7 @@ namespace PenyaManager {
         bool ok = m_createProductFamilyItemQuery.exec();
         if (!ok) {
             qDebug() << m_createProductFamilyItemQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] createProductFamilyItem: familyName: %1").arg(pFamilyPtr->m_name);
             QLOG_ERROR() << m_createProductFamilyItemQuery.lastError();
         }
         m_createProductFamilyItemQuery.finish();
@@ -2106,6 +2221,10 @@ namespace PenyaManager {
         if (!m_productExpensesListQuery.exec())
         {
             qDebug() << m_productExpensesListQuery.lastError();
+            QLocale locale;
+            QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
+            QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("[ERROR] getProductExpensesList: fromDate: %1 toDate: %2 page: %3 count: %4").arg(fromDateLocalized).arg(toDateLocalized).arg(page).arg(count);
             QLOG_ERROR() << m_productExpensesListQuery.lastError();
             pInvoiceProductItemListResultPtr->m_error = 1;
         } else {
@@ -2132,6 +2251,10 @@ namespace PenyaManager {
         if (!m_productExpensesListStatsQuery.exec())
         {
             qDebug() << m_productExpensesListStatsQuery.lastError();
+            QLocale locale;
+            QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
+            QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("[ERROR] getProductExpensesListStats: fromDate: %1 toDate: %2").arg(fromDateLocalized).arg(toDateLocalized);
             QLOG_ERROR() << m_productExpensesListStatsQuery.lastError();
             pIPISResultPtr->m_error = 1;
         } else {
@@ -2154,6 +2277,10 @@ namespace PenyaManager {
         if (!m_productExpensesListByMemberIdQuery.exec())
         {
             qDebug() << m_productExpensesListByMemberIdQuery.lastError();
+            QLocale locale;
+            QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
+            QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("[ERROR] getProductExpensesListByMemberId: memberId: %1 fromDate: %2 toDate: %3 page: %4 count: %5").arg(memberId).arg(fromDateLocalized).arg(toDateLocalized).arg(page).arg(count);
             QLOG_ERROR() << m_productExpensesListByMemberIdQuery.lastError();
             pIPILResult->m_error = 1;
         } else {
@@ -2181,6 +2308,10 @@ namespace PenyaManager {
         if (!m_productExpensesListByMemberIdStatsQuery.exec())
         {
             qDebug() << m_productExpensesListByMemberIdStatsQuery.lastError();
+            QLocale locale;
+            QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
+            QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("[ERROR] getProductExpensesListByMemberIdStats: memberId: %1 fromDate: %2 toDate: %3").arg(memberId).arg(fromDateLocalized).arg(toDateLocalized);
             QLOG_ERROR() << m_productExpensesListByMemberIdStatsQuery.lastError();
             pIPISResult->m_error = 1;
         } else {
@@ -2201,6 +2332,7 @@ namespace PenyaManager {
         bool ok = m_createProviderInvoiceQuery.exec();
         if (!ok) {
             qDebug() << m_createProviderInvoiceQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] createProviderInvoice: providerId: %1").arg(pProviderInvoicePtr->m_id);
             QLOG_ERROR() << m_createProviderInvoiceQuery.lastError();
         }
         m_createProviderInvoiceQuery.finish();
@@ -2215,6 +2347,7 @@ namespace PenyaManager {
         bool ok = m_createProviderInvoiceProductQuery.exec();
         if (!ok) {
             qDebug() << m_createProviderInvoiceProductQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] createProviderInvoiceProduct: providerInvoiceId: %1 productId: %2 count: %3").arg(invoiceId).arg(productId).arg(count);
             QLOG_ERROR() << m_createProviderInvoiceProductQuery.lastError();
         }
         m_createProviderInvoiceProductQuery.finish();
@@ -2231,6 +2364,10 @@ namespace PenyaManager {
         if (!m_providerInvoiceListQuery.exec())
         {
             qDebug() << m_providerInvoiceListQuery.lastError();
+            QLocale locale;
+            QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
+            QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("[ERROR] getProviderInvoiceList: fromDate: %1 toDate: %2 page: %3 count: %4").arg(fromDateLocalized).arg(toDateLocalized).arg(page).arg(count);
             QLOG_ERROR() << m_providerInvoiceListQuery.lastError();
             pInvoiceListResultPtr->m_error = 1;
         } else {
@@ -2257,6 +2394,10 @@ namespace PenyaManager {
         if (!m_providerInvoiceListStatsQuery.exec())
         {
             qDebug() << m_providerInvoiceListStatsQuery.lastError();
+            QLocale locale;
+            QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
+            QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("[ERROR] getProviderInvoiceListStats: fromDate: %1 toDate: %2").arg(fromDateLocalized).arg(toDateLocalized);
             QLOG_ERROR() << m_providerInvoiceListStatsQuery.lastError();
             pInvoiceListStatsResultPtr->m_error = 1;
         } else {
@@ -2280,6 +2421,10 @@ namespace PenyaManager {
         if (!m_providerInvoiceListByProviderIdQuery.exec())
         {
             qDebug() << m_providerInvoiceListByProviderIdQuery.lastError();
+            QLocale locale;
+            QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
+            QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("[ERROR] getProviderInvoiceListByProviderId: providerId: %1 fromDate: %2 toDate: %3 page: %4 count: %5").arg(providerId).arg(fromDateLocalized).arg(toDateLocalized).arg(page).arg(count);
             QLOG_ERROR() << m_providerInvoiceListByProviderIdQuery.lastError();
             pInvoiceListResultPtr->m_error = 1;
         } else {
@@ -2307,6 +2452,10 @@ namespace PenyaManager {
         if (!m_providerInvoiceListByProviderIdStatsQuery.exec())
         {
             qDebug() << m_providerInvoiceListByProviderIdStatsQuery.lastError();
+            QLocale locale;
+            QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
+            QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("[ERROR] getProviderInvoiceListByProviderIdStats: providerId: %1 fromDate: %2 toDate: %3").arg(providerId).arg(fromDateLocalized).arg(toDateLocalized);
             QLOG_ERROR() << m_providerInvoiceListByProviderIdStatsQuery.lastError();
             pInvoiceListStatsResultPtr->m_error = 1;
         } else {
@@ -2325,6 +2474,7 @@ namespace PenyaManager {
         if (!m_uncheckedDepositListQuery.exec())
         {
             qDebug() << m_uncheckedDepositListQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] getUncheckedDeposits");
             QLOG_ERROR() << m_uncheckedDepositListQuery.lastError();
             pDepositListResultPtr->m_error = 1;
         } else {
@@ -2352,6 +2502,7 @@ namespace PenyaManager {
         bool ok = m_closeDepositQuery.exec();
         if (!ok) {
             qDebug() << m_closeDepositQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] closeDeposit: depositId: %1").arg(depositId);
             QLOG_ERROR() << m_closeDepositQuery.lastError();
         }
         m_closeDepositQuery.finish();
@@ -2368,6 +2519,7 @@ namespace PenyaManager {
         if (!pQuery->exec())
         {
             qDebug() << pQuery->lastError();
+            QLOG_ERROR() << QString("[ERROR] getMemberList: postalSend: %1 page: %2 count: %3").arg(onlyPostalSend).arg(page).arg(count);
             QLOG_ERROR() << pQuery->lastError();
             pMemberListResultPtr->m_error = 1;
         } else {
@@ -2413,6 +2565,7 @@ namespace PenyaManager {
         if (!pQuery->exec())
         {
             qDebug() << pQuery->lastError();
+            QLOG_ERROR() << QString("[ERROR] getMemberListStats: postalSend: %1").arg(onlyPostalSend);
             QLOG_ERROR() << pQuery->lastError();
             pMemberListStatsResultPtr->m_error = 1;
         } else {
@@ -2491,6 +2644,7 @@ namespace PenyaManager {
         bool ok = m_updateMemberQuery.exec();
         if (!ok) {
             qDebug() << m_updateMemberQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] updateMember: memberId: %1").arg(pMemberPtr->m_id);
             QLOG_ERROR() << m_updateMemberQuery.lastError();
         }
         m_updateMemberQuery.finish();
@@ -2567,6 +2721,7 @@ namespace PenyaManager {
         if (!m_createMemberQuery.exec())
         {
             qDebug() << m_createMemberQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] createMember: memberUsername: %1").arg(pMemberPtr->m_username);
             QLOG_ERROR() << m_createMemberQuery.lastError();
         }
         m_createMemberQuery.finish();
@@ -2576,6 +2731,7 @@ namespace PenyaManager {
         if (!m_getLastIdQuery.exec())
         {
             qDebug() << m_getLastIdQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] createMember: lastidquery");
             QLOG_ERROR() << m_getLastIdQuery.lastError();
         } else {
             m_getLastIdQuery.next();
@@ -2594,6 +2750,7 @@ namespace PenyaManager {
         bool ok = m_updateMemberPasswordQuery.exec();
         if (!ok) {
             qDebug() << m_updateMemberPasswordQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] changeMemberPassword: memberId: %1").arg(memberId);
             QLOG_ERROR() << m_updateMemberPasswordQuery.lastError();
         }
         m_updateMemberPasswordQuery.finish();
@@ -2608,6 +2765,7 @@ namespace PenyaManager {
         bool ok = m_updateMemberLastLoginQuery.exec();
         if (!ok) {
             qDebug() << m_updateMemberLastLoginQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] changeMemberLastLogin: memberId: %1").arg(memberId);
             QLOG_ERROR() << m_updateMemberLastLoginQuery.lastError();
         }
         m_updateMemberLastLoginQuery.finish();
@@ -2620,6 +2778,7 @@ namespace PenyaManager {
         if (!m_lastInvoiceQuery.exec())
         {
             qDebug() << m_lastInvoiceQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] getLastInvoiceInfo");
             QLOG_ERROR() << m_lastInvoiceQuery.lastError();
             pInvoiceResultPtr->m_error = 1;
         } else if (m_lastInvoiceQuery.next())
@@ -2646,6 +2805,7 @@ namespace PenyaManager {
         bool ok = m_updateLastModInvoiceQuery.exec();
         if (!ok) {
             qDebug() << m_updateLastModInvoiceQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] updateInvoiceLastModDate: invoiceId: %1").arg(invoiceId);
             QLOG_ERROR() << m_updateLastModInvoiceQuery.lastError();
         }
         m_updateLastModInvoiceQuery.finish();
@@ -2659,6 +2819,7 @@ namespace PenyaManager {
         bool ok = m_removeInvoiceQuery.exec();
         if (!ok) {
             qDebug() << m_removeInvoiceQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] deleteInvoice: invoiceId: %1").arg(invoiceId);
             QLOG_ERROR() << m_removeInvoiceQuery.lastError();
         }
         m_removeInvoiceQuery.finish();
@@ -2675,6 +2836,7 @@ namespace PenyaManager {
         if (!m_getActiveInvoiceListQuery.exec())
         {
             qDebug() << m_getActiveInvoiceListQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] getActiveInvoiceList");
             QLOG_ERROR() << m_getActiveInvoiceListQuery.lastError();
             pInvoiceListResultPtr->m_error = 1;
         } else {
@@ -2702,6 +2864,7 @@ namespace PenyaManager {
         if (!m_checkUsernameQuery.exec())
         {
             qDebug() << m_checkUsernameQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] checkUsername: username: %1").arg(username);
             QLOG_ERROR() << m_checkUsernameQuery.lastError();
         } else {
             m_checkUsernameQuery.next();
@@ -2717,6 +2880,7 @@ namespace PenyaManager {
         if (!m_providerInvoiceByIdQuery.exec())
         {
             qDebug() << m_providerInvoiceByIdQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] getProviderInvoiceById: providerInvoiceId: %1").arg(providerInvoiceId);
             QLOG_ERROR() << m_providerInvoiceByIdQuery.lastError();
             pProviderInvoiceResultPtr->m_error = 1;
         } else if (m_providerInvoiceByIdQuery.next())
@@ -2743,6 +2907,7 @@ namespace PenyaManager {
         if (!m_providerInvoiceProductsByInvoiceIdQuery.exec())
         {
             qDebug() << m_providerInvoiceProductsByInvoiceIdQuery.lastError();
+            QLOG_ERROR() << QString("[ERROR] getProviderInvoiceProductsByInvoiceId: providerInvoiceId: %1").arg(providerInvoiceId);
             QLOG_ERROR() << m_providerInvoiceProductsByInvoiceIdQuery.lastError();
             pListResultPtr->m_error = 1;
         } else {

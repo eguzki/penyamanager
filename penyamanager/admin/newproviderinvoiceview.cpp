@@ -81,9 +81,8 @@ namespace PenyaManager {
             QWidget *pCountWidget = pLayout->itemAt(3)->widget();
             QSpinBox *pCountSpinBox = qobject_cast<QSpinBox *>(pCountWidget);
             if (pCountSpinBox == 0) {
-                QLOG_ERROR() << "[ERROR] NewProviderInvoiceView failed taking SpinBox";
-                QMessageBox::critical(this, tr("Unexpected error"),
-                        tr("NewProviderInvoiceView failed taking SpinBox"));
+                QLOG_WARN() << "NewProviderInvoiceView failed taking SpinBox";
+                QMessageBox::warning(this, tr("Unexpected state"), tr("Operation not performed. Contact administrator"));
                 return;
             }
 

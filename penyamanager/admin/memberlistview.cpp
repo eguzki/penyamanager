@@ -163,7 +163,7 @@ namespace PenyaManager {
         auto rowMap = m_rowProductIdMap.find(row);
         if (rowMap == m_rowProductIdMap.end()) {
             //this should never happen
-            QLOG_ERROR() << "[ERROR] memberID not found and should be in the map";
+            QLOG_WARN() << "memberID not found and should be in the map";
             return;
         }
         Int32 memberId = rowMap->second;

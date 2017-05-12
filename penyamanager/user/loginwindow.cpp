@@ -46,9 +46,8 @@ namespace PenyaManager {
 
         if (!Singletons::m_pDAO->isOpen()) {
             QSqlError err = Singletons::m_pDAO->lastError();
-            QLOG_ERROR() << QString("[FATAL] Unable to initialize Database: %1").arg(err.text());
-            QMessageBox::critical(this, "Unable to initialize Database",
-                    "Error initializing database: " + err.text());
+            QLOG_ERROR() << QString("Unable to initialize Database: %1").arg(err.text());
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
             qApp->exit(1);
             return;
         }
@@ -79,7 +78,7 @@ namespace PenyaManager {
         }
         if (!pMemberResultPtr->m_member) {
             // member not found, should not happen
-            QLOG_ERROR() << QString("[WARN] unable to find last invoice's owner by id: %1").arg(pLastInvoiceResultPtr->m_pInvoice->m_memberId);
+            QLOG_WARN() << QString("Unable to find last invoice's owner by id: %1").arg(pLastInvoiceResultPtr->m_pInvoice->m_memberId);
             return;
         }
         fillLastInvoiceOwnerInfo(pMemberResultPtr->m_member);

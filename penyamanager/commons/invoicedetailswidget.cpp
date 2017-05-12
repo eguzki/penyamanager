@@ -63,7 +63,7 @@ namespace PenyaManager {
         }
         if (pInvoicePtr->m_pInvoice) {
             // invoice not found, should not happen
-            QLOG_ERROR() << QString("[WARN] unable to find expected invoice by id: %1").arg(invoiceId);
+            QLOG_ERROR() << QString("[ERROR] unable to find expected invoice by id: %1").arg(invoiceId);
             return;
         }
 
