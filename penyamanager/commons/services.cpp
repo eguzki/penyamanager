@@ -265,7 +265,7 @@ namespace PenyaManager {
                 if (!ok) {
                     return false;
                 }
-                QLOG_INFO() << QString("[Invoice][ONTIMEOUT] User %1 Invoice ID %2").arg(pInvoicePtr->m_memberId).arg(pInvoicePtr->m_id);
+                QLOG_INFO() << QString("[Invoice][OUTDATED] User %1 Invoice ID %2").arg(pInvoicePtr->m_memberId).arg(pInvoicePtr->m_id);
                 // leave returnInvoicePtr empty
             }
         }
