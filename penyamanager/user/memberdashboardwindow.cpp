@@ -329,7 +329,7 @@ namespace PenyaManager {
             return;
         }
 
-        NumItemDialog numItemDialog(this, tr("Enter number of items"));
+        NumItemDialog numItemDialog(this);
         numItemDialog.exec();
         Uint32 count = numItemDialog.getKey();
         if (!count) {
@@ -366,7 +366,7 @@ namespace PenyaManager {
     void MemberDashboardWindow::on_productListWidget_itemClicked(QListWidgetItem *item)
     {
         Int32 productId = item->data(Constants::kIdRole).toInt();
-        NumItemDialog numItemDialog(this, tr("Enter number of items"));
+        NumItemDialog numItemDialog(this);
         numItemDialog.exec();
         Uint32 count = numItemDialog.getKey();
         if (!count) {

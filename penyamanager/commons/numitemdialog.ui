@@ -37,18 +37,16 @@
 background: gray;
 }
 
-#numDisplayWidget {
+#numDisplayWidget  *{
 border: 3px solid gray;
 border-radius: 0px;
 background: white;
-
-}
-
-#numDisplayLabel {
-font: 75 50pt &quot;Calibri&quot;;
+font: 75 40pt &quot;Calibri&quot;;
+color: black;
 font-weight: bold;
-
 }
+
+
 
 QToolButton {
 color: white;

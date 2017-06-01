@@ -112,7 +112,7 @@ namespace PenyaManager {
     void LoginWindow::on_loginPushButton_clicked()
     {
         // Ask for userId
-        NumItemDialog numItemDialog(this, tr("Enter member code"));
+        NumItemDialog numItemDialog(this);
         numItemDialog.exec();
         this->m_username = numItemDialog.getKey();
         // check member username input
@@ -123,7 +123,7 @@ namespace PenyaManager {
         }
 
         // Ask for password
-        NumItemDialog passNumItemDialog(this, tr("Enter password"), true);
+        NumItemDialog passNumItemDialog(this, true);
         passNumItemDialog.exec();
         this->m_password = passNumItemDialog.getKeyStr();
         // check password input
