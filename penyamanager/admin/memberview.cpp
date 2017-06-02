@@ -281,6 +281,10 @@ namespace PenyaManager {
             pMemberPtr->m_pwd = Utils::hashSHA256asHex("0000");
             // create in ddbb
             Int32 memberId = Singletons::m_pDAO->createMember(pMemberPtr);
+            if (memberId < 0) {
+                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                return;
+            }
             // create account
             bool ok = Singletons::m_pServices->createAccountTransaction(memberId, 0.0, "new account", TransactionType::DepositFix);
             if (!ok) {

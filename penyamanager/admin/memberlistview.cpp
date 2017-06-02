@@ -86,6 +86,10 @@ namespace PenyaManager {
             QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
             return;
         }
+        if (!pMemberListStatsResultPtr->m_stats) {
+            pMemberListStatsResultPtr->m_stats = MemberListStatsPtr(new MemberListStats);
+            pMemberListStatsResultPtr->m_stats->m_totalMembers = 0;
+        }
         // enable-disable pagination buttons
         // total num pages
         Uint32 numPages = (Uint32)ceil((Float)pMemberListStatsResultPtr->m_stats->m_totalMembers/Constants::kInvoiceListPageCount);

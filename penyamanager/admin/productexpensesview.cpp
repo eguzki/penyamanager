@@ -157,6 +157,12 @@ namespace PenyaManager {
                 QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
                 return;
             }
+            if (!pInvoiceProductItemStatsResultPtr->m_stats) {
+                // no invoices found
+                InvoiceProductItemStatsPtr stats(new InvoiceProductItemStats);
+                stats->m_totalProducts = 0;
+                pInvoiceProductItemStatsResultPtr->m_stats = stats;
+            }
         } else {
             bool ok;
             Int32 memberUsername = usernameStr.toInt(&ok);
@@ -184,6 +190,12 @@ namespace PenyaManager {
                 if (pInvoiceProductItemStatsResultPtr->m_error) {
                     QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
                     return;
+                }
+                if (!pInvoiceProductItemStatsResultPtr->m_stats) {
+                    // no products found
+                    InvoiceProductItemStatsPtr stats(new InvoiceProductItemStats);
+                    stats->m_totalProducts = 0;
+                    pInvoiceProductItemStatsResultPtr->m_stats = stats;
                 }
             }
         }

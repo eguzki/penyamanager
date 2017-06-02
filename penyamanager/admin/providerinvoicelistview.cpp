@@ -139,6 +139,13 @@ namespace PenyaManager {
                 QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
                 return;
             }
+            if (!pProviderInvoiceListStatsResult->m_stats) {
+                // no invoices found
+                ProviderInvoiceListStatsPtr stats(new ProviderInvoiceListStats);
+                stats->m_totalNumInvoices = 0;
+                stats->m_totalAmount = 0;
+                pProviderInvoiceListStatsResult->m_stats = stats;
+            }
         } else {
             pProviderInvoiceListResult = Singletons::m_pDAO->getProviderInvoiceList(fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
             if (pProviderInvoiceListResult->m_error) {
@@ -149,6 +156,13 @@ namespace PenyaManager {
             if (pProviderInvoiceListStatsResult->m_error) {
                 QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
                 return;
+            }
+            if (!pProviderInvoiceListStatsResult->m_stats) {
+                // no invoices found
+                ProviderInvoiceListStatsPtr stats(new ProviderInvoiceListStats);
+                stats->m_totalNumInvoices = 0;
+                stats->m_totalAmount = 0;
+                pProviderInvoiceListStatsResult->m_stats = stats;
             }
         }
         // enable-disable pagination buttons

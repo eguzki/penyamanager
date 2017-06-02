@@ -19,9 +19,23 @@
 
 namespace PenyaManager {
     //
+    typedef QSharedPointer<QSqlQuery>           QueryPtr;
+    //
+    typedef std::function<QueryPtr(void)>       QueryFactory;
+    //
+    struct QueryResponse {
+        //
+        bool        error;
+        //
+        QueryPtr    query;
+    };
+
+    //
     class DAO
     {
         public:
+            // Last query ID
+            static const QString    kLastQueryId;
             //
             DAO(const QString& hostame, const QString& databaseName,
                     const QString& username, const QString& pass);
@@ -30,7 +44,7 @@ namespace PenyaManager {
             //
             bool isOpen();
             //
-            bool exec(QSqlQuery&);
+            QueryResponse exec(QueryFactory);
             //
             QSqlError lastError() const;
             //
@@ -205,180 +219,6 @@ namespace PenyaManager {
         private:
             //
             QSqlDatabase            m_db;
-            //
-            QSqlQuery               m_productFamiliesQuery;
-            //
-            QSqlQuery               m_productItemsByFamilyQuery;
-            //
-            QSqlQuery               m_memberByIdQuery;
-            //
-            QSqlQuery               m_memberByUsernameQuery;
-            //
-            QSqlQuery               m_memberAccountBalanceQuery;
-            //
-            QSqlQuery               m_invoiceQuery;
-            //
-            QSqlQuery               m_memberActiveInvoiceQuery;
-            //
-            QSqlQuery               m_removeProductInvoiceQuery;
-            //
-            QSqlQuery               m_updateProductInvoiceQuery;
-            //
-            QSqlQuery               m_increaseProductInvoiceQuery;
-            //
-            QSqlQuery               m_insertInvoiceQuery;
-            //
-            QSqlQuery               m_getLastIdQuery;
-            //
-            QSqlQuery               m_productInvoiceCountQuery;
-            //
-            QSqlQuery               m_productInvoiceItemsQuery;
-            //
-            QSqlQuery               m_updateInvoiceQuery;
-            //
-            QSqlQuery               m_memberLastAccountInfoQuery;
-            //
-            QSqlQuery               m_insertTransactionQuery;
-            //
-            QSqlQuery               m_insertDepositQuery;
-            //
-            QSqlQuery               m_accountListQuery;
-            //
-            QSqlQuery               m_memberAccountListQuery;
-            //
-            QSqlQuery               m_accountListCountQuery;
-            //
-            QSqlQuery               m_accountListInvoicesSumQuery;
-            //
-            QSqlQuery               m_accountListDepositsSumQuery;
-            //
-            QSqlQuery               m_accountListBankChargesSumQuery;
-            //
-            QSqlQuery               m_accountListByMemberIdCountQuery;
-            //
-            QSqlQuery               m_accountListByMemberIdInvoicesSumQuery;
-            //
-            QSqlQuery               m_accountListByMemberIdDepositsSumQuery;
-            //
-            QSqlQuery               m_accountListByMemberIdBankChargesSumQuery;
-            //
-            QSqlQuery               m_tableReservationListQuery;
-            //
-            QSqlQuery               m_ovenReservationListQuery;
-            //
-            QSqlQuery               m_fireplaceReservationListQuery;
-            //
-            QSqlQuery               m_lunchTablesListQuery;
-            //
-            QSqlQuery               m_ovenListQuery;
-            //
-            QSqlQuery               m_fireplaceListQuery;
-            //
-            QSqlQuery               m_insertTableReservationQuery;
-            //
-            QSqlQuery               m_updateTableReservationQuery;
-            //
-            QSqlQuery               m_cancelTableReservationQuery;
-            //
-            QSqlQuery               m_insertOvenReservationQuery;
-            //
-            QSqlQuery               m_updateOvenReservationQuery;
-            //
-            QSqlQuery               m_cancelOvenReservationQuery;
-            //
-            QSqlQuery               m_insertFireplaceReservationQuery;
-            //
-            QSqlQuery               m_updateFireplaceReservationQuery;
-            //
-            QSqlQuery               m_cancelFireplaceReservationQuery;
-            //
-            QSqlQuery               m_slowPayersQuery;
-            //
-            QSqlQuery               m_invoiceListByMemberIdQuery;
-            //
-            QSqlQuery               m_invoiceListByMemberIdStatsQuery;
-            //
-            QSqlQuery               m_invoiceListQuery;
-            //
-            QSqlQuery               m_invoiceListStatsQuery;
-            //
-            QSqlQuery               m_providerListQuery;
-            //
-            QSqlQuery               m_productItemsByProviderQuery;
-            //
-            QSqlQuery               m_createProviderQuery;
-            //
-            QSqlQuery               m_productItemListQuery;
-            //
-            QSqlQuery               m_productItemsStatsQuery;
-            //
-            QSqlQuery               m_updateStockQuery;
-            //
-            QSqlQuery               m_productItemQuery;
-            //
-            QSqlQuery               m_updateProductItemQuery;
-            //
-            QSqlQuery               m_createProductItemQuery;
-            //
-            QSqlQuery               m_productFamilyItemQuery;
-            //
-            QSqlQuery               m_updateProductFamilyItemQuery;
-            //
-            QSqlQuery               m_createProductFamilyItemQuery;
-            //
-            QSqlQuery               m_productExpensesListByMemberIdQuery;
-            //
-            QSqlQuery               m_productExpensesListByMemberIdStatsQuery;
-            //
-            QSqlQuery               m_productExpensesListQuery;
-            //
-            QSqlQuery               m_productExpensesListStatsQuery;
-            //
-            QSqlQuery               m_createProviderInvoiceQuery;
-            //
-            QSqlQuery               m_createProviderInvoiceProductQuery;
-            //
-            QSqlQuery               m_providerInvoiceListByProviderIdQuery;
-            //
-            QSqlQuery               m_providerInvoiceListByProviderIdStatsQuery;
-            //
-            QSqlQuery               m_providerInvoiceListQuery;
-            //
-            QSqlQuery               m_providerInvoiceListStatsQuery;
-            //
-            QSqlQuery               m_uncheckedDepositListQuery;
-            //
-            QSqlQuery               m_closeDepositQuery;
-            //
-            QSqlQuery               m_memberListQuery;
-            //
-            QSqlQuery               m_memberListFilteredQuery;
-            //
-            QSqlQuery               m_memberListStatsQuery;
-            //
-            QSqlQuery               m_memberListFilteredStatsQuery;
-            //
-            QSqlQuery               m_updateMemberQuery;
-            //
-            QSqlQuery               m_createMemberQuery;
-            //
-            QSqlQuery               m_updateMemberPasswordQuery;
-            //
-            QSqlQuery               m_updateMemberLastLoginQuery;
-            //
-            QSqlQuery               m_lastInvoiceQuery;
-            //
-            QSqlQuery               m_updateLastModInvoiceQuery;
-            //
-            QSqlQuery               m_removeInvoiceQuery;
-            //
-            QSqlQuery               m_getActiveInvoiceListQuery;
-            //
-            QSqlQuery               m_checkUsernameQuery;
-            //
-            QSqlQuery               m_providerInvoiceByIdQuery;
-            //
-            QSqlQuery               m_providerInvoiceProductsByInvoiceIdQuery;
     };
 }
 #endif // DAO_H

@@ -177,6 +177,11 @@ namespace PenyaManager {
             QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
             return;
         }
+        if (!pProductFamilyResultPtr->m_family) {
+            QLOG_WARN() << QString("fetching item [id: %1] not found in ddbb").arg(familyId);
+            QMessageBox::warning(this, tr("Unexpected state"), tr("Operation not performed. Contact administrator"));
+            return;
+        }
         // name
         this->ui->nameLineEdit->setText(pProductFamilyResultPtr->m_family->m_name);
         // show image
