@@ -59,9 +59,19 @@ namespace PenyaManager {
         // query has to be re-initialized
         // factory fuction creates query objects
         QueryResponse queryResponse;
-        queryResponse.error = false;
+        queryResponse.error = true;
         queryResponse.query = QueryPtr();
-
+        // When database is down, qsqlquery.prepare fails, should not create query when database is down
+        // When database is up again, database connection will be re-opened and sql queries can be built
+        if (!isOpen()) {
+            bool ok = m_db.open();
+            if (!ok) {
+                // database open error
+                qDebug() << m_db.lastError();
+                QLOG_ERROR() << m_db.lastError();
+                return queryResponse;
+            }
+        }
         queryResponse.query = queryFactory();
         queryResponse.error = !queryResponse.query->exec();
         if (queryResponse.error) {
