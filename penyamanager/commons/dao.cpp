@@ -6,98 +6,13 @@
 
 namespace PenyaManager {
     //
+    const QString DAO::kLastQueryId = "SELECT LAST_INSERT_ID()";
+    //
     DAO::DAO(const QString& hostname, const QString& databaseName,
             const QString& username, const QString& pass)
         :
             // add QT_DEBUG_PLUGINS=1 to check plugin errors
-            m_db(QSqlDatabase::addDatabase("QMYSQL")),
-            m_productFamiliesQuery(),
-            m_productItemsByFamilyQuery(),
-            m_memberByIdQuery(),
-            m_memberByUsernameQuery(),
-            m_memberAccountBalanceQuery(),
-            m_invoiceQuery(),
-            m_memberActiveInvoiceQuery(),
-            m_removeProductInvoiceQuery(),
-            m_updateProductInvoiceQuery(),
-            m_increaseProductInvoiceQuery(),
-            m_insertInvoiceQuery(),
-            m_getLastIdQuery("SELECT LAST_INSERT_ID()"),
-            m_productInvoiceCountQuery(),
-            m_productInvoiceItemsQuery(),
-            m_updateInvoiceQuery(),
-            m_memberLastAccountInfoQuery(),
-            m_insertTransactionQuery(),
-            m_insertDepositQuery(),
-            m_accountListQuery(),
-            m_memberAccountListQuery(),
-            m_accountListCountQuery(),
-            m_accountListInvoicesSumQuery(),
-            m_accountListDepositsSumQuery(),
-            m_accountListBankChargesSumQuery(),
-            m_accountListByMemberIdCountQuery(),
-            m_accountListByMemberIdInvoicesSumQuery(),
-            m_accountListByMemberIdDepositsSumQuery(),
-            m_accountListByMemberIdBankChargesSumQuery(),
-            m_tableReservationListQuery(),
-            m_ovenReservationListQuery(),
-            m_fireplaceReservationListQuery(),
-            m_lunchTablesListQuery(),
-            m_ovenListQuery(),
-            m_fireplaceListQuery(),
-            m_insertTableReservationQuery(),
-            m_updateTableReservationQuery(),
-            m_cancelTableReservationQuery(),
-            m_insertOvenReservationQuery(),
-            m_updateOvenReservationQuery(),
-            m_cancelOvenReservationQuery(),
-            m_insertFireplaceReservationQuery(),
-            m_updateFireplaceReservationQuery(),
-            m_cancelFireplaceReservationQuery(),
-            m_slowPayersQuery(),
-            m_invoiceListByMemberIdQuery(),
-            m_invoiceListByMemberIdStatsQuery(),
-            m_invoiceListQuery(),
-            m_invoiceListStatsQuery(),
-            m_providerListQuery(),
-            m_productItemsByProviderQuery(),
-            m_createProviderQuery(),
-            m_productItemListQuery(),
-            m_productItemsStatsQuery(),
-            m_updateStockQuery(),
-            m_productItemQuery(),
-            m_updateProductItemQuery(),
-            m_createProductItemQuery(),
-            m_productFamilyItemQuery(),
-            m_updateProductFamilyItemQuery(),
-            m_createProductFamilyItemQuery(),
-            m_productExpensesListByMemberIdQuery(),
-            m_productExpensesListByMemberIdStatsQuery(),
-            m_productExpensesListQuery(),
-            m_productExpensesListStatsQuery(),
-            m_createProviderInvoiceQuery(),
-            m_createProviderInvoiceProductQuery(),
-            m_providerInvoiceListByProviderIdQuery(),
-            m_providerInvoiceListByProviderIdStatsQuery(),
-            m_providerInvoiceListQuery(),
-            m_providerInvoiceListStatsQuery(),
-            m_uncheckedDepositListQuery(),
-            m_closeDepositQuery(),
-            m_memberListQuery(),
-            m_memberListFilteredQuery(),
-            m_memberListStatsQuery(),
-            m_memberListFilteredStatsQuery(),
-            m_updateMemberQuery(),
-            m_createMemberQuery(),
-            m_updateMemberPasswordQuery(),
-            m_updateMemberLastLoginQuery(),
-            m_lastInvoiceQuery(),
-            m_updateLastModInvoiceQuery(),
-            m_removeInvoiceQuery(),
-            m_getActiveInvoiceListQuery(),
-            m_checkUsernameQuery(),
-            m_providerInvoiceByIdQuery(),
-            m_providerInvoiceProductsByInvoiceIdQuery()
+            m_db(QSqlDatabase::addDatabase("QMYSQL"))
     {
         // configure db connection
         m_db.setHostName(hostname);
@@ -112,579 +27,6 @@ namespace PenyaManager {
             return;
         }
 
-        // ProductFamilies
-        // for filterinf only active, fetch all and filter with code
-        m_productFamiliesQuery.prepare("SELECT idproduct_family, name, image, active FROM product_family");
-
-        // ProductItems by family
-        // for filterinf only active, fetch all and filter with code
-        m_productItemsByFamilyQuery.prepare("SELECT idproduct_item, name, image, active, reg_date, price, idprovider FROM product_item WHERE idproduct_family = :familyId");
-
-        // Member by id
-        m_memberByIdQuery.prepare(
-                "SELECT member.name, member.username, member.surname, member.image, member.lastmodified, member.reg_date, member.active, member.isAdmin, member.birth, "
-                "member.address, member.zip_code, member.town, member.state, member.tel, member.tel2, member.email, member.bank_account, member.postal_send, "
-                "member.notes, member.pwd, member.lastlogin "
-                "FROM member "
-                "WHERE member.idmember=:memberid"
-                );
-
-        // Member by id
-        m_memberByUsernameQuery.prepare(
-                "SELECT member.idmember, member.name, member.surname, member.image, member.lastmodified, member.reg_date, member.active, member.isAdmin, member.birth, "
-                "member.address, member.zip_code, member.town, member.state, member.tel, member.tel2, member.email, member.bank_account, member.postal_send, "
-                "member.notes, member.pwd, member.lastlogin "
-                "FROM member "
-                "WHERE member.username=:username"
-                );
-
-        // Member account balance
-        m_memberAccountBalanceQuery.prepare(
-                "SELECT balance FROM account "
-                "WHERE idmember=:memberid "
-                "ORDER BY date DESC LIMIT 1 "
-                );
-
-        // Invoice by member ID
-        m_invoiceQuery.prepare(
-                "SELECT state, date, total, idmember, last_modif FROM invoice "
-                "WHERE idinvoice = :invoiceid "
-                );
-
-        // Invoice by member ID
-        m_memberActiveInvoiceQuery.prepare(
-                "SELECT idinvoice, state, date, total, last_modif FROM invoice "
-                "WHERE idmember = :memberid AND state = :stateid "
-                "ORDER BY date DESC LIMIT 1"
-                );
-
-        // remove product invoice by ID
-        m_removeProductInvoiceQuery.prepare(
-                "DELETE FROM inv_prod "
-                "WHERE idinvoice = :invoiceid AND idproduct_item = :productid"
-                );
-
-        // update product invoice by ID
-        m_updateProductInvoiceQuery.prepare(
-                "INSERT INTO inv_prod "
-                "(idinvoice, idproduct_item, count) "
-                "VALUES (:invoiceid, :productid, :count) "
-                "ON DUPLICATE KEY UPDATE "
-                "count = :count"
-                );
-        // update product invoice by ID
-        m_increaseProductInvoiceQuery.prepare(
-                "UPDATE inv_prod SET count = count + :count "
-                "WHERE idinvoice = :invoiceid and idproduct_item = :productid"
-                );
-
-        // insert new invoice
-        m_insertInvoiceQuery.prepare(
-                "INSERT INTO invoice"
-                "(idinvoice, state, date, total, idmember, last_modif) "
-                "VALUES (NULL, :state, :date, :total, :idmember, :lastmodified)"
-                );
-        // invoice product items by invoiceId
-        m_productInvoiceCountQuery.prepare(
-                "SELECT COUNT(*)  "
-                "FROM inv_prod "
-                "WHERE idinvoice=:invoiceid"
-                );
-        // invoice product items by invoiceId
-        m_productInvoiceItemsQuery.prepare(
-                "SELECT product_item.idproduct_item, product_item.name, product_item.image, product_item.price, inv_prod.count "
-                "FROM inv_prod INNER JOIN product_item ON inv_prod.idproduct_item=product_item.idproduct_item "
-                "WHERE idinvoice=:invoiceid"
-                );
-
-        // update existing invoice
-        m_updateInvoiceQuery.prepare(
-                "UPDATE invoice "
-                "SET state=:state, date=:date, total=:total, last_modif=:lastmodified "
-                "WHERE idinvoice=:invoiceid"
-                );
-
-        // member's last account transaction
-        m_memberLastAccountInfoQuery.prepare(
-                "SELECT member.username, account.amount, account.date, account.balance, account.description, account.type "
-                "FROM account "
-                "INNER JOIN member ON member.idmember = account.idmember "
-                "WHERE account.idmember=:memberid "
-                "ORDER BY account.date DESC "
-                "LIMIT 1"
-                );
-
-        // insert transaction
-        m_insertTransactionQuery.prepare(
-                "INSERT INTO account "
-                "(idmember, amount, date, balance, description, type) "
-                "VALUES (:memberid, :amount, :date, :balance, :description, :type)"
-                );
-        // insert new deposit
-        m_insertDepositQuery.prepare(
-                "INSERT INTO deposit "
-                "(idmember, state, date, total, description) "
-                "VALUES (:memberid, :state, :date, :total, :description)"
-                );
-        // member's account transaction list
-        m_memberAccountListQuery.prepare(
-                "SELECT member.username, account.amount, account.date, account.description, account.balance, account.type "
-                "FROM account "
-                "INNER JOIN member ON member.idmember = account.idmember "
-                "WHERE account.idmember=:memberid "
-                "AND account.date BETWEEN :fromDate AND :toDate "
-                "ORDER BY account.date DESC "
-                "LIMIT :limit OFFSET :offset"
-                );
-        // member's account transaction list
-        m_accountListQuery.prepare(
-                "SELECT account.idmember, member.username, account.amount, account.date, account.description, account.balance, account.type "
-                "FROM account "
-                "INNER JOIN member ON member.idmember = account.idmember "
-                "WHERE date BETWEEN :fromDate AND :toDate "
-                "ORDER BY date DESC "
-                "LIMIT :limit OFFSET :offset"
-                );
-        // num transactions from account
-        m_accountListCountQuery.prepare(
-                "SELECT COUNT(*) FROM account "
-                "WHERE date BETWEEN :fromDate AND :toDate"
-                );
-        // sum of invoices from account
-        m_accountListInvoicesSumQuery.prepare(
-                "SELECT SUM(amount) FROM account "
-                "WHERE date BETWEEN :fromDate AND :toDate "
-                "AND type=0"
-                );
-        // sum of deposits from account
-        m_accountListDepositsSumQuery.prepare(
-                "SELECT SUM(amount) FROM account "
-                "WHERE date BETWEEN :fromDate AND :toDate "
-                "AND type IN (1, 3)"
-                );
-        // sum of bank charges from account
-        m_accountListBankChargesSumQuery.prepare(
-                "SELECT SUM(amount) FROM account "
-                "WHERE date BETWEEN :fromDate AND :toDate "
-                "AND type=2"
-                );
-        // num transactions by memberid from account
-        m_accountListByMemberIdCountQuery.prepare(
-                "SELECT COUNT(*) FROM account "
-                "WHERE idmember=:memberid "
-                "AND date BETWEEN :fromDate AND :toDate"
-                );
-        // sum of invoices by memberid from account
-        m_accountListByMemberIdInvoicesSumQuery.prepare(
-                "SELECT SUM(amount) FROM account "
-                "WHERE idmember=:memberid "
-                "AND date BETWEEN :fromDate AND :toDate "
-                "AND type=0"
-                );
-        // sum of deposits by memberid from account
-        m_accountListByMemberIdDepositsSumQuery.prepare(
-                "SELECT SUM(amount) FROM account "
-                "WHERE idmember=:memberid "
-                "AND date BETWEEN :fromDate AND :toDate "
-                "AND type IN (1, 3)"
-                );
-        // sum of bank charger by memberid from account
-        m_accountListByMemberIdBankChargesSumQuery.prepare(
-                "SELECT SUM(amount) FROM account "
-                "WHERE idmember=:memberid "
-                "AND date BETWEEN :fromDate AND :toDate "
-                "AND type=2"
-                );
-        // table reservation list for a given moment (date and reservationtype)
-        m_tableReservationListQuery.prepare(
-                "SELECT tablereservation.idreservation, tablereservation.idtable, member.username, member.name, member.surname, tablereservation.idmember, tablereservation.guestnum, tablereservation.isadmin "
-                "FROM tablereservation "
-                "INNER JOIN member ON tablereservation.idmember=member.idmember "
-                "WHERE date=:dateid "
-                "AND reservationtype=:reservationtypeid"
-                );
-        // oven reservation list for a given moment (date and reservationtype)
-        m_ovenReservationListQuery.prepare(
-                "SELECT ovenreservation.idreservation, ovenreservation.idoven, member.username, member.name, member.surname, ovenreservation.idmember, ovenreservation.isadmin "
-                "FROM ovenreservation "
-                "INNER JOIN member ON ovenreservation.idmember=member.idmember "
-                "WHERE date=:dateid "
-                "AND reservationtype=:reservationtypeid"
-                );
-        // oven reservation list for a given moment (date and reservationtype)
-        m_fireplaceReservationListQuery.prepare(
-                "SELECT fireplacereservation.idreservation, fireplacereservation.idfireplace, member.username, member.name, member.surname, fireplacereservation.idmember, fireplacereservation.isadmin "
-                "FROM fireplacereservation "
-                "INNER JOIN member ON fireplacereservation.idmember=member.idmember "
-                "WHERE date=:dateid "
-                "AND reservationtype=:reservationtypeid"
-                );
-        // lunch tables list
-        m_lunchTablesListQuery.prepare(
-                "SELECT idtable, name, guestnum "
-                "FROM lunchtables"
-                );
-        // oven list
-        m_ovenListQuery.prepare(
-                "SELECT idoven, name "
-                "FROM ovens"
-                );
-        // fireplace list
-        m_fireplaceListQuery.prepare(
-                "SELECT idfireplace, name "
-                "FROM fireplaces"
-                );
-        // insert table reservation
-        m_insertTableReservationQuery.prepare(
-                "INSERT INTO tablereservation "
-                "(date, reservationtype, guestnum, idmember, idtable, isadmin) "
-                "VALUES (:date, :reservationtype, :guestnum, :idmember, :idtable, :isadmin)"
-                );
-        // update table reservation
-        m_updateTableReservationQuery.prepare(
-                "UPDATE tablereservation "
-                "SET isadmin = :isadmin "
-                "WHERE idreservation = :idreservation"
-                );
-        // cancel table reservation
-        m_cancelTableReservationQuery.prepare(
-                "DELETE FROM tablereservation "
-                "WHERE idreservation = :idreservation"
-                );
-        // insert oven reservation
-        m_insertOvenReservationQuery.prepare(
-                "INSERT INTO ovenreservation "
-                "(date, reservationtype, idmember, idoven, isadmin) "
-                "VALUES (:date, :reservationtype, :idmember, :idoven, :isadmin)"
-                );
-        // update oven reservation
-        m_updateOvenReservationQuery.prepare(
-                "UPDATE ovenreservation "
-                "SET isadmin = :isadmin "
-                "WHERE idreservation = :idreservation"
-                );
-        // cancel oven reservation
-        m_cancelOvenReservationQuery.prepare(
-                "DELETE FROM ovenreservation "
-                "WHERE idreservation = :idreservation"
-                );
-        // insert fireplace reservation
-        m_insertFireplaceReservationQuery.prepare(
-                "INSERT INTO fireplacereservation "
-                "(date, reservationtype, idmember, idfireplace, isadmin) "
-                "VALUES (:date, :reservationtype, :idmember, :idfireplace, :isadmin)"
-                );
-        // update fireplace reservation
-        m_updateFireplaceReservationQuery.prepare(
-                "UPDATE fireplacereservation "
-                "SET isadmin = :isadmin "
-                "WHERE idreservation = :idreservation"
-                );
-        // cancel fireplace reservation
-        m_cancelFireplaceReservationQuery.prepare(
-                "DELETE FROM fireplacereservation "
-                "WHERE idreservation = :idreservation"
-                );
-        // slow payers
-        // SELECT account.idmember, MAX(account.date) AS MaxDate FROM account GROUP BY account.idmember
-        // returns list of distinct idmembers and their last account date
-        // First INNER JOIN on the same table (account) gets balance for the row with last (newest) account date
-        // Second INNER JOIN on members table get member information
-        m_slowPayersQuery.prepare(
-                "SELECT ac.idmember, member.username, member.name, member.surname, member.image, ac.balance, member.lastmodified, member.reg_date "
-                "FROM account ac "
-                "INNER JOIN (SELECT account.idmember, MAX(account.date) AS MaxDate FROM account GROUP BY account.idmember) groupedAccount "
-                "ON ac.idmember = groupedAccount.idmember AND ac.date=groupedAccount.MaxDate "
-                "INNER JOIN member ON member.idmember=ac.idmember "
-                "WHERE ac.balance<0 AND member.active=1"
-                );
-        // active invoice list by memberId
-        m_invoiceListByMemberIdQuery.prepare(
-                "SELECT member.username, invoice.idinvoice, invoice.date, invoice.total, invoice.last_modif "
-                "FROM invoice "
-                "INNER JOIN member ON member.idmember = invoice.idmember "
-                "WHERE invoice.idmember = :memberid AND invoice.state = :stateid "
-                "AND invoice.date BETWEEN :fromDate AND :toDate "
-                "ORDER BY date DESC "
-                "LIMIT :limit OFFSET :offset"
-                );
-        // active invoice list by memberId stats
-        m_invoiceListByMemberIdStatsQuery.prepare(
-                "SELECT COUNT(*), SUM(total) FROM invoice "
-                "WHERE idmember = :memberid AND state = :stateid "
-                "AND date BETWEEN :fromDate AND :toDate"
-                );
-        // active invoice list
-        m_invoiceListQuery.prepare(
-                "SELECT member.username, invoice.idinvoice, invoice.idmember, invoice.date, invoice.total, invoice.last_modif "
-                "FROM invoice "
-                "INNER JOIN member ON invoice.idmember=member.idmember "
-                "WHERE invoice.state = :stateid "
-                "AND invoice.date BETWEEN :fromDate AND :toDate "
-                "ORDER BY invoice.date DESC "
-                "LIMIT :limit OFFSET :offset"
-                );
-        // active invoice list stats
-        m_invoiceListStatsQuery.prepare(
-                "SELECT COUNT(*), SUM(total) FROM invoice "
-                "WHERE state = :stateid "
-                "AND date BETWEEN :fromDate AND :toDate"
-                );
-        // provider list
-        m_providerListQuery.prepare(
-                "SELECT idprovider, name, image, reg_date, phone FROM provider"
-                );
-        // ProductItems by provider
-        m_productItemsByProviderQuery.prepare("SELECT idproduct_item, name, image, reg_date, idproduct_family, price FROM product_item WHERE active=1 AND idprovider=:providerId");
-        // create provider
-        m_createProviderQuery.prepare(
-                "INSERT INTO provider "
-                "(name, image, reg_date, phone) "
-                "VALUES (:name, :image, :reg_date, :phone)"
-                );
-        // product items query
-        m_productItemListQuery.prepare(
-                "SELECT idproduct_item, name, active, image, reg_date, price, idproduct_family, idprovider, stock FROM product_item "
-                "ORDER BY reg_date DESC "
-                "LIMIT :limit OFFSET :offset"
-                );
-        // product items stats query
-        m_productItemsStatsQuery.prepare(
-                "SELECT COUNT(*) FROM product_item"
-                );
-        // update product item stock
-        m_updateStockQuery.prepare(
-                "UPDATE product_item SET stock = stock + :count WHERE idproduct_item = :productid"
-                );
-        // product item
-        m_productItemQuery.prepare(
-                "SELECT name, active, image, reg_date, price, idproduct_family, idprovider, stock FROM product_item "
-                "WHERE idproduct_item = :productid"
-                );
-        // update product item
-        m_updateProductItemQuery.prepare(
-                "UPDATE product_item "
-                "SET name=:name, image=:image, active=:active, idproduct_family=:familyid, price=:price, "
-                "idprovider=:providerid, stock=:stock "
-                "WHERE idproduct_item = :productid"
-                );
-        // create product item
-        m_createProductItemQuery.prepare(
-                "INSERT INTO product_item "
-                "(name, image, active, reg_date, idproduct_family, price, idprovider, stock) "
-                "VALUES (:name, :image, :active, :reg_date, :familyid, :price, :providerid, :stock)"
-                );
-        // product family item
-        m_productFamilyItemQuery.prepare(
-                "SELECT name, active, image, reg_date FROM product_family "
-                "WHERE idproduct_family = :familyid"
-                );
-        // update product family item
-        m_updateProductFamilyItemQuery.prepare(
-                "UPDATE product_family "
-                "SET name=:name, image=:image, active=:active "
-                "WHERE idproduct_family = :familyid"
-                );
-        // create product family item
-        m_createProductFamilyItemQuery.prepare(
-                "INSERT INTO product_family "
-                "(name, image, active, reg_date) "
-                "VALUES (:name, :image, :active, :reg_date)"
-                );
-        // product expenses list by memberId
-        m_productExpensesListByMemberIdQuery.prepare(
-                "SELECT product_item.idproduct_item, product_item.name, product_item.image, product_item.price, SUM(inv_prod.count) "
-                "FROM invoice "
-                "INNER JOIN inv_prod ON inv_prod.idinvoice=invoice.idinvoice "
-                "INNER JOIN product_item ON product_item.idproduct_item=inv_prod.idproduct_item "
-                "WHERE invoice.idmember=:memberid AND invoice.date BETWEEN :fromDate AND :toDate AND invoice.state=1 "
-                "GROUP BY inv_prod.idproduct_item "
-                "LIMIT :limit OFFSET :offset"
-                );
-        // product expenses list by memberId stats
-        m_productExpensesListByMemberIdStatsQuery.prepare(
-                "SELECT COUNT(DISTINCT inv_prod.idproduct_item) "
-                "FROM invoice "
-                "INNER JOIN inv_prod ON inv_prod.idinvoice=invoice.idinvoice "
-                "WHERE invoice.idmember=:memberid AND invoice.date BETWEEN :fromDate AND :toDate AND invoice.state=1"
-                );
-        // product expenses list
-        // only closed
-        m_productExpensesListQuery.prepare(
-                "SELECT product_item.idproduct_item, product_item.name, product_item.image, product_item.price, SUM(inv_prod.count) "
-                "FROM invoice "
-                "INNER JOIN inv_prod ON inv_prod.idinvoice=invoice.idinvoice "
-                "INNER JOIN product_item ON product_item.idproduct_item=inv_prod.idproduct_item "
-                "WHERE invoice.date BETWEEN :fromDate AND :toDate AND invoice.state=1 "
-                "GROUP BY inv_prod.idproduct_item "
-                "LIMIT :limit OFFSET :offset"
-                );
-        // product expenses list stats
-        // only closed
-        m_productExpensesListStatsQuery.prepare(
-                "SELECT COUNT(DISTINCT inv_prod.idproduct_item) "
-                "FROM invoice "
-                "INNER JOIN inv_prod ON inv_prod.idinvoice=invoice.idinvoice "
-                "WHERE invoice.date BETWEEN :fromDate AND :toDate AND invoice.state=1"
-                );
-        // create provider invoice
-        m_createProviderInvoiceQuery.prepare(
-                "INSERT INTO provider_invoices "
-                "(idprovider_invoices, date, total, idprovider) "
-                "VALUES (:id, :date, :total, :providerid)"
-                );
-        // create provider invoice product
-        m_createProviderInvoiceProductQuery.prepare(
-                "INSERT INTO provider_invoices_product "
-                "(provider_invoices_idprovider_invoices, product_item_idproduct_item, count) "
-                "VALUES (:providerinvoiceid, :productid, :count)"
-                );
-        // provider invoice list by provider
-        m_providerInvoiceListByProviderIdQuery.prepare(
-                "SELECT idprovider_invoices, date, total, idprovider FROM provider_invoices "
-                "WHERE idprovider = :providerid "
-                "AND date BETWEEN :fromDate AND :toDate "
-                "ORDER BY date DESC "
-                "LIMIT :limit OFFSET :offset"
-                );
-        // provider invoice list Stats by provider
-        m_providerInvoiceListByProviderIdStatsQuery.prepare(
-                "SELECT COUNT(*), SUM(total) FROM provider_invoices "
-                "WHERE idprovider = :providerid "
-                "AND date BETWEEN :fromDate AND :toDate"
-                );
-        // provider invoice list
-        m_providerInvoiceListQuery.prepare(
-                "SELECT idprovider_invoices, date, total, idprovider FROM provider_invoices "
-                "WHERE date BETWEEN :fromDate AND :toDate "
-                "ORDER BY date DESC "
-                "LIMIT :limit OFFSET :offset"
-                );
-        // provider invoice list stats
-        m_providerInvoiceListStatsQuery.prepare(
-                "SELECT COUNT(*), SUM(total) FROM provider_invoices "
-                "WHERE date BETWEEN :fromDate AND :toDate"
-                );
-        // unchecked deposit list
-        m_uncheckedDepositListQuery.prepare(
-                "SELECT member.username, deposit.iddeposit, deposit.date, deposit.total, deposit.description, deposit.idmember "
-                "FROM deposit "
-                "INNER JOIN member ON member.idmember = deposit.idmember "
-                "WHERE deposit.state = 0"
-                );
-        // close deposit
-        m_closeDepositQuery.prepare(
-                "UPDATE deposit "
-                "SET state=1 "
-                "WHERE iddeposit=:depositid"
-                );
-        // member list
-        m_memberListQuery.prepare(
-                "SELECT member.idmember, member.username, member.name, member.surname, member.image, member.lastmodified, member.reg_date, member.active, member.isAdmin, member.birth, "
-                "member.address, member.zip_code, member.town, member.state, member.tel, member.tel2, member.email, member.bank_account, member.postal_send, "
-                "member.notes, ac.balance "
-                "FROM account ac "
-                "INNER JOIN (SELECT account.idmember, MAX(account.date) AS MaxDate FROM account GROUP BY account.idmember) groupedAccount "
-                "ON ac.idmember = groupedAccount.idmember AND ac.date=groupedAccount.MaxDate "
-                "INNER JOIN member ON member.idmember=ac.idmember "
-                "ORDER BY member.surname ASC "
-                "LIMIT :limit OFFSET :offset"
-                );
-        // member filtered list
-        m_memberListFilteredQuery.prepare(
-                "SELECT member.idmember, member.username, member.name, member.surname, member.image, member.lastmodified, member.reg_date, member.active, member.isAdmin, member.birth, "
-                "member.address, member.zip_code, member.town, member.state, member.tel, member.tel2, member.email, member.bank_account, member.postal_send, "
-                "member.notes, ac.balance "
-                "FROM account ac "
-                "INNER JOIN (SELECT account.idmember, MAX(account.date) AS MaxDate FROM account GROUP BY account.idmember) groupedAccount "
-                "ON ac.idmember = groupedAccount.idmember AND ac.date=groupedAccount.MaxDate "
-                "INNER JOIN member ON member.idmember=ac.idmember "
-                "WHERE member.postal_send = 1 "
-                "ORDER BY member.surname ASC "
-                "LIMIT :limit OFFSET :offset"
-                );
-        // member list stats
-        m_memberListStatsQuery.prepare(
-                "SELECT COUNT(*) FROM member"
-                );
-        // member list filtered stats
-        m_memberListFilteredStatsQuery.prepare(
-                "SELECT COUNT(*) FROM member "
-                "WHERE postal_send = 1"
-                );
-        // update  member
-        m_updateMemberQuery.prepare(
-                "UPDATE member "
-                "SET username=:username, name=:name, surname=:surname, image=:image, lastmodified=:lastmodified, active=:active, isAdmin=:isadmin, birth=:birth, "
-                "address=:address, zip_code=:zip_code, town=:town, state=:state, tel=:tel, tel2=:tel2, email=:email, bank_account=:bank_account, postal_send=:postal_send, "
-                "notes=:notes "
-                "WHERE idmember = :memberid"
-                );
-        // create member
-        m_createMemberQuery.prepare(
-                "INSERT INTO member "
-                "(username, name, surname, image, lastmodified, reg_date, active, isAdmin, birth, "
-                "address, zip_code, town, state, tel, tel2, email, bank_account, postal_send, "
-                "notes, pwd, lastlogin) "
-                "VALUES (:username, :name, :surname, :image, :lastmodified, :reg_date, :active, :isadmin, :birth, "
-                ":address, :zip_code, :town, :state, :tel, :tel2, :email, :bank_account, :postal_send, "
-                ":notes, :pwd, :lastlogin)"
-                );
-        // update member password
-        m_updateMemberPasswordQuery.prepare(
-                "UPDATE member "
-                "SET pwd=:pwd, lastmodified=:lastmodified "
-                "WHERE idmember = :memberid"
-                );
-        // update member lastlogin date
-        m_updateMemberLastLoginQuery.prepare(
-                "UPDATE member "
-                "SET lastlogin=:lastlogin "
-                "WHERE idmember = :memberid"
-                );
-        // Get last invoice (closed or open)
-        m_lastInvoiceQuery.prepare(
-                "SELECT idinvoice, state, date, total, idmember, last_modif FROM invoice "
-                "ORDER BY last_modif DESC "
-                "LIMIT 1"
-                );
-        // update invoice's last modification date
-        m_updateLastModInvoiceQuery.prepare(
-                "UPDATE invoice "
-                "SET last_modif=:lastmodified "
-                "WHERE idinvoice=:invoiceid"
-                );
-        // remove invoice
-        m_removeInvoiceQuery.prepare(
-                "DELETE FROM invoice "
-                "WHERE idinvoice=:invoiceid"
-                );
-        // active invoice list
-        m_getActiveInvoiceListQuery.prepare(
-                "SELECT idinvoice, state, date, total, idmember, last_modif "
-                "FROM invoice "
-                "WHERE state = :state"
-                );
-        // check username
-        m_checkUsernameQuery.prepare(
-                "SELECT COUNT(*) "
-                "FROM member "
-                "WHERE username = :username"
-                );
-        // get provider invoice by id
-        m_providerInvoiceByIdQuery.prepare(
-                "SELECT provider_invoices.date, provider_invoices.total, provider.name, provider.image "
-                "FROM provider_invoices "
-                "INNER JOIN provider ON provider.idprovider = provider_invoices.idprovider "
-                "WHERE provider_invoices.idprovider_invoices = :providerinvoicesid"
-                );
-        // get provider invoice product by invoice id
-        m_providerInvoiceProductsByInvoiceIdQuery.prepare(
-                "SELECT provider_invoices_product.product_item_idproduct_item, provider_invoices_product.count, product_item.name, product_item.image, product_item.price "
-                "FROM provider_invoices_product "
-                "INNER JOIN product_item ON product_item.idproduct_item = provider_invoices_product.product_item_idproduct_item "
-                "WHERE provider_invoices_product.provider_invoices_idprovider_invoices = :providerinvoicesid"
-                );
     }
 
     //
@@ -707,252 +49,428 @@ namespace PenyaManager {
     {
         return m_db.lastError();
     }
+    //
+    QueryResponse DAO::exec(QueryFactory queryFactory)
+    {
+        // Function to recover from db server connection timeouts
+        // When server reset connection, err is 2006.
+        // Then query cannot be reused.
+        // https://stackoverflow.com/questions/44120210/recover-from-mysql-server-connection-close-using-qt-qsqlquery
+        // query has to be re-initialized
+        // factory fuction creates query objects
+        QueryResponse queryResponse;
+        queryResponse.error = true;
+        queryResponse.query = QueryPtr();
+        // When database is down, qsqlquery.prepare fails, should not create query when database is down
+        // When database is up again, database connection will be re-opened and sql queries can be built
+        if (!isOpen()) {
+            bool ok = m_db.open();
+            if (!ok) {
+                // database open error
+                qDebug() << m_db.lastError();
+                QLOG_ERROR() << m_db.lastError();
+                return queryResponse;
+            }
+        }
+        queryResponse.query = queryFactory();
+        queryResponse.error = !queryResponse.query->exec();
+        if (queryResponse.error) {
+            int err = queryResponse.query->lastError().number();
+            qDebug() << queryResponse.query->lastError();
+            QLOG_ERROR() << queryResponse.query->lastError();
+            // in case error can not be recovered, return null
+            queryResponse.query.reset();
+            // try to handle server timeout connection closes by inactivity
+            // QSqlError(2006, "QMYSQL: Unable to execute query", "MySQL server has gone away")
+            if (err == 2006) {
+                m_db.close();
+                queryResponse.error = !m_db.open();
+                if (!queryResponse.error) {
+                    // when database connection is opened, query has to be re-initialized
+                    queryResponse.query = queryFactory();
+                    queryResponse.error = !queryResponse.query->exec();
+                    if (queryResponse.error) {
+                        qDebug() << queryResponse.query->lastError();
+                        QLOG_ERROR() << queryResponse.query->lastError();
+                        // in case error can not be recovered, return null
+                        queryResponse.query.reset();
+                    }
+                } else {
+                    // database open error
+                    qDebug() << m_db.lastError();
+                    QLOG_ERROR() << m_db.lastError();
+                }
+            }
+        }
+        return queryResponse;
+    }
 
     //
-    ProductFamilyListPtr DAO::getProductFamilies(bool onlyActive)
+    ProductFamilyListResultPtr DAO::getProductFamilies(bool onlyActive)
     {
-        ProductFamilyListPtr pfListPrt(new ProductFamilyList);
+        ProductFamilyListResultPtr pfListPrt(new ProductFamilyListResult);
+
+        auto createQuery = [](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // ProductFamilies
+            // for filtering only active, fetch all and filter with code
+            queryPtr->prepare("SELECT idproduct_family, name, image, active FROM product_family");
+            return queryPtr;
+        };
 
         // run query
-        if (!m_productFamiliesQuery.exec())
-        {
-            qDebug() << m_productFamiliesQuery.lastError();
-            QLOG_ERROR() << m_productFamiliesQuery.lastError();
+        QueryResponse queryResponse = exec(createQuery);
+
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("getProductFamilies: onlyActive: %1").arg(onlyActive);
+            pfListPrt->m_error = 1;
         } else {
-            while (m_productFamiliesQuery.next()) {
+            pfListPrt->m_list = ProductFamilyListPtr(new ProductFamilyList);
+            while (queryResponse.query->next()) {
                 ProductFamilyPtr pfPtr(new ProductFamily);
-                pfPtr->m_id = m_productFamiliesQuery.value(0).toUInt();
-                pfPtr->m_name = m_productFamiliesQuery.value(1).toString();
-                pfPtr->m_imagePath = m_productFamiliesQuery.value(2).toString();
-                pfPtr->m_active = m_productFamiliesQuery.value(3).toInt() == 1;
+                pfPtr->m_id = queryResponse.query->value(0).toUInt();
+                pfPtr->m_name = queryResponse.query->value(1).toString();
+                pfPtr->m_imagePath = queryResponse.query->value(2).toString();
+                pfPtr->m_active = queryResponse.query->value(3).toInt() == 1;
                 // discard when onlyActive filter is on and family is not active
                 if (!onlyActive || pfPtr->m_active) {
-                    pfListPrt->push_back(pfPtr);
+                    pfListPrt->m_list->push_back(pfPtr);
                 }
             }
         }
-        m_productFamiliesQuery.finish();
         return pfListPrt;
     }
 
     //
-    ProductItemListPtr DAO::getProductsFromFamily(Int32 familyId, bool onlyActive)
+    ProductItemListResultPtr DAO::getProductsFromFamily(Int32 familyId, bool onlyActive)
     {
-        ProductItemListPtr pfListPrt(new ProductItemList);
+        ProductItemListResultPtr pIListResultPtr(new ProductItemListResult);
 
-        // bind value
-        m_productItemsByFamilyQuery.bindValue(":familyId", familyId);
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // ProductItems by family
+            // for filterinf only active, fetch all and filter with code
+            queryPtr->prepare("SELECT idproduct_item, name, image, active, reg_date, price, idprovider FROM product_item WHERE idproduct_family = :familyId");
+            // bind value
+            queryPtr->bindValue(":familyId", familyId);
+            return queryPtr;
+        };
+
         // run query
-        if (!m_productItemsByFamilyQuery.exec())
-        {
-            qDebug() << m_productItemsByFamilyQuery.lastError();
-            QLOG_ERROR() << m_productItemsByFamilyQuery.lastError();
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("getProductsFromFamily: family: %1 onlyActive: %2").arg(familyId).arg(onlyActive);
+            pIListResultPtr->m_error = 1;
         } else {
-            while (m_productItemsByFamilyQuery.next()) {
+            pIListResultPtr->m_list = ProductItemListPtr(new ProductItemList);
+            while (queryResponse.query->next()) {
                 ProductItemPtr pfPtr(new ProductItem);
-                pfPtr->m_id = m_productItemsByFamilyQuery.value(0).toUInt();
-                pfPtr->m_name = m_productItemsByFamilyQuery.value(1).toString();
-                pfPtr->m_imagePath = m_productItemsByFamilyQuery.value(2).toString();
-                pfPtr->m_active = m_productItemsByFamilyQuery.value(3).toInt() == 1;
-                pfPtr->m_regDate = m_productItemsByFamilyQuery.value(4).toDateTime();
-                pfPtr->m_price = m_productItemsByFamilyQuery.value(5).toFloat();
-                pfPtr->m_providerId = m_productItemsByFamilyQuery.value(6).toInt();
+                pfPtr->m_id = queryResponse.query->value(0).toUInt();
+                pfPtr->m_name = queryResponse.query->value(1).toString();
+                pfPtr->m_imagePath = queryResponse.query->value(2).toString();
+                pfPtr->m_active = queryResponse.query->value(3).toInt() == 1;
+                pfPtr->m_regDate = queryResponse.query->value(4).toDateTime();
+                pfPtr->m_price = queryResponse.query->value(5).toFloat();
+                pfPtr->m_providerId = queryResponse.query->value(6).toInt();
                 // discard when onlyActive filter is on and product is not active
                 if (!onlyActive || pfPtr->m_active) {
-                    pfListPrt->push_back(pfPtr);
+                    pIListResultPtr->m_list->push_back(pfPtr);
                 }
             }
         }
-        m_productFamiliesQuery.finish();
-        return pfListPrt;
+        return pIListResultPtr;
     }
     //
-    MemberPtr DAO::fetchMemberById(Int32 memberId)
+    MemberResultPtr DAO::fetchMemberById(Int32 memberId)
     {
-        MemberPtr pMemberPtr;
-        // member and balance
-        m_memberByIdQuery.bindValue(":memberid", memberId);
-        if (!m_memberByIdQuery.exec())
+        MemberResultPtr pMemberResultPtr(new MemberResult);
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // Member by id
+            queryPtr->prepare(
+                    "SELECT member.name, member.username, member.surname, member.image, member.lastmodified, member.reg_date, member.active, member.isAdmin, member.birth, "
+                    "member.address, member.zip_code, member.town, member.state, member.tel, member.tel2, member.email, member.bank_account, member.postal_send, "
+                    "member.notes, member.pwd, member.lastlogin "
+                    "FROM member "
+                    "WHERE member.idmember=:memberid"
+                    );
+            // member and balance
+            queryPtr->bindValue(":memberid", memberId);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("fetchMemberById: memberId: %1").arg(memberId);
+            pMemberResultPtr->m_error = 1;
+        } else if (queryResponse.query->next())
         {
-            qDebug() << m_memberByIdQuery.lastError();
-            QLOG_ERROR() << m_memberByIdQuery.lastError();
-        } else if (m_memberByIdQuery.next())
-        {
-            pMemberPtr = MemberPtr(new Member);
+            MemberPtr pMemberPtr(new Member);
             Uint32 column = 0;
             pMemberPtr->m_id = memberId;
-            pMemberPtr->m_name = m_memberByIdQuery.value(column++).toString();
-            pMemberPtr->m_username = m_memberByIdQuery.value(column++).toInt();
-            pMemberPtr->m_surname = m_memberByIdQuery.value(column++).toString();
-            pMemberPtr->m_imagePath = m_memberByIdQuery.value(column++).toString();
-            pMemberPtr->m_lastModified = m_memberByIdQuery.value(column++).toDateTime();
-            pMemberPtr->m_regDate = m_memberByIdQuery.value(column++).toDateTime();
-            pMemberPtr->m_active = m_memberByIdQuery.value(column++).toInt() == 1;
-            pMemberPtr->m_isAdmin = m_memberByIdQuery.value(column++).toInt() == 1;
-            pMemberPtr->m_birthdate = m_memberByIdQuery.value(column++).toDate();
-            pMemberPtr->m_address = m_memberByIdQuery.value(column++).toString();
-            pMemberPtr->m_zipCode = m_memberByIdQuery.value(column++).toString();
-            pMemberPtr->m_town = m_memberByIdQuery.value(column++).toString();
-            pMemberPtr->m_state = m_memberByIdQuery.value(column++).toString();
-            pMemberPtr->m_phone = m_memberByIdQuery.value(column++).toString();
-            pMemberPtr->m_phone2 = m_memberByIdQuery.value(column++).toString();
-            pMemberPtr->m_email = m_memberByIdQuery.value(column++).toString();
-            pMemberPtr->m_bank_account = m_memberByIdQuery.value(column++).toString();
-            pMemberPtr->m_postalSend = m_memberByIdQuery.value(column++).toInt() == 1;
-            pMemberPtr->m_notes = m_memberByIdQuery.value(column++).toString();
-            pMemberPtr->m_pwd = m_memberByIdQuery.value(column++).toString();
-            pMemberPtr->m_lastLogin = m_memberByIdQuery.value(column++).toDateTime();
+            pMemberPtr->m_name = queryResponse.query->value(column++).toString();
+            pMemberPtr->m_username = queryResponse.query->value(column++).toInt();
+            pMemberPtr->m_surname = queryResponse.query->value(column++).toString();
+            pMemberPtr->m_imagePath = queryResponse.query->value(column++).toString();
+            pMemberPtr->m_lastModified = queryResponse.query->value(column++).toDateTime();
+            pMemberPtr->m_regDate = queryResponse.query->value(column++).toDateTime();
+            pMemberPtr->m_active = queryResponse.query->value(column++).toInt() == 1;
+            pMemberPtr->m_isAdmin = queryResponse.query->value(column++).toInt() == 1;
+            pMemberPtr->m_birthdate = queryResponse.query->value(column++).toDate();
+            pMemberPtr->m_address = queryResponse.query->value(column++).toString();
+            pMemberPtr->m_zipCode = queryResponse.query->value(column++).toString();
+            pMemberPtr->m_town = queryResponse.query->value(column++).toString();
+            pMemberPtr->m_state = queryResponse.query->value(column++).toString();
+            pMemberPtr->m_phone = queryResponse.query->value(column++).toString();
+            pMemberPtr->m_phone2 = queryResponse.query->value(column++).toString();
+            pMemberPtr->m_email = queryResponse.query->value(column++).toString();
+            pMemberPtr->m_bank_account = queryResponse.query->value(column++).toString();
+            pMemberPtr->m_postalSend = queryResponse.query->value(column++).toInt() == 1;
+            pMemberPtr->m_notes = queryResponse.query->value(column++).toString();
+            pMemberPtr->m_pwd = queryResponse.query->value(column++).toString();
+            pMemberPtr->m_lastLogin = queryResponse.query->value(column++).toDateTime();
+            pMemberResultPtr->m_member = pMemberPtr;
         }
-        m_memberByIdQuery.finish();
-        return pMemberPtr;
+        return pMemberResultPtr;
     }
     //
-    MemberPtr DAO::fetchMemberByUsername(Int32 username)
+    MemberResultPtr DAO::fetchMemberByUsername(Int32 username)
     {
-        MemberPtr pMemberPtr;
-        // member and balance
-        m_memberByUsernameQuery.bindValue(":username", username);
-        if (!m_memberByUsernameQuery.exec())
+        MemberResultPtr pMemberResultPtr(new MemberResult);
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // Member by username
+            queryPtr->prepare(
+                    "SELECT member.idmember, member.name, member.surname, member.image, member.lastmodified, member.reg_date, member.active, member.isAdmin, member.birth, "
+                    "member.address, member.zip_code, member.town, member.state, member.tel, member.tel2, member.email, member.bank_account, member.postal_send, "
+                    "member.notes, member.pwd, member.lastlogin "
+                    "FROM member "
+                    "WHERE member.username=:username"
+                    );
+            // member and balance
+            queryPtr->bindValue(":username", username);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("fetchMemberByUsername: member: %1").arg(username);
+            pMemberResultPtr->m_error = 1;
+        } else if (queryResponse.query->next())
         {
-            qDebug() << m_memberByUsernameQuery.lastError();
-            QLOG_ERROR() << m_memberByUsernameQuery.lastError();
-        } else if (m_memberByUsernameQuery.next())
-        {
-            pMemberPtr = MemberPtr(new Member);
+            MemberPtr pMemberPtr(new Member);
             Uint32 column = 0;
-            pMemberPtr->m_id = m_memberByUsernameQuery.value(column++).toInt();
-            pMemberPtr->m_name = m_memberByUsernameQuery.value(column++).toString();
+            pMemberPtr->m_id = queryResponse.query->value(column++).toInt();
+            pMemberPtr->m_name = queryResponse.query->value(column++).toString();
             pMemberPtr->m_username = username;
-            pMemberPtr->m_surname = m_memberByUsernameQuery.value(column++).toString();
-            pMemberPtr->m_imagePath = m_memberByUsernameQuery.value(column++).toString();
-            pMemberPtr->m_lastModified = m_memberByUsernameQuery.value(column++).toDateTime();
-            pMemberPtr->m_regDate = m_memberByUsernameQuery.value(column++).toDateTime();
-            pMemberPtr->m_active = m_memberByUsernameQuery.value(column++).toInt() == 1;
-            pMemberPtr->m_isAdmin = m_memberByUsernameQuery.value(column++).toInt() == 1;
-            pMemberPtr->m_birthdate = m_memberByUsernameQuery.value(column++).toDate();
-            pMemberPtr->m_address = m_memberByUsernameQuery.value(column++).toString();
-            pMemberPtr->m_zipCode = m_memberByUsernameQuery.value(column++).toString();
-            pMemberPtr->m_town = m_memberByUsernameQuery.value(column++).toString();
-            pMemberPtr->m_state = m_memberByUsernameQuery.value(column++).toString();
-            pMemberPtr->m_phone = m_memberByUsernameQuery.value(column++).toString();
-            pMemberPtr->m_phone2 = m_memberByUsernameQuery.value(column++).toString();
-            pMemberPtr->m_email = m_memberByUsernameQuery.value(column++).toString();
-            pMemberPtr->m_bank_account = m_memberByUsernameQuery.value(column++).toString();
-            pMemberPtr->m_postalSend = m_memberByUsernameQuery.value(column++).toInt() == 1;
-            pMemberPtr->m_notes = m_memberByUsernameQuery.value(column++).toString();
-            pMemberPtr->m_pwd = m_memberByUsernameQuery.value(column++).toString();
-            pMemberPtr->m_lastLogin = m_memberByUsernameQuery.value(column++).toDateTime();
+            pMemberPtr->m_surname = queryResponse.query->value(column++).toString();
+            pMemberPtr->m_imagePath = queryResponse.query->value(column++).toString();
+            pMemberPtr->m_lastModified = queryResponse.query->value(column++).toDateTime();
+            pMemberPtr->m_regDate = queryResponse.query->value(column++).toDateTime();
+            pMemberPtr->m_active = queryResponse.query->value(column++).toInt() == 1;
+            pMemberPtr->m_isAdmin = queryResponse.query->value(column++).toInt() == 1;
+            pMemberPtr->m_birthdate = queryResponse.query->value(column++).toDate();
+            pMemberPtr->m_address = queryResponse.query->value(column++).toString();
+            pMemberPtr->m_zipCode = queryResponse.query->value(column++).toString();
+            pMemberPtr->m_town = queryResponse.query->value(column++).toString();
+            pMemberPtr->m_state = queryResponse.query->value(column++).toString();
+            pMemberPtr->m_phone = queryResponse.query->value(column++).toString();
+            pMemberPtr->m_phone2 = queryResponse.query->value(column++).toString();
+            pMemberPtr->m_email = queryResponse.query->value(column++).toString();
+            pMemberPtr->m_bank_account = queryResponse.query->value(column++).toString();
+            pMemberPtr->m_postalSend = queryResponse.query->value(column++).toInt() == 1;
+            pMemberPtr->m_notes = queryResponse.query->value(column++).toString();
+            pMemberPtr->m_pwd = queryResponse.query->value(column++).toString();
+            pMemberPtr->m_lastLogin = queryResponse.query->value(column++).toDateTime();
+            pMemberResultPtr->m_member = pMemberPtr;
         }
-        m_memberByUsernameQuery.finish();
-        return pMemberPtr;
+        return pMemberResultPtr;
     }
     //
-    FloatBoolPair DAO::getAccountBalance(Int32 memberId)
+    FloatBoolPairResultPtr DAO::getAccountBalance(Int32 memberId)
     {
-        FloatBoolPair result = {0.0, false};
-        // member and balance
-        m_memberAccountBalanceQuery.bindValue(":memberid", memberId);
-        if (!m_memberAccountBalanceQuery.exec())
+        FloatBoolPairResultPtr pResult(new FloatBoolPairResult);
+
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // Member account balance
+            queryPtr->prepare(
+                    "SELECT balance FROM account "
+                    "WHERE idmember=:memberid "
+                    "ORDER BY date DESC LIMIT 1"
+                    );
+            // member and balance
+            queryPtr->bindValue(":memberid", memberId);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("getAccountBalance: member: %1").arg(memberId);
+            pResult->m_error = 1;
+        } else if (queryResponse.query->next())
         {
-            qDebug() << m_memberAccountBalanceQuery.lastError();
-            QLOG_ERROR() << m_memberAccountBalanceQuery.lastError();
-        } else if (m_memberAccountBalanceQuery.next())
-        {
-            result.b = true;
-            result.f = m_memberAccountBalanceQuery.value(0).toFloat();
+            pResult->m_pair.b = true;
+            pResult->m_pair.f = queryResponse.query->value(0).toFloat();
         }
-        m_memberAccountBalanceQuery.finish();
-        return result;
+        return pResult;
     }
     //
-    InvoicePtr DAO::getInvoice(Int32 invoiceId)
+    InvoiceResultPtr DAO::getInvoice(Int32 invoiceId)
     {
-        InvoicePtr pInvoicePtr;
-        m_invoiceQuery.bindValue(":invoiceid", invoiceId);
-        if (!m_invoiceQuery.exec())
+        InvoiceResultPtr pInvoiceResultPtr(new InvoiceResult);
+
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // Invoice by invoice ID
+            queryPtr->prepare(
+                    "SELECT state, date, total, idmember, last_modif FROM invoice "
+                    "WHERE idinvoice = :invoiceid "
+                    );
+            queryPtr->bindValue(":invoiceid", invoiceId);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("getInvoice: invoice: %1").arg(invoiceId);
+            pInvoiceResultPtr->m_error = 1;
+        } else if (queryResponse.query->next())
         {
-            qDebug() << m_invoiceQuery.lastError();
-            QLOG_ERROR() << m_invoiceQuery.lastError();
-        } else if (m_invoiceQuery.next())
-        {
-            pInvoicePtr = InvoicePtr(new Invoice());
+            InvoicePtr pInvoicePtr(new Invoice());
             pInvoicePtr->m_id = invoiceId;
-            pInvoicePtr->m_state = static_cast<InvoiceState>(m_invoiceQuery.value(0).toUInt());
-            pInvoicePtr->m_date = m_invoiceQuery.value(1).toDateTime();
-            pInvoicePtr->m_total = m_invoiceQuery.value(2).toFloat();
-            pInvoicePtr->m_memberId = m_invoiceQuery.value(3).toInt();
-            pInvoicePtr->m_lastModified = m_invoiceQuery.value(4).toDateTime();
+            pInvoicePtr->m_state = static_cast<InvoiceState>(queryResponse.query->value(0).toUInt());
+            pInvoicePtr->m_date = queryResponse.query->value(1).toDateTime();
+            pInvoicePtr->m_total = queryResponse.query->value(2).toFloat();
+            pInvoicePtr->m_memberId = queryResponse.query->value(3).toInt();
+            pInvoicePtr->m_lastModified = queryResponse.query->value(4).toDateTime();
+            pInvoiceResultPtr->m_pInvoice = pInvoicePtr;
         }
-        m_invoiceQuery.finish();
 
-        return pInvoicePtr;
+        return pInvoiceResultPtr;
     }
 
-    InvoicePtr DAO::getMemberActiveInvoice(Int32 memberId)
+    InvoiceResultPtr DAO::getMemberActiveInvoice(Int32 memberId)
     {
-        InvoicePtr pInvoicePtr;
-        m_memberActiveInvoiceQuery.bindValue(":memberid", memberId);
-        m_memberActiveInvoiceQuery.bindValue(":stateid", static_cast<Int32>(InvoiceState::Open));
-        if (!m_memberActiveInvoiceQuery.exec())
+        InvoiceResultPtr pInvoiceResultPtr(new InvoiceResult);
+
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // Invoice by member ID
+            queryPtr->prepare(
+                    "SELECT idinvoice, state, date, total, last_modif FROM invoice "
+                    "WHERE idmember = :memberid AND state = :stateid "
+                    "ORDER BY date DESC LIMIT 1"
+                    );
+            queryPtr->bindValue(":memberid", memberId);
+            queryPtr->bindValue(":stateid", static_cast<Int32>(InvoiceState::Open));
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("getMemberActiveInvoice: member: %1").arg(memberId);
+            pInvoiceResultPtr->m_error = 1;
+        } else if (queryResponse.query->next())
         {
-            qDebug() << m_memberActiveInvoiceQuery.lastError();
-            QLOG_ERROR() << m_memberActiveInvoiceQuery.lastError();
-        } else if (m_memberActiveInvoiceQuery.next())
-        {
-            pInvoicePtr = InvoicePtr(new Invoice());
-            pInvoicePtr->m_id = m_memberActiveInvoiceQuery.value(0).toUInt();
-            pInvoicePtr->m_state = static_cast<InvoiceState>(m_memberActiveInvoiceQuery.value(1).toUInt());
-            pInvoicePtr->m_date = m_memberActiveInvoiceQuery.value(2).toDateTime();
-            pInvoicePtr->m_total = m_memberActiveInvoiceQuery.value(3).toFloat();
-            pInvoicePtr->m_lastModified = m_memberActiveInvoiceQuery.value(4).toDateTime();
+            InvoicePtr pInvoicePtr(new Invoice());
+            pInvoicePtr->m_id = queryResponse.query->value(0).toUInt();
+            pInvoicePtr->m_state = static_cast<InvoiceState>(queryResponse.query->value(1).toUInt());
+            pInvoicePtr->m_date = queryResponse.query->value(2).toDateTime();
+            pInvoicePtr->m_total = queryResponse.query->value(3).toFloat();
+            pInvoicePtr->m_lastModified = queryResponse.query->value(4).toDateTime();
+            pInvoiceResultPtr->m_pInvoice = pInvoicePtr;
         }
-        m_memberActiveInvoiceQuery.finish();
-        return pInvoicePtr;
+        return pInvoiceResultPtr;
     }
     //
-    void DAO::removeProductInvoice(Int32 invoiceId, Int32 productId)
+    bool DAO::removeProductInvoice(Int32 invoiceId, Int32 productId)
     {
-        m_removeProductInvoiceQuery.bindValue(":invoiceid", invoiceId);
-        m_removeProductInvoiceQuery.bindValue(":productid", productId);
-        if (!m_removeProductInvoiceQuery.exec())
-        {
-            qDebug() << m_removeProductInvoiceQuery.lastError();
-            QLOG_ERROR() << m_removeProductInvoiceQuery.lastError();
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // remove product invoice by ID
+            queryPtr->prepare(
+                    "DELETE FROM inv_prod "
+                    "WHERE idinvoice = :invoiceid AND idproduct_item = :productid"
+                    );
+            queryPtr->bindValue(":invoiceid", invoiceId);
+            queryPtr->bindValue(":productid", productId);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("removeProductInvoice: invoice: %1 product: %2").arg(invoiceId).arg(productId);
         }
-        m_removeProductInvoiceQuery.finish();
+        return !queryResponse.error;
     }
     //
-    void DAO::updateProductInvoice(Int32 invoiceId, Int32 productId, Uint32 count)
+    bool DAO::updateProductInvoice(Int32 invoiceId, Int32 productId, Uint32 count)
     {
-        m_updateProductInvoiceQuery.bindValue(":invoiceid", invoiceId);
-        m_updateProductInvoiceQuery.bindValue(":productid", productId);
-        m_updateProductInvoiceQuery.bindValue(":count", count);
-        if (!m_updateProductInvoiceQuery.exec())
-        {
-            qDebug() << m_updateProductInvoiceQuery.lastError();
-            QLOG_ERROR() << m_updateProductInvoiceQuery.lastError();
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // update product invoice by ID
+            queryPtr->prepare(
+                    "INSERT INTO inv_prod "
+                    "(idinvoice, idproduct_item, count) "
+                    "VALUES (:invoiceid, :productid, :count) "
+                    "ON DUPLICATE KEY UPDATE "
+                    "count = :count"
+                    );
+            queryPtr->bindValue(":invoiceid", invoiceId);
+            queryPtr->bindValue(":productid", productId);
+            queryPtr->bindValue(":count", count);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("updateProductInvoice: invoice: %1 product: %2 count: %3").arg(invoiceId).arg(productId).arg(count);
         }
-        m_updateProductInvoiceQuery.finish();
+        return !queryResponse.error;
     }
     //
     // Returns number of rows affected
-    Uint32 DAO::increaseProductInvoice(Int32 invoiceId, Int32 productId, Uint32 count)
+    // -1 for error
+    Int32 DAO::increaseProductInvoice(Int32 invoiceId, Int32 productId, Uint32 count)
     {
-        m_increaseProductInvoiceQuery.bindValue(":invoiceid", invoiceId);
-        m_increaseProductInvoiceQuery.bindValue(":productid", productId);
-        m_increaseProductInvoiceQuery.bindValue(":count", count);
-        if (!m_increaseProductInvoiceQuery.exec())
-        {
-            qDebug() << m_increaseProductInvoiceQuery.lastError();
-            QLOG_ERROR() << m_increaseProductInvoiceQuery.lastError();
+        Int32 numRowsAffected = -1;
+
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // update product invoice by ID
+            queryPtr->prepare(
+                    "UPDATE inv_prod SET count = count + :count "
+                    "WHERE idinvoice = :invoiceid and idproduct_item = :productid"
+                    );
+            queryPtr->bindValue(":invoiceid", invoiceId);
+            queryPtr->bindValue(":productid", productId);
+            queryPtr->bindValue(":count", count);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("increaseProductInvoice: invoice: %1 product: %2 count: %3").arg(invoiceId).arg(productId).arg(count);
+        } else {
+            numRowsAffected = queryResponse.query->numRowsAffected();
         }
-        Int32 numRowsAffected = m_increaseProductInvoiceQuery.numRowsAffected();
-        m_increaseProductInvoiceQuery.finish();
         return numRowsAffected;
     }
     //
-    InvoicePtr DAO::createInvoice(Int32 memberId)
+    InvoiceResultPtr DAO::createInvoice(Int32 memberId)
     {
+        InvoiceResultPtr pInvoiceResultPtr(new InvoiceResult);
         InvoicePtr pInvoicePtr(new Invoice);
         pInvoicePtr->m_id = 0;
         pInvoicePtr->m_memberId = memberId;
@@ -960,1680 +478,2663 @@ namespace PenyaManager {
         pInvoicePtr->m_date = QDateTime::currentDateTime();
         pInvoicePtr->m_total = 0.0;
         pInvoicePtr->m_lastModified = QDateTime::currentDateTime();
+        pInvoiceResultPtr->m_pInvoice = pInvoicePtr;
 
-        m_insertInvoiceQuery.bindValue(":state", static_cast<Int32>(pInvoicePtr->m_state));
-        m_insertInvoiceQuery.bindValue(":date", pInvoicePtr->m_date);
-        m_insertInvoiceQuery.bindValue(":total", pInvoicePtr->m_total);
-        m_insertInvoiceQuery.bindValue(":idmember", pInvoicePtr->m_memberId);
-        m_insertInvoiceQuery.bindValue(":lastmodified", pInvoicePtr->m_lastModified);
-        if (!m_insertInvoiceQuery.exec())
-        {
-            qDebug() << m_insertInvoiceQuery.lastError();
-            QLOG_ERROR() << m_insertInvoiceQuery.lastError();
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // insert new invoice
+            queryPtr->prepare(
+                    "INSERT INTO invoice"
+                    "(idinvoice, state, date, total, idmember, last_modif) "
+                    "VALUES (NULL, :state, :date, :total, :idmember, :lastmodified)"
+                    );
+            queryPtr->bindValue(":state", static_cast<Int32>(pInvoicePtr->m_state));
+            queryPtr->bindValue(":date", pInvoicePtr->m_date);
+            queryPtr->bindValue(":total", pInvoicePtr->m_total);
+            queryPtr->bindValue(":idmember", pInvoicePtr->m_memberId);
+            queryPtr->bindValue(":lastmodified", pInvoicePtr->m_lastModified);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("createInvoice: member: %1").arg(memberId);
+            pInvoiceResultPtr->m_error = 1;
+            return pInvoiceResultPtr;
         }
-        m_insertInvoiceQuery.finish();
+
+        auto lastQuery = [](){
+            return QueryPtr(new QSqlQuery(kLastQueryId));
+        };
 
         // For LAST_INSERT_ID(), the most recently generated ID is maintained in the server on a per-connection basis
-        if (!m_getLastIdQuery.exec())
-        {
-            qDebug() << m_getLastIdQuery.lastError();
-            QLOG_ERROR() << m_getLastIdQuery.lastError();
-        } else if (m_getLastIdQuery.next())
-        {
-            pInvoicePtr->m_id = m_getLastIdQuery.value(0).toUInt();
+        QueryResponse lastQueryResponse = exec(lastQuery);
+        if (lastQueryResponse.error) {
+            QLOG_ERROR() << QString("createInvoice: could not get last ID created in db");
+            pInvoiceResultPtr->m_error = 1;
+        } else if (lastQueryResponse.query->next()) {
+            pInvoiceResultPtr->m_pInvoice->m_id = lastQueryResponse.query->value(0).toUInt();
         }
-        m_getLastIdQuery.finish();
-        return pInvoicePtr;
+        return pInvoiceResultPtr;
     }
     //
-    Uint32 DAO::countInvoiceProductItems(Int32 invoiceId)
+    Int32 DAO::countInvoiceProductItems(Int32 invoiceId)
     {
         Uint32 count = 0;
-        m_productInvoiceCountQuery.bindValue(":invoiceid", invoiceId);
-        if (!m_productInvoiceCountQuery.exec())
-        {
-            qDebug() << m_productInvoiceCountQuery.lastError();
-            QLOG_ERROR() << m_productInvoiceCountQuery.lastError();
-        } else if (m_productInvoiceCountQuery.next())
-        {
-            count = m_productInvoiceCountQuery.value(0).toUInt();
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // invoice product items by invoiceId
+            queryPtr->prepare(
+                    "SELECT COUNT(*)  "
+                    "FROM inv_prod "
+                    "WHERE idinvoice=:invoiceid"
+                    );
+            queryPtr->bindValue(":invoiceid", invoiceId);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("countInvoiceProductItems: invoiceId: %1").arg(invoiceId);
+            count = -1;
+        } else if (queryResponse.query->next()) {
+            count = queryResponse.query->value(0).toUInt();
         }
-        m_productInvoiceCountQuery.finish();
         return count;
     }
     //
-    InvoiceProductItemListPtr DAO::getInvoiceProductItems(Int32 invoiceId)
+    InvoiceProductItemListResultPtr DAO::getInvoiceProductItems(Int32 invoiceId)
     {
-        // bind value
-        m_productInvoiceItemsQuery.bindValue(":invoiceid", invoiceId);
-        // run query
-        if (!m_productInvoiceItemsQuery.exec())
-        {
-            qDebug() << m_productInvoiceItemsQuery.lastError();
-            QLOG_ERROR() << m_productInvoiceItemsQuery.lastError();
-        }
+        InvoiceProductItemListResultPtr pInvoicePILResult(new InvoiceProductItemListResult);
 
-        InvoiceProductItemListPtr pIPIListPrt(new InvoiceProductItemList);
-        while (m_productInvoiceItemsQuery.next()) {
-            InvoiceProductItemPtr pInvoiceProductItemPtr(new InvoiceProductItem);
-            pInvoiceProductItemPtr->m_productId = m_productInvoiceItemsQuery.value(0).toInt();
-            pInvoiceProductItemPtr->m_productname = m_productInvoiceItemsQuery.value(1).toString();
-            pInvoiceProductItemPtr->m_imagePath = m_productInvoiceItemsQuery.value(2).toString();
-            pInvoiceProductItemPtr->m_priceperunit = m_productInvoiceItemsQuery.value(3).toFloat();
-            pInvoiceProductItemPtr->m_count = m_productInvoiceItemsQuery.value(4).toUInt();
-            pIPIListPrt->push_back(pInvoiceProductItemPtr);
-        }
-        m_productInvoiceItemsQuery.finish();
-        return pIPIListPrt;
-    }
-    //
-    void DAO::updateInvoice(const InvoicePtr &pInvoicePtr)
-    {
-        // bind value
-        m_updateInvoiceQuery.bindValue(":invoiceid", pInvoicePtr->m_id);
-        m_updateInvoiceQuery.bindValue(":state", static_cast<Int32>(pInvoicePtr->m_state));
-        m_updateInvoiceQuery.bindValue(":date", pInvoicePtr->m_date);
-        m_updateInvoiceQuery.bindValue(":total", pInvoicePtr->m_total);
-        m_updateInvoiceQuery.bindValue(":lastmodified", pInvoicePtr->m_lastModified);
-        if (!m_updateInvoiceQuery.exec())
-        {
-            qDebug() << m_updateInvoiceQuery.lastError();
-            QLOG_ERROR() << m_updateInvoiceQuery.lastError();
-        }
-        m_updateInvoiceQuery.finish();
-    }
-    //
-    TransactionPtr DAO::getLastAccountInfo(Int32 memberId)
-    {
-        TransactionPtr pLastAccountInfoPtr;
-        m_memberLastAccountInfoQuery.bindValue(":memberid", memberId);
-        if (!m_memberLastAccountInfoQuery.exec())
-        {
-            qDebug() << m_memberLastAccountInfoQuery.lastError();
-            QLOG_ERROR() << m_memberLastAccountInfoQuery.lastError();
-        } else if (m_memberLastAccountInfoQuery.next())
-        {
-            Uint32 column = 0;
-            pLastAccountInfoPtr = TransactionPtr(new Transaction);
-            pLastAccountInfoPtr->m_memberId = memberId;
-            pLastAccountInfoPtr->m_memberUsername = m_memberLastAccountInfoQuery.value(column++).toInt();
-            pLastAccountInfoPtr->m_amount = m_memberLastAccountInfoQuery.value(column++).toFloat();
-            pLastAccountInfoPtr->m_date = m_memberLastAccountInfoQuery.value(column++).toDateTime();
-            pLastAccountInfoPtr->m_balance = m_memberLastAccountInfoQuery.value(column++).toFloat();
-            pLastAccountInfoPtr->m_descr = m_memberLastAccountInfoQuery.value(column++).toString();
-            pLastAccountInfoPtr->m_type = static_cast<TransactionType>(m_memberLastAccountInfoQuery.value(column++).toUInt());
-        }
-        m_memberLastAccountInfoQuery.finish();
-        return pLastAccountInfoPtr;
-    }
-    //
-    void DAO::insertTransaction(const TransactionPtr &pTransactionPtr)
-    {
-        m_insertTransactionQuery.bindValue(":memberid", pTransactionPtr->m_memberId);
-        m_insertTransactionQuery.bindValue(":amount", pTransactionPtr->m_amount);
-        m_insertTransactionQuery.bindValue(":date", pTransactionPtr->m_date);
-        m_insertTransactionQuery.bindValue(":balance", pTransactionPtr->m_balance);
-        m_insertTransactionQuery.bindValue(":description", pTransactionPtr->m_descr);
-        m_insertTransactionQuery.bindValue(":type", static_cast<Int32>(pTransactionPtr->m_type));
-        if (!m_insertTransactionQuery.exec())
-        {
-            qDebug() << m_insertTransactionQuery.lastError();
-            QLOG_ERROR() << m_insertTransactionQuery.lastError();
-        }
-        m_insertTransactionQuery.finish();
-    }
-    //
-    DepositPtr DAO::createDeposit(const DepositPtr &pDepositPtr)
-    {
-        DepositPtr pNewDepositPtr;
-        m_insertDepositQuery.bindValue(":memberid", pDepositPtr->m_memberId);
-        m_insertDepositQuery.bindValue(":state", static_cast<Int32>(pDepositPtr->m_state));
-        m_insertDepositQuery.bindValue(":date", pDepositPtr->m_date);
-        m_insertDepositQuery.bindValue(":total", pDepositPtr->m_total);
-        m_insertDepositQuery.bindValue(":description", pDepositPtr->m_descr);
-        if (!m_insertDepositQuery.exec())
-        {
-            qDebug() << m_insertDepositQuery.lastError();
-            QLOG_ERROR() << m_insertDepositQuery.lastError();
-            // TODO on error, finish query and exit
-        }
-        m_insertDepositQuery.finish();
-        // For LAST_INSERT_ID(), the most recently generated ID is maintained in the server on a per-connection basis
-        if (!m_getLastIdQuery.exec())
-        {
-            qDebug() << m_getLastIdQuery.lastError();
-            QLOG_ERROR() << m_getLastIdQuery.lastError();
-        } else {
-            m_getLastIdQuery.next();
-            pNewDepositPtr = pDepositPtr;
-            pNewDepositPtr->m_id = m_getLastIdQuery.value(0).toUInt();
-        }
-        m_getLastIdQuery.finish();
-        return pNewDepositPtr;
-    }
-    //
-    TransactionListPtr DAO::getAccountList(const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count)
-    {
-        TransactionListPtr pTransactionListPtr(new TransactionList);
-        // bind value
-        m_accountListQuery.bindValue(":fromDate", fromDate);
-        m_accountListQuery.bindValue(":toDate", toDate);
-        m_accountListQuery.bindValue(":limit", count);
-        m_accountListQuery.bindValue(":offset", page * count);
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // invoice product items by invoiceId
+            queryPtr->prepare(
+                    "SELECT product_item.idproduct_item, product_item.name, product_item.image, product_item.price, inv_prod.count "
+                    "FROM inv_prod INNER JOIN product_item ON inv_prod.idproduct_item=product_item.idproduct_item "
+                    "WHERE idinvoice=:invoiceid"
+                    );
+            // bind value
+            queryPtr->bindValue(":invoiceid", invoiceId);
+            return queryPtr;
+        };
+
         // run query
-        if (!m_accountListQuery.exec())
-        {
-            qDebug() << m_accountListQuery.lastError();
-            QLOG_ERROR() << m_accountListQuery.lastError();
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("getInvoiceProductItems: invoiceId: %1").arg(invoiceId);
+            pInvoicePILResult->m_error = 1;
         } else {
-            while (m_accountListQuery.next()) {
-                Uint32 value = 0;
-                TransactionPtr pTransactionPtr(new Transaction());
-                pTransactionPtr->m_memberId = m_accountListQuery.value(value++).toInt();
-                pTransactionPtr->m_memberUsername = m_accountListQuery.value(value++).toInt();
-                pTransactionPtr->m_amount = m_accountListQuery.value(value++).toFloat();
-                pTransactionPtr->m_date = m_accountListQuery.value(value++).toDateTime();
-                pTransactionPtr->m_descr = m_accountListQuery.value(value++).toString();
-                pTransactionPtr->m_balance = m_accountListQuery.value(value++).toFloat();
-                pTransactionPtr->m_type = static_cast<TransactionType>(m_accountListQuery.value(value++).toUInt());
-                pTransactionListPtr->push_back(pTransactionPtr);
+            pInvoicePILResult->m_list = InvoiceProductItemListPtr(new InvoiceProductItemList);
+            while (queryResponse.query->next()) {
+                InvoiceProductItemPtr pInvoiceProductItemPtr(new InvoiceProductItem);
+                pInvoiceProductItemPtr->m_productId = queryResponse.query->value(0).toInt();
+                pInvoiceProductItemPtr->m_productname = queryResponse.query->value(1).toString();
+                pInvoiceProductItemPtr->m_imagePath = queryResponse.query->value(2).toString();
+                pInvoiceProductItemPtr->m_priceperunit = queryResponse.query->value(3).toFloat();
+                pInvoiceProductItemPtr->m_count = queryResponse.query->value(4).toUInt();
+                pInvoicePILResult->m_list->push_back(pInvoiceProductItemPtr);
             }
         }
 
-        m_accountListQuery.finish();
-        return pTransactionListPtr;
+        return pInvoicePILResult;
     }
     //
-    Uint32 DAO::getAccountListCount(const QDate &fromDate, const QDate &toDate)
+    bool DAO::updateInvoice(const InvoicePtr &pInvoicePtr)
     {
-        Uint32 count = 0;
-        m_accountListCountQuery.bindValue(":fromDate", fromDate);
-        m_accountListCountQuery.bindValue(":toDate", toDate);
-        if (!m_accountListCountQuery.exec())
-        {
-            qDebug() << m_accountListCountQuery.lastError();
-            QLOG_ERROR() << m_accountListCountQuery.lastError();
-        } else if (m_accountListCountQuery.next())
-        {
-            count = m_accountListCountQuery.value(0).toUInt();
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // update existing invoice
+            queryPtr->prepare(
+                    "UPDATE invoice "
+                    "SET state=:state, date=:date, total=:total, last_modif=:lastmodified "
+                    "WHERE idinvoice=:invoiceid"
+                    );
+            // bind value
+            queryPtr->bindValue(":invoiceid", pInvoicePtr->m_id);
+            queryPtr->bindValue(":state", static_cast<Int32>(pInvoicePtr->m_state));
+            queryPtr->bindValue(":date", pInvoicePtr->m_date);
+            queryPtr->bindValue(":total", pInvoicePtr->m_total);
+            queryPtr->bindValue(":lastmodified", pInvoicePtr->m_lastModified);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("updateInvoice: invoiceId: %1").arg(pInvoicePtr->m_id);
         }
-        m_accountListCountQuery.finish();
+        return !queryResponse.error;
+    }
+    //
+    TransactionResultPtr DAO::getLastAccountInfo(Int32 memberId)
+    {
+        TransactionResultPtr pLastAccountInfoResultPtr(new TransactionResult);
+
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // member's last account transaction
+            queryPtr->prepare(
+                    "SELECT member.username, account.amount, account.date, account.balance, account.description, account.type "
+                    "FROM account "
+                    "INNER JOIN member ON member.idmember = account.idmember "
+                    "WHERE account.idmember=:memberid "
+                    "ORDER BY account.date DESC "
+                    "LIMIT 1"
+                    );
+            queryPtr->bindValue(":memberid", memberId);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("getLastAccountInfo: memberId: %1").arg(memberId);
+            pLastAccountInfoResultPtr->m_error = 1;
+        } else if (queryResponse.query->next()) {
+            Uint32 column = 0;
+            TransactionPtr pLastAccountInfoPtr(new Transaction);
+            pLastAccountInfoPtr->m_memberId = memberId;
+            pLastAccountInfoPtr->m_memberUsername = queryResponse.query->value(column++).toInt();
+            pLastAccountInfoPtr->m_amount = queryResponse.query->value(column++).toFloat();
+            pLastAccountInfoPtr->m_date = queryResponse.query->value(column++).toDateTime();
+            pLastAccountInfoPtr->m_balance = queryResponse.query->value(column++).toFloat();
+            pLastAccountInfoPtr->m_descr = queryResponse.query->value(column++).toString();
+            pLastAccountInfoPtr->m_type = static_cast<TransactionType>(queryResponse.query->value(column++).toUInt());
+            pLastAccountInfoResultPtr->m_transaction = pLastAccountInfoPtr;
+        }
+        return pLastAccountInfoResultPtr;
+    }
+    //
+    bool DAO::insertTransaction(const TransactionPtr &pTransactionPtr)
+    {
+        auto createQuery = [pTransactionPtr](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // insert transaction
+            queryPtr->prepare(
+                    "INSERT INTO account "
+                    "(idmember, amount, date, balance, description, type) "
+                    "VALUES (:memberid, :amount, :date, :balance, :description, :type)"
+                    );
+            queryPtr->bindValue(":memberid", pTransactionPtr->m_memberId);
+            queryPtr->bindValue(":amount", pTransactionPtr->m_amount);
+            queryPtr->bindValue(":date", pTransactionPtr->m_date);
+            queryPtr->bindValue(":balance", pTransactionPtr->m_balance);
+            queryPtr->bindValue(":description", pTransactionPtr->m_descr);
+            queryPtr->bindValue(":type", static_cast<Int32>(pTransactionPtr->m_type));
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("insertTransaction: memberId: %1").arg(pTransactionPtr->m_memberId);
+        }
+        return !queryResponse.error;
+    }
+    //
+    DepositResultPtr DAO::createDeposit(const DepositPtr &pDepositPtr)
+    {
+        DepositResultPtr pNewDepositResultPtr(new DepositResult);
+
+        auto createQuery = [pDepositPtr](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // insert new deposit
+            queryPtr->prepare(
+                    "INSERT INTO deposit "
+                    "(idmember, state, date, total, description) "
+                    "VALUES (:memberid, :state, :date, :total, :description)"
+                    );
+            queryPtr->bindValue(":memberid", pDepositPtr->m_memberId);
+            queryPtr->bindValue(":state", static_cast<Int32>(pDepositPtr->m_state));
+            queryPtr->bindValue(":date", pDepositPtr->m_date);
+            queryPtr->bindValue(":total", pDepositPtr->m_total);
+            queryPtr->bindValue(":description", pDepositPtr->m_descr);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("createDeposit: memberId: %1").arg(pDepositPtr->m_memberId);
+            pNewDepositResultPtr->m_error = 1;
+            return pNewDepositResultPtr;
+        }
+
+        auto lastQuery = [](){
+            return QueryPtr(new QSqlQuery(kLastQueryId));
+        };
+
+        // For LAST_INSERT_ID(), the most recently generated ID is maintained in the server on a per-connection basis
+        QueryResponse lastQueryResponse = exec(lastQuery);
+        if (lastQueryResponse.error) {
+            QLOG_ERROR() << QString("createDeposit: could not get last ID created in db");
+            pNewDepositResultPtr->m_error = 1;
+        } else if (lastQueryResponse.query->next()) {
+            pNewDepositResultPtr->m_deposit = pDepositPtr;
+            pNewDepositResultPtr->m_deposit->m_id = lastQueryResponse.query->value(0).toUInt();
+        }
+        return pNewDepositResultPtr;
+    }
+    //
+    TransactionListResultPtr DAO::getAccountList(const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count)
+    {
+        TransactionListResultPtr pTransactionListResultPtr(new TransactionListResult);
+
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // member's account transaction list
+            queryPtr->prepare(
+                    "SELECT account.idmember, member.username, account.amount, account.date, account.description, account.balance, account.type "
+                    "FROM account "
+                    "INNER JOIN member ON member.idmember = account.idmember "
+                    "WHERE date BETWEEN :fromDate AND :toDate "
+                    "ORDER BY date DESC "
+                    "LIMIT :limit OFFSET :offset"
+                    );
+            // bind value
+            queryPtr->bindValue(":fromDate", fromDate);
+            queryPtr->bindValue(":toDate", toDate);
+            queryPtr->bindValue(":limit", count);
+            queryPtr->bindValue(":offset", page * count);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLocale locale;
+            QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
+            QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("getAccountList: fromDate: %1 toDate: %2 page: %3 count: %4").arg(fromDateLocalized).arg(toDateLocalized).arg(page).arg(count);
+            pTransactionListResultPtr->m_error = 1;
+        } else {
+            pTransactionListResultPtr->m_list = TransactionListPtr(new TransactionList);
+            while (queryResponse.query->next()) {
+                Uint32 value = 0;
+                TransactionPtr pTransactionPtr(new Transaction());
+                pTransactionPtr->m_memberId = queryResponse.query->value(value++).toInt();
+                pTransactionPtr->m_memberUsername = queryResponse.query->value(value++).toInt();
+                pTransactionPtr->m_amount = queryResponse.query->value(value++).toFloat();
+                pTransactionPtr->m_date = queryResponse.query->value(value++).toDateTime();
+                pTransactionPtr->m_descr = queryResponse.query->value(value++).toString();
+                pTransactionPtr->m_balance = queryResponse.query->value(value++).toFloat();
+                pTransactionPtr->m_type = static_cast<TransactionType>(queryResponse.query->value(value++).toUInt());
+                pTransactionListResultPtr->m_list->push_back(pTransactionPtr);
+            }
+        }
+
+        return pTransactionListResultPtr;
+    }
+    //
+    Int32 DAO::getAccountListCount(const QDate &fromDate, const QDate &toDate)
+    {
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // num transactions from account
+            queryPtr->prepare(
+                    "SELECT COUNT(*) FROM account "
+                    "WHERE date BETWEEN :fromDate AND :toDate"
+                    );
+            queryPtr->bindValue(":fromDate", fromDate);
+            queryPtr->bindValue(":toDate", toDate);
+            return queryPtr;
+        };
+
+        Int32 count = 0.0;
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLocale locale;
+            QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
+            QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("getAccountListCount: fromDate: %1 toDate: %2").arg(fromDateLocalized).arg(toDateLocalized);
+            count = -1;
+        } else if (queryResponse.query->next()) {
+            count = queryResponse.query->value(0).toUInt();
+        }
         return count;
     }
     //
     Float DAO::getAccountListInvoicesSum(const QDate &fromDate, const QDate &toDate)
     {
         Float count = 0.0;
-        m_accountListInvoicesSumQuery.bindValue(":fromDate", fromDate);
-        m_accountListInvoicesSumQuery.bindValue(":toDate", toDate);
-        if (!m_accountListInvoicesSumQuery.exec())
-        {
-            qDebug() << m_accountListInvoicesSumQuery.lastError();
-            QLOG_ERROR() << m_accountListInvoicesSumQuery.lastError();
-        } else if (m_accountListInvoicesSumQuery.next())
-        {
-            count = m_accountListInvoicesSumQuery.value(0).toFloat();
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // sum of invoices from account
+            queryPtr->prepare(
+                    "SELECT SUM(amount) FROM account "
+                    "WHERE date BETWEEN :fromDate AND :toDate "
+                    "AND type=0"
+                    );
+            queryPtr->bindValue(":fromDate", fromDate);
+            queryPtr->bindValue(":toDate", toDate);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLocale locale;
+            QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
+            QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("getAccountListInvoicesSum: fromDate: %1 toDate: %2").arg(fromDateLocalized).arg(toDateLocalized);
+            count = -1;
+        } else if (queryResponse.query->next()) {
+            count = queryResponse.query->value(0).toInt();
         }
-        m_accountListInvoicesSumQuery.finish();
         return count;
     }
     //
     Float DAO::getAccountListDepositsSum(const QDate &fromDate, const QDate &toDate)
     {
         Float count = 0.0;
-        m_accountListDepositsSumQuery.bindValue(":fromDate", fromDate);
-        m_accountListDepositsSumQuery.bindValue(":toDate", toDate);
-        if (!m_accountListDepositsSumQuery.exec())
-        {
-            qDebug() << m_accountListDepositsSumQuery.lastError();
-            QLOG_ERROR() << m_accountListDepositsSumQuery.lastError();
-        } else if (m_accountListDepositsSumQuery.next())
-        {
-            count = m_accountListDepositsSumQuery.value(0).toFloat();
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // sum of deposits from account
+            queryPtr->prepare(
+                    "SELECT SUM(amount) FROM account "
+                    "WHERE date BETWEEN :fromDate AND :toDate "
+                    "AND type IN (1, 3)"
+                    );
+            queryPtr->bindValue(":fromDate", fromDate);
+            queryPtr->bindValue(":toDate", toDate);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLocale locale;
+            QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
+            QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("getAccountListDepositsSum: fromDate: %1 toDate: %2").arg(fromDateLocalized).arg(toDateLocalized);
+            count = -1;
+        } else if (queryResponse.query->next()) {
+            count = queryResponse.query->value(0).toFloat();
         }
-        m_accountListDepositsSumQuery.finish();
         return count;
     }
     //
     Float DAO::getAccountListBankChargesSum(const QDate &fromDate, const QDate &toDate)
     {
         Float count = 0.0;
-        m_accountListBankChargesSumQuery.bindValue(":fromDate", fromDate);
-        m_accountListBankChargesSumQuery.bindValue(":toDate", toDate);
-        if (!m_accountListBankChargesSumQuery.exec())
-        {
-            qDebug() << m_accountListBankChargesSumQuery.lastError();
-            QLOG_ERROR() << m_accountListBankChargesSumQuery.lastError();
-        } else if (m_accountListBankChargesSumQuery.next())
-        {
-            count = m_accountListBankChargesSumQuery.value(0).toFloat();
+
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // sum of bank charges from account
+            queryPtr->prepare(
+                    "SELECT SUM(amount) FROM account "
+                    "WHERE date BETWEEN :fromDate AND :toDate "
+                    "AND type=2"
+                    );
+            queryPtr->bindValue(":fromDate", fromDate);
+            queryPtr->bindValue(":toDate", toDate);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLocale locale;
+            QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
+            QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("getAccountListBankChargesSum: fromDate: %1 toDate: %2").arg(fromDateLocalized).arg(toDateLocalized);
+            count = -1;
+        } else if (queryResponse.query->next()) {
+            count = queryResponse.query->value(0).toFloat();
         }
-        m_accountListBankChargesSumQuery.finish();
         return count;
     }
     //
-    Uint32 DAO::getAccountListByMemberIdCount(Int32 memberId, const QDate &fromDate, const QDate &toDate)
+    Int32 DAO::getAccountListByMemberIdCount(Int32 memberId, const QDate &fromDate, const QDate &toDate)
     {
-        Uint32 count = 0;
-        m_accountListByMemberIdCountQuery.bindValue(":memberid", memberId);
-        m_accountListByMemberIdCountQuery.bindValue(":fromDate", fromDate);
-        m_accountListByMemberIdCountQuery.bindValue(":toDate", toDate);
-        if (!m_accountListByMemberIdCountQuery.exec())
-        {
-            qDebug() << m_accountListByMemberIdCountQuery.lastError();
-            QLOG_ERROR() << m_accountListByMemberIdCountQuery.lastError();
-        } else if (m_accountListByMemberIdCountQuery.next())
-        {
-            count = m_accountListByMemberIdCountQuery.value(0).toUInt();
+        Uint32 count = 0.0;
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // num transactions by memberid from account
+            queryPtr->prepare(
+                    "SELECT COUNT(*) FROM account "
+                    "WHERE idmember=:memberid "
+                    "AND date BETWEEN :fromDate AND :toDate"
+                    );
+            queryPtr->bindValue(":memberid", memberId);
+            queryPtr->bindValue(":fromDate", fromDate);
+            queryPtr->bindValue(":toDate", toDate);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLocale locale;
+            QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
+            QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("getAccountListByMemberIdCount: memberId: %1 fromDate: %2 toDate: %3").arg(memberId).arg(fromDateLocalized).arg(toDateLocalized);
+            count = -1;
+        } else if (queryResponse.query->next()) {
+            count = queryResponse.query->value(0).toUInt();
         }
-        m_accountListByMemberIdCountQuery.finish();
         return count;
     }
     //
     Float DAO::getAccountListByMemberIdInvoicesSum(Int32 memberId, const QDate &fromDate, const QDate &toDate)
     {
         Float count = 0.0;
-        m_accountListByMemberIdInvoicesSumQuery.bindValue(":memberid", memberId);
-        m_accountListByMemberIdInvoicesSumQuery.bindValue(":fromDate", fromDate);
-        m_accountListByMemberIdInvoicesSumQuery.bindValue(":toDate", toDate);
-        if (!m_accountListByMemberIdInvoicesSumQuery.exec())
-        {
-            qDebug() << m_accountListByMemberIdInvoicesSumQuery.lastError();
-            QLOG_ERROR() << m_accountListByMemberIdInvoicesSumQuery.lastError();
-        } else if (m_accountListByMemberIdInvoicesSumQuery.next())
-        {
-            count = m_accountListByMemberIdInvoicesSumQuery.value(0).toFloat();
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // sum of invoices by memberid from account
+            queryPtr->prepare(
+                    "SELECT SUM(amount) FROM account "
+                    "WHERE idmember=:memberid "
+                    "AND date BETWEEN :fromDate AND :toDate "
+                    "AND type=0"
+                    );
+            queryPtr->bindValue(":memberid", memberId);
+            queryPtr->bindValue(":fromDate", fromDate);
+            queryPtr->bindValue(":toDate", toDate);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLocale locale;
+            QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
+            QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("getAccountListByMemberIdInvoicesSum: memberId: %1 fromDate: %2 toDate: %3").arg(memberId).arg(fromDateLocalized).arg(toDateLocalized);
+            count = -1;
+        } else if (queryResponse.query->next()) {
+            count = queryResponse.query->value(0).toFloat();
         }
-        m_accountListByMemberIdInvoicesSumQuery.finish();
         return count;
     }
     //
     Float DAO::getAccountListByMemberIdDepositsSum(Int32 memberId, const QDate &fromDate, const QDate &toDate)
     {
         Float count = 0.0;
-        m_accountListByMemberIdDepositsSumQuery.bindValue(":memberid", memberId);
-        m_accountListByMemberIdDepositsSumQuery.bindValue(":fromDate", fromDate);
-        m_accountListByMemberIdDepositsSumQuery.bindValue(":toDate", toDate);
-        if (!m_accountListByMemberIdDepositsSumQuery.exec())
-        {
-            qDebug() << m_accountListByMemberIdDepositsSumQuery.lastError();
-            QLOG_ERROR() << m_accountListByMemberIdDepositsSumQuery.lastError();
-        } else if (m_accountListByMemberIdDepositsSumQuery.next())
-        {
-            count = m_accountListByMemberIdDepositsSumQuery.value(0).toFloat();
+
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // sum of deposits by memberid from account
+            queryPtr->prepare(
+                    "SELECT SUM(amount) FROM account "
+                    "WHERE idmember=:memberid "
+                    "AND date BETWEEN :fromDate AND :toDate "
+                    "AND type IN (1, 3)"
+                    );
+            queryPtr->bindValue(":memberid", memberId);
+            queryPtr->bindValue(":fromDate", fromDate);
+            queryPtr->bindValue(":toDate", toDate);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLocale locale;
+            QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
+            QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("getAccountListByMemberIdDepositsSum: memberId: %1 fromDate: %2 toDate: %3").arg(memberId).arg(fromDateLocalized).arg(toDateLocalized);
+            count = -1;
+        } else if (queryResponse.query->next()) {
+            count = queryResponse.query->value(0).toFloat();
         }
-        m_accountListByMemberIdDepositsSumQuery.finish();
         return count;
     }
     //
     Float DAO::getAccountListByMemberIdBankChargesSum(Int32 memberId, const QDate &fromDate, const QDate &toDate)
     {
         Float count = 0.0;
-        m_accountListByMemberIdBankChargesSumQuery.bindValue(":memberid", memberId);
-        m_accountListByMemberIdBankChargesSumQuery.bindValue(":fromDate", fromDate);
-        m_accountListByMemberIdBankChargesSumQuery.bindValue(":toDate", toDate);
-        if (!m_accountListByMemberIdBankChargesSumQuery.exec())
-        {
-            qDebug() << m_accountListByMemberIdBankChargesSumQuery.lastError();
-            QLOG_ERROR() << m_accountListByMemberIdBankChargesSumQuery.lastError();
-        } else if (m_accountListByMemberIdBankChargesSumQuery.next())
-        {
-            count = m_accountListByMemberIdBankChargesSumQuery.value(0).toFloat();
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // sum of bank charger by memberid from account
+            queryPtr->prepare(
+                    "SELECT SUM(amount) FROM account "
+                    "WHERE idmember=:memberid "
+                    "AND date BETWEEN :fromDate AND :toDate "
+                    "AND type=2"
+                    );
+            queryPtr->bindValue(":memberid", memberId);
+            queryPtr->bindValue(":fromDate", fromDate);
+            queryPtr->bindValue(":toDate", toDate);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLocale locale;
+            QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
+            QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("getAccountListByMemberIdBankChargesSum: memberId: %1 fromDate: %2 toDate: %3").arg(memberId).arg(fromDateLocalized).arg(toDateLocalized);
+            count = -1;
+        } else if (queryResponse.query->next()) {
+            count = queryResponse.query->value(0).toFloat();
         }
-        m_accountListByMemberIdBankChargesSumQuery.finish();
         return count;
     }
     //
-    TransactionListPtr DAO::getAccountListByMemberId(Int32 memberId, const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count)
+    TransactionListResultPtr DAO::getAccountListByMemberId(Int32 memberId, const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count)
     {
-        TransactionListPtr pTransactionListPtr(new TransactionList);
-        // bind value
-        m_memberAccountListQuery.bindValue(":memberid", memberId);
-        m_memberAccountListQuery.bindValue(":fromDate", fromDate);
-        m_memberAccountListQuery.bindValue(":toDate", toDate);
-        m_memberAccountListQuery.bindValue(":limit", count);
-        m_memberAccountListQuery.bindValue(":offset", page * count);
+        TransactionListResultPtr pTransactionListResultPtr(new TransactionListResult);
+
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // member's account transaction list
+            queryPtr->prepare(
+                    "SELECT member.username, account.amount, account.date, account.description, account.balance, account.type "
+                    "FROM account "
+                    "INNER JOIN member ON member.idmember = account.idmember "
+                    "WHERE account.idmember=:memberid "
+                    "AND account.date BETWEEN :fromDate AND :toDate "
+                    "ORDER BY account.date DESC "
+                    "LIMIT :limit OFFSET :offset"
+                    );
+            // bind value
+            queryPtr->bindValue(":memberid", memberId);
+            queryPtr->bindValue(":fromDate", fromDate);
+            queryPtr->bindValue(":toDate", toDate);
+            queryPtr->bindValue(":limit", count);
+            queryPtr->bindValue(":offset", page * count);
+            return queryPtr;
+        };
+
         // run query
-        if (!m_memberAccountListQuery.exec())
-        {
-            qDebug() << m_memberAccountListQuery.lastError();
-            QLOG_ERROR() << m_memberAccountListQuery.lastError();
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLocale locale;
+            QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
+            QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("getAccountListByMemberId: memberId: %1 fromDate: %2 toDate: %3").arg(memberId).arg(fromDateLocalized).arg(toDateLocalized);
+            pTransactionListResultPtr->m_error = 1;
         } else {
-            while (m_memberAccountListQuery.next()) {
+            pTransactionListResultPtr->m_list = TransactionListPtr(new TransactionList);
+            while (queryResponse.query->next()) {
                 Uint32 value = 0;
                 TransactionPtr pTransactionPtr(new Transaction());
                 pTransactionPtr->m_memberId = memberId;
-                pTransactionPtr->m_memberUsername = m_memberAccountListQuery.value(value++).toInt();
-                pTransactionPtr->m_amount = m_memberAccountListQuery.value(value++).toFloat();
-                pTransactionPtr->m_date = m_memberAccountListQuery.value(value++).toDateTime();
-                pTransactionPtr->m_descr = m_memberAccountListQuery.value(value++).toString();
-                pTransactionPtr->m_balance = m_memberAccountListQuery.value(value++).toFloat();
-                pTransactionPtr->m_type = static_cast<TransactionType>(m_memberAccountListQuery.value(value++).toUInt());
-                pTransactionListPtr->push_back(pTransactionPtr);
+                pTransactionPtr->m_memberUsername = queryResponse.query->value(value++).toInt();
+                pTransactionPtr->m_amount = queryResponse.query->value(value++).toFloat();
+                pTransactionPtr->m_date = queryResponse.query->value(value++).toDateTime();
+                pTransactionPtr->m_descr = queryResponse.query->value(value++).toString();
+                pTransactionPtr->m_balance = queryResponse.query->value(value++).toFloat();
+                pTransactionPtr->m_type = static_cast<TransactionType>(queryResponse.query->value(value++).toUInt());
+                pTransactionListResultPtr->m_list->push_back(pTransactionPtr);
+            }
+        }
+        return pTransactionListResultPtr;
+    }
+    //
+    ReservationListResultPtr DAO::getTableReservation(ReservationType reservationType, const QDate &now)
+    {
+        ReservationListResultPtr pReservationListResultPtr(new ReservationListResult);
+
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // table reservation list for a given moment (date and reservationtype)
+            queryPtr->prepare(
+                    "SELECT tablereservation.idreservation, tablereservation.idtable, member.username, member.name, member.surname, tablereservation.idmember, tablereservation.guestnum, tablereservation.isadmin "
+                    "FROM tablereservation "
+                    "INNER JOIN member ON tablereservation.idmember=member.idmember "
+                    "WHERE date=:dateid "
+                    "AND reservationtype=:reservationtypeid"
+                    );
+            // bind value
+            queryPtr->bindValue(":reservationtypeid", static_cast<Uint16>(reservationType));
+            queryPtr->bindValue(":dateid", now);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLocale locale;
+            QString nowDateLocalized = locale.toString(now, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("getTableReservation: reservationType: %1 now: %2").arg(static_cast<Uint16>(reservationType)).arg(nowDateLocalized);
+            pReservationListResultPtr->m_error = -1;
+        } else {
+            pReservationListResultPtr->m_list =  ReservationListPtr(new ReservationList);
+            while (queryResponse.query->next()) {
+                ReservationPtr pReservationPtr(new Reservation);
+                Uint32 column = 0;
+                pReservationPtr->m_reservationId = queryResponse.query->value(column++).toInt();
+                pReservationPtr->m_idItem = queryResponse.query->value(column++).toInt();
+                pReservationPtr->m_memberUsername = queryResponse.query->value(column++).toInt();
+                pReservationPtr->m_memberName = queryResponse.query->value(column++).toString();
+                pReservationPtr->m_memberSurname = queryResponse.query->value(column++).toString();
+                pReservationPtr->m_idMember = queryResponse.query->value(column++).toInt();
+                pReservationPtr->m_guestNum = queryResponse.query->value(column++).toUInt();
+                pReservationPtr->m_isAdmin = queryResponse.query->value(column++).toInt() == 1;
+                pReservationListResultPtr->m_list->push_back(pReservationPtr);
             }
         }
 
-        m_memberAccountListQuery.finish();
-        return pTransactionListPtr;
+        return pReservationListResultPtr;
     }
     //
-    ReservationListPtr DAO::getTableReservation(ReservationType reservationType, const QDate &now)
+    ReservationListResultPtr DAO::getOvenReservation(ReservationType reservationType, const QDate &now)
     {
-        // bind value
-        m_tableReservationListQuery.bindValue(":reservationtypeid", static_cast<Uint16>(reservationType));
-        m_tableReservationListQuery.bindValue(":dateid", now);
-        // run query
-        if (!m_tableReservationListQuery.exec())
-        {
-            qDebug() << m_tableReservationListQuery.lastError();
-            QLOG_ERROR() << m_tableReservationListQuery.lastError();
-        }
+        ReservationListResultPtr pReservationListResultPtr(new ReservationListResult);
 
-        ReservationListPtr pReservationListPtr(new ReservationList);
-        while (m_tableReservationListQuery.next()) {
-            ReservationPtr pReservationPtr(new Reservation);
-            Uint32 column = 0;
-            pReservationPtr->m_reservationId = m_tableReservationListQuery.value(column++).toInt();
-            pReservationPtr->m_idItem = m_tableReservationListQuery.value(column++).toInt();
-            pReservationPtr->m_memberUsername = m_tableReservationListQuery.value(column++).toInt();
-            pReservationPtr->m_memberName = m_tableReservationListQuery.value(column++).toString();
-            pReservationPtr->m_memberSurname = m_tableReservationListQuery.value(column++).toString();
-            pReservationPtr->m_idMember = m_tableReservationListQuery.value(column++).toInt();
-            pReservationPtr->m_guestNum = m_tableReservationListQuery.value(column++).toUInt();
-            pReservationPtr->m_isAdmin = m_tableReservationListQuery.value(column++).toInt() == 1;
-            pReservationListPtr->push_back(pReservationPtr);
-        }
-        m_tableReservationListQuery.finish();
-        return pReservationListPtr;
-    }
-    //
-    ReservationListPtr DAO::getOvenReservation(ReservationType reservationType, const QDate &now)
-    {
-        // bind value
-        m_ovenReservationListQuery.bindValue(":reservationtypeid", static_cast<Uint16>(reservationType));
-        m_ovenReservationListQuery.bindValue(":dateid", now);
-        // run query
-        if (!m_ovenReservationListQuery.exec())
-        {
-            qDebug() << m_ovenReservationListQuery.lastError();
-            QLOG_ERROR() << m_ovenReservationListQuery.lastError();
-        }
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // oven reservation list for a given moment (date and reservationtype)
+            queryPtr->prepare(
+                    "SELECT ovenreservation.idreservation, ovenreservation.idoven, member.username, member.name, member.surname, ovenreservation.idmember, ovenreservation.isadmin "
+                    "FROM ovenreservation "
+                    "INNER JOIN member ON ovenreservation.idmember=member.idmember "
+                    "WHERE date=:dateid "
+                    "AND reservationtype=:reservationtypeid"
+                    );
+            // bind value
+            queryPtr->bindValue(":reservationtypeid", static_cast<Uint16>(reservationType));
+            queryPtr->bindValue(":dateid", now);
+            return queryPtr;
+        };
 
-        ReservationListPtr pReservationListPtr(new ReservationList);
-        while (m_ovenReservationListQuery.next()) {
-            ReservationPtr pReservationPtr(new Reservation);
-            Uint32 column = 0;
-            pReservationPtr->m_reservationId = m_ovenReservationListQuery.value(column++).toInt();
-            pReservationPtr->m_idItem = m_ovenReservationListQuery.value(column++).toInt();
-            pReservationPtr->m_memberUsername = m_ovenReservationListQuery.value(column++).toInt();
-            pReservationPtr->m_memberName = m_ovenReservationListQuery.value(column++).toString();
-            pReservationPtr->m_memberSurname = m_ovenReservationListQuery.value(column++).toString();
-            pReservationPtr->m_idMember = m_ovenReservationListQuery.value(column++).toInt();
-            pReservationPtr->m_guestNum = 0;
-            pReservationPtr->m_isAdmin = m_ovenReservationListQuery.value(column++).toInt() == 1;
-            pReservationListPtr->push_back(pReservationPtr);
-        }
-        m_ovenReservationListQuery.finish();
-        return pReservationListPtr;
-    }
-    //
-    ReservationListPtr DAO::getFireplaceReservation(ReservationType reservationType, const QDate &now)
-    {
-        // bind value
-        m_fireplaceReservationListQuery.bindValue(":reservationtypeid", static_cast<Uint16>(reservationType));
-        m_fireplaceReservationListQuery.bindValue(":dateid", now);
         // run query
-        if (!m_fireplaceReservationListQuery.exec())
-        {
-            qDebug() << m_fireplaceReservationListQuery.lastError();
-            QLOG_ERROR() << m_fireplaceReservationListQuery.lastError();
-        }
-
-        ReservationListPtr pReservationListPtr(new ReservationList);
-        while (m_fireplaceReservationListQuery.next()) {
-            ReservationPtr pReservationPtr(new Reservation);
-            Uint32 column = 0;
-            pReservationPtr->m_reservationId = m_fireplaceReservationListQuery.value(column++).toInt();
-            pReservationPtr->m_idItem = m_fireplaceReservationListQuery.value(column++).toInt();
-            pReservationPtr->m_memberUsername = m_fireplaceReservationListQuery.value(column++).toInt();
-            pReservationPtr->m_memberName = m_fireplaceReservationListQuery.value(column++).toString();
-            pReservationPtr->m_memberSurname = m_fireplaceReservationListQuery.value(column++).toString();
-            pReservationPtr->m_idMember = m_fireplaceReservationListQuery.value(column++).toInt();
-            pReservationPtr->m_isAdmin = m_fireplaceReservationListQuery.value(column++).toInt() == 1;
-            pReservationPtr->m_guestNum = 0;
-            pReservationListPtr->push_back(pReservationPtr);
-        }
-        m_fireplaceReservationListQuery.finish();
-        return pReservationListPtr;
-    }
-    //
-    ReservationItemListPtr DAO::getLunchTableList()
-    {
-        ReservationItemListPtr pReservationItemListPtr(new ReservationItemList);
-        // run query
-        if (!m_lunchTablesListQuery.exec())
-        {
-            qDebug() << m_lunchTablesListQuery.lastError();
-            QLOG_ERROR() << m_lunchTablesListQuery.lastError();
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLocale locale;
+            QString nowDateLocalized = locale.toString(now, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("getOvenReservation: reservationType: %1 now: %2").arg(static_cast<Uint16>(reservationType)).arg(nowDateLocalized);
+            pReservationListResultPtr->m_error = -1;
         } else {
-            while (m_lunchTablesListQuery.next()) {
+            pReservationListResultPtr->m_list = ReservationListPtr(new ReservationList);
+            while (queryResponse.query->next()) {
+                ReservationPtr pReservationPtr(new Reservation);
+                Uint32 column = 0;
+                pReservationPtr->m_reservationId = queryResponse.query->value(column++).toInt();
+                pReservationPtr->m_idItem = queryResponse.query->value(column++).toInt();
+                pReservationPtr->m_memberUsername = queryResponse.query->value(column++).toInt();
+                pReservationPtr->m_memberName = queryResponse.query->value(column++).toString();
+                pReservationPtr->m_memberSurname = queryResponse.query->value(column++).toString();
+                pReservationPtr->m_idMember = queryResponse.query->value(column++).toInt();
+                pReservationPtr->m_guestNum = 0;
+                pReservationPtr->m_isAdmin = queryResponse.query->value(column++).toInt() == 1;
+                pReservationListResultPtr->m_list->push_back(pReservationPtr);
+            }
+        }
+
+        return pReservationListResultPtr;
+    }
+    //
+    ReservationListResultPtr DAO::getFireplaceReservation(ReservationType reservationType, const QDate &now)
+    {
+        ReservationListResultPtr pReservationListResultPtr(new ReservationListResult);
+
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // oven reservation list for a given moment (date and reservationtype)
+            queryPtr->prepare(
+                    "SELECT fireplacereservation.idreservation, fireplacereservation.idfireplace, member.username, member.name, member.surname, fireplacereservation.idmember, fireplacereservation.isadmin "
+                    "FROM fireplacereservation "
+                    "INNER JOIN member ON fireplacereservation.idmember=member.idmember "
+                    "WHERE date=:dateid "
+                    "AND reservationtype=:reservationtypeid"
+                    );
+            // bind value
+            queryPtr->bindValue(":reservationtypeid", static_cast<Uint16>(reservationType));
+            queryPtr->bindValue(":dateid", now);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLocale locale;
+            QString nowDateLocalized = locale.toString(now, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("getFireplaceReservation: reservationType: %1 now: %2").arg(static_cast<Uint16>(reservationType)).arg(nowDateLocalized);
+            pReservationListResultPtr->m_error = -1;
+        } else {
+            pReservationListResultPtr->m_list = ReservationListPtr(new ReservationList);
+            while (queryResponse.query->next()) {
+                ReservationPtr pReservationPtr(new Reservation);
+                Uint32 column = 0;
+                pReservationPtr->m_reservationId = queryResponse.query->value(column++).toInt();
+                pReservationPtr->m_idItem = queryResponse.query->value(column++).toInt();
+                pReservationPtr->m_memberUsername = queryResponse.query->value(column++).toInt();
+                pReservationPtr->m_memberName = queryResponse.query->value(column++).toString();
+                pReservationPtr->m_memberSurname = queryResponse.query->value(column++).toString();
+                pReservationPtr->m_idMember = queryResponse.query->value(column++).toInt();
+                pReservationPtr->m_isAdmin = queryResponse.query->value(column++).toInt() == 1;
+                pReservationPtr->m_guestNum = 0;
+                pReservationListResultPtr->m_list->push_back(pReservationPtr);
+            }
+        }
+        return pReservationListResultPtr;
+    }
+    //
+    ReservationItemListResultPtr DAO::getLunchTableList()
+    {
+        ReservationItemListResultPtr pReservationItemListResultPtr(new ReservationItemListResult);
+
+        auto createQuery = [](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // lunch tables list
+            queryPtr->prepare(
+                    "SELECT idtable, name, guestnum "
+                    "FROM lunchtables"
+                    );
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("getLunchTableList");
+            pReservationItemListResultPtr->m_error = 1;
+        } else {
+            pReservationItemListResultPtr->m_list = ReservationItemListPtr(new ReservationItemList);
+            while (queryResponse.query->next()) {
                 ReservationItemPtr pReservationItemPtr(new ReservationItem);
                 pReservationItemPtr->m_itemType = ReservationItemType::LunchTableType;
-                pReservationItemPtr->m_idItem = m_lunchTablesListQuery.value(0).toInt();
-                pReservationItemPtr->m_itemName = m_lunchTablesListQuery.value(1).toString();
-                pReservationItemPtr->m_guestNum = m_lunchTablesListQuery.value(2).toUInt();
-                pReservationItemListPtr->push_back(pReservationItemPtr);
+                pReservationItemPtr->m_idItem = queryResponse.query->value(0).toInt();
+                pReservationItemPtr->m_itemName = queryResponse.query->value(1).toString();
+                pReservationItemPtr->m_guestNum = queryResponse.query->value(2).toUInt();
+                pReservationItemListResultPtr->m_list->push_back(pReservationItemPtr);
             }
         }
-        m_lunchTablesListQuery.finish();
-        return pReservationItemListPtr;
+        return pReservationItemListResultPtr;
     }
     //
-    ReservationItemListPtr DAO::getOvenList()
+    ReservationItemListResultPtr DAO::getOvenList()
     {
-        ReservationItemListPtr pReservationItemListPtr(new ReservationItemList);
+        ReservationItemListResultPtr pReservationItemListResultPtr(new ReservationItemListResult);
+
+        auto createQuery = [](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // oven list
+            queryPtr->prepare(
+                    "SELECT idoven, name "
+                    "FROM ovens"
+                    );
+            return queryPtr;
+        };
+
         // run query
-        if (!m_ovenListQuery.exec())
-        {
-            qDebug() << m_ovenListQuery.lastError();
-            QLOG_ERROR() << m_ovenListQuery.lastError();
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("getOvenList");
+            pReservationItemListResultPtr->m_error = 1;
         } else {
-            while (m_ovenListQuery.next()) {
+            pReservationItemListResultPtr->m_list = ReservationItemListPtr(new ReservationItemList);
+            while (queryResponse.query->next()) {
                 ReservationItemPtr pReservationItemPtr(new ReservationItem);
                 pReservationItemPtr->m_itemType = ReservationItemType::OvenType;
-                pReservationItemPtr->m_idItem = m_ovenListQuery.value(0).toInt();
-                pReservationItemPtr->m_itemName = m_ovenListQuery.value(1).toString();
+                pReservationItemPtr->m_idItem = queryResponse.query->value(0).toInt();
+                pReservationItemPtr->m_itemName = queryResponse.query->value(1).toString();
                 pReservationItemPtr->m_guestNum = 0;
-                pReservationItemListPtr->push_back(pReservationItemPtr);
+                pReservationItemListResultPtr->m_list->push_back(pReservationItemPtr);
             }
         }
-        m_ovenListQuery.finish();
-        return pReservationItemListPtr;
+        return pReservationItemListResultPtr;
     }
     //
-    ReservationItemListPtr DAO::getFireplaceList()
+    ReservationItemListResultPtr DAO::getFireplaceList()
     {
-        ReservationItemListPtr pReservationItemListPtr(new ReservationItemList);
+        ReservationItemListResultPtr pReservationItemListResultPtr(new ReservationItemListResult);
+
+        auto createQuery = [](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // fireplace list
+            queryPtr->prepare(
+                    "SELECT idfireplace, name "
+                    "FROM fireplaces"
+                    );
+            return queryPtr;
+        };
+
         // run query
-        if (!m_fireplaceListQuery.exec())
-        {
-            qDebug() << m_fireplaceListQuery.lastError();
-            QLOG_ERROR() << m_fireplaceListQuery.lastError();
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("getFireplaceList");
+            pReservationItemListResultPtr->m_error = 1;
         } else {
-            while (m_fireplaceListQuery.next()) {
+            pReservationItemListResultPtr->m_list = ReservationItemListPtr(new ReservationItemList);
+            while (queryResponse.query->next()) {
                 ReservationItemPtr pReservationItemPtr(new ReservationItem);
                 pReservationItemPtr->m_itemType = ReservationItemType::FireplaceType;
-                pReservationItemPtr->m_idItem = m_fireplaceListQuery.value(0).toInt();
-                pReservationItemPtr->m_itemName = m_fireplaceListQuery.value(1).toString();
+                pReservationItemPtr->m_idItem = queryResponse.query->value(0).toInt();
+                pReservationItemPtr->m_itemName = queryResponse.query->value(1).toString();
                 pReservationItemPtr->m_guestNum = 0;
-                pReservationItemListPtr->push_back(pReservationItemPtr);
+                pReservationItemListResultPtr->m_list->push_back(pReservationItemPtr);
             }
         }
-        m_fireplaceListQuery.finish();
-        return pReservationItemListPtr;
+        return pReservationItemListResultPtr;
     }
     //
-    void DAO::makeTableReservation(const QDate &date, ReservationType reservationType, Uint16 guestNum, Int32 memberId, Int32 idTable, bool isAdmin)
+    bool DAO::makeTableReservation(const QDate &date, ReservationType reservationType, Uint16 guestNum, Int32 memberId, Int32 idTable, bool isAdmin)
     {
-        m_insertTableReservationQuery.bindValue(":date", date);
-        m_insertTableReservationQuery.bindValue(":reservationtype", static_cast<Uint16>(reservationType));
-        m_insertTableReservationQuery.bindValue(":guestnum", guestNum);
-        m_insertTableReservationQuery.bindValue(":idmember", memberId);
-        m_insertTableReservationQuery.bindValue(":idtable", idTable);
-        m_insertTableReservationQuery.bindValue(":isadmin", (isAdmin)?(1):(0));
-        if (!m_insertTableReservationQuery.exec())
-        {
-            qDebug() << m_insertTableReservationQuery.lastError();
-            QLOG_ERROR() << m_insertTableReservationQuery.lastError();
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // insert table reservation
+            queryPtr->prepare(
+                    "INSERT INTO tablereservation "
+                    "(date, reservationtype, guestnum, idmember, idtable, isadmin) "
+                    "VALUES (:date, :reservationtype, :guestnum, :idmember, :idtable, :isadmin)"
+                    );
+            queryPtr->bindValue(":date", date);
+            queryPtr->bindValue(":reservationtype", static_cast<Uint16>(reservationType));
+            queryPtr->bindValue(":guestnum", guestNum);
+            queryPtr->bindValue(":idmember", memberId);
+            queryPtr->bindValue(":idtable", idTable);
+            queryPtr->bindValue(":isadmin", (isAdmin)?(1):(0));
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLocale locale;
+            QString dateLocalized = locale.toString(date, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("makeTableReservation: reservationType: %1 date: %2 memberId: %3").arg(static_cast<Uint16>(reservationType)).arg(dateLocalized).arg(memberId);
         }
-        m_insertTableReservationQuery.finish();
+        return !queryResponse.error;
     }
     //
-    void DAO::updateTableReservation(Int32 reservationId, bool isAdmin)
+    bool DAO::updateTableReservation(Int32 reservationId, bool isAdmin)
     {
-        m_updateTableReservationQuery.bindValue(":idreservation", reservationId);
-        m_updateTableReservationQuery.bindValue(":isadmin", (isAdmin)?(1):(0));
-        if (!m_updateTableReservationQuery.exec())
-        {
-            qDebug() << m_updateTableReservationQuery.lastError();
-            QLOG_ERROR() << m_updateTableReservationQuery.lastError();
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // update table reservation
+            queryPtr->prepare(
+                    "UPDATE tablereservation "
+                    "SET isadmin = :isadmin "
+                    "WHERE idreservation = :idreservation"
+                    );
+            queryPtr->bindValue(":idreservation", reservationId);
+            queryPtr->bindValue(":isadmin", (isAdmin)?(1):(0));
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("updateTableReservation: reservationId: %1").arg(reservationId);
         }
-        m_updateTableReservationQuery.finish();
+        return !queryResponse.error;
     }
     //
-    void DAO::cancelTableReservation(Int32 reservationId)
+    bool DAO::cancelTableReservation(Int32 reservationId)
     {
-        m_cancelTableReservationQuery.bindValue(":idreservation", reservationId);
-        if (!m_cancelTableReservationQuery.exec())
-        {
-            qDebug() << m_cancelTableReservationQuery.lastError();
-            QLOG_ERROR() << m_cancelTableReservationQuery.lastError();
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // cancel table reservation
+            queryPtr->prepare(
+                    "DELETE FROM tablereservation "
+                    "WHERE idreservation = :idreservation"
+                    );
+            queryPtr->bindValue(":idreservation", reservationId);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("cancelTableReservation: reservationId: %1").arg(reservationId);
         }
-        m_cancelTableReservationQuery.finish();
+        return !queryResponse.error;
     }
     //
-    void DAO::makeOvenReservation(const QDate &date, ReservationType reservationType, Int32 memberId, Int32 idOven, bool isAdmin)
+    bool DAO::makeOvenReservation(const QDate &date, ReservationType reservationType, Int32 memberId, Int32 idOven, bool isAdmin)
     {
-        m_insertOvenReservationQuery.bindValue(":date", date);
-        m_insertOvenReservationQuery.bindValue(":reservationtype", static_cast<Uint16>(reservationType));
-        m_insertOvenReservationQuery.bindValue(":idmember", memberId);
-        m_insertOvenReservationQuery.bindValue(":idoven", idOven);
-        m_insertOvenReservationQuery.bindValue(":isadmin", (isAdmin)?(1):(0));
-        if (!m_insertOvenReservationQuery.exec())
-        {
-            qDebug() << m_insertOvenReservationQuery.lastError();
-            QLOG_ERROR() << m_insertOvenReservationQuery.lastError();
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // insert oven reservation
+            queryPtr->prepare(
+                    "INSERT INTO ovenreservation "
+                    "(date, reservationtype, idmember, idoven, isadmin) "
+                    "VALUES (:date, :reservationtype, :idmember, :idoven, :isadmin)"
+                    );
+            queryPtr->bindValue(":date", date);
+            queryPtr->bindValue(":reservationtype", static_cast<Uint16>(reservationType));
+            queryPtr->bindValue(":idmember", memberId);
+            queryPtr->bindValue(":idoven", idOven);
+            queryPtr->bindValue(":isadmin", (isAdmin)?(1):(0));
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLocale locale;
+            QString dateLocalized = locale.toString(date, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("makeOvenReservation: reservationType: %1 date: %2 memberId: %3").arg(static_cast<Uint16>(reservationType)).arg(dateLocalized).arg(memberId);
         }
-        m_insertOvenReservationQuery.finish();
+        return !queryResponse.error;
     }
     //
-    void DAO::updateOvenReservation(Int32 reservationId, bool isAdmin)
+    bool DAO::updateOvenReservation(Int32 reservationId, bool isAdmin)
     {
-        m_updateOvenReservationQuery.bindValue(":idreservation", reservationId);
-        m_updateOvenReservationQuery.bindValue(":isadmin", (isAdmin)?(1):(0));
-        if (!m_updateOvenReservationQuery.exec())
-        {
-            qDebug() << m_updateOvenReservationQuery.lastError();
-            QLOG_ERROR() << m_updateOvenReservationQuery.lastError();
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // update oven reservation
+            queryPtr->prepare(
+                    "UPDATE ovenreservation "
+                    "SET isadmin = :isadmin "
+                    "WHERE idreservation = :idreservation"
+                    );
+            queryPtr->bindValue(":idreservation", reservationId);
+            queryPtr->bindValue(":isadmin", (isAdmin)?(1):(0));
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("updateOvenReservation: reservationId: %1").arg(reservationId);
         }
-        m_updateOvenReservationQuery.finish();
+        return !queryResponse.error;
     }
     //
-    void DAO::cancelOvenReservation(Int32 reservationId)
+    bool DAO::cancelOvenReservation(Int32 reservationId)
     {
-        m_cancelOvenReservationQuery.bindValue(":idreservation", reservationId);
-        if (!m_cancelOvenReservationQuery.exec())
-        {
-            qDebug() << m_cancelOvenReservationQuery.lastError();
-            QLOG_ERROR() << m_cancelOvenReservationQuery.lastError();
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // cancel oven reservation
+            queryPtr->prepare(
+                    "DELETE FROM ovenreservation "
+                    "WHERE idreservation = :idreservation"
+                    );
+            queryPtr->bindValue(":idreservation", reservationId);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("cancelOvenReservation: reservationId: %1").arg(reservationId);
         }
-        m_cancelOvenReservationQuery.finish();
+        return !queryResponse.error;
     }
     //
-    void DAO::updateFireplaceReservation(Int32 reservationId, bool isAdmin)
+    bool DAO::updateFireplaceReservation(Int32 reservationId, bool isAdmin)
     {
-        m_updateFireplaceReservationQuery.bindValue(":idreservation", reservationId);
-        m_updateFireplaceReservationQuery.bindValue(":isadmin", (isAdmin)?(1):(0));
-        if (!m_updateFireplaceReservationQuery.exec())
-        {
-            qDebug() << m_updateFireplaceReservationQuery.lastError();
-            QLOG_ERROR() << m_updateFireplaceReservationQuery.lastError();
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // update fireplace reservation
+            queryPtr->prepare(
+                    "UPDATE fireplacereservation "
+                    "SET isadmin = :isadmin "
+                    "WHERE idreservation = :idreservation"
+                    );
+            queryPtr->bindValue(":idreservation", reservationId);
+            queryPtr->bindValue(":isadmin", (isAdmin)?(1):(0));
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("updateFireplaceReservation: reservationId: %1").arg(reservationId);
         }
-        m_updateFireplaceReservationQuery.finish();
+        return !queryResponse.error;
     }
     //
-    void DAO::makeFireplaceReservation(const QDate &date, ReservationType reservationType, Int32 memberId, Int32 idFireplace, bool isAdmin)
+    bool DAO::makeFireplaceReservation(const QDate &date, ReservationType reservationType, Int32 memberId, Int32 idFireplace, bool isAdmin)
     {
-        m_insertFireplaceReservationQuery.bindValue(":date", date);
-        m_insertFireplaceReservationQuery.bindValue(":reservationtype", static_cast<Uint16>(reservationType));
-        m_insertFireplaceReservationQuery.bindValue(":idmember", memberId);
-        m_insertFireplaceReservationQuery.bindValue(":idfireplace", idFireplace);
-        m_insertFireplaceReservationQuery.bindValue(":isadmin", (isAdmin)?(1):(0));
-        if (!m_insertFireplaceReservationQuery.exec())
-        {
-            qDebug() << m_insertFireplaceReservationQuery.lastError();
-            QLOG_ERROR() << m_insertFireplaceReservationQuery.lastError();
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // insert fireplace reservation
+            queryPtr->prepare(
+                    "INSERT INTO fireplacereservation "
+                    "(date, reservationtype, idmember, idfireplace, isadmin) "
+                    "VALUES (:date, :reservationtype, :idmember, :idfireplace, :isadmin)"
+                    );
+            queryPtr->bindValue(":date", date);
+            queryPtr->bindValue(":reservationtype", static_cast<Uint16>(reservationType));
+            queryPtr->bindValue(":idmember", memberId);
+            queryPtr->bindValue(":idfireplace", idFireplace);
+            queryPtr->bindValue(":isadmin", (isAdmin)?(1):(0));
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLocale locale;
+            QString dateLocalized = locale.toString(date, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("makeFireplaceReservation: reservationType: %1 date: %2 memberId: %3").arg(static_cast<Uint16>(reservationType)).arg(dateLocalized).arg(memberId);
         }
-        m_insertFireplaceReservationQuery.finish();
+        return !queryResponse.error;
     }
     //
-    void DAO::cancelFireplaceReservation(Int32 reservationId)
+    bool DAO::cancelFireplaceReservation(Int32 reservationId)
     {
-        m_cancelFireplaceReservationQuery.bindValue(":idreservation", reservationId);
-        if (!m_cancelFireplaceReservationQuery.exec())
-        {
-            qDebug() << m_cancelFireplaceReservationQuery.lastError();
-            QLOG_ERROR() << m_cancelFireplaceReservationQuery.lastError();
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // cancel fireplace reservation
+            queryPtr->prepare(
+                    "DELETE FROM fireplacereservation "
+                    "WHERE idreservation = :idreservation"
+                    );
+            queryPtr->bindValue(":idreservation", reservationId);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("cancelFireplaceReservation: reservationId: %1").arg(reservationId);
         }
-        m_cancelFireplaceReservationQuery.finish();
+        return !queryResponse.error;
     }
     //
-    MemberListPtr DAO::getSlowPayersList()
+    MemberListResultPtr DAO::getSlowPayersList()
     {
-        MemberListPtr pMemberListPtr(new MemberList);
-        // only active members
-        if (!m_slowPayersQuery.exec())
-        {
-            qDebug() << m_slowPayersQuery.lastError();
-            QLOG_ERROR() << m_slowPayersQuery.lastError();
+        MemberListResultPtr pMemberListResultPtr(new MemberListResult);
+
+        auto createQuery = [](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // slow payers
+            // SELECT account.idmember, MAX(account.date) AS MaxDate FROM account GROUP BY account.idmember
+            // returns list of distinct idmembers and their last account date
+            // First INNER JOIN on the same table (account) gets balance for the row with last (newest) account date
+            // Second INNER JOIN on members table get member information
+            queryPtr->prepare(
+                    "SELECT ac.idmember, member.username, member.name, member.surname, member.image, ac.balance, member.lastmodified, member.reg_date "
+                    "FROM account ac "
+                    "INNER JOIN (SELECT account.idmember, MAX(account.date) AS MaxDate FROM account GROUP BY account.idmember) groupedAccount "
+                    "ON ac.idmember = groupedAccount.idmember AND ac.date=groupedAccount.MaxDate "
+                    "INNER JOIN member ON member.idmember=ac.idmember "
+                    "WHERE ac.balance<0 AND member.active=1"
+                    );
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("getSlowPayersList");
+            pMemberListResultPtr->m_error = 1;
         } else {
-            while (m_slowPayersQuery.next()) {
+            pMemberListResultPtr->m_list = MemberListPtr(new MemberList);
+            while (queryResponse.query->next()) {
                 MemberPtr pMemberPtr(new Member);
                 Uint32 column = 0;
-                pMemberPtr->m_id =  m_slowPayersQuery.value(column++).toInt();
-                pMemberPtr->m_username =  m_slowPayersQuery.value(column++).toInt();
-                pMemberPtr->m_name =  m_slowPayersQuery.value(column++).toString();
-                pMemberPtr->m_surname =  m_slowPayersQuery.value(column++).toString();
-                pMemberPtr->m_imagePath =  m_slowPayersQuery.value(column++).toString();
-                pMemberPtr->m_balance =  m_slowPayersQuery.value(column++).toFloat();
-                pMemberPtr->m_lastModified =  m_slowPayersQuery.value(column++).toDateTime();
-                pMemberPtr->m_regDate =  m_slowPayersQuery.value(column++).toDateTime();
-                pMemberListPtr->push_back(pMemberPtr);
+                pMemberPtr->m_id =  queryResponse.query->value(column++).toInt();
+                pMemberPtr->m_username =  queryResponse.query->value(column++).toInt();
+                pMemberPtr->m_name =  queryResponse.query->value(column++).toString();
+                pMemberPtr->m_surname =  queryResponse.query->value(column++).toString();
+                pMemberPtr->m_imagePath =  queryResponse.query->value(column++).toString();
+                pMemberPtr->m_balance =  queryResponse.query->value(column++).toFloat();
+                pMemberPtr->m_lastModified =  queryResponse.query->value(column++).toDateTime();
+                pMemberPtr->m_regDate =  queryResponse.query->value(column++).toDateTime();
+                pMemberListResultPtr->m_list->push_back(pMemberPtr);
             }
         }
-        m_slowPayersQuery.finish();
-        return pMemberListPtr;
+        return pMemberListResultPtr;
     }
     //
-    InvoiceListPtr DAO::getInvoiceListByMemberId(Int32 memberId, const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count)
+    InvoiceListResultPtr DAO::getInvoiceListByMemberId(Int32 memberId, const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count)
     {
-        InvoiceListPtr pInvoiceListPtr;
-        // only active invoices
-        m_invoiceListByMemberIdQuery.bindValue(":stateid", static_cast<Int32>(InvoiceState::Closed));
-        m_invoiceListByMemberIdQuery.bindValue(":memberid", memberId);
-        m_invoiceListByMemberIdQuery.bindValue(":fromDate", fromDate);
-        m_invoiceListByMemberIdQuery.bindValue(":toDate", toDate);
-        m_invoiceListByMemberIdQuery.bindValue(":limit", count);
-        m_invoiceListByMemberIdQuery.bindValue(":offset", page * count);
-        if (!m_invoiceListByMemberIdQuery.exec())
-        {
-            qDebug() << m_invoiceListByMemberIdQuery.lastError();
-            QLOG_ERROR() << m_invoiceListByMemberIdQuery.lastError();
+        InvoiceListResultPtr pInvoiceListResultPtr(new InvoiceListResult);
+
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // active invoice list by memberId
+            queryPtr->prepare(
+                    "SELECT member.username, invoice.idinvoice, invoice.date, invoice.total, invoice.last_modif "
+                    "FROM invoice "
+                    "INNER JOIN member ON member.idmember = invoice.idmember "
+                    "WHERE invoice.idmember = :memberid AND invoice.state = :stateid "
+                    "AND invoice.date BETWEEN :fromDate AND :toDate "
+                    "ORDER BY date DESC "
+                    "LIMIT :limit OFFSET :offset"
+                    );
+            // only active invoices
+            queryPtr->bindValue(":stateid", static_cast<Int32>(InvoiceState::Closed));
+            queryPtr->bindValue(":memberid", memberId);
+            queryPtr->bindValue(":fromDate", fromDate);
+            queryPtr->bindValue(":toDate", toDate);
+            queryPtr->bindValue(":limit", count);
+            queryPtr->bindValue(":offset", page * count);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLocale locale;
+            QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
+            QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("getInvoiceListByMemberId: memberId: %1 fromDate: %2 toDate: %3").arg(memberId).arg(fromDateLocalized).arg(toDateLocalized);
+            pInvoiceListResultPtr->m_error = 1;
         } else {
-            pInvoiceListPtr = InvoiceListPtr(new InvoiceList);
-            while (m_invoiceListByMemberIdQuery.next()) {
+            pInvoiceListResultPtr->m_list = InvoiceListPtr(new InvoiceList);
+            while (queryResponse.query->next()) {
                 Uint32 column = 0;
                 InvoicePtr pInvoicePtr(new Invoice);
-                pInvoicePtr->m_memberUsername = m_invoiceListByMemberIdQuery.value(column++).toInt();
-                pInvoicePtr->m_id =  m_invoiceListByMemberIdQuery.value(column++).toInt();
+                pInvoicePtr->m_memberUsername = queryResponse.query->value(column++).toInt();
+                pInvoicePtr->m_id =  queryResponse.query->value(column++).toInt();
                 pInvoicePtr->m_memberId =  memberId;
                 pInvoicePtr->m_state =  InvoiceState::Closed;
-                pInvoicePtr->m_date =  m_invoiceListByMemberIdQuery.value(column++).toDateTime();
-                pInvoicePtr->m_total =  m_invoiceListByMemberIdQuery.value(column++).toFloat();
-                pInvoicePtr->m_lastModified =  m_invoiceListByMemberIdQuery.value(column++).toDateTime();
-                pInvoiceListPtr->push_back(pInvoicePtr);
+                pInvoicePtr->m_date =  queryResponse.query->value(column++).toDateTime();
+                pInvoicePtr->m_total =  queryResponse.query->value(column++).toFloat();
+                pInvoicePtr->m_lastModified =  queryResponse.query->value(column++).toDateTime();
+                pInvoiceListResultPtr->m_list->push_back(pInvoicePtr);
             }
         }
 
-        m_invoiceListByMemberIdQuery.finish();
-        return pInvoiceListPtr;
+        return pInvoiceListResultPtr;
     }
     //
-    InvoiceListStatsPtr DAO::getInvoiceListByMemberIdStats(Int32 memberId, const QDate &fromDate, const QDate &toDate)
+    InvoiceListStatsResultPtr DAO::getInvoiceListByMemberIdStats(Int32 memberId, const QDate &fromDate, const QDate &toDate)
     {
-        InvoiceListStatsPtr pInvoiceListStatsPtr(new InvoiceListStats);
-        pInvoiceListStatsPtr->m_totalNumInvoices= 0;
-        pInvoiceListStatsPtr->m_totalAmount = 0;
-        // only active invoices
-        m_invoiceListByMemberIdStatsQuery.bindValue(":stateid", static_cast<Int32>(InvoiceState::Closed));
-        m_invoiceListByMemberIdStatsQuery.bindValue(":memberid", memberId);
-        m_invoiceListByMemberIdStatsQuery.bindValue(":fromDate", fromDate);
-        m_invoiceListByMemberIdStatsQuery.bindValue(":toDate", toDate);
-        if (!m_invoiceListByMemberIdStatsQuery.exec())
-        {
-            qDebug() << m_invoiceListByMemberIdStatsQuery.lastError();
-            QLOG_ERROR() << m_invoiceListByMemberIdStatsQuery.lastError();
-        } else {
-            m_invoiceListByMemberIdStatsQuery.next();
-            pInvoiceListStatsPtr->m_totalNumInvoices = m_invoiceListByMemberIdStatsQuery.value(0).toUInt();
-            pInvoiceListStatsPtr->m_totalAmount = m_invoiceListByMemberIdStatsQuery.value(1).toFloat();
+        InvoiceListStatsResultPtr pInvoiceListStatsResultPtr(new InvoiceListStatsResult);
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // active invoice list by memberId stats
+            queryPtr->prepare(
+                    "SELECT COUNT(*), SUM(total) FROM invoice "
+                    "WHERE idmember = :memberid AND state = :stateid "
+                    "AND date BETWEEN :fromDate AND :toDate"
+                    );
+            // only active invoices
+            queryPtr->bindValue(":stateid", static_cast<Int32>(InvoiceState::Closed));
+            queryPtr->bindValue(":memberid", memberId);
+            queryPtr->bindValue(":fromDate", fromDate);
+            queryPtr->bindValue(":toDate", toDate);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLocale locale;
+            QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
+            QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("getInvoiceListByMemberIdStats: memberId: %1 fromDate: %2 toDate: %3").arg(memberId).arg(fromDateLocalized).arg(toDateLocalized);
+            pInvoiceListStatsResultPtr->m_error = 1;
+        } else if (queryResponse.query->next()) {
+            InvoiceListStatsPtr stats(new InvoiceListStats);
+            stats->m_totalNumInvoices = queryResponse.query->value(0).toUInt();
+            stats->m_totalAmount = queryResponse.query->value(1).toFloat();
+            pInvoiceListStatsResultPtr->m_stats = stats;
         }
-        m_invoiceListByMemberIdStatsQuery.finish();
-        return pInvoiceListStatsPtr;
+        return pInvoiceListStatsResultPtr;
     }
     //
-    InvoiceListPtr DAO::getInvoiceList(const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count)
+    InvoiceListResultPtr DAO::getInvoiceList(const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count)
     {
-        InvoiceListPtr pInvoiceListPtr;
-        // only active invoices
-        m_invoiceListQuery.bindValue(":stateid", static_cast<Int32>(InvoiceState::Closed));
-        m_invoiceListQuery.bindValue(":fromDate", fromDate);
-        m_invoiceListQuery.bindValue(":toDate", toDate);
-        m_invoiceListQuery.bindValue(":limit", count);
-        m_invoiceListQuery.bindValue(":offset", page * count);
-        if (!m_invoiceListQuery.exec())
-        {
-            qDebug() << m_invoiceListQuery.lastError();
-            QLOG_ERROR() << m_invoiceListQuery.lastError();
+        InvoiceListResultPtr pInvoiceListResultPtr(new InvoiceListResult);
+
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // active invoice list
+            queryPtr->prepare(
+                    "SELECT member.username, invoice.idinvoice, invoice.idmember, invoice.date, invoice.total, invoice.last_modif "
+                    "FROM invoice "
+                    "INNER JOIN member ON invoice.idmember=member.idmember "
+                    "WHERE invoice.state = :stateid "
+                    "AND invoice.date BETWEEN :fromDate AND :toDate "
+                    "ORDER BY invoice.date DESC "
+                    "LIMIT :limit OFFSET :offset"
+                    );
+            // only active invoices
+            queryPtr->bindValue(":stateid", static_cast<Int32>(InvoiceState::Closed));
+            queryPtr->bindValue(":fromDate", fromDate);
+            queryPtr->bindValue(":toDate", toDate);
+            queryPtr->bindValue(":limit", count);
+            queryPtr->bindValue(":offset", page * count);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLocale locale;
+            QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
+            QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("getInvoiceList: fromDate: %2 toDate: %3").arg(fromDateLocalized).arg(toDateLocalized);
+            pInvoiceListResultPtr->m_error = 1;
         } else {
-            pInvoiceListPtr = InvoiceListPtr(new InvoiceList);
-            while (m_invoiceListQuery.next()) {
+            pInvoiceListResultPtr->m_list = InvoiceListPtr(new InvoiceList);
+            while (queryResponse.query->next()) {
                 InvoicePtr pInvoicePtr(new Invoice);
                 Uint32 column = 0;
-                pInvoicePtr->m_memberUsername = m_invoiceListQuery.value(column++).toInt();
-                pInvoicePtr->m_id = m_invoiceListQuery.value(column++).toInt();
-                pInvoicePtr->m_memberId = m_invoiceListQuery.value(column++).toInt();
+                pInvoicePtr->m_memberUsername = queryResponse.query->value(column++).toInt();
+                pInvoicePtr->m_id = queryResponse.query->value(column++).toInt();
+                pInvoicePtr->m_memberId = queryResponse.query->value(column++).toInt();
                 pInvoicePtr->m_state = InvoiceState::Closed;
-                pInvoicePtr->m_date = m_invoiceListQuery.value(column++).toDateTime();
-                pInvoicePtr->m_total = m_invoiceListQuery.value(column++).toFloat();
-                pInvoicePtr->m_lastModified = m_invoiceListQuery.value(column++).toDateTime();
-                pInvoiceListPtr->push_back(pInvoicePtr);
+                pInvoicePtr->m_date = queryResponse.query->value(column++).toDateTime();
+                pInvoicePtr->m_total = queryResponse.query->value(column++).toFloat();
+                pInvoicePtr->m_lastModified = queryResponse.query->value(column++).toDateTime();
+                pInvoiceListResultPtr->m_list->push_back(pInvoicePtr);
             }
         }
 
-        m_invoiceListQuery.finish();
-        return pInvoiceListPtr;
+        return pInvoiceListResultPtr;
     }
     //
-    InvoiceListStatsPtr DAO::getInvoiceListStats(const QDate &fromDate, const QDate &toDate)
+    InvoiceListStatsResultPtr DAO::getInvoiceListStats(const QDate &fromDate, const QDate &toDate)
     {
-        InvoiceListStatsPtr pInvoiceListStatsPtr(new InvoiceListStats);
-        pInvoiceListStatsPtr->m_totalNumInvoices= 0;
-        pInvoiceListStatsPtr->m_totalAmount = 0;
-        // only active invoices
-        m_invoiceListStatsQuery.bindValue(":stateid", static_cast<Int32>(InvoiceState::Closed));
-        m_invoiceListStatsQuery.bindValue(":fromDate", fromDate);
-        m_invoiceListStatsQuery.bindValue(":toDate", toDate);
-        if (!m_invoiceListStatsQuery.exec())
-        {
-            qDebug() << m_invoiceListStatsQuery.lastError();
-            QLOG_ERROR() << m_invoiceListStatsQuery.lastError();
-        } else {
-            m_invoiceListStatsQuery.next();
-            pInvoiceListStatsPtr->m_totalNumInvoices = m_invoiceListStatsQuery.value(0).toUInt();
-            pInvoiceListStatsPtr->m_totalAmount = m_invoiceListStatsQuery.value(1).toFloat();
-        }
-        m_invoiceListStatsQuery.finish();
-        return pInvoiceListStatsPtr;
-    }
-    //
-    ProviderListPtr DAO::getProviderList()
-    {
-        ProviderListPtr pProviderListPtr;
+        InvoiceListStatsResultPtr pInvoiceListStatsResultPtr(new InvoiceListStatsResult);
+
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // active invoice list stats
+            queryPtr->prepare(
+                    "SELECT COUNT(*), SUM(total) FROM invoice "
+                    "WHERE state = :stateid "
+                    "AND date BETWEEN :fromDate AND :toDate"
+                    );
+            // only active invoices
+            queryPtr->bindValue(":stateid", static_cast<Int32>(InvoiceState::Closed));
+            queryPtr->bindValue(":fromDate", fromDate);
+            queryPtr->bindValue(":toDate", toDate);
+            return queryPtr;
+        };
+
         // run query
-        if (!m_providerListQuery.exec())
-        {
-            qDebug() << m_providerListQuery.lastError();
-            QLOG_ERROR() << m_providerListQuery.lastError();
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLocale locale;
+            QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
+            QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("getInvoiceListStats: fromDate: %1 toDate: %2").arg(fromDateLocalized).arg(toDateLocalized);
+            pInvoiceListStatsResultPtr->m_error = 1;
+        } else if (queryResponse.query->next()) {
+            pInvoiceListStatsResultPtr->m_stats = InvoiceListStatsPtr(new InvoiceListStats);
+            pInvoiceListStatsResultPtr->m_stats->m_totalNumInvoices = queryResponse.query->value(0).toUInt();
+            pInvoiceListStatsResultPtr->m_stats->m_totalAmount = queryResponse.query->value(1).toFloat();
+        }
+        return pInvoiceListStatsResultPtr;
+    }
+    //
+    ProviderListResultPtr DAO::getProviderList()
+    {
+        ProviderListResultPtr pProviderListResultPtr(new ProviderListResult);
+
+        auto createQuery = [](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // provider list
+            queryPtr->prepare(
+                    "SELECT idprovider, name, image, reg_date, phone FROM provider"
+                    );
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("getProviderList");
+            pProviderListResultPtr->m_error = 1;
         } else {
-            pProviderListPtr = ProviderListPtr(new ProviderList);
-            while (m_providerListQuery.next()) {
+            pProviderListResultPtr->m_list = ProviderListPtr(new ProviderList);
+            while (queryResponse.query->next()) {
                 ProviderPtr pProviderPtr(new Provider);
-                pProviderPtr->m_id = m_providerListQuery.value(0).toInt();
-                pProviderPtr->m_name = m_providerListQuery.value(1).toString();
-                pProviderPtr->m_image = m_providerListQuery.value(2).toString();
-                pProviderPtr->m_regDate = m_providerListQuery.value(3).toDateTime();
-                pProviderPtr->m_phone = m_providerListQuery.value(4).toString();
-                pProviderListPtr->push_back(pProviderPtr);
+                pProviderPtr->m_id = queryResponse.query->value(0).toInt();
+                pProviderPtr->m_name = queryResponse.query->value(1).toString();
+                pProviderPtr->m_image = queryResponse.query->value(2).toString();
+                pProviderPtr->m_regDate = queryResponse.query->value(3).toDateTime();
+                pProviderPtr->m_phone = queryResponse.query->value(4).toString();
+                pProviderListResultPtr->m_list->push_back(pProviderPtr);
             }
         }
-        m_providerListQuery.finish();
-        return pProviderListPtr;
+        return pProviderListResultPtr;
     }
     //
-    ProductItemListPtr DAO::getProductsFromProvider(Int32 providerId)
+    ProductItemListResultPtr DAO::getProductsFromProvider(Int32 providerId)
     {
-        ProductItemListPtr pfListPrt;
-        // bind value
-        m_productItemsByProviderQuery.bindValue(":providerId", providerId);
+        ProductItemListResultPtr pIListResultPtr(new ProductItemListResult);
+
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // ProductItems by provider
+            queryPtr->prepare("SELECT idproduct_item, name, image, reg_date, idproduct_family, price FROM product_item WHERE active=1 AND idprovider=:providerId");
+            // bind value
+            queryPtr->bindValue(":providerId", providerId);
+            return queryPtr;
+        };
+
         // run query
-        if (!m_productItemsByProviderQuery.exec())
-        {
-            qDebug() << m_productItemsByProviderQuery.lastError();
-            QLOG_ERROR() << m_productItemsByProviderQuery.lastError();
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("getProductsFromProvider: providerId: %1").arg(providerId);
+            pIListResultPtr->m_error = 1;
         } else {
-            pfListPrt = ProductItemListPtr(new ProductItemList);
-            while (m_productItemsByProviderQuery.next()) {
+            pIListResultPtr->m_list = ProductItemListPtr(new ProductItemList);
+            while (queryResponse.query->next()) {
                 ProductItemPtr pfPtr(new ProductItem);
-                pfPtr->m_id = m_productItemsByProviderQuery.value(0).toUInt();
-                pfPtr->m_name = m_productItemsByProviderQuery.value(1).toString();
-                pfPtr->m_imagePath = m_productItemsByProviderQuery.value(2).toString();
+                pfPtr->m_id = queryResponse.query->value(0).toUInt();
+                pfPtr->m_name = queryResponse.query->value(1).toString();
+                pfPtr->m_imagePath = queryResponse.query->value(2).toString();
                 pfPtr->m_active = true;
-                pfPtr->m_regDate = m_productItemsByProviderQuery.value(3).toDateTime();
-                pfPtr->m_familyId = m_productItemsByProviderQuery.value(4).toInt();
-                pfPtr->m_price = m_productItemsByProviderQuery.value(5).toFloat();
-                pfListPrt->push_back(pfPtr);
+                pfPtr->m_regDate = queryResponse.query->value(3).toDateTime();
+                pfPtr->m_familyId = queryResponse.query->value(4).toInt();
+                pfPtr->m_price = queryResponse.query->value(5).toFloat();
+                pIListResultPtr->m_list->push_back(pfPtr);
             }
         }
-        m_productFamiliesQuery.finish();
-        return pfListPrt;
+        return pIListResultPtr;
     }
     //
-    void DAO::createProvider(const QString &name, const QString &imageFileName, const QString &phone)
+    bool DAO::createProvider(const QString &name, const QString &imageFileName, const QString &phone)
     {
         QDate today(QDateTime::currentDateTime().date());
-        m_createProviderQuery.bindValue(":name", name);
-        if (imageFileName.isEmpty()) {
-            m_createProviderQuery.bindValue(":image", QVariant());
-        } else {
-            m_createProviderQuery.bindValue(":image", imageFileName);
+
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // create provider
+            queryPtr->prepare(
+                    "INSERT INTO provider "
+                    "(name, image, reg_date, phone) "
+                    "VALUES (:name, :image, :reg_date, :phone)"
+                    );
+            queryPtr->bindValue(":name", name);
+            if (imageFileName.isEmpty()) {
+                queryPtr->bindValue(":image", QVariant());
+            } else {
+                queryPtr->bindValue(":image", imageFileName);
+            }
+            queryPtr->bindValue(":reg_date", today);
+            if (phone.isEmpty()) {
+                queryPtr->bindValue(":phone", QVariant());
+            } else {
+                queryPtr->bindValue(":phone", phone);
+            }
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("createProvider: name: %1 image: %2 phone: %3").arg(name).arg(imageFileName).arg(phone);
         }
-        m_createProviderQuery.bindValue(":reg_date", today);
-        if (phone.isEmpty()) {
-            m_createProviderQuery.bindValue(":phone", QVariant());
-        } else {
-            m_createProviderQuery.bindValue(":phone", phone);
-        }
-        if (!m_createProviderQuery.exec())
-        {
-            qDebug() << m_createProviderQuery.lastError();
-            QLOG_ERROR() << m_createProviderQuery.lastError();
-        }
-        m_createProviderQuery.finish();
+        return !queryResponse.error;
     }
     //
-    ProductItemListPtr DAO::getProductsList(Uint32 page, Uint32 count)
+    ProductItemListResultPtr DAO::getProductsList(Uint32 page, Uint32 count)
     {
-        ProductItemListPtr pProductItemListPtr;
-        // only active invoices
-        m_productItemListQuery.bindValue(":limit", count);
-        m_productItemListQuery.bindValue(":offset", page * count);
-        if (!m_productItemListQuery.exec())
-        {
-            qDebug() << m_productItemListQuery.lastError();
-            QLOG_ERROR() << m_productItemListQuery.lastError();
+        ProductItemListResultPtr pIListResultPtr(new ProductItemListResult);
+
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // product items query
+            queryPtr->prepare(
+                    "SELECT idproduct_item, name, active, image, reg_date, price, idproduct_family, idprovider, stock FROM product_item "
+                    "ORDER BY reg_date DESC "
+                    "LIMIT :limit OFFSET :offset"
+                    );
+            // only active invoices
+            queryPtr->bindValue(":limit", count);
+            queryPtr->bindValue(":offset", page * count);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("getProductsList: page: %1 count: %2").arg(page).arg(count);
+            pIListResultPtr->m_error = 1;
         } else {
-            pProductItemListPtr = ProductItemListPtr(new ProductItemList);
-            while (m_productItemListQuery.next()) {
+            pIListResultPtr->m_list = ProductItemListPtr(new ProductItemList);
+            while (queryResponse.query->next()) {
                 ProductItemPtr pProductItemPtr(new ProductItem);
-                pProductItemPtr->m_id =  m_productItemListQuery.value(0).toInt();
-                pProductItemPtr->m_name =  m_productItemListQuery.value(1).toString();
-                pProductItemPtr->m_active =  m_productItemListQuery.value(2).toInt() == 1;
-                pProductItemPtr->m_imagePath =  m_productItemListQuery.value(3).toString();
-                pProductItemPtr->m_regDate =  m_productItemListQuery.value(4).toDateTime();
-                pProductItemPtr->m_price =  m_productItemListQuery.value(5).toFloat();
-                pProductItemPtr->m_familyId =  m_productItemListQuery.value(6).toInt();
-                pProductItemPtr->m_providerId =  m_productItemListQuery.value(7).toInt();
-                pProductItemPtr->m_stock =  m_productItemListQuery.value(8).toInt();
-                pProductItemListPtr->push_back(pProductItemPtr);
+                pProductItemPtr->m_id =  queryResponse.query->value(0).toInt();
+                pProductItemPtr->m_name =  queryResponse.query->value(1).toString();
+                pProductItemPtr->m_active =  queryResponse.query->value(2).toInt() == 1;
+                pProductItemPtr->m_imagePath =  queryResponse.query->value(3).toString();
+                pProductItemPtr->m_regDate =  queryResponse.query->value(4).toDateTime();
+                pProductItemPtr->m_price =  queryResponse.query->value(5).toFloat();
+                pProductItemPtr->m_familyId =  queryResponse.query->value(6).toInt();
+                pProductItemPtr->m_providerId =  queryResponse.query->value(7).toInt();
+                pProductItemPtr->m_stock =  queryResponse.query->value(8).toInt();
+                pIListResultPtr->m_list->push_back(pProductItemPtr);
+            }
+        }
+        return pIListResultPtr;
+    }
+    //
+    ProductListStatsResultPtr DAO::getProductsListStats()
+    {
+        ProductListStatsResultPtr pProductListStatsResultPtr(new ProductListStatsResult);
+
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // product items stats query
+            queryPtr->prepare(
+                    "SELECT COUNT(*) FROM product_item"
+                    );
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("getProductsListStats");
+            pProductListStatsResultPtr->m_error = 1;
+        } else if (queryResponse.query->next()) {
+            pProductListStatsResultPtr->m_stats = ProductListStatsPtr(new ProductListStats);
+            pProductListStatsResultPtr->m_stats->m_totalNumProducts = queryResponse.query->value(0).toUInt();
+        }
+        return pProductListStatsResultPtr;
+    }
+    //
+    bool DAO::updateStock(Int32 productItemId, Int32 count)
+    {
+
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // update product item stock
+            queryPtr->prepare(
+                    "UPDATE product_item SET stock = stock + :count WHERE idproduct_item = :productid"
+                    );
+            queryPtr->bindValue(":count", count);
+            queryPtr->bindValue(":productid", productItemId);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("updateStock: productItemId: %1 count: %2").arg(productItemId).arg(count);
+        }
+        return !queryResponse.error;
+    }
+    //
+    ProductItemResultPtr DAO::getProductItem(Int32 productItemId)
+    {
+        ProductItemResultPtr pProductItemResultPtr(new ProductItemResult);
+
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // product item
+            queryPtr->prepare(
+                    "SELECT name, active, image, reg_date, price, idproduct_family, idprovider, stock FROM product_item "
+                    "WHERE idproduct_item = :productid"
+                    );
+            queryPtr->bindValue(":productid", productItemId);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("getProductItem: productItemId: %1").arg(productItemId);
+            pProductItemResultPtr->m_error = 1;
+        } else if (queryResponse.query->next()) {
+            ProductItemPtr pProductItemPtr(new ProductItem);
+            pProductItemPtr->m_id = productItemId;
+            pProductItemPtr->m_name = queryResponse.query->value(0).toString();
+            pProductItemPtr->m_active =  queryResponse.query->value(1).toInt() == 1;
+            pProductItemPtr->m_imagePath = queryResponse.query->value(2).toString();
+            pProductItemPtr->m_regDate = queryResponse.query->value(3).toDateTime();
+            pProductItemPtr->m_price = queryResponse.query->value(4).toFloat();
+            pProductItemPtr->m_familyId = queryResponse.query->value(5).toInt();
+            pProductItemPtr->m_providerId = queryResponse.query->value(6).toInt();
+            pProductItemPtr->m_stock = queryResponse.query->value(7).toInt();
+            pProductItemResultPtr->m_item = pProductItemPtr;
+        }
+        return pProductItemResultPtr;
+    }
+    //
+    bool DAO::updateProductItem(const ProductItemPtr &pProductPtr)
+    {
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // update product item
+            queryPtr->prepare(
+                    "UPDATE product_item "
+                    "SET name=:name, image=:image, active=:active, idproduct_family=:familyid, price=:price, "
+                    "idprovider=:providerid, stock=:stock "
+                    "WHERE idproduct_item = :productid"
+                    );
+            queryPtr->bindValue(":name", pProductPtr->m_name);
+            queryPtr->bindValue(":image", pProductPtr->m_imagePath);
+            queryPtr->bindValue(":active", (pProductPtr->m_active)?(1):(0));
+            queryPtr->bindValue(":familyid", pProductPtr->m_familyId);
+            queryPtr->bindValue(":price", pProductPtr->m_price);
+            queryPtr->bindValue(":providerid", pProductPtr->m_providerId);
+            queryPtr->bindValue(":stock", pProductPtr->m_stock);
+            queryPtr->bindValue(":productid", pProductPtr->m_id);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("updateProductItem: productId: %1").arg(pProductPtr->m_id);
+        }
+        return !queryResponse.error;
+    }
+    //
+    Int32 DAO::createProductItem(const ProductItemPtr &pProductPtr)
+    {
+        Int32 itemId = -1;
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // create product item
+            queryPtr->prepare(
+                    "INSERT INTO product_item "
+                    "(name, image, active, reg_date, idproduct_family, price, idprovider, stock) "
+                    "VALUES (:name, :image, :active, :reg_date, :familyid, :price, :providerid, :stock)"
+                    );
+            queryPtr->bindValue(":name", pProductPtr->m_name);
+            queryPtr->bindValue(":image", pProductPtr->m_imagePath);
+            queryPtr->bindValue(":active", (pProductPtr->m_active)?(1):(0));
+            queryPtr->bindValue(":reg_date", pProductPtr->m_regDate);
+            queryPtr->bindValue(":familyid", pProductPtr->m_familyId);
+            queryPtr->bindValue(":price", pProductPtr->m_price);
+            queryPtr->bindValue(":providerid", pProductPtr->m_providerId);
+            queryPtr->bindValue(":stock", pProductPtr->m_stock);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("createProductItem: productItemName: %1").arg(pProductPtr->m_name);
+            return -1;
+        } else {
+            auto lastQuery = [](){
+                return QueryPtr(new QSqlQuery(kLastQueryId));
+            };
+
+            // For LAST_INSERT_ID(), the most recently generated ID is maintained in the server on a per-connection basis
+            QueryResponse lastQueryResponse = exec(lastQuery);
+            if (lastQueryResponse.error) {
+                QLOG_ERROR() << QString("createProductItem: could not get last ID created in DB");
+            } else if (lastQueryResponse.query->next()) {
+                itemId = lastQueryResponse.query->value(0).toUInt();
             }
         }
 
-        m_productItemListQuery.finish();
-        return pProductItemListPtr;
-    }
-    //
-    ProductListStatsPtr DAO::getProductsListStats()
-    {
-        ProductListStatsPtr pProductListStatsPtr(new ProductListStats);
-        pProductListStatsPtr->m_totalNumProducts = 0;
-        if (!m_productItemsStatsQuery.exec())
-        {
-            qDebug() << m_productItemsStatsQuery.lastError();
-            QLOG_ERROR() << m_productItemsStatsQuery.lastError();
-        } else {
-            m_productItemsStatsQuery.next();
-            pProductListStatsPtr->m_totalNumProducts = m_productItemsStatsQuery.value(0).toUInt();
-        }
-        m_productItemsStatsQuery.finish();
-        return pProductListStatsPtr;
-    }
-    //
-    void DAO::updateStock(Int32 productItemId, Int32 count)
-    {
-        m_updateStockQuery.bindValue(":count", count);
-        m_updateStockQuery.bindValue(":productid", productItemId);
-        if (!m_updateStockQuery.exec())
-        {
-            qDebug() << m_updateStockQuery.lastError();
-            QLOG_ERROR() << m_updateStockQuery.lastError();
-        }
-        m_updateStockQuery.finish();
-    }
-    //
-    ProductItemPtr DAO::getProductItem(Int32 productItemId)
-    {
-        ProductItemPtr pProductItemPtr;
-        m_productItemQuery.bindValue(":productid", productItemId);
-        if (!m_productItemQuery.exec())
-        {
-            qDebug() << m_productItemQuery.lastError();
-            QLOG_ERROR() << m_productItemQuery.lastError();
-        } else {
-            pProductItemPtr = ProductItemPtr(new ProductItem);
-            m_productItemQuery.next();
-            pProductItemPtr->m_id = productItemId;
-            pProductItemPtr->m_name = m_productItemQuery.value(0).toString();
-            pProductItemPtr->m_active =  m_productItemQuery.value(1).toInt() == 1;
-            pProductItemPtr->m_imagePath = m_productItemQuery.value(2).toString();
-            pProductItemPtr->m_regDate = m_productItemQuery.value(3).toDateTime();
-            pProductItemPtr->m_price = m_productItemQuery.value(4).toFloat();
-            pProductItemPtr->m_familyId = m_productItemQuery.value(5).toInt();
-            pProductItemPtr->m_providerId = m_productItemQuery.value(6).toInt();
-            pProductItemPtr->m_stock = m_productItemQuery.value(7).toInt();
-        }
-        m_productItemQuery.finish();
-        return pProductItemPtr;
-    }
-    //
-    void DAO::updateProductItem(const ProductItemPtr &pProductPtr)
-    {
-        m_updateProductItemQuery.bindValue(":name", pProductPtr->m_name);
-        m_updateProductItemQuery.bindValue(":image", pProductPtr->m_imagePath);
-        m_updateProductItemQuery.bindValue(":active", (pProductPtr->m_active)?(1):(0));
-        m_updateProductItemQuery.bindValue(":familyid", pProductPtr->m_familyId);
-        m_updateProductItemQuery.bindValue(":price", pProductPtr->m_price);
-        m_updateProductItemQuery.bindValue(":providerid", pProductPtr->m_providerId);
-        m_updateProductItemQuery.bindValue(":stock", pProductPtr->m_stock);
-        m_updateProductItemQuery.bindValue(":productid", pProductPtr->m_id);
-        if (!m_updateProductItemQuery.exec())
-        {
-            qDebug() << m_updateProductItemQuery.lastError();
-            QLOG_ERROR() << m_updateProductItemQuery.lastError();
-        }
-        m_updateProductItemQuery.finish();
-    }
-    //
-    Uint32 DAO::createProductItem(const ProductItemPtr &pProductPtr)
-    {
-        Uint32 itemId = 0;
-        m_createProductItemQuery.bindValue(":name", pProductPtr->m_name);
-        m_createProductItemQuery.bindValue(":image", pProductPtr->m_imagePath);
-        m_createProductItemQuery.bindValue(":active", (pProductPtr->m_active)?(1):(0));
-        m_createProductItemQuery.bindValue(":reg_date", pProductPtr->m_regDate);
-        m_createProductItemQuery.bindValue(":familyid", pProductPtr->m_familyId);
-        m_createProductItemQuery.bindValue(":price", pProductPtr->m_price);
-        m_createProductItemQuery.bindValue(":providerid", pProductPtr->m_providerId);
-        m_createProductItemQuery.bindValue(":stock", pProductPtr->m_stock);
-        if (!m_createProductItemQuery.exec())
-        {
-            qDebug() << m_createProductItemQuery.lastError();
-            QLOG_ERROR() << m_createProductItemQuery.lastError();
-        }
-        m_createProductItemQuery.finish();
-
-        // For LAST_INSERT_ID(), the most recently generated ID is maintained in the server on a per-connection basis
-        if (!m_getLastIdQuery.exec())
-        {
-            qDebug() << m_getLastIdQuery.lastError();
-            QLOG_ERROR() << m_getLastIdQuery.lastError();
-        } else {
-            m_getLastIdQuery.next();
-            itemId = m_getLastIdQuery.value(0).toUInt();
-        }
-        m_getLastIdQuery.finish();
         return itemId;
     }
     //
-    ProductFamilyPtr DAO::getProductFamily(Int32 familyId)
+    ProductFamilyResultPtr DAO::getProductFamily(Int32 familyId)
     {
-        ProductFamilyPtr pProductFamilyPtr(new ProductFamily);
-        m_productFamilyItemQuery.bindValue(":familyid", familyId);
-        if (!m_productFamilyItemQuery.exec())
-        {
-            qDebug() << m_productFamilyItemQuery.lastError();
-            QLOG_ERROR() << m_productFamilyItemQuery.lastError();
-        } else {
-            m_productFamilyItemQuery.next();
-            pProductFamilyPtr->m_id = familyId;
-            pProductFamilyPtr->m_name = m_productFamilyItemQuery.value(0).toString();
-            pProductFamilyPtr->m_active =  m_productFamilyItemQuery.value(1).toInt() == 1;
-            pProductFamilyPtr->m_imagePath = m_productFamilyItemQuery.value(2).toString();
-            pProductFamilyPtr->m_regDate = m_productFamilyItemQuery.value(3).toDateTime();
-        }
-        m_productFamilyItemQuery.finish();
-        return pProductFamilyPtr;
-    }
-    //
-    void DAO::updateProductFamilyItem(const ProductFamilyPtr &pFamilyPtr)
-    {
-        m_updateProductFamilyItemQuery.bindValue(":name", pFamilyPtr->m_name);
-        m_updateProductFamilyItemQuery.bindValue(":image", pFamilyPtr->m_imagePath);
-        m_updateProductFamilyItemQuery.bindValue(":active", (pFamilyPtr->m_active)?(1):(0));
-        m_updateProductFamilyItemQuery.bindValue(":familyid", pFamilyPtr->m_id);
-        if (!m_updateProductFamilyItemQuery.exec())
-        {
-            qDebug() << m_updateProductFamilyItemQuery.lastError();
-            QLOG_ERROR() << m_updateProductFamilyItemQuery.lastError();
-        }
-        m_updateProductFamilyItemQuery.finish();
-    }
-    //
-    Uint32 DAO::createProductFamilyItem(const ProductFamilyPtr &pFamilyPtr)
-    {
-        m_createProductFamilyItemQuery.bindValue(":name", pFamilyPtr->m_name);
-        m_createProductFamilyItemQuery.bindValue(":image", pFamilyPtr->m_imagePath);
-        m_createProductFamilyItemQuery.bindValue(":active", (pFamilyPtr->m_active)?(1):(0));
-        m_createProductFamilyItemQuery.bindValue(":reg_date", pFamilyPtr->m_regDate);
-        if (!m_createProductFamilyItemQuery.exec())
-        {
-            qDebug() << m_createProductFamilyItemQuery.lastError();
-            QLOG_ERROR() << m_createProductFamilyItemQuery.lastError();
-        }
-        m_createProductFamilyItemQuery.finish();
+        ProductFamilyResultPtr pProductFamilyResultPtr(new ProductFamilyResult);
 
-        Uint32 familyId = 0;
-        // For LAST_INSERT_ID(), the most recently generated ID is maintained in the server on a per-connection basis
-        if (!m_getLastIdQuery.exec())
-        {
-            qDebug() << m_getLastIdQuery.lastError();
-            QLOG_ERROR() << m_getLastIdQuery.lastError();
-        } else {
-            m_getLastIdQuery.next();
-            familyId = m_getLastIdQuery.value(0).toUInt();
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // product family item
+            queryPtr->prepare(
+                    "SELECT name, active, image, reg_date FROM product_family "
+                    "WHERE idproduct_family = :familyid"
+                    );
+            queryPtr->bindValue(":familyid", familyId);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("getProductFamily: familyId: %1").arg(familyId);
+            pProductFamilyResultPtr->m_error = 1;
+        } else if (queryResponse.query->next()) {
+            ProductFamilyPtr pProductFamilyPtr(new ProductFamily);
+            pProductFamilyPtr->m_id = familyId;
+            pProductFamilyPtr->m_name = queryResponse.query->value(0).toString();
+            pProductFamilyPtr->m_active =  queryResponse.query->value(1).toInt() == 1;
+            pProductFamilyPtr->m_imagePath = queryResponse.query->value(2).toString();
+            pProductFamilyPtr->m_regDate = queryResponse.query->value(3).toDateTime();
+            pProductFamilyResultPtr->m_family = pProductFamilyPtr;
         }
-        m_getLastIdQuery.finish();
+        return pProductFamilyResultPtr;
+    }
+    //
+    bool DAO::updateProductFamilyItem(const ProductFamilyPtr &pFamilyPtr)
+    {
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // update product family item
+            queryPtr->prepare(
+                    "UPDATE product_family "
+                    "SET name=:name, image=:image, active=:active "
+                    "WHERE idproduct_family = :familyid"
+                    );
+            queryPtr->bindValue(":name", pFamilyPtr->m_name);
+            queryPtr->bindValue(":image", pFamilyPtr->m_imagePath);
+            queryPtr->bindValue(":active", (pFamilyPtr->m_active)?(1):(0));
+            queryPtr->bindValue(":familyid", pFamilyPtr->m_id);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("updateProductFamilyItem: familyId: %1").arg(pFamilyPtr->m_id);
+        }
+        return !queryResponse.error;
+    }
+    //
+    Int32 DAO::createProductFamilyItem(const ProductFamilyPtr &pFamilyPtr)
+    {
+        Int32 familyId = -1;
+
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // create product family item
+            queryPtr->prepare(
+                    "INSERT INTO product_family "
+                    "(name, image, active, reg_date) "
+                    "VALUES (:name, :image, :active, :reg_date)"
+                    );
+            queryPtr->bindValue(":name", pFamilyPtr->m_name);
+            queryPtr->bindValue(":image", pFamilyPtr->m_imagePath);
+            queryPtr->bindValue(":active", (pFamilyPtr->m_active)?(1):(0));
+            queryPtr->bindValue(":reg_date", pFamilyPtr->m_regDate);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("createProductFamilyItem: familyName: %1").arg(pFamilyPtr->m_name);
+        } else {
+            auto lastQuery = [](){
+                return QueryPtr(new QSqlQuery(kLastQueryId));
+            };
+            // For LAST_INSERT_ID(), the most recently generated ID is maintained in the server on a per-connection basis
+            QueryResponse lastQueryResponse = exec(lastQuery);
+            if (lastQueryResponse.error) {
+                QLOG_ERROR() << QString("createProductFamilyItem: could not get last ID created in DB");
+            } else if (lastQueryResponse.query->next()) {
+                familyId = lastQueryResponse.query->value(0).toUInt();
+            }
+        }
+
         return familyId;
     }
     //
-    InvoiceProductItemListPtr DAO::getProductExpensesList(const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count)
+    InvoiceProductItemListResultPtr DAO::getProductExpensesList(const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count)
     {
-        InvoiceProductItemListPtr pInvoiceProductItemListPtr;
-        // only active invoices
-        m_productExpensesListQuery.bindValue(":fromDate", fromDate);
-        m_productExpensesListQuery.bindValue(":toDate", toDate);
-        m_productExpensesListQuery.bindValue(":limit", count);
-        m_productExpensesListQuery.bindValue(":offset", page * count);
-        if (!m_productExpensesListQuery.exec())
-        {
-            qDebug() << m_productExpensesListQuery.lastError();
-            QLOG_ERROR() << m_productExpensesListQuery.lastError();
+        InvoiceProductItemListResultPtr pInvoiceProductItemListResultPtr(new InvoiceProductItemListResult);
+
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // product expenses list
+            // only closed
+            queryPtr->prepare(
+                    "SELECT product_item.idproduct_item, product_item.name, product_item.image, product_item.price, SUM(inv_prod.count) "
+                    "FROM invoice "
+                    "INNER JOIN inv_prod ON inv_prod.idinvoice=invoice.idinvoice "
+                    "INNER JOIN product_item ON product_item.idproduct_item=inv_prod.idproduct_item "
+                    "WHERE invoice.date BETWEEN :fromDate AND :toDate AND invoice.state=1 "
+                    "GROUP BY inv_prod.idproduct_item "
+                    "LIMIT :limit OFFSET :offset"
+                    );
+            // only active invoices
+            queryPtr->bindValue(":fromDate", fromDate);
+            queryPtr->bindValue(":toDate", toDate);
+            queryPtr->bindValue(":limit", count);
+            queryPtr->bindValue(":offset", page * count);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLocale locale;
+            QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
+            QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("getProductExpensesList: fromDate: %1 toDate: %2 page: %3 count: %4").arg(fromDateLocalized).arg(toDateLocalized).arg(page).arg(count);
+            pInvoiceProductItemListResultPtr->m_error = 1;
         } else {
-            pInvoiceProductItemListPtr = InvoiceProductItemListPtr(new InvoiceProductItemList);
-            while (m_productExpensesListQuery.next()) {
+            pInvoiceProductItemListResultPtr->m_list = InvoiceProductItemListPtr(new InvoiceProductItemList);
+            while (queryResponse.query->next()) {
                 InvoiceProductItemPtr pInvoiceProductItemPtr(new InvoiceProductItem);
-                pInvoiceProductItemPtr->m_productId =  m_productExpensesListQuery.value(0).toInt();
-                pInvoiceProductItemPtr->m_productname =  m_productExpensesListQuery.value(1).toString();
-                pInvoiceProductItemPtr->m_imagePath =  m_productExpensesListQuery.value(2).toString();
-                pInvoiceProductItemPtr->m_priceperunit =  m_productExpensesListQuery.value(3).toFloat();
-                pInvoiceProductItemPtr->m_count =  m_productExpensesListQuery.value(4).toUInt();
-                pInvoiceProductItemListPtr->push_back(pInvoiceProductItemPtr);
+                pInvoiceProductItemPtr->m_productId =  queryResponse.query->value(0).toInt();
+                pInvoiceProductItemPtr->m_productname =  queryResponse.query->value(1).toString();
+                pInvoiceProductItemPtr->m_imagePath =  queryResponse.query->value(2).toString();
+                pInvoiceProductItemPtr->m_priceperunit =  queryResponse.query->value(3).toFloat();
+                pInvoiceProductItemPtr->m_count =  queryResponse.query->value(4).toUInt();
+                pInvoiceProductItemListResultPtr->m_list->push_back(pInvoiceProductItemPtr);
             }
         }
-        m_productExpensesListQuery.finish();
-        return pInvoiceProductItemListPtr;
+        return pInvoiceProductItemListResultPtr;
     }
     //
-    InvoiceProductItemStatsPtr DAO::getProductExpensesListStats(const QDate &fromDate, const QDate &toDate)
+    InvoiceProductItemStatsResultPtr DAO::getProductExpensesListStats(const QDate &fromDate, const QDate &toDate)
     {
-        m_productExpensesListStatsQuery.bindValue(":fromDate", fromDate);
-        m_productExpensesListStatsQuery.bindValue(":toDate", toDate);
-        InvoiceProductItemStatsPtr pInvoiceProductItemStatsPtr(new InvoiceProductItemStats);
-        pInvoiceProductItemStatsPtr->m_totalProducts = 0;
-        if (!m_productExpensesListStatsQuery.exec())
-        {
-            qDebug() << m_productExpensesListStatsQuery.lastError();
-            QLOG_ERROR() << m_productExpensesListStatsQuery.lastError();
-        } else {
-            m_productExpensesListStatsQuery.next();
-            pInvoiceProductItemStatsPtr->m_totalProducts = m_productExpensesListStatsQuery.value(0).toUInt();
+        InvoiceProductItemStatsResultPtr pIPISResultPtr(new InvoiceProductItemStatsResult);
+
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // product expenses list stats
+            // only closed
+            queryPtr->prepare(
+                    "SELECT COUNT(DISTINCT inv_prod.idproduct_item) "
+                    "FROM invoice "
+                    "INNER JOIN inv_prod ON inv_prod.idinvoice=invoice.idinvoice "
+                    "WHERE invoice.date BETWEEN :fromDate AND :toDate AND invoice.state=1"
+                    );
+            queryPtr->bindValue(":fromDate", fromDate);
+            queryPtr->bindValue(":toDate", toDate);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLocale locale;
+            QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
+            QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("getProductExpensesListStats: fromDate: %1 toDate: %2").arg(fromDateLocalized).arg(toDateLocalized);
+            pIPISResultPtr->m_error = 1;
+        } else if (queryResponse.query->next()) {
+            pIPISResultPtr->m_stats = InvoiceProductItemStatsPtr(new InvoiceProductItemStats);
+            pIPISResultPtr->m_stats->m_totalProducts = queryResponse.query->value(0).toUInt();
         }
-        m_productExpensesListStatsQuery.finish();
-        return pInvoiceProductItemStatsPtr;
+        return pIPISResultPtr;
     }
     //
-    InvoiceProductItemListPtr DAO::getProductExpensesListByMemberId(Int32 memberId, const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count)
+    InvoiceProductItemListResultPtr DAO::getProductExpensesListByMemberId(Int32 memberId, const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count)
     {
-        InvoiceProductItemListPtr pInvoiceProductItemListPtr;
-        m_productExpensesListByMemberIdQuery.bindValue(":memberid", memberId);
-        m_productExpensesListByMemberIdQuery.bindValue(":fromDate", fromDate);
-        m_productExpensesListByMemberIdQuery.bindValue(":toDate", toDate);
-        m_productExpensesListByMemberIdQuery.bindValue(":limit", count);
-        m_productExpensesListByMemberIdQuery.bindValue(":offset", page * count);
-        if (!m_productExpensesListByMemberIdQuery.exec())
-        {
-            qDebug() << m_productExpensesListByMemberIdQuery.lastError();
-            QLOG_ERROR() << m_productExpensesListByMemberIdQuery.lastError();
+        InvoiceProductItemListResultPtr pIPILResult(new InvoiceProductItemListResult);
+
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // product expenses list by memberId
+            queryPtr->prepare(
+                    "SELECT product_item.idproduct_item, product_item.name, product_item.image, product_item.price, SUM(inv_prod.count) "
+                    "FROM invoice "
+                    "INNER JOIN inv_prod ON inv_prod.idinvoice=invoice.idinvoice "
+                    "INNER JOIN product_item ON product_item.idproduct_item=inv_prod.idproduct_item "
+                    "WHERE invoice.idmember=:memberid AND invoice.date BETWEEN :fromDate AND :toDate AND invoice.state=1 "
+                    "GROUP BY inv_prod.idproduct_item "
+                    "LIMIT :limit OFFSET :offset"
+                    );
+            queryPtr->bindValue(":memberid", memberId);
+            queryPtr->bindValue(":fromDate", fromDate);
+            queryPtr->bindValue(":toDate", toDate);
+            queryPtr->bindValue(":limit", count);
+            queryPtr->bindValue(":offset", page * count);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLocale locale;
+            QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
+            QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("getProductExpensesListByMemberId: memberId: %1 fromDate: %2 toDate: %3 page: %4 count: %5").arg(memberId).arg(fromDateLocalized).arg(toDateLocalized).arg(page).arg(count);
+            pIPILResult->m_error = 1;
         } else {
-            pInvoiceProductItemListPtr = InvoiceProductItemListPtr(new InvoiceProductItemList);
-            while (m_productExpensesListByMemberIdQuery.next()) {
+            pIPILResult->m_list = InvoiceProductItemListPtr(new InvoiceProductItemList);
+            while (queryResponse.query->next()) {
                 InvoiceProductItemPtr pInvoiceProductItemPtr(new InvoiceProductItem);
-                pInvoiceProductItemPtr->m_productId =  m_productExpensesListByMemberIdQuery.value(0).toInt();
-                pInvoiceProductItemPtr->m_productname =  m_productExpensesListByMemberIdQuery.value(1).toString();
-                pInvoiceProductItemPtr->m_imagePath =  m_productExpensesListByMemberIdQuery.value(2).toString();
-                pInvoiceProductItemPtr->m_priceperunit =  m_productExpensesListByMemberIdQuery.value(3).toFloat();
-                pInvoiceProductItemPtr->m_count =  m_productExpensesListByMemberIdQuery.value(4).toUInt();
-                pInvoiceProductItemListPtr->push_back(pInvoiceProductItemPtr);
+                pInvoiceProductItemPtr->m_productId =  queryResponse.query->value(0).toInt();
+                pInvoiceProductItemPtr->m_productname =  queryResponse.query->value(1).toString();
+                pInvoiceProductItemPtr->m_imagePath =  queryResponse.query->value(2).toString();
+                pInvoiceProductItemPtr->m_priceperunit =  queryResponse.query->value(3).toFloat();
+                pInvoiceProductItemPtr->m_count =  queryResponse.query->value(4).toUInt();
+                pIPILResult->m_list->push_back(pInvoiceProductItemPtr);
             }
         }
-        m_productExpensesListByMemberIdQuery.finish();
-        return pInvoiceProductItemListPtr;
+        return pIPILResult;
     }
     //
-    InvoiceProductItemStatsPtr DAO::getProductExpensesListByMemberIdStats(Int32 memberId, const QDate &fromDate, const QDate &toDate)
+    InvoiceProductItemStatsResultPtr DAO::getProductExpensesListByMemberIdStats(Int32 memberId, const QDate &fromDate, const QDate &toDate)
     {
-        InvoiceProductItemStatsPtr pInvoiceProductItemStatsPtr(new InvoiceProductItemStats);
-        m_productExpensesListByMemberIdStatsQuery.bindValue(":memberid", memberId);
-        m_productExpensesListByMemberIdStatsQuery.bindValue(":fromDate", fromDate);
-        m_productExpensesListByMemberIdStatsQuery.bindValue(":toDate", toDate);
-        pInvoiceProductItemStatsPtr->m_totalProducts = 0;
-        if (!m_productExpensesListByMemberIdStatsQuery.exec())
-        {
-            qDebug() << m_productExpensesListByMemberIdStatsQuery.lastError();
-            QLOG_ERROR() << m_productExpensesListByMemberIdStatsQuery.lastError();
+        InvoiceProductItemStatsResultPtr pIPISResult(new InvoiceProductItemStatsResult);
+
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // product expenses list by memberId stats
+            queryPtr->prepare(
+                    "SELECT COUNT(DISTINCT inv_prod.idproduct_item) "
+                    "FROM invoice "
+                    "INNER JOIN inv_prod ON inv_prod.idinvoice=invoice.idinvoice "
+                    "WHERE invoice.idmember=:memberid AND invoice.date BETWEEN :fromDate AND :toDate AND invoice.state=1"
+                    );
+            queryPtr->bindValue(":memberid", memberId);
+            queryPtr->bindValue(":fromDate", fromDate);
+            queryPtr->bindValue(":toDate", toDate);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLocale locale;
+            QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
+            QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("getProductExpensesListByMemberIdStats: memberId: %1 fromDate: %2 toDate: %3").arg(memberId).arg(fromDateLocalized).arg(toDateLocalized);
+            pIPISResult->m_error = 1;
+        } else if (queryResponse.query->next()) {
+            pIPISResult->m_stats = InvoiceProductItemStatsPtr(new InvoiceProductItemStats);
+            pIPISResult->m_stats->m_totalProducts = queryResponse.query->value(0).toUInt();
+        }
+        return pIPISResult;
+    }
+    //
+    bool DAO::createProviderInvoice(const ProviderInvoicePtr &pProviderInvoicePtr)
+    {
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // create provider invoice
+            queryPtr->prepare(
+                    "INSERT INTO provider_invoices "
+                    "(idprovider_invoices, date, total, idprovider) "
+                    "VALUES (:id, :date, :total, :providerid)"
+                    );
+            queryPtr->bindValue(":id", pProviderInvoicePtr->m_id);
+            queryPtr->bindValue(":date", pProviderInvoicePtr->m_regDate);
+            queryPtr->bindValue(":total", pProviderInvoicePtr->m_total);
+            queryPtr->bindValue(":providerid", pProviderInvoicePtr->m_providerid);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("createProviderInvoice: providerId: %1").arg(pProviderInvoicePtr->m_id);
+        }
+        return !queryResponse.error;
+    }
+    //
+    bool DAO::createProviderInvoiceProduct(const QString &invoiceId, Int32 productId, Uint32 count)
+    {
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // create provider invoice product
+            queryPtr->prepare(
+                    "INSERT INTO provider_invoices_product "
+                    "(provider_invoices_idprovider_invoices, product_item_idproduct_item, count) "
+                    "VALUES (:providerinvoiceid, :productid, :count)"
+                    );
+            queryPtr->bindValue(":providerinvoiceid", invoiceId);
+            queryPtr->bindValue(":productid", productId);
+            queryPtr->bindValue(":count", count);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("createProviderInvoiceProduct: providerInvoiceId: %1 productId: %2 count: %3").arg(invoiceId).arg(productId).arg(count);
+        }
+        return !queryResponse.error;
+    }
+    //
+    ProviderInvoiceListResultPtr DAO::getProviderInvoiceList(const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count)
+    {
+        ProviderInvoiceListResultPtr pInvoiceListResultPtr(new ProviderInvoiceListResult);
+
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // provider invoice list
+            queryPtr->prepare(
+                    "SELECT idprovider_invoices, date, total, idprovider FROM provider_invoices "
+                    "WHERE date BETWEEN :fromDate AND :toDate "
+                    "ORDER BY date DESC "
+                    "LIMIT :limit OFFSET :offset"
+                    );
+            queryPtr->bindValue(":fromDate", fromDate);
+            queryPtr->bindValue(":toDate", toDate);
+            queryPtr->bindValue(":limit", count);
+            queryPtr->bindValue(":offset", page * count);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLocale locale;
+            QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
+            QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("getProviderInvoiceList: fromDate: %1 toDate: %2 page: %3 count: %4").arg(fromDateLocalized).arg(toDateLocalized).arg(page).arg(count);
+            pInvoiceListResultPtr->m_error = 1;
         } else {
-            m_productExpensesListByMemberIdStatsQuery.next();
-            pInvoiceProductItemStatsPtr->m_totalProducts = m_productExpensesListByMemberIdStatsQuery.value(0).toUInt();
-        }
-        m_productExpensesListByMemberIdStatsQuery.finish();
-        return pInvoiceProductItemStatsPtr;
-    }
-    //
-    void DAO::createProviderInvoice(const ProviderInvoicePtr &pProviderInvoicePtr)
-    {
-        m_createProviderInvoiceQuery.bindValue(":id", pProviderInvoicePtr->m_id);
-        m_createProviderInvoiceQuery.bindValue(":date", pProviderInvoicePtr->m_regDate);
-        m_createProviderInvoiceQuery.bindValue(":total", pProviderInvoicePtr->m_total);
-        m_createProviderInvoiceQuery.bindValue(":providerid", pProviderInvoicePtr->m_providerid);
-        if (!m_createProviderInvoiceQuery.exec())
-        {
-            qDebug() << m_createProviderInvoiceQuery.lastError();
-            QLOG_ERROR() << m_createProviderInvoiceQuery.lastError();
-        }
-        m_createProviderInvoiceQuery.finish();
-    }
-    //
-    void DAO::createProviderInvoiceProduct(const QString &invoiceId, Int32 productId, Uint32 count)
-    {
-        m_createProviderInvoiceProductQuery.bindValue(":providerinvoiceid", invoiceId);
-        m_createProviderInvoiceProductQuery.bindValue(":productid", productId);
-        m_createProviderInvoiceProductQuery.bindValue(":count", count);
-        if (!m_createProviderInvoiceProductQuery.exec())
-        {
-            qDebug() << m_createProviderInvoiceProductQuery.lastError();
-            QLOG_ERROR() << m_createProviderInvoiceProductQuery.lastError();
-        }
-        m_createProviderInvoiceProductQuery.finish();
-    }
-    //
-    ProviderInvoiceListPtr DAO::getProviderInvoiceList(const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count)
-    {
-        ProviderInvoiceListPtr pInvoiceListPtr(new ProviderInvoiceList);
-        m_providerInvoiceListQuery.bindValue(":fromDate", fromDate);
-        m_providerInvoiceListQuery.bindValue(":toDate", toDate);
-        m_providerInvoiceListQuery.bindValue(":limit", count);
-        m_providerInvoiceListQuery.bindValue(":offset", page * count);
-        if (!m_providerInvoiceListQuery.exec())
-        {
-            qDebug() << m_providerInvoiceListQuery.lastError();
-            QLOG_ERROR() << m_providerInvoiceListQuery.lastError();
-        } else {
-            while (m_providerInvoiceListQuery.next()) {
+            pInvoiceListResultPtr->m_list = ProviderInvoiceListPtr(new ProviderInvoiceList);
+            while (queryResponse.query->next()) {
                 ProviderInvoicePtr pInvoicePtr(new ProviderInvoice);
-                pInvoicePtr->m_id = m_providerInvoiceListQuery.value(0).toString();
-                pInvoicePtr->m_regDate = m_providerInvoiceListQuery.value(1).toDate();
-                pInvoicePtr->m_total = m_providerInvoiceListQuery.value(2).toFloat();
-                pInvoicePtr->m_providerid = m_providerInvoiceListQuery.value(3).toInt();
-                pInvoiceListPtr->push_back(pInvoicePtr);
+                pInvoicePtr->m_id = queryResponse.query->value(0).toString();
+                pInvoicePtr->m_regDate = queryResponse.query->value(1).toDate();
+                pInvoicePtr->m_total = queryResponse.query->value(2).toFloat();
+                pInvoicePtr->m_providerid = queryResponse.query->value(3).toInt();
+                pInvoiceListResultPtr->m_list->push_back(pInvoicePtr);
             }
         }
 
-        m_providerInvoiceListQuery.finish();
-        return pInvoiceListPtr;
+        return pInvoiceListResultPtr;
     }
     //
-    ProviderInvoiceListStatsPtr DAO::getProviderInvoiceListStats(const QDate &fromDate, const QDate &toDate)
+    ProviderInvoiceListStatsResultPtr DAO::getProviderInvoiceListStats(const QDate &fromDate, const QDate &toDate)
     {
-        ProviderInvoiceListStatsPtr pInvoiceListStatsPtr(new ProviderInvoiceListStats);
-        pInvoiceListStatsPtr->m_totalNumInvoices= 0;
-        pInvoiceListStatsPtr->m_totalAmount = 0;
+        ProviderInvoiceListStatsResultPtr pInvoiceListStatsResultPtr(new ProviderInvoiceListStatsResult);
 
-        m_providerInvoiceListStatsQuery.bindValue(":fromDate", fromDate);
-        m_providerInvoiceListStatsQuery.bindValue(":toDate", toDate);
-        if (!m_providerInvoiceListStatsQuery.exec())
-        {
-            qDebug() << m_providerInvoiceListStatsQuery.lastError();
-            QLOG_ERROR() << m_providerInvoiceListStatsQuery.lastError();
-        } else {
-            m_providerInvoiceListStatsQuery.next();
-            pInvoiceListStatsPtr->m_totalNumInvoices = m_providerInvoiceListStatsQuery.value(0).toUInt();
-            pInvoiceListStatsPtr->m_totalAmount = m_providerInvoiceListStatsQuery.value(1).toFloat();
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // provider invoice list stats
+            queryPtr->prepare(
+                    "SELECT COUNT(*), SUM(total) FROM provider_invoices "
+                    "WHERE date BETWEEN :fromDate AND :toDate"
+                    );
+            queryPtr->bindValue(":fromDate", fromDate);
+            queryPtr->bindValue(":toDate", toDate);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLocale locale;
+            QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
+            QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("getProviderInvoiceListStats: fromDate: %1 toDate: %2").arg(fromDateLocalized).arg(toDateLocalized);
+            pInvoiceListStatsResultPtr->m_error = 1;
+        } else if (queryResponse.query->next()) {
+            pInvoiceListStatsResultPtr->m_stats = ProviderInvoiceListStatsPtr(new ProviderInvoiceListStats);
+            pInvoiceListStatsResultPtr->m_stats->m_totalNumInvoices = queryResponse.query->value(0).toUInt();
+            pInvoiceListStatsResultPtr->m_stats->m_totalAmount = queryResponse.query->value(1).toFloat();
         }
-        m_providerInvoiceListStatsQuery.finish();
-        return pInvoiceListStatsPtr;
+        return pInvoiceListStatsResultPtr;
     }
     //
-    ProviderInvoiceListPtr DAO::getProviderInvoiceListByProviderId(Int32 providerId, const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count)
+    ProviderInvoiceListResultPtr DAO::getProviderInvoiceListByProviderId(Int32 providerId, const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count)
     {
-        ProviderInvoiceListPtr pInvoiceListPtr(new ProviderInvoiceList);
-        m_providerInvoiceListByProviderIdQuery.bindValue(":providerid", providerId);
-        m_providerInvoiceListByProviderIdQuery.bindValue(":fromDate", fromDate);
-        m_providerInvoiceListByProviderIdQuery.bindValue(":toDate", toDate);
-        m_providerInvoiceListByProviderIdQuery.bindValue(":limit", count);
-        m_providerInvoiceListByProviderIdQuery.bindValue(":offset", page * count);
-        if (!m_providerInvoiceListByProviderIdQuery.exec())
-        {
-            qDebug() << m_providerInvoiceListByProviderIdQuery.lastError();
-            QLOG_ERROR() << m_providerInvoiceListByProviderIdQuery.lastError();
+        ProviderInvoiceListResultPtr pInvoiceListResultPtr(new ProviderInvoiceListResult);
+
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // provider invoice list by provider
+            queryPtr->prepare(
+                    "SELECT idprovider_invoices, date, total, idprovider FROM provider_invoices "
+                    "WHERE idprovider = :providerid "
+                    "AND date BETWEEN :fromDate AND :toDate "
+                    "ORDER BY date DESC "
+                    "LIMIT :limit OFFSET :offset"
+                    );
+            queryPtr->bindValue(":providerid", providerId);
+            queryPtr->bindValue(":fromDate", fromDate);
+            queryPtr->bindValue(":toDate", toDate);
+            queryPtr->bindValue(":limit", count);
+            queryPtr->bindValue(":offset", page * count);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLocale locale;
+            QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
+            QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("getProviderInvoiceListByProviderId: providerId: %1 fromDate: %2 toDate: %3 page: %4 count: %5").arg(providerId).arg(fromDateLocalized).arg(toDateLocalized).arg(page).arg(count);
+            pInvoiceListResultPtr->m_error = 1;
         } else {
-            while (m_providerInvoiceListByProviderIdQuery.next()) {
+            pInvoiceListResultPtr->m_list = ProviderInvoiceListPtr(new ProviderInvoiceList);
+            while (queryResponse.query->next()) {
                 ProviderInvoicePtr pInvoicePtr(new ProviderInvoice);
-                pInvoicePtr->m_id = m_providerInvoiceListByProviderIdQuery.value(0).toString();
-                pInvoicePtr->m_regDate = m_providerInvoiceListByProviderIdQuery.value(1).toDate();
-                pInvoicePtr->m_total = m_providerInvoiceListByProviderIdQuery.value(2).toFloat();
-                pInvoicePtr->m_providerid = m_providerInvoiceListByProviderIdQuery.value(3).toInt();
-                pInvoiceListPtr->push_back(pInvoicePtr);
+                pInvoicePtr->m_id = queryResponse.query->value(0).toString();
+                pInvoicePtr->m_regDate = queryResponse.query->value(1).toDate();
+                pInvoicePtr->m_total = queryResponse.query->value(2).toFloat();
+                pInvoicePtr->m_providerid = queryResponse.query->value(3).toInt();
+                pInvoiceListResultPtr->m_list->push_back(pInvoicePtr);
             }
         }
 
-        m_providerInvoiceListByProviderIdQuery.finish();
-        return pInvoiceListPtr;
+        return pInvoiceListResultPtr;
     }
     //
-    ProviderInvoiceListStatsPtr DAO::getProviderInvoiceListByProviderIdStats(Int32 providerId, const QDate &fromDate, const QDate &toDate)
+    ProviderInvoiceListStatsResultPtr DAO::getProviderInvoiceListByProviderIdStats(Int32 providerId, const QDate &fromDate, const QDate &toDate)
     {
-        ProviderInvoiceListStatsPtr pInvoiceListStatsPtr(new ProviderInvoiceListStats);
-        pInvoiceListStatsPtr->m_totalNumInvoices= 0;
-        pInvoiceListStatsPtr->m_totalAmount = 0;
+        ProviderInvoiceListStatsResultPtr pInvoiceListStatsResultPtr(new ProviderInvoiceListStatsResult);
 
-        m_providerInvoiceListByProviderIdStatsQuery.bindValue(":providerid", providerId);
-        m_providerInvoiceListByProviderIdStatsQuery.bindValue(":fromDate", fromDate);
-        m_providerInvoiceListByProviderIdStatsQuery.bindValue(":toDate", toDate);
-        if (!m_providerInvoiceListByProviderIdStatsQuery.exec())
-        {
-            qDebug() << m_providerInvoiceListByProviderIdStatsQuery.lastError();
-            QLOG_ERROR() << m_providerInvoiceListByProviderIdStatsQuery.lastError();
-        } else {
-            m_providerInvoiceListByProviderIdStatsQuery.next();
-            pInvoiceListStatsPtr->m_totalNumInvoices = m_providerInvoiceListByProviderIdStatsQuery.value(0).toUInt();
-            pInvoiceListStatsPtr->m_totalAmount = m_providerInvoiceListByProviderIdStatsQuery.value(1).toFloat();
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // provider invoice list Stats by provider
+            queryPtr->prepare(
+                    "SELECT COUNT(*), SUM(total) FROM provider_invoices "
+                    "WHERE idprovider = :providerid "
+                    "AND date BETWEEN :fromDate AND :toDate"
+                    );
+            queryPtr->bindValue(":providerid", providerId);
+            queryPtr->bindValue(":fromDate", fromDate);
+            queryPtr->bindValue(":toDate", toDate);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLocale locale;
+            QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
+            QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
+            QLOG_ERROR() << QString("getProviderInvoiceListByProviderIdStats: providerId: %1 fromDate: %2 toDate: %3").arg(providerId).arg(fromDateLocalized).arg(toDateLocalized);
+            pInvoiceListStatsResultPtr->m_error = 1;
+        } else if (queryResponse.query->next()) {
+            pInvoiceListStatsResultPtr->m_stats = ProviderInvoiceListStatsPtr(new ProviderInvoiceListStats);
+            pInvoiceListStatsResultPtr->m_stats->m_totalNumInvoices = queryResponse.query->value(0).toUInt();
+            pInvoiceListStatsResultPtr->m_stats->m_totalAmount = queryResponse.query->value(1).toFloat();
         }
-        m_providerInvoiceListByProviderIdStatsQuery.finish();
-        return pInvoiceListStatsPtr;
+        return pInvoiceListStatsResultPtr;
     }
     //
-    DepositListPtr DAO::getUncheckedDeposits()
+    DepositListResultPtr DAO::getUncheckedDeposits()
     {
-        DepositListPtr pDepositListPtr(new DepositList);
-        if (!m_uncheckedDepositListQuery.exec())
-        {
-            qDebug() << m_uncheckedDepositListQuery.lastError();
-            QLOG_ERROR() << m_uncheckedDepositListQuery.lastError();
+        DepositListResultPtr pDepositListResultPtr(new DepositListResult);
+
+        auto createQuery = [](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // unchecked deposit list
+            queryPtr->prepare(
+                    "SELECT member.username, deposit.iddeposit, deposit.date, deposit.total, deposit.description, deposit.idmember "
+                    "FROM deposit "
+                    "INNER JOIN member ON member.idmember = deposit.idmember "
+                    "WHERE deposit.state = 0"
+                    );
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("getUncheckedDeposits");
+            pDepositListResultPtr->m_error = 1;
         } else {
-            while (m_uncheckedDepositListQuery.next()) {
+            pDepositListResultPtr->m_list = DepositListPtr(new DepositList);
+            while (queryResponse.query->next()) {
                 Uint32 column = 0;
                 DepositPtr pDepositPtr(new Deposit);
-                pDepositPtr->m_memberUsername = m_uncheckedDepositListQuery.value(column++).toInt();
-                pDepositPtr->m_id = m_uncheckedDepositListQuery.value(column++).toInt();
-                pDepositPtr->m_date = m_uncheckedDepositListQuery.value(column++).toDateTime();
-                pDepositPtr->m_total = m_uncheckedDepositListQuery.value(column++).toFloat();
-                pDepositPtr->m_descr = m_uncheckedDepositListQuery.value(column++).toString();
-                pDepositPtr->m_memberId = m_uncheckedDepositListQuery.value(column++).toInt();
-                pDepositListPtr->push_back(pDepositPtr);
+                pDepositPtr->m_memberUsername = queryResponse.query->value(column++).toInt();
+                pDepositPtr->m_id = queryResponse.query->value(column++).toInt();
+                pDepositPtr->m_date = queryResponse.query->value(column++).toDateTime();
+                pDepositPtr->m_total = queryResponse.query->value(column++).toFloat();
+                pDepositPtr->m_descr = queryResponse.query->value(column++).toString();
+                pDepositPtr->m_memberId = queryResponse.query->value(column++).toInt();
+                pDepositListResultPtr->m_list->push_back(pDepositPtr);
             }
         }
 
-        m_uncheckedDepositListQuery.finish();
-        return pDepositListPtr;
+        return pDepositListResultPtr;
     }
     //
-    void DAO::closeDeposit(Int32 depositId)
+    bool DAO::closeDeposit(Int32 depositId)
     {
-        m_closeDepositQuery.bindValue(":depositid", depositId);
-        if (!m_closeDepositQuery.exec())
-        {
-            qDebug() << m_closeDepositQuery.lastError();
-            QLOG_ERROR() << m_closeDepositQuery.lastError();
-        }
-        m_closeDepositQuery.finish();
-    }
-    //
-    MemberListPtr DAO::getMemberList(bool onlyPostalSend, Uint32 page, Uint32 count)
-    {
-        QSqlQuery *pQuery = onlyPostalSend?(&m_memberListFilteredQuery):(&m_memberListQuery);
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // close deposit
+            queryPtr->prepare(
+                    "UPDATE deposit "
+                    "SET state=1 "
+                    "WHERE iddeposit=:depositid"
+                    );
+            queryPtr->bindValue(":depositid", depositId);
+            return queryPtr;
+        };
 
-        MemberListPtr pMemberListPtr(new MemberList);
-        pQuery->bindValue(":limit", count);
-        pQuery->bindValue(":offset", page * count);
-        if (!pQuery->exec())
-        {
-            qDebug() << pQuery->lastError();
-            QLOG_ERROR() << pQuery->lastError();
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("closeDeposit: depositId: %1").arg(depositId);
+        }
+        return !queryResponse.error;
+    }
+    //
+    MemberListResultPtr DAO::getMemberList(bool onlyPostalSend, Uint32 page, Uint32 count)
+    {
+        MemberListResultPtr pMemberListResultPtr(new MemberListResult);
+
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            if (onlyPostalSend) {
+                // member filtered list
+                queryPtr->prepare(
+                        "SELECT member.idmember, member.username, member.name, member.surname, member.image, member.lastmodified, member.reg_date, member.active, member.isAdmin, member.birth, "
+                        "member.address, member.zip_code, member.town, member.state, member.tel, member.tel2, member.email, member.bank_account, member.postal_send, "
+                        "member.notes, ac.balance "
+                        "FROM account ac "
+                        "INNER JOIN (SELECT account.idmember, MAX(account.date) AS MaxDate FROM account GROUP BY account.idmember) groupedAccount "
+                        "ON ac.idmember = groupedAccount.idmember AND ac.date=groupedAccount.MaxDate "
+                        "INNER JOIN member ON member.idmember=ac.idmember "
+                        "WHERE member.postal_send = 1 "
+                        "ORDER BY member.surname ASC "
+                        "LIMIT :limit OFFSET :offset"
+                        );
+            } else {
+                // member list
+                queryPtr->prepare(
+                        "SELECT member.idmember, member.username, member.name, member.surname, member.image, member.lastmodified, member.reg_date, member.active, member.isAdmin, member.birth, "
+                        "member.address, member.zip_code, member.town, member.state, member.tel, member.tel2, member.email, member.bank_account, member.postal_send, "
+                        "member.notes, ac.balance "
+                        "FROM account ac "
+                        "INNER JOIN (SELECT account.idmember, MAX(account.date) AS MaxDate FROM account GROUP BY account.idmember) groupedAccount "
+                        "ON ac.idmember = groupedAccount.idmember AND ac.date=groupedAccount.MaxDate "
+                        "INNER JOIN member ON member.idmember=ac.idmember "
+                        "ORDER BY member.surname ASC "
+                        "LIMIT :limit OFFSET :offset"
+                        );
+            }
+            queryPtr->bindValue(":limit", count);
+            queryPtr->bindValue(":offset", page * count);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("getMemberList: postalSend: %1 page: %2 count: %3").arg(onlyPostalSend).arg(page).arg(count);
+            pMemberListResultPtr->m_error = 1;
         } else {
-            while (pQuery->next()) {
+            pMemberListResultPtr->m_list = MemberListPtr(new MemberList);
+            while (queryResponse.query->next()) {
                 Uint32 column = 0;
                 MemberPtr pMemberPtr(new Member);
-                pMemberPtr->m_id = pQuery->value(column++).toInt();
-                pMemberPtr->m_username = pQuery->value(column++).toInt();
-                pMemberPtr->m_name = pQuery->value(column++).toString();
-                pMemberPtr->m_surname = pQuery->value(column++).toString();
-                pMemberPtr->m_imagePath = pQuery->value(column++).toString();
-                pMemberPtr->m_lastModified = pQuery->value(column++).toDateTime();
-                pMemberPtr->m_regDate = pQuery->value(column++).toDateTime();
-                pMemberPtr->m_active = pQuery->value(column++).toInt() == 1;
-                pMemberPtr->m_isAdmin = pQuery->value(column++).toInt() == 1;
-                pMemberPtr->m_birthdate = pQuery->value(column++).toDate();
-                pMemberPtr->m_address = pQuery->value(column++).toString();
-                pMemberPtr->m_zipCode = pQuery->value(column++).toString();
-                pMemberPtr->m_town = pQuery->value(column++).toString();
-                pMemberPtr->m_state = pQuery->value(column++).toString();
-                pMemberPtr->m_phone = pQuery->value(column++).toString();
-                pMemberPtr->m_phone2 = pQuery->value(column++).toString();
-                pMemberPtr->m_email = pQuery->value(column++).toString();
-                pMemberPtr->m_bank_account = pQuery->value(column++).toString();
-                pMemberPtr->m_postalSend = pQuery->value(column++).toInt() == 1;
-                pMemberPtr->m_notes = pQuery->value(column++).toString();
-                pMemberPtr->m_balance =  pQuery->value(column++).toFloat();
-                pMemberListPtr->push_back(pMemberPtr);
+                pMemberPtr->m_id = queryResponse.query->value(column++).toInt();
+                pMemberPtr->m_username = queryResponse.query->value(column++).toInt();
+                pMemberPtr->m_name = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_surname = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_imagePath = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_lastModified = queryResponse.query->value(column++).toDateTime();
+                pMemberPtr->m_regDate = queryResponse.query->value(column++).toDateTime();
+                pMemberPtr->m_active = queryResponse.query->value(column++).toInt() == 1;
+                pMemberPtr->m_isAdmin = queryResponse.query->value(column++).toInt() == 1;
+                pMemberPtr->m_birthdate = queryResponse.query->value(column++).toDate();
+                pMemberPtr->m_address = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_zipCode = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_town = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_state = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_phone = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_phone2 = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_email = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_bank_account = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_postalSend = queryResponse.query->value(column++).toInt() == 1;
+                pMemberPtr->m_notes = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_balance = queryResponse.query->value(column++).toFloat();
+                pMemberListResultPtr->m_list->push_back(pMemberPtr);
             }
         }
 
-        pQuery->finish();
-        return pMemberListPtr;
+        return pMemberListResultPtr;
     }
     //
-    MemberListStatsPtr DAO::getMemberListStats(bool onlyPostalSend)
+    MemberListStatsResultPtr DAO::getMemberListStats(bool onlyPostalSend)
     {
-        MemberListStatsPtr pMemberListStatsPtr(new MemberListStats);
-        pMemberListStatsPtr->m_totalMembers = 0;
+        MemberListStatsResultPtr pMemberListStatsResultPtr(new MemberListStatsResult);
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            if (onlyPostalSend) {
+                // member list filtered stats
+                queryPtr->prepare(
+                        "SELECT COUNT(*) FROM member "
+                        "WHERE postal_send = 1"
+                        );
+            } else {
+                // member list stats
+                queryPtr->prepare(
+                        "SELECT COUNT(*) FROM member"
+                        );
+            }
+            return queryPtr;
+        };
 
-        QSqlQuery *pQuery = onlyPostalSend?(&m_memberListFilteredStatsQuery):(&m_memberListStatsQuery);
-
-        if (!pQuery->exec())
-        {
-            qDebug() << pQuery->lastError();
-            QLOG_ERROR() << pQuery->lastError();
-        } else {
-            pQuery->next();
-            pMemberListStatsPtr->m_totalMembers = pQuery->value(0).toUInt();
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("getMemberListStats: postalSend: %1").arg(onlyPostalSend);
+            pMemberListStatsResultPtr->m_error = 1;
+        } else if (queryResponse.query->next()) {
+            pMemberListStatsResultPtr->m_stats = MemberListStatsPtr(new MemberListStats);
+            pMemberListStatsResultPtr->m_stats->m_totalMembers = queryResponse.query->value(0).toUInt();
         }
-        pQuery->finish();
-        return pMemberListStatsPtr;
+        return pMemberListStatsResultPtr;
     }
     //
-    void DAO::updateMember(const MemberPtr &pMemberPtr)
+    bool DAO::updateMember(const MemberPtr &pMemberPtr)
     {
-        // obligatory
-        m_updateMemberQuery.bindValue(":memberid", pMemberPtr->m_id);
-        m_updateMemberQuery.bindValue(":username", pMemberPtr->m_username);
-        m_updateMemberQuery.bindValue(":name", pMemberPtr->m_name);
-        m_updateMemberQuery.bindValue(":surname", pMemberPtr->m_surname);
-        m_updateMemberQuery.bindValue(":lastmodified", pMemberPtr->m_lastModified);
-        m_updateMemberQuery.bindValue(":active", pMemberPtr->m_active?1:0);
-        m_updateMemberQuery.bindValue(":isadmin", pMemberPtr->m_isAdmin?1:0);
-        m_updateMemberQuery.bindValue(":bank_account", pMemberPtr->m_bank_account);
-        m_updateMemberQuery.bindValue(":postal_send", pMemberPtr->m_postalSend?1:0);
-        // optional
-        if (pMemberPtr->m_imagePath.isEmpty()) {
-            m_updateMemberQuery.bindValue(":image", QVariant());
-        } else {
-            m_updateMemberQuery.bindValue(":image", pMemberPtr->m_imagePath);
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // update  member
+            queryPtr->prepare(
+                    "UPDATE member "
+                    "SET username=:username, name=:name, surname=:surname, image=:image, lastmodified=:lastmodified, active=:active, isAdmin=:isadmin, birth=:birth, "
+                    "address=:address, zip_code=:zip_code, town=:town, state=:state, tel=:tel, tel2=:tel2, email=:email, bank_account=:bank_account, postal_send=:postal_send, "
+                    "notes=:notes "
+                    "WHERE idmember = :memberid"
+                    );
+            // obligatory
+            queryPtr->bindValue(":memberid", pMemberPtr->m_id);
+            queryPtr->bindValue(":username", pMemberPtr->m_username);
+            queryPtr->bindValue(":name", pMemberPtr->m_name);
+            queryPtr->bindValue(":surname", pMemberPtr->m_surname);
+            queryPtr->bindValue(":lastmodified", pMemberPtr->m_lastModified);
+            queryPtr->bindValue(":active", pMemberPtr->m_active?1:0);
+            queryPtr->bindValue(":isadmin", pMemberPtr->m_isAdmin?1:0);
+            queryPtr->bindValue(":bank_account", pMemberPtr->m_bank_account);
+            queryPtr->bindValue(":postal_send", pMemberPtr->m_postalSend?1:0);
+            // optional
+            if (pMemberPtr->m_imagePath.isEmpty()) {
+                queryPtr->bindValue(":image", QVariant());
+            } else {
+                queryPtr->bindValue(":image", pMemberPtr->m_imagePath);
+            }
+            if (pMemberPtr->m_birthdate.isValid()) {
+                queryPtr->bindValue(":birth", pMemberPtr->m_birthdate);
+            } else {
+                queryPtr->bindValue(":birth", QVariant());
+            }
+            if (pMemberPtr->m_address.isEmpty()) {
+                queryPtr->bindValue(":address", QVariant());
+            } else {
+                queryPtr->bindValue(":address", pMemberPtr->m_address);
+            }
+            if (pMemberPtr->m_zipCode.isEmpty()) {
+                queryPtr->bindValue(":zip_code", QVariant());
+            } else {
+                queryPtr->bindValue(":zip_code", pMemberPtr->m_zipCode);
+            }
+            if (pMemberPtr->m_town.isEmpty()) {
+                queryPtr->bindValue(":town", QVariant());
+            } else {
+                queryPtr->bindValue(":town", pMemberPtr->m_town);
+            }
+            if (pMemberPtr->m_state.isEmpty()) {
+                queryPtr->bindValue(":state", QVariant());
+            } else {
+                queryPtr->bindValue(":state", pMemberPtr->m_state);
+            }
+            if (pMemberPtr->m_phone.isEmpty()) {
+                queryPtr->bindValue(":tel", QVariant());
+            } else {
+                queryPtr->bindValue(":tel", pMemberPtr->m_phone);
+            }
+            if (pMemberPtr->m_phone2.isEmpty()) {
+                queryPtr->bindValue(":tel2", QVariant());
+            } else {
+                queryPtr->bindValue(":tel2", pMemberPtr->m_phone2);
+            }
+            if (pMemberPtr->m_email.isEmpty()) {
+                queryPtr->bindValue(":email", QVariant());
+            } else {
+                queryPtr->bindValue(":email", pMemberPtr->m_email);
+            }
+            if (pMemberPtr->m_notes.isEmpty()) {
+                queryPtr->bindValue(":notes", QVariant());
+            } else {
+                queryPtr->bindValue(":notes", pMemberPtr->m_notes);
+            }
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("updateMember: memberId: %1").arg(pMemberPtr->m_id);
         }
-        if (pMemberPtr->m_birthdate.isValid()) {
-            m_updateMemberQuery.bindValue(":birth", pMemberPtr->m_birthdate);
-        } else {
-            m_updateMemberQuery.bindValue(":birth", QVariant());
-        }
-        if (pMemberPtr->m_address.isEmpty()) {
-            m_updateMemberQuery.bindValue(":address", QVariant());
-        } else {
-            m_updateMemberQuery.bindValue(":address", pMemberPtr->m_address);
-        }
-        if (pMemberPtr->m_zipCode.isEmpty()) {
-            m_updateMemberQuery.bindValue(":zip_code", QVariant());
-        } else {
-            m_updateMemberQuery.bindValue(":zip_code", pMemberPtr->m_zipCode);
-        }
-        if (pMemberPtr->m_town.isEmpty()) {
-            m_updateMemberQuery.bindValue(":town", QVariant());
-        } else {
-            m_updateMemberQuery.bindValue(":town", pMemberPtr->m_town);
-        }
-        if (pMemberPtr->m_state.isEmpty()) {
-            m_updateMemberQuery.bindValue(":state", QVariant());
-        } else {
-            m_updateMemberQuery.bindValue(":state", pMemberPtr->m_state);
-        }
-        if (pMemberPtr->m_phone.isEmpty()) {
-            m_updateMemberQuery.bindValue(":tel", QVariant());
-        } else {
-            m_updateMemberQuery.bindValue(":tel", pMemberPtr->m_phone);
-        }
-        if (pMemberPtr->m_phone2.isEmpty()) {
-            m_updateMemberQuery.bindValue(":tel2", QVariant());
-        } else {
-            m_updateMemberQuery.bindValue(":tel2", pMemberPtr->m_phone2);
-        }
-        if (pMemberPtr->m_email.isEmpty()) {
-            m_updateMemberQuery.bindValue(":email", QVariant());
-        } else {
-            m_updateMemberQuery.bindValue(":email", pMemberPtr->m_email);
-        }
-        if (pMemberPtr->m_notes.isEmpty()) {
-            m_updateMemberQuery.bindValue(":notes", QVariant());
-        } else {
-            m_updateMemberQuery.bindValue(":notes", pMemberPtr->m_notes);
-        }
-        // execute query
-        if (!m_updateMemberQuery.exec())
-        {
-            qDebug() << m_updateMemberQuery.lastError();
-            QLOG_ERROR() << m_updateMemberQuery.lastError();
-        }
-        m_updateMemberQuery.finish();
+        return !queryResponse.error;
     }
     //
     Int32 DAO::createMember(const MemberPtr &pMemberPtr)
     {
-        // obligatory
-        m_createMemberQuery.bindValue(":username", pMemberPtr->m_username);
-        m_createMemberQuery.bindValue(":name", pMemberPtr->m_name);
-        m_createMemberQuery.bindValue(":surname", pMemberPtr->m_surname);
-        m_createMemberQuery.bindValue(":lastmodified", pMemberPtr->m_lastModified);
-        m_createMemberQuery.bindValue(":reg_date", pMemberPtr->m_regDate);
-        m_createMemberQuery.bindValue(":active", pMemberPtr->m_active?1:0);
-        m_createMemberQuery.bindValue(":isadmin", pMemberPtr->m_isAdmin?1:0);
-        m_createMemberQuery.bindValue(":bank_account", pMemberPtr->m_bank_account);
-        m_createMemberQuery.bindValue(":postal_send", pMemberPtr->m_postalSend?1:0);
-        m_createMemberQuery.bindValue(":pwd", pMemberPtr->m_pwd);
-        m_createMemberQuery.bindValue(":lastlogin", pMemberPtr->m_lastLogin);
-        // optional
-        if (pMemberPtr->m_imagePath.isEmpty()) {
-            m_createMemberQuery.bindValue(":image", QVariant());
-        } else {
-            m_createMemberQuery.bindValue(":image", pMemberPtr->m_imagePath);
-        }
-        if (pMemberPtr->m_birthdate.isValid()) {
-            m_createMemberQuery.bindValue(":birth", pMemberPtr->m_birthdate);
-        } else {
-            m_createMemberQuery.bindValue(":birth", QVariant());
-        }
-        if (pMemberPtr->m_address.isEmpty()) {
-            m_createMemberQuery.bindValue(":address", QVariant());
-        } else {
-            m_createMemberQuery.bindValue(":address", pMemberPtr->m_address);
-        }
-        if (pMemberPtr->m_zipCode.isEmpty()) {
-            m_createMemberQuery.bindValue(":zip_code", QVariant());
-        } else {
-            m_createMemberQuery.bindValue(":zip_code", pMemberPtr->m_zipCode);
-        }
-        if (pMemberPtr->m_town.isEmpty()) {
-            m_createMemberQuery.bindValue(":town", QVariant());
-        } else {
-            m_createMemberQuery.bindValue(":town", pMemberPtr->m_town);
-        }
-        if (pMemberPtr->m_state.isEmpty()) {
-            m_createMemberQuery.bindValue(":state", QVariant());
-        } else {
-            m_createMemberQuery.bindValue(":state", pMemberPtr->m_state);
-        }
-        if (pMemberPtr->m_phone.isEmpty()) {
-            m_createMemberQuery.bindValue(":tel", QVariant());
-        } else {
-            m_createMemberQuery.bindValue(":tel", pMemberPtr->m_phone);
-        }
-        if (pMemberPtr->m_phone2.isEmpty()) {
-            m_createMemberQuery.bindValue(":tel2", QVariant());
-        } else {
-            m_createMemberQuery.bindValue(":tel2", pMemberPtr->m_phone2);
-        }
-        if (pMemberPtr->m_email.isEmpty()) {
-            m_createMemberQuery.bindValue(":email", QVariant());
-        } else {
-            m_createMemberQuery.bindValue(":email", pMemberPtr->m_email);
-        }
-        if (pMemberPtr->m_notes.isEmpty()) {
-            m_createMemberQuery.bindValue(":notes", QVariant());
-        } else {
-            m_createMemberQuery.bindValue(":notes", pMemberPtr->m_notes);
-        }
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // create member
+            queryPtr->prepare(
+                    "INSERT INTO member "
+                    "(username, name, surname, image, lastmodified, reg_date, active, isAdmin, birth, "
+                    "address, zip_code, town, state, tel, tel2, email, bank_account, postal_send, "
+                    "notes, pwd, lastlogin) "
+                    "VALUES (:username, :name, :surname, :image, :lastmodified, :reg_date, :active, :isadmin, :birth, "
+                    ":address, :zip_code, :town, :state, :tel, :tel2, :email, :bank_account, :postal_send, "
+                    ":notes, :pwd, :lastlogin)"
+                    );
+            // obligatory
+            queryPtr->bindValue(":username", pMemberPtr->m_username);
+            queryPtr->bindValue(":name", pMemberPtr->m_name);
+            queryPtr->bindValue(":surname", pMemberPtr->m_surname);
+            queryPtr->bindValue(":lastmodified", pMemberPtr->m_lastModified);
+            queryPtr->bindValue(":reg_date", pMemberPtr->m_regDate);
+            queryPtr->bindValue(":active", pMemberPtr->m_active?1:0);
+            queryPtr->bindValue(":isadmin", pMemberPtr->m_isAdmin?1:0);
+            queryPtr->bindValue(":bank_account", pMemberPtr->m_bank_account);
+            queryPtr->bindValue(":postal_send", pMemberPtr->m_postalSend?1:0);
+            queryPtr->bindValue(":pwd", pMemberPtr->m_pwd);
+            queryPtr->bindValue(":lastlogin", pMemberPtr->m_lastLogin);
+            // optional
+            if (pMemberPtr->m_imagePath.isEmpty()) {
+                queryPtr->bindValue(":image", QVariant());
+            } else {
+                queryPtr->bindValue(":image", pMemberPtr->m_imagePath);
+            }
+            if (pMemberPtr->m_birthdate.isValid()) {
+                queryPtr->bindValue(":birth", pMemberPtr->m_birthdate);
+            } else {
+                queryPtr->bindValue(":birth", QVariant());
+            }
+            if (pMemberPtr->m_address.isEmpty()) {
+                queryPtr->bindValue(":address", QVariant());
+            } else {
+                queryPtr->bindValue(":address", pMemberPtr->m_address);
+            }
+            if (pMemberPtr->m_zipCode.isEmpty()) {
+                queryPtr->bindValue(":zip_code", QVariant());
+            } else {
+                queryPtr->bindValue(":zip_code", pMemberPtr->m_zipCode);
+            }
+            if (pMemberPtr->m_town.isEmpty()) {
+                queryPtr->bindValue(":town", QVariant());
+            } else {
+                queryPtr->bindValue(":town", pMemberPtr->m_town);
+            }
+            if (pMemberPtr->m_state.isEmpty()) {
+                queryPtr->bindValue(":state", QVariant());
+            } else {
+                queryPtr->bindValue(":state", pMemberPtr->m_state);
+            }
+            if (pMemberPtr->m_phone.isEmpty()) {
+                queryPtr->bindValue(":tel", QVariant());
+            } else {
+                queryPtr->bindValue(":tel", pMemberPtr->m_phone);
+            }
+            if (pMemberPtr->m_phone2.isEmpty()) {
+                queryPtr->bindValue(":tel2", QVariant());
+            } else {
+                queryPtr->bindValue(":tel2", pMemberPtr->m_phone2);
+            }
+            if (pMemberPtr->m_email.isEmpty()) {
+                queryPtr->bindValue(":email", QVariant());
+            } else {
+                queryPtr->bindValue(":email", pMemberPtr->m_email);
+            }
+            if (pMemberPtr->m_notes.isEmpty()) {
+                queryPtr->bindValue(":notes", QVariant());
+            } else {
+                queryPtr->bindValue(":notes", pMemberPtr->m_notes);
+            }
+            return queryPtr;
+        };
 
-        // execute query
-        if (!m_createMemberQuery.exec())
-        {
-            qDebug() << m_createMemberQuery.lastError();
-            QLOG_ERROR() << m_createMemberQuery.lastError();
-        }
-        m_createMemberQuery.finish();
-
-        Int32 memberId = 0;
-        // For LAST_INSERT_ID(), the most recently generated ID is maintained in the server on a per-connection basis
-        if (!m_getLastIdQuery.exec())
-        {
-            qDebug() << m_getLastIdQuery.lastError();
-            QLOG_ERROR() << m_getLastIdQuery.lastError();
+        Int32 memberId = -1;
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("createMember: memberUsername: %1").arg(pMemberPtr->m_username);
         } else {
-            m_getLastIdQuery.next();
-            memberId = m_getLastIdQuery.value(0).toUInt();
+            auto lastQuery = [](){
+                return QueryPtr(new QSqlQuery(kLastQueryId));
+            };
+
+            // For LAST_INSERT_ID(), the most recently generated ID is maintained in the server on a per-connection basis
+            QueryResponse lastQueryResponse = exec(lastQuery);
+            if (lastQueryResponse.error) {
+                QLOG_ERROR() << QString("createMember: could not get last ID created in DB");
+            } else if (lastQueryResponse.query->next()) {
+                memberId = lastQueryResponse.query->value(0).toUInt();
+            }
         }
-        m_getLastIdQuery.finish();
         return memberId;
     }
     //
-    void DAO::changeMemberPassword(Int32 memberId, const QString &pwdHash, const QDateTime &lastmodified)
+    bool DAO::changeMemberPassword(Int32 memberId, const QString &pwdHash, const QDateTime &lastmodified)
     {
-        m_updateMemberPasswordQuery.bindValue(":pwd", pwdHash);
-        m_updateMemberPasswordQuery.bindValue(":lastmodified", lastmodified);
-        m_updateMemberPasswordQuery.bindValue(":memberid", memberId);
-        // execute query
-        if (!m_updateMemberPasswordQuery.exec())
-        {
-            qDebug() << m_updateMemberPasswordQuery.lastError();
-            QLOG_ERROR() << m_updateMemberPasswordQuery.lastError();
-        }
-        m_updateMemberPasswordQuery.finish();
-    }
-    //
-    void DAO::changeMemberLastLogin(Int32 memberId, const QDateTime &lastlogin)
-    {
-        m_updateMemberLastLoginQuery.bindValue(":lastlogin", lastlogin);
-        m_updateMemberLastLoginQuery.bindValue(":memberid", memberId);
-        // execute query
-        if (!m_updateMemberLastLoginQuery.exec())
-        {
-            qDebug() << m_updateMemberLastLoginQuery.lastError();
-            QLOG_ERROR() << m_updateMemberLastLoginQuery.lastError();
-        }
-        m_updateMemberLastLoginQuery.finish();
-    }
-    //
-    InvoicePtr DAO::getLastInvoiceInfo()
-    {
-        InvoicePtr pInvoicePtr;
-        if (!m_lastInvoiceQuery.exec())
-        {
-            qDebug() << m_lastInvoiceQuery.lastError();
-            QLOG_ERROR() << m_lastInvoiceQuery.lastError();
-        } else if (m_lastInvoiceQuery.next())
-        {
-            pInvoicePtr = InvoicePtr(new Invoice());
-            pInvoicePtr->m_id = m_lastInvoiceQuery.value(0).toInt();;
-            pInvoicePtr->m_state = static_cast<InvoiceState>(m_lastInvoiceQuery.value(1).toUInt());
-            pInvoicePtr->m_date = m_lastInvoiceQuery.value(2).toDateTime();
-            pInvoicePtr->m_total = m_lastInvoiceQuery.value(3).toFloat();
-            pInvoicePtr->m_memberId = m_lastInvoiceQuery.value(4).toInt();
-            pInvoicePtr->m_lastModified = m_lastInvoiceQuery.value(5).toDateTime();
-        }
-        m_lastInvoiceQuery.finish();
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // update member password
+            queryPtr->prepare(
+                    "UPDATE member "
+                    "SET pwd=:pwd, lastmodified=:lastmodified "
+                    "WHERE idmember = :memberid"
+                    );
+            queryPtr->bindValue(":pwd", pwdHash);
+            queryPtr->bindValue(":lastmodified", lastmodified);
+            queryPtr->bindValue(":memberid", memberId);
+            return queryPtr;
+        };
 
-        return pInvoicePtr;
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("changeMemberPassword: memberId: %1").arg(memberId);
+        }
+        return !queryResponse.error;
     }
     //
-    void DAO::updateInvoiceLastModDate(Int32 invoiceId, const QDateTime &lastModDate)
+    bool DAO::changeMemberLastLogin(Int32 memberId, const QDateTime &lastlogin)
+    {
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // update member lastlogin date
+            queryPtr->prepare(
+                    "UPDATE member "
+                    "SET lastlogin=:lastlogin "
+                    "WHERE idmember = :memberid"
+                    );
+            queryPtr->bindValue(":lastlogin", lastlogin);
+            queryPtr->bindValue(":memberid", memberId);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("changeMemberLastLogin: memberId: %1").arg(memberId);
+        }
+        return !queryResponse.error;
+    }
+    //
+    InvoiceResultPtr DAO::getLastInvoiceInfo()
+    {
+        InvoiceResultPtr pInvoiceResultPtr(new InvoiceResult);
+
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // Get last invoice (closed or open)
+            queryPtr->prepare(
+                    "SELECT idinvoice, state, date, total, idmember, last_modif FROM invoice "
+                    "ORDER BY last_modif DESC "
+                    "LIMIT 1"
+                    );
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("getLastInvoiceInfo");
+            pInvoiceResultPtr->m_error = 1;
+        } else if (queryResponse.query->next())
+        {
+            InvoicePtr pInvoicePtr(new Invoice());
+            pInvoicePtr->m_id = queryResponse.query->value(0).toInt();;
+            pInvoicePtr->m_state = static_cast<InvoiceState>(queryResponse.query->value(1).toUInt());
+            pInvoicePtr->m_date = queryResponse.query->value(2).toDateTime();
+            pInvoicePtr->m_total = queryResponse.query->value(3).toFloat();
+            pInvoicePtr->m_memberId = queryResponse.query->value(4).toInt();
+            pInvoicePtr->m_lastModified = queryResponse.query->value(5).toDateTime();
+            pInvoiceResultPtr->m_pInvoice = pInvoicePtr;
+        }
+
+        return pInvoiceResultPtr;
+    }
+    //
+    bool DAO::updateInvoiceLastModDate(Int32 invoiceId, const QDateTime &lastModDate)
     {
         // bind value
-        m_updateLastModInvoiceQuery.bindValue(":invoiceid", invoiceId);
-        m_updateLastModInvoiceQuery.bindValue(":lastmodified", lastModDate);
-        if (!m_updateLastModInvoiceQuery.exec())
-        {
-            qDebug() << m_updateLastModInvoiceQuery.lastError();
-            QLOG_ERROR() << m_updateLastModInvoiceQuery.lastError();
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // update invoice's last modification date
+            queryPtr->prepare(
+                    "UPDATE invoice "
+                    "SET last_modif=:lastmodified "
+                    "WHERE idinvoice=:invoiceid"
+                    );
+            queryPtr->bindValue(":invoiceid", invoiceId);
+            queryPtr->bindValue(":lastmodified", lastModDate);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("updateInvoiceLastModDate: invoiceId: %1").arg(invoiceId);
         }
-        m_updateLastModInvoiceQuery.finish();
+        return !queryResponse.error;
     }
     //
-    void DAO::deleteInvoice(Int32 invoiceId)
+    bool DAO::deleteInvoice(Int32 invoiceId)
     {
-        // bind value
-        m_removeInvoiceQuery.bindValue(":invoiceid", invoiceId);
-        if (!m_removeInvoiceQuery.exec())
-        {
-            qDebug() << m_removeInvoiceQuery.lastError();
-            QLOG_ERROR() << m_removeInvoiceQuery.lastError();
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // remove invoice
+            queryPtr->prepare(
+                    "DELETE FROM invoice "
+                    "WHERE idinvoice=:invoiceid"
+                    );
+            // bind value
+            queryPtr->bindValue(":invoiceid", invoiceId);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("deleteInvoice: invoiceId: %1").arg(invoiceId);
         }
-        m_removeInvoiceQuery.finish();
+        return !queryResponse.error;
     }
     //
-    InvoiceListPtr DAO::getActiveInvoiceList()
+    InvoiceListResultPtr DAO::getActiveInvoiceList()
     {
         // always return list object
-        InvoiceListPtr pActiveInvoiceList = InvoiceListPtr(new InvoiceList);
+        InvoiceListResultPtr pInvoiceListResultPtr(new InvoiceListResult);
 
-        m_getActiveInvoiceListQuery.bindValue(":state", static_cast<Int32>(InvoiceState::Open));
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // active invoice list
+            queryPtr->prepare(
+                    "SELECT idinvoice, state, date, total, idmember, last_modif "
+                    "FROM invoice "
+                    "WHERE state = :state"
+                    );
+            queryPtr->bindValue(":state", static_cast<Int32>(InvoiceState::Open));
+            return queryPtr;
+        };
+
         // run query
-        if (!m_getActiveInvoiceListQuery.exec())
-        {
-            qDebug() << m_getActiveInvoiceListQuery.lastError();
-            QLOG_ERROR() << m_getActiveInvoiceListQuery.lastError();
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("getActiveInvoiceList");
+            pInvoiceListResultPtr->m_error = 1;
         } else {
-            while (m_getActiveInvoiceListQuery.next()) {
+            pInvoiceListResultPtr->m_list = InvoiceListPtr(new InvoiceList);
+            while (queryResponse.query->next()) {
                 InvoicePtr pInvoicePtr = InvoicePtr(new Invoice());
-                pInvoicePtr->m_id = m_getActiveInvoiceListQuery.value(0).toInt();
-                pInvoicePtr->m_state = static_cast<InvoiceState>(m_getActiveInvoiceListQuery.value(1).toUInt());
-                pInvoicePtr->m_date = m_getActiveInvoiceListQuery.value(2).toDateTime();
-                pInvoicePtr->m_total = m_getActiveInvoiceListQuery.value(3).toFloat();
-                pInvoicePtr->m_memberId = m_getActiveInvoiceListQuery.value(4).toInt();
-                pInvoicePtr->m_lastModified = m_getActiveInvoiceListQuery.value(5).toDateTime();
-                pActiveInvoiceList->push_back(pInvoicePtr);
+                pInvoicePtr->m_id = queryResponse.query->value(0).toInt();
+                pInvoicePtr->m_state = static_cast<InvoiceState>(queryResponse.query->value(1).toUInt());
+                pInvoicePtr->m_date = queryResponse.query->value(2).toDateTime();
+                pInvoicePtr->m_total = queryResponse.query->value(3).toFloat();
+                pInvoicePtr->m_memberId = queryResponse.query->value(4).toInt();
+                pInvoicePtr->m_lastModified = queryResponse.query->value(5).toDateTime();
+                pInvoiceListResultPtr->m_list->push_back(pInvoicePtr);
             }
         }
 
-        m_getActiveInvoiceListQuery.finish();
-        return pActiveInvoiceList;
+        return pInvoiceListResultPtr;
     }
     //
-    bool DAO::checkUsername(Int32 username)
+    BoolResult DAO::checkUsername(Int32 username)
     {
-        bool usernameUsed = true;
-        m_checkUsernameQuery.bindValue(":username", username);
-        if (!m_checkUsernameQuery.exec())
-        {
-            qDebug() << m_checkUsernameQuery.lastError();
-            QLOG_ERROR() << m_checkUsernameQuery.lastError();
+        BoolResult boolResult({0, false});
+
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // check username
+            queryPtr->prepare(
+                    "SELECT COUNT(*) "
+                    "FROM member "
+                    "WHERE username = :username"
+                    );
+            queryPtr->bindValue(":username", username);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("checkUsername: username: %1").arg(username);
+            boolResult.error = 1;
+        } else if (queryResponse.query->next()) {
+            boolResult.result = queryResponse.query->value(0).toInt() != 0;
         } else {
-            m_checkUsernameQuery.next();
-            usernameUsed = m_checkUsernameQuery.value(0).toInt() != 0;
+            QLOG_ERROR() << QString("checkUsername: username: %1. Query does not return any result and should.").arg(username);
         }
-        return usernameUsed;
+        return boolResult;
     }
     //
-    ProviderInvoicePtr DAO::getProviderInvoiceById(const QString &providerInvoiceId)
+    ProviderInvoiceResultPtr DAO::getProviderInvoiceById(const QString &providerInvoiceId)
     {
-        ProviderInvoicePtr pProviderInvoicePtr;
-        m_providerInvoiceByIdQuery.bindValue(":providerinvoicesid", providerInvoiceId);
-        if (!m_providerInvoiceByIdQuery.exec())
+        ProviderInvoiceResultPtr pProviderInvoiceResultPtr(new ProviderInvoiceResult);
+
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // get provider invoice by id
+            queryPtr->prepare(
+                    "SELECT provider_invoices.date, provider_invoices.total, provider.name, provider.image "
+                    "FROM provider_invoices "
+                    "INNER JOIN provider ON provider.idprovider = provider_invoices.idprovider "
+                    "WHERE provider_invoices.idprovider_invoices = :providerinvoicesid"
+                    );
+            queryPtr->bindValue(":providerinvoicesid", providerInvoiceId);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("getProviderInvoiceById: providerInvoiceId: %1").arg(providerInvoiceId);
+            pProviderInvoiceResultPtr->m_error = 1;
+        } else if (queryResponse.query->next())
         {
-            qDebug() << m_providerInvoiceByIdQuery.lastError();
-            QLOG_ERROR() << m_providerInvoiceByIdQuery.lastError();
-        } else if (m_providerInvoiceByIdQuery.next())
-        {
-            pProviderInvoicePtr = ProviderInvoicePtr(new ProviderInvoice);
+            ProviderInvoicePtr pProviderInvoicePtr(new ProviderInvoice);
             Uint32 column = 0;
             pProviderInvoicePtr->m_id = providerInvoiceId;
-            pProviderInvoicePtr->m_regDate = m_providerInvoiceByIdQuery.value(column++).toDate();
-            pProviderInvoicePtr->m_total = m_providerInvoiceByIdQuery.value(column++).toFloat();
-            pProviderInvoicePtr->m_providerName = m_providerInvoiceByIdQuery.value(column++).toString();
-            pProviderInvoicePtr->m_providerImagePath = m_providerInvoiceByIdQuery.value(column++).toString();
+            pProviderInvoicePtr->m_regDate = queryResponse.query->value(column++).toDate();
+            pProviderInvoicePtr->m_total = queryResponse.query->value(column++).toFloat();
+            pProviderInvoicePtr->m_providerName = queryResponse.query->value(column++).toString();
+            pProviderInvoicePtr->m_providerImagePath = queryResponse.query->value(column++).toString();
+            pProviderInvoiceResultPtr->m_pProviderInvoice = pProviderInvoicePtr;
         }
-        m_providerInvoiceByIdQuery.finish();
-        return pProviderInvoicePtr;
+        return pProviderInvoiceResultPtr;
     }
     //
-    ProviderInvoiceProductItemListPtr DAO::getProviderInvoiceProductsByInvoiceId(const QString &providerInvoiceId)
+    ProviderInvoiceProductItemListResultPtr DAO::getProviderInvoiceProductsByInvoiceId(const QString &providerInvoiceId)
     {
-        ProviderInvoiceProductItemListPtr pListPtr = ProviderInvoiceProductItemListPtr(new ProviderInvoiceProductItemList);
-        // bind value
-        m_providerInvoiceProductsByInvoiceIdQuery.bindValue(":providerinvoicesid", providerInvoiceId);
+        ProviderInvoiceProductItemListResultPtr pListResultPtr = ProviderInvoiceProductItemListResultPtr(new ProviderInvoiceProductItemListResult);
+
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // get provider invoice product by invoice id
+            queryPtr->prepare(
+                    "SELECT provider_invoices_product.product_item_idproduct_item, provider_invoices_product.count, product_item.name, product_item.image, product_item.price "
+                    "FROM provider_invoices_product "
+                    "INNER JOIN product_item ON product_item.idproduct_item = provider_invoices_product.product_item_idproduct_item "
+                    "WHERE provider_invoices_product.provider_invoices_idprovider_invoices = :providerinvoicesid"
+                    );
+            // bind value
+            queryPtr->bindValue(":providerinvoicesid", providerInvoiceId);
+            return queryPtr;
+        };
+
         // run query
-        if (!m_providerInvoiceProductsByInvoiceIdQuery.exec())
-        {
-            qDebug() << m_providerInvoiceProductsByInvoiceIdQuery.lastError();
-            QLOG_ERROR() << m_providerInvoiceProductsByInvoiceIdQuery.lastError();
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("getProviderInvoiceProductsByInvoiceId: providerInvoiceId: %1").arg(providerInvoiceId);
+            pListResultPtr->m_error = 1;
         } else {
-            while (m_providerInvoiceProductsByInvoiceIdQuery.next()) {
+            pListResultPtr->m_list = ProviderInvoiceProductItemListPtr(new ProviderInvoiceProductItemList);
+            while (queryResponse.query->next()) {
                 ProviderInvoiceProductItemPtr pProductPtr(new ProviderInvoiceProductItem);
                 Uint32 column = 0;
-                pProductPtr->m_productId = m_providerInvoiceProductsByInvoiceIdQuery.value(column++).toInt();
-                pProductPtr->m_count = m_providerInvoiceProductsByInvoiceIdQuery.value(column++).toInt();
-                pProductPtr->m_productName = m_providerInvoiceProductsByInvoiceIdQuery.value(column++).toString();
-                pProductPtr->m_productImagePath = m_providerInvoiceProductsByInvoiceIdQuery.value(column++).toString();
-                pProductPtr->m_productPrice = m_providerInvoiceProductsByInvoiceIdQuery.value(column++).toFloat();
-                pListPtr->push_back(pProductPtr);
+                pProductPtr->m_productId = queryResponse.query->value(column++).toInt();
+                pProductPtr->m_count = queryResponse.query->value(column++).toInt();
+                pProductPtr->m_productName = queryResponse.query->value(column++).toString();
+                pProductPtr->m_productImagePath = queryResponse.query->value(column++).toString();
+                pProductPtr->m_productPrice = queryResponse.query->value(column++).toFloat();
+                pListResultPtr->m_list->push_back(pProductPtr);
             }
         }
-        m_providerInvoiceProductsByInvoiceIdQuery.finish();
-        return pListPtr;
+        return pListResultPtr;
     }
 }
 

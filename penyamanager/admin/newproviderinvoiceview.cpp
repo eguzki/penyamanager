@@ -65,7 +65,11 @@ namespace PenyaManager {
         pProviderInvoicePtr->m_regDate = QDate::currentDate();
         pProviderInvoicePtr->m_total = total;
         pProviderInvoicePtr->m_providerid = this->ui->providerComboBox->currentData().toInt();
-        Singletons::m_pDAO->createProviderInvoice(pProviderInvoicePtr);
+        bool ok = Singletons::m_pDAO->createProviderInvoice(pProviderInvoicePtr);
+        if (!ok) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
 
         // create invoice products
         for (auto idx = 0; idx < this->ui->productsListWidget->count(); ++idx)
@@ -77,9 +81,8 @@ namespace PenyaManager {
             QWidget *pCountWidget = pLayout->itemAt(3)->widget();
             QSpinBox *pCountSpinBox = qobject_cast<QSpinBox *>(pCountWidget);
             if (pCountSpinBox == 0) {
-                QLOG_ERROR() << "[ERROR] NewProviderInvoiceView failed taking SpinBox";
-                QMessageBox::critical(this, tr("Unexpected error"),
-                        tr("NewProviderInvoiceView failed taking SpinBox"));
+                QLOG_WARN() << "NewProviderInvoiceView failed taking SpinBox";
+                QMessageBox::warning(this, tr("Unexpected state"), tr("Operation not performed. Contact administrator"));
                 return;
             }
 
@@ -87,9 +90,17 @@ namespace PenyaManager {
             // only those with non zero count
             if (pCountSpinBox->value() > 0) {
                 // create provider invoice product item
-                Singletons::m_pDAO->createProviderInvoiceProduct(pProviderInvoicePtr->m_id, productId, pCountSpinBox->value());
+                bool ok = Singletons::m_pDAO->createProviderInvoiceProduct(pProviderInvoicePtr->m_id, productId, pCountSpinBox->value());
+                if (!ok) {
+                    QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                    return;
+                }
                 // update stock
-                Singletons::m_pDAO->updateStock(productId, pCountSpinBox->value());
+                ok = Singletons::m_pDAO->updateStock(productId, pCountSpinBox->value());
+                if (!ok) {
+                    QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                    return;
+                }
             }
         }
         QLOG_INFO() << QString("[ProviderInvoice] ID %1 providerID %2").arg(pProviderInvoicePtr->m_id).arg(pProviderInvoicePtr->m_providerid);
@@ -106,13 +117,16 @@ namespace PenyaManager {
         this->ui->providerComboBox->clear();
         this->ui->productsListWidget->clear();
 
-        ProviderListPtr pProviderListPtr = Singletons::m_pDAO->getProviderList();
+        ProviderListResultPtr pProviderListResultPtr = Singletons::m_pDAO->getProviderList();
+        if (pProviderListResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
 
         // internal data structure reset
         this->m_rowProviderIdMap.clear();
         Int32 idx = 0;
-        for (auto iter = pProviderListPtr->begin(); iter != pProviderListPtr->end(); ++iter)
-        {
+        for (auto iter = pProviderListResultPtr->m_list->begin(); iter != pProviderListResultPtr->m_list->end(); ++iter) {
             ProviderPtr pProviderPtr = *iter;
             QString providerImagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pProviderPtr->m_image);
             QPixmap productPixmap = GuiUtils::getImage(providerImagePath);
@@ -154,9 +168,13 @@ namespace PenyaManager {
 
         this->ui->productsListWidget->clear();
 
-        ProductItemListPtr pfListPtr = Singletons::m_pDAO->getProductsFromProvider(providerId);
+        ProductItemListResultPtr pfListPtr = Singletons::m_pDAO->getProductsFromProvider(providerId);
+        if (pfListPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
 
-        for (ProductItemList::iterator iter = pfListPtr->begin(); iter != pfListPtr->end(); ++iter)
+        for (ProductItemList::iterator iter = pfListPtr->m_list->begin(); iter != pfListPtr->m_list->end(); ++iter)
         {
             createProductItemRow(*iter);
         }

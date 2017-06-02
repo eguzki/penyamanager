@@ -56,16 +56,20 @@ namespace PenyaManager {
         }
 
         // save in ddbb
-        ProductFamilyPtr pFamilyPtr;
         if (Singletons::m_currentFamilyId >= 0) {
             // edit previous item
-            pFamilyPtr = Singletons::m_pDAO->getProductFamily(Singletons::m_currentFamilyId);
-            if (!pFamilyPtr) {
-                QMessageBox::warning(this, "Unexpected state", QString("Editing item [id: %1] not found in ddbb").arg(Singletons::m_currentFamilyId));
+            ProductFamilyResultPtr pFamilyResultPtr = Singletons::m_pDAO->getProductFamily(Singletons::m_currentFamilyId);
+            if (pFamilyResultPtr->m_error) {
+                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                return;
+            }
+            if (!pFamilyResultPtr->m_family) {
+                QLOG_WARN() << QString("Editing item [id: %1] not found in ddbb").arg(Singletons::m_currentFamilyId);
+                QMessageBox::warning(this, tr("Unexpected state"), tr("Operation not performed. Contact administrator"));
                 return;
             }
             // save old image in case we need to delete it
-            QString oldImage = pFamilyPtr->m_imagePath;
+            QString oldImage = pFamilyResultPtr->m_family->m_imagePath;
 
             //
             // get new attribute values
@@ -73,20 +77,24 @@ namespace PenyaManager {
 
             // id -> no change
             // name
-            pFamilyPtr->m_name = this->ui->nameLineEdit->text();
+            pFamilyResultPtr->m_family->m_name = this->ui->nameLineEdit->text();
             // imagePath
             if (!this->m_familyImageFilename.isEmpty()) {
                 // new image was selected
-                pFamilyPtr->m_imagePath = Utils::newImageName("prodcategory", this->m_familyImageFilename);;
-                QString destFilePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pFamilyPtr->m_imagePath);
+                pFamilyResultPtr->m_family->m_imagePath = Utils::newImageName("prodcategory", this->m_familyImageFilename);;
+                QString destFilePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pFamilyResultPtr->m_family->m_imagePath);
                 QFile::copy(this->m_familyImageFilename, destFilePath);
             }
             // active
-            pFamilyPtr->m_active = this->ui->activeCheckBox->isChecked();
+            pFamilyResultPtr->m_family->m_active = this->ui->activeCheckBox->isChecked();
             // regDate -> no change
 
             // update in ddbb
-            Singletons::m_pDAO->updateProductFamilyItem(pFamilyPtr);
+            bool ok = Singletons::m_pDAO->updateProductFamilyItem(pFamilyResultPtr->m_family);
+            if (!ok) {
+                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                return;
+            }
             // if there is previously one image, and it has been changed -> delete it
             // make sure it is after being updated in ddbb
             if (!this->m_familyImageFilename.isEmpty() && !oldImage.isEmpty()) {
@@ -95,10 +103,10 @@ namespace PenyaManager {
                 QFile oldFile(oldImagePath);
                 oldFile.remove();
             }
-            QLOG_INFO() << QString("[EditFamily] ID %1").arg(pFamilyPtr->m_id);
+            QLOG_INFO() << QString("[EditFamily] ID %1").arg(pFamilyResultPtr->m_family->m_id);
         } else {
             // new item
-            pFamilyPtr = ProductFamilyPtr(new ProductFamily);
+            ProductFamilyPtr pFamilyPtr(new ProductFamily);
             //
             // get new attribute values
             //
@@ -121,7 +129,11 @@ namespace PenyaManager {
             // regDate
             pFamilyPtr->m_regDate = QDateTime::currentDateTime();
             // create in ddbb
-            Uint32 familyId = Singletons::m_pDAO->createProductFamilyItem(pFamilyPtr);
+            Int32 familyId = Singletons::m_pDAO->createProductFamilyItem(pFamilyPtr);
+            if (familyId < 0) {
+                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                return;
+            }
             QLOG_INFO() << QString("[NewFamily] ID %1").arg(familyId);
         }
 
@@ -129,7 +141,6 @@ namespace PenyaManager {
         this->m_familyImageFilename.clear();
         // call family product management window throw adminmainwindow
         m_switchCentralWidgetCallback(WindowKey::kFamilyItemManagementWindowKey);
-
     }
     //
     void AdminFamilyView::on_imagePushButton_clicked()
@@ -161,18 +172,27 @@ namespace PenyaManager {
     //
     void AdminFamilyView::fillFamilyInfo(Int32 familyId)
     {
-        ProductFamilyPtr pProductFamilyPtr = Singletons::m_pDAO->getProductFamily(familyId);
+        ProductFamilyResultPtr pProductFamilyResultPtr = Singletons::m_pDAO->getProductFamily(familyId);
+        if (pProductFamilyResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
+        if (!pProductFamilyResultPtr->m_family) {
+            QLOG_WARN() << QString("fetching item [id: %1] not found in ddbb").arg(familyId);
+            QMessageBox::warning(this, tr("Unexpected state"), tr("Operation not performed. Contact administrator"));
+            return;
+        }
         // name
-        this->ui->nameLineEdit->setText(pProductFamilyPtr->m_name);
+        this->ui->nameLineEdit->setText(pProductFamilyResultPtr->m_family->m_name);
         // show image
-        QString imagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pProductFamilyPtr->m_imagePath);
+        QString imagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pProductFamilyResultPtr->m_family->m_imagePath);
         QPixmap familyPixmap = GuiUtils::getImage(imagePath);
         this->ui->imageLabel->setPixmap(familyPixmap);
         this->ui->imageLabel->setFixedWidth(Constants::kMemberImageWidth);
         this->ui->imageLabel->setFixedHeight(Constants::kMemberImageHeigth);
         this->ui->imageLabel->setScaledContents(true);
         // active
-        this->ui->activeCheckBox->setChecked(pProductFamilyPtr->m_active);
+        this->ui->activeCheckBox->setChecked(pProductFamilyResultPtr->m_family->m_active);
     }
     //
     void AdminFamilyView::initialize()

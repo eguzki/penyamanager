@@ -75,16 +75,20 @@ namespace PenyaManager {
         }
 
         // save in ddbb
-        ProductItemPtr pProductPtr;
         if (Singletons::m_currentProductId >= 0) {
             // edit previous item
-            pProductPtr = Singletons::m_pDAO->getProductItem(Singletons::m_currentProductId);
-            if (!pProductPtr) {
-                QMessageBox::warning(this, "Unexpected state", QString("Editing item [id: %1] not found in ddbb").arg(Singletons::m_currentProductId));
+            ProductItemResultPtr pProductResultPtr = Singletons::m_pDAO->getProductItem(Singletons::m_currentProductId);
+            if (pProductResultPtr->m_error) {
+                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                return;
+            }
+            if (!pProductResultPtr->m_item) {
+                QLOG_WARN() << QString("Editing item [id: %1] not found in ddbb").arg(Singletons::m_currentProductId);
+                QMessageBox::warning(this, tr("Unexpected state"), tr("Operation not performed. Contact administrator"));
                 return;
             }
             // save old image in case we need to delete it
-            QString oldImage = pProductPtr->m_imagePath;
+            QString oldImage = pProductResultPtr->m_item->m_imagePath;
 
             //
             // get new attribute values
@@ -92,26 +96,31 @@ namespace PenyaManager {
 
             // id -> no change
             // name
-            pProductPtr->m_name = this->ui->nameLineEdit->text();
+            pProductResultPtr->m_item->m_name = this->ui->nameLineEdit->text();
             // imagePath
             if (!this->m_productImageFilename.isEmpty()) {
                 // new image was selected
-                pProductPtr->m_imagePath = Utils::newImageName("product", this->m_productImageFilename);
-                QString destFilePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pProductPtr->m_imagePath);
+                pProductResultPtr->m_item->m_imagePath = Utils::newImageName("product", this->m_productImageFilename);
+                QString destFilePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pProductResultPtr->m_item->m_imagePath);
                 QFile::copy(this->m_productImageFilename, destFilePath);
             }
             // active
-            pProductPtr->m_active = this->ui->activeCheckBox->isChecked();
+            pProductResultPtr->m_item->m_active = this->ui->activeCheckBox->isChecked();
             // regDate -> no change
             // family
-            pProductPtr->m_familyId = this->ui->familyComboBox->currentData().toInt();
+            pProductResultPtr->m_item->m_familyId = this->ui->familyComboBox->currentData().toInt();
             // price -> no change
             // providerId
-            pProductPtr->m_providerId = this->ui->providerComboBox->currentData().toInt();
+            pProductResultPtr->m_item->m_providerId = this->ui->providerComboBox->currentData().toInt();
             // stock -> no change
 
             // update in ddbb
-            Singletons::m_pDAO->updateProductItem(pProductPtr);
+            bool ok = Singletons::m_pDAO->updateProductItem(pProductResultPtr->m_item);
+            if (!ok) {
+                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                return;
+            }
+
             // if there is previously one image, and it has been changed -> delete it
             // make sure it is after being updated in ddbb
             if (!this->m_productImageFilename.isEmpty() && !oldImage.isEmpty()) {
@@ -120,41 +129,45 @@ namespace PenyaManager {
                 QFile oldFile(oldImagePath);
                 oldFile.remove();
             }
-            QLOG_INFO() << QString("[EditItem] ID %1").arg(pProductPtr->m_id);
+            QLOG_INFO() << QString("[EditItem] ID %1").arg(pProductResultPtr->m_item->m_id);
         } else {
             // new item
-            pProductPtr = ProductItemPtr(new ProductItem);
+            ProductItemPtr pProductItemPtr(new ProductItem);
             //
             // get new attribute values
             //
 
             // id -> no needed
             // name
-            pProductPtr->m_name = this->ui->nameLineEdit->text();
+            pProductItemPtr->m_name = this->ui->nameLineEdit->text();
             // imagePath
             QString destFileName;
             // can be null, allowed by ddbb schema
-            pProductPtr->m_imagePath = destFileName;
+            pProductItemPtr->m_imagePath = destFileName;
             if (!this->m_productImageFilename.isEmpty()) {
                 // new image was selected
-                pProductPtr->m_imagePath = Utils::newImageName("product", this->m_productImageFilename);
-                QString destFilePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pProductPtr->m_imagePath);
+                pProductItemPtr->m_imagePath = Utils::newImageName("product", this->m_productImageFilename);
+                QString destFilePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pProductItemPtr->m_imagePath);
                 QFile::copy(this->m_productImageFilename, destFilePath);
             }
             // active
-            pProductPtr->m_active = this->ui->activeCheckBox->isChecked();
+            pProductItemPtr->m_active = this->ui->activeCheckBox->isChecked();
             // regDate
-            pProductPtr->m_regDate = QDateTime::currentDateTime();
+            pProductItemPtr->m_regDate = QDateTime::currentDateTime();
             // family
-            pProductPtr->m_familyId = this->ui->familyComboBox->currentData().toInt();
+            pProductItemPtr->m_familyId = this->ui->familyComboBox->currentData().toInt();
             // price (already validated)
-            pProductPtr->m_price = price;
+            pProductItemPtr->m_price = price;
             // providerId
-            pProductPtr->m_providerId = this->ui->providerComboBox->currentData().toInt();
+            pProductItemPtr->m_providerId = this->ui->providerComboBox->currentData().toInt();
             // stock -> no change
-            pProductPtr->m_stock = 0;
+            pProductItemPtr->m_stock = 0;
             // create in ddbb
-            Uint32 itemId = Singletons::m_pDAO->createProductItem(pProductPtr);
+            Int32 itemId = Singletons::m_pDAO->createProductItem(pProductItemPtr);
+            if (itemId < 0) {
+                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                return;
+            }
             QLOG_INFO() << QString("[NewItem] ID %1").arg(itemId);
         }
 
@@ -166,33 +179,46 @@ namespace PenyaManager {
     //
     void AdminProductItem::fillProductInfo(Int32 productId)
     {
-        ProductItemPtr pProductPtr = Singletons::m_pDAO->getProductItem(productId);
+        ProductItemResultPtr pProductItemResultPtr = Singletons::m_pDAO->getProductItem(productId);
+        if (pProductItemResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
+        if (!pProductItemResultPtr->m_item) {
+            QLOG_WARN() << QString("Fetching item [id: %1] not found in ddbb").arg(productId);
+            QMessageBox::warning(this, tr("Unexpected state"), tr("Operation not performed. Contact administrator"));
+            return;
+        }
         // name
-        this->ui->nameLineEdit->setText(pProductPtr->m_name);
+        this->ui->nameLineEdit->setText(pProductItemResultPtr->m_item->m_name);
         // show image
-        QString imagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pProductPtr->m_imagePath);
+        QString imagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pProductItemResultPtr->m_item->m_imagePath);
         QPixmap productPixmap = GuiUtils::getImage(imagePath);
         this->ui->imageLabel->setPixmap(productPixmap);
         this->ui->imageLabel->setFixedWidth(Constants::kMemberImageWidth);
         this->ui->imageLabel->setFixedHeight(Constants::kMemberImageHeigth);
         this->ui->imageLabel->setScaledContents(true);
         // active
-        this->ui->activeCheckBox->setChecked(pProductPtr->m_active);
+        this->ui->activeCheckBox->setChecked(pProductItemResultPtr->m_item->m_active);
         // price, disable edit
-        this->ui->priceDoubleSpinBox->setValue(pProductPtr->m_price);
+        this->ui->priceDoubleSpinBox->setValue(pProductItemResultPtr->m_item->m_price);
         this->ui->priceDoubleSpinBox->setReadOnly(true);
         // provider
         this->ui->providerComboBox->clear();
-        ProviderListPtr pProviderListPtr = Singletons::m_pDAO->getProviderList();
+        ProviderListResultPtr pProviderListResultPtr = Singletons::m_pDAO->getProviderList();
+        if (pProviderListResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
         Int32 currentIndex = 0;
         Int32 productProviderIndex = -1;
-        for (auto iter = pProviderListPtr->begin(); iter != pProviderListPtr->end(); ++iter)
+        for (auto iter = pProviderListResultPtr->m_list->begin(); iter != pProviderListResultPtr->m_list->end(); ++iter)
         {
             ProviderPtr pProviderPtr = *iter;
             QString providerImagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pProviderPtr->m_image);
             QPixmap productPixmap = GuiUtils::getImage(providerImagePath);
             this->ui->providerComboBox->insertItem(currentIndex, QIcon(productPixmap), pProviderPtr->m_name, pProviderPtr->m_id);
-            if (pProviderPtr->m_id == pProductPtr->m_providerId) {
+            if (pProviderPtr->m_id == pProductItemResultPtr->m_item->m_providerId) {
                 productProviderIndex = currentIndex;
             }
             currentIndex++;
@@ -201,16 +227,20 @@ namespace PenyaManager {
         this->ui->providerComboBox->setCurrentIndex(productProviderIndex);
         // family
         this->ui->familyComboBox->clear();
-        ProductFamilyListPtr pfListPtr = Singletons::m_pDAO->getProductFamilies(false);
+        ProductFamilyListResultPtr pfListPtr = Singletons::m_pDAO->getProductFamilies(false);
+        if (pfListPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
         currentIndex = 0;
         Int32 productFamilyIndex = -1;
-        for (auto iter = pfListPtr->begin(); iter != pfListPtr->end(); ++iter)
+        for (auto iter = pfListPtr->m_list->begin(); iter != pfListPtr->m_list->end(); ++iter)
         {
             ProductFamilyPtr pFamilyPtr = *iter;
             QString providerImagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pFamilyPtr->m_imagePath);
             QPixmap productPixmap = GuiUtils::getImage(providerImagePath);
             this->ui->familyComboBox->insertItem(currentIndex, QIcon(productPixmap), pFamilyPtr->m_name, pFamilyPtr->m_id);
-            if (pFamilyPtr->m_id == pProductPtr->m_familyId) {
+            if (pFamilyPtr->m_id == pProductItemResultPtr->m_item->m_familyId) {
                 productFamilyIndex = currentIndex;
             }
             currentIndex++;
@@ -236,10 +266,13 @@ namespace PenyaManager {
         this->ui->priceDoubleSpinBox->setReadOnly(false);
         // provider
         this->ui->providerComboBox->clear();
-        ProviderListPtr pProviderListPtr = Singletons::m_pDAO->getProviderList();
+        ProviderListResultPtr pProviderListResultPtr = Singletons::m_pDAO->getProviderList();
+        if (pProviderListResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
         Int32 currentIndex = 0;
-        for (auto iter = pProviderListPtr->begin(); iter != pProviderListPtr->end(); ++iter)
-        {
+        for (auto iter = pProviderListResultPtr->m_list->begin(); iter != pProviderListResultPtr->m_list->end(); ++iter) {
             ProviderPtr pProviderPtr = *iter;
             QString providerImagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pProviderPtr->m_image);
             QPixmap productPixmap = GuiUtils::getImage(providerImagePath);
@@ -248,9 +281,13 @@ namespace PenyaManager {
         }
         // family
         this->ui->familyComboBox->clear();
-        ProductFamilyListPtr pfListPtr = Singletons::m_pDAO->getProductFamilies(false);
+        ProductFamilyListResultPtr pfListPtr = Singletons::m_pDAO->getProductFamilies(false);
+        if (pfListPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
         currentIndex = 0;
-        for (auto iter = pfListPtr->begin(); iter != pfListPtr->end(); ++iter)
+        for (auto iter = pfListPtr->m_list->begin(); iter != pfListPtr->m_list->end(); ++iter)
         {
             ProductFamilyPtr pFamilyPtr = *iter;
             QString providerImagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pFamilyPtr->m_imagePath);

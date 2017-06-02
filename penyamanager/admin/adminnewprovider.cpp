@@ -98,7 +98,12 @@ namespace PenyaManager {
         }
 
         // save in ddbb
-        Singletons::m_pDAO->createProvider(providerName, destFileName, this->ui->phoneLineEdit->text());
+        bool ok = Singletons::m_pDAO->createProvider(providerName, destFileName, this->ui->phoneLineEdit->text());
+        if (!ok) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
+
         QLOG_INFO() << QString("[NewProvider] name %1").arg(providerName);
         QMessageBox::information(this, tr("New Provider"), tr("Provider created successfully"));
 

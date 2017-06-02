@@ -1,6 +1,7 @@
 //
 
 #include <QMessageBox>
+#include <QsLog.h>
 #include <commons/singletons.h>
 #include "admininvoicelistview.h"
 #include "ui_admininvoicelistview.h"
@@ -64,16 +65,31 @@ namespace PenyaManager {
     //
     void AdminInvoiceListView::updateResults()
     {
-        InvoiceListPtr pInvoiceList;
-        InvoiceListStatsPtr pInvoiceListStats;
+        InvoiceListResultPtr pInvoiceListResult;
+        InvoiceListStatsResultPtr pInvoiceListStatsResult;
         QDate fromDate = this->ui->fromCalendarWidget->selectedDate();
         // add one day to "toDate" to be included
         QDate toDate = this->ui->toCalendarWidget->selectedDate().addDays(1);
         QString memberUsernameStr = this->ui->memberIdLineEdit->text().trimmed();
         if (memberUsernameStr.isEmpty()) {
             this->ui->memberIdLineEdit->clear();
-            pInvoiceList = Singletons::m_pDAO->getInvoiceList(fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
-            pInvoiceListStats = Singletons::m_pDAO->getInvoiceListStats(fromDate, toDate);
+            pInvoiceListResult = Singletons::m_pDAO->getInvoiceList(fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
+            if (pInvoiceListResult->m_error) {
+                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                return;
+            }
+            pInvoiceListStatsResult = Singletons::m_pDAO->getInvoiceListStats(fromDate, toDate);
+            if (pInvoiceListStatsResult->m_error) {
+                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                return;
+            }
+            if (!pInvoiceListStatsResult->m_stats) {
+                // no invoices found
+                InvoiceListStatsPtr stats(new InvoiceListStats);
+                stats->m_totalNumInvoices = 0;
+                stats->m_totalAmount = 0;
+                pInvoiceListStatsResult->m_stats = stats;
+            }
         } else {
             bool ok;
             Int32 memberUsername = memberUsernameStr.toInt(&ok);
@@ -81,34 +97,53 @@ namespace PenyaManager {
                 QMessageBox::about(this, tr("Invalid data"), tr("Username not valid"));
                 return;
             } else {
-                MemberPtr pMemberPtr = Singletons::m_pServices->getMemberByUsername(memberUsername);
-                if (!pMemberPtr)
+                MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberByUsername(memberUsername);
+                if (pMemberResultPtr->m_error) {
+                    QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                    return;
+                }
+                if (!pMemberResultPtr->m_member)
                 {
                     // User could not be found
                     QMessageBox::about(this, tr("Invalid data"), tr("Username found"));
                     return;
                 }
-                pInvoiceList = Singletons::m_pDAO->getInvoiceListByMemberId(pMemberPtr->m_id, fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
-                pInvoiceListStats = Singletons::m_pDAO->getInvoiceListByMemberIdStats(pMemberPtr->m_id, fromDate, toDate);
+                pInvoiceListResult = Singletons::m_pDAO->getInvoiceListByMemberId(pMemberResultPtr->m_member->m_id, fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
+                if (pInvoiceListResult->m_error) {
+                    QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                    return;
+                }
+                pInvoiceListStatsResult = Singletons::m_pDAO->getInvoiceListByMemberIdStats(pMemberResultPtr->m_member->m_id, fromDate, toDate);
+                if (pInvoiceListStatsResult->m_error) {
+                    QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                    return;
+                }
+                if (!pInvoiceListStatsResult->m_stats) {
+                    // no invoices found
+                    InvoiceListStatsPtr stats(new InvoiceListStats);
+                    stats->m_totalNumInvoices = 0;
+                    stats->m_totalAmount = 0;
+                    pInvoiceListStatsResult->m_stats = stats;
+                }
             }
         }
         // enable-disable pagination buttons
         // total num pages
-        Uint32 numPages = (Uint32)ceil((Float)pInvoiceListStats->m_totalNumInvoices/Constants::kInvoiceListPageCount);
+        Uint32 numPages = (Uint32)ceil((Float)pInvoiceListStatsResult->m_stats->m_totalNumInvoices/Constants::kInvoiceListPageCount);
         this->ui->prevPagePushButton->setEnabled(m_currentPage > 0);
         this->ui->nextPagePushButton->setEnabled(m_currentPage < numPages-1);
         // fill page view
         this->ui->pageInfoLabel->setText(tr("page %1 out of %2").arg(m_currentPage+1).arg(numPages));
         // fill total stats view
-        this->ui->totalInvoicesValueLabel->setText(QString::number(pInvoiceListStats->m_totalNumInvoices));
-        this->ui->totalCountValueLabel->setText(QString("%1 €").arg(pInvoiceListStats->m_totalAmount, 0, 'f', 2));
+        this->ui->totalInvoicesValueLabel->setText(QString::number(pInvoiceListStatsResult->m_stats->m_totalNumInvoices));
+        this->ui->totalCountValueLabel->setText(QString("%1 €").arg(pInvoiceListStatsResult->m_stats->m_totalAmount, 0, 'f', 2));
         // fill dates used for query
         QString dateLocalized = Singletons::m_translationManager.getLocale().toString(fromDate, QLocale::NarrowFormat);
         this->ui->fromDateResultValueLabel->setText(dateLocalized);
         dateLocalized = Singletons::m_translationManager.getLocale().toString(toDate.addDays(-1), QLocale::NarrowFormat);
         this->ui->toDateResultValueLabel->setText(dateLocalized);
         // fill invoice list
-        fillInvoiceList(pInvoiceList);
+        fillInvoiceList(pInvoiceListResult->m_list);
     }
     //
     void AdminInvoiceListView::on_searchPushButton_clicked()
@@ -163,7 +198,8 @@ namespace PenyaManager {
         auto rowMap = m_rowProductIdMap.find(row);
         if (rowMap == m_rowProductIdMap.end()) {
             //this should never happen
-            qDebug() << "[ERROR] invoiceID not found and should be in the map";
+            QLOG_ERROR() << QString("invoiceID not found and should be in the map");
+            qDebug() << "invoiceID not found and should be in the map";
             return;
         }
         Int32 invoiceId = rowMap->second;

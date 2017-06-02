@@ -1,5 +1,6 @@
 //
 
+#include <QMessageBox>
 #include <commons/singletons.h>
 #include "invoicelistwindow.h"
 #include "ui_invoicelistwindow.h"
@@ -81,31 +82,46 @@ namespace PenyaManager {
     //
     void InvoiceListWindow::updateResults()
     {
-        InvoiceListPtr pInvoiceList;
-        InvoiceListStatsPtr pInvoiceListStats;
+        InvoiceListResultPtr pInvoiceListResult;
+        InvoiceListStatsResultPtr pInvoiceListStatsResult;
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
         QDate fromDate = this->ui->fromCalendarWidget->selectedDate();
         // add one day to "toDate" to be included
         QDate toDate = this->ui->toCalendarWidget->selectedDate().addDays(1);
-        pInvoiceList = Singletons::m_pDAO->getInvoiceListByMemberId(pCurrMemberPtr->m_id, fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
-        pInvoiceListStats = Singletons::m_pDAO->getInvoiceListByMemberIdStats(pCurrMemberPtr->m_id, fromDate, toDate);
+        pInvoiceListResult = Singletons::m_pDAO->getInvoiceListByMemberId(pCurrMemberPtr->m_id, fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
+        if (pInvoiceListResult->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
+        pInvoiceListStatsResult = Singletons::m_pDAO->getInvoiceListByMemberIdStats(pCurrMemberPtr->m_id, fromDate, toDate);
+        if (pInvoiceListStatsResult->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
+        if (!pInvoiceListStatsResult->m_stats) {
+            // no invoices found
+            InvoiceListStatsPtr stats(new InvoiceListStats);
+            stats->m_totalNumInvoices = 0;
+            stats->m_totalAmount = 0;
+            pInvoiceListStatsResult->m_stats = stats;
+        }
         // enable-disable pagination buttons
         // total num pages
-        Uint32 numPages = (Uint32)ceil((Float)pInvoiceListStats->m_totalNumInvoices/Constants::kInvoiceListPageCount);
+        Uint32 numPages = (Uint32)ceil((Float)pInvoiceListStatsResult->m_stats->m_totalNumInvoices/Constants::kInvoiceListPageCount);
         this->ui->prevPagePushButton->setEnabled(m_currentPage > 0);
         this->ui->nextPagePushButton->setEnabled(m_currentPage < numPages-1);
         // fill page view
         this->ui->pageInfoLabel->setText(QString("%1 / %2").arg(m_currentPage+1).arg(numPages));
         // fill total stats view
-        this->ui->totalInvoicesValueLabel->setText(QString::number(pInvoiceListStats->m_totalNumInvoices));
-        this->ui->totalCountValueLabel->setText(QString("%1 €").arg(pInvoiceListStats->m_totalAmount, 0, 'f', 2));
+        this->ui->totalInvoicesValueLabel->setText(QString::number(pInvoiceListStatsResult->m_stats->m_totalNumInvoices));
+        this->ui->totalCountValueLabel->setText(QString("%1 €").arg(pInvoiceListStatsResult->m_stats->m_totalAmount, 0, 'f', 2));
         // fill dates used for query
         QString dateLocalized = Singletons::m_translationManager.getLocale().toString(fromDate, QLocale::NarrowFormat);
         this->ui->fromDateResultValueLabel->setText(dateLocalized);
         dateLocalized = Singletons::m_translationManager.getLocale().toString(toDate.addDays(-1), QLocale::NarrowFormat);
         this->ui->toDateResultValueLabel->setText(dateLocalized);
         // fill invoice list
-        fillInvoiceList(pInvoiceList);
+        fillInvoiceList(pInvoiceListResult->m_list);
     }
     //
     void InvoiceListWindow::fillInvoiceList(InvoiceListPtr pInvoiceListPtr)

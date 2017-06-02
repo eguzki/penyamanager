@@ -69,10 +69,46 @@ namespace PenyaManager
 
     //
     typedef QSharedPointer<Member> MemberPtr;
+
+    //
+    class MemberResult
+    {
+        public:
+            //
+            MemberResult();
+            //
+            virtual ~MemberResult(){}
+
+        public:
+            //
+            Int32              m_error;
+            //
+            MemberPtr          m_member;
+    };
+
+    typedef QSharedPointer<MemberResult> MemberResultPtr;
+
     //
     typedef std::vector<MemberPtr> MemberList;
     //
     typedef QSharedPointer<MemberList> MemberListPtr;
+    //
+    class MemberListResult
+    {
+        public:
+            //
+            MemberListResult();
+            //
+            virtual ~MemberListResult(){}
+
+        public:
+            //
+            Int32              m_error;
+            //
+            MemberListPtr      m_list;
+    };
+    //
+    typedef QSharedPointer<MemberListResult> MemberListResultPtr;
 
     //
     class MemberListStats
@@ -90,6 +126,23 @@ namespace PenyaManager
 
     //
     typedef QSharedPointer<MemberListStats> MemberListStatsPtr;
+    //
+    class MemberListStatsResult
+    {
+        public:
+            //
+            MemberListStatsResult();
+            //
+            virtual ~MemberListStatsResult(){}
+
+        public:
+            //
+            Int32              m_error;
+            //
+            MemberListStatsPtr m_stats;
+    };
+    //
+    typedef QSharedPointer<MemberListStatsResult> MemberListStatsResultPtr;
 }
 
 #endif // MEMBER_H

@@ -47,6 +47,40 @@ namespace PenyaManager
     typedef std::vector<ProductItemPtr> ProductItemList;
     //
     typedef QSharedPointer<ProductItemList> ProductItemListPtr;
+    //
+    class ProductItemResult
+    {
+        public:
+            //
+            ProductItemResult();
+            //
+            virtual ~ProductItemResult(){}
+
+        public:
+            //
+            Int32                   m_error;
+            //
+            ProductItemPtr          m_item;
+    };
+    //
+    typedef QSharedPointer<ProductItemResult> ProductItemResultPtr;
+    //
+    class ProductItemListResult
+    {
+        public:
+            //
+            ProductItemListResult();
+            //
+            virtual ~ProductItemListResult(){}
+
+        public:
+            //
+            Int32                   m_error;
+            //
+            ProductItemListPtr          m_list;
+    };
+    //
+    typedef QSharedPointer<ProductItemListResult> ProductItemListResultPtr;
 
     //
     class ProductListStats
@@ -66,6 +100,23 @@ namespace PenyaManager
 
     //
     typedef QSharedPointer<ProductListStats> ProductListStatsPtr;
+    //
+    class ProductListStatsResult
+    {
+        public:
+            //
+            ProductListStatsResult();
+            //
+            virtual ~ProductListStatsResult(){}
+
+        public:
+            //
+            Int32                   m_error;
+            //
+            ProductListStatsPtr     m_stats;
+    };
+    //
+    typedef QSharedPointer<ProductListStatsResult> ProductListStatsResultPtr;
 }
 
 #endif // PRODUCTITEM_H

@@ -50,9 +50,43 @@ namespace PenyaManager
     //
     typedef QSharedPointer<Transaction> TransactionPtr;
     //
+    class TransactionResult
+    {
+        public:
+            //
+            TransactionResult();
+            //
+            virtual ~TransactionResult(){}
+
+        public:
+            //
+            Int32                   m_error;
+            //
+            TransactionPtr          m_transaction;
+    };
+    //
+    typedef QSharedPointer<TransactionResult> TransactionResultPtr;
+    //
     typedef std::vector<TransactionPtr> TransactionList;
     //
     typedef QSharedPointer<TransactionList> TransactionListPtr;
+    //
+    class TransactionListResult
+    {
+        public:
+            //
+            TransactionListResult();
+            //
+            virtual ~TransactionListResult(){}
+
+        public:
+            //
+            Int32                   m_error;
+            //
+            TransactionListPtr      m_list;
+    };
+    //
+    typedef QSharedPointer<TransactionListResult> TransactionListResultPtr;
 
     //
     class TransactionListStats
@@ -76,6 +110,23 @@ namespace PenyaManager
 
     //
     typedef QSharedPointer<TransactionListStats> TransactionListStatsPtr;
+    //
+    class TransactionListStatsResult
+    {
+        public:
+            //
+            TransactionListStatsResult();
+            //
+            virtual ~TransactionListStatsResult(){}
+
+        public:
+            //
+            Int32                   m_error;
+            //
+            TransactionListStatsPtr m_listStats;
+    };
+    //
+    typedef QSharedPointer<TransactionListStatsResult> TransactionListStatsResultPtr;
 }
 
 #endif // TRANSACTION_H

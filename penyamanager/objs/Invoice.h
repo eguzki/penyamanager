@@ -42,11 +42,45 @@ namespace PenyaManager
 
     //
     typedef QSharedPointer<Invoice> InvoicePtr;
+
+    //
+    class InvoiceResult
+    {
+        public:
+            //
+            InvoiceResult();
+            //
+            virtual ~InvoiceResult(){}
+
+        public:
+            //
+            Int32                   m_error;
+            //
+            InvoicePtr              m_pInvoice;
+    };
+    //
+    typedef QSharedPointer<InvoiceResult> InvoiceResultPtr;
     //
     typedef std::vector<InvoicePtr> InvoiceList;
     //
     typedef QSharedPointer<InvoiceList> InvoiceListPtr;
+    //
+    class InvoiceListResult
+    {
+        public:
+            //
+            InvoiceListResult();
+            //
+            virtual ~InvoiceListResult(){}
 
+        public:
+            //
+            Int32                   m_error;
+            //
+            InvoiceListPtr          m_list;
+    };
+    //
+    typedef QSharedPointer<InvoiceListResult> InvoiceListResultPtr;
     //
     class InvoiceListStats
     {
@@ -64,9 +98,25 @@ namespace PenyaManager
             //
             Float               m_totalAmount;
     };
-
     //
     typedef QSharedPointer<InvoiceListStats> InvoiceListStatsPtr;
+    //
+    class InvoiceListStatsResult
+    {
+        public:
+            //
+            InvoiceListStatsResult();
+            //
+            virtual ~InvoiceListStatsResult(){}
+
+        public:
+            //
+            Int32                   m_error;
+            //
+            InvoiceListStatsPtr     m_stats;
+    };
+    //
+    typedef QSharedPointer<InvoiceListStatsResult> InvoiceListStatsResultPtr;
 }
 
 #endif // INVOICE_H

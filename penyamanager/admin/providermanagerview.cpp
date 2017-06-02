@@ -1,6 +1,7 @@
 //
 
 #include <QLabel>
+#include <QMessageBox>
 
 #include <commons/guiutils.h>
 #include <commons/utils.h>
@@ -41,10 +42,13 @@ namespace PenyaManager {
     {
         this->ui->providersListWidget->clear();
 
-        ProviderListPtr pProviderListPtr = Singletons::m_pDAO->getProviderList();
+        ProviderListResultPtr pProviderListResultPtr = Singletons::m_pDAO->getProviderList();
+        if (pProviderListResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
 
-        for (auto iter = pProviderListPtr->begin(); iter != pProviderListPtr->end(); ++iter)
-        {
+        for (auto iter = pProviderListResultPtr->m_list->begin(); iter != pProviderListResultPtr->m_list->end(); ++iter) {
             createProviderWidget(*iter);
         }
     }
@@ -89,9 +93,13 @@ namespace PenyaManager {
     {
         this->ui->productsListWidget->clear();
 
-        ProductItemListPtr pfListPtr = Singletons::m_pDAO->getProductsFromProvider(providerId);
+        ProductItemListResultPtr pfListPtr = Singletons::m_pDAO->getProductsFromProvider(providerId);
+        if (pfListPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
 
-        for (ProductItemList::iterator iter = pfListPtr->begin(); iter != pfListPtr->end(); ++iter)
+        for (ProductItemList::iterator iter = pfListPtr->m_list->begin(); iter != pfListPtr->m_list->end(); ++iter)
         {
             createProductItemWidget(*iter, this->ui->productsListWidget);
         }

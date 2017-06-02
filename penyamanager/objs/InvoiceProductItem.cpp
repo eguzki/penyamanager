@@ -31,4 +31,14 @@ namespace PenyaManager
             m_totalProducts(totalProducts)
     {
     }
+    //
+    InvoiceProductItemListResult::InvoiceProductItemListResult()
+        :
+            m_error(0)
+    {}
+    //
+    InvoiceProductItemStatsResult::InvoiceProductItemStatsResult()
+        :
+            m_error(0)
+    {}
 }

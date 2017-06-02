@@ -38,6 +38,23 @@ namespace PenyaManager
     typedef std::vector<ProviderPtr> ProviderList;
     //
     typedef QSharedPointer<ProviderList> ProviderListPtr;
+    //
+    class ProviderListResult
+    {
+        public:
+            //
+            ProviderListResult();
+            //
+            virtual ~ProviderListResult(){}
+
+        public:
+            //
+            Int32                   m_error;
+            //
+            ProviderListPtr         m_list;
+    };
+    //
+    typedef QSharedPointer<ProviderListResult> ProviderListResultPtr;
 }
 
 #endif // PROVIDER_H

@@ -20,5 +20,10 @@ namespace PenyaManager
             default: return "Bad ReservationItemType";
         }
     }
+    //
+    ReservationItemListResult::ReservationItemListResult()
+        :
+            m_error(0)
+    {}
 }
 

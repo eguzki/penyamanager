@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
     QSettings settings(PenyaManager::Constants::kOrganizationName, PenyaManager::Constants::kApplicationName);
     if (!settings.contains(PenyaManager::Constants::kResourcePathKey))
     {
-        QMessageBox::critical(NULL, "Error", "Settings file not found. Call the stupid administrator and complain for incompetence");
+        QMessageBox::critical(NULL, QObject::tr("Error"), QObject::tr("Settings file not found. Call the stupid administrator and complain for incompetence"));
         return 1;
     }
 
@@ -61,15 +61,15 @@ int main(int argc, char *argv[])
     // set log destinations on the logger
     logger.addDestination(fileDestination);
 
-    QLOG_INFO() << "Program started";
+    QLOG_INFO() << QString("Program started");
 
     // Singletons initialization
     // Includes ddbb connection
     PenyaManager::Singletons::Create(&settings);
 
     if (!PenyaManager::Singletons::m_pDAO->isOpen()) {
-        QLOG_ERROR() << QString("[FATAL] Database connection failed");
-        QMessageBox::critical(NULL, "Error", "Database connection failed. Call the stupid administrator and complain for incompetence");
+        QLOG_ERROR() << QString("Database connection failed");
+        QMessageBox::critical(NULL, QObject::tr("Error"), QObject::tr("Database connection failed. Call the stupid administrator and complain for incompetence"));
         return 1;
     }
 
@@ -125,6 +125,6 @@ int main(int argc, char *argv[])
 
     PenyaManager::Singletons::Destroy();
 
-    QLOG_INFO() << "Program exited";
+    QLOG_INFO() << QString("Program exited");
     return returnValue;
 }

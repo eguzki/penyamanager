@@ -18,7 +18,7 @@ namespace PenyaManager {
     {
     }
     //
-    DepositPtr Services::createDeposit(const MemberPtr &pMemberPtr, Float amount)
+    DepositResultPtr Services::createDeposit(const MemberPtr &pMemberPtr, Float amount)
     {
         // create deposit register info as unconfirmed
         DepositPtr pDepositPtr(new Deposit);
@@ -34,7 +34,7 @@ namespace PenyaManager {
         return Singletons::m_pDAO->createDeposit(pDepositPtr);
     }
     //
-    void Services::closeInvoice(Int32 memberId, Int32 invoiceId)
+    bool Services::closeInvoice(Int32 memberId, Int32 invoiceId)
     {
         InvoicePtr pInvoicePtr(new Invoice());
         // id
@@ -46,9 +46,12 @@ namespace PenyaManager {
         // state: closed
         pInvoicePtr->m_state = InvoiceState::Closed;
         // total
-        InvoiceProductItemListPtr pInvoiceProductItemListPtr = Singletons::m_pDAO->getInvoiceProductItems(pInvoicePtr->m_id);
+        InvoiceProductItemListResultPtr pInvoiceProductItemListResultPtr = Singletons::m_pDAO->getInvoiceProductItems(pInvoicePtr->m_id);
+        if (pInvoiceProductItemListResultPtr->m_error) {
+            return false;
+        }
         Float totalInvoice = 0.0;
-        for (InvoiceProductItemList::iterator iter = pInvoiceProductItemListPtr->begin(); iter != pInvoiceProductItemListPtr->end(); ++iter)
+        for (InvoiceProductItemList::iterator iter = pInvoiceProductItemListResultPtr->m_list->begin(); iter != pInvoiceProductItemListResultPtr->m_list->end(); ++iter)
         {
             InvoiceProductItemPtr pInvoiceProductItemPtr = *iter;
             Float totalPrice = pInvoiceProductItemPtr->m_priceperunit * pInvoiceProductItemPtr->m_count;
@@ -59,30 +62,43 @@ namespace PenyaManager {
         pInvoicePtr->m_lastModified = QDateTime::currentDateTime();
 
         // update invoice data
-        Singletons::m_pDAO->updateInvoice(pInvoicePtr);
+        bool ok = Singletons::m_pDAO->updateInvoice(pInvoicePtr);
+        if (!ok) {
+            return false;
+        }
 
         // create account register info
         QString description = QString("invoice ref %1").arg(invoiceId);
         // account transaction has totalInvoice as negative amount
-        this->createAccountTransaction(memberId, -totalInvoice, description, TransactionType::Invoice);
+        ok = this->createAccountTransaction(memberId, -totalInvoice, description, TransactionType::Invoice);
+        if (!ok) {
+            return false;
+        }
         // Update stock
-        for (InvoiceProductItemList::iterator iter = pInvoiceProductItemListPtr->begin(); iter != pInvoiceProductItemListPtr->end(); ++iter)
+        for (InvoiceProductItemList::iterator iter = pInvoiceProductItemListResultPtr->m_list->begin(); iter != pInvoiceProductItemListResultPtr->m_list->end(); ++iter)
         {
             InvoiceProductItemPtr pInvoiceProductItemPtr = *iter;
             // count as negative addition
-            Singletons::m_pDAO->updateStock(pInvoiceProductItemPtr->m_productId,-pInvoiceProductItemPtr->m_count);
+            ok = Singletons::m_pDAO->updateStock(pInvoiceProductItemPtr->m_productId,-pInvoiceProductItemPtr->m_count);
+            if (!ok) {
+                return false;
+            }
         }
+        return true;
     }
     //
-    void Services::createAccountTransaction(Int32 memberId, Float amount, const QString &description, TransactionType type)
+    bool Services::createAccountTransaction(Int32 memberId, Float amount, const QString &description, TransactionType type)
     {
         // get member last balance information and add new transaction
-        TransactionPtr pLastAccountInfo = Singletons::m_pDAO->getLastAccountInfo(memberId);
+        TransactionResultPtr pLastAccountInfoResultPtr = Singletons::m_pDAO->getLastAccountInfo(memberId);
+        if (pLastAccountInfoResultPtr->m_error) {
+            return false;
+        }
 
         // in case there is not previous account info
         Float lastBalance = 0.0;
-        if (pLastAccountInfo) {
-            lastBalance = pLastAccountInfo->m_balance;
+        if (pLastAccountInfoResultPtr->m_transaction) {
+            lastBalance = pLastAccountInfoResultPtr->m_transaction->m_balance;
         }
 
         TransactionPtr pNewTransaction(new Transaction);
@@ -93,127 +109,210 @@ namespace PenyaManager {
         pNewTransaction->m_balance = lastBalance + amount;
         pNewTransaction->m_descr = description;
         // update account balance info
-        Singletons::m_pDAO->insertTransaction(pNewTransaction);
+        return Singletons::m_pDAO->insertTransaction(pNewTransaction);
     }
     //
-    void Services::resetSlowPayersBalance()
+    bool Services::resetSlowPayersBalance()
     {
         // fetch data
-        MemberListPtr pMemberListPtr = Singletons::m_pDAO->getSlowPayersList();
-        for (MemberList::iterator iter = pMemberListPtr->begin(); iter != pMemberListPtr->end(); ++iter)
+        MemberListResultPtr pMemberListResultPtr = Singletons::m_pDAO->getSlowPayersList();
+        if (pMemberListResultPtr->m_error) {
+            return false;
+        }
+        for (MemberList::iterator iter = pMemberListResultPtr->m_list->begin(); iter != pMemberListResultPtr->m_list->end(); ++iter)
         {
             MemberPtr pMemberPtr = *iter;
-            createAccountTransaction(pMemberPtr->m_id, -pMemberPtr->m_balance, "reset account", TransactionType::AccountPayment);
+            bool ok = createAccountTransaction(pMemberPtr->m_id, -pMemberPtr->m_balance, "reset account", TransactionType::AccountPayment);
+            if (!ok) {
+                return false;
+            }
             QLOG_INFO() << QString("[ResetSlowPayer] member ID %1 amount %2€").arg(pMemberPtr->m_id).arg(-pMemberPtr->m_balance, 0, 'f', 2);
         }
+        return true;
     }
     //
-    TransactionListStatsPtr Services::getAccountListStats(const QDate &fromDate, const QDate &toDate)
+    TransactionListStatsResultPtr Services::getAccountListStats(const QDate &fromDate, const QDate &toDate)
     {
-        TransactionListStatsPtr pTransactionListStatsPtr(new TransactionListStats);
+        TransactionListStatsResultPtr pTransactionListStatsResultPtr(new TransactionListStatsResult);
         // query to get total num of transactions
-        pTransactionListStatsPtr->m_totalNumTransactions = Singletons::m_pDAO->getAccountListCount(fromDate, toDate);
+        Int32 totalNumTransactions = Singletons::m_pDAO->getAccountListCount(fromDate, toDate);
+        if (totalNumTransactions < 0) {
+            pTransactionListStatsResultPtr->m_error = 1;
+            return pTransactionListStatsResultPtr;
+        }
         // query to get sum of invoices
-        pTransactionListStatsPtr->m_totalInvoices = Singletons::m_pDAO->getAccountListInvoicesSum(fromDate, toDate);
+        Float totalInvoices = Singletons::m_pDAO->getAccountListInvoicesSum(fromDate, toDate);
+        if (totalInvoices < 0) {
+            pTransactionListStatsResultPtr->m_error = 1;
+            return pTransactionListStatsResultPtr;
+        }
         // query to get sum of deposits
-        pTransactionListStatsPtr->m_totalDeposits = Singletons::m_pDAO->getAccountListDepositsSum(fromDate, toDate);
+        Float totalDeposits = Singletons::m_pDAO->getAccountListDepositsSum(fromDate, toDate);
+        if (totalDeposits < 0) {
+            pTransactionListStatsResultPtr->m_error = 1;
+            return pTransactionListStatsResultPtr;
+        }
         // query to get sum of bank charges
-        pTransactionListStatsPtr->m_totalBankCharges = Singletons::m_pDAO->getAccountListBankChargesSum(fromDate, toDate);
-        return pTransactionListStatsPtr;
+        Float totalBankCharges = Singletons::m_pDAO->getAccountListBankChargesSum(fromDate, toDate);
+        if (totalBankCharges < 0) {
+            pTransactionListStatsResultPtr->m_error = 1;
+            return pTransactionListStatsResultPtr;
+        }
+        pTransactionListStatsResultPtr->m_listStats = TransactionListStatsPtr(new TransactionListStats);
+        pTransactionListStatsResultPtr->m_listStats->m_totalBankCharges = totalBankCharges;
+        pTransactionListStatsResultPtr->m_listStats->m_totalNumTransactions = totalNumTransactions;
+        pTransactionListStatsResultPtr->m_listStats->m_totalInvoices = totalInvoices;
+        pTransactionListStatsResultPtr->m_listStats->m_totalDeposits = totalDeposits;
+        return pTransactionListStatsResultPtr;
     }
     //
-    TransactionListStatsPtr Services::getAccountListByMemberIdStats(Int32 memberId, const QDate &fromDate, const QDate &toDate)
+    TransactionListStatsResultPtr Services::getAccountListByMemberIdStats(Int32 memberId, const QDate &fromDate, const QDate &toDate)
     {
-        TransactionListStatsPtr pTransactionListStatsPtr(new TransactionListStats);
+        TransactionListStatsResultPtr pTransactionListStatsResultPtr(new TransactionListStatsResult);
         // query to get total num of transactions
-        pTransactionListStatsPtr->m_totalNumTransactions = Singletons::m_pDAO->getAccountListByMemberIdCount(memberId, fromDate, toDate);
+        Int32 totalNumTransactions = Singletons::m_pDAO->getAccountListByMemberIdCount(memberId, fromDate, toDate);
+        if (totalNumTransactions < 0) {
+            pTransactionListStatsResultPtr->m_error = 1;
+            return pTransactionListStatsResultPtr;
+        }
         // query to get sum of invoices
-        pTransactionListStatsPtr->m_totalInvoices = Singletons::m_pDAO->getAccountListByMemberIdInvoicesSum(memberId, fromDate, toDate);
+        Float totalInvoices = Singletons::m_pDAO->getAccountListByMemberIdInvoicesSum(memberId, fromDate, toDate);
+        if (totalInvoices < 0) {
+            pTransactionListStatsResultPtr->m_error = 1;
+            return pTransactionListStatsResultPtr;
+        }
         // query to get sum of deposits
-        pTransactionListStatsPtr->m_totalDeposits = Singletons::m_pDAO->getAccountListByMemberIdDepositsSum(memberId, fromDate, toDate);
+        Float totalDeposits = Singletons::m_pDAO->getAccountListByMemberIdDepositsSum(memberId, fromDate, toDate);
+        if (totalDeposits < 0) {
+            pTransactionListStatsResultPtr->m_error = 1;
+            return pTransactionListStatsResultPtr;
+        }
         // query to get sum of bank charges
-        pTransactionListStatsPtr->m_totalBankCharges = Singletons::m_pDAO->getAccountListByMemberIdBankChargesSum(memberId, fromDate, toDate);
-        return pTransactionListStatsPtr;
+        Float totalBankCharges = Singletons::m_pDAO->getAccountListByMemberIdBankChargesSum(memberId, fromDate, toDate);
+        if (totalBankCharges < 0) {
+            pTransactionListStatsResultPtr->m_error = 1;
+            return pTransactionListStatsResultPtr;
+        }
+
+        pTransactionListStatsResultPtr->m_listStats = TransactionListStatsPtr(new TransactionListStats);
+        pTransactionListStatsResultPtr->m_listStats->m_totalNumTransactions = totalNumTransactions;
+        pTransactionListStatsResultPtr->m_listStats->m_totalInvoices = totalInvoices;
+        pTransactionListStatsResultPtr->m_listStats->m_totalDeposits = totalDeposits;
+        pTransactionListStatsResultPtr->m_listStats->m_totalBankCharges = totalBankCharges;
+        return pTransactionListStatsResultPtr;
     }
     //
-    void Services::updateInvoiceInfo(Int32 invoiceId, Int32 productId, Uint32 count)
+    bool Services::updateInvoiceInfo(Int32 invoiceId, Int32 productId, Uint32 count)
     {
         // update product invoice and invoice's last modification date
-        Singletons::m_pDAO->updateProductInvoice(invoiceId, productId, count);
-        Singletons::m_pDAO->updateInvoiceLastModDate(invoiceId, QDateTime::currentDateTime());
+        bool ok = Singletons::m_pDAO->updateProductInvoice(invoiceId, productId, count);
+        if (!ok) {
+            return false;
+        }
+        return Singletons::m_pDAO->updateInvoiceLastModDate(invoiceId, QDateTime::currentDateTime());
     }
     //
-    void Services::removeInvoiceProductId(Int32 invoiceId, Int32 productId)
+    bool Services::removeInvoiceProductId(Int32 invoiceId, Int32 productId)
     {
         // update product invoice and invoice's last modification date
-        Singletons::m_pDAO->removeProductInvoice(invoiceId, productId);
+        bool ok = Singletons::m_pDAO->removeProductInvoice(invoiceId, productId);
+        if (!ok) {
+            return false;
+        }
         // check if there are more products
-        Uint32 numProducts = Singletons::m_pDAO->countInvoiceProductItems(invoiceId);
-        if (numProducts) {
-            Singletons::m_pDAO->updateInvoiceLastModDate(invoiceId, QDateTime::currentDateTime());
+        Int32 numProducts = Singletons::m_pDAO->countInvoiceProductItems(invoiceId);
+        if (numProducts < 0) {
+            return false;
+        } else if (numProducts > 0) {
+            ok = Singletons::m_pDAO->updateInvoiceLastModDate(invoiceId, QDateTime::currentDateTime());
         } else {
             // no products left, remove invoice
-            Singletons::m_pDAO->deleteInvoice(invoiceId);
+            ok = Singletons::m_pDAO->deleteInvoice(invoiceId);
         }
+        return ok;
     }
     //
-    void Services::increaseProductInvoice(Int32 invoiceId, Int32 productId, Int32 count)
+    bool Services::increaseProductInvoice(Int32 invoiceId, Int32 productId, Int32 count)
     {
-        Uint32 numRowsAffected = Singletons::m_pDAO->increaseProductInvoice(invoiceId, productId, count);
-        if (numRowsAffected <= 0) {
+        Int32 numRowsAffected = Singletons::m_pDAO->increaseProductInvoice(invoiceId, productId, count);
+        if (numRowsAffected < 0) {
+            return false;
+        } else if (numRowsAffected == 0) {
             // product item does not exit, create it on invoice
-            Singletons::m_pDAO->updateProductInvoice(invoiceId, productId, count);
+            bool ok = Singletons::m_pDAO->updateProductInvoice(invoiceId, productId, count);
+            if (!ok) {
+                return false;
+            }
         }
-        Singletons::m_pDAO->updateInvoiceLastModDate(invoiceId, QDateTime::currentDateTime());
+        return Singletons::m_pDAO->updateInvoiceLastModDate(invoiceId, QDateTime::currentDateTime());
     }
     //
-    void Services::cleanOutdatedInvoices()
+    bool Services::cleanOutdatedInvoices()
     {
-        InvoiceListPtr pActiveInvoiceList = Singletons::m_pDAO->getActiveInvoiceList();
+        InvoiceListResultPtr pActiveInvoiceList = Singletons::m_pDAO->getActiveInvoiceList();
+        if (pActiveInvoiceList->m_error) {
+            return false;
+        }
 
         QDateTime now = QDateTime::currentDateTime();
-        for (InvoiceList::iterator iter = pActiveInvoiceList->begin(); iter != pActiveInvoiceList->end(); ++iter) {
+        for (InvoiceList::iterator iter = pActiveInvoiceList->m_list->begin(); iter != pActiveInvoiceList->m_list->end(); ++iter) {
             InvoicePtr pInvoicePtr = *iter;
             // check modified
             if (pInvoicePtr->m_lastModified.secsTo(now) > 60*60 * Constants::kOpenInvoiceTimeoutH) {
                 // invoice timed out
                 // close it
-                Singletons::m_pServices->closeInvoice(pInvoicePtr->m_memberId, pInvoicePtr->m_id);
-                QLOG_INFO() << QString("[Invoice][ONTIMEOUT] User %1 Invoice ID %2").arg(pInvoicePtr->m_memberId).arg(pInvoicePtr->m_id);
+                bool ok = Singletons::m_pServices->closeInvoice(pInvoicePtr->m_memberId, pInvoicePtr->m_id);
+                if (!ok) {
+                    return false;
+                }
+                QLOG_INFO() << QString("[Invoice][OUTDATED] User %1 Invoice ID %2").arg(pInvoicePtr->m_memberId).arg(pInvoicePtr->m_id);
                 // leave returnInvoicePtr empty
             }
         }
+        return !pActiveInvoiceList->m_error;
     }
     //
-    MemberPtr Services::getMemberById(Int32 memberId)
+    MemberResultPtr Services::getMemberById(Int32 memberId)
     {
-        MemberPtr pResult;
-        MemberPtr pMember = Singletons::m_pDAO->fetchMemberById(memberId);
-        if (pMember) {
-            FloatBoolPair pair = Singletons::m_pDAO->getAccountBalance(memberId);
-            if (pair.b) {
+        MemberResultPtr pResult = Singletons::m_pDAO->fetchMemberById(memberId);
+        if (pResult->m_error) {
+            return pResult;
+        }
+        if (pResult->m_member) {
+            FloatBoolPairResultPtr pair = Singletons::m_pDAO->getAccountBalance(memberId);
+            if (pair->m_error) {
+                pResult->m_error = 1;
+                return pResult;
+            }
+
+            if (pair->m_pair.b) {
                 // exists
-                pResult = pMember;
-                pResult->m_balance = pair.f;
+                pResult->m_member->m_balance = pair->m_pair.f;
             }
         }
-        // if any of the queries fail, return null
+
         return pResult;
     }
     //
-    MemberPtr Services::getMemberByUsername(Int32 username)
+    MemberResultPtr Services::getMemberByUsername(Int32 username)
     {
-        MemberPtr pResult;
-        MemberPtr pMember = Singletons::m_pDAO->fetchMemberByUsername(username);
-        if (pMember) {
-            FloatBoolPair pair = Singletons::m_pDAO->getAccountBalance(pMember->m_id);
-            if (pair.b) {
+        MemberResultPtr pResult = Singletons::m_pDAO->fetchMemberByUsername(username);
+        if (pResult->m_error) {
+            return pResult;
+        }
+
+        if (pResult->m_member) {
+            FloatBoolPairResultPtr pair = Singletons::m_pDAO->getAccountBalance(pResult->m_member->m_id);
+            if (pair->m_error) {
+                pResult->m_error = 1;
+                return pResult;
+            }
+
+            if (pair->m_pair.b) {
                 // exists
-                pResult = pMember;
-                pResult->m_balance = pair.f;
+                pResult->m_member->m_balance = pair->m_pair.f;
             }
         }
-        // if any of the queries fail, return null
         return pResult;
     }
 }

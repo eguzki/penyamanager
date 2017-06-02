@@ -25,6 +25,7 @@
 #include <cstdlib>
 
 #include <QString>
+#include <QSharedPointer>
 
 using namespace std::placeholders;  // for _1, _2, _3...
 
@@ -65,5 +66,33 @@ typedef struct {
     Float f;
     bool b;
 }FloatBoolPair;
+
+//
+class FloatBoolPairResult
+{
+    public:
+        //
+        FloatBoolPairResult()
+            :
+            m_error(0),
+            m_pair({0.0, false})
+        {}
+        //
+        virtual ~FloatBoolPairResult(){}
+
+    public:
+        //
+        Int32              m_error;
+        //
+        FloatBoolPair      m_pair;
+};
+
+typedef QSharedPointer<FloatBoolPairResult> FloatBoolPairResultPtr;
+
+//
+typedef struct {
+    Int32 error;
+    bool result;
+}BoolResult;
 
 #endif // DATATYPES_H

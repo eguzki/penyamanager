@@ -46,9 +46,8 @@ namespace PenyaManager {
 
         if (!Singletons::m_pDAO->isOpen()) {
             QSqlError err = Singletons::m_pDAO->lastError();
-            QLOG_ERROR() << QString("[FATAL] Unable to initialize Database: %1").arg(err.text());
-            QMessageBox::critical(this, "Unable to initialize Database",
-                    "Error initializing database: " + err.text());
+            QLOG_ERROR() << QString("Unable to initialize Database: %1").arg(err.text());
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
             qApp->exit(1);
             return;
         }
@@ -56,27 +55,37 @@ namespace PenyaManager {
         //
         // Loading Last Invoice
         //
-        InvoicePtr pLastInvoicePtr = Singletons::m_pDAO->getLastInvoiceInfo();
-        if (!pLastInvoicePtr) {
+        InvoiceResultPtr pLastInvoiceResultPtr = Singletons::m_pDAO->getLastInvoiceInfo();
+        if (pLastInvoiceResultPtr->m_error) {
             // Last invoice not found
             QLOG_INFO() << QString("Last invoice not found");
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
+        if (!pLastInvoiceResultPtr->m_pInvoice) {
+            // Last invoice not found
+            QLOG_WARN() << QString("Last invoice not found");
             return;
         }
 
         //
         // Loading Last Invoice's owner profile
         //
-        MemberPtr pLastInvoiceOwnerPtr = Singletons::m_pServices->getMemberById(pLastInvoicePtr->m_memberId);
-        if (!pLastInvoiceOwnerPtr) {
-            // member not found, should not happen
-            QLOG_ERROR() << QString("[WARN] unable to find last invoice's owner by id: %1").arg(pLastInvoicePtr->m_memberId);
+        MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberById(pLastInvoiceResultPtr->m_pInvoice->m_memberId);
+        if (pMemberResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
             return;
         }
-        fillLastInvoiceOwnerInfo(pLastInvoiceOwnerPtr);
+        if (!pMemberResultPtr->m_member) {
+            // member not found, should not happen
+            QLOG_WARN() << QString("Unable to find last invoice's owner by id: %1").arg(pLastInvoiceResultPtr->m_pInvoice->m_memberId);
+            return;
+        }
+        fillLastInvoiceOwnerInfo(pMemberResultPtr->m_member);
         //
         // Loading Last Invoice info
         //
-        fillLastInvoiceInfo(pLastInvoicePtr);
+        fillLastInvoiceInfo(pLastInvoiceResultPtr->m_pInvoice);
     }
     //
     void LoginWindow::retranslate()
@@ -134,8 +143,12 @@ namespace PenyaManager {
         }
 
         // Loading user Profile
-        MemberPtr pCurrMemberPtr = Singletons::m_pServices->getMemberByUsername(this->m_username);
-        if (!pCurrMemberPtr)
+        MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberByUsername(this->m_username);
+        if (pMemberResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
+        if (!pMemberResultPtr->m_member)
         {
             QLOG_INFO() << QString("[LoginFailed] username %1 does not exist").arg(this->m_username);
             // User could not be found
@@ -145,42 +158,50 @@ namespace PenyaManager {
         }
 
         QString hashedPwd = Utils::hashSHA256asHex(this->m_password);
-        if (pCurrMemberPtr->m_pwd != hashedPwd)
+        if (pMemberResultPtr->m_member->m_pwd != hashedPwd)
         {
-            QLOG_INFO() << QString("[LoginFailed] id %1 username %2 pass check failed").arg(pCurrMemberPtr->m_id).arg(this->m_username);
+            QLOG_INFO() << QString("[LoginFailed] id %1 username %2 pass check failed").arg(pMemberResultPtr->m_member->m_id).arg(this->m_username);
             // User not active
             QMessageBox::about(this, tr("Login failed"), tr("Password incorrect"));
             return;
         }
 
-        if (!pCurrMemberPtr->m_active)
+        if (!pMemberResultPtr->m_member->m_active)
         {
-            QLOG_INFO() << QString("[LoginFailed] User id %1 not active").arg(pCurrMemberPtr->m_id);
+            QLOG_INFO() << QString("[LoginFailed] User id %1 not active").arg(pMemberResultPtr->m_member->m_id);
             // User not active
             QMessageBox::about(this, "Login failed",
-                    tr("User not active in the system: %1").arg(pCurrMemberPtr->m_id));
+                    tr("User not active in the system: %1").arg(pMemberResultPtr->m_member->m_id));
             return;
         }
 
-        if (pCurrMemberPtr->m_balance < 0)
+        if (pMemberResultPtr->m_member->m_balance < 0)
         {
             // User is slow payer
             QMessageBox::warning(this, "Slow Payer",
-                    tr("Your current balance is negative: %1 €").arg(pCurrMemberPtr->m_balance, 0, 'f', 2));
+                    tr("Your current balance is negative: %1 €").arg(pMemberResultPtr->m_member->m_balance, 0, 'f', 2));
         }
 
         // login granted
-        QLOG_INFO() << QString("[LoginSucess] User %1").arg(pCurrMemberPtr->m_id);
+        QLOG_INFO() << QString("[LoginSucess] User %1").arg(pMemberResultPtr->m_member->m_id);
 
         // Every member login, outdated invoices are cleaned
         // It is supossed that only few invoices would be open
-        Singletons::m_pServices->cleanOutdatedInvoices();
+        bool ok = Singletons::m_pServices->cleanOutdatedInvoices();
+        if (!ok) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
 
         // assign user
-        Singletons::m_pCurrMember = pCurrMemberPtr;
+        Singletons::m_pCurrMember = pMemberResultPtr->m_member;
 
         // change last login date
-        Singletons::m_pDAO->changeMemberLastLogin(pCurrMemberPtr->m_id, QDateTime::currentDateTime());
+        ok = Singletons::m_pDAO->changeMemberLastLogin(pMemberResultPtr->m_member->m_id, QDateTime::currentDateTime());
+        if (!ok) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
 
         // load main window
         m_switchCentralWidgetCallback(WindowKey::kMemberDashboardWindowKey);
@@ -218,15 +239,19 @@ namespace PenyaManager {
         //
         // Product List
         //
-        InvoiceProductItemListPtr pInvoiceProductItemListPtr = Singletons::m_pDAO->getInvoiceProductItems(pLastInvoicePtr->m_id);
-        this->ui->lastInvoiceTableWidget->setRowCount(pInvoiceProductItemListPtr->size());
+        InvoiceProductItemListResultPtr pInvoiceProductItemListResultPtr = Singletons::m_pDAO->getInvoiceProductItems(pLastInvoicePtr->m_id);
+        if (pInvoiceProductItemListResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
+        this->ui->lastInvoiceTableWidget->setRowCount(pInvoiceProductItemListResultPtr->m_list->size());
         // invoice table reset
         this->ui->lastInvoiceTableWidget->clearContents();
 
         //fill data
         Uint32 rowCount = 0;
         Float totalInvoice = 0.0;
-        for (InvoiceProductItemList::iterator iter = pInvoiceProductItemListPtr->begin(); iter != pInvoiceProductItemListPtr->end(); ++iter)
+        for (InvoiceProductItemList::iterator iter = pInvoiceProductItemListResultPtr->m_list->begin(); iter != pInvoiceProductItemListResultPtr->m_list->end(); ++iter)
         {
             InvoiceProductItemPtr pInvoiceProductItemPtr = *iter;
             this->ui->lastInvoiceTableWidget->setItem(rowCount, 0, new QTableWidgetItem(pInvoiceProductItemPtr->m_productname));

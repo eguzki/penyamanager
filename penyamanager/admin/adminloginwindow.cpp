@@ -56,8 +56,13 @@ namespace PenyaManager {
     {
         // Loading user Profile
         QString loginName = this->ui->loginInput->text();
-        MemberPtr pCurrMemberPtr = Singletons::m_pServices->getMemberByUsername(loginName.toInt());
-        if (!pCurrMemberPtr)
+        MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberByUsername(loginName.toInt());
+        if (pMemberResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
+
+        if (!pMemberResultPtr->m_member)
         {
             QLOG_INFO() << QString("[LoginFailed] username %1 does not exist").arg(loginName);
             // User could not be found
@@ -68,25 +73,25 @@ namespace PenyaManager {
 
         QString plainPwd = this->ui->passInput->text();
         QString hashedPwd = Utils::hashSHA256asHex(plainPwd);
-        if (pCurrMemberPtr->m_pwd != hashedPwd)
+        if (pMemberResultPtr->m_member->m_pwd != hashedPwd)
         {
-            QLOG_INFO() << QString("[LoginFailed] User id %1 pass check failed").arg(pCurrMemberPtr->m_id);
+            QLOG_INFO() << QString("[LoginFailed] User id %1 pass check failed").arg(pMemberResultPtr->m_member->m_id);
             // User not active
             QMessageBox::about(this, tr("Login failed"), tr("Password incorrect"));
             return;
         }
 
-        if (!pCurrMemberPtr->m_active)
+        if (!pMemberResultPtr->m_member->m_active)
         {
-            QLOG_INFO() << QString("[LoginFailed] User id %1 not active").arg(pCurrMemberPtr->m_id);
+            QLOG_INFO() << QString("[LoginFailed] User id %1 not active").arg(pMemberResultPtr->m_member->m_id);
             // User not active
             QMessageBox::about(this, tr("Login failed"), tr("User not active in the system: %1").arg(this->ui->loginInput->text()));
             return;
         }
 
-        if (!pCurrMemberPtr->m_isAdmin)
+        if (!pMemberResultPtr->m_member->m_isAdmin)
         {
-            QLOG_INFO() << QString("[LoginFailed] User id %1 not admin").arg(pCurrMemberPtr->m_id);
+            QLOG_INFO() << QString("[LoginFailed] User id %1 not admin").arg(pMemberResultPtr->m_member->m_id);
             // User not admin
             QMessageBox::about(this, tr("Login failed"), tr("User does not have permissions to login"));
             return;
@@ -98,7 +103,7 @@ namespace PenyaManager {
         // switch
         this->hide();
         // assign user
-        Singletons::m_pCurrMember = pCurrMemberPtr;
+        Singletons::m_pCurrMember = pMemberResultPtr->m_member;
         // call admin main window
         m_pAdminMainWindow->show();
     }

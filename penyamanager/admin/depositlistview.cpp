@@ -65,15 +65,19 @@ namespace PenyaManager {
     //
     void DepositListView::showUncheckedDeposits()
     {
-        DepositListPtr pDepositListPtr = Singletons::m_pDAO->getUncheckedDeposits();
+        DepositListResultPtr pDepositListResultPtr = Singletons::m_pDAO->getUncheckedDeposits();
+        if (pDepositListResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
         // num rows
-        this->ui->depositTableWidget->setRowCount(pDepositListPtr->size());
+        this->ui->depositTableWidget->setRowCount(pDepositListResultPtr->m_list->size());
         // deposit table reset
         this->ui->depositTableWidget->clearContents();
 
         // fill data
         Uint32 rowCount = 0;
-        for (DepositList::iterator iter = pDepositListPtr->begin(); iter != pDepositListPtr->end(); ++iter)
+        for (DepositList::iterator iter = pDepositListResultPtr->m_list->begin(); iter != pDepositListResultPtr->m_list->end(); ++iter)
         {
             DepositPtr pDepositPtr = *iter;
             Uint32 column = 0;
@@ -119,10 +123,18 @@ namespace PenyaManager {
         if (amount != 0) {
             // create account entry with difference when not equal
             QString descr = QString("deposit fix. Ref: %1").arg(depositId);
-            Singletons::m_pServices->createAccountTransaction(memberId, amount, descr, TransactionType::DepositFix);
+            bool ok = Singletons::m_pServices->createAccountTransaction(memberId, amount, descr, TransactionType::DepositFix);
+            if (!ok) {
+                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                return;
+            }
         }
         // close deposit
-        Singletons::m_pDAO->closeDeposit(depositId);
+        bool ok = Singletons::m_pDAO->closeDeposit(depositId);
+        if (!ok) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
         QLOG_INFO() << QString("[DepositCheck] deposit ID %1 member ID %2 total %3€ diff %4€").arg(depositId).arg(memberId).arg(total, 0, 'f', 2).arg(amount, 0, 'f', 2);
         QMessageBox::information(this, tr("Deposit checked"), tr("Difference: %1 €").arg(amount, 0, 'f', 2));
         showUncheckedDeposits();
