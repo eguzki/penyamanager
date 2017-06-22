@@ -1,12 +1,12 @@
 <RCC>
     <qresource prefix="/">
         <file>images/no-image.gif</file>
-        <file>images/alegrialogo.jpg</file>
         <file>resources/deposit.html</file>
         <file>resources/invoice.html</file>
         <file>resources/members.html</file>
         <file>resources/singlemember.html</file>
         <file>resources/doublemember.html</file>
         <file>VERSION</file>
+        <file>images/alegrialogo.png</file>
     </qresource>
 </RCC>

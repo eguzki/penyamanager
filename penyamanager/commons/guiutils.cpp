@@ -23,6 +23,7 @@ namespace PenyaManager {
     //
     void GuiUtils::printText(const QString& html)
     {
+        QLOG_INFO() << QString("[Print] print ini");
         QPrinterInfo defaultPrinter = QPrinterInfo::defaultPrinter();
         if (defaultPrinter.isNull()) {
             QLOG_ERROR() << QString("[PrintFailed] default printer is null");

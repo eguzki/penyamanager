@@ -219,6 +219,7 @@ namespace PenyaManager {
         // computed invoice total value
         invoiceData["invoiceTotal"] = QString("%1 €").arg(totalInvoice, 0, 'f', 2);
         // print invoice
+        QLOG_INFO() << QString("[Print] heeee ini");
         GuiUtils::printInvoice(invoiceData, pMemberPtr->m_id, pInvoicePtr->m_id);
         QMessageBox::information(this, tr("Print Invoice"), tr("Invoice #%1 sent to printer").arg(QString::number(pInvoicePtr->m_id)));
     }

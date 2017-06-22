@@ -264,7 +264,7 @@ namespace PenyaManager {
         Uint32 guestNum = 0;
         if (itemType == ReservationItemType::LunchTableType)
         {
-            NumItemDialog numItemDialog(this, tr("Enter number of guests"));
+            NumItemDialog numItemDialog(this);
             numItemDialog.exec();
             guestNum = numItemDialog.getKey();
             if (guestNum == 0)
