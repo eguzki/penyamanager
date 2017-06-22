@@ -35,13 +35,20 @@ namespace PenyaManager {
     void MemberDashboardWindow::initializeTable()
     {
         this->ui->invoiceTableWidget->setColumnCount(5);
+        QHeaderView* header = this->ui->invoiceTableWidget->horizontalHeader();
+        header->setSectionResizeMode(QHeaderView::Fixed);
+        //header->setDefaultSectionSize(24);
         translateTable();
+
+
         Uint32 column = 0;
-        this->ui->invoiceTableWidget->setColumnWidth(column++, 150);
-        this->ui->invoiceTableWidget->setColumnWidth(column++, 70);
-        this->ui->invoiceTableWidget->setColumnWidth(column++, 30);
-        this->ui->invoiceTableWidget->setColumnWidth(column++, 70);
+        this->ui->invoiceTableWidget->setColumnWidth(column++, 124);
         this->ui->invoiceTableWidget->setColumnWidth(column++, 50);
+        this->ui->invoiceTableWidget->setColumnWidth(column++, 30);
+        this->ui->invoiceTableWidget->setColumnWidth(column++, 50);
+        this->ui->invoiceTableWidget->setColumnWidth(column++, 40);
+        //this->ui->invoiceTableWidget->setRowHeight(, 30);
+
     }
     //
     void MemberDashboardWindow::translateTable()
@@ -228,7 +235,7 @@ namespace PenyaManager {
     {
         if (!pInvoicePtr) {
             // clean all
-            this->ui->invoiceInfoLabel->setText("");
+
             // invoice table reset
             this->ui->invoiceTableWidget->clearContents();
             this->ui->invoiceTableWidget->setRowCount(0);
@@ -236,10 +243,6 @@ namespace PenyaManager {
             return;
         }
 
-        // Invoice header
-        QString dateLocalized = Singletons::m_translationManager.getLocale().toString(pInvoicePtr->m_date, QLocale::NarrowFormat);
-        QString lastModifDateLocalized = Singletons::m_translationManager.getLocale().toString(pInvoicePtr->m_lastModified, QLocale::NarrowFormat);
-        this->ui->invoiceInfoLabel->setText(QString("%1: %2     %3: %4").arg(tr("Created on")).arg(dateLocalized).arg(tr("Modified on")).arg(lastModifDateLocalized));
 
         // get invoice products
         InvoiceProductItemListPtr pInvoiceProductItemListPtr = Singletons::m_pDAO->getInvoiceProductItems(pInvoicePtr->m_id);

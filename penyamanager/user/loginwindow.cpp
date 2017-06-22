@@ -90,6 +90,9 @@ namespace PenyaManager {
     {
         // table
         this->ui->lastInvoiceTableWidget->setColumnCount(4);
+        QHeaderView* header = this->ui->lastInvoiceTableWidget->horizontalHeader();
+        header->setSectionResizeMode(QHeaderView::Fixed);
+        header->setDefaultSectionSize(80);
         translateTable();
         Uint32 column = 0;
         this->ui->lastInvoiceTableWidget->setColumnWidth(column++, 300);

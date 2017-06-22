@@ -7,14 +7,16 @@
     <x>0</x>
     <y>0</y>
     <width>934</width>
-    <height>627</height>
+    <height>635</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string notr="true"/>
   </property>
   <property name="styleSheet">
-   <string notr="true">#LoginWindow {
+   <string notr="true">
+
+#LoginWindow {
 background: rgb(66, 66, 66);
 }
 
