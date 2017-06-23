@@ -61,7 +61,7 @@ namespace PenyaManager {
             QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
             return;
         }
-        if (pInvoicePtr->m_pInvoice) {
+        if (!pInvoicePtr->m_pInvoice) {
             // invoice not found, should not happen
             QLOG_ERROR() << QString("[ERROR] unable to find expected invoice by id: %1").arg(invoiceId);
             return;
