@@ -32,7 +32,6 @@ namespace PenyaManager {
         //
         // Loading User profile
         //
-
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
         this->m_pMemberProfileGroupBox->init(pCurrMemberPtr);
 
@@ -40,8 +39,20 @@ namespace PenyaManager {
         // Loading invoice data
         // current invoice is Singletons::m_currentInvoiceId read by widget
         //
+        // use static global variable to get invoiceId
+        Int32 invoiceId = Singletons::m_currentInvoiceId;
+        InvoiceResultPtr pInvoicePtr = Singletons::m_pDAO->getInvoice(invoiceId);
+        if (pInvoicePtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
+        if (!pInvoicePtr->m_pInvoice) {
+            // invoice not found, should not happen
+            QLOG_ERROR() << QString("[ERROR] unable to find expected invoice by id: %1").arg(invoiceId);
+            return;
+        }
 
-        this->m_pInvoiceDetailsWidget->init();
+        this->m_pInvoiceDetailsWidget->init(pInvoicePtr);
     }
     //
     void InvoiceDetailsWindow::retranslate()

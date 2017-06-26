@@ -47,15 +47,15 @@ namespace PenyaManager {
         headers.append(tr("total"));
         this->ui->productTableWidget->setHorizontalHeaderLabels(headers);
     }
-    //
+    // called from admin framework
     void InvoiceDetailsWidget::init()
     {
+        //
+        // Loading invoice data
+        // current invoice is Singletons::m_currentInvoiceId read by widget
+        //
         // use static global variable to get invoiceId
         Int32 invoiceId = Singletons::m_currentInvoiceId;
-
-        //
-        // Loading Current Invoice
-        //
         InvoiceResultPtr pInvoicePtr = Singletons::m_pDAO->getInvoice(invoiceId);
         if (pInvoicePtr->m_error) {
             QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
@@ -66,7 +66,11 @@ namespace PenyaManager {
             QLOG_ERROR() << QString("[ERROR] unable to find expected invoice by id: %1").arg(invoiceId);
             return;
         }
-
+        fillInvoiceData(pInvoicePtr->m_pInvoice);
+    }
+    // called from user framework
+    void InvoiceDetailsWidget::init(InvoiceResultPtr pInvoicePtr)
+    {
         fillInvoiceData(pInvoicePtr->m_pInvoice);
         show();
     }
