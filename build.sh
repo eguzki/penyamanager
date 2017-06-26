@@ -48,7 +48,6 @@ PROJECT_PATH=$CURRENT_PATH/$PROJECT_NAME
 CONF_APP=$PROJECT_PATH/penyamanagerconf.pro
 USER_APP=$PROJECT_PATH/penyamanager.pro
 ADMIN_APP=$PROJECT_PATH/penyamanageradmin.pro
-SUCSESFURL_APP=$PROJECT_PATH/sucsesfurl.pro
 QMAKE_FLAGS="-Wall"
 DEBUG=yes
 CLEAN=no
@@ -96,10 +95,6 @@ else
     $MAKE
     echo "** TRANSLATION:: making with: $LRELEASE**"
     $LRELEASE $ADMIN_APP
-    echo "** BUILD:: building \"$SUCSESFURL_APP\""
-    $QMAKE $QMAKE_FLAGS $SUCSESFURL_APP
-    echo "** BUILD:: making with: $MAKE**"
-    $MAKE
     echo "** DEPLOY:: qm files**"
     mv $PROJECT_PATH/translations/*.qm $TARGETPATH
     echo "** BUILD:: building \"$CONF_APP\""

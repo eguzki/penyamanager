@@ -23,6 +23,8 @@ namespace PenyaManager {
             //
             ~InvoiceDetailsWidget();
             //
+            void init(InvoiceResultPtr pInvoicePtr);
+            //
             void init();
             //
             void retranslate();
