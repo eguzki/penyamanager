@@ -288,7 +288,10 @@ namespace PenyaManager {
             totalInvoice += totalPrice;
             this->m_rowProductIdMap[rowCount] = pInvoiceProductItemPtr->m_productId;
             // show remove action
-            QPushButton *pRemoveButton = new QPushButton(tr("Remove"), this->ui->invoiceTableWidget);
+            QPushButton *pRemoveButton = new QPushButton("", this->ui->invoiceTableWidget);
+            QPixmap pixmap(":images/trash.png");
+            QIcon buttonIcon(pixmap);
+            pRemoveButton->setIcon(buttonIcon);
             this->connect(pRemoveButton, &QPushButton::clicked, std::bind(&MemberDashboardWindow::on_productRemoveButton_clicked, this, pInvoiceProductItemPtr->m_productId));
             this->ui->invoiceTableWidget->setCellWidget(rowCount, 4, pRemoveButton);
             rowCount++;
