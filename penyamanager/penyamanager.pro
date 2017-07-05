@@ -57,7 +57,9 @@ SOURCES += main.cpp\
         user/invoicedetailswindow.cpp \
         commons/guiutils.cpp \
         commons/translationmanager.cpp \
-        user/mainwindow.cpp
+        user/mainwindow.cpp \
+        commons/familyitemwidget.cpp \
+        commons/productitemwidget.cpp
 
 HEADERS  += user/memberdashboardwindow.h\
         commons/singletons.h\
@@ -67,6 +69,8 @@ HEADERS  += user/memberdashboardwindow.h\
         commons/services.h\
         commons/IPartner.h\
         commons/partnerfinder.h\
+        commons/familyitemwidget.h\
+        commons/productitemwidget.h\
         objs/Transaction.h\
         objs/Invoice.h\
         objs/Deposit.h\
@@ -105,7 +109,9 @@ FORMS    += user/memberdashboardwindow.ui\
         commons/invoicedetailswidget.ui \
         user/memberprofilegroupbox.ui \
         user/invoicedetailswindow.ui \
-        user/mainwindow.ui
+        user/mainwindow.ui \
+        commons/familyitemwidget.ui \
+        commons/productitemwidget.ui
 
 TRANSLATIONS += \
     translations/penyamanager_es.ts \
