@@ -88,21 +88,21 @@ namespace PenyaManager {
             //
             Int32 getAccountListCount(const QDate &fromDate, const QDate &toDate);
             //
-            Float getAccountListInvoicesSum(const QDate &fromDate, const QDate &toDate);
+            FloatResult getAccountListInvoicesSum(const QDate &fromDate, const QDate &toDate);
             //
-            Float getAccountListDepositsSum(const QDate &fromDate, const QDate &toDate);
+            FloatResult getAccountListDepositsSum(const QDate &fromDate, const QDate &toDate);
             //
-            Float getAccountListBankChargesSum(const QDate &fromDate, const QDate &toDate);
+            FloatResult getAccountListBankChargesSum(const QDate &fromDate, const QDate &toDate);
             //
             TransactionListResultPtr getAccountListByMemberId(Int32 memberId, const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count);
             //
             Int32 getAccountListByMemberIdCount(Int32 memberId, const QDate &fromDate, const QDate &toDate);
             //
-            Float getAccountListByMemberIdInvoicesSum(Int32 memberId, const QDate &fromDate, const QDate &toDate);
+            FloatResult getAccountListByMemberIdInvoicesSum(Int32 memberId, const QDate &fromDate, const QDate &toDate);
             //
-            Float getAccountListByMemberIdDepositsSum(Int32 memberId, const QDate &fromDate, const QDate &toDate);
+            FloatResult getAccountListByMemberIdDepositsSum(Int32 memberId, const QDate &fromDate, const QDate &toDate);
             //
-            Float getAccountListByMemberIdBankChargesSum(Int32 memberId, const QDate &fromDate, const QDate &toDate);
+            FloatResult getAccountListByMemberIdBankChargesSum(Int32 memberId, const QDate &fromDate, const QDate &toDate);
             //
             ReservationListResultPtr getTableReservation(ReservationType reservationType, const QDate &now);
             //

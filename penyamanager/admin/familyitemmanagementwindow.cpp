@@ -5,6 +5,7 @@
 
 #include <commons/guiutils.h>
 #include <commons/singletons.h>
+#include <commons/familyitemwidget.h>
 #include "familyitemmanagementwindow.h"
 #include "ui_familyitemmanagementwindow.h"
 
@@ -81,27 +82,12 @@ namespace PenyaManager {
         pFamilyItem->setData(Constants::kIdRole, pfPtr->m_id);
         pList->addItem(pFamilyItem);
 
-        QWidget *pFamilyWidget = new QWidget;
-        // load family image
-        QLabel *pImageLabel = new QLabel;
         QString imagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pfPtr->m_imagePath);
         QPixmap familyPixmap = GuiUtils::getImage(imagePath);
-        pImageLabel->setPixmap(familyPixmap);
-        pImageLabel->setFixedWidth(Constants::kFamilyImageWidth);
-        pImageLabel->setFixedHeight(Constants::kFamilyImageHeigth);
-        pImageLabel->setScaledContents(true);
-
-        QLabel *pTextLabel = new QLabel(pfPtr->m_name);
-        pTextLabel->setFixedWidth(Constants::kFamilyWidgetWidth -  Constants::kFamilyImageWidth - 5);
-        pTextLabel->setFixedHeight(Constants::kFamilyImageHeigth);
-
-        QHBoxLayout *pLayout = new QHBoxLayout;
-        pLayout->addWidget(pImageLabel);
-        pLayout->addWidget(pTextLabel);
-        pFamilyWidget->setLayout(pLayout);
-        pFamilyItem->setSizeHint(pLayout->minimumSize());
+        QWidget *pFamilyWidget = new FamilyItemWidget(pList, familyPixmap, pfPtr->m_name);
+        // load family image
+        pFamilyItem->setSizeHint(pFamilyWidget->minimumSize());
         pFamilyItem->setFlags(Qt::ItemIsSelectable);
-        pFamilyItem->setBackgroundColor(pList->count() % 2 == 0 ? (Qt::lightGray) : (Qt::darkGray));
         pList->setItemWidget(pFamilyItem, pFamilyWidget);
     }
     //
