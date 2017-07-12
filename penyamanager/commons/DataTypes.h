@@ -95,4 +95,10 @@ typedef struct {
     bool result;
 }BoolResult;
 
+//
+typedef struct {
+    Int32 error;
+    Float result;
+}FloatResult;
+
 #endif // DATATYPES_H

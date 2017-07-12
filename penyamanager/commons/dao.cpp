@@ -259,8 +259,7 @@ namespace PenyaManager {
         if (queryResponse.error) {
             QLOG_ERROR() << QString("fetchMemberByUsername: member: %1").arg(username);
             pMemberResultPtr->m_error = 1;
-        } else if (queryResponse.query->next())
-        {
+        } else if (queryResponse.query->next()) {
             MemberPtr pMemberPtr(new Member);
             Uint32 column = 0;
             pMemberPtr->m_id = queryResponse.query->value(column++).toInt();
@@ -799,9 +798,9 @@ namespace PenyaManager {
         return count;
     }
     //
-    Float DAO::getAccountListInvoicesSum(const QDate &fromDate, const QDate &toDate)
+    FloatResult DAO::getAccountListInvoicesSum(const QDate &fromDate, const QDate &toDate)
     {
-        Float count = 0.0;
+        FloatResult floatResult({0, 0.0});
         auto createQuery = [=](){
             QueryPtr queryPtr(new QSqlQuery);
             // sum of invoices from account
@@ -822,16 +821,16 @@ namespace PenyaManager {
             QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
             QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
             QLOG_ERROR() << QString("getAccountListInvoicesSum: fromDate: %1 toDate: %2").arg(fromDateLocalized).arg(toDateLocalized);
-            count = -1;
+            floatResult.error = 1;
         } else if (queryResponse.query->next()) {
-            count = queryResponse.query->value(0).toInt();
+            floatResult.result = queryResponse.query->value(0).toInt();
         }
-        return count;
+        return floatResult;
     }
     //
-    Float DAO::getAccountListDepositsSum(const QDate &fromDate, const QDate &toDate)
+    FloatResult DAO::getAccountListDepositsSum(const QDate &fromDate, const QDate &toDate)
     {
-        Float count = 0.0;
+        FloatResult floatResult({0, 0.0});
         auto createQuery = [=](){
             QueryPtr queryPtr(new QSqlQuery);
             // sum of deposits from account
@@ -852,16 +851,16 @@ namespace PenyaManager {
             QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
             QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
             QLOG_ERROR() << QString("getAccountListDepositsSum: fromDate: %1 toDate: %2").arg(fromDateLocalized).arg(toDateLocalized);
-            count = -1;
+            floatResult.error = 1;
         } else if (queryResponse.query->next()) {
-            count = queryResponse.query->value(0).toFloat();
+            floatResult.result = queryResponse.query->value(0).toFloat();
         }
-        return count;
+        return floatResult;
     }
     //
-    Float DAO::getAccountListBankChargesSum(const QDate &fromDate, const QDate &toDate)
+    FloatResult DAO::getAccountListBankChargesSum(const QDate &fromDate, const QDate &toDate)
     {
-        Float count = 0.0;
+        FloatResult floatResult({0, 0.0});
 
         auto createQuery = [=](){
             QueryPtr queryPtr(new QSqlQuery);
@@ -883,11 +882,11 @@ namespace PenyaManager {
             QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
             QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
             QLOG_ERROR() << QString("getAccountListBankChargesSum: fromDate: %1 toDate: %2").arg(fromDateLocalized).arg(toDateLocalized);
-            count = -1;
+            floatResult.error = 1;
         } else if (queryResponse.query->next()) {
-            count = queryResponse.query->value(0).toFloat();
+            floatResult.result = queryResponse.query->value(0).toFloat();
         }
-        return count;
+        return floatResult;
     }
     //
     Int32 DAO::getAccountListByMemberIdCount(Int32 memberId, const QDate &fromDate, const QDate &toDate)
@@ -921,9 +920,9 @@ namespace PenyaManager {
         return count;
     }
     //
-    Float DAO::getAccountListByMemberIdInvoicesSum(Int32 memberId, const QDate &fromDate, const QDate &toDate)
+    FloatResult DAO::getAccountListByMemberIdInvoicesSum(Int32 memberId, const QDate &fromDate, const QDate &toDate)
     {
-        Float count = 0.0;
+        FloatResult floatResult({0, 0.0});
         auto createQuery = [=](){
             QueryPtr queryPtr(new QSqlQuery);
             // sum of invoices by memberid from account
@@ -946,16 +945,16 @@ namespace PenyaManager {
             QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
             QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
             QLOG_ERROR() << QString("getAccountListByMemberIdInvoicesSum: memberId: %1 fromDate: %2 toDate: %3").arg(memberId).arg(fromDateLocalized).arg(toDateLocalized);
-            count = -1;
+            floatResult.error = 1;
         } else if (queryResponse.query->next()) {
-            count = queryResponse.query->value(0).toFloat();
+            floatResult.result = queryResponse.query->value(0).toFloat();
         }
-        return count;
+        return floatResult;
     }
     //
-    Float DAO::getAccountListByMemberIdDepositsSum(Int32 memberId, const QDate &fromDate, const QDate &toDate)
+    FloatResult DAO::getAccountListByMemberIdDepositsSum(Int32 memberId, const QDate &fromDate, const QDate &toDate)
     {
-        Float count = 0.0;
+        FloatResult floatResult({0, 0.0});
 
         auto createQuery = [=](){
             QueryPtr queryPtr(new QSqlQuery);
@@ -979,16 +978,16 @@ namespace PenyaManager {
             QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
             QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
             QLOG_ERROR() << QString("getAccountListByMemberIdDepositsSum: memberId: %1 fromDate: %2 toDate: %3").arg(memberId).arg(fromDateLocalized).arg(toDateLocalized);
-            count = -1;
+            floatResult.error = 1;
         } else if (queryResponse.query->next()) {
-            count = queryResponse.query->value(0).toFloat();
+            floatResult.result = queryResponse.query->value(0).toFloat();
         }
-        return count;
+        return floatResult;
     }
     //
-    Float DAO::getAccountListByMemberIdBankChargesSum(Int32 memberId, const QDate &fromDate, const QDate &toDate)
+    FloatResult DAO::getAccountListByMemberIdBankChargesSum(Int32 memberId, const QDate &fromDate, const QDate &toDate)
     {
-        Float count = 0.0;
+        FloatResult floatResult({0, 0.0});
         auto createQuery = [=](){
             QueryPtr queryPtr(new QSqlQuery);
             // sum of bank charger by memberid from account
@@ -1011,11 +1010,11 @@ namespace PenyaManager {
             QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
             QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
             QLOG_ERROR() << QString("getAccountListByMemberIdBankChargesSum: memberId: %1 fromDate: %2 toDate: %3").arg(memberId).arg(fromDateLocalized).arg(toDateLocalized);
-            count = -1;
+            floatResult.error = 1;
         } else if (queryResponse.query->next()) {
-            count = queryResponse.query->value(0).toFloat();
+            floatResult.result = queryResponse.query->value(0).toFloat();
         }
-        return count;
+        return floatResult;
     }
     //
     TransactionListResultPtr DAO::getAccountListByMemberId(Int32 memberId, const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count)

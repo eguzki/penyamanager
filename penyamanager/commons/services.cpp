@@ -141,28 +141,28 @@ namespace PenyaManager {
             return pTransactionListStatsResultPtr;
         }
         // query to get sum of invoices
-        Float totalInvoices = Singletons::m_pDAO->getAccountListInvoicesSum(fromDate, toDate);
-        if (totalInvoices < 0) {
+        FloatResult totalInvoices = Singletons::m_pDAO->getAccountListInvoicesSum(fromDate, toDate);
+        if (totalInvoices.error) {
             pTransactionListStatsResultPtr->m_error = 1;
             return pTransactionListStatsResultPtr;
         }
         // query to get sum of deposits
-        Float totalDeposits = Singletons::m_pDAO->getAccountListDepositsSum(fromDate, toDate);
-        if (totalDeposits < 0) {
+        FloatResult totalDeposits = Singletons::m_pDAO->getAccountListDepositsSum(fromDate, toDate);
+        if (totalDeposits.error) {
             pTransactionListStatsResultPtr->m_error = 1;
             return pTransactionListStatsResultPtr;
         }
         // query to get sum of bank charges
-        Float totalBankCharges = Singletons::m_pDAO->getAccountListBankChargesSum(fromDate, toDate);
-        if (totalBankCharges < 0) {
+        FloatResult totalBankCharges = Singletons::m_pDAO->getAccountListBankChargesSum(fromDate, toDate);
+        if (totalBankCharges.error) {
             pTransactionListStatsResultPtr->m_error = 1;
             return pTransactionListStatsResultPtr;
         }
         pTransactionListStatsResultPtr->m_listStats = TransactionListStatsPtr(new TransactionListStats);
-        pTransactionListStatsResultPtr->m_listStats->m_totalBankCharges = totalBankCharges;
+        pTransactionListStatsResultPtr->m_listStats->m_totalBankCharges = totalBankCharges.result;
         pTransactionListStatsResultPtr->m_listStats->m_totalNumTransactions = totalNumTransactions;
-        pTransactionListStatsResultPtr->m_listStats->m_totalInvoices = totalInvoices;
-        pTransactionListStatsResultPtr->m_listStats->m_totalDeposits = totalDeposits;
+        pTransactionListStatsResultPtr->m_listStats->m_totalInvoices = totalInvoices.result;
+        pTransactionListStatsResultPtr->m_listStats->m_totalDeposits = totalDeposits.result;
         return pTransactionListStatsResultPtr;
     }
     //
@@ -176,29 +176,29 @@ namespace PenyaManager {
             return pTransactionListStatsResultPtr;
         }
         // query to get sum of invoices
-        Float totalInvoices = Singletons::m_pDAO->getAccountListByMemberIdInvoicesSum(memberId, fromDate, toDate);
-        if (totalInvoices < 0) {
+        FloatResult totalInvoices = Singletons::m_pDAO->getAccountListByMemberIdInvoicesSum(memberId, fromDate, toDate);
+        if (totalInvoices.error) {
             pTransactionListStatsResultPtr->m_error = 1;
             return pTransactionListStatsResultPtr;
         }
         // query to get sum of deposits
-        Float totalDeposits = Singletons::m_pDAO->getAccountListByMemberIdDepositsSum(memberId, fromDate, toDate);
-        if (totalDeposits < 0) {
+        FloatResult totalDeposits = Singletons::m_pDAO->getAccountListByMemberIdDepositsSum(memberId, fromDate, toDate);
+        if (totalDeposits.error) {
             pTransactionListStatsResultPtr->m_error = 1;
             return pTransactionListStatsResultPtr;
         }
         // query to get sum of bank charges
-        Float totalBankCharges = Singletons::m_pDAO->getAccountListByMemberIdBankChargesSum(memberId, fromDate, toDate);
-        if (totalBankCharges < 0) {
+        FloatResult totalBankCharges = Singletons::m_pDAO->getAccountListByMemberIdBankChargesSum(memberId, fromDate, toDate);
+        if (totalBankCharges.error) {
             pTransactionListStatsResultPtr->m_error = 1;
             return pTransactionListStatsResultPtr;
         }
 
         pTransactionListStatsResultPtr->m_listStats = TransactionListStatsPtr(new TransactionListStats);
         pTransactionListStatsResultPtr->m_listStats->m_totalNumTransactions = totalNumTransactions;
-        pTransactionListStatsResultPtr->m_listStats->m_totalInvoices = totalInvoices;
-        pTransactionListStatsResultPtr->m_listStats->m_totalDeposits = totalDeposits;
-        pTransactionListStatsResultPtr->m_listStats->m_totalBankCharges = totalBankCharges;
+        pTransactionListStatsResultPtr->m_listStats->m_totalInvoices = totalInvoices.result;
+        pTransactionListStatsResultPtr->m_listStats->m_totalDeposits = totalDeposits.result;
+        pTransactionListStatsResultPtr->m_listStats->m_totalBankCharges = totalBankCharges.result;
         return pTransactionListStatsResultPtr;
     }
     //
