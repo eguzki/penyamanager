@@ -10,6 +10,7 @@
 #include <commons/singletons.h>
 #include <commons/numitemdialog.h>
 #include <commons/familyitemwidget.h>
+#include <commons/productitemwidget.h>
 #include "memberdashboardwindow.h"
 #include "ui_memberdashboardwindow.h"
 
@@ -140,36 +141,14 @@ namespace PenyaManager {
         pList->addItem(pProductItem);
 
         // main product widget
-        QWidget *pProduceItemWidget = new QWidget;
-
-        // load product image
-        QLabel *pImageLabel = new QLabel;
         QString imagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pfPtr->m_imagePath);
         QPixmap productItemPixmap = GuiUtils::getImage(imagePath);
-        pImageLabel->setPixmap(productItemPixmap);
-        pImageLabel->setFixedWidth(Constants::kFamilyImageWidth);
-        pImageLabel->setFixedHeight(Constants::kFamilyImageHeigth);
-        pImageLabel->setScaledContents(true);
+        QWidget *pProduceItemWidget = new ProductItemWidget(pList, productItemPixmap, pfPtr->m_name, pfPtr->m_price);
 
-        // product info: name and price
-        QWidget *pProductItemInfoWidget = new QWidget;
-        QVBoxLayout *pInfoLayout = new QVBoxLayout;
-        pInfoLayout->setContentsMargins(2,2,2,2);
-        QLabel *pTextLabel = new QLabel(pfPtr->m_name);
-        QLabel *pProductPriceLabel = new QLabel(QString("%1 €").arg(pfPtr->m_price, 0, 'f', 2));
-        pInfoLayout->addWidget(pTextLabel);
-        pInfoLayout->addWidget(pProductPriceLabel);
-        pProductItemInfoWidget->setLayout(pInfoLayout);
-        pProductItemInfoWidget->setFixedWidth(Constants::kFamilyWidgetWidth);
-
-        QHBoxLayout *pLayout = new QHBoxLayout;
-        pLayout->setContentsMargins(2,2,2,2);
-        pLayout->addWidget(pImageLabel);
-        pLayout->addWidget(pProductItemInfoWidget);
-        pProduceItemWidget->setLayout(pLayout);
-        pProductItem->setSizeHint(pLayout->minimumSize());
+        // load product image
+        pProductItem->setSizeHint(pProduceItemWidget->minimumSize());
         pProductItem->setFlags(Qt::ItemIsSelectable);
-        pProductItem->setBackgroundColor(pList->count() % 2 == 0 ? (Qt::lightGray) : (Qt::darkGray));
+        //pProductItem->setBackgroundColor(pList->count() % 2 == 0 ? (Qt::lightGray) : (Qt::darkGray));
         pList->setItemWidget(pProductItem, pProduceItemWidget);
     }
 
@@ -180,9 +159,11 @@ namespace PenyaManager {
         pFamilyItem->setData(Constants::kIdRole, pfPtr->m_id);
         pList->addItem(pFamilyItem);
 
+        // main family widget
         QString imagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pfPtr->m_imagePath);
         QPixmap familyPixmap = GuiUtils::getImage(imagePath);
         QWidget *pFamilyWidget = new FamilyItemWidget(pList, familyPixmap, pfPtr->m_name);
+
         // load family image
         pFamilyItem->setSizeHint(pFamilyWidget->minimumSize());
         pFamilyItem->setFlags(Qt::ItemIsSelectable);

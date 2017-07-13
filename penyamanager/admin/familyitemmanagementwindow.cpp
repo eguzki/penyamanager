@@ -6,6 +6,7 @@
 #include <commons/guiutils.h>
 #include <commons/singletons.h>
 #include <commons/familyitemwidget.h>
+#include <commons/productitemwidget.h>
 #include "familyitemmanagementwindow.h"
 #include "ui_familyitemmanagementwindow.h"
 
@@ -130,35 +131,12 @@ namespace PenyaManager {
         pList->addItem(pProductItem);
 
         // main product widget
-        QWidget *pProduceItemWidget = new QWidget;
-
-        // load product image
-        QLabel *pImageLabel = new QLabel;
         QString imagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pfPtr->m_imagePath);
         QPixmap productItemPixmap = GuiUtils::getImage(imagePath);
-        pImageLabel->setPixmap(productItemPixmap);
-        pImageLabel->setFixedWidth(Constants::kFamilyImageWidth);
-        pImageLabel->setFixedHeight(Constants::kFamilyImageHeigth);
-        pImageLabel->setScaledContents(true);
+        QWidget *pProduceItemWidget = new ProductItemWidget(pList, productItemPixmap, pfPtr->m_name, pfPtr->m_price);
 
-        // product info: name and price
-        QWidget *pProductItemInfoWidget = new QWidget;
-        QVBoxLayout *pInfoLayout = new QVBoxLayout;
-        QLabel *pTextLabel = new QLabel(pfPtr->m_name);
-        pTextLabel->setFixedWidth(Constants::kFamilyWidgetWidth -  Constants::kFamilyImageWidth - 5);
-        //pTextLabel->setFixedHeight(Constants::kFamilyImageHeigth);
-        QLabel *pProductPriceLabel = new QLabel(QString("%1 €").arg(pfPtr->m_price, 0, 'f', 2));
-        pTextLabel->setFixedWidth(Constants::kFamilyWidgetWidth -  Constants::kFamilyImageWidth - 5);
-        //pTextLabel->setFixedHeight(Constants::kFamilyImageHeigth);
-        pInfoLayout->addWidget(pTextLabel);
-        pInfoLayout->addWidget(pProductPriceLabel);
-        pProductItemInfoWidget->setLayout(pInfoLayout);
-
-        QHBoxLayout *pLayout = new QHBoxLayout;
-        pLayout->addWidget(pImageLabel);
-        pLayout->addWidget(pProductItemInfoWidget);
-        pProduceItemWidget->setLayout(pLayout);
-        pProductItem->setSizeHint(pLayout->minimumSize());
+        // load product image
+        pProductItem->setSizeHint(pProduceItemWidget->minimumSize());
         pProductItem->setFlags(Qt::ItemIsSelectable);
         pProductItem->setBackgroundColor(pList->count() % 2 == 0 ? (Qt::lightGray) : (Qt::darkGray));
         pList->setItemWidget(pProductItem, pProduceItemWidget);

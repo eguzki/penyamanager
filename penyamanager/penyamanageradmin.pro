@@ -116,7 +116,7 @@ HEADERS += commons/singletons.h\
         admin/memberview.h \
         admin/passchangedialog.h \
         admin/adminreservationswindow.h \
-        admin/providerinvoiceview.h
+        admin/providerinvoiceview.h \
 
 FORMS   += admin/adminloginwindow.ui\
         admin/adminmainwindow.ui \
