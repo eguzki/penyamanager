@@ -14,15 +14,25 @@
    <string notr="true"/>
   </property>
   <property name="styleSheet">
-   <string notr="true">FamilyItemWidget:QLabel  {
-	color: green;
-}
-
-QListWidget {
+   <string notr="true">QListWidget {
     alternate-background-color: blue;
     selection-background-color: darkblue;
     selection-color: red;
     background: white;
+}
+
+#productListWidget {
+    alternate-background-color: blue;
+    selection-background-color: darkblue;
+    background: white;
+}
+
+PenyaManager--FamilyItemWidget * {
+    color: green;
+}
+
+PenyaManager--ProductItemWidget * {
+    color: red;
 }
 
 QListWidget:QScrollBar::handle:vertical {

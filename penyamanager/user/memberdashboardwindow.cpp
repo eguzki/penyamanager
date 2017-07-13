@@ -148,7 +148,7 @@ namespace PenyaManager {
         // load product image
         pProductItem->setSizeHint(pProduceItemWidget->minimumSize());
         pProductItem->setFlags(Qt::ItemIsSelectable);
-        pProductItem->setBackgroundColor(pList->count() % 2 == 0 ? (Qt::lightGray) : (Qt::darkGray));
+        //pProductItem->setBackgroundColor(pList->count() % 2 == 0 ? (Qt::lightGray) : (Qt::darkGray));
         pList->setItemWidget(pProductItem, pProduceItemWidget);
     }
 
