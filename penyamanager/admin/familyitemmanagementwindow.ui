@@ -147,7 +147,11 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
-          <widget class="QListWidget" name="familyListWidget"/>
+          <widget class="QListWidget" name="familyListWidget">
+           <property name="alternatingRowColors">
+            <bool>true</bool>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>

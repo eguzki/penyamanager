@@ -86,18 +86,26 @@ namespace PenyaManager {
 
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
         // Create deposit info
-        DepositPtr pDepositPtr = Singletons::m_pServices->createDeposit(pCurrMemberPtr, deposit);
-        if (!pDepositPtr) {
+        DepositResultPtr pDepositResultPtr = Singletons::m_pServices->createDeposit(pCurrMemberPtr, deposit);
+        if (pDepositResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
+        if (!pDepositResultPtr->m_deposit) {
             QMessageBox::warning(this, "Could not create deposit", "Contact administrator");
             return;
         }
 
         // Update member balance
-        QString description = QString("deposit id: %1").arg(pDepositPtr->m_id);
-        Singletons::m_pServices->createAccountTransaction(pCurrMemberPtr->m_id, deposit, description, TransactionType::Deposit);
-        QLOG_INFO() << QString("[Deposit] User %1 deposit ID %2").arg(pCurrMemberPtr->m_id).arg(pDepositPtr->m_id);
+        QString description = QString("deposit id: %1").arg(pDepositResultPtr->m_deposit->m_id);
+        bool transactionOk = Singletons::m_pServices->createAccountTransaction(pCurrMemberPtr->m_id, deposit, description, TransactionType::Deposit);
+        if (!transactionOk) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
+        QLOG_INFO() << QString("[Deposit] User %1 deposit ID %2").arg(pCurrMemberPtr->m_id).arg(pDepositResultPtr->m_deposit->m_id);
         // print deposit
-        printDeposit(pCurrMemberPtr, pDepositPtr);
+        printDeposit(pCurrMemberPtr, pDepositResultPtr->m_deposit);
         QMessageBox::information(this, tr("Deposit"), tr("Deposit for %1 € created sucessfully").arg(QString::number(deposit, 'f', 2)));
         // Go to dashboard window
         m_switchCentralWidgetCallback(WindowKey::kMemberDashboardWindowKey);

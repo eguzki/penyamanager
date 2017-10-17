@@ -58,8 +58,14 @@ namespace PenyaManager {
     void SlowPayersView::fillSlowPayersData()
     {
         // fetch data
-        MemberListPtr pMemberListPtr = Singletons::m_pDAO->getSlowPayersList();
-        if (pMemberListPtr->size() > 0) {
+        MemberListResultPtr pMemberListResultPtr = Singletons::m_pDAO->getSlowPayersList();
+
+        if (pMemberListResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
+
+        if (pMemberListResultPtr->m_list->size() > 0) {
             this->ui->csvPushButton->setEnabled(true);
             this->ui->resetAccountsPushButton->setEnabled(true);
         } else {
@@ -68,14 +74,14 @@ namespace PenyaManager {
         }
 
         // table
-        this->ui->slowPayersTableWidget->setRowCount(pMemberListPtr->size());
+        this->ui->slowPayersTableWidget->setRowCount(pMemberListResultPtr->m_list->size());
 
         // invoice table reset
         this->ui->slowPayersTableWidget->clearContents();
 
         // fill data
         Uint32 rowCount = 0;
-        for (MemberList::iterator iter = pMemberListPtr->begin(); iter != pMemberListPtr->end(); ++iter)
+        for (MemberList::iterator iter = pMemberListResultPtr->m_list->begin(); iter != pMemberListResultPtr->m_list->end(); ++iter)
         {
             MemberPtr pMemberPtr = *iter;
             this->ui->slowPayersTableWidget->setItem(rowCount, 0, new QTableWidgetItem(QString::number(pMemberPtr->m_username)));
@@ -94,6 +100,13 @@ namespace PenyaManager {
             return;
         }
 
+        // fetch data
+        MemberListResultPtr pMemberListResultPtr = Singletons::m_pDAO->getSlowPayersList();
+        if (pMemberListResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
+
         QFile f(filename);
         if (!f.open( QIODevice::WriteOnly )) {
             QMessageBox::warning(this, "Unable to save file", "Error opening " + filename);
@@ -103,9 +116,7 @@ namespace PenyaManager {
         // print header
         out << tr("Name") << "," << tr("Balance") << endl;
 
-        // fetch data
-        MemberListPtr pMemberListPtr = Singletons::m_pDAO->getSlowPayersList();
-        for (MemberList::iterator iter = pMemberListPtr->begin(); iter != pMemberListPtr->end(); ++iter)
+        for (MemberList::iterator iter = pMemberListResultPtr->m_list->begin(); iter != pMemberListResultPtr->m_list->end(); ++iter)
         {
             MemberPtr pMemberPtr = *iter;
             out << pMemberPtr->m_name << " " << pMemberPtr->m_surname << ", " << QString("%1 €").arg(pMemberPtr->m_balance, 0, 'f', 2) << endl;

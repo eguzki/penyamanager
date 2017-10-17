@@ -1,5 +1,8 @@
 //
 
+#include <QMessageBox>
+#include <QsLog.h>
+
 #include "guiutils.h"
 #include "constants.h"
 #include "singletons.h"
@@ -44,18 +47,31 @@ namespace PenyaManager {
         headers.append(tr("total"));
         this->ui->productTableWidget->setHorizontalHeaderLabels(headers);
     }
-    //
+    // called from admin framework
     void InvoiceDetailsWidget::init()
     {
+        //
+        // Loading invoice data
+        // current invoice is Singletons::m_currentInvoiceId read by widget
+        //
         // use static global variable to get invoiceId
         Int32 invoiceId = Singletons::m_currentInvoiceId;
-
-        //
-        // Loading Current Invoice
-        //
-        InvoicePtr pInvoicePtr = Singletons::m_pDAO->getInvoice(invoiceId);
-
-        fillInvoiceData(pInvoicePtr);
+        InvoiceResultPtr pInvoicePtr = Singletons::m_pDAO->getInvoice(invoiceId);
+        if (pInvoicePtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
+        if (!pInvoicePtr->m_pInvoice) {
+            // invoice not found, should not happen
+            QLOG_ERROR() << QString("[ERROR] unable to find expected invoice by id: %1").arg(invoiceId);
+            return;
+        }
+        fillInvoiceData(pInvoicePtr->m_pInvoice);
+    }
+    // called from user framework
+    void InvoiceDetailsWidget::init(InvoiceResultPtr pInvoicePtr)
+    {
+        fillInvoiceData(pInvoicePtr->m_pInvoice);
         show();
     }
     //
@@ -70,13 +86,17 @@ namespace PenyaManager {
         //
         // Product List
         //
-        InvoiceProductItemListPtr pInvoiceProductItemListPtr = Singletons::m_pDAO->getInvoiceProductItems(pInvoicePtr->m_id);
-        this->ui->productTableWidget->setRowCount(pInvoiceProductItemListPtr->size());
+        InvoiceProductItemListResultPtr pInvoiceProductItemListResultPtr = Singletons::m_pDAO->getInvoiceProductItems(pInvoicePtr->m_id);
+        if (pInvoiceProductItemListResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
+        this->ui->productTableWidget->setRowCount(pInvoiceProductItemListResultPtr->m_list->size());
         // invoice table reset
         this->ui->productTableWidget->clearContents();
         Uint32 rowCount = 0;
         Float totalInvoice = 0.0;
-        for (InvoiceProductItemList::iterator iter = pInvoiceProductItemListPtr->begin(); iter != pInvoiceProductItemListPtr->end(); ++iter)
+        for (InvoiceProductItemList::iterator iter = pInvoiceProductItemListResultPtr->m_list->begin(); iter != pInvoiceProductItemListResultPtr->m_list->end(); ++iter)
         {
             InvoiceProductItemPtr pInvoiceProductItemPtr = *iter;
 

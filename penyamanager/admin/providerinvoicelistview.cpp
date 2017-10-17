@@ -2,6 +2,7 @@
 
 #include <QDebug>
 #include <QsLog.h>
+#include <QMessageBox>
 
 #include <commons/guiutils.h>
 #include <commons/singletons.h>
@@ -97,14 +98,18 @@ namespace PenyaManager {
         this->ui->providerComboBox->clear();
         this->ui->invoicesTableWidget->clearContents();
 
-        ProviderListPtr pProviderListPtr = Singletons::m_pDAO->getProviderList();
+        ProviderListResultPtr pProviderListResultPtr = Singletons::m_pDAO->getProviderList();
+        if (pProviderListResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
 
         Int32 idx = 0;
         // first element: No Provider
         this->ui->providerComboBox->insertItem(idx, "No Provider", -1);
         idx++;
         // providers
-        for (auto iter = pProviderListPtr->begin(); iter != pProviderListPtr->end(); ++iter)
+        for (auto iter = pProviderListResultPtr->m_list->begin(); iter != pProviderListResultPtr->m_list->end(); ++iter)
         {
             ProviderPtr pProviderPtr = *iter;
             QString providerImagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pProviderPtr->m_image);
@@ -117,36 +122,66 @@ namespace PenyaManager {
     //
     void ProviderInvoiceListView::updateResults()
     {
-        ProviderInvoiceListPtr pProviderInvoiceList;
-        ProviderInvoiceListStatsPtr pProviderInvoiceListStats;
+        ProviderInvoiceListResultPtr pProviderInvoiceListResult;
+        ProviderInvoiceListStatsResultPtr pProviderInvoiceListStatsResult;
         Int32 providerId = this->ui->providerComboBox->currentData().toInt();
         QDate fromDate = this->ui->fromCalendarWidget->selectedDate();
         // add one day to "toDate" to be included
         QDate toDate = this->ui->toCalendarWidget->selectedDate().addDays(1);
         if (providerId >= 0) {
-            pProviderInvoiceList = Singletons::m_pDAO->getProviderInvoiceListByProviderId(providerId, fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
-            pProviderInvoiceListStats = Singletons::m_pDAO->getProviderInvoiceListByProviderIdStats(providerId, fromDate, toDate);
+            pProviderInvoiceListResult = Singletons::m_pDAO->getProviderInvoiceListByProviderId(providerId, fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
+            if (pProviderInvoiceListResult->m_error) {
+                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                return;
+            }
+            pProviderInvoiceListStatsResult = Singletons::m_pDAO->getProviderInvoiceListByProviderIdStats(providerId, fromDate, toDate);
+            if (pProviderInvoiceListStatsResult->m_error) {
+                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                return;
+            }
+            if (!pProviderInvoiceListStatsResult->m_stats) {
+                // no invoices found
+                ProviderInvoiceListStatsPtr stats(new ProviderInvoiceListStats);
+                stats->m_totalNumInvoices = 0;
+                stats->m_totalAmount = 0;
+                pProviderInvoiceListStatsResult->m_stats = stats;
+            }
         } else {
-            pProviderInvoiceList = Singletons::m_pDAO->getProviderInvoiceList(fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
-            pProviderInvoiceListStats = Singletons::m_pDAO->getProviderInvoiceListStats(fromDate, toDate);
+            pProviderInvoiceListResult = Singletons::m_pDAO->getProviderInvoiceList(fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
+            if (pProviderInvoiceListResult->m_error) {
+                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                return;
+            }
+            pProviderInvoiceListStatsResult = Singletons::m_pDAO->getProviderInvoiceListStats(fromDate, toDate);
+            if (pProviderInvoiceListStatsResult->m_error) {
+                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                return;
+            }
+            if (!pProviderInvoiceListStatsResult->m_stats) {
+                // no invoices found
+                ProviderInvoiceListStatsPtr stats(new ProviderInvoiceListStats);
+                stats->m_totalNumInvoices = 0;
+                stats->m_totalAmount = 0;
+                pProviderInvoiceListStatsResult->m_stats = stats;
+            }
         }
         // enable-disable pagination buttons
         // total num pages
-        Uint32 numPages = (Uint32)ceil((Float)pProviderInvoiceListStats->m_totalNumInvoices/Constants::kInvoiceListPageCount);
+        Uint32 numPages = (Uint32)ceil((Float)pProviderInvoiceListStatsResult->m_stats->m_totalNumInvoices/Constants::kInvoiceListPageCount);
         this->ui->prevPagePushButton->setEnabled(m_currentPage > 0);
         this->ui->nextPagePushButton->setEnabled(m_currentPage < numPages-1);
         // fill page view
         this->ui->pageInfoLabel->setText(tr("page %1 out of %2").arg(m_currentPage+1).arg(numPages));
         // fill total stats view
-        this->ui->totalInvoicesValueLabel->setText(QString::number(pProviderInvoiceListStats->m_totalNumInvoices));
-        this->ui->totalCostValueLabel->setText(QString("%1 €").arg(pProviderInvoiceListStats->m_totalAmount, 0, 'f', 2));
+        this->ui->totalInvoicesValueLabel->setText(QString::number(pProviderInvoiceListStatsResult->m_stats->m_totalNumInvoices));
+        this->ui->totalCostValueLabel->setText(QString("%1 €").arg(pProviderInvoiceListStatsResult->m_stats->m_totalAmount, 0, 'f', 2));
         // fill dates used for query
         QString dateLocalized = Singletons::m_translationManager.getLocale().toString(fromDate, QLocale::NarrowFormat);
         this->ui->fromDateResultValueLabel->setText(dateLocalized);
         dateLocalized = Singletons::m_translationManager.getLocale().toString(toDate.addDays(-1), QLocale::NarrowFormat);
         this->ui->toDateResultValueLabel->setText(dateLocalized);
         // fill invoice list
-        fillInvoiceList(pProviderInvoiceList);
+        fillInvoiceList(pProviderInvoiceListResult->m_list);
     }
     //
     void ProviderInvoiceListView::fillInvoiceList(ProviderInvoiceListPtr pProviderInvoiceListPtr)

@@ -80,18 +80,24 @@ namespace PenyaManager {
             return;
         }
 
+        // fetch data
+        ProductItemListResultPtr pfListPtr = Singletons::m_pDAO->getProductsList(0, 100000);
+        if (pfListPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
+
         QFile f(filename);
         if (!f.open( QIODevice::WriteOnly )) {
             QMessageBox::warning(this, "Unable to save file", "Error opening " + filename);
             return;
         }
+
         QTextStream out(&f);
         // print header
         out << tr("name") << "," << tr("stock") << endl;
 
-        // fetch data
-        ProductItemListPtr pfListPtr = Singletons::m_pDAO->getProductsList(0, 100000);
-        for (ProductItemList::iterator iter = pfListPtr->begin(); iter != pfListPtr->end(); ++iter)
+        for (ProductItemList::iterator iter = pfListPtr->m_list->begin(); iter != pfListPtr->m_list->end(); ++iter)
         {
             ProductItemPtr pProductPtr = *iter;
             out << pProductPtr->m_name << ", " << QString::number(pProductPtr->m_stock) << endl;
@@ -114,21 +120,35 @@ namespace PenyaManager {
     //
     void StockManagementWindow::updateResults()
     {
-        ProductItemListPtr pfListPtr = Singletons::m_pDAO->getProductsList(m_currentPage, Constants::kProductListPageCount);
-        ProductListStatsPtr pProductListStats = Singletons::m_pDAO->getProductsListStats();
+        ProductItemListResultPtr pfListPtr = Singletons::m_pDAO->getProductsList(m_currentPage, Constants::kProductListPageCount);
+        if (pfListPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
+        ProductListStatsResultPtr pProductListStatsResultPtr = Singletons::m_pDAO->getProductsListStats();
+        if (pProductListStatsResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
+        if (!pProductListStatsResultPtr->m_stats) {
+            // no products found
+            ProductListStatsPtr stats(new ProductListStats);
+            stats->m_totalNumProducts = 0;
+            pProductListStatsResultPtr->m_stats = stats;
+        }
         // enable-disable pagination buttons
         // total num pages
-        Uint32 numPages = (Uint32)ceil((Float)pProductListStats->m_totalNumProducts/Constants::kProductListPageCount);
+        Uint32 numPages = (Uint32)ceil((Float)pProductListStatsResultPtr->m_stats->m_totalNumProducts/Constants::kProductListPageCount);
         this->ui->prevPagePushButton->setEnabled(m_currentPage > 0);
         this->ui->nextPagePushButton->setEnabled(m_currentPage < numPages-1);
         // fill page view
         this->ui->pageInfoLabel->setText(tr("page %1 out of %2").arg(m_currentPage+1).arg(numPages));
         // fill total stats view
-        this->ui->totalProductsValueLabel->setText(QString::number(pProductListStats->m_totalNumProducts));
+        this->ui->totalProductsValueLabel->setText(QString::number(pProductListStatsResultPtr->m_stats->m_totalNumProducts));
         // fill product list
-        fillProductList(pfListPtr);
+        fillProductList(pfListPtr->m_list);
         //
-        this->ui->csvPushButton->setEnabled(pfListPtr->size() > 0);
+        this->ui->csvPushButton->setEnabled(pfListPtr->m_list->size() > 0);
     }
     //
     void StockManagementWindow::fillProductList(const ProductItemListPtr &pProductItemListPtr)

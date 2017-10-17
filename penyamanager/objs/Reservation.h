@@ -50,6 +50,23 @@ namespace PenyaManager
     typedef QSharedPointer<ReservationList> ReservationListPtr;
     //
     typedef std::map<Uint32, ReservationPtr> ReservationMap;
+    //
+    class ReservationListResult
+    {
+        public:
+            //
+            ReservationListResult();
+            //
+            virtual ~ReservationListResult(){}
+
+        public:
+            //
+            Int32                   m_error;
+            //
+            ReservationListPtr      m_list;
+    };
+    //
+    typedef QSharedPointer<ReservationListResult> ReservationListResultPtr;
 }
 
 #endif // RESERVATIONS_H

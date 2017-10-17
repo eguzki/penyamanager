@@ -7,12 +7,11 @@
 QT       += core gui
 QT       += printsupport
 QT       += sql
-
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+QT       += widgets
 
 QTPLUGIN += qsqlmysql
 
-QMAKE_CXXFLAGS += -std=c++11
+CONFIG += c++11
 
 TARGET = penyamanageradmin
 TEMPLATE = app
@@ -68,7 +67,9 @@ SOURCES += adminmain.cpp\
         admin/memberview.cpp \
         admin/passchangedialog.cpp \
         admin/adminreservationswindow.cpp \
-        admin/providerinvoiceview.cpp
+        admin/providerinvoiceview.cpp \
+        commons/familyitemwidget.cpp \
+        commons/productitemwidget.cpp
 
 HEADERS += commons/singletons.h\
         commons/dao.h\
@@ -82,6 +83,8 @@ HEADERS += commons/singletons.h\
         commons/invoicedetailswidget.h \
         commons/guiutils.h \
         commons/translationmanager.h \
+        commons/familyitemwidget.h\
+        commons/productitemwidget.h\
         objs/Transaction.h\
         objs/Invoice.h\
         objs/Deposit.h\
@@ -113,7 +116,7 @@ HEADERS += commons/singletons.h\
         admin/memberview.h \
         admin/passchangedialog.h \
         admin/adminreservationswindow.h \
-        admin/providerinvoiceview.h
+        admin/providerinvoiceview.h \
 
 FORMS   += admin/adminloginwindow.ui\
         admin/adminmainwindow.ui \
@@ -136,7 +139,9 @@ FORMS   += admin/adminloginwindow.ui\
         admin/memberview.ui \
         admin/passchangedialog.ui \
         admin/adminreservationswindow.ui \
-        admin/providerinvoiceview.ui
+        admin/providerinvoiceview.ui \
+        commons/familyitemwidget.ui \
+        commons/productitemwidget.ui
 
 TRANSLATIONS += \
         translations/penyamanageradmin_es.ts \

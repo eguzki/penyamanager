@@ -126,8 +126,8 @@ namespace PenyaManager {
     //
     void AccountBalanceView::updateResults()
     {
-        TransactionListPtr pTransactionListPtr;
-        TransactionListStatsPtr pTransactionListStatsPtr;
+        TransactionListResultPtr pTransactionListResultPtr;
+        TransactionListStatsResultPtr pTransactionListStatsResultPtr;
         QDate fromDate = this->ui->fromCalendarWidget->selectedDate();
         // add one day to "toDate" to be included
         QDate toDate = this->ui->toCalendarWidget->selectedDate().addDays(1);
@@ -135,8 +135,16 @@ namespace PenyaManager {
         if (usernameStr.isEmpty()) {
             this->ui->memberIdLineEdit->clear();
             this->ui->memberIdResValueLabel->setText(QString("ALL"));
-            pTransactionListPtr = Singletons::m_pDAO->getAccountList(fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
-            pTransactionListStatsPtr = Singletons::m_pServices->getAccountListStats(fromDate, toDate);
+            pTransactionListResultPtr = Singletons::m_pDAO->getAccountList(fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
+            if (pTransactionListResultPtr->m_error) {
+                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                return;
+            }
+            pTransactionListStatsResultPtr = Singletons::m_pServices->getAccountListStats(fromDate, toDate);
+            if (pTransactionListStatsResultPtr->m_error) {
+                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                return;
+            }
         } else {
             bool ok;
             Int32 memberUsername = usernameStr.toInt(&ok);
@@ -145,36 +153,48 @@ namespace PenyaManager {
                 QMessageBox::about(this, tr("Invalid data"), tr("Username not valid"));
                 return;
             } else {
-                MemberPtr pMemberPtr = Singletons::m_pServices->getMemberByUsername(memberUsername);
-                if (!pMemberPtr)
+                MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberByUsername(memberUsername);
+                if (pMemberResultPtr->m_error) {
+                    QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                    return;
+                }
+                if (!pMemberResultPtr->m_member)
                 {
                     // User could not be found
                     QMessageBox::about(this, tr("Invalid data"), tr("Username found"));
                     return;
                 }
-                pTransactionListPtr = Singletons::m_pDAO->getAccountListByMemberId(pMemberPtr->m_id, fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
-                pTransactionListStatsPtr = Singletons::m_pServices->getAccountListByMemberIdStats(pMemberPtr->m_id, fromDate, toDate);
+                pTransactionListResultPtr = Singletons::m_pDAO->getAccountListByMemberId(pMemberResultPtr->m_member->m_id, fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
+                if (pTransactionListResultPtr->m_error) {
+                    QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                    return;
+                }
+                pTransactionListStatsResultPtr = Singletons::m_pServices->getAccountListByMemberIdStats(pMemberResultPtr->m_member->m_id, fromDate, toDate);
+                if (pTransactionListStatsResultPtr->m_error) {
+                    QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                    return;
+                }
                 this->ui->memberIdResValueLabel->setText(QString::number(memberUsername));
             }
         }
         // enable-disable pagination buttons
         // total num pages
-        Uint32 numPages = (Uint32)ceil((Float)pTransactionListStatsPtr->m_totalNumTransactions/Constants::kInvoiceListPageCount);
+        Uint32 numPages = (Uint32)ceil((Float)pTransactionListStatsResultPtr->m_listStats->m_totalNumTransactions/Constants::kInvoiceListPageCount);
         this->ui->prevPagePushButton->setEnabled(m_currentPage > 0);
         this->ui->nextPagePushButton->setEnabled(m_currentPage < numPages-1);
         // fill page view
         this->ui->pageInfoLabel->setText(tr("page %1 out of %2").arg(m_currentPage+1).arg(numPages));
         // fill total stats view
-        this->ui->totalRowsValueLabel->setText(QString::number(pTransactionListStatsPtr->m_totalNumTransactions));
-        this->ui->totalDepositsValueLabel->setText(QString("%1 €").arg(pTransactionListStatsPtr->m_totalDeposits, 0, 'f', 2));
-        this->ui->totalInvoicesValueLabel->setText(QString("%1 €").arg(pTransactionListStatsPtr->m_totalInvoices, 0, 'f', 2));
-        this->ui->totalBankChargesValueLabel->setText(QString("%1 €").arg(pTransactionListStatsPtr->m_totalBankCharges, 0, 'f', 2));
+        this->ui->totalRowsValueLabel->setText(QString::number(pTransactionListStatsResultPtr->m_listStats->m_totalNumTransactions));
+        this->ui->totalDepositsValueLabel->setText(QString("%1 €").arg(pTransactionListStatsResultPtr->m_listStats->m_totalDeposits, 0, 'f', 2));
+        this->ui->totalInvoicesValueLabel->setText(QString("%1 €").arg(pTransactionListStatsResultPtr->m_listStats->m_totalInvoices, 0, 'f', 2));
+        this->ui->totalBankChargesValueLabel->setText(QString("%1 €").arg(pTransactionListStatsResultPtr->m_listStats->m_totalBankCharges, 0, 'f', 2));
         // fill dates used for query
         QString dateLocalized = Singletons::m_translationManager.getLocale().toString(fromDate, QLocale::NarrowFormat);
         this->ui->fromDateResultValueLabel->setText(dateLocalized);
         dateLocalized = Singletons::m_translationManager.getLocale().toString(toDate.addDays(-1), QLocale::NarrowFormat);
         this->ui->toDateResultValueLabel->setText(dateLocalized);
         // fill transaction list
-        fillTransactionList(pTransactionListPtr);
+        fillTransactionList(pTransactionListResultPtr->m_list);
     }
 }

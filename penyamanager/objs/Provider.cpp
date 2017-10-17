@@ -19,4 +19,9 @@ namespace PenyaManager
             m_phone(phone)
     {
     }
+    //
+    ProviderListResult::ProviderListResult()
+        :
+            m_error(0)
+    {}
 }

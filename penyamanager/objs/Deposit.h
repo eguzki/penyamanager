@@ -43,9 +43,43 @@ namespace PenyaManager
     //
     typedef QSharedPointer<Deposit> DepositPtr;
     //
+    class DepositResult
+    {
+        public:
+            //
+            DepositResult();
+            //
+            virtual ~DepositResult(){}
+
+        public:
+            //
+            Int32                   m_error;
+            //
+            DepositPtr              m_deposit;
+    };
+    //
+    typedef QSharedPointer<DepositResult> DepositResultPtr;
+    //
     typedef std::vector<DepositPtr> DepositList;
     //
     typedef QSharedPointer<DepositList> DepositListPtr;
+    //
+    class DepositListResult
+    {
+        public:
+            //
+            DepositListResult();
+            //
+            virtual ~DepositListResult(){}
+
+        public:
+            //
+            Int32                   m_error;
+            //
+            DepositListPtr          m_list;
+    };
+    //
+    typedef QSharedPointer<DepositListResult> DepositListResultPtr;
 }
 
 #endif // DEPOSIT_H

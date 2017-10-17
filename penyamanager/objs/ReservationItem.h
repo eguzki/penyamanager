@@ -44,6 +44,23 @@ namespace PenyaManager
     typedef std::vector<ReservationItemPtr> ReservationItemList;
     //
     typedef QSharedPointer<ReservationItemList> ReservationItemListPtr;
+    //
+    class ReservationItemListResult
+    {
+        public:
+            //
+            ReservationItemListResult();
+            //
+            virtual ~ReservationItemListResult(){}
+
+        public:
+            //
+            Int32                   m_error;
+            //
+            ReservationItemListPtr  m_list;
+    };
+    //
+    typedef QSharedPointer<ReservationItemListResult> ReservationItemListResultPtr;
 }
 
 #endif // RESERVATIONITEMS_H
