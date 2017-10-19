@@ -44,12 +44,12 @@ namespace PenyaManager {
 
 
         Uint32 column = 0;
-        this->ui->invoiceTableWidget->setColumnWidth(column++, 124);
-        this->ui->invoiceTableWidget->setColumnWidth(column++, 50);
-        this->ui->invoiceTableWidget->setColumnWidth(column++, 30);
-        this->ui->invoiceTableWidget->setColumnWidth(column++, 50);
-        this->ui->invoiceTableWidget->setColumnWidth(column++, 40);
-        //this->ui->invoiceTableWidget->setRowHeight(, 30);
+        this->ui->invoiceTableWidget->setColumnWidth(column++, 170);
+        this->ui->invoiceTableWidget->setColumnWidth(column++, 83);
+        this->ui->invoiceTableWidget->setColumnWidth(column++, 45);
+        this->ui->invoiceTableWidget->setColumnWidth(column++, 100);
+        this->ui->invoiceTableWidget->setColumnWidth(column++, 48);
+
 
     }
     //
@@ -260,6 +260,9 @@ namespace PenyaManager {
             pRemoveButton->setIcon(buttonIcon);
             this->connect(pRemoveButton, &QPushButton::clicked, std::bind(&MemberDashboardWindow::on_productRemoveButton_clicked, this, pInvoiceProductItemPtr->m_productId));
             this->ui->invoiceTableWidget->setCellWidget(rowCount, 4, pRemoveButton);
+
+            // ROW HEIGHT
+            this->ui->invoiceTableWidget->setRowHeight(rowCount, 30);
             rowCount++;
         }
         this->ui->totalDisplayLabel->setText(QString("%1 €").arg(totalInvoice));

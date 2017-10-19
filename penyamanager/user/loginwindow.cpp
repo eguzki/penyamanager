@@ -104,10 +104,13 @@ namespace PenyaManager {
         header->setDefaultSectionSize(80);
         translateTable();
         Uint32 column = 0;
-        this->ui->lastInvoiceTableWidget->setColumnWidth(column++, 300);
-        this->ui->lastInvoiceTableWidget->setColumnWidth(column++, 100);
-        this->ui->lastInvoiceTableWidget->setColumnWidth(column++, 100);
-        this->ui->lastInvoiceTableWidget->setColumnWidth(column++, 100);
+
+        this->ui->lastInvoiceTableWidget->setColumnWidth(column++, 184);
+        this->ui->lastInvoiceTableWidget->setColumnWidth(column++, 90);
+        this->ui->lastInvoiceTableWidget->setColumnWidth(column++, 60);
+        this->ui->lastInvoiceTableWidget->setColumnWidth(column++, 90);
+        //this->ui->lastInvoiceTableWidget->setColumnWidth(column++, 60);
+
     }
     //
     void LoginWindow::translateTable()

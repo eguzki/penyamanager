@@ -46,7 +46,7 @@ padding-right: 5px;
 
 }
 QPushButton:pressed {
-background-color: rgb(0, 255, 0);
+background-color: rgb(239,83,80);
 }
 
 
@@ -56,7 +56,57 @@ color: white;
 }
 
 
-</string>
+QScrollBar:vertical {
+    border: 1px solid #999999;
+    background: rgb(158,158,158);
+	width:15px;    
+   margin: 0px 0px 0px 0px;
+}
+QScrollBar::handle:vertical {
+        background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+		stop: 0 rgb(239,83,80), stop: 0.5 rgb(239,83,80), stop:1 rgb(239,83,80));
+        min-height: 0px;
+}
+QScrollBar::add-line:vertical {
+	background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+	stop: 0 rgb(239,83,80), stop: 0.5 rgb(239,83,80),  stop:1 rgb(239,83,80));
+	height: 0px;
+	subcontrol-position: bottom;
+	subcontrol-origin: margin;
+}    
+QScrollBar::sub-line:vertical {
+        background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+		stop: 0  rgb(239,83,80), stop: 0.5 rgbrgb(239,83,80),  stop:1 rgb(239,83,80));
+        height: 0 px;
+        subcontrol-position: top;
+        subcontrol-origin: margin;
+}
+
+QScrollBar:horizontal {
+    border: 1px solid #999999;
+    background: rgb(158,158,158);
+	height:15px;    
+   margin: 0px 0px 0px 0px;
+}
+QScrollBar::handle:horizontal {
+        background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+		stop: 0 rgb(239,83,80), stop: 0.5 rgb(239,83,80), stop:1 rgb(239,83,80));
+        min-height: 0px;
+}
+QScrollBar::add-line:horizontal {
+	background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+	stop: 0 rgb(239,83,80), stop: 0.5 rgb(239,83,80),  stop:1 rgb(239,83,80));
+	height: 0px;
+	subcontrol-position: right;
+	subcontrol-origin: margin;
+}    
+QScrollBar::sub-line:horizontal {
+        background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+		stop: 0  rgb(239,83,80), stop: 0.5 rgbrgb(239,83,80),  stop:1 rgb(239,83,80));
+        height: 0 px;
+        subcontrol-position: left;
+        subcontrol-origin: margin;
+}</string>
   </property>
   <property name="locale">
    <locale language="Spanish" country="Spain"/>

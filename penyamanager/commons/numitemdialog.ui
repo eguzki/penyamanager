@@ -34,7 +34,7 @@
   </property>
   <property name="styleSheet">
    <string notr="true">#NumItemDialog {
-background: gray;
+background:rgb(117,117,117);
 }
 
 #numDisplayWidget  *{
@@ -45,8 +45,6 @@ font: 75 40pt &quot;Calibri&quot;;
 color: black;
 font-weight: bold;
 }
-
-
 
 QToolButton {
 color: white;
@@ -65,6 +63,14 @@ max-width: 95px;
 min-height: 95px;
 max-height: 95px;
 }
+
+QToolButton:pressed {
+background-color: rgb(239,83,80);
+}
+
+
+
+
 
 </string>
   </property>

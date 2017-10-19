@@ -15,40 +15,54 @@
   </property>
   <property name="styleSheet">
    <string notr="true">QListWidget {
-    alternate-background-color: blue;
-    selection-background-color: darkblue;
-    selection-color: red;
-    background: white;
+    alternate-background-color:  rgb(158,158,158);
+    
+    selection-color: rgb(117,117,117);
+    background: rgb(158,158,158);
+}
+
+
+QTableWidget{
+font: 18pt &quot;Calibri&quot;;
 }
 
 #productListWidget {
-    alternate-background-color: blue;
-    selection-background-color: darkblue;
-    background: white;
+    alternate-background-color:  rgb(158,158,158);
+    background: rgb(189,189,189);
+}
+
+#familyListWidget {
+    alternate-background-color:  rgb(158,158,158);
+    background: rgb(189,189,189);
+}
+
+#invoiceTableWidget {
+   background: rgb(189,189,189);
 }
 
 PenyaManager--FamilyItemWidget * {
-    color: green;
+    color: black;
+	font: 20pt &quot;Calibri&quot;;
 }
 
 PenyaManager--ProductItemWidget * {
-    color: red;
+    color: black;
+	font: 20pt &quot;Calibri&quot;;
 }
 
-QListWidget:QScrollBar::handle:vertical {
-        background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
-        stop: 0  rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130),  stop:1 rgb(32, 47, 130));
-        min-height: 0px;
-}
+
+
+
+
 
 #totalDisplayLabel {
 font-weight: bold;
-font-size: 35px;
+font: 30pt &quot;Calibri&quot;;
 }
 
 #totalLabel {
 font-weight: bold;
-font-size: 35px;
+font: 30pt &quot;Calibri&quot;;
 }</string>
   </property>
   <property name="locale">
@@ -202,13 +216,13 @@ font-size: 35px;
        <widget class="QListWidget" name="familyListWidget">
         <property name="minimumSize">
          <size>
-          <width>300</width>
+          <width>250</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>300</width>
+          <width>200</width>
           <height>16777215</height>
          </size>
         </property>
@@ -268,7 +282,7 @@ font-size: 35px;
         </property>
         <property name="maximumSize">
          <size>
-          <width>300</width>
+          <width>450</width>
           <height>16777215</height>
          </size>
         </property>
@@ -328,7 +342,11 @@ font-size: 35px;
               </property>
               <property name="font">
                <font>
-                <pointsize>7</pointsize>
+                <family>Calibri</family>
+                <pointsize>18</pointsize>
+                <weight>50</weight>
+                <italic>false</italic>
+                <bold>false</bold>
                </font>
               </property>
               <property name="horizontalScrollBarPolicy">
