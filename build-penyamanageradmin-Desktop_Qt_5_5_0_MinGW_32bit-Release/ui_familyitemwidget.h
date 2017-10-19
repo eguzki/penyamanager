@@ -31,17 +31,18 @@ public:
     {
         if (FamilyItemWidget->objectName().isEmpty())
             FamilyItemWidget->setObjectName(QStringLiteral("FamilyItemWidget"));
-        FamilyItemWidget->resize(295, 40);
-        FamilyItemWidget->setMinimumSize(QSize(295, 40));
-        FamilyItemWidget->setMaximumSize(QSize(295, 40));
+        FamilyItemWidget->resize(230, 69);
+        FamilyItemWidget->setMinimumSize(QSize(230, 69));
+        FamilyItemWidget->setMaximumSize(QSize(230, 69));
+        FamilyItemWidget->setStyleSheet(QStringLiteral(""));
         horizontalLayout = new QHBoxLayout(FamilyItemWidget);
-        horizontalLayout->setSpacing(0);
+        horizontalLayout->setSpacing(2);
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-        horizontalLayout->setContentsMargins(0, 0, 0, 0);
+        horizontalLayout->setContentsMargins(2, 2, 2, 2);
         imageQLabel = new QLabel(FamilyItemWidget);
         imageQLabel->setObjectName(QStringLiteral("imageQLabel"));
-        imageQLabel->setMinimumSize(QSize(40, 0));
-        imageQLabel->setMaximumSize(QSize(40, 16777215));
+        imageQLabel->setMinimumSize(QSize(68, 0));
+        imageQLabel->setMaximumSize(QSize(68, 16777215));
         imageQLabel->setText(QStringLiteral("TextLabel"));
         imageQLabel->setScaledContents(true);
 

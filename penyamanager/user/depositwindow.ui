@@ -89,10 +89,10 @@ font: 30pt &quot;Calibri&quot;;
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="numPadWidget" native="true">
+    <widget class="QWidget" name="depositWidget" native="true">
      <layout class="QHBoxLayout" name="horizontalLayout_6">
       <item>
-       <widget class="QWidget" name="numPadWidget" native="true">
+       <widget class="QWidget" name="numPadWidget1" native="true">
         <property name="minimumSize">
          <size>
           <width>366</width>
@@ -354,6 +354,13 @@ font: 30pt &quot;Calibri&quot;;
           </spacer>
          </item>
          <item>
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>Subtotal</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QLabel" name="depositLabel">
            <property name="minimumSize">
             <size>
@@ -387,6 +394,13 @@ font: 30pt &quot;Calibri&quot;;
          </size>
         </property>
        </spacer>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Total</string>
+        </property>
+       </widget>
       </item>
       <item>
        <widget class="QLabel" name="newBalanceLabel">

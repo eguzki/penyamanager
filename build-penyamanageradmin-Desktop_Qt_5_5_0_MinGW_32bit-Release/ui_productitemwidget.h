@@ -35,17 +35,20 @@ public:
     {
         if (ProductItemWidget->objectName().isEmpty())
             ProductItemWidget->setObjectName(QStringLiteral("ProductItemWidget"));
-        ProductItemWidget->resize(156, 50);
-        ProductItemWidget->setMinimumSize(QSize(156, 50));
+        ProductItemWidget->resize(250, 69);
+        ProductItemWidget->setMinimumSize(QSize(250, 69));
+        ProductItemWidget->setMaximumSize(QSize(250, 72));
         ProductItemWidget->setWindowTitle(QStringLiteral("Form"));
+        ProductItemWidget->setStyleSheet(QStringLiteral(""));
         horizontalLayout = new QHBoxLayout(ProductItemWidget);
-        horizontalLayout->setSpacing(0);
+        horizontalLayout->setSpacing(2);
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-        horizontalLayout->setContentsMargins(0, 0, 0, 0);
+        horizontalLayout->setContentsMargins(2, 2, 2, 2);
         imageQLabel = new QLabel(ProductItemWidget);
         imageQLabel->setObjectName(QStringLiteral("imageQLabel"));
-        imageQLabel->setMinimumSize(QSize(40, 0));
-        imageQLabel->setMaximumSize(QSize(40, 16777215));
+        imageQLabel->setEnabled(true);
+        imageQLabel->setMinimumSize(QSize(68, 68));
+        imageQLabel->setMaximumSize(QSize(68, 68));
         imageQLabel->setScaledContents(true);
 
         horizontalLayout->addWidget(imageQLabel);

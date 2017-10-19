@@ -59,7 +59,7 @@ public:
         icon.addFile(QStringLiteral(":/images/alegrialogo.jpg"), QSize(), QIcon::Normal, QIcon::Off);
         NumItemDialog->setWindowIcon(icon);
         NumItemDialog->setStyleSheet(QLatin1String("#NumItemDialog {\n"
-"background: gray;\n"
+"background:rgb(117,117,117);\n"
 "}\n"
 "\n"
 "#numDisplayWidget  *{\n"
@@ -92,6 +92,8 @@ public:
 "QToolButton:pressed {\n"
 "background-color: rgb(239,83,80);\n"
 "}\n"
+"\n"
+"\n"
 "\n"
 "\n"
 "\n"

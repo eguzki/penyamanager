@@ -44,7 +44,7 @@ namespace PenyaManager {
 
 
         Uint32 column = 0;
-        this->ui->invoiceTableWidget->setColumnWidth(column++, 170);
+        this->ui->invoiceTableWidget->setColumnWidth(column++, 168);
         this->ui->invoiceTableWidget->setColumnWidth(column++, 83);
         this->ui->invoiceTableWidget->setColumnWidth(column++, 45);
         this->ui->invoiceTableWidget->setColumnWidth(column++, 100);
@@ -262,7 +262,7 @@ namespace PenyaManager {
             this->ui->invoiceTableWidget->setCellWidget(rowCount, 4, pRemoveButton);
 
             // ROW HEIGHT
-            this->ui->invoiceTableWidget->setRowHeight(rowCount, 30);
+            this->ui->invoiceTableWidget->setRowHeight(rowCount, 35);
             rowCount++;
         }
         this->ui->totalDisplayLabel->setText(QString("%1 €").arg(totalInvoice));
