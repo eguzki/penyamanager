@@ -41,13 +41,14 @@ font: 18pt &quot;Calibri&quot;;
 }
 
 PenyaManager--FamilyItemWidget * {
-    color: black;
+	font-weight: bold;
+	color: black;
 	font: 20pt &quot;Calibri&quot;;
 }
 
 PenyaManager--ProductItemWidget * {
-    color: black;
-	font: 20pt &quot;Calibri&quot;;
+    color: rgb(33,33,33);
+	font: 18pt &quot;Calibri&quot;;
 }
 
 
@@ -57,12 +58,12 @@ PenyaManager--ProductItemWidget * {
 
 #totalDisplayLabel {
 font-weight: bold;
-font: 30pt &quot;Calibri&quot;;
+font: 40pt &quot;Calibri&quot;;
 }
 
 #totalLabel {
 font-weight: bold;
-font: 30pt &quot;Calibri&quot;;
+font: 40pt &quot;Calibri&quot;;
 }</string>
   </property>
   <property name="locale">
@@ -258,6 +259,12 @@ font: 30pt &quot;Calibri&quot;;
           <pointsize>7</pointsize>
          </font>
         </property>
+        <property name="horizontalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
+        </property>
+        <property name="defaultDropAction">
+         <enum>Qt::IgnoreAction</enum>
+        </property>
         <property name="alternatingRowColors">
          <bool>true</bool>
         </property>
@@ -285,7 +292,7 @@ font: 30pt &quot;Calibri&quot;;
         </property>
         <property name="maximumSize">
          <size>
-          <width>450</width>
+          <width>490</width>
           <height>16777215</height>
          </size>
         </property>
@@ -392,13 +399,13 @@ font: 30pt &quot;Calibri&quot;;
            <property name="minimumSize">
             <size>
              <width>0</width>
-             <height>50</height>
+             <height>65</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
              <width>16777215</width>
-             <height>50</height>
+             <height>65</height>
             </size>
            </property>
            <layout class="QHBoxLayout" name="horizontalLayout_8">

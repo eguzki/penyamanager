@@ -138,8 +138,8 @@ namespace PenyaManager {
         headers.append(tr("Surename"));
         this->ui->invoicesTableWidget->setHorizontalHeaderLabels(headers);
         this->ui->invoicesTableWidget->setColumnWidth(0, 100);
-        this->ui->invoicesTableWidget->setColumnWidth(1, 300);
-        this->ui->invoicesTableWidget->setColumnWidth(2, 200);
+        this->ui->invoicesTableWidget->setColumnWidth(1, 100);
+        this->ui->invoicesTableWidget->setColumnWidth(2, 100);
         this->ui->invoicesTableWidget->setColumnWidth(3, 100);
         // invoice table reset
         this->ui->invoicesTableWidget->clearContents();

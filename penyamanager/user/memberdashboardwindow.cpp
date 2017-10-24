@@ -44,11 +44,11 @@ namespace PenyaManager {
 
 
         Uint32 column = 0;
-        this->ui->invoiceTableWidget->setColumnWidth(column++, 168);
+        this->ui->invoiceTableWidget->setColumnWidth(column++, 198);
         this->ui->invoiceTableWidget->setColumnWidth(column++, 83);
         this->ui->invoiceTableWidget->setColumnWidth(column++, 45);
         this->ui->invoiceTableWidget->setColumnWidth(column++, 100);
-        this->ui->invoiceTableWidget->setColumnWidth(column++, 48);
+        this->ui->invoiceTableWidget->setColumnWidth(column++, 58);
 
 
     }

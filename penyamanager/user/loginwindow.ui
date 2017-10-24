@@ -16,7 +16,7 @@
   <property name="styleSheet">
    <string notr="true">QTableWidget{
 background: rgb(189,189,189);
-font-size: 20px;
+font: 18pt &quot;Calibri&quot;;
 }
 
 QListWidget{
@@ -45,7 +45,21 @@ font: 75 25pt &quot;Navarre&quot;;
 font: 75 25pt &quot;Navarre&quot;;
 }
 
+#memberIdFixedLabel{
+font: 18pt &quot;Calibri&quot;;
+}
 
+#memberIdLabel{
+font: 18pt &quot;Calibri&quot;;
+}
+
+#memberImageLabel{
+font: 18pt &quot;Calibri&quot;;
+}
+
+#memberNameLabel{
+font: 18pt &quot;Calibri&quot;;
+}
 
 #lastInvoiceWidget *{
 color: black;
@@ -153,25 +167,6 @@ font-size: 35px;
       <property name="rightMargin">
        <number>30</number>
       </property>
-      <item>
-       <widget class="QWidget" name="imageWidget" native="true">
-        <property name="minimumSize">
-         <size>
-          <width>160</width>
-          <height>162</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>160</width>
-          <height>162</height>
-         </size>
-        </property>
-        <property name="styleSheet">
-         <string notr="true"/>
-        </property>
-       </widget>
-      </item>
       <item>
        <widget class="QWidget" name="penyaLabel" native="true">
         <property name="minimumSize">
@@ -378,6 +373,19 @@ font-size: 35px;
        <number>3</number>
       </property>
       <item>
+       <spacer name="horizontalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
        <layout class="QVBoxLayout" name="verticalLayout_5">
         <item>
          <widget class="QWidget" name="lastMemberWidget" native="true">
@@ -431,7 +439,7 @@ font-size: 35px;
                 <property name="minimumSize">
                  <size>
                   <width>0</width>
-                  <height>30</height>
+                  <height>0</height>
                  </size>
                 </property>
                 <property name="maximumSize">

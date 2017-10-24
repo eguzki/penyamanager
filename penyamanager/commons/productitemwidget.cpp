@@ -12,7 +12,7 @@ namespace PenyaManager {
         ui->setupUi(this);
         ui->imageQLabel->setPixmap(imageMap);
         ui->nameQLabel->setText(text);
-        ui->priceQLabel->setText(QString("%1 €").arg(price, 0, 'f', 2));
+        //ui->priceQLabel->setText(QString("%1 €").arg(price, 0, 'f', 2));
     }
     //
     ProductItemWidget::~ProductItemWidget()
