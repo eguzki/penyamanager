@@ -99,12 +99,18 @@ namespace PenyaManager {
     {
         // table
         this->ui->lastInvoiceTableWidget->setColumnCount(4);
+        QHeaderView* header = this->ui->lastInvoiceTableWidget->horizontalHeader();
+        header->setSectionResizeMode(QHeaderView::Fixed);
+        header->setDefaultSectionSize(80);
         translateTable();
         Uint32 column = 0;
-        this->ui->lastInvoiceTableWidget->setColumnWidth(column++, 300);
-        this->ui->lastInvoiceTableWidget->setColumnWidth(column++, 100);
-        this->ui->lastInvoiceTableWidget->setColumnWidth(column++, 100);
-        this->ui->lastInvoiceTableWidget->setColumnWidth(column++, 100);
+
+        this->ui->lastInvoiceTableWidget->setColumnWidth(column++, 184);
+        this->ui->lastInvoiceTableWidget->setColumnWidth(column++, 90);
+        this->ui->lastInvoiceTableWidget->setColumnWidth(column++, 60);
+        this->ui->lastInvoiceTableWidget->setColumnWidth(column++, 90);
+        //this->ui->lastInvoiceTableWidget->setColumnWidth(column++, 60);
+
     }
     //
     void LoginWindow::translateTable()

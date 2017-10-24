@@ -37,13 +37,20 @@ namespace PenyaManager {
     void MemberDashboardWindow::initializeTable()
     {
         this->ui->invoiceTableWidget->setColumnCount(5);
+        QHeaderView* header = this->ui->invoiceTableWidget->horizontalHeader();
+        header->setSectionResizeMode(QHeaderView::Fixed);
+        //header->setDefaultSectionSize(24);
         translateTable();
+
+
         Uint32 column = 0;
-        this->ui->invoiceTableWidget->setColumnWidth(column++, 150);
-        this->ui->invoiceTableWidget->setColumnWidth(column++, 70);
-        this->ui->invoiceTableWidget->setColumnWidth(column++, 30);
-        this->ui->invoiceTableWidget->setColumnWidth(column++, 70);
-        this->ui->invoiceTableWidget->setColumnWidth(column++, 50);
+        this->ui->invoiceTableWidget->setColumnWidth(column++, 168);
+        this->ui->invoiceTableWidget->setColumnWidth(column++, 83);
+        this->ui->invoiceTableWidget->setColumnWidth(column++, 45);
+        this->ui->invoiceTableWidget->setColumnWidth(column++, 100);
+        this->ui->invoiceTableWidget->setColumnWidth(column++, 48);
+
+
     }
     //
     void MemberDashboardWindow::translateTable()
@@ -210,7 +217,7 @@ namespace PenyaManager {
     {
         if (!pInvoicePtr) {
             // clean all
-            this->ui->invoiceInfoLabel->setText("");
+
             // invoice table reset
             this->ui->invoiceTableWidget->clearContents();
             this->ui->invoiceTableWidget->setRowCount(0);
@@ -218,10 +225,6 @@ namespace PenyaManager {
             return;
         }
 
-        // Invoice header
-        QString dateLocalized = Singletons::m_translationManager.getLocale().toString(pInvoicePtr->m_date, QLocale::NarrowFormat);
-        QString lastModifDateLocalized = Singletons::m_translationManager.getLocale().toString(pInvoicePtr->m_lastModified, QLocale::NarrowFormat);
-        this->ui->invoiceInfoLabel->setText(QString("%1: %2     %3: %4").arg(tr("Created on")).arg(dateLocalized).arg(tr("Modified on")).arg(lastModifDateLocalized));
 
         // get invoice products
         InvoiceProductItemListResultPtr pInvoiceProductItemListResultPtr = Singletons::m_pDAO->getInvoiceProductItems(pInvoicePtr->m_id);
@@ -257,6 +260,9 @@ namespace PenyaManager {
             pRemoveButton->setIcon(buttonIcon);
             this->connect(pRemoveButton, &QPushButton::clicked, std::bind(&MemberDashboardWindow::on_productRemoveButton_clicked, this, pInvoiceProductItemPtr->m_productId));
             this->ui->invoiceTableWidget->setCellWidget(rowCount, 4, pRemoveButton);
+
+            // ROW HEIGHT
+            this->ui->invoiceTableWidget->setRowHeight(rowCount, 35);
             rowCount++;
         }
         this->ui->totalDisplayLabel->setText(QString("%1 €").arg(totalInvoice));

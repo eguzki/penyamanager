@@ -7,14 +7,24 @@
     <x>0</x>
     <y>0</y>
     <width>934</width>
-    <height>627</height>
+    <height>635</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string notr="true"/>
   </property>
   <property name="styleSheet">
-   <string notr="true">#LoginWindow {
+   <string notr="true">QTableWidget{
+background: rgb(189,189,189);
+font-size: 20px;
+}
+
+QListWidget{
+background: rgb(158,158,158);
+font-size: 20px;
+}
+
+#LoginWindow {
 background: rgb(66, 66, 66);
 }
 
@@ -74,13 +84,13 @@ max-height: 120px;
 #lastInvoiceInfoWidget {
 border: 1px solid gray;
 border-radius: 0px;
-background: white;
+background: rgb(158,158,158);
 }
 
 #lastMemberWidget {
 border: 1px solid gray;
 border-radius: 0px;
-background: white;
+background: rgb(158,158,158);
 }
 
 #memberIdLabel {
@@ -489,7 +499,26 @@ font-size: 35px;
        </layout>
       </item>
       <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
        <widget class="QWidget" name="lastInvoiceInfoWidget" native="true">
+        <property name="maximumSize">
+         <size>
+          <width>450</width>
+          <height>16777215</height>
+         </size>
+        </property>
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>
           <widget class="QLabel" name="lastInvoiceDateLabel">

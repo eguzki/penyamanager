@@ -19,6 +19,15 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">#newBalanceLabel{
+font: 30pt &quot;Calibri&quot;;
+}
+
+#depositLabel{
+font: 30pt &quot;Calibri&quot;;
+}</string>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QWidget" name="topPanelWidget" native="true">
@@ -80,13 +89,10 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="numPadGroupBox">
-     <property name="title">
-      <string>Deposit</string>
-     </property>
+    <widget class="QWidget" name="depositWidget" native="true">
      <layout class="QHBoxLayout" name="horizontalLayout_6">
       <item>
-       <widget class="QWidget" name="numPadWidget" native="true">
+       <widget class="QWidget" name="numPadWidget1" native="true">
         <property name="minimumSize">
          <size>
           <width>366</width>
@@ -348,6 +354,13 @@
           </spacer>
          </item>
          <item>
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>Subtotal</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QLabel" name="depositLabel">
            <property name="minimumSize">
             <size>
@@ -367,13 +380,36 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="newBalanceGroupBox">
-     <property name="title">
-      <string>New Balance</string>
-     </property>
+    <widget class="QWidget" name="newBalanceWidget" native="true">
      <layout class="QHBoxLayout" name="horizontalLayout_7">
       <item>
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Total</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QLabel" name="newBalanceLabel">
+        <property name="minimumSize">
+         <size>
+          <width>120</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="text">
          <string>TextLabel</string>
         </property>

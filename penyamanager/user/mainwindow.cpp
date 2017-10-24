@@ -15,6 +15,7 @@ namespace PenyaManager {
         ui(new Ui::MainWindow)
     {
         ui->setupUi(this);
+
     }
     //
     MainWindow::~MainWindow()
@@ -25,7 +26,10 @@ namespace PenyaManager {
     void MainWindow::init()
     {
         switchCentralWidget(WindowKey::kLoginWindowKey);
-        show();
+        // To disable Full Screen, comment the line below. Que no la above.
+        showFullScreen();
+        // To disable windowed mode, comment the line below. Que sí, que la de abajo.
+        // show();
     }
     //
     void MainWindow::switchCentralWidget(WindowKey key)

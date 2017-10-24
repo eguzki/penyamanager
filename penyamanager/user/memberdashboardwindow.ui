@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1024</width>
+    <width>817</width>
     <height>768</height>
    </rect>
   </property>
@@ -15,33 +15,55 @@
   </property>
   <property name="styleSheet">
    <string notr="true">QListWidget {
-    alternate-background-color: blue;
-    selection-background-color: darkblue;
-    selection-color: red;
-    background: white;
+    alternate-background-color:  rgb(158,158,158);
+    
+    selection-color: green;
+    background: rgb(158,158,158);
+}
+
+
+QTableWidget{
+font: 18pt &quot;Calibri&quot;;
 }
 
 #productListWidget {
-    alternate-background-color: blue;
-    selection-background-color: darkblue;
-    background: white;
+    alternate-background-color:  rgb(158,158,158);
+    background: rgb(189,189,189);
+}
+
+#familyListWidget {
+    alternate-background-color:  rgb(158,158,158);
+    background: rgb(189,189,189);
+}
+
+#invoiceTableWidget {
+   background: rgb(189,189,189);
 }
 
 PenyaManager--FamilyItemWidget * {
-    color: green;
+    color: black;
+	font: 20pt &quot;Calibri&quot;;
 }
 
 PenyaManager--ProductItemWidget * {
-    color: red;
+    color: black;
+	font: 20pt &quot;Calibri&quot;;
 }
 
-QListWidget:QScrollBar::handle:vertical {
-        background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
-        stop: 0  rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130),  stop:1 rgb(32, 47, 130));
-        min-height: 0px;
+
+
+
+
+
+#totalDisplayLabel {
+font-weight: bold;
+font: 30pt &quot;Calibri&quot;;
 }
 
-</string>
+#totalLabel {
+font-weight: bold;
+font: 30pt &quot;Calibri&quot;;
+}</string>
   </property>
   <property name="locale">
    <locale language="Spanish" country="Spain"/>
@@ -194,13 +216,13 @@ QListWidget:QScrollBar::handle:vertical {
        <widget class="QListWidget" name="familyListWidget">
         <property name="minimumSize">
          <size>
-          <width>300</width>
+          <width>250</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>300</width>
+          <width>200</width>
           <height>16777215</height>
          </size>
         </property>
@@ -236,11 +258,14 @@ QListWidget:QScrollBar::handle:vertical {
           <pointsize>7</pointsize>
          </font>
         </property>
+        <property name="alternatingRowColors">
+         <bool>true</bool>
+        </property>
         <property name="movement">
          <enum>QListView::Static</enum>
         </property>
         <property name="flow">
-         <enum>QListView::LeftToRight</enum>
+         <enum>QListView::TopToBottom</enum>
         </property>
         <property name="isWrapping" stdset="0">
          <bool>true</bool>
@@ -254,31 +279,31 @@ QListWidget:QScrollBar::handle:vertical {
        <widget class="QWidget" name="invoiceInfoWidget" native="true">
         <property name="minimumSize">
          <size>
-          <width>410</width>
+          <width>0</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>410</width>
+          <width>450</width>
           <height>16777215</height>
          </size>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_4">
          <property name="spacing">
-          <number>10</number>
+          <number>0</number>
          </property>
          <property name="leftMargin">
-          <number>2</number>
+          <number>0</number>
          </property>
          <property name="topMargin">
-          <number>2</number>
+          <number>0</number>
          </property>
          <property name="rightMargin">
-          <number>2</number>
+          <number>0</number>
          </property>
          <property name="bottomMargin">
-          <number>2</number>
+          <number>0</number>
          </property>
          <item>
           <widget class="QWidget" name="invoiceWidget" native="true">
@@ -311,18 +336,6 @@ QListWidget:QScrollBar::handle:vertical {
              <number>1</number>
             </property>
             <item>
-             <widget class="QLabel" name="invoiceInfoLabel">
-              <property name="font">
-               <font>
-                <pointsize>8</pointsize>
-               </font>
-              </property>
-              <property name="text">
-               <string notr="true"/>
-              </property>
-             </widget>
-            </item>
-            <item>
              <widget class="QTableWidget" name="invoiceTableWidget">
               <property name="minimumSize">
                <size>
@@ -332,26 +345,39 @@ QListWidget:QScrollBar::handle:vertical {
               </property>
               <property name="font">
                <font>
-                <pointsize>7</pointsize>
+                <family>Calibri</family>
+                <pointsize>18</pointsize>
+                <weight>50</weight>
+                <italic>false</italic>
+                <bold>false</bold>
                </font>
               </property>
               <property name="horizontalScrollBarPolicy">
                <enum>Qt::ScrollBarAlwaysOff</enum>
               </property>
               <property name="sizeAdjustPolicy">
-               <enum>QAbstractScrollArea::AdjustToContents</enum>
+               <enum>QAbstractScrollArea::AdjustIgnored</enum>
               </property>
               <property name="editTriggers">
                <set>QAbstractItemView::NoEditTriggers</set>
               </property>
+              <property name="showDropIndicator" stdset="0">
+               <bool>false</bool>
+              </property>
               <property name="dragEnabled">
+               <bool>false</bool>
+              </property>
+              <property name="dragDropOverwriteMode">
                <bool>false</bool>
               </property>
               <property name="selectionMode">
                <enum>QAbstractItemView::NoSelection</enum>
               </property>
+              <property name="cornerButtonEnabled">
+               <bool>false</bool>
+              </property>
               <attribute name="horizontalHeaderStretchLastSection">
-               <bool>true</bool>
+               <bool>false</bool>
               </attribute>
               <attribute name="verticalHeaderVisible">
                <bool>false</bool>
