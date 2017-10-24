@@ -163,8 +163,8 @@ namespace PenyaManager {
         depositTemplateStream.setCodec("UTF-8");
         QString depositTemplate = depositTemplateStream.readAll();
         QString depositHtml = renderDepositTemplate(depositTemplate, pMemberPtr, pDepositPtr);
-        GuiUtils::printText(depositHtml);
         QLOG_INFO() << QString("[Print] print deposit user %1 deposit %2").arg(pMemberPtr->m_id).arg(pDepositPtr->m_id);
+        GuiUtils::printText(depositHtml);
     }
     //
     QString DepositWindow::renderDepositTemplate(const QString &depositTemplate, const MemberPtr &pMemberPtr, const DepositPtr &pDepositPtr)
