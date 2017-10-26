@@ -55,6 +55,10 @@ namespace PenyaManager {
             MemberProfileGroupBox       *m_pMemberProfileGroupBox;
             //
             CentralWidgetCallback       m_switchCentralWidgetCallback;
+            //
+            double                      m_depositValue;
+            //
+            Uint8                       m_decimalPosition;
     };
 }
 

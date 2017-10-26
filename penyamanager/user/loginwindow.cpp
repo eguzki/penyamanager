@@ -189,7 +189,7 @@ namespace PenyaManager {
         }
 
         // login granted
-        QLOG_INFO() << QString("[LoginSucess] User %1").arg(pMemberResultPtr->m_member->m_id);
+        QLOG_INFO() << QString("[Login] [User %1]").arg(pMemberResultPtr->m_member->m_id);
 
         // Every member login, outdated invoices are cleaned
         // It is supossed that only few invoices would be open
