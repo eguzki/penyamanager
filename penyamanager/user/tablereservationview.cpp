@@ -49,7 +49,6 @@ namespace PenyaManager {
     {
         // table reservation table Header
         QStringList headers;
-        headers.append(tr("Type"));
         headers.append(tr("Name"));
         headers.append(tr("Size"));
         headers.append(tr("Reserved By Guest"));
@@ -61,10 +60,9 @@ namespace PenyaManager {
     void TableReservationView::initializeTable()
     {
         // table
-        this->ui->tableReservationTableWidget->setColumnCount(6);
+        this->ui->tableReservationTableWidget->setColumnCount(5);
         translateTable();
         Uint32 column = 0;
-        this->ui->tableReservationTableWidget->setColumnWidth(column++, 150);
         this->ui->tableReservationTableWidget->setColumnWidth(column++, 200);
         this->ui->tableReservationTableWidget->setColumnWidth(column++, 80);
         this->ui->tableReservationTableWidget->setColumnWidth(column++, 200);
@@ -138,9 +136,8 @@ namespace PenyaManager {
         for (ReservationItemList::iterator iter = pReservationItemListPtr->begin(); iter != pReservationItemListPtr->end(); ++iter) {
             ReservationItemPtr pReservationItemPtr = *iter;
             this->ui->tableReservationTableWidget->setRowHeight(rowCount, 50);
-            this->ui->tableReservationTableWidget->setItem(rowCount, 0, new QTableWidgetItem(getStringFromReservationTypeEnum(pReservationItemPtr->m_itemType)));
-            this->ui->tableReservationTableWidget->setItem(rowCount, 1, new QTableWidgetItem(pReservationItemPtr->m_itemName));
-            this->ui->tableReservationTableWidget->setItem(rowCount, 2, new QTableWidgetItem(QString::number(pReservationItemPtr->m_guestNum)));
+            this->ui->tableReservationTableWidget->setItem(rowCount, 0, new QTableWidgetItem(pReservationItemPtr->m_itemName));
+            this->ui->tableReservationTableWidget->setItem(rowCount, 1, new QTableWidgetItem(QString::number(pReservationItemPtr->m_guestNum)));
             auto tableReservationMapItem = tableReservationMap.find(pReservationItemPtr->m_idItem);
             // not showing action buttons when: a)has reservation for unreserved tables and b)reservation of other members
             if (tableReservationMapItem == tableReservationMap.end()) {
@@ -150,25 +147,25 @@ namespace PenyaManager {
                     // only when there is no reserved table for this (date, reservationType)
                     QPushButton *pReservationButton = new QPushButton(tr("Reserve"), this->ui->tableReservationTableWidget);
                     this->connect(pReservationButton, &QPushButton::clicked, std::bind(&TableReservationView::on_reservedButton_clicked, this, pReservationItemPtr->m_idItem, pReservationItemPtr->m_itemType));
-                    this->ui->tableReservationTableWidget->setCellWidget(rowCount, 5, pReservationButton);
+                    this->ui->tableReservationTableWidget->setCellWidget(rowCount, 4, pReservationButton);
                 }
             } else {
                 // this table is reserved
                 ReservationPtr pReservationPtr = tableReservationMapItem->second;
-                this->ui->tableReservationTableWidget->setItem(rowCount, 4, new QTableWidgetItem(QString::number(pReservationPtr->m_guestNum)));
+                this->ui->tableReservationTableWidget->setItem(rowCount, 3, new QTableWidgetItem(QString::number(pReservationPtr->m_guestNum)));
                 // do not show cancel when reservation is from Admin
                 if (pReservationPtr->m_isAdmin)
                 {
-                    this->ui->tableReservationTableWidget->setItem(rowCount, 3, new QTableWidgetItem(QString(tr("BLOCKED"))));
+                    this->ui->tableReservationTableWidget->setItem(rowCount, 2, new QTableWidgetItem(QString(tr("BLOCKED"))));
                 } else
                 {
                     QString guestName = QString("%1 %2").arg(pReservationPtr->m_memberName).arg(pReservationPtr->m_memberSurname);
-                    this->ui->tableReservationTableWidget->setItem(rowCount, 3, new QTableWidgetItem(guestName));
+                    this->ui->tableReservationTableWidget->setItem(rowCount, 2, new QTableWidgetItem(guestName));
                     if (pReservationPtr->m_idMember == pMemberPtr->m_id) {
                         // show cancel button action
                         QPushButton *pCancelButton = new QPushButton(tr("Cancel"), this->ui->tableReservationTableWidget);
                         this->connect(pCancelButton, &QPushButton::clicked, std::bind(&TableReservationView::on_cancelButton_clicked, this, pReservationPtr->m_reservationId, pReservationItemPtr->m_itemType));
-                        this->ui->tableReservationTableWidget->setCellWidget(rowCount, 5, pCancelButton);
+                        this->ui->tableReservationTableWidget->setCellWidget(rowCount, 4, pCancelButton);
                     }
                 }
 
