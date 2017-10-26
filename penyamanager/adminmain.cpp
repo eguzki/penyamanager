@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
     // set log destinations on the logger
     logger.addDestination(fileDestination);
 
-    QLOG_INFO() << QString("Program started");
+    QLOG_INFO() << QString("[Start]");
 
     // Singletons initialization
     // Includes ddbb connection
@@ -125,6 +125,6 @@ int main(int argc, char *argv[])
 
     PenyaManager::Singletons::Destroy();
 
-    QLOG_INFO() << QString("Program exited");
+    QLOG_INFO() << QString("[Exit]");
     return returnValue;
 }

@@ -135,7 +135,6 @@ namespace PenyaManager {
         // fill data
         for (ReservationItemList::iterator iter = pReservationItemListPtr->begin(); iter != pReservationItemListPtr->end(); ++iter) {
             ReservationItemPtr pReservationItemPtr = *iter;
-            this->ui->tableReservationTableWidget->setRowHeight(rowCount, 50);
             this->ui->tableReservationTableWidget->setItem(rowCount, 0, new QTableWidgetItem(pReservationItemPtr->m_itemName));
             this->ui->tableReservationTableWidget->setItem(rowCount, 1, new QTableWidgetItem(QString::number(pReservationItemPtr->m_guestNum)));
             auto tableReservationMapItem = tableReservationMap.find(pReservationItemPtr->m_idItem);
@@ -295,7 +294,7 @@ namespace PenyaManager {
             QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
-        QLOG_INFO() << QString("[%1] User %2 item %3").arg(title).arg(pCurrMemberPtr->m_id).arg(itemId);
+        QLOG_INFO() << QString("[%1] [User %2] [item %3]").arg(title).arg(pCurrMemberPtr->m_id).arg(itemId);
         QMessageBox::information(this, title, "Reservation done");
         fillTableReservations(pCurrMemberPtr, date, reservationType);
     }
