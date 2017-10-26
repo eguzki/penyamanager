@@ -49,7 +49,6 @@ namespace PenyaManager {
     {
         // table reservation table Header
         QStringList headers;
-        headers.append(tr("Type"));
         headers.append(tr("Name"));
         headers.append(tr("Size"));
         headers.append(tr("Reserved By Guest"));
@@ -61,10 +60,9 @@ namespace PenyaManager {
     void TableReservationView::initializeTable()
     {
         // table
-        this->ui->tableReservationTableWidget->setColumnCount(6);
+        this->ui->tableReservationTableWidget->setColumnCount(5);
         translateTable();
         Uint32 column = 0;
-        this->ui->tableReservationTableWidget->setColumnWidth(column++, 150);
         this->ui->tableReservationTableWidget->setColumnWidth(column++, 200);
         this->ui->tableReservationTableWidget->setColumnWidth(column++, 80);
         this->ui->tableReservationTableWidget->setColumnWidth(column++, 200);
@@ -138,9 +136,8 @@ namespace PenyaManager {
         for (ReservationItemList::iterator iter = pReservationItemListPtr->begin(); iter != pReservationItemListPtr->end(); ++iter) {
             ReservationItemPtr pReservationItemPtr = *iter;
             this->ui->tableReservationTableWidget->setRowHeight(rowCount, 50);
-            this->ui->tableReservationTableWidget->setItem(rowCount, 0, new QTableWidgetItem(getStringFromReservationTypeEnum(pReservationItemPtr->m_itemType)));
-            this->ui->tableReservationTableWidget->setItem(rowCount, 1, new QTableWidgetItem(pReservationItemPtr->m_itemName));
-            this->ui->tableReservationTableWidget->setItem(rowCount, 2, new QTableWidgetItem(QString::number(pReservationItemPtr->m_guestNum)));
+            this->ui->tableReservationTableWidget->setItem(rowCount, 0, new QTableWidgetItem(pReservationItemPtr->m_itemName));
+            this->ui->tableReservationTableWidget->setItem(rowCount, 1, new QTableWidgetItem(QString::number(pReservationItemPtr->m_guestNum)));
             auto tableReservationMapItem = tableReservationMap.find(pReservationItemPtr->m_idItem);
             // not showing action buttons when: a)has reservation for unreserved tables and b)reservation of other members
             if (tableReservationMapItem == tableReservationMap.end()) {
@@ -150,25 +147,25 @@ namespace PenyaManager {
                     // only when there is no reserved table for this (date, reservationType)
                     QPushButton *pReservationButton = new QPushButton(tr("Reserve"), this->ui->tableReservationTableWidget);
                     this->connect(pReservationButton, &QPushButton::clicked, std::bind(&TableReservationView::on_reservedButton_clicked, this, pReservationItemPtr->m_idItem, pReservationItemPtr->m_itemType));
-                    this->ui->tableReservationTableWidget->setCellWidget(rowCount, 5, pReservationButton);
+                    this->ui->tableReservationTableWidget->setCellWidget(rowCount, 4, pReservationButton);
                 }
             } else {
                 // this table is reserved
                 ReservationPtr pReservationPtr = tableReservationMapItem->second;
-                this->ui->tableReservationTableWidget->setItem(rowCount, 4, new QTableWidgetItem(QString::number(pReservationPtr->m_guestNum)));
+                this->ui->tableReservationTableWidget->setItem(rowCount, 3, new QTableWidgetItem(QString::number(pReservationPtr->m_guestNum)));
                 // do not show cancel when reservation is from Admin
                 if (pReservationPtr->m_isAdmin)
                 {
-                    this->ui->tableReservationTableWidget->setItem(rowCount, 3, new QTableWidgetItem(QString(tr("BLOCKED"))));
+                    this->ui->tableReservationTableWidget->setItem(rowCount, 2, new QTableWidgetItem(QString(tr("BLOCKED"))));
                 } else
                 {
                     QString guestName = QString("%1 %2").arg(pReservationPtr->m_memberName).arg(pReservationPtr->m_memberSurname);
-                    this->ui->tableReservationTableWidget->setItem(rowCount, 3, new QTableWidgetItem(guestName));
+                    this->ui->tableReservationTableWidget->setItem(rowCount, 2, new QTableWidgetItem(guestName));
                     if (pReservationPtr->m_idMember == pMemberPtr->m_id) {
                         // show cancel button action
                         QPushButton *pCancelButton = new QPushButton(tr("Cancel"), this->ui->tableReservationTableWidget);
                         this->connect(pCancelButton, &QPushButton::clicked, std::bind(&TableReservationView::on_cancelButton_clicked, this, pReservationPtr->m_reservationId, pReservationItemPtr->m_itemType));
-                        this->ui->tableReservationTableWidget->setCellWidget(rowCount, 5, pCancelButton);
+                        this->ui->tableReservationTableWidget->setCellWidget(rowCount, 4, pCancelButton);
                     }
                 }
 
@@ -182,43 +179,43 @@ namespace PenyaManager {
         // fetch table reservation data
         ReservationListResultPtr pTableReservationListResultPtr = Singletons::m_pDAO->getTableReservation(reservationType, nowDate);
         if (pTableReservationListResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
         // fetch tables data
         ReservationItemListResultPtr pTableListResultPtr = Singletons::m_pDAO->getLunchTableList();
         if (pTableListResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
 
         // fetch oven reservation data
         ReservationListResultPtr pOvenReservationListResultPtr = Singletons::m_pDAO->getOvenReservation(reservationType, nowDate);
         if (pOvenReservationListResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
         // fetch oven data
         ReservationItemListResultPtr pOvenListResultPtr = Singletons::m_pDAO->getOvenList();
         if (pOvenListResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
 
         // fetch fireplace reservation data
         ReservationListResultPtr pFireplaceReservationListResultPtr = Singletons::m_pDAO->getFireplaceReservation(reservationType, nowDate);
         if (pFireplaceReservationListResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
         // fetch fireplace data
         ReservationItemListResultPtr pFireplaceListResultPtr = Singletons::m_pDAO->getFireplaceList();
         if (pFireplaceListResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
 
-        Uint32 totalSize = pTableListResultPtr->m_list->size() + pOvenReservationListResultPtr->m_list->size() + pFireplaceReservationListResultPtr->m_list->size();
+        Uint32 totalSize = pTableListResultPtr->m_list->size() + pOvenListResultPtr->m_list->size() + pFireplaceListResultPtr->m_list->size();
         // table
         this->ui->tableReservationTableWidget->setRowCount(totalSize);
 
@@ -228,9 +225,9 @@ namespace PenyaManager {
         // fill table data
         fillReservationsItems(pMemberPtr, pTableReservationListResultPtr->m_list, pTableListResultPtr->m_list, rowCount);
         // fill oven data
-        fillReservationsItems(pMemberPtr, pTableReservationListResultPtr->m_list, pOvenListResultPtr->m_list, rowCount);
+        fillReservationsItems(pMemberPtr, pOvenReservationListResultPtr->m_list, pOvenListResultPtr->m_list, rowCount);
         // fill fireplace data
-        fillReservationsItems(pMemberPtr, pOvenReservationListResultPtr->m_list, pFireplaceListResultPtr->m_list, rowCount);
+        fillReservationsItems(pMemberPtr, pFireplaceReservationListResultPtr->m_list, pFireplaceListResultPtr->m_list, rowCount);
     }
     //
     void TableReservationView::prepareTableReservationMap(ReservationMap &tableReservationMap, const ReservationListPtr &pReservationListPtr, const MemberPtr &pMemberPtr, bool &hasReservation)
@@ -295,7 +292,7 @@ namespace PenyaManager {
         }
 
         if (!ok) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
         QLOG_INFO() << QString("[%1] User %2 item %3").arg(title).arg(pCurrMemberPtr->m_id).arg(itemId);
@@ -325,7 +322,7 @@ namespace PenyaManager {
                 break;
         }
         if (!ok) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
         QMessageBox::information(this, title, "Reservation cancelled");
