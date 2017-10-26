@@ -182,43 +182,43 @@ namespace PenyaManager {
         // fetch table reservation data
         ReservationListResultPtr pTableReservationListResultPtr = Singletons::m_pDAO->getTableReservation(reservationType, nowDate);
         if (pTableReservationListResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
         // fetch tables data
         ReservationItemListResultPtr pTableListResultPtr = Singletons::m_pDAO->getLunchTableList();
         if (pTableListResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
 
         // fetch oven reservation data
         ReservationListResultPtr pOvenReservationListResultPtr = Singletons::m_pDAO->getOvenReservation(reservationType, nowDate);
         if (pOvenReservationListResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
         // fetch oven data
         ReservationItemListResultPtr pOvenListResultPtr = Singletons::m_pDAO->getOvenList();
         if (pOvenListResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
 
         // fetch fireplace reservation data
         ReservationListResultPtr pFireplaceReservationListResultPtr = Singletons::m_pDAO->getFireplaceReservation(reservationType, nowDate);
         if (pFireplaceReservationListResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
         // fetch fireplace data
         ReservationItemListResultPtr pFireplaceListResultPtr = Singletons::m_pDAO->getFireplaceList();
         if (pFireplaceListResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
 
-        Uint32 totalSize = pTableListResultPtr->m_list->size() + pOvenReservationListResultPtr->m_list->size() + pFireplaceReservationListResultPtr->m_list->size();
+        Uint32 totalSize = pTableListResultPtr->m_list->size() + pOvenListResultPtr->m_list->size() + pFireplaceListResultPtr->m_list->size();
         // table
         this->ui->tableReservationTableWidget->setRowCount(totalSize);
 
@@ -228,9 +228,9 @@ namespace PenyaManager {
         // fill table data
         fillReservationsItems(pMemberPtr, pTableReservationListResultPtr->m_list, pTableListResultPtr->m_list, rowCount);
         // fill oven data
-        fillReservationsItems(pMemberPtr, pTableReservationListResultPtr->m_list, pOvenListResultPtr->m_list, rowCount);
+        fillReservationsItems(pMemberPtr, pOvenReservationListResultPtr->m_list, pOvenListResultPtr->m_list, rowCount);
         // fill fireplace data
-        fillReservationsItems(pMemberPtr, pOvenReservationListResultPtr->m_list, pFireplaceListResultPtr->m_list, rowCount);
+        fillReservationsItems(pMemberPtr, pFireplaceReservationListResultPtr->m_list, pFireplaceListResultPtr->m_list, rowCount);
     }
     //
     void TableReservationView::prepareTableReservationMap(ReservationMap &tableReservationMap, const ReservationListPtr &pReservationListPtr, const MemberPtr &pMemberPtr, bool &hasReservation)
@@ -295,7 +295,7 @@ namespace PenyaManager {
         }
 
         if (!ok) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
         QLOG_INFO() << QString("[%1] User %2 item %3").arg(title).arg(pCurrMemberPtr->m_id).arg(itemId);
@@ -325,7 +325,7 @@ namespace PenyaManager {
                 break;
         }
         if (!ok) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
         QMessageBox::information(this, title, "Reservation cancelled");
