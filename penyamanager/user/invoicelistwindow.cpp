@@ -127,20 +127,16 @@ namespace PenyaManager {
     void InvoiceListWindow::fillInvoiceList(InvoiceListPtr pInvoiceListPtr)
     {
         // table
-        this->ui->invoicesTableWidget->setColumnCount(4);
+        this->ui->invoicesTableWidget->setColumnCount(2);
         this->ui->invoicesTableWidget->setRowCount(pInvoiceListPtr->size());
 
         // invoice table Header
         QStringList headers;
-        headers.append(tr("Ref#"));
         headers.append(tr("Date"));
         headers.append(tr("Total"));
-        headers.append(tr("Surename"));
         this->ui->invoicesTableWidget->setHorizontalHeaderLabels(headers);
-        this->ui->invoicesTableWidget->setColumnWidth(0, 100);
         this->ui->invoicesTableWidget->setColumnWidth(1, 300);
         this->ui->invoicesTableWidget->setColumnWidth(2, 200);
-        this->ui->invoicesTableWidget->setColumnWidth(3, 100);
         // invoice table reset
         this->ui->invoicesTableWidget->clearContents();
         // internal data structure reset
@@ -151,17 +147,14 @@ namespace PenyaManager {
         for (InvoiceList::iterator iter = pInvoiceListPtr->begin(); iter != pInvoiceListPtr->end(); ++iter)
         {
             InvoicePtr pInvoicePtr = *iter;
-            this->ui->invoicesTableWidget->setItem(rowCount, 0, new QTableWidgetItem(QString::number(pInvoicePtr->m_id)));
             QString dateLocalized = Singletons::m_translationManager.getLocale().toString(pInvoicePtr->m_date, QLocale::NarrowFormat);
-            this->ui->invoicesTableWidget->setItem(rowCount, 1, new QTableWidgetItem(dateLocalized));
-            this->ui->invoicesTableWidget->setItem(rowCount, 2, new QTableWidgetItem(QString("%1 €").arg(pInvoicePtr->m_total, 0, 'f', 2)));
-            this->ui->invoicesTableWidget->setItem(rowCount, 3, new QTableWidgetItem(QString::number(pInvoicePtr->m_memberUsername)));
+            this->ui->invoicesTableWidget->setItem(rowCount, 0, new QTableWidgetItem(dateLocalized));
+            this->ui->invoicesTableWidget->setItem(rowCount, 1, new QTableWidgetItem(QString("%1 €").arg(pInvoicePtr->m_total, 0, 'f', 2)));
             this->m_rowProductIdMap[rowCount] = pInvoicePtr->m_id;
             rowCount++;
         }
     }
-    //
-    void InvoiceListWindow::on_invoicesTableWidget_cellDoubleClicked(int row, int column)
+    void PenyaManager::InvoiceListWindow::on_invoicesTableWidget_cellClicked(int row, int column)
     {
         UNUSEDPARAMETER(column);
         auto rowMap = m_rowProductIdMap.find(row);
@@ -178,4 +171,3 @@ namespace PenyaManager {
         m_switchCentralWidgetCallback(WindowKey::kInvoiceDetailsWindowKey);
     }
 }
-

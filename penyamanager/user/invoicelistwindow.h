@@ -43,7 +43,7 @@ namespace PenyaManager {
             //
             void on_nextPagePushButton_clicked();
             //
-            void on_invoicesTableWidget_cellDoubleClicked(int row, int column);
+            void on_invoicesTableWidget_cellClicked(int row, int column);
 
         private:
             //
