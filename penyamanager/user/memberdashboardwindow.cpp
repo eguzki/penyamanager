@@ -266,7 +266,10 @@ namespace PenyaManager {
             QPixmap pixmap(":images/trash.png");
             QIcon buttonIcon(pixmap);
             pRemoveButton->setIcon(buttonIcon);
-            this->connect(pRemoveButton, &QPushButton::clicked, std::bind(&MemberDashboardWindow::on_productRemoveButton_clicked, this, pInvoiceProductItemPtr->m_productId));
+            this->connect(pRemoveButton, &QPushButton::clicked, std::bind(&MemberDashboardWindow::on_productRemoveButton_clicked, this,
+                  pInvoiceProductItemPtr->m_productId,
+                  pInvoiceProductItemPtr->m_productname,
+                  totalPrice));
             this->ui->invoiceTableWidget->setCellWidget(rowCount, 4, pRemoveButton);
 
             // ROW HEIGHT
@@ -415,13 +418,8 @@ namespace PenyaManager {
         fillInvoiceData(pInvoiceResultPtr->m_pInvoice);
     }
     //
-    void MemberDashboardWindow::on_productRemoveButton_clicked(int productId)
+    void MemberDashboardWindow::on_productRemoveButton_clicked(int productId, QString productName, Float totalPrice)
     {
-        // ask for confirmation
-        QMessageBox::StandardButton answerButton = QMessageBox::question(this, tr("delete product item"), tr("Are you sure?"));
-        if (answerButton != QMessageBox::Yes) {
-            return;
-        }
         MemberPtr pCurrMember = Singletons::m_pCurrMember;
         // always fresh invoice
         InvoiceResultPtr pInvoiceResultPtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
@@ -431,6 +429,14 @@ namespace PenyaManager {
         }
         if (!pInvoiceResultPtr->m_pInvoice)
         {
+            QLOG_WARN() << QString("[User %1] Unable to find current active invoice").arg(Singletons::m_pCurrMember->m_id);
+            QMessageBox::warning(this, tr("Error happened"), tr("Invoice not found"));
+            return;
+        }
+        // ask for confirmation
+        QMessageBox::StandardButton answerButton = QMessageBox::question(this, tr("Delete product"),
+            tr("Delete %1 for %2 €?").arg(productName).arg(QString::number(totalPrice, 'f', 2)));
+        if (answerButton != QMessageBox::Yes) {
             return;
         }
         bool ok = Singletons::m_pServices->removeInvoiceProductId(pInvoiceResultPtr->m_pInvoice->m_id, productId);
