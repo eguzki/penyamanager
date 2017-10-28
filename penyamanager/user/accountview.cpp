@@ -113,14 +113,30 @@ namespace PenyaManager {
     //
     void AccountView::on_searchButton_clicked()
     {
-        if (this->ui->fromCalendarWidget->selectedDate() >= this->ui->toCalendarWidget->selectedDate())
+        QDate fromDate = this->ui->fromCalendarWidget->selectedDate();
+        QDate toDate = this->ui->toCalendarWidget->selectedDate();
+        if (fromDate > toDate)
         {
             QMessageBox::information(this, "Wrong search criteria", "From date must be before To date");
-        } else {
-            MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
-            // add one day to "toDate" to be included
-            fillAccountData(pCurrMemberPtr->m_id, this->ui->fromCalendarWidget->selectedDate(), this->ui->toCalendarWidget->selectedDate().addDays(1));
+            return;
         }
+        // check selected date is shown checking monthShown and yearShown
+        int fromMonthShown = this->ui->fromCalendarWidget->monthShown();
+        int fromYearShown = this->ui->fromCalendarWidget->yearShown();
+        int toMonthShown = this->ui->toCalendarWidget->monthShown();
+        int toYearShown = this->ui->toCalendarWidget->yearShown();
+        if ( fromDate.month() != fromMonthShown ||
+            toDate.month() != toMonthShown ||
+            fromDate.year() != fromYearShown ||
+            toDate.year() != toYearShown ) {
+            QMessageBox::warning(this, tr("Date not selected"), tr("Select date"));
+            return;
+        }
+
+        // search
+        MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
+        // add one day to "toDate" to be included
+        fillAccountData(pCurrMemberPtr->m_id, this->ui->fromCalendarWidget->selectedDate(), this->ui->toCalendarWidget->selectedDate().addDays(1));
     }
 }
 
