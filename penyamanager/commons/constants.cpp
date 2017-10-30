@@ -35,7 +35,9 @@ namespace PenyaManager {
     //
     const Uint32    Constants::kMemberImageHeigth               = 80;
     //
-    const Uint32    Constants::kInvoiceListPageCount            = 25;
+    const Uint32    Constants::kInvoiceListPageCount            = 10;
+    //
+    const Uint32    Constants::kAccountListPageCount            = 10;
     //
     const Uint32    Constants::kProductListPageCount            = 25;
     // Put your own key here

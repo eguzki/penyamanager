@@ -54,6 +54,8 @@ namespace PenyaManager {
             static const Uint32     kMemberImageHeigth;
             // Invoice List page count
             static const Uint32     kInvoiceListPageCount;
+            // Account List page count
+            static const Uint32     kAccountListPageCount;
             // Product List page count
             static const Uint32     kProductListPageCount;
             // Crypt key

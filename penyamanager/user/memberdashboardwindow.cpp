@@ -39,9 +39,7 @@ namespace PenyaManager {
         this->ui->invoiceTableWidget->setColumnCount(5);
         QHeaderView* header = this->ui->invoiceTableWidget->horizontalHeader();
         header->setSectionResizeMode(QHeaderView::Fixed);
-        //header->setDefaultSectionSize(24);
         translateTable();
-
 
         Uint32 column = 0;
         this->ui->invoiceTableWidget->setColumnWidth(column++, 168);
@@ -49,8 +47,6 @@ namespace PenyaManager {
         this->ui->invoiceTableWidget->setColumnWidth(column++, 45);
         this->ui->invoiceTableWidget->setColumnWidth(column++, 100);
         this->ui->invoiceTableWidget->setColumnWidth(column++, 48);
-
-
     }
     //
     void MemberDashboardWindow::translateTable()

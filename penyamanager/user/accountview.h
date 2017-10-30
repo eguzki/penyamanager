@@ -3,6 +3,7 @@
 
 #include <QWidget>
 
+#include <objs/Transaction.h>
 #include <commons/IPartner.h>
 #include "memberprofilegroupbox.h"
 
@@ -30,21 +31,33 @@ namespace PenyaManager {
             //
             void translateTable();
             //
-            void fillAccountData(Int32 memberId, const QDate &fromDate, const QDate &toDate);
+            void fillAccountData(TransactionListResultPtr pTransactionListResultPtr);
             //
             void initializeTable();
+            //
+            void updateResults();
 
         private slots:
             //
             void on_backPushButton_clicked();
             //
             void on_searchButton_clicked();
+            //
+            void on_prevPagePushButton_clicked();
+            //
+            void on_nextPagePushButton_clicked();
 
         private:
             //
             Ui::AccountView *ui;
             //
             MemberProfileGroupBox       *m_pMemberProfileGroupBox;
+            //
+            Uint32                      m_currentPage;
+            //
+            bool                        m_firstTime;
+            //
+            Int32                       m_currentMemberId;
             //
             CentralWidgetCallback       m_switchCentralWidgetCallback;
     };
