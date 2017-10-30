@@ -29,7 +29,11 @@ namespace PenyaManager {
 
         private:
             //
+            void translateTable();
+            //
             void fillInvoiceList(InvoiceListPtr pInvoiceListPtr);
+            //
+            void initializeTable();
             //
             void updateResults();
 
@@ -56,6 +60,8 @@ namespace PenyaManager {
             RowIdMap                    m_rowProductIdMap;
             //
             bool                        m_firstTime;
+            //
+            Int32                       m_currentMemberId;
             //
             CentralWidgetCallback       m_switchCentralWidgetCallback;
     };

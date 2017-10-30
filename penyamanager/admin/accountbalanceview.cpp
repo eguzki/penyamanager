@@ -137,12 +137,12 @@ namespace PenyaManager {
             this->ui->memberIdResValueLabel->setText(QString("ALL"));
             pTransactionListResultPtr = Singletons::m_pDAO->getAccountList(fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
             if (pTransactionListResultPtr->m_error) {
-                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
                 return;
             }
             pTransactionListStatsResultPtr = Singletons::m_pServices->getAccountListStats(fromDate, toDate);
             if (pTransactionListStatsResultPtr->m_error) {
-                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
                 return;
             }
         } else {
@@ -155,7 +155,7 @@ namespace PenyaManager {
             } else {
                 MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberByUsername(memberUsername);
                 if (pMemberResultPtr->m_error) {
-                    QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                    QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
                     return;
                 }
                 if (!pMemberResultPtr->m_member)
@@ -166,12 +166,12 @@ namespace PenyaManager {
                 }
                 pTransactionListResultPtr = Singletons::m_pDAO->getAccountListByMemberId(pMemberResultPtr->m_member->m_id, fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
                 if (pTransactionListResultPtr->m_error) {
-                    QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                    QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
                     return;
                 }
                 pTransactionListStatsResultPtr = Singletons::m_pServices->getAccountListByMemberIdStats(pMemberResultPtr->m_member->m_id, fromDate, toDate);
                 if (pTransactionListStatsResultPtr->m_error) {
-                    QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                    QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
                     return;
                 }
                 this->ui->memberIdResValueLabel->setText(QString::number(memberUsername));
@@ -179,7 +179,7 @@ namespace PenyaManager {
         }
         // enable-disable pagination buttons
         // total num pages
-        Uint32 numPages = (Uint32)ceil((Float)pTransactionListStatsResultPtr->m_listStats->m_totalNumTransactions/Constants::kInvoiceListPageCount);
+        Uint32 numPages = (Uint32)ceil((Float)pTransactionListStatsResultPtr->m_listStats->m_totalNumTransactions/Constants::kAccountListPageCount);
         this->ui->prevPagePushButton->setEnabled(m_currentPage > 0);
         this->ui->nextPagePushButton->setEnabled(m_currentPage < numPages-1);
         // fill page view
