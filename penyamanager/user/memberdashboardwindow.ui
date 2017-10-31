@@ -21,6 +21,13 @@
     background: rgb(158,158,158);
 }
 
+QHeaderView::section {
+	height: 30px;
+    background: rgb(198, 40, 40);
+	border-style: none;
+    /* ... */
+}
+
 
 QTableWidget{
 font: 18pt &quot;Calibri&quot;;
@@ -384,7 +391,7 @@ font: 40pt &quot;Calibri&quot;;
                <bool>false</bool>
               </property>
               <attribute name="horizontalHeaderStretchLastSection">
-               <bool>false</bool>
+               <bool>true</bool>
               </attribute>
               <attribute name="verticalHeaderVisible">
                <bool>false</bool>

@@ -47,7 +47,7 @@ namespace PenyaManager {
         if (!Singletons::m_pDAO->isOpen()) {
             QSqlError err = Singletons::m_pDAO->lastError();
             QLOG_ERROR() << QString("Unable to initialize Database: %1").arg(err.text());
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             qApp->exit(1);
             return;
         }
@@ -59,7 +59,7 @@ namespace PenyaManager {
         if (pLastInvoiceResultPtr->m_error) {
             // Last invoice not found
             QLOG_INFO() << QString("Last invoice not found");
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
         if (!pLastInvoiceResultPtr->m_pInvoice) {

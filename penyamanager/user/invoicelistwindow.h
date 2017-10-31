@@ -44,8 +44,10 @@ namespace PenyaManager {
             void on_nextPagePushButton_clicked();
             //
             void on_invoicesTableWidget_cellDoubleClicked(int row, int column);
+            //
+            void on_exitButton_2_clicked();
 
-        private:
+    private:
             //
             Ui::InvoiceListWindow *ui;
             //

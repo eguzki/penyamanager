@@ -7,14 +7,18 @@
     <x>0</x>
     <y>0</y>
     <width>1463</width>
-    <height>768</height>
+    <height>836</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Invoice List</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QCalendarWidget QToolButton {
+   <string notr="true">QTableWidget{
+font: 18pt &quot;Calibri&quot;;
+}
+
+QCalendarWidget QToolButton {
   	height: 30px;
   	width: 120px;
   	color: black;
@@ -84,7 +88,7 @@ color: rgb(158,158,158);
        <height>150</height>
       </size>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <layout class="QHBoxLayout" name="horizontalLayout_6">
       <property name="spacing">
        <number>10</number>
       </property>
@@ -101,7 +105,7 @@ color: rgb(158,158,158);
        <number>1</number>
       </property>
       <item>
-       <widget class="QPushButton" name="backPushButton">
+       <widget class="QPushButton" name="tableReservationButton_2">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
           <horstretch>0</horstretch>
@@ -109,12 +113,12 @@ color: rgb(158,158,158);
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Back</string>
+         <string>Reservations</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="searchPushButton">
+       <widget class="QPushButton" name="invoicesPushButton_2">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
           <horstretch>0</horstretch>
@@ -122,7 +126,73 @@ color: rgb(158,158,158);
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Search</string>
+         <string>Invoices</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="accountButton_2">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Account</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="depositsButton_2">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Deposits</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="exitButton_2">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Exit</string>
         </property>
        </widget>
       </item>
@@ -406,6 +476,65 @@ color: rgb(158,158,158);
            <attribute name="verticalHeaderMinimumSectionSize">
             <number>50</number>
            </attribute>
+          </widget>
+         </item>
+         <item>
+          <widget class="QWidget" name="topPanelWidget_2" native="true">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>150</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>150</height>
+            </size>
+           </property>
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <property name="spacing">
+             <number>10</number>
+            </property>
+            <property name="leftMargin">
+             <number>1</number>
+            </property>
+            <property name="topMargin">
+             <number>1</number>
+            </property>
+            <property name="rightMargin">
+             <number>1</number>
+            </property>
+            <property name="bottomMargin">
+             <number>1</number>
+            </property>
+            <item>
+             <widget class="QPushButton" name="backPushButton">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Back</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="searchPushButton">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Search</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </widget>
          </item>
         </layout>
