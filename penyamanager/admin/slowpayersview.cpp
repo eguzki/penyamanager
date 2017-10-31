@@ -85,7 +85,7 @@ namespace PenyaManager {
         {
             MemberPtr pMemberPtr = *iter;
             this->ui->slowPayersTableWidget->setItem(rowCount, 0, new QTableWidgetItem(QString::number(pMemberPtr->m_username)));
-            this->ui->slowPayersTableWidget->setItem(rowCount, 1, new QTableWidgetItem(pMemberPtr->m_name + " " + pMemberPtr->m_surname));
+            this->ui->slowPayersTableWidget->setItem(rowCount, 1, new QTableWidgetItem(pMemberPtr->m_name + " " + pMemberPtr->m_surname1 + " " + pMemberPtr->m_surname2));
             this->ui->slowPayersTableWidget->setItem(rowCount, 2, new QTableWidgetItem(QString("%1 €").arg(pMemberPtr->m_balance, 0, 'f', 2)));
             rowCount++;
         }
@@ -119,7 +119,7 @@ namespace PenyaManager {
         for (MemberList::iterator iter = pMemberListResultPtr->m_list->begin(); iter != pMemberListResultPtr->m_list->end(); ++iter)
         {
             MemberPtr pMemberPtr = *iter;
-            out << pMemberPtr->m_name << " " << pMemberPtr->m_surname << ", " << QString("%1 €").arg(pMemberPtr->m_balance, 0, 'f', 2) << endl;
+            out << pMemberPtr->m_name << " " << pMemberPtr->m_surname1 << " " << pMemberPtr->m_surname2 << ", " << QString("%1 €").arg(pMemberPtr->m_balance, 0, 'f', 2) << endl;
         }
         f.close();
         QMessageBox::information(this, tr("CSV export"), tr("Successfully exported. Filename: %1").arg(filename));

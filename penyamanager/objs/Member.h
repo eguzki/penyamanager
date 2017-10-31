@@ -26,7 +26,9 @@ namespace PenyaManager
             //
             QString             m_name;
             //
-            QString             m_surname;
+            QString             m_surname1;
+            //
+            QString             m_surname2;
             //
             QString             m_imagePath;
             //

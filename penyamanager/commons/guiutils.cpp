@@ -107,21 +107,21 @@ namespace PenyaManager {
             if ((iter+1) == pMemberListPtr->end()) {
                 // last one
                 QVariantHash memberData;
-                memberData["name"] = QString("%1 %2").arg(pMemberPtr->m_name).arg(pMemberPtr->m_surname);
+                memberData["name"] = QString("%1 %2 %3").arg(pMemberPtr->m_name).arg(pMemberPtr->m_surname1).arg(pMemberPtr->m_surname2);
                 memberData["address"] = pMemberPtr->m_address;
                 memberData["zip"] = pMemberPtr->m_zipCode;
                 memberData["town"] = pMemberPtr->m_town;
                 membersPart = Mustache::renderTemplate(singleMembersTemplate, memberData);
             } else {
                 QVariantHash memberData;
-                memberData["name_1"] = QString("%1 %2").arg(pMemberPtr->m_name).arg(pMemberPtr->m_surname);
+                memberData["name_1"] = QString("%1 %2 %3").arg(pMemberPtr->m_name).arg(pMemberPtr->m_surname1).arg(pMemberPtr->m_surname2);
                 memberData["address_1"] = pMemberPtr->m_address;
                 memberData["zip_1"] = pMemberPtr->m_zipCode;
                 memberData["town_1"] = pMemberPtr->m_town;
                 // increment iterator to read next member
                 ++iter;
                 pMemberPtr = *iter;
-                memberData["name_2"] = QString("%1 %2").arg(pMemberPtr->m_name).arg(pMemberPtr->m_surname);
+                memberData["name_2"] = QString("%1 %2 %3").arg(pMemberPtr->m_name).arg(pMemberPtr->m_surname1).arg(pMemberPtr->m_surname2);
                 memberData["address_2"] = pMemberPtr->m_address;
                 memberData["zip_2"] = pMemberPtr->m_zipCode;
                 memberData["town_2"] = pMemberPtr->m_town;

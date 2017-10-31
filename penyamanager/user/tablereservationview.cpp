@@ -158,7 +158,7 @@ namespace PenyaManager {
                     this->ui->tableReservationTableWidget->setItem(rowCount, 2, new QTableWidgetItem(QString(tr("BLOCKED"))));
                 } else
                 {
-                    QString guestName = QString("%1 %2").arg(pReservationPtr->m_memberName).arg(pReservationPtr->m_memberSurname);
+                    QString guestName = QString("%1 %2 %3").arg(pReservationPtr->m_memberName).arg(pReservationPtr->m_memberSurname1).arg(pReservationPtr->m_memberSurname2);
                     this->ui->tableReservationTableWidget->setItem(rowCount, 2, new QTableWidgetItem(guestName));
                     if (pReservationPtr->m_idMember == pMemberPtr->m_id) {
                         // show cancel button action

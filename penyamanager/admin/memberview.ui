@@ -349,10 +349,10 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="memberSurnameLineEdit">
+             <widget class="QLineEdit" name="memberSurname1LineEdit">
               <property name="minimumSize">
                <size>
-                <width>500</width>
+                <width>250</width>
                 <height>0</height>
                </size>
               </property>
@@ -360,6 +360,16 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
                <size>
                 <width>500</width>
                 <height>16777215</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="memberSurname2LineEdit">
+              <property name="minimumSize">
+               <size>
+                <width>250</width>
+                <height>0</height>
                </size>
               </property>
              </widget>
@@ -701,19 +711,6 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
           </widget>
          </item>
         </layout>
-        <zorder>notesLabelwidget</zorder>
-        <zorder>usernameWidget</zorder>
-        <zorder>nameFormWidget</zorder>
-        <zorder>memberSurnameWidget</zorder>
-        <zorder>bankAccountWidget</zorder>
-        <zorder>birthdateWidget</zorder>
-        <zorder>emailWidget</zorder>
-        <zorder>addressWidget</zorder>
-        <zorder>zipCodeWidget</zorder>
-        <zorder>townWidget</zorder>
-        <zorder>stateWidget</zorder>
-        <zorder>phoneWidget</zorder>
-        <zorder>phone2Widget</zorder>
        </widget>
       </item>
       <item>
