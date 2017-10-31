@@ -48,7 +48,9 @@ padding-right: 5px;
 QPushButton:pressed {
 background-color: rgb(239,83,80);
 }
-
+QPushButton:checked {
+background-color: rgb(239,83,80);
+}
 
 QLabel{
 font: 12pt &quot;Calibri&quot;;

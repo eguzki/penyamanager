@@ -14,8 +14,10 @@ namespace PenyaManager {
         ui(new Ui::AdminReservationsWindow)
     {
         ui->setupUi(this);
-        this->ui->reservationTypeButtonGroup->setId(this->ui->dinnerButton, static_cast<Int32>(ReservationType::Dinner));
+        this->ui->reservationTypeButtonGroup->setId(this->ui->midMorningButton, static_cast<Int32>(ReservationType::MidMorning));
         this->ui->reservationTypeButtonGroup->setId(this->ui->lunchButton, static_cast<Int32>(ReservationType::Lunch));
+        this->ui->reservationTypeButtonGroup->setId(this->ui->supperButton, static_cast<Int32>(ReservationType::Supper));
+        this->ui->reservationTypeButtonGroup->setId(this->ui->dinnerButton, static_cast<Int32>(ReservationType::Dinner));
         initializeTable();
         this->ui->calendarWidget->setLocale(Singletons::m_translationManager.getLocale());
     }
@@ -79,12 +81,18 @@ namespace PenyaManager {
         this->ui->calendarWidget->setSelectedDate(nowDate);
         // set minimum selectable date
         this->ui->calendarWidget->setMinimumDate(nowDate);
-        // reservation type (lunch/dinner) buttons
+        // reservation type (midmorning,lunch,supper,dinner) buttons
+        this->ui->midMorningButton->setEnabled(true);
         this->ui->lunchButton->setEnabled(true);
+        this->ui->supperButton->setEnabled(true);
         this->ui->dinnerButton->setEnabled(true);
+        this->ui->midMorningButton->setCheckable(true);
         this->ui->lunchButton->setCheckable(true);
+        this->ui->supperButton->setCheckable(true);
         this->ui->dinnerButton->setCheckable(true);
+        this->ui->midMorningButton->setChecked(false);
         this->ui->lunchButton->setChecked(true);
+        this->ui->supperButton->setChecked(false);
         this->ui->dinnerButton->setChecked(false);
         this->ui->calendarWidget->setSelectionMode(QCalendarWidget::SingleSelection);
         fillReservations(nowDate, ReservationType::Lunch);
@@ -208,6 +216,16 @@ namespace PenyaManager {
             rowCount++;
         }
     }
+    void AdminReservationsWindow::on_midMorningButton_clicked(bool checked)
+    {
+        if (!checked) {
+            // discard event of unchecked button
+            return;
+        }
+
+        QDate date = this->ui->calendarWidget->selectedDate();
+        fillReservations(date, ReservationType::MidMorning);
+    }
     void AdminReservationsWindow::on_lunchButton_clicked(bool checked)
     {
         if (!checked) {
@@ -218,7 +236,17 @@ namespace PenyaManager {
         QDate date = this->ui->calendarWidget->selectedDate();
         fillReservations(date, ReservationType::Lunch);
     }
+    void AdminReservationsWindow::on_supperButton_clicked(bool checked)
+    {
+        if (!checked) {
+            // discard event of unchecked button
+            return;
+        }
 
+        QDate date = this->ui->calendarWidget->selectedDate();
+        fillReservations(date, ReservationType::Supper);
+    }
+    //
     void AdminReservationsWindow::on_dinnerButton_clicked(bool checked)
     {
         if (!checked) {
