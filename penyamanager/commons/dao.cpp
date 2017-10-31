@@ -188,7 +188,7 @@ namespace PenyaManager {
             QueryPtr queryPtr(new QSqlQuery);
             // Member by id
             queryPtr->prepare(
-                    "SELECT member.name, member.username, member.surname, member.image, member.lastmodified, member.reg_date, member.active, member.isAdmin, member.birth, "
+                    "SELECT member.name, member.username, member.surname1, member.surname2, member.image, member.lastmodified, member.reg_date, member.active, member.isAdmin, member.birth, "
                     "member.address, member.zip_code, member.town, member.state, member.tel, member.tel2, member.email, member.bank_account, member.postal_send, "
                     "member.notes, member.pwd, member.lastlogin "
                     "FROM member "
@@ -212,7 +212,8 @@ namespace PenyaManager {
             pMemberPtr->m_id = memberId;
             pMemberPtr->m_name = queryResponse.query->value(column++).toString();
             pMemberPtr->m_username = queryResponse.query->value(column++).toInt();
-            pMemberPtr->m_surname = queryResponse.query->value(column++).toString();
+            pMemberPtr->m_surname1 = queryResponse.query->value(column++).toString();
+            pMemberPtr->m_surname2 = queryResponse.query->value(column++).toString();
             pMemberPtr->m_imagePath = queryResponse.query->value(column++).toString();
             pMemberPtr->m_lastModified = queryResponse.query->value(column++).toDateTime();
             pMemberPtr->m_regDate = queryResponse.query->value(column++).toDateTime();
@@ -243,7 +244,7 @@ namespace PenyaManager {
             QueryPtr queryPtr(new QSqlQuery);
             // Member by username
             queryPtr->prepare(
-                    "SELECT member.idmember, member.name, member.surname, member.image, member.lastmodified, member.reg_date, member.active, member.isAdmin, member.birth, "
+                    "SELECT member.idmember, member.name, member.surname1, member.surname2, member.image, member.lastmodified, member.reg_date, member.active, member.isAdmin, member.birth, "
                     "member.address, member.zip_code, member.town, member.state, member.tel, member.tel2, member.email, member.bank_account, member.postal_send, "
                     "member.notes, member.pwd, member.lastlogin "
                     "FROM member "
@@ -265,7 +266,8 @@ namespace PenyaManager {
             pMemberPtr->m_id = queryResponse.query->value(column++).toInt();
             pMemberPtr->m_name = queryResponse.query->value(column++).toString();
             pMemberPtr->m_username = username;
-            pMemberPtr->m_surname = queryResponse.query->value(column++).toString();
+            pMemberPtr->m_surname1 = queryResponse.query->value(column++).toString();
+            pMemberPtr->m_surname2 = queryResponse.query->value(column++).toString();
             pMemberPtr->m_imagePath = queryResponse.query->value(column++).toString();
             pMemberPtr->m_lastModified = queryResponse.query->value(column++).toDateTime();
             pMemberPtr->m_regDate = queryResponse.query->value(column++).toDateTime();
@@ -1076,7 +1078,7 @@ namespace PenyaManager {
             QueryPtr queryPtr(new QSqlQuery);
             // table reservation list for a given moment (date and reservationtype)
             queryPtr->prepare(
-                    "SELECT tablereservation.idreservation, tablereservation.idtable, member.username, member.name, member.surname, tablereservation.idmember, tablereservation.guestnum, tablereservation.isadmin "
+                    "SELECT tablereservation.idreservation, tablereservation.idtable, member.username, member.name, member.surname1, member.surname2, tablereservation.idmember, tablereservation.guestnum, tablereservation.isadmin "
                     "FROM tablereservation "
                     "INNER JOIN member ON tablereservation.idmember=member.idmember "
                     "WHERE date=:dateid "
@@ -1104,7 +1106,8 @@ namespace PenyaManager {
                 pReservationPtr->m_idItem = queryResponse.query->value(column++).toInt();
                 pReservationPtr->m_memberUsername = queryResponse.query->value(column++).toInt();
                 pReservationPtr->m_memberName = queryResponse.query->value(column++).toString();
-                pReservationPtr->m_memberSurname = queryResponse.query->value(column++).toString();
+                pReservationPtr->m_memberSurname1 = queryResponse.query->value(column++).toString();
+                pReservationPtr->m_memberSurname2 = queryResponse.query->value(column++).toString();
                 pReservationPtr->m_idMember = queryResponse.query->value(column++).toInt();
                 pReservationPtr->m_guestNum = queryResponse.query->value(column++).toUInt();
                 pReservationPtr->m_isAdmin = queryResponse.query->value(column++).toInt() == 1;
@@ -1123,7 +1126,7 @@ namespace PenyaManager {
             QueryPtr queryPtr(new QSqlQuery);
             // oven reservation list for a given moment (date and reservationtype)
             queryPtr->prepare(
-                    "SELECT ovenreservation.idreservation, ovenreservation.idoven, member.username, member.name, member.surname, ovenreservation.idmember, ovenreservation.isadmin "
+                    "SELECT ovenreservation.idreservation, ovenreservation.idoven, member.username, member.name, member.surname1, member.surname2, ovenreservation.idmember, ovenreservation.isadmin "
                     "FROM ovenreservation "
                     "INNER JOIN member ON ovenreservation.idmember=member.idmember "
                     "WHERE date=:dateid "
@@ -1151,7 +1154,8 @@ namespace PenyaManager {
                 pReservationPtr->m_idItem = queryResponse.query->value(column++).toInt();
                 pReservationPtr->m_memberUsername = queryResponse.query->value(column++).toInt();
                 pReservationPtr->m_memberName = queryResponse.query->value(column++).toString();
-                pReservationPtr->m_memberSurname = queryResponse.query->value(column++).toString();
+                pReservationPtr->m_memberSurname1 = queryResponse.query->value(column++).toString();
+                pReservationPtr->m_memberSurname2 = queryResponse.query->value(column++).toString();
                 pReservationPtr->m_idMember = queryResponse.query->value(column++).toInt();
                 pReservationPtr->m_guestNum = 0;
                 pReservationPtr->m_isAdmin = queryResponse.query->value(column++).toInt() == 1;
@@ -1170,7 +1174,7 @@ namespace PenyaManager {
             QueryPtr queryPtr(new QSqlQuery);
             // oven reservation list for a given moment (date and reservationtype)
             queryPtr->prepare(
-                    "SELECT fireplacereservation.idreservation, fireplacereservation.idfireplace, member.username, member.name, member.surname, fireplacereservation.idmember, fireplacereservation.isadmin "
+                    "SELECT fireplacereservation.idreservation, fireplacereservation.idfireplace, member.username, member.name, member.surname1, member.surname2, fireplacereservation.idmember, fireplacereservation.isadmin "
                     "FROM fireplacereservation "
                     "INNER JOIN member ON fireplacereservation.idmember=member.idmember "
                     "WHERE date=:dateid "
@@ -1198,7 +1202,8 @@ namespace PenyaManager {
                 pReservationPtr->m_idItem = queryResponse.query->value(column++).toInt();
                 pReservationPtr->m_memberUsername = queryResponse.query->value(column++).toInt();
                 pReservationPtr->m_memberName = queryResponse.query->value(column++).toString();
-                pReservationPtr->m_memberSurname = queryResponse.query->value(column++).toString();
+                pReservationPtr->m_memberSurname1 = queryResponse.query->value(column++).toString();
+                pReservationPtr->m_memberSurname2 = queryResponse.query->value(column++).toString();
                 pReservationPtr->m_idMember = queryResponse.query->value(column++).toInt();
                 pReservationPtr->m_isAdmin = queryResponse.query->value(column++).toInt() == 1;
                 pReservationPtr->m_guestNum = 0;
@@ -1536,7 +1541,7 @@ namespace PenyaManager {
             // First INNER JOIN on the same table (account) gets balance for the row with last (newest) account date
             // Second INNER JOIN on members table get member information
             queryPtr->prepare(
-                    "SELECT ac.idmember, member.username, member.name, member.surname, member.image, ac.balance, member.lastmodified, member.reg_date "
+                    "SELECT ac.idmember, member.username, member.name, member.surname1, member.surname2, member.image, ac.balance, member.lastmodified, member.reg_date "
                     "FROM account ac "
                     "INNER JOIN (SELECT account.idmember, MAX(account.date) AS MaxDate FROM account GROUP BY account.idmember) groupedAccount "
                     "ON ac.idmember = groupedAccount.idmember AND ac.date=groupedAccount.MaxDate "
@@ -1559,7 +1564,8 @@ namespace PenyaManager {
                 pMemberPtr->m_id =  queryResponse.query->value(column++).toInt();
                 pMemberPtr->m_username =  queryResponse.query->value(column++).toInt();
                 pMemberPtr->m_name =  queryResponse.query->value(column++).toString();
-                pMemberPtr->m_surname =  queryResponse.query->value(column++).toString();
+                pMemberPtr->m_surname1 =  queryResponse.query->value(column++).toString();
+                pMemberPtr->m_surname2 =  queryResponse.query->value(column++).toString();
                 pMemberPtr->m_imagePath =  queryResponse.query->value(column++).toString();
                 pMemberPtr->m_balance =  queryResponse.query->value(column++).toFloat();
                 pMemberPtr->m_lastModified =  queryResponse.query->value(column++).toDateTime();
@@ -2580,7 +2586,7 @@ namespace PenyaManager {
             if (onlyPostalSend) {
                 // member filtered list
                 queryPtr->prepare(
-                        "SELECT member.idmember, member.username, member.name, member.surname, member.image, member.lastmodified, member.reg_date, member.active, member.isAdmin, member.birth, "
+                        "SELECT member.idmember, member.username, member.name, member.surname1, member.surname2, member.image, member.lastmodified, member.reg_date, member.active, member.isAdmin, member.birth, "
                         "member.address, member.zip_code, member.town, member.state, member.tel, member.tel2, member.email, member.bank_account, member.postal_send, "
                         "member.notes, ac.balance "
                         "FROM account ac "
@@ -2588,20 +2594,20 @@ namespace PenyaManager {
                         "ON ac.idmember = groupedAccount.idmember AND ac.date=groupedAccount.MaxDate "
                         "INNER JOIN member ON member.idmember=ac.idmember "
                         "WHERE member.postal_send = 1 "
-                        "ORDER BY member.surname ASC "
+                        "ORDER BY member.surname1 ASC "
                         "LIMIT :limit OFFSET :offset"
                         );
             } else {
                 // member list
                 queryPtr->prepare(
-                        "SELECT member.idmember, member.username, member.name, member.surname, member.image, member.lastmodified, member.reg_date, member.active, member.isAdmin, member.birth, "
+                        "SELECT member.idmember, member.username, member.name, member.surname1, member.surname2, member.image, member.lastmodified, member.reg_date, member.active, member.isAdmin, member.birth, "
                         "member.address, member.zip_code, member.town, member.state, member.tel, member.tel2, member.email, member.bank_account, member.postal_send, "
                         "member.notes, ac.balance "
                         "FROM account ac "
                         "INNER JOIN (SELECT account.idmember, MAX(account.date) AS MaxDate FROM account GROUP BY account.idmember) groupedAccount "
                         "ON ac.idmember = groupedAccount.idmember AND ac.date=groupedAccount.MaxDate "
                         "INNER JOIN member ON member.idmember=ac.idmember "
-                        "ORDER BY member.surname ASC "
+                        "ORDER BY member.surname1 ASC "
                         "LIMIT :limit OFFSET :offset"
                         );
             }
@@ -2623,7 +2629,8 @@ namespace PenyaManager {
                 pMemberPtr->m_id = queryResponse.query->value(column++).toInt();
                 pMemberPtr->m_username = queryResponse.query->value(column++).toInt();
                 pMemberPtr->m_name = queryResponse.query->value(column++).toString();
-                pMemberPtr->m_surname = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_surname1 = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_surname2 = queryResponse.query->value(column++).toString();
                 pMemberPtr->m_imagePath = queryResponse.query->value(column++).toString();
                 pMemberPtr->m_lastModified = queryResponse.query->value(column++).toDateTime();
                 pMemberPtr->m_regDate = queryResponse.query->value(column++).toDateTime();
@@ -2687,7 +2694,7 @@ namespace PenyaManager {
             // update  member
             queryPtr->prepare(
                     "UPDATE member "
-                    "SET username=:username, name=:name, surname=:surname, image=:image, lastmodified=:lastmodified, active=:active, isAdmin=:isadmin, birth=:birth, "
+                    "SET username=:username, name=:name, surname1=:surname1, surname2=:surname2, image=:image, lastmodified=:lastmodified, active=:active, isAdmin=:isadmin, birth=:birth, "
                     "address=:address, zip_code=:zip_code, town=:town, state=:state, tel=:tel, tel2=:tel2, email=:email, bank_account=:bank_account, postal_send=:postal_send, "
                     "notes=:notes "
                     "WHERE idmember = :memberid"
@@ -2696,7 +2703,8 @@ namespace PenyaManager {
             queryPtr->bindValue(":memberid", pMemberPtr->m_id);
             queryPtr->bindValue(":username", pMemberPtr->m_username);
             queryPtr->bindValue(":name", pMemberPtr->m_name);
-            queryPtr->bindValue(":surname", pMemberPtr->m_surname);
+            queryPtr->bindValue(":surname1", pMemberPtr->m_surname1);
+            queryPtr->bindValue(":surname2", pMemberPtr->m_surname2);
             queryPtr->bindValue(":lastmodified", pMemberPtr->m_lastModified);
             queryPtr->bindValue(":active", pMemberPtr->m_active?1:0);
             queryPtr->bindValue(":isadmin", pMemberPtr->m_isAdmin?1:0);
@@ -2771,17 +2779,18 @@ namespace PenyaManager {
             // create member
             queryPtr->prepare(
                     "INSERT INTO member "
-                    "(username, name, surname, image, lastmodified, reg_date, active, isAdmin, birth, "
+                    "(username, name, surname1, surname2, image, lastmodified, reg_date, active, isAdmin, birth, "
                     "address, zip_code, town, state, tel, tel2, email, bank_account, postal_send, "
                     "notes, pwd, lastlogin) "
-                    "VALUES (:username, :name, :surname, :image, :lastmodified, :reg_date, :active, :isadmin, :birth, "
+                    "VALUES (:username, :name, :surname1, :surname2, :image, :lastmodified, :reg_date, :active, :isadmin, :birth, "
                     ":address, :zip_code, :town, :state, :tel, :tel2, :email, :bank_account, :postal_send, "
                     ":notes, :pwd, :lastlogin)"
                     );
             // obligatory
             queryPtr->bindValue(":username", pMemberPtr->m_username);
             queryPtr->bindValue(":name", pMemberPtr->m_name);
-            queryPtr->bindValue(":surname", pMemberPtr->m_surname);
+            queryPtr->bindValue(":surname1", pMemberPtr->m_surname1);
+            queryPtr->bindValue(":surname2", pMemberPtr->m_surname2);
             queryPtr->bindValue(":lastmodified", pMemberPtr->m_lastModified);
             queryPtr->bindValue(":reg_date", pMemberPtr->m_regDate);
             queryPtr->bindValue(":active", pMemberPtr->m_active?1:0);

@@ -42,8 +42,10 @@ namespace PenyaManager {
         this->ui->lastLoginValueLabel->setText("-");
         // name
         this->ui->nameLineEdit->clear();
-        // surname
-        this->ui->memberSurnameLineEdit->clear();
+        // surname1
+        this->ui->memberSurname1LineEdit->clear();
+        // surname2
+        this->ui->memberSurname2LineEdit->clear();
         // show image
         QPixmap memberPixmap = GuiUtils::getImage("");
         this->ui->imageLabel->setPixmap(memberPixmap);
@@ -117,10 +119,16 @@ namespace PenyaManager {
             QMessageBox::warning(this, tr("Data missing"), tr("Name cannot be empty"));
             return;
         }
-        // surname
-        QString memberSurname = this->ui->memberSurnameLineEdit->text();
-        if (memberSurname.isEmpty()){
-            QMessageBox::warning(this, tr("Data missing"), tr("Surname cannot be empty"));
+        // surname1
+        QString memberSurname1 = this->ui->memberSurname1LineEdit->text();
+        if (memberSurname1.isEmpty()){
+            QMessageBox::warning(this, tr("Data missing"), tr("First surname cannot be empty"));
+            return;
+        }
+        // surname2
+        QString memberSurname2 = this->ui->memberSurname2LineEdit->text();
+        if (memberSurname2.isEmpty()){
+            QMessageBox::warning(this, tr("Data missing"), tr("Second surname cannot be empty"));
             return;
         }
         // bank_account
@@ -156,8 +164,10 @@ namespace PenyaManager {
             pMemberResultPtr->m_member->m_name = this->ui->nameLineEdit->text();
             // username
             pMemberResultPtr->m_member->m_username = this->ui->usernameLineEdit->text().toInt();
-            // surname
-            pMemberResultPtr->m_member->m_surname = this->ui->memberSurnameLineEdit->text();
+            // surname1
+            pMemberResultPtr->m_member->m_surname1 = this->ui->memberSurname1LineEdit->text();
+            // surname2
+            pMemberResultPtr->m_member->m_surname2 = this->ui->memberSurname2LineEdit->text();
             // imagePath (optional)
             if (!this->m_memberImageFilename.isEmpty()) {
                 QString destFileName = Utils::newImageName("member", this->m_memberImageFilename);
@@ -234,8 +244,9 @@ namespace PenyaManager {
             }
             // name
             pMemberPtr->m_name = this->ui->nameLineEdit->text();
-            // surname
-            pMemberPtr->m_surname = this->ui->memberSurnameLineEdit->text();
+            // surname1
+            pMemberPtr->m_surname1 = this->ui->memberSurname1LineEdit->text();
+            pMemberPtr->m_surname2 = this->ui->memberSurname2LineEdit->text();
             // imagePath (optional)
             if (!this->m_memberImageFilename.isEmpty()) {
                 // new image was selected
@@ -323,8 +334,10 @@ namespace PenyaManager {
         this->ui->usernameLineEdit->setText(QString::number(pMemberResultPtr->m_member->m_username));
         // name
         this->ui->nameLineEdit->setText(pMemberResultPtr->m_member->m_name);
-        // surname
-        this->ui->memberSurnameLineEdit->setText(pMemberResultPtr->m_member->m_surname);
+        // surname1
+        this->ui->memberSurname1LineEdit->setText(pMemberResultPtr->m_member->m_surname1);
+        // surname2
+        this->ui->memberSurname2LineEdit->setText(pMemberResultPtr->m_member->m_surname2);
         // show image
         QString imagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pMemberResultPtr->m_member->m_imagePath);
         QPixmap productPixmap = GuiUtils::getImage(imagePath);

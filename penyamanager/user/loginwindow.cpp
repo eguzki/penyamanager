@@ -233,7 +233,7 @@ namespace PenyaManager {
         this->ui->memberImageLabel->setFixedHeight(Constants::kMemberImageHeigth*2);
         this->ui->memberImageLabel->setScaledContents(true);
         // name
-        this->ui->memberNameLabel->setText(pLastInvoiceOwnerPtr->m_name + " " + pLastInvoiceOwnerPtr->m_surname);
+        this->ui->memberNameLabel->setText(QString("%1 %2 %3").arg(pLastInvoiceOwnerPtr->m_name).arg(pLastInvoiceOwnerPtr->m_surname1).arg(pLastInvoiceOwnerPtr->m_surname2));
         // id
         this->ui->memberIdLabel->setText(QString::number(pLastInvoiceOwnerPtr->m_username));
     }

@@ -195,7 +195,7 @@ namespace PenyaManager {
         // invoice general info
         invoiceData["invoiceId"] = pInvoicePtr->m_id;
         invoiceData["memberid"] = pMemberPtr->m_username;
-        invoiceData["memberName"] = QString("%1 %2").arg(pMemberPtr->m_name).arg(pMemberPtr->m_surname);
+        invoiceData["memberName"] = QString("%1 %2 %3").arg(pMemberPtr->m_name).arg(pMemberPtr->m_surname1).arg(pMemberPtr->m_surname2);
         // invoice date is invoice creation date
         // Can be old (e.g. an unclosed invoice created some days ago)
         // print current date

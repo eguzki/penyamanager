@@ -198,7 +198,7 @@ namespace PenyaManager {
                     this->connect(pCancelButton, &QPushButton::clicked, std::bind(&AdminReservationsWindow::on_cancelButton_clicked, this, pReservationPtr->m_reservationId, pReservationItemPtr->m_itemType));
                     this->ui->tableReservationTableWidget->setCellWidget(rowCount, 5, pCancelButton);
                 } else {
-                    QString guestName = QString("%1 %2").arg(pReservationPtr->m_memberName).arg(pReservationPtr->m_memberSurname);
+                    QString guestName = QString("%1 %2 %3").arg(pReservationPtr->m_memberName).arg(pReservationPtr->m_memberSurname1).arg(pReservationPtr->m_memberSurname2);
                     this->ui->tableReservationTableWidget->setItem(rowCount, 3, new QTableWidgetItem(guestName));
                     QPushButton *pReservationButton = new QPushButton(tr("Reserve"), this->ui->tableReservationTableWidget);
                     this->connect(pReservationButton, &QPushButton::clicked, std::bind(updateReservationCallback, pReservationPtr->m_reservationId));
