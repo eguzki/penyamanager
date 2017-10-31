@@ -11,7 +11,9 @@ namespace PenyaManager
     //
     enum class ReservationType
     {
+        MidMorning,
         Lunch,
+        Supper,
         Dinner
     };
     //

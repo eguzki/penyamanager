@@ -13,7 +13,7 @@
 
 namespace PenyaManager {
     // Rules:
-    // * One member, one reservation in a given (day, reservationtype {lunch, dinner})
+    // * One member, one reservation in a given (day, reservationtype {mid-morning, lunch, supper, dinner})
     // * Reservations can be done only for the current week days
     // * Reservations are available since Monday 06:00AM till Sunday 23:59PM
     // * Reservations can be cancelled
@@ -27,8 +27,10 @@ namespace PenyaManager {
     {
         ui->setupUi(this);
         this->ui->topPanelWidget->layout()->addWidget(m_pMemberProfileGroupBox);
-        this->ui->reservationTypeButtonGroup->setId(this->ui->dinnerButton, static_cast<Int32>(ReservationType::Dinner));
+        this->ui->reservationTypeButtonGroup->setId(this->ui->midMorningButton, static_cast<Int32>(ReservationType::MidMorning));
         this->ui->reservationTypeButtonGroup->setId(this->ui->lunchButton, static_cast<Int32>(ReservationType::Lunch));
+        this->ui->reservationTypeButtonGroup->setId(this->ui->supperButton, static_cast<Int32>(ReservationType::Supper));
+        this->ui->reservationTypeButtonGroup->setId(this->ui->dinnerButton, static_cast<Int32>(ReservationType::Dinner));
         initializeTable();
         this->ui->calendarWidget->setLocale(Singletons::m_translationManager.getLocale());
     }
@@ -109,16 +111,24 @@ namespace PenyaManager {
         if (nowDate.dayOfWeek() == 1 && nowDateTime.time().hour() < 6) {
             // monday before deadline, user cannot select for reservation
             this->ui->calendarWidget->setSelectionMode(QCalendarWidget::NoSelection);
-            // reservation type (lunch/dinner) buttons
+            // reservation type (midmorning,lunch,supper,dinner) buttons
+            this->ui->midMorningButton->setEnabled(false);
             this->ui->lunchButton->setEnabled(false);
+            this->ui->supperButton->setEnabled(false);
             this->ui->dinnerButton->setEnabled(false);
         } else {
-            // reservation type (lunch/dinner) buttons
+            // reservation type (midmorning,lunch,supper,dinner) buttons
+            this->ui->midMorningButton->setEnabled(true);
             this->ui->lunchButton->setEnabled(true);
+            this->ui->supperButton->setEnabled(true);
             this->ui->dinnerButton->setEnabled(true);
+            this->ui->midMorningButton->setCheckable(true);
             this->ui->lunchButton->setCheckable(true);
+            this->ui->supperButton->setCheckable(true);
             this->ui->dinnerButton->setCheckable(true);
+            this->ui->midMorningButton->setChecked(false);
             this->ui->lunchButton->setChecked(true);
+            this->ui->supperButton->setChecked(false);
             this->ui->dinnerButton->setChecked(false);
             this->ui->calendarWidget->setSelectionMode(QCalendarWidget::SingleSelection);
             fillTableReservations(pCurrMemberPtr, nowDate, ReservationType::Lunch);
@@ -331,6 +341,18 @@ namespace PenyaManager {
         fillTableReservations(pCurrMemberPtr, date, reservationType);
     }
     //
+    void TableReservationView::on_midMorningButton_clicked(bool checked)
+    {
+        if (!checked) {
+            // discard event of unchecked button
+            return;
+        }
+
+        QDate date = this->ui->calendarWidget->selectedDate();
+        MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
+        fillTableReservations(pCurrMemberPtr, date, ReservationType::MidMorning);
+    }
+    //
     void TableReservationView::on_lunchButton_clicked(bool checked)
     {
         if (!checked) {
@@ -343,7 +365,18 @@ namespace PenyaManager {
         fillTableReservations(pCurrMemberPtr, date, ReservationType::Lunch);
     }
     //
+    void TableReservationView::on_supperButton_clicked(bool checked)
+    {
+        if (!checked) {
+            // discard event of unchecked button
+            return;
+        }
 
+        QDate date = this->ui->calendarWidget->selectedDate();
+        MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
+        fillTableReservations(pCurrMemberPtr, date, ReservationType::Supper);
+    }
+    //
     void TableReservationView::on_dinnerButton_clicked(bool checked)
     {
         if (!checked) {
