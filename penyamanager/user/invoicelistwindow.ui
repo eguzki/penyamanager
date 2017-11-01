@@ -411,6 +411,13 @@ color: rgb(158,158,158);
              </widget>
             </item>
             <item>
+             <widget class="QLabel" name="pageInfoLabel">
+              <property name="text">
+               <string notr="true">X / Y</string>
+              </property>
+             </widget>
+            </item>
+            <item>
              <widget class="QPushButton" name="nextPagePushButton">
               <property name="text">
                <string>&gt;</string>
@@ -460,6 +467,9 @@ color: rgb(158,158,158);
            </property>
            <property name="editTriggers">
             <set>QAbstractItemView::NoEditTriggers</set>
+           </property>
+           <property name="alternatingRowColors">
+            <bool>true</bool>
            </property>
            <property name="selectionMode">
             <enum>QAbstractItemView::SingleSelection</enum>

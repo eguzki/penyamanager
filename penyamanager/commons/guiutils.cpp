@@ -23,10 +23,9 @@ namespace PenyaManager {
     //
     void GuiUtils::printText(const QString& html)
     {
-        QLOG_INFO() << QString("[Print] print ini");
         QPrinterInfo defaultPrinter = QPrinterInfo::defaultPrinter();
         if (defaultPrinter.isNull()) {
-            QLOG_ERROR() << QString("[PrintFailed] default printer is null");
+            QLOG_ERROR() << QString("[Print] default printer is null");
             return;
         }
         QPrinter printer( defaultPrinter);
@@ -53,7 +52,6 @@ namespace PenyaManager {
         // Use tables for layout
         textDocument.setPageSize(pageSize); // the document needs a valid PageSize
         textDocument.setHtml(html);
-        QLOG_INFO() << QString("[Print] print");
         textDocument.print(&printer);
     }
     //
@@ -68,8 +66,8 @@ namespace PenyaManager {
         invoiceTemplateStream.setCodec("UTF-8");
         QString invoiceTemplate = invoiceTemplateStream.readAll();
         QString invoiceHtml = Mustache::renderTemplate(invoiceTemplate, invoiceData);
-        GuiUtils::printText(invoiceHtml);
         QLOG_INFO() << QString("[Print] print invoice user %1 invoice %2").arg(memberId).arg(invoiceId);
+        GuiUtils::printText(invoiceHtml);
     }
     //
     void GuiUtils::printPostalMembers(const MemberListPtr pMemberListPtr)
@@ -109,21 +107,21 @@ namespace PenyaManager {
             if ((iter+1) == pMemberListPtr->end()) {
                 // last one
                 QVariantHash memberData;
-                memberData["name"] = QString("%1 %2").arg(pMemberPtr->m_name).arg(pMemberPtr->m_surname);
+                memberData["name"] = QString("%1 %2 %3").arg(pMemberPtr->m_name).arg(pMemberPtr->m_surname1).arg(pMemberPtr->m_surname2);
                 memberData["address"] = pMemberPtr->m_address;
                 memberData["zip"] = pMemberPtr->m_zipCode;
                 memberData["town"] = pMemberPtr->m_town;
                 membersPart = Mustache::renderTemplate(singleMembersTemplate, memberData);
             } else {
                 QVariantHash memberData;
-                memberData["name_1"] = QString("%1 %2").arg(pMemberPtr->m_name).arg(pMemberPtr->m_surname);
+                memberData["name_1"] = QString("%1 %2 %3").arg(pMemberPtr->m_name).arg(pMemberPtr->m_surname1).arg(pMemberPtr->m_surname2);
                 memberData["address_1"] = pMemberPtr->m_address;
                 memberData["zip_1"] = pMemberPtr->m_zipCode;
                 memberData["town_1"] = pMemberPtr->m_town;
                 // increment iterator to read next member
                 ++iter;
                 pMemberPtr = *iter;
-                memberData["name_2"] = QString("%1 %2").arg(pMemberPtr->m_name).arg(pMemberPtr->m_surname);
+                memberData["name_2"] = QString("%1 %2 %3").arg(pMemberPtr->m_name).arg(pMemberPtr->m_surname1).arg(pMemberPtr->m_surname2);
                 memberData["address_2"] = pMemberPtr->m_address;
                 memberData["zip_2"] = pMemberPtr->m_zipCode;
                 memberData["town_2"] = pMemberPtr->m_town;
@@ -135,9 +133,7 @@ namespace PenyaManager {
         QVariantHash htmlVariant;
         htmlVariant["members"] = membersHtml;
         QString html = Mustache::renderTemplate(memberTemplate, htmlVariant);
-        QLOG_DEBUG() << html;
-        GuiUtils::printText(html);
         QLOG_INFO() << QString("[Print] print member list");
-
+        GuiUtils::printText(html);
     }
 }

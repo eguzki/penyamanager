@@ -150,7 +150,7 @@ namespace PenyaManager {
             Uint32 column = 0;
             this->ui->memberTableWidget->setRowHeight(rowCount, Constants::kFamilyImageHeigth);
             this->ui->memberTableWidget->setItem(rowCount, column++, memberImageWidget);
-            this->ui->memberTableWidget->setItem(rowCount, column++, new QTableWidgetItem(pMemberPtr->m_surname));
+            this->ui->memberTableWidget->setItem(rowCount, column++, new QTableWidgetItem(QString("%1 %2").arg(pMemberPtr->m_surname1).arg(pMemberPtr->m_surname2)));
             this->ui->memberTableWidget->setItem(rowCount, column++, new QTableWidgetItem(pMemberPtr->m_name));
             this->ui->memberTableWidget->setItem(rowCount, column++, new QTableWidgetItem(QString::number(pMemberPtr->m_username)));
             this->ui->memberTableWidget->setItem(rowCount, column++, new QTableWidgetItem(QString::number(pMemberPtr->m_balance, 'f', 2)));
@@ -210,7 +210,7 @@ namespace PenyaManager {
         for (MemberList::iterator iter = pMemberListResultPtr->m_list->begin(); iter != pMemberListResultPtr->m_list->end(); ++iter)
         {
             MemberPtr pMemberPtr = *iter;
-            out << pMemberPtr->m_name << " " << pMemberPtr->m_surname << ", " << QString("%1 €").arg(pMemberPtr->m_balance, 0, 'f', 2) << endl;
+            out << pMemberPtr->m_name << " " << pMemberPtr->m_surname1 << " " << pMemberPtr->m_surname2 << ", " << QString("%1 €").arg(pMemberPtr->m_balance, 0, 'f', 2) << endl;
         }
         f.close();
         QMessageBox::information(this, tr("CSV export"), tr("Successfully exported. Filename: %1").arg(filename));

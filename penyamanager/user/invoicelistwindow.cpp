@@ -13,6 +13,7 @@ namespace PenyaManager {
         m_pMemberProfileGroupBox(new MemberProfileGroupBox),
         m_currentPage(0),
         m_firstTime(true),
+        m_currentMemberId(-1),
         m_switchCentralWidgetCallback(callback)
     {
         ui->setupUi(this);
@@ -28,11 +29,24 @@ namespace PenyaManager {
 
         this->ui->fromDateResultValueLabel->clear();
         this->ui->toDateResultValueLabel->clear();
+        initializeTable();
     }
     //
     InvoiceListWindow::~InvoiceListWindow()
     {
         delete ui;
+    }
+    //
+    void InvoiceListWindow::initializeTable()
+    {
+        // table
+        this->ui->invoicesTableWidget->setColumnCount(2);
+        QHeaderView* header = this->ui->invoicesTableWidget->horizontalHeader();
+        header->setSectionResizeMode(QHeaderView::Fixed);
+        translateTable();
+        Uint32 column = 0;
+        this->ui->invoicesTableWidget->setColumnWidth(column++, 380);
+        this->ui->invoicesTableWidget->setColumnWidth(column++, 100);
     }
     //
     void InvoiceListWindow::init()
@@ -44,7 +58,7 @@ namespace PenyaManager {
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
         this->m_pMemberProfileGroupBox->init(pCurrMemberPtr);
 
-        if (this->m_firstTime) {
+        if (this->m_firstTime || m_currentMemberId != pCurrMemberPtr->m_id) {
             updateResults();
         }
     }
@@ -52,10 +66,40 @@ namespace PenyaManager {
     void InvoiceListWindow::retranslate()
     {
         this->ui->retranslateUi(this);
+        translateTable();
+    }
+    //
+    void InvoiceListWindow::translateTable()
+    {
+        // invoice table Header
+        QStringList headers;
+        headers.append(tr("Date"));
+        headers.append(tr("Total"));
+        this->ui->invoicesTableWidget->setHorizontalHeaderLabels(headers);
     }
     //
     void InvoiceListWindow::on_searchPushButton_clicked()
     {
+        QDate fromDate = this->ui->fromCalendarWidget->selectedDate();
+        QDate toDate = this->ui->toCalendarWidget->selectedDate();
+        if (fromDate > toDate)
+        {
+            QMessageBox::information(this, tr("Wrong search criteria"), tr("From date must be before To date"));
+            return;
+        }
+        // check selected date is shown checking monthShown and yearShown
+        int fromMonthShown = this->ui->fromCalendarWidget->monthShown();
+        int fromYearShown = this->ui->fromCalendarWidget->yearShown();
+        int toMonthShown = this->ui->toCalendarWidget->monthShown();
+        int toYearShown = this->ui->toCalendarWidget->yearShown();
+        if ( fromDate.month() != fromMonthShown ||
+            toDate.month() != toMonthShown ||
+            fromDate.year() != fromYearShown ||
+            toDate.year() != toYearShown ) {
+            QMessageBox::warning(this, tr("Date not selected"), tr("Select date"));
+            return;
+        }
+
         // when user pushes search, afterwards, on init() results are not updated
         this->m_firstTime = false;
         m_currentPage = 0;
@@ -90,12 +134,12 @@ namespace PenyaManager {
         QDate toDate = this->ui->toCalendarWidget->selectedDate().addDays(1);
         pInvoiceListResult = Singletons::m_pDAO->getInvoiceListByMemberId(pCurrMemberPtr->m_id, fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
         if (pInvoiceListResult->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
         pInvoiceListStatsResult = Singletons::m_pDAO->getInvoiceListByMemberIdStats(pCurrMemberPtr->m_id, fromDate, toDate);
         if (pInvoiceListStatsResult->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
         if (!pInvoiceListStatsResult->m_stats) {
@@ -126,19 +170,12 @@ namespace PenyaManager {
     //
     void InvoiceListWindow::fillInvoiceList(InvoiceListPtr pInvoiceListPtr)
     {
-        // table
-        this->ui->invoicesTableWidget->setColumnCount(2);
-        this->ui->invoicesTableWidget->setRowCount(pInvoiceListPtr->size());
-
-        // invoice table Header
-        QStringList headers;
-        headers.append(tr("Date"));
-        headers.append(tr("Total"));
-        this->ui->invoicesTableWidget->setHorizontalHeaderLabels(headers);
-        this->ui->invoicesTableWidget->setColumnWidth(0, 380);
-        this->ui->invoicesTableWidget->setColumnWidth(1, 100);
         // invoice table reset
         this->ui->invoicesTableWidget->clearContents();
+
+        // table
+        this->ui->invoicesTableWidget->setRowCount(pInvoiceListPtr->size());
+
         // internal data structure reset
         this->m_rowProductIdMap.clear();
 
@@ -155,7 +192,7 @@ namespace PenyaManager {
         }
     }
     //
-    void InvoiceListWindow::on_invoicesTableWidget_cellDoubleClicked(int row, int column)
+    void PenyaManager::InvoiceListWindow::on_invoicesTableWidget_cellClicked(int row, int column)
     {
         UNUSEDPARAMETER(column);
         auto rowMap = m_rowProductIdMap.find(row);
@@ -178,6 +215,3 @@ namespace PenyaManager {
         m_switchCentralWidgetCallback(WindowKey::kLoginWindowKey);
     }
 }
-
-
-

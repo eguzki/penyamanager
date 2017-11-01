@@ -116,8 +116,8 @@ penyamanager
 
 ## Developed using:
 * Vim 7.4 [customized](https://github.com/eguzki/eguzki-vim-environment)
-* QT Creator 3.4.2
-* QT 5.5.0
+* QT Creator 4.0.3
+* QT 5.7.0
 * GCC 4.8.4, 64 bit
 
 ## Log level:
@@ -127,13 +127,13 @@ penyamanager
 ## Package deployment for windows 7
 
 ### Windows 7 32/64 bits
-* Compile using mingw 4.9.2 32bits compiler (currently QT 5.5 only supports mingw 4.9.2 32 bits but not 64 bits)
+* Compile using mingw 4.9.2 32bits compiler (currently QT 5.7 only supports mingw 4.9.2 32 bits but not 64 bits)
 * Necessary elements:
   * Application main exe (penyamanager.exe)
   * Translation files (e.g. penyamanager_eu.qm). Check doc to know how to generate them out of source code.
   * QT and system shared libreries (dll's)
-    * QT dll's path: QT_PATH/5.5/mingw492_32/bin
-    * QT plugins dll's path: QT_PATH/5.5/mingw492_32/plugins
+    * QT dll's path: QT_PATH/5.7/mingw492_32/bin
+    * QT plugins dll's path: QT_PATH/5.7/mingw492_32/plugins
     * Qt plugins: imageformats, platforms, sqldrivers, printsupport
 
 ```Shell

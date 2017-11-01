@@ -46,7 +46,7 @@ namespace PenyaManager {
             //
             void initializeTable();
             //
-            void on_productRemoveButton_clicked(int productId);
+            void on_productRemoveButton_clicked(int productId, QString productName, Float totalPrice);
 
         private:
             //

@@ -195,7 +195,7 @@ namespace PenyaManager {
         // invoice general info
         invoiceData["invoiceId"] = pInvoicePtr->m_id;
         invoiceData["memberid"] = pMemberPtr->m_username;
-        invoiceData["memberName"] = QString("%1 %2").arg(pMemberPtr->m_name).arg(pMemberPtr->m_surname);
+        invoiceData["memberName"] = QString("%1 %2 %3").arg(pMemberPtr->m_name).arg(pMemberPtr->m_surname1).arg(pMemberPtr->m_surname2);
         // invoice date is invoice creation date
         // Can be old (e.g. an unclosed invoice created some days ago)
         // print current date
@@ -219,7 +219,6 @@ namespace PenyaManager {
         // computed invoice total value
         invoiceData["invoiceTotal"] = QString("%1 €").arg(totalInvoice, 0, 'f', 2);
         // print invoice
-        QLOG_INFO() << QString("[Print] heeee ini");
         GuiUtils::printInvoice(invoiceData, pMemberPtr->m_id, pInvoicePtr->m_id);
         QMessageBox::information(this, tr("Print Invoice"), tr("Invoice #%1 sent to printer").arg(QString::number(pInvoicePtr->m_id)));
     }

@@ -109,8 +109,6 @@ namespace PenyaManager {
         this->ui->lastInvoiceTableWidget->setColumnWidth(column++, 90);
         this->ui->lastInvoiceTableWidget->setColumnWidth(column++, 60);
         this->ui->lastInvoiceTableWidget->setColumnWidth(column++, 90);
-        //this->ui->lastInvoiceTableWidget->setColumnWidth(column++, 60);
-
     }
     //
     void LoginWindow::translateTable()
@@ -189,7 +187,7 @@ namespace PenyaManager {
         }
 
         // login granted
-        QLOG_INFO() << QString("[LoginSucess] User %1").arg(pMemberResultPtr->m_member->m_id);
+        QLOG_INFO() << QString("[Login] [User %1]").arg(pMemberResultPtr->m_member->m_id);
 
         // Every member login, outdated invoices are cleaned
         // It is supossed that only few invoices would be open
@@ -235,7 +233,7 @@ namespace PenyaManager {
         this->ui->memberImageLabel->setFixedHeight(Constants::kMemberImageHeigth*2);
         this->ui->memberImageLabel->setScaledContents(true);
         // name
-        this->ui->memberNameLabel->setText(pLastInvoiceOwnerPtr->m_name + " " + pLastInvoiceOwnerPtr->m_surname);
+        this->ui->memberNameLabel->setText(QString("%1 %2 %3").arg(pLastInvoiceOwnerPtr->m_name).arg(pLastInvoiceOwnerPtr->m_surname1).arg(pLastInvoiceOwnerPtr->m_surname2));
         // id
         this->ui->memberIdLabel->setText(QString::number(pLastInvoiceOwnerPtr->m_username));
     }
@@ -260,11 +258,19 @@ namespace PenyaManager {
         for (InvoiceProductItemList::iterator iter = pInvoiceProductItemListResultPtr->m_list->begin(); iter != pInvoiceProductItemListResultPtr->m_list->end(); ++iter)
         {
             InvoiceProductItemPtr pInvoiceProductItemPtr = *iter;
-            this->ui->lastInvoiceTableWidget->setItem(rowCount, 0, new QTableWidgetItem(pInvoiceProductItemPtr->m_productname));
-            this->ui->lastInvoiceTableWidget->setItem(rowCount, 1, new QTableWidgetItem(QString("%1 €").arg(pInvoiceProductItemPtr->m_priceperunit, 0, 'f', 2)));
-            this->ui->lastInvoiceTableWidget->setItem(rowCount, 2, new QTableWidgetItem(QString("%1").arg(pInvoiceProductItemPtr->m_count)));
+            QTableWidgetItem *item = new QTableWidgetItem(pInvoiceProductItemPtr->m_productname);
+            item->setData(Qt::TextAlignmentRole, Qt::AlignLeft);
+            this->ui->lastInvoiceTableWidget->setItem(rowCount, 0, item);
+            item = new QTableWidgetItem(QString("%1 €").arg(pInvoiceProductItemPtr->m_priceperunit, 0, 'f', 2));
+            item->setData(Qt::TextAlignmentRole, Qt::AlignRight);
+            this->ui->lastInvoiceTableWidget->setItem(rowCount, 1, item);
+            item = new QTableWidgetItem(QString("%1").arg(pInvoiceProductItemPtr->m_count));
+            item->setData(Qt::TextAlignmentRole, Qt::AlignRight);
+            this->ui->lastInvoiceTableWidget->setItem(rowCount, 2, item);
             Float totalPrice = pInvoiceProductItemPtr->m_priceperunit * pInvoiceProductItemPtr->m_count;
-            this->ui->lastInvoiceTableWidget->setItem(rowCount, 3, new QTableWidgetItem(QString("%1 €").arg(totalPrice, 0, 'f', 2)));
+            item = new QTableWidgetItem(QString("%1 €").arg(totalPrice, 0, 'f', 2));
+            item->setData(Qt::TextAlignmentRole, Qt::AlignRight);
+            this->ui->lastInvoiceTableWidget->setItem(rowCount, 3, item);
             totalInvoice += totalPrice;
             rowCount++;
         }
