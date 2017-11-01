@@ -24,12 +24,8 @@ background: rgb(158,158,158);
 font-size: 20px;
 }
 
-#LoginWindow {
-background: rgb(66, 66, 66);
-}
+#LoginWindow{
 
-#imageWidget{
-background-image: url(&quot;:/images/alegrialogo.png&quot;);
 }
 
 #penyaLabel * {

@@ -26,6 +26,9 @@ namespace PenyaManager {
             void switchCentralWidget(WindowKey key);
             //
             void init();
+        protected:
+            //
+            void paintEvent(QPaintEvent *);
 
         private:
             //

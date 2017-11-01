@@ -119,6 +119,9 @@ color: rgb(158,158,158);
       </item>
       <item>
        <widget class="QPushButton" name="invoicesPushButton_2">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
           <horstretch>0</horstretch>
@@ -127,6 +130,12 @@ color: rgb(158,158,158);
         </property>
         <property name="text">
          <string>Invoices</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
        </widget>
       </item>

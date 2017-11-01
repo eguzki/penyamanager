@@ -2,6 +2,7 @@
 
 #include <QMessageBox>
 #include <QsLog.h>
+#include <QPainter>
 
 #include <commons/singletons.h>
 #include "mainwindow.h"
@@ -15,7 +16,6 @@ namespace PenyaManager {
         ui(new Ui::MainWindow)
     {
         ui->setupUi(this);
-
     }
     //
     MainWindow::~MainWindow()
@@ -23,9 +23,18 @@ namespace PenyaManager {
         delete ui;
     }
     //
+    void MainWindow::paintEvent(QPaintEvent *)
+    {
+        QStyleOption opt;
+        opt.init(this);
+        QPainter p(this);
+        style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+    }
+    //
     void MainWindow::init()
     {
         switchCentralWidget(WindowKey::kLoginWindowKey);
+
         // To disable Full Screen, comment the line below. Que no la above.
         showFullScreen();
         // To disable windowed mode, comment the line below. Que sí, que la de abajo.

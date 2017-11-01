@@ -28,7 +28,12 @@
   <property name="styleSheet">
    <string notr="true">#MainWindow {
 background: rgb(66, 66, 66);
+border-image: url(&quot;:/images/logogrande.png&quot;);
 }
+
+
+
+
 
 
 
