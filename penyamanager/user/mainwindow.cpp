@@ -22,7 +22,7 @@ namespace PenyaManager {
     {
         delete ui;
     }
-    //
+    // Required to apply background-image stylesheet to QWidget
     void MainWindow::paintEvent(QPaintEvent *)
     {
         QStyleOption opt;

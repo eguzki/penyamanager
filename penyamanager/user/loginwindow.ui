@@ -14,11 +14,7 @@
    <string notr="true"/>
   </property>
   <property name="styleSheet">
-   <string notr="true">QTableWidget{
-background: rgb(189,189,189);
-font: 18pt &quot;Calibri&quot;;
-}
-
+   <string notr="true">
 QListWidget{
 background: rgb(158,158,158);
 font-size: 20px;

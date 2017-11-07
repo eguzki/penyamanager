@@ -45,7 +45,7 @@ namespace PenyaManager {
         header->setSectionResizeMode(QHeaderView::Fixed);
         translateTable();
         Uint32 column = 0;
-        this->ui->invoicesTableWidget->setColumnWidth(column++, 380);
+        this->ui->invoicesTableWidget->setColumnWidth(column++, 360);
         this->ui->invoicesTableWidget->setColumnWidth(column++, 100);
     }
     //
@@ -214,4 +214,32 @@ namespace PenyaManager {
         // call login window on exit
         m_switchCentralWidgetCallback(WindowKey::kLoginWindowKey);
     }
+    void InvoiceListWindow::on_exitButton_clicked()
+    {
+        // call login window on exit
+        m_switchCentralWidgetCallback(WindowKey::kLoginWindowKey);
+    }
+    void InvoiceListWindow::on_newinvoiceButton_clicked()
+    {
+        //call new invoice window
+        m_switchCentralWidgetCallback(WindowKey::kMemberDashboardWindowKey);
+    }
+    void InvoiceListWindow::on_tableReservationButton_clicked()
+    {
+        // call table reservation window
+        m_switchCentralWidgetCallback(WindowKey::kTableReservationViewWindowKey);
+    }
+    void InvoiceListWindow::on_accountButton_clicked()
+    {
+        // call account window
+        m_switchCentralWidgetCallback(WindowKey::kAccountViewWindowKey);
+    }
+    void InvoiceListWindow::on_depositsButton_clicked()
+    {
+        // call deposits window
+        m_switchCentralWidgetCallback(WindowKey::kDepositsWindowKey);
+    }
+
+
 }
+

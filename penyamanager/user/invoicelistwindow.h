@@ -51,7 +51,17 @@ namespace PenyaManager {
             //
             void on_exitButton_2_clicked();
 
-        private:
+            void on_newinvoiceButton_clicked();
+
+            void on_tableReservationButton_clicked();
+
+            void on_depositsButton_clicked();
+
+            void on_accountButton_clicked();
+
+            void on_exitButton_clicked();
+
+    private:
             //
             Ui::InvoiceListWindow *ui;
             //

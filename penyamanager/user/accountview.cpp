@@ -195,5 +195,36 @@ namespace PenyaManager {
         this->ui->toDateResultValueLabel->setText(dateLocalized);
         fillAccountData(pTransactionListResultPtr);
     }
+    void AccountView::on_newinvoiceButton_clicked()
+    {
+        //call new invoice window
+        m_switchCentralWidgetCallback(WindowKey::kMemberDashboardWindowKey);
+    }
+
+    void AccountView::on_tableReservationButton_clicked()
+    {
+        // call table reservation window
+        m_switchCentralWidgetCallback(WindowKey::kTableReservationViewWindowKey);
+    }
+
+    void AccountView::on_invoicesPushButton_clicked()
+    {
+        // call invoices window
+        m_switchCentralWidgetCallback(WindowKey::kInvoiceListWindoKey);
+    }
+
+    void AccountView::on_depositsButton_clicked()
+    {
+        // call deposits window
+        m_switchCentralWidgetCallback(WindowKey::kDepositsWindowKey);
+    }
+
+    void AccountView::on_exitButton_clicked()
+    {
+        // call login window on exit
+        m_switchCentralWidgetCallback(WindowKey::kLoginWindowKey);
+    }
+
 }
+
 

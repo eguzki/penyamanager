@@ -63,7 +63,17 @@ namespace PenyaManager {
             //
             void on_dinnerButton_clicked(bool checked);
 
-        private:
+            void on_newinvoiceButton_clicked();
+
+            void on_invoicesPushButton_clicked();
+
+            void on_accountButton_clicked();
+
+            void on_depositsButton_clicked();
+
+            void on_exitButton_clicked();
+
+    private:
             //
             Ui::TableReservationView *ui;
             //

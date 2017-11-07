@@ -65,11 +65,11 @@ namespace PenyaManager {
         this->ui->tableReservationTableWidget->setColumnCount(5);
         translateTable();
         Uint32 column = 0;
-        this->ui->tableReservationTableWidget->setColumnWidth(column++, 200);
-        this->ui->tableReservationTableWidget->setColumnWidth(column++, 80);
-        this->ui->tableReservationTableWidget->setColumnWidth(column++, 200);
         this->ui->tableReservationTableWidget->setColumnWidth(column++, 100);
-        this->ui->tableReservationTableWidget->setColumnWidth(column++, 200);
+        this->ui->tableReservationTableWidget->setColumnWidth(column++, 50);
+        this->ui->tableReservationTableWidget->setColumnWidth(column++, 75);
+        this->ui->tableReservationTableWidget->setColumnWidth(column++, 75);
+        this->ui->tableReservationTableWidget->setColumnWidth(column++, 150);
     }
     //
     void TableReservationView::init()
@@ -388,5 +388,35 @@ namespace PenyaManager {
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
         fillTableReservations(pCurrMemberPtr, date, ReservationType::Dinner);
     }
-}
 
+    void TableReservationView::on_newinvoiceButton_clicked()
+    {
+        //call new invoice window
+        m_switchCentralWidgetCallback(WindowKey::kMemberDashboardWindowKey);
+    }
+
+    void TableReservationView::on_invoicesPushButton_clicked()
+    {
+        // call invoices window
+        m_switchCentralWidgetCallback(WindowKey::kInvoiceListWindoKey);
+    }
+
+    void TableReservationView::on_accountButton_clicked()
+    {
+        // call account window
+        m_switchCentralWidgetCallback(WindowKey::kAccountViewWindowKey);
+    }
+
+    void TableReservationView::on_depositsButton_clicked()
+    {
+        // call deposits window
+        m_switchCentralWidgetCallback(WindowKey::kDepositsWindowKey);
+    }
+
+    void TableReservationView::on_exitButton_clicked()
+    {
+        // call login window on exit
+        m_switchCentralWidgetCallback(WindowKey::kLoginWindowKey);
+    }
+
+}

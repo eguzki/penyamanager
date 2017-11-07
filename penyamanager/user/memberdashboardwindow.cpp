@@ -42,7 +42,7 @@ namespace PenyaManager {
         translateTable();
 
         Uint32 column = 0;
-        this->ui->invoiceTableWidget->setColumnWidth(column++, 198);
+        this->ui->invoiceTableWidget->setColumnWidth(column++, 168);
         this->ui->invoiceTableWidget->setColumnWidth(column++, 83);
         this->ui->invoiceTableWidget->setColumnWidth(column++, 45);
         this->ui->invoiceTableWidget->setColumnWidth(column++, 100);
@@ -379,7 +379,7 @@ namespace PenyaManager {
     //
     void MemberDashboardWindow::on_invoicesPushButton_clicked()
     {
-        // call table reservation window
+        // call invoices window
         m_switchCentralWidgetCallback(WindowKey::kInvoiceListWindoKey);
     }
     //
@@ -452,3 +452,9 @@ namespace PenyaManager {
     }
 }
 
+
+void PenyaManager::MemberDashboardWindow::on_newinvoiceButton_clicked()
+{
+    // Go to dashboard window
+    m_switchCentralWidgetCallback(WindowKey::kMemberDashboardWindowKey);
+}
