@@ -18,7 +18,7 @@ namespace PenyaManager {
 
         public:
             //
-            explicit NumItemDialog(QWidget *parent, bool passMode = false, Uint32 maxDigits = 5);
+            explicit NumItemDialog(QWidget *parent, QString title = "", bool passMode = false, Uint32 maxDigits = 5);
             //
             ~NumItemDialog();
             //

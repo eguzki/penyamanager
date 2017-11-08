@@ -10,7 +10,7 @@ using namespace std::placeholders;
 namespace PenyaManager {
 
     //
-    NumItemDialog::NumItemDialog(QWidget *parent,bool passMode, Uint32 maxDigits) :
+    NumItemDialog::NumItemDialog(QWidget *parent, QString title, bool passMode, Uint32 maxDigits) :
         QDialog(parent),
         ui(new Ui::NumItemDialog),
         m_maxDigits(maxDigits),
@@ -18,7 +18,11 @@ namespace PenyaManager {
         m_passMode(passMode)
     {
         ui->setupUi(this);
-
+        if (title.length() > 0) {
+            this->ui->displayLabel->setText(title);
+        } else {
+            this->ui->displayLabel->setHidden(true);
+        }
         this->setWindowFlags(Qt::Dialog|Qt::SubWindow|Qt::FramelessWindowHint);
         this->connect(this->ui->toolButton_0, &QToolButton::clicked, std::bind(&NumItemDialog::onButtonClick, this, 0));
         this->connect(this->ui->toolButton_1, &QToolButton::clicked, std::bind(&NumItemDialog::onButtonClick, this, 1));
