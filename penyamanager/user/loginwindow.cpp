@@ -125,7 +125,7 @@ namespace PenyaManager {
     void LoginWindow::on_loginPushButton_clicked()
     {
         // Ask for userId
-        NumItemDialog numItemDialog(this);
+        NumItemDialog numItemDialog(this, tr("Insert member ID"));
         numItemDialog.exec();
         this->m_username = numItemDialog.getKey();
         // check member username input
@@ -136,7 +136,7 @@ namespace PenyaManager {
         }
 
         // Ask for password
-        NumItemDialog passNumItemDialog(this, true);
+        NumItemDialog passNumItemDialog(this, tr("Insert password"), true);
         passNumItemDialog.exec();
         this->m_password = passNumItemDialog.getKeyStr();
         // check password input
