@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>817</width>
+    <width>1024</width>
     <height>768</height>
    </rect>
   </property>
@@ -20,6 +20,8 @@
     selection-color: green;
     background: rgb(158,158,158);
 }
+
+
 
 
 QTableWidget{
@@ -41,13 +43,14 @@ font: 18pt &quot;Calibri&quot;;
 }
 
 PenyaManager--FamilyItemWidget * {
-    color: black;
+	font-weight: bold;
+	color: black;
 	font: 20pt &quot;Calibri&quot;;
 }
 
 PenyaManager--ProductItemWidget * {
-    color: black;
-	font: 20pt &quot;Calibri&quot;;
+    color: rgb(33,33,33);
+	font: 18pt &quot;Calibri&quot;;
 }
 
 
@@ -57,12 +60,12 @@ PenyaManager--ProductItemWidget * {
 
 #totalDisplayLabel {
 font-weight: bold;
-font: 30pt &quot;Calibri&quot;;
+font: 40pt &quot;Calibri&quot;;
 }
 
 #totalLabel {
 font-weight: bold;
-font: 30pt &quot;Calibri&quot;;
+font: 40pt &quot;Calibri&quot;;
 }</string>
   </property>
   <property name="locale">
@@ -83,22 +86,29 @@ font: 30pt &quot;Calibri&quot;;
        <height>150</height>
       </size>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_5">
-      <property name="spacing">
-       <number>10</number>
-      </property>
-      <property name="leftMargin">
-       <number>1</number>
-      </property>
-      <property name="topMargin">
-       <number>1</number>
-      </property>
-      <property name="rightMargin">
-       <number>1</number>
-      </property>
-      <property name="bottomMargin">
-       <number>1</number>
-      </property>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QPushButton" name="newinvoiceButton">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>NewInvoice</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
       <item>
        <widget class="QPushButton" name="tableReservationButton">
         <property name="sizePolicy">
@@ -197,21 +207,6 @@ font: 30pt &quot;Calibri&quot;;
    <item>
     <widget class="QWidget" name="mainWidget" native="true">
      <layout class="QHBoxLayout" name="verticalLayout_2">
-      <property name="spacing">
-       <number>4</number>
-      </property>
-      <property name="leftMargin">
-       <number>4</number>
-      </property>
-      <property name="topMargin">
-       <number>4</number>
-      </property>
-      <property name="rightMargin">
-       <number>4</number>
-      </property>
-      <property name="bottomMargin">
-       <number>4</number>
-      </property>
       <item>
        <widget class="QListWidget" name="familyListWidget">
         <property name="minimumSize">
@@ -258,6 +253,12 @@ font: 30pt &quot;Calibri&quot;;
           <pointsize>7</pointsize>
          </font>
         </property>
+        <property name="horizontalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
+        </property>
+        <property name="defaultDropAction">
+         <enum>Qt::IgnoreAction</enum>
+        </property>
         <property name="alternatingRowColors">
          <bool>true</bool>
         </property>
@@ -285,7 +286,7 @@ font: 30pt &quot;Calibri&quot;;
         </property>
         <property name="maximumSize">
          <size>
-          <width>450</width>
+          <width>460</width>
           <height>16777215</height>
          </size>
         </property>
@@ -377,7 +378,7 @@ font: 30pt &quot;Calibri&quot;;
                <bool>false</bool>
               </property>
               <attribute name="horizontalHeaderStretchLastSection">
-               <bool>false</bool>
+               <bool>true</bool>
               </attribute>
               <attribute name="verticalHeaderVisible">
                <bool>false</bool>
@@ -392,13 +393,13 @@ font: 30pt &quot;Calibri&quot;;
            <property name="minimumSize">
             <size>
              <width>0</width>
-             <height>50</height>
+             <height>65</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
              <width>16777215</width>
-             <height>50</height>
+             <height>65</height>
             </size>
            </property>
            <layout class="QHBoxLayout" name="horizontalLayout_8">

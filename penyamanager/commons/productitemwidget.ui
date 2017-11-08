@@ -106,13 +106,6 @@
         </property>
        </widget>
       </item>
-      <item>
-       <widget class="QLabel" name="priceQLabel">
-        <property name="text">
-         <string notr="true">TextLabel</string>
-        </property>
-       </widget>
-      </item>
      </layout>
     </widget>
    </item>

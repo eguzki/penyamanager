@@ -9,5 +9,6 @@
         <file>VERSION</file>
         <file>images/alegrialogo.png</file>
         <file>images/trash.png</file>
+        <file>images/logogrande.png</file>
     </qresource>
 </RCC>

@@ -211,3 +211,38 @@ namespace PenyaManager {
         return depositHtml;
     }
 }
+
+void PenyaManager::DepositWindow::on_newinvoiceButton_clicked()
+{
+    //call new invoice window
+    m_switchCentralWidgetCallback(WindowKey::kMemberDashboardWindowKey);
+}
+
+void PenyaManager::DepositWindow::on_tableReservationButton_clicked()
+{
+    // call table reservation window
+    m_switchCentralWidgetCallback(WindowKey::kTableReservationViewWindowKey);
+
+}
+
+void PenyaManager::DepositWindow::on_invoicesPushButton_clicked()
+{
+    // call invoices window
+    m_switchCentralWidgetCallback(WindowKey::kInvoiceListWindoKey);
+
+}
+
+void PenyaManager::DepositWindow::on_accountButton_clicked()
+{
+    // call account window
+    m_switchCentralWidgetCallback(WindowKey::kAccountViewWindowKey);
+}
+
+void PenyaManager::DepositWindow::on_exitButton_clicked()
+{
+    // call login window on exit
+    m_switchCentralWidgetCallback(WindowKey::kLoginWindowKey);
+}
+
+
+

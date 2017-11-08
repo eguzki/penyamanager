@@ -28,8 +28,34 @@
   <property name="styleSheet">
    <string notr="true">#MainWindow {
 background: rgb(66, 66, 66);
+border-image: url(&quot;:/images/logogrande.png&quot;);
 }
 
+QHeaderView::section {
+	font: 14pt &quot;Calibri&quot;;
+	height: 30px;
+    background: rgb(117,117,117);
+	border-style: none;
+    border-left: 1px solid rgb(97,97,97);
+    border-top: 1px solid rgb(97,97,97);
+    border-right: 1px solid rgb(97,97,97);
+    border-bottom: 1px solid rgb(97,97,97);
+
+}
+
+QTableWidget{
+border-style: none;
+background: rgb(189,189,189);
+font: 18pt &quot;Calibri&quot;;
+}
+
+QListWidget{
+border-style: none;
+}
+
+QTableWidget::item:focus {
+ border: 0px
+ }
 
 
 QPushButton {
@@ -56,6 +82,71 @@ QLabel{
 font: 12pt &quot;Calibri&quot;;
 color: white;
 }
+
+/* CALENDAR */
+
+
+QCalendarWidget QToolButton {
+  	height: 30px;
+  	width: 120px;
+  	color: black;
+	font-weight: bold;
+	font: 20pt &quot;Calibri&quot;;
+  	icon-size: 30px, 56px;
+  	background-color: rgb(158,158,158);
+  }
+
+
+  QCalendarWidget QMenu {
+  	width: 150px;
+  	left: 20px;
+  	color: white;
+  	font-size: 18px;
+  	background-color: rgb(100, 100, 100);
+  }
+  QCalendarWidget QSpinBox { 
+  	width: 150px; 
+  	font-size:24px; 
+  	color: white; 
+  	background-color: rgb(158,158,158); 
+  	selection-background-color: rgb(136, 136, 136);
+  	selection-color: rgb(255, 255, 255);
+  }
+  QCalendarWidget QSpinBox::up-button { subcontrol-origin: border;  subcontrol-position: top right;  width:65px; }
+  QCalendarWidget QSpinBox::down-button {subcontrol-origin: border; subcontrol-position: bottom right;  width:65px;}
+  QCalendarWidget QSpinBox::up-arrow { width:5px;  height:5px; }
+  QCalendarWidget QSpinBox::down-arrow { width:5px;  height:5px; }
+   
+  /* header row */
+  QCalendarWidget QWidget { alternate-background-color: rgb(117,117,117); }
+   
+  /* normal days */
+  QCalendarWidget QAbstractItemView:enabled 
+  {
+  	color: black;
+	font-weight: bold;
+	font: 20pt &quot;Calibri&quot;;  
+	/*background-color: rgb(189,189,189);*/
+	selection-background-color:  rgb(198,40,40); 
+  	selection-color: white; 
+  }
+   
+  /* days in other months */
+  /* navigation bar */
+QCalendarWidget QWidget#qt_calendar_navigationbar
+{ 
+background-color: rgb(158,158,158); 
+}
+
+QCalendarWidget QAbstractItemView:disabled 
+{ 
+
+color: rgb(158,158,158);
+}
+
+
+
+/* SCROLL BAR */
 
 
 QScrollBar:vertical {
@@ -87,7 +178,7 @@ QScrollBar::sub-line:vertical {
 QScrollBar:horizontal {
     border: 1px solid #999999;
     background: rgb(158,158,158);
-	height:15px;    
+	height:2px;    
    margin: 0px 0px 0px 0px;
 }
 QScrollBar::handle:horizontal {
