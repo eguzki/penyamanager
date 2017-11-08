@@ -219,7 +219,7 @@ namespace PenyaManager {
             // invoice table reset
             this->ui->invoiceTableWidget->clearContents();
             this->ui->invoiceTableWidget->setRowCount(0);
-            this->ui->totalDisplayLabel->setText("0 €");
+            this->ui->totalDisplayLabel->setText("0.00 €");
             return;
         }
 
@@ -274,7 +274,7 @@ namespace PenyaManager {
             this->ui->invoiceTableWidget->setRowHeight(rowCount, 35);
             rowCount++;
         }
-        this->ui->totalDisplayLabel->setText(QString("%1 €").arg(totalInvoice));
+        this->ui->totalDisplayLabel->setText(QString("%1 €").arg(totalInvoice, 0, 'f', 2));
     }
     //
     void MemberDashboardWindow::on_invoiceCloseButton_clicked()
@@ -356,7 +356,7 @@ namespace PenyaManager {
             fillInvoiceData(pNewInvoicePtr->m_pInvoice);
         } else {
             // count was not 0 -> update item from invoice
-            bool ok = Singletons::m_pServices->updateInvoiceInfo(pInvoiceResultPtr->m_pInvoice->m_id, productId, count);
+            bool ok = Singletons::m_pServices->increaseProductInvoice(pInvoiceResultPtr->m_pInvoice->m_id, productId, count);
             if (!ok) {
                 QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
                 return;
