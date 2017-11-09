@@ -48,8 +48,6 @@ namespace PenyaManager {
             void on_nextPagePushButton_clicked();
             //
             void on_invoicesTableWidget_cellClicked(int row, int column);
-            //
-            void on_exitButton_2_clicked();
 
             void on_newinvoiceButton_clicked();
 

@@ -62,14 +62,17 @@ namespace PenyaManager {
     void TableReservationView::initializeTable()
     {
         // table
+        QHeaderView* header = this->ui->tableReservationTableWidget->horizontalHeader();
+        header->setSectionResizeMode(QHeaderView::Fixed);
         this->ui->tableReservationTableWidget->setColumnCount(5);
         translateTable();
         Uint32 column = 0;
-        this->ui->tableReservationTableWidget->setColumnWidth(column++, 100);
-        this->ui->tableReservationTableWidget->setColumnWidth(column++, 50);
+        this->ui->tableReservationTableWidget->setColumnWidth(column++, 140);
+        this->ui->tableReservationTableWidget->setColumnWidth(column++, 40);
         this->ui->tableReservationTableWidget->setColumnWidth(column++, 75);
-        this->ui->tableReservationTableWidget->setColumnWidth(column++, 75);
+        this->ui->tableReservationTableWidget->setColumnWidth(column++, 40);
         this->ui->tableReservationTableWidget->setColumnWidth(column++, 150);
+
     }
     //
     void TableReservationView::init()
@@ -179,6 +182,8 @@ namespace PenyaManager {
                 }
 
             }
+            // SET ROW HEIGHT
+            this->ui->tableReservationTableWidget->setRowHeight(rowCount, 20);
             rowCount++;
         }
     }

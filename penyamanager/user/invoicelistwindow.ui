@@ -14,9 +14,12 @@
    <string>Invoice List</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">
+   <string notr="true">QLabel{
+	font: 18pt &quot;Calibri&quot;;	
+}
+
 QTableWidget{
-font: 18pt &quot;Calibri&quot;;
+	font: 18pt &quot;Calibri&quot;;
 }
 
 QCalendarWidget QAbstractItemView:enabled 
@@ -24,6 +27,10 @@ QCalendarWidget QAbstractItemView:enabled
   	
 	background-color: rgb(189,189,189);
 	
+}
+
+QTableWidget::item:selected{
+	background-color: rgb(198,40,40);
 }
 
 </string>
@@ -44,6 +51,18 @@ QCalendarWidget QAbstractItemView:enabled
       </size>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_5">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
       <item>
        <widget class="QPushButton" name="newinvoiceButton">
         <property name="sizePolicy">
@@ -164,6 +183,18 @@ QCalendarWidget QAbstractItemView:enabled
    <item>
     <widget class="QWidget" name="resultWidget" native="true">
      <layout class="QHBoxLayout" name="horizontalLayout_4">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
       <item>
        <widget class="QWidget" name="calendarWidget" native="true">
         <property name="minimumSize">
@@ -173,6 +204,9 @@ QCalendarWidget QAbstractItemView:enabled
          </size>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_2">
+         <property name="spacing">
+          <number>6</number>
+         </property>
          <property name="leftMargin">
           <number>0</number>
          </property>
@@ -235,68 +269,19 @@ QCalendarWidget QAbstractItemView:enabled
           <height>16777215</height>
          </size>
         </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>
-          <widget class="QLabel" name="pageInfoLabel">
+          <widget class="QLabel" name="fromDateResultLabel">
            <property name="text">
-            <string notr="true">X / Y</string>
+            <string>From:</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="totalCountValueLabel">
-           <property name="minimumSize">
-            <size>
-             <width>100</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>100</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>0 €</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="totalCountLabel">
-           <property name="text">
-            <string>Total:</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="totalInvoicesValueLabel">
-           <property name="minimumSize">
-            <size>
-             <width>100</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>100</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>0</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="totalInvoicesLabel">
-           <property name="text">
-            <string>Total Invoices:</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="toDateResultValueLabel">
+          <widget class="QLabel" name="fromDateResultValueLabel">
            <property name="minimumSize">
             <size>
              <width>200</width>
@@ -322,7 +307,7 @@ QCalendarWidget QAbstractItemView:enabled
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="fromDateResultValueLabel">
+          <widget class="QLabel" name="toDateResultValueLabel">
            <property name="minimumSize">
             <size>
              <width>200</width>
@@ -341,37 +326,55 @@ QCalendarWidget QAbstractItemView:enabled
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="fromDateResultLabel">
+          <widget class="QLabel" name="totalInvoicesLabel">
            <property name="text">
-            <string>From:</string>
+            <string>Total Invoices:</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QWidget" name="horizontalWidget" native="true">
-           <layout class="QHBoxLayout" name="horizontalLayout_2">
-            <item>
-             <widget class="QPushButton" name="prevPagePushButton">
-              <property name="text">
-               <string>&lt;</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="pageInfoLabel">
-              <property name="text">
-               <string notr="true">X / Y</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="nextPagePushButton">
-              <property name="text">
-               <string>&gt;</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
+          <widget class="QLabel" name="totalInvoicesValueLabel">
+           <property name="minimumSize">
+            <size>
+             <width>100</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>100</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>0</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="totalCountLabel">
+           <property name="text">
+            <string>Total:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="totalCountValueLabel">
+           <property name="minimumSize">
+            <size>
+             <width>100</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>100</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>0 €</string>
+           </property>
           </widget>
          </item>
         </layout>
@@ -392,6 +395,9 @@ QCalendarWidget QAbstractItemView:enabled
          </size>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_4">
+         <property name="spacing">
+          <number>6</number>
+         </property>
          <property name="leftMargin">
           <number>0</number>
          </property>
@@ -449,32 +455,55 @@ QCalendarWidget QAbstractItemView:enabled
              <height>75</height>
             </size>
            </property>
-           <layout class="QHBoxLayout" name="horizontalLayout_3">
-            <property name="spacing">
-             <number>10</number>
-            </property>
+           <layout class="QHBoxLayout" name="horizontalLayout">
             <property name="leftMargin">
-             <number>1</number>
+             <number>0</number>
             </property>
             <property name="topMargin">
-             <number>1</number>
+             <number>0</number>
             </property>
             <property name="rightMargin">
-             <number>1</number>
+             <number>0</number>
             </property>
             <property name="bottomMargin">
-             <number>1</number>
+             <number>0</number>
             </property>
             <item>
-             <widget class="QPushButton" name="searchPushButton">
+             <widget class="QPushButton" name="prevPagePushButton">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>&lt;</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="pageInfoLabel">
+              <property name="text">
+               <string notr="true">X / Y</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="nextPagePushButton">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
               <property name="text">
-               <string>Search</string>
+               <string>&gt;</string>
               </property>
              </widget>
             </item>
