@@ -130,12 +130,6 @@ namespace PenyaManager {
             QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
             return;
         }
-        if (!pProductListStatsResultPtr->m_stats) {
-            // no products found
-            ProductListStatsPtr stats(new ProductListStats);
-            stats->m_totalNumProducts = 0;
-            pProductListStatsResultPtr->m_stats = stats;
-        }
         // enable-disable pagination buttons
         // total num pages
         Uint32 numPages = (Uint32)ceil((Float)pProductListStatsResultPtr->m_stats->m_totalNumProducts/Constants::kProductListPageCount);

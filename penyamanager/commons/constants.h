@@ -68,6 +68,8 @@ namespace PenyaManager {
             static const Uint32     kOpenInvoiceTimeoutH;
             // Credit limit
             static const Float      kCreditLimit;
+            // Dashboard product item list
+            static const Float      kDashboardProductListPageCount;
 
         private:
             Constants() {}

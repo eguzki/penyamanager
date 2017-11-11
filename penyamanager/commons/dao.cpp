@@ -520,15 +520,16 @@ namespace PenyaManager {
         return pInvoiceResultPtr;
     }
     //
-    Int32 DAO::countInvoiceProductItems(Int32 invoiceId)
+    InvoiceProductItemStatsResultPtr DAO::getInvoiceProductItemsStats(Int32 invoiceId)
     {
-        Uint32 count = 0;
+        InvoiceProductItemStatsResultPtr invoiceProductItemStatsResultPtr(new InvoiceProductItemStatsResult);
         auto createQuery = [=](){
             QueryPtr queryPtr(new QSqlQuery);
             // invoice product items by invoiceId
             queryPtr->prepare(
-                    "SELECT COUNT(*)  "
+                    "SELECT COUNT(*), SUM(inv_prod.count * product_item.price)  "
                     "FROM inv_prod "
+                    "INNER JOIN product_item on inv_prod.idproduct_item=product_item.idproduct_item "
                     "WHERE idinvoice=:invoiceid"
                     );
             queryPtr->bindValue(":invoiceid", invoiceId);
@@ -538,15 +539,19 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            QLOG_ERROR() << QString("countInvoiceProductItems: invoiceId: %1").arg(invoiceId);
-            count = -1;
+            QLOG_ERROR() << QString("getInvoiceProductItemsStats: invoiceId: %1").arg(invoiceId);
+            invoiceProductItemStatsResultPtr->m_error = 1;
         } else if (queryResponse.query->next()) {
-            count = queryResponse.query->value(0).toUInt();
+            invoiceProductItemStatsResultPtr->m_stats = InvoiceProductItemStatsPtr(new InvoiceProductItemStats);
+            invoiceProductItemStatsResultPtr->m_stats->m_totalProducts = queryResponse.query->value(0).toUInt();
+            invoiceProductItemStatsResultPtr->m_stats->m_totalAmount = queryResponse.query->value(1).toFloat();
+        } else {
+            invoiceProductItemStatsResultPtr->m_stats = InvoiceProductItemStatsPtr(new InvoiceProductItemStats(0, 0.0));
         }
-        return count;
+        return invoiceProductItemStatsResultPtr;
     }
     //
-    InvoiceProductItemListResultPtr DAO::getInvoiceProductItems(Int32 invoiceId)
+    InvoiceProductItemListResultPtr DAO::getInvoiceProductItems(Int32 invoiceId, Uint32 page, Uint32 count)
     {
         InvoiceProductItemListResultPtr pInvoicePILResult(new InvoiceProductItemListResult);
 
@@ -556,10 +561,13 @@ namespace PenyaManager {
             queryPtr->prepare(
                     "SELECT product_item.idproduct_item, product_item.name, product_item.image, product_item.price, inv_prod.count "
                     "FROM inv_prod INNER JOIN product_item ON inv_prod.idproduct_item=product_item.idproduct_item "
-                    "WHERE idinvoice=:invoiceid"
+                    "WHERE idinvoice=:invoiceid "
+                    "LIMIT :limit OFFSET :offset"
                     );
             // bind value
             queryPtr->bindValue(":invoiceid", invoiceId);
+            queryPtr->bindValue(":limit", count);
+            queryPtr->bindValue(":offset", page * count);
             return queryPtr;
         };
 
@@ -583,6 +591,45 @@ namespace PenyaManager {
 
         return pInvoicePILResult;
     }
+    //
+    InvoiceProductItemListResultPtr DAO::getAllInvoiceProductItems(Int32 invoiceId)
+    {
+        InvoiceProductItemListResultPtr pInvoicePILResult(new InvoiceProductItemListResult);
+
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // invoice product items by invoiceId
+            queryPtr->prepare(
+                    "SELECT product_item.idproduct_item, product_item.name, product_item.image, product_item.price, inv_prod.count "
+                    "FROM inv_prod INNER JOIN product_item ON inv_prod.idproduct_item=product_item.idproduct_item "
+                    "WHERE idinvoice=:invoiceid"
+                    );
+            // bind value
+            queryPtr->bindValue(":invoiceid", invoiceId);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("getAllInvoiceProductItems: invoiceId: %1").arg(invoiceId);
+            pInvoicePILResult->m_error = 1;
+        } else {
+            pInvoicePILResult->m_list = InvoiceProductItemListPtr(new InvoiceProductItemList);
+            while (queryResponse.query->next()) {
+                InvoiceProductItemPtr pInvoiceProductItemPtr(new InvoiceProductItem);
+                pInvoiceProductItemPtr->m_productId = queryResponse.query->value(0).toInt();
+                pInvoiceProductItemPtr->m_productname = queryResponse.query->value(1).toString();
+                pInvoiceProductItemPtr->m_imagePath = queryResponse.query->value(2).toString();
+                pInvoiceProductItemPtr->m_priceperunit = queryResponse.query->value(3).toFloat();
+                pInvoiceProductItemPtr->m_count = queryResponse.query->value(4).toUInt();
+                pInvoicePILResult->m_list->push_back(pInvoiceProductItemPtr);
+            }
+        }
+
+        return pInvoicePILResult;
+    }
+    //
     //
     bool DAO::updateInvoice(const InvoicePtr &pInvoicePtr)
     {
@@ -1657,10 +1704,11 @@ namespace PenyaManager {
             QLOG_ERROR() << QString("getInvoiceListByMemberIdStats: memberId: %1 fromDate: %2 toDate: %3").arg(memberId).arg(fromDateLocalized).arg(toDateLocalized);
             pInvoiceListStatsResultPtr->m_error = 1;
         } else if (queryResponse.query->next()) {
-            InvoiceListStatsPtr stats(new InvoiceListStats);
-            stats->m_totalNumInvoices = queryResponse.query->value(0).toUInt();
-            stats->m_totalAmount = queryResponse.query->value(1).toFloat();
-            pInvoiceListStatsResultPtr->m_stats = stats;
+            pInvoiceListStatsResultPtr->m_stats = InvoiceListStatsPtr(new InvoiceListStats);
+            pInvoiceListStatsResultPtr->m_stats->m_totalNumInvoices = queryResponse.query->value(0).toUInt();
+            pInvoiceListStatsResultPtr->m_stats->m_totalAmount = queryResponse.query->value(1).toFloat();
+        } else {
+            pInvoiceListStatsResultPtr->m_stats = InvoiceListStatsPtr(new InvoiceListStats(0, 0.0));
         }
         return pInvoiceListStatsResultPtr;
     }
@@ -1748,6 +1796,8 @@ namespace PenyaManager {
             pInvoiceListStatsResultPtr->m_stats = InvoiceListStatsPtr(new InvoiceListStats);
             pInvoiceListStatsResultPtr->m_stats->m_totalNumInvoices = queryResponse.query->value(0).toUInt();
             pInvoiceListStatsResultPtr->m_stats->m_totalAmount = queryResponse.query->value(1).toFloat();
+        } else {
+            pInvoiceListStatsResultPtr->m_stats = InvoiceListStatsPtr(new InvoiceListStats(0, 0.0));
         }
         return pInvoiceListStatsResultPtr;
     }
@@ -1918,6 +1968,8 @@ namespace PenyaManager {
         } else if (queryResponse.query->next()) {
             pProductListStatsResultPtr->m_stats = ProductListStatsPtr(new ProductListStats);
             pProductListStatsResultPtr->m_stats->m_totalNumProducts = queryResponse.query->value(0).toUInt();
+        } else {
+            pProductListStatsResultPtr->m_stats = ProductListStatsPtr(new ProductListStats(0));
         }
         return pProductListStatsResultPtr;
     }
@@ -2198,9 +2250,9 @@ namespace PenyaManager {
         return pInvoiceProductItemListResultPtr;
     }
     //
-    InvoiceProductItemStatsResultPtr DAO::getProductExpensesListStats(const QDate &fromDate, const QDate &toDate)
+    InvoiceProductItemCounterStatsResultPtr DAO::getProductExpensesListStats(const QDate &fromDate, const QDate &toDate)
     {
-        InvoiceProductItemStatsResultPtr pIPISResultPtr(new InvoiceProductItemStatsResult);
+        InvoiceProductItemCounterStatsResultPtr pIPISResultPtr(new InvoiceProductItemCounterStatsResult);
 
         auto createQuery = [=](){
             QueryPtr queryPtr(new QSqlQuery);
@@ -2226,8 +2278,10 @@ namespace PenyaManager {
             QLOG_ERROR() << QString("getProductExpensesListStats: fromDate: %1 toDate: %2").arg(fromDateLocalized).arg(toDateLocalized);
             pIPISResultPtr->m_error = 1;
         } else if (queryResponse.query->next()) {
-            pIPISResultPtr->m_stats = InvoiceProductItemStatsPtr(new InvoiceProductItemStats);
+            pIPISResultPtr->m_stats = InvoiceProductItemCounterStatsPtr(new InvoiceProductItemCounterStats);
             pIPISResultPtr->m_stats->m_totalProducts = queryResponse.query->value(0).toUInt();
+        } else {
+            pIPISResultPtr->m_stats = InvoiceProductItemCounterStatsPtr(new InvoiceProductItemCounterStats(0));
         }
         return pIPISResultPtr;
     }
@@ -2279,9 +2333,9 @@ namespace PenyaManager {
         return pIPILResult;
     }
     //
-    InvoiceProductItemStatsResultPtr DAO::getProductExpensesListByMemberIdStats(Int32 memberId, const QDate &fromDate, const QDate &toDate)
+    InvoiceProductItemCounterStatsResultPtr DAO::getProductExpensesListByMemberIdStats(Int32 memberId, const QDate &fromDate, const QDate &toDate)
     {
-        InvoiceProductItemStatsResultPtr pIPISResult(new InvoiceProductItemStatsResult);
+        InvoiceProductItemCounterStatsResultPtr pIPISResult(new InvoiceProductItemCounterStatsResult);
 
         auto createQuery = [=](){
             QueryPtr queryPtr(new QSqlQuery);
@@ -2307,8 +2361,10 @@ namespace PenyaManager {
             QLOG_ERROR() << QString("getProductExpensesListByMemberIdStats: memberId: %1 fromDate: %2 toDate: %3").arg(memberId).arg(fromDateLocalized).arg(toDateLocalized);
             pIPISResult->m_error = 1;
         } else if (queryResponse.query->next()) {
-            pIPISResult->m_stats = InvoiceProductItemStatsPtr(new InvoiceProductItemStats);
+            pIPISResult->m_stats = InvoiceProductItemCounterStatsPtr(new InvoiceProductItemCounterStats);
             pIPISResult->m_stats->m_totalProducts = queryResponse.query->value(0).toUInt();
+        } else {
+            pIPISResult->m_stats = InvoiceProductItemCounterStatsPtr(new InvoiceProductItemCounterStats(0));
         }
         return pIPISResult;
     }
@@ -2433,6 +2489,8 @@ namespace PenyaManager {
             pInvoiceListStatsResultPtr->m_stats = ProviderInvoiceListStatsPtr(new ProviderInvoiceListStats);
             pInvoiceListStatsResultPtr->m_stats->m_totalNumInvoices = queryResponse.query->value(0).toUInt();
             pInvoiceListStatsResultPtr->m_stats->m_totalAmount = queryResponse.query->value(1).toFloat();
+        } else {
+            pInvoiceListStatsResultPtr->m_stats = ProviderInvoiceListStatsPtr(new ProviderInvoiceListStats(0, 0.0));
         }
         return pInvoiceListStatsResultPtr;
     }
@@ -2512,6 +2570,8 @@ namespace PenyaManager {
             pInvoiceListStatsResultPtr->m_stats = ProviderInvoiceListStatsPtr(new ProviderInvoiceListStats);
             pInvoiceListStatsResultPtr->m_stats->m_totalNumInvoices = queryResponse.query->value(0).toUInt();
             pInvoiceListStatsResultPtr->m_stats->m_totalAmount = queryResponse.query->value(1).toFloat();
+        } else {
+            pInvoiceListStatsResultPtr->m_stats = ProviderInvoiceListStatsPtr(new ProviderInvoiceListStats(0, 0.0));
         }
         return pInvoiceListStatsResultPtr;
     }
@@ -2683,6 +2743,8 @@ namespace PenyaManager {
         } else if (queryResponse.query->next()) {
             pMemberListStatsResultPtr->m_stats = MemberListStatsPtr(new MemberListStats);
             pMemberListStatsResultPtr->m_stats->m_totalMembers = queryResponse.query->value(0).toUInt();
+        } else {
+            pMemberListStatsResultPtr->m_stats = MemberListStatsPtr(new MemberListStats(0));
         }
         return pMemberListStatsResultPtr;
     }

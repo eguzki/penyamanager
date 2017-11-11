@@ -139,7 +139,7 @@ namespace PenyaManager {
     void ProductExpensesView::updateResults()
     {
         InvoiceProductItemListResultPtr pInvoiceProductItemListResultPtr;
-        InvoiceProductItemStatsResultPtr pInvoiceProductItemStatsResultPtr;
+        InvoiceProductItemCounterStatsResultPtr pInvoiceProductItemCounterStatsResultPtr;
         QDate fromDate = this->ui->fromCalendarWidget->selectedDate();
         // add one day to "toDate" to be included
         QDate toDate = this->ui->toCalendarWidget->selectedDate().addDays(1);
@@ -152,16 +152,10 @@ namespace PenyaManager {
                 QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
                 return;
             }
-            pInvoiceProductItemStatsResultPtr = Singletons::m_pDAO->getProductExpensesListStats(fromDate, toDate);
-            if (pInvoiceProductItemStatsResultPtr->m_error) {
+            pInvoiceProductItemCounterStatsResultPtr = Singletons::m_pDAO->getProductExpensesListStats(fromDate, toDate);
+            if (pInvoiceProductItemCounterStatsResultPtr->m_error) {
                 QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
                 return;
-            }
-            if (!pInvoiceProductItemStatsResultPtr->m_stats) {
-                // no invoices found
-                InvoiceProductItemStatsPtr stats(new InvoiceProductItemStats);
-                stats->m_totalProducts = 0;
-                pInvoiceProductItemStatsResultPtr->m_stats = stats;
             }
         } else {
             bool ok;
@@ -186,28 +180,22 @@ namespace PenyaManager {
                     QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
                     return;
                 }
-                pInvoiceProductItemStatsResultPtr = Singletons::m_pDAO->getProductExpensesListByMemberIdStats(pMemberResultPtr->m_member->m_id, fromDate, toDate);
-                if (pInvoiceProductItemStatsResultPtr->m_error) {
+                pInvoiceProductItemCounterStatsResultPtr = Singletons::m_pDAO->getProductExpensesListByMemberIdStats(pMemberResultPtr->m_member->m_id, fromDate, toDate);
+                if (pInvoiceProductItemCounterStatsResultPtr->m_error) {
                     QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
                     return;
-                }
-                if (!pInvoiceProductItemStatsResultPtr->m_stats) {
-                    // no products found
-                    InvoiceProductItemStatsPtr stats(new InvoiceProductItemStats);
-                    stats->m_totalProducts = 0;
-                    pInvoiceProductItemStatsResultPtr->m_stats = stats;
                 }
             }
         }
         // enable-disable pagination buttons
         // total num pages
-        Uint32 numPages = (Uint32)ceil((Float)pInvoiceProductItemStatsResultPtr->m_stats->m_totalProducts/Constants::kInvoiceListPageCount);
+        Uint32 numPages = (Uint32)ceil((Float)pInvoiceProductItemCounterStatsResultPtr->m_stats->m_totalProducts/Constants::kInvoiceListPageCount);
         this->ui->prevPagePushButton->setEnabled(m_currentPage > 0);
         this->ui->nextPagePushButton->setEnabled(m_currentPage < numPages-1);
         // fill page view
         this->ui->pageInfoLabel->setText(tr("page %1 out of %2").arg(m_currentPage+1).arg(numPages));
         // fill total stats view
-        this->ui->totalProductsValueLabel->setText(QString::number(pInvoiceProductItemStatsResultPtr->m_stats->m_totalProducts));
+        this->ui->totalProductsValueLabel->setText(QString::number(pInvoiceProductItemCounterStatsResultPtr->m_stats->m_totalProducts));
         // fill dates used for query
         QString dateLocalized = Singletons::m_translationManager.getLocale().toString(fromDate, QLocale::NarrowFormat);
         this->ui->fromDateResultValueLabel->setText(dateLocalized);

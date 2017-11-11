@@ -72,9 +72,11 @@ namespace PenyaManager {
             //
             Int32 increaseProductInvoice(Int32 invoiceId, Int32 productId, Uint32 count);
             //
-            Int32 countInvoiceProductItems(Int32 invoiceId);
+            InvoiceProductItemListResultPtr getInvoiceProductItems(Int32 invoiceId, Uint32 page, Uint32 count);
             //
-            InvoiceProductItemListResultPtr getInvoiceProductItems(Int32 invoiceId);
+            InvoiceProductItemStatsResultPtr getInvoiceProductItemsStats(Int32 invoiceId);
+            //
+            InvoiceProductItemListResultPtr getAllInvoiceProductItems(Int32 invoiceId);
             //
             bool updateInvoice(const InvoicePtr &pInvoicePtr);
             //
@@ -170,11 +172,11 @@ namespace PenyaManager {
             //
             InvoiceProductItemListResultPtr getProductExpensesList(const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count);
             //
-            InvoiceProductItemStatsResultPtr getProductExpensesListStats(const QDate &fromDate, const QDate &toDate);
+            InvoiceProductItemCounterStatsResultPtr getProductExpensesListStats(const QDate &fromDate, const QDate &toDate);
             //
             InvoiceProductItemListResultPtr getProductExpensesListByMemberId(Int32 memberId, const QDate &fromDate, const QDate &toDate, Uint32 page, Uint32 count);
             //
-            InvoiceProductItemStatsResultPtr getProductExpensesListByMemberIdStats(Int32 memberId, const QDate &fromDate, const QDate &toDate);
+            InvoiceProductItemCounterStatsResultPtr getProductExpensesListByMemberIdStats(Int32 memberId, const QDate &fromDate, const QDate &toDate);
             //
             bool createProviderInvoice(const ProviderInvoicePtr &pProviderInvoicePtr);
             //

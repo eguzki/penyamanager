@@ -63,13 +63,15 @@ namespace PenyaManager
             //
             InvoiceProductItemStats();
             //
-            InvoiceProductItemStats(Uint32 totalProducts);
+            InvoiceProductItemStats(Uint32 totalProducts, Float totalAmount);
             //
             virtual ~InvoiceProductItemStats(){}
 
         public:
             //
             Uint32              m_totalProducts;
+            //
+            Float               m_totalAmount;
     };
 
     //
@@ -91,6 +93,42 @@ namespace PenyaManager
     };
     //
     typedef QSharedPointer<InvoiceProductItemStatsResult> InvoiceProductItemStatsResultPtr;
+
+    //
+    class InvoiceProductItemCounterStats
+    {
+        public:
+            //
+            InvoiceProductItemCounterStats();
+            //
+            InvoiceProductItemCounterStats(Uint32 totalProducts);
+            //
+            virtual ~InvoiceProductItemCounterStats(){}
+
+        public:
+            //
+            Uint32              m_totalProducts;
+    };
+
+    //
+    typedef QSharedPointer<InvoiceProductItemCounterStats> InvoiceProductItemCounterStatsPtr;
+    //
+    class InvoiceProductItemCounterStatsResult
+    {
+        public:
+            //
+            InvoiceProductItemCounterStatsResult();
+            //
+            virtual ~InvoiceProductItemCounterStatsResult(){}
+
+        public:
+            //
+            Int32                               m_error;
+            //
+            InvoiceProductItemCounterStatsPtr   m_stats;
+    };
+    //
+    typedef QSharedPointer<InvoiceProductItemCounterStatsResult> InvoiceProductItemCounterStatsResultPtr;
 }
 
 #endif // INVOICEPRODUCTITEM_H
