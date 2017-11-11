@@ -72,6 +72,8 @@ namespace PenyaManager {
             static const Uint32     kDashboardProductListPageCount;
             // LoginWindow product item list
             static const Uint32     kLoginWindowProductListPageCount;
+            // InvoiceWindow product item list
+            static const Uint32     kInvoiceWindowProductListPageCount;
 
         private:
             Constants() {}

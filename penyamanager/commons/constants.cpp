@@ -55,5 +55,7 @@ namespace PenyaManager {
     const Uint32    Constants::kDashboardProductListPageCount   = 20;
     //
     const Uint32    Constants::kLoginWindowProductListPageCount = 10;
+    //
+    const Uint32    Constants::kInvoiceWindowProductListPageCount = 20;
 }
 
