@@ -69,7 +69,9 @@ namespace PenyaManager {
             // Credit limit
             static const Float      kCreditLimit;
             // Dashboard product item list
-            static const Float      kDashboardProductListPageCount;
+            static const Uint32     kDashboardProductListPageCount;
+            // LoginWindow product item list
+            static const Uint32     kLoginWindowProductListPageCount;
 
         private:
             Constants() {}

@@ -42,10 +42,16 @@ namespace PenyaManager {
             void on_loginPushButton_clicked();
             //
             void on_languagePushButton_clicked();
+            //
+            void on_prevPagePushButton_clicked();
+            //
+            void on_nextPagePushButton_clicked();
 
         private:
             //
             Ui::LoginWindow             *ui;
+            //
+            Uint32                      m_currentPage;
             //
             QString                     m_password;
             //

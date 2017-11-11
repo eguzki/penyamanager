@@ -52,6 +52,8 @@ namespace PenyaManager {
     //
     const Float     Constants::kCreditLimit                     = 100;
     //
-    const Float     Constants::kDashboardProductListPageCount   = 20;
+    const Uint32    Constants::kDashboardProductListPageCount   = 20;
+    //
+    const Uint32    Constants::kLoginWindowProductListPageCount = 10;
 }
 
