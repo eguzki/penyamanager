@@ -257,71 +257,6 @@
           <widget class="QWidget" name="pagingWidget" native="true">
            <layout class="QHBoxLayout" name="horizontalLayout_9">
             <item>
-             <widget class="QLabel" name="fromDateResultLabel">
-              <property name="text">
-               <string>From:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="fromDateResultValueLabel">
-              <property name="minimumSize">
-               <size>
-                <width>200</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>200</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="toDateResultLabel">
-              <property name="text">
-               <string>To:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="toDateResultValueLabel">
-              <property name="minimumSize">
-               <size>
-                <width>200</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>200</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="horizontalSpacer_2">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>846</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
              <widget class="QLabel" name="totalTransactionsLabel">
               <property name="text">
                <string>Total entries:</string>
@@ -348,30 +283,17 @@
              </widget>
             </item>
             <item>
-             <widget class="QLabel" name="totalCountLabel">
-              <property name="text">
-               <string>Total:</string>
+             <spacer name="horizontalSpacer_2">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
               </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="totalCountValueLabel">
-              <property name="minimumSize">
+              <property name="sizeHint" stdset="0">
                <size>
-                <width>100</width>
-                <height>0</height>
+                <width>40</width>
+                <height>20</height>
                </size>
               </property>
-              <property name="maximumSize">
-               <size>
-                <width>100</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>0 €</string>
-              </property>
-             </widget>
+             </spacer>
             </item>
             <item>
              <widget class="QPushButton" name="prevPagePushButton">

@@ -337,6 +337,46 @@ font: 40pt &quot;Calibri&quot;;
              <number>1</number>
             </property>
             <item>
+             <widget class="QWidget" name="pagingWidget" native="true">
+              <layout class="QHBoxLayout" name="horizontalLayout_10">
+               <item>
+                <spacer name="horizontalSpacer_2">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>846</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QPushButton" name="prevPagePushButton">
+                 <property name="text">
+                  <string>&lt;</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="pageInfoLabel">
+                 <property name="text">
+                  <string notr="true">X / Y</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="nextPagePushButton">
+                 <property name="text">
+                  <string>&gt;</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
              <widget class="QTableWidget" name="invoiceTableWidget">
               <property name="minimumSize">
                <size>

@@ -9,6 +9,7 @@ namespace PenyaManager {
         QWidget(parent),
         ui(new Ui::ProductItemWidget)
     {
+        UNUSEDPARAMETER(price);
         ui->setupUi(this);
         ui->imageQLabel->setPixmap(imageMap);
         ui->nameQLabel->setText(text);

@@ -15,6 +15,7 @@ namespace PenyaManager {
     InvoiceWindow::InvoiceWindow(QWidget *parent, const CentralWidgetCallback &callback) :
         IPartner(parent),
         ui(new Ui::InvoiceWindow),
+        m_currentPage(0),
         m_pMemberProfileGroupBox(new MemberProfileGroupBox),
         m_switchCentralWidgetCallback(callback)
     {
@@ -69,6 +70,7 @@ namespace PenyaManager {
             qApp->exit(0);
             return;
         }
+        m_currentPage = 0;
         fillInvoiceData(pCurrMember, pInvoiceResultPtr->m_pInvoice);
     }
     //
@@ -133,18 +135,34 @@ namespace PenyaManager {
         //
         // Product List
         //
-        InvoiceProductItemListResultPtr pInvoiceProductItemListResultPtr = Singletons::m_pDAO->getInvoiceProductItems(pInvoicePtr->m_id);
+        InvoiceProductItemListResultPtr pInvoiceProductItemListResultPtr = Singletons::m_pDAO->getInvoiceProductItems(pInvoicePtr->m_id, m_currentPage, Constants::kInvoiceWindowProductListPageCount);
         if (pInvoiceProductItemListResultPtr->m_error) {
             QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
             return;
         }
-        this->ui->invoiceProductTableWidget->setRowCount(pInvoiceProductItemListResultPtr->m_list->size());
+        InvoiceProductItemStatsResultPtr invoiceProductItemStatsResultPtr = Singletons::m_pDAO->getInvoiceProductItemsStats(pInvoicePtr->m_id);
+        if (invoiceProductItemStatsResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            return;
+        }
+        // enable-disable pagination buttons
+        // total num pages
+        Uint32 numPages = (Uint32)ceil((Float)invoiceProductItemStatsResultPtr->m_stats->m_totalProducts/Constants::kInvoiceWindowProductListPageCount);
+        // when just single page, hide pagingWidget
+        this->ui->pagingWidget->setHidden(numPages <= 1);
+        if (numPages > 1) {
+            this->ui->prevPagePushButton->setEnabled(m_currentPage > 0);
+            this->ui->nextPagePushButton->setEnabled(m_currentPage < numPages-1);
+            this->ui->pageInfoLabel->setText(QString("%1 / %2").arg(m_currentPage+1).arg(numPages));
+        }
+
         // invoice table reset
         this->ui->invoiceProductTableWidget->clearContents();
 
+        this->ui->invoiceProductTableWidget->setRowCount(pInvoiceProductItemListResultPtr->m_list->size());
+
         //fill data
         Uint32 rowCount = 0;
-        Float totalInvoice = 0.0;
         for (InvoiceProductItemList::iterator iter = pInvoiceProductItemListResultPtr->m_list->begin(); iter != pInvoiceProductItemListResultPtr->m_list->end(); ++iter)
         {
             InvoiceProductItemPtr pInvoiceProductItemPtr = *iter;
@@ -153,7 +171,6 @@ namespace PenyaManager {
             this->ui->invoiceProductTableWidget->setItem(rowCount, 2, new QTableWidgetItem(QString("%1").arg(pInvoiceProductItemPtr->m_count)));
             Float totalPrice = pInvoiceProductItemPtr->m_priceperunit * pInvoiceProductItemPtr->m_count;
             this->ui->invoiceProductTableWidget->setItem(rowCount, 3, new QTableWidgetItem(QString("%1 €").arg(totalPrice, 0, 'f', 2)));
-            totalInvoice += totalPrice;
             rowCount++;
         }
 
@@ -166,6 +183,7 @@ namespace PenyaManager {
         QString dateLocalized = Singletons::m_translationManager.getLocale().toString(pInvoicePtr->m_date, QLocale::NarrowFormat);
         this->ui->invoiceDateInfoLabel->setText(dateLocalized);
         // Total
+        Float totalInvoice = invoiceProductItemStatsResultPtr->m_stats->m_totalAmount;
         this->ui->invoiceTotalInfoLabel->setText(QString("%1 €").arg(totalInvoice, 0, 'f', 2));
         // new balance
         Float newBalance = pMemberPtr->m_balance;
@@ -177,7 +195,7 @@ namespace PenyaManager {
     {
         // Loading Current Invoice
         // Loading Current Invoice products
-        InvoiceProductItemListResultPtr pInvoiceProductItemListResultPtr = Singletons::m_pDAO->getInvoiceProductItems(pInvoicePtr->m_id);
+        InvoiceProductItemListResultPtr pInvoiceProductItemListResultPtr = Singletons::m_pDAO->getAllInvoiceProductItems(pInvoicePtr->m_id);
         if (pInvoiceProductItemListResultPtr->m_error) {
             QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
             return;
@@ -221,6 +239,46 @@ namespace PenyaManager {
         // print invoice
         GuiUtils::printInvoice(invoiceData, pMemberPtr->m_id, pInvoicePtr->m_id);
         QMessageBox::information(this, tr("Print Invoice"), tr("Invoice #%1 sent to printer").arg(QString::number(pInvoicePtr->m_id)));
+    }
+    //
+    void InvoiceWindow::on_prevPagePushButton_clicked()
+    {
+        //
+        // Loading Current Invoice
+        //
+        MemberPtr pCurrMember = Singletons::m_pCurrMember;
+        InvoiceResultPtr pInvoiceResultPtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
+        if (pInvoiceResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
+        if (!pInvoiceResultPtr->m_pInvoice) {
+            QMessageBox::critical(this, tr("No active invoice found."), tr("Program will exit"));
+            qApp->exit(0);
+            return;
+        }
+        m_currentPage--;
+        fillInvoiceData(pCurrMember, pInvoiceResultPtr->m_pInvoice);
+    }
+    //
+    void InvoiceWindow::on_nextPagePushButton_clicked()
+    {
+        //
+        // Loading Current Invoice
+        //
+        MemberPtr pCurrMember = Singletons::m_pCurrMember;
+        InvoiceResultPtr pInvoiceResultPtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
+        if (pInvoiceResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
+        if (!pInvoiceResultPtr->m_pInvoice) {
+            QMessageBox::critical(this, tr("No active invoice found."), tr("Program will exit"));
+            qApp->exit(0);
+            return;
+        }
+        m_currentPage++;
+        fillInvoiceData(pCurrMember, pInvoiceResultPtr->m_pInvoice);
     }
 }
 

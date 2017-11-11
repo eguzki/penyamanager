@@ -29,8 +29,6 @@ namespace PenyaManager {
         this->ui->fromCalendarWidget->setSelectedDate(fromIntialDate);
         this->ui->toCalendarWidget->setSelectedDate(toInitialDate);
 
-        this->ui->fromDateResultValueLabel->clear();
-        this->ui->toDateResultValueLabel->clear();
         initializeTable();
     }
     //
@@ -176,23 +174,17 @@ namespace PenyaManager {
         // enable-disable pagination buttons
         // total num pages
         Uint32 numPages = (Uint32)ceil((Float)pTransactionListStatsResultPtr->m_listStats->m_totalNumTransactions/Constants::kAccountListPageCount);
-        this->ui->prevPagePushButton->setEnabled(m_currentPage > 0);
-        this->ui->nextPagePushButton->setEnabled(m_currentPage < numPages-1);
-        // fill page view
-        this->ui->pageInfoLabel->setText(QString("%1 / %2").arg(m_currentPage+1).arg(numPages));
+        // when just single page, hide pagingWidget
+        this->ui->pagingWidget->setHidden(numPages <= 1);
+        if (numPages > 1) {
+            this->ui->prevPagePushButton->setEnabled(m_currentPage > 0);
+            this->ui->nextPagePushButton->setEnabled(m_currentPage < numPages-1);
+            this->ui->pageInfoLabel->setText(QString("%1 / %2").arg(m_currentPage+1).arg(numPages));
+        }
+
         // fill total stats view
         this->ui->totalTransactionsValueLabel->setText(QString::number(pTransactionListStatsResultPtr->m_listStats->m_totalNumTransactions));
 
-        Float totalTransactions = 0.0;
-        totalTransactions += pTransactionListStatsResultPtr->m_listStats->m_totalBankCharges;
-        totalTransactions += pTransactionListStatsResultPtr->m_listStats->m_totalInvoices;
-        totalTransactions += pTransactionListStatsResultPtr->m_listStats->m_totalDeposits;
-        this->ui->totalCountValueLabel->setText(QString("%1 €").arg(totalTransactions, 0, 'f', 2));
-        // fill dates used for query
-        QString dateLocalized = Singletons::m_translationManager.getLocale().toString(fromDate, QLocale::NarrowFormat);
-        this->ui->fromDateResultValueLabel->setText(dateLocalized);
-        dateLocalized = Singletons::m_translationManager.getLocale().toString(toDate.addDays(-1), QLocale::NarrowFormat);
-        this->ui->toDateResultValueLabel->setText(dateLocalized);
         fillAccountData(pTransactionListResultPtr);
     }
     void AccountView::on_newinvoiceButton_clicked()

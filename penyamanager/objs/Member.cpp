@@ -11,6 +11,11 @@ namespace PenyaManager
     MemberListStats::MemberListStats()
     {}
     //
+    MemberListStats::MemberListStats(Uint32 totalMembers)
+        :
+            m_totalMembers(totalMembers)
+    {}
+    //
     MemberResult::MemberResult()
         :
             m_error(0)

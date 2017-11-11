@@ -17,8 +17,7 @@ namespace PenyaManager
         :
             m_totalNumInvoices(totalNumInvoices),
             m_totalAmount(totalAmount)
-    {
-    }
+    {}
     //
     InvoiceResult::InvoiceResult()
         :
