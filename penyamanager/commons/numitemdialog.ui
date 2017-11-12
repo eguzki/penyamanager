@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>366</width>
-    <height>542</height>
+    <height>584</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -33,7 +33,12 @@
     <normaloff>:/images/alegrialogo.jpg</normaloff>:/images/alegrialogo.jpg</iconset>
   </property>
   <property name="styleSheet">
-   <string notr="true">#NumItemDialog {
+   <string notr="true">#displayLabel{
+font: 22pt &quot;Calibri&quot;;
+qproperty-alignment: AlignCenter;
+}
+
+#NumItemDialog {
 background:rgb(117,117,117);
 }
 
