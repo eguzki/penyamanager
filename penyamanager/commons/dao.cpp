@@ -1261,17 +1261,20 @@ namespace PenyaManager {
         return pReservationListResultPtr;
     }
     //
-    ReservationItemListResultPtr DAO::getLunchTableList()
+    ReservationItemListResultPtr DAO::getLunchTableList(Uint32 page, Uint32 count)
     {
         ReservationItemListResultPtr pReservationItemListResultPtr(new ReservationItemListResult);
 
-        auto createQuery = [](){
+        auto createQuery = [=](){
             QueryPtr queryPtr(new QSqlQuery);
             // lunch tables list
             queryPtr->prepare(
                     "SELECT idtable, name, guestnum "
-                    "FROM lunchtables"
+                    "FROM lunchtables "
+                    "LIMIT :limit OFFSET :offset"
                     );
+            queryPtr->bindValue(":limit", count);
+            queryPtr->bindValue(":offset", page * count);
             return queryPtr;
         };
 
@@ -1294,17 +1297,79 @@ namespace PenyaManager {
         return pReservationItemListResultPtr;
     }
     //
-    ReservationItemListResultPtr DAO::getOvenList()
+    ReservationItemListResultPtr DAO::getAllLunchTableList()
     {
         ReservationItemListResultPtr pReservationItemListResultPtr(new ReservationItemListResult);
 
         auto createQuery = [](){
             QueryPtr queryPtr(new QSqlQuery);
+            // lunch tables list
+            queryPtr->prepare(
+                    "SELECT idtable, name, guestnum "
+                    "FROM lunchtables"
+                    );
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("getAllLunchTableList");
+            pReservationItemListResultPtr->m_error = 1;
+        } else {
+            pReservationItemListResultPtr->m_list = ReservationItemListPtr(new ReservationItemList);
+            while (queryResponse.query->next()) {
+                ReservationItemPtr pReservationItemPtr(new ReservationItem);
+                pReservationItemPtr->m_itemType = ReservationItemType::LunchTableType;
+                pReservationItemPtr->m_idItem = queryResponse.query->value(0).toInt();
+                pReservationItemPtr->m_itemName = queryResponse.query->value(1).toString();
+                pReservationItemPtr->m_guestNum = queryResponse.query->value(2).toUInt();
+                pReservationItemListResultPtr->m_list->push_back(pReservationItemPtr);
+            }
+        }
+        return pReservationItemListResultPtr;
+    }
+    //
+    ReservationItemListStatsPtr DAO::getLunchTableListStats()
+    {
+        ReservationItemListStatsPtr pReservationItemListStatsPtr(new ReservationItemListStats);
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // fireplace list
+            queryPtr->prepare(
+                    "SELECT COUNT(*) "
+                    "FROM lunchtables"
+                    );
+            return queryPtr;
+        };
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("getLunchTableListStats");
+            pReservationItemListStatsPtr->m_error = 1;
+        } else if (queryResponse.query->next()) {
+            pReservationItemListStatsPtr->m_listStats = ReservationListStatsPtr(new ReservationListStats);
+            pReservationItemListStatsPtr->m_listStats->m_totalNum = queryResponse.query->value(0).toUInt();
+        } else {
+            pReservationItemListStatsPtr->m_listStats = ReservationListStatsPtr(new ReservationListStats(0));
+        }
+        return pReservationItemListStatsPtr;
+    }
+    //
+    ReservationItemListResultPtr DAO::getOvenList(Uint32 page, Uint32 count)
+    {
+        ReservationItemListResultPtr pReservationItemListResultPtr(new ReservationItemListResult);
+
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
             // oven list
             queryPtr->prepare(
                     "SELECT idoven, name "
-                    "FROM ovens"
+                    "FROM ovens "
+                    "LIMIT :limit OFFSET :offset"
                     );
+            queryPtr->bindValue(":limit", count);
+            queryPtr->bindValue(":offset", page * count);
             return queryPtr;
         };
 
@@ -1327,17 +1392,80 @@ namespace PenyaManager {
         return pReservationItemListResultPtr;
     }
     //
-    ReservationItemListResultPtr DAO::getFireplaceList()
+    ReservationItemListResultPtr DAO::getAllOvenList()
     {
         ReservationItemListResultPtr pReservationItemListResultPtr(new ReservationItemListResult);
 
         auto createQuery = [](){
             QueryPtr queryPtr(new QSqlQuery);
+            // oven list
+            queryPtr->prepare(
+                    "SELECT idoven, name "
+                    "FROM ovens "
+                    "LIMIT :limit OFFSET :offset"
+                    );
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("getAllOvenList");
+            pReservationItemListResultPtr->m_error = 1;
+        } else {
+            pReservationItemListResultPtr->m_list = ReservationItemListPtr(new ReservationItemList);
+            while (queryResponse.query->next()) {
+                ReservationItemPtr pReservationItemPtr(new ReservationItem);
+                pReservationItemPtr->m_itemType = ReservationItemType::OvenType;
+                pReservationItemPtr->m_idItem = queryResponse.query->value(0).toInt();
+                pReservationItemPtr->m_itemName = queryResponse.query->value(1).toString();
+                pReservationItemPtr->m_guestNum = 0;
+                pReservationItemListResultPtr->m_list->push_back(pReservationItemPtr);
+            }
+        }
+        return pReservationItemListResultPtr;
+    }
+    //
+    ReservationItemListStatsPtr DAO::getOvenListStats()
+    {
+        ReservationItemListStatsPtr pReservationItemListStatsPtr(new ReservationItemListStats);
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // fireplace list
+            queryPtr->prepare(
+                    "SELECT COUNT(*) "
+                    "FROM ovens"
+                    );
+            return queryPtr;
+        };
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("getOvenListStats");
+            pReservationItemListStatsPtr->m_error = 1;
+        } else if (queryResponse.query->next()) {
+            pReservationItemListStatsPtr->m_listStats = ReservationListStatsPtr(new ReservationListStats);
+            pReservationItemListStatsPtr->m_listStats->m_totalNum = queryResponse.query->value(0).toUInt();
+        } else {
+            pReservationItemListStatsPtr->m_listStats = ReservationListStatsPtr(new ReservationListStats(0));
+        }
+        return pReservationItemListStatsPtr;
+    }
+    //
+    ReservationItemListResultPtr DAO::getFireplaceList(Uint32 page, Uint32 count)
+    {
+        ReservationItemListResultPtr pReservationItemListResultPtr(new ReservationItemListResult);
+
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
             // fireplace list
             queryPtr->prepare(
                     "SELECT idfireplace, name "
-                    "FROM fireplaces"
+                    "FROM fireplaces "
+                    "LIMIT :limit OFFSET :offset"
                     );
+            queryPtr->bindValue(":limit", count);
+            queryPtr->bindValue(":offset", page * count);
             return queryPtr;
         };
 
@@ -1358,6 +1486,66 @@ namespace PenyaManager {
             }
         }
         return pReservationItemListResultPtr;
+    }
+    //
+    ReservationItemListResultPtr DAO::getAllFireplaceList()
+    {
+        ReservationItemListResultPtr pReservationItemListResultPtr(new ReservationItemListResult);
+
+        auto createQuery = [](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // fireplace list
+            queryPtr->prepare(
+                    "SELECT idfireplace, name "
+                    "FROM fireplaces "
+                    "LIMIT :limit OFFSET :offset"
+                    );
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("getAllFireplaceList");
+            pReservationItemListResultPtr->m_error = 1;
+        } else {
+            pReservationItemListResultPtr->m_list = ReservationItemListPtr(new ReservationItemList);
+            while (queryResponse.query->next()) {
+                ReservationItemPtr pReservationItemPtr(new ReservationItem);
+                pReservationItemPtr->m_itemType = ReservationItemType::FireplaceType;
+                pReservationItemPtr->m_idItem = queryResponse.query->value(0).toInt();
+                pReservationItemPtr->m_itemName = queryResponse.query->value(1).toString();
+                pReservationItemPtr->m_guestNum = 0;
+                pReservationItemListResultPtr->m_list->push_back(pReservationItemPtr);
+            }
+        }
+        return pReservationItemListResultPtr;
+    }
+    //
+    ReservationItemListStatsPtr DAO::getFireplaceListStats()
+    {
+        ReservationItemListStatsPtr pReservationItemListStatsPtr(new ReservationItemListStats);
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // fireplace list
+            queryPtr->prepare(
+                    "SELECT COUNT(*) "
+                    "FROM fireplaces"
+                    );
+            return queryPtr;
+        };
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            QLOG_ERROR() << QString("getFireplaceListStats");
+            pReservationItemListStatsPtr->m_error = 1;
+        } else if (queryResponse.query->next()) {
+            pReservationItemListStatsPtr->m_listStats = ReservationListStatsPtr(new ReservationListStats);
+            pReservationItemListStatsPtr->m_listStats->m_totalNum = queryResponse.query->value(0).toUInt();
+        } else {
+            pReservationItemListStatsPtr->m_listStats = ReservationListStatsPtr(new ReservationListStats(0));
+        }
+        return pReservationItemListStatsPtr;
     }
     //
     bool DAO::makeTableReservation(const QDate &date, ReservationType reservationType, Uint16 guestNum, Int32 memberId, Int32 idTable, bool isAdmin)

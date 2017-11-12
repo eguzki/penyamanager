@@ -22,15 +22,22 @@ namespace PenyaManager {
     TableReservationView::TableReservationView(QWidget *parent, const CentralWidgetCallback &callback) :
         IPartner(parent),
         ui(new Ui::TableReservationView),
+        m_currentPage(0),
         m_pMemberProfileGroupBox(new MemberProfileGroupBox),
         m_switchCentralWidgetCallback(callback)
     {
         ui->setupUi(this);
         this->ui->topPanelWidget->layout()->addWidget(m_pMemberProfileGroupBox);
+        // reservation type
         this->ui->reservationTypeButtonGroup->setId(this->ui->midMorningButton, static_cast<Int32>(ReservationType::MidMorning));
         this->ui->reservationTypeButtonGroup->setId(this->ui->lunchButton, static_cast<Int32>(ReservationType::Lunch));
         this->ui->reservationTypeButtonGroup->setId(this->ui->supperButton, static_cast<Int32>(ReservationType::Supper));
         this->ui->reservationTypeButtonGroup->setId(this->ui->dinnerButton, static_cast<Int32>(ReservationType::Dinner));
+        // reservation item
+        this->ui->reservationItemButtonGroup->setId(this->ui->tablePushButton, static_cast<Int32>(ReservationItemType::LunchTableType));
+        this->ui->reservationItemButtonGroup->setId(this->ui->ovenPushButton, static_cast<Int32>(ReservationItemType::OvenType));
+        this->ui->reservationItemButtonGroup->setId(this->ui->fireplacePushButton, static_cast<Int32>(ReservationItemType::FireplaceType));
+
         initializeTable();
         this->ui->calendarWidget->setLocale(Singletons::m_translationManager.getLocale());
     }
@@ -110,6 +117,10 @@ namespace PenyaManager {
             this->ui->lunchButton->setEnabled(false);
             this->ui->supperButton->setEnabled(false);
             this->ui->dinnerButton->setEnabled(false);
+            // reservation item buttons
+            this->ui->tablePushButton->setEnabled(false);
+            this->ui->ovenPushButton->setEnabled(false);
+            this->ui->fireplacePushButton->setEnabled(false);
         } else {
             // reservation type (midmorning,lunch,supper,dinner) buttons
             this->ui->midMorningButton->setEnabled(true);
@@ -125,17 +136,35 @@ namespace PenyaManager {
             this->ui->supperButton->setChecked(false);
             this->ui->dinnerButton->setChecked(false);
             this->ui->calendarWidget->setSelectionMode(QCalendarWidget::SingleSelection);
+            // reservation item buttons
+            this->ui->tablePushButton->setEnabled(true);
+            this->ui->ovenPushButton->setEnabled(true);
+            this->ui->fireplacePushButton->setEnabled(true);
+            this->ui->tablePushButton->setCheckable(true);
+            this->ui->ovenPushButton->setCheckable(true);
+            this->ui->fireplacePushButton->setCheckable(true);
+            this->ui->tablePushButton->setChecked(true);
+            this->ui->ovenPushButton->setChecked(false);
+            this->ui->fireplacePushButton->setChecked(false);
+            m_currentPage = 0;
             fillTableReservations(pCurrMemberPtr, nowDate, ReservationType::Lunch);
         }
     }
     //
-    void TableReservationView::fillReservationsItems(const MemberPtr &pMemberPtr, const ReservationListPtr &pReservationListPtr, const ReservationItemListPtr &pReservationItemListPtr, Uint32 &rowCount)
+    void TableReservationView::fillReservationsItems(const MemberPtr &pMemberPtr, const ReservationListPtr &pReservationListPtr, const ReservationItemListPtr &pReservationItemListPtr)
     {
+        // table reset
+        this->ui->tableReservationTableWidget->clearContents();
+
+        // table
+        this->ui->tableReservationTableWidget->setRowCount(pReservationItemListPtr->size());
+
         bool hasReservation = false;
         // create map structure for easy and efficient lookup
         ReservationMap tableReservationMap;
         prepareTableReservationMap(tableReservationMap, pReservationListPtr, pMemberPtr, hasReservation);
 
+        Uint32 rowCount = 0;
         // fill data
         for (ReservationItemList::iterator iter = pReservationItemListPtr->begin(); iter != pReservationItemListPtr->end(); ++iter) {
             ReservationItemPtr pReservationItemPtr = *iter;
@@ -149,7 +178,7 @@ namespace PenyaManager {
                     // show reservation action
                     // only when there is no reserved table for this (date, reservationType)
                     QPushButton *pReservationButton = new QPushButton(tr("Reserve"), this->ui->tableReservationTableWidget);
-                    this->connect(pReservationButton, &QPushButton::clicked, std::bind(&TableReservationView::on_reservedButton_clicked, this, pReservationItemPtr->m_idItem, pReservationItemPtr->m_itemType));
+                    this->connect(pReservationButton, &QPushButton::clicked, std::bind(&TableReservationView::on_reservedButton_clicked, this, pReservationItemPtr->m_idItem));
                     this->ui->tableReservationTableWidget->setCellWidget(rowCount, 4, pReservationButton);
                 }
             } else {
@@ -160,14 +189,13 @@ namespace PenyaManager {
                 if (pReservationPtr->m_isAdmin)
                 {
                     this->ui->tableReservationTableWidget->setItem(rowCount, 2, new QTableWidgetItem(QString(tr("BLOCKED"))));
-                } else
-                {
+                } else {
                     QString guestName = QString("%1 %2 %3").arg(pReservationPtr->m_memberName).arg(pReservationPtr->m_memberSurname1).arg(pReservationPtr->m_memberSurname2);
                     this->ui->tableReservationTableWidget->setItem(rowCount, 2, new QTableWidgetItem(guestName));
                     if (pReservationPtr->m_idMember == pMemberPtr->m_id) {
                         // show cancel button action
                         QPushButton *pCancelButton = new QPushButton(tr("Cancel"), this->ui->tableReservationTableWidget);
-                        this->connect(pCancelButton, &QPushButton::clicked, std::bind(&TableReservationView::on_cancelButton_clicked, this, pReservationPtr->m_reservationId, pReservationItemPtr->m_itemType));
+                        this->connect(pCancelButton, &QPushButton::clicked, std::bind(&TableReservationView::on_cancelButton_clicked, this, pReservationPtr->m_reservationId));
                         this->ui->tableReservationTableWidget->setCellWidget(rowCount, 4, pCancelButton);
                     }
                 }
@@ -175,6 +203,76 @@ namespace PenyaManager {
             }
             rowCount++;
         }
+    }
+    //
+    void TableReservationView::fillFireplaceReservations(const MemberPtr &pMemberPtr, const QDate &nowDate, ReservationType reservationType)
+    {
+        // fetch fireplace reservation data
+        ReservationListResultPtr pFireplaceReservationListResultPtr = Singletons::m_pDAO->getFireplaceReservation(reservationType, nowDate);
+        if (pFireplaceReservationListResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            return;
+        }
+        // fetch fireplace data
+        ReservationItemListResultPtr pFireplaceListResultPtr = Singletons::m_pDAO->getFireplaceList(m_currentPage, Constants::kReservationListPageCount);
+        if (pFireplaceListResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            return;
+        }
+
+        ReservationItemListStatsPtr pFireplaceListStatsPtr = Singletons::m_pDAO->getFireplaceListStats();
+        if (pFireplaceListStatsPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            return;
+        }
+        // enable-disable pagination buttons
+        // total num pages
+        Uint32 numPages = (Uint32)ceil((Float)pFireplaceListStatsPtr->m_listStats->m_totalNum/Constants::kReservationListPageCount);
+        // when just single page, hide pagingWidget
+        this->ui->pagingWidget->setHidden(numPages <= 1);
+        if (numPages > 1) {
+            this->ui->prevPagePushButton->setEnabled(m_currentPage > 0);
+            this->ui->nextPagePushButton->setEnabled(m_currentPage < numPages-1);
+            this->ui->pageInfoLabel->setText(QString("%1 / %2").arg(m_currentPage+1).arg(numPages));
+        }
+
+        // fill fireplace data
+        fillReservationsItems(pMemberPtr, pFireplaceReservationListResultPtr->m_list, pFireplaceListResultPtr->m_list);
+    }
+    //
+    void TableReservationView::fillOvenReservations(const MemberPtr &pMemberPtr, const QDate &nowDate, ReservationType reservationType)
+    {
+        // fetch oven reservation data
+        ReservationListResultPtr pOvenReservationListResultPtr = Singletons::m_pDAO->getOvenReservation(reservationType, nowDate);
+        if (pOvenReservationListResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            return;
+        }
+        // fetch oven data
+        ReservationItemListResultPtr pOvenListResultPtr = Singletons::m_pDAO->getOvenList(m_currentPage, Constants::kReservationListPageCount);
+        if (pOvenListResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            return;
+        }
+        // fetch oven list stats
+        ReservationItemListStatsPtr pOvenListStatsPtr = Singletons::m_pDAO->getOvenListStats();
+        if (pOvenListStatsPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            return;
+        }
+        // enable-disable pagination buttons
+        // total num pages
+        Uint32 numPages = (Uint32)ceil((Float)pOvenListStatsPtr->m_listStats->m_totalNum/Constants::kReservationListPageCount);
+        // when just single page, hide pagingWidget
+        this->ui->pagingWidget->setHidden(numPages <= 1);
+        if (numPages > 1) {
+            this->ui->prevPagePushButton->setEnabled(m_currentPage > 0);
+            this->ui->nextPagePushButton->setEnabled(m_currentPage < numPages-1);
+            this->ui->pageInfoLabel->setText(QString("%1 / %2").arg(m_currentPage+1).arg(numPages));
+        }
+
+        // fill oven data
+        fillReservationsItems(pMemberPtr, pOvenReservationListResultPtr->m_list, pOvenListResultPtr->m_list);
     }
     //
     void TableReservationView::fillTableReservations(const MemberPtr &pMemberPtr, const QDate &nowDate, ReservationType reservationType)
@@ -186,51 +284,30 @@ namespace PenyaManager {
             return;
         }
         // fetch tables data
-        ReservationItemListResultPtr pTableListResultPtr = Singletons::m_pDAO->getLunchTableList();
+        ReservationItemListResultPtr pTableListResultPtr = Singletons::m_pDAO->getLunchTableList(m_currentPage, Constants::kReservationListPageCount);
         if (pTableListResultPtr->m_error) {
             QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
-
-        // fetch oven reservation data
-        ReservationListResultPtr pOvenReservationListResultPtr = Singletons::m_pDAO->getOvenReservation(reservationType, nowDate);
-        if (pOvenReservationListResultPtr->m_error) {
+        // fetch table list stats
+        ReservationItemListStatsPtr pTableListStatsPtr = Singletons::m_pDAO->getLunchTableListStats();
+        if (pTableListStatsPtr->m_error) {
             QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
-        // fetch oven data
-        ReservationItemListResultPtr pOvenListResultPtr = Singletons::m_pDAO->getOvenList();
-        if (pOvenListResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
-            return;
+        // enable-disable pagination buttons
+        // total num pages
+        Uint32 numPages = (Uint32)ceil((Float)pTableListStatsPtr->m_listStats->m_totalNum/Constants::kReservationListPageCount);
+        // when just single page, hide pagingWidget
+        this->ui->pagingWidget->setHidden(numPages <= 1);
+        if (numPages > 1) {
+            this->ui->prevPagePushButton->setEnabled(m_currentPage > 0);
+            this->ui->nextPagePushButton->setEnabled(m_currentPage < numPages-1);
+            this->ui->pageInfoLabel->setText(QString("%1 / %2").arg(m_currentPage+1).arg(numPages));
         }
 
-        // fetch fireplace reservation data
-        ReservationListResultPtr pFireplaceReservationListResultPtr = Singletons::m_pDAO->getFireplaceReservation(reservationType, nowDate);
-        if (pFireplaceReservationListResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
-            return;
-        }
-        // fetch fireplace data
-        ReservationItemListResultPtr pFireplaceListResultPtr = Singletons::m_pDAO->getFireplaceList();
-        if (pFireplaceListResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
-            return;
-        }
-
-        Uint32 totalSize = pTableListResultPtr->m_list->size() + pOvenListResultPtr->m_list->size() + pFireplaceListResultPtr->m_list->size();
-        // table
-        this->ui->tableReservationTableWidget->setRowCount(totalSize);
-
-        // invoice table reset
-        this->ui->tableReservationTableWidget->clearContents();
-        Uint32 rowCount = 0;
         // fill table data
-        fillReservationsItems(pMemberPtr, pTableReservationListResultPtr->m_list, pTableListResultPtr->m_list, rowCount);
-        // fill oven data
-        fillReservationsItems(pMemberPtr, pOvenReservationListResultPtr->m_list, pOvenListResultPtr->m_list, rowCount);
-        // fill fireplace data
-        fillReservationsItems(pMemberPtr, pFireplaceReservationListResultPtr->m_list, pFireplaceListResultPtr->m_list, rowCount);
+        fillReservationsItems(pMemberPtr, pTableReservationListResultPtr->m_list, pTableListResultPtr->m_list);
     }
     //
     void TableReservationView::prepareTableReservationMap(ReservationMap &tableReservationMap, const ReservationListPtr &pReservationListPtr, const MemberPtr &pMemberPtr, bool &hasReservation)
@@ -252,17 +329,35 @@ namespace PenyaManager {
     {
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
         ReservationType reservationType = static_cast<ReservationType>(this->ui->reservationTypeButtonGroup->checkedId());
-        fillTableReservations(pCurrMemberPtr, date, reservationType);
+        m_currentPage = 0;
+
+
+        ReservationItemType reservationItemType = static_cast<ReservationItemType>(this->ui->reservationItemButtonGroup->checkedId());
+        switch (reservationItemType)
+        {
+            case ReservationItemType::LunchTableType:
+                fillTableReservations(pCurrMemberPtr, date, reservationType);
+                break;
+            case ReservationItemType::OvenType:
+                fillOvenReservations(pCurrMemberPtr, date, reservationType);
+                break;
+            case ReservationItemType::FireplaceType:
+                fillFireplaceReservations(pCurrMemberPtr, date, reservationType);
+                break;
+            default:
+                break;
+        }
     }
     //
-    void TableReservationView::on_reservedButton_clicked(int itemId, ReservationItemType itemType)
+    void TableReservationView::on_reservedButton_clicked(int itemId)
     {
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
         QDate date = this->ui->calendarWidget->selectedDate();
         ReservationType reservationType = static_cast<ReservationType>(this->ui->reservationTypeButtonGroup->checkedId());
+        ReservationItemType reservationItemType = static_cast<ReservationItemType>(this->ui->reservationItemButtonGroup->checkedId());
 
         Uint32 guestNum = 0;
-        if (itemType == ReservationItemType::LunchTableType)
+        if (reservationItemType == ReservationItemType::LunchTableType)
         {
             NumItemDialog numItemDialog(this);
             numItemDialog.exec();
@@ -276,7 +371,7 @@ namespace PenyaManager {
         bool isAdmin = false;
         bool ok = false;
         QString title;
-        switch (itemType)
+        switch (reservationItemType)
         {
             case ReservationItemType::LunchTableType:
                 title = "Table reservation";
@@ -300,14 +395,29 @@ namespace PenyaManager {
         }
         QLOG_INFO() << QString("[%1] [User %2] [item %3]").arg(title).arg(pCurrMemberPtr->m_id).arg(itemId);
         QMessageBox::information(this, title, "Reservation done");
-        fillTableReservations(pCurrMemberPtr, date, reservationType);
+        // currentPage does not need to be changed
+        switch (reservationItemType)
+        {
+            case ReservationItemType::LunchTableType:
+                fillTableReservations(pCurrMemberPtr, date, reservationType);
+                break;
+            case ReservationItemType::OvenType:
+                fillOvenReservations(pCurrMemberPtr, date, reservationType);
+                break;
+            case ReservationItemType::FireplaceType:
+                fillFireplaceReservations(pCurrMemberPtr, date, reservationType);
+                break;
+            default:
+                break;
+        }
     }
     //
-    void TableReservationView::on_cancelButton_clicked(int reservationId, ReservationItemType itemType)
+    void TableReservationView::on_cancelButton_clicked(int reservationId)
     {
         QString title;
         bool ok = false;
-        switch (itemType)
+        ReservationItemType reservationItemType = static_cast<ReservationItemType>(this->ui->reservationItemButtonGroup->checkedId());
+        switch (reservationItemType)
         {
             case ReservationItemType::LunchTableType:
                 title = "Table reservation";
@@ -332,7 +442,21 @@ namespace PenyaManager {
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
         QDate date = this->ui->calendarWidget->selectedDate();
         ReservationType reservationType = static_cast<ReservationType>(this->ui->reservationTypeButtonGroup->checkedId());
-        fillTableReservations(pCurrMemberPtr, date, reservationType);
+        // currentPage does not need to be changed
+        switch (reservationItemType)
+        {
+            case ReservationItemType::LunchTableType:
+                fillTableReservations(pCurrMemberPtr, date, reservationType);
+                break;
+            case ReservationItemType::OvenType:
+                fillOvenReservations(pCurrMemberPtr, date, reservationType);
+                break;
+            case ReservationItemType::FireplaceType:
+                fillFireplaceReservations(pCurrMemberPtr, date, reservationType);
+                break;
+            default:
+                break;
+        }
     }
     //
     void TableReservationView::on_midMorningButton_clicked(bool checked)
@@ -344,7 +468,22 @@ namespace PenyaManager {
 
         QDate date = this->ui->calendarWidget->selectedDate();
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
-        fillTableReservations(pCurrMemberPtr, date, ReservationType::MidMorning);
+        ReservationItemType reservationItemType = static_cast<ReservationItemType>(this->ui->reservationItemButtonGroup->checkedId());
+        m_currentPage = 0;
+        switch (reservationItemType)
+        {
+            case ReservationItemType::LunchTableType:
+                fillTableReservations(pCurrMemberPtr, date, ReservationType::MidMorning);
+                break;
+            case ReservationItemType::OvenType:
+                fillOvenReservations(pCurrMemberPtr, date, ReservationType::MidMorning);
+                break;
+            case ReservationItemType::FireplaceType:
+                fillFireplaceReservations(pCurrMemberPtr, date, ReservationType::MidMorning);
+                break;
+            default:
+                break;
+        }
     }
     //
     void TableReservationView::on_lunchButton_clicked(bool checked)
@@ -356,7 +495,22 @@ namespace PenyaManager {
 
         QDate date = this->ui->calendarWidget->selectedDate();
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
-        fillTableReservations(pCurrMemberPtr, date, ReservationType::Lunch);
+        ReservationItemType reservationItemType = static_cast<ReservationItemType>(this->ui->reservationItemButtonGroup->checkedId());
+        m_currentPage = 0;
+        switch (reservationItemType)
+        {
+            case ReservationItemType::LunchTableType:
+                fillTableReservations(pCurrMemberPtr, date, ReservationType::Lunch);
+                break;
+            case ReservationItemType::OvenType:
+                fillOvenReservations(pCurrMemberPtr, date, ReservationType::Lunch);
+                break;
+            case ReservationItemType::FireplaceType:
+                fillFireplaceReservations(pCurrMemberPtr, date, ReservationType::Lunch);
+                break;
+            default:
+                break;
+        }
     }
     //
     void TableReservationView::on_supperButton_clicked(bool checked)
@@ -368,7 +522,22 @@ namespace PenyaManager {
 
         QDate date = this->ui->calendarWidget->selectedDate();
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
-        fillTableReservations(pCurrMemberPtr, date, ReservationType::Supper);
+        ReservationItemType reservationItemType = static_cast<ReservationItemType>(this->ui->reservationItemButtonGroup->checkedId());
+        m_currentPage = 0;
+        switch (reservationItemType)
+        {
+            case ReservationItemType::LunchTableType:
+                fillTableReservations(pCurrMemberPtr, date, ReservationType::Supper);
+                break;
+            case ReservationItemType::OvenType:
+                fillOvenReservations(pCurrMemberPtr, date, ReservationType::Supper);
+                break;
+            case ReservationItemType::FireplaceType:
+                fillFireplaceReservations(pCurrMemberPtr, date, ReservationType::Supper);
+                break;
+            default:
+                break;
+        }
     }
     //
     void TableReservationView::on_dinnerButton_clicked(bool checked)
@@ -380,7 +549,22 @@ namespace PenyaManager {
 
         QDate date = this->ui->calendarWidget->selectedDate();
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
-        fillTableReservations(pCurrMemberPtr, date, ReservationType::Dinner);
+        ReservationItemType reservationItemType = static_cast<ReservationItemType>(this->ui->reservationItemButtonGroup->checkedId());
+        m_currentPage = 0;
+        switch (reservationItemType)
+        {
+            case ReservationItemType::LunchTableType:
+                fillTableReservations(pCurrMemberPtr, date, ReservationType::Dinner);
+                break;
+            case ReservationItemType::OvenType:
+                fillOvenReservations(pCurrMemberPtr, date, ReservationType::Dinner);
+                break;
+            case ReservationItemType::FireplaceType:
+                fillFireplaceReservations(pCurrMemberPtr, date, ReservationType::Dinner);
+                break;
+            default:
+                break;
+        }
     }
 
     void TableReservationView::on_newinvoiceButton_clicked()
@@ -412,5 +596,78 @@ namespace PenyaManager {
         // call login window on exit
         m_switchCentralWidgetCallback(WindowKey::kLoginWindowKey);
     }
-
+    //
+    void TableReservationView::on_prevPagePushButton_clicked()
+    {
+        QDate date = this->ui->calendarWidget->selectedDate();
+        MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
+        ReservationItemType reservationItemType = static_cast<ReservationItemType>(this->ui->reservationItemButtonGroup->checkedId());
+        ReservationType reservationType = static_cast<ReservationType>(this->ui->reservationTypeButtonGroup->checkedId());
+        m_currentPage--;
+        switch (reservationItemType)
+        {
+            case ReservationItemType::LunchTableType:
+                fillTableReservations(pCurrMemberPtr, date, reservationType);
+                break;
+            case ReservationItemType::OvenType:
+                fillOvenReservations(pCurrMemberPtr, date, reservationType);
+                break;
+            case ReservationItemType::FireplaceType:
+                fillFireplaceReservations(pCurrMemberPtr, date, reservationType);
+                break;
+            default:
+                break;
+        }
+    }
+    //
+    void TableReservationView::on_nextPagePushButton_clicked()
+    {
+        QDate date = this->ui->calendarWidget->selectedDate();
+        MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
+        ReservationItemType reservationItemType = static_cast<ReservationItemType>(this->ui->reservationItemButtonGroup->checkedId());
+        ReservationType reservationType = static_cast<ReservationType>(this->ui->reservationTypeButtonGroup->checkedId());
+        m_currentPage++;
+        switch (reservationItemType)
+        {
+            case ReservationItemType::LunchTableType:
+                fillTableReservations(pCurrMemberPtr, date, reservationType);
+                break;
+            case ReservationItemType::OvenType:
+                fillOvenReservations(pCurrMemberPtr, date, reservationType);
+                break;
+            case ReservationItemType::FireplaceType:
+                fillFireplaceReservations(pCurrMemberPtr, date, reservationType);
+                break;
+            default:
+                break;
+        }
+    }
+    //
+    void TableReservationView::on_tablePushButton_clicked()
+    {
+        QDate date = this->ui->calendarWidget->selectedDate();
+        MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
+        ReservationType reservationType = static_cast<ReservationType>(this->ui->reservationTypeButtonGroup->checkedId());
+        m_currentPage = 0;
+        fillTableReservations(pCurrMemberPtr, date, reservationType);
+    }
+    //
+    void TableReservationView::on_ovenPushButton_clicked()
+    {
+        QDate date = this->ui->calendarWidget->selectedDate();
+        MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
+        ReservationType reservationType = static_cast<ReservationType>(this->ui->reservationTypeButtonGroup->checkedId());
+        m_currentPage = 0;
+        fillOvenReservations(pCurrMemberPtr, date, reservationType);
+    }
+    //
+    void TableReservationView::on_fireplacePushButton_clicked()
+    {
+        QDate date = this->ui->calendarWidget->selectedDate();
+        MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
+        ReservationType reservationType = static_cast<ReservationType>(this->ui->reservationTypeButtonGroup->checkedId());
+        m_currentPage = 0;
+        fillFireplaceReservations(pCurrMemberPtr, date, reservationType);
+    }
 }
+

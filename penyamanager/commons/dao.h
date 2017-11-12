@@ -112,11 +112,23 @@ namespace PenyaManager {
             //
             ReservationListResultPtr getFireplaceReservation(ReservationType reservationType, const QDate &now);
             //
-            ReservationItemListResultPtr getLunchTableList();
+            ReservationItemListResultPtr getLunchTableList(Uint32 page, Uint32 count);
             //
-            ReservationItemListResultPtr getOvenList();
+            ReservationItemListResultPtr getAllLunchTableList();
             //
-            ReservationItemListResultPtr getFireplaceList();
+            ReservationItemListResultPtr getOvenList(Uint32 page, Uint32 count);
+            //
+            ReservationItemListResultPtr getAllOvenList();
+            //
+            ReservationItemListResultPtr getFireplaceList(Uint32 page, Uint32 count);
+            //
+            ReservationItemListResultPtr getAllFireplaceList();
+            //
+            ReservationItemListStatsPtr getLunchTableListStats();
+            //
+            ReservationItemListStatsPtr getOvenListStats();
+            //
+            ReservationItemListStatsPtr getFireplaceListStats();
             //
             bool makeTableReservation(const QDate &date, ReservationType reservationType, Uint16 guestNum, Int32 memberId, Int32 idtable, bool isAdmin);
             //

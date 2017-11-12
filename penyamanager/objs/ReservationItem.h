@@ -61,6 +61,40 @@ namespace PenyaManager
     };
     //
     typedef QSharedPointer<ReservationItemListResult> ReservationItemListResultPtr;
+    //
+    class ReservationListStats
+    {
+        public:
+            //
+            ReservationListStats();
+            //
+            ReservationListStats(Int32 totalNum);
+            //
+            virtual ~ReservationListStats(){}
+
+        public:
+            //
+            Int32                   m_totalNum;
+    };
+    //
+    typedef QSharedPointer<ReservationListStats> ReservationListStatsPtr;
+    //
+    class ReservationItemListStats
+    {
+        public:
+            //
+            ReservationItemListStats();
+            //
+            virtual ~ReservationItemListStats(){}
+
+        public:
+            //
+            Int32                   m_error;
+            //
+            ReservationListStatsPtr  m_listStats;
+    };
+    //
+    typedef QSharedPointer<ReservationItemListStats> ReservationItemListStatsPtr;
 }
 
 #endif // RESERVATIONITEMS_H
