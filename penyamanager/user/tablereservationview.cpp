@@ -69,14 +69,17 @@ namespace PenyaManager {
     void TableReservationView::initializeTable()
     {
         // table
+        QHeaderView* header = this->ui->tableReservationTableWidget->horizontalHeader();
+        header->setSectionResizeMode(QHeaderView::Fixed);
         this->ui->tableReservationTableWidget->setColumnCount(5);
         translateTable();
         Uint32 column = 0;
-        this->ui->tableReservationTableWidget->setColumnWidth(column++, 100);
-        this->ui->tableReservationTableWidget->setColumnWidth(column++, 50);
+        this->ui->tableReservationTableWidget->setColumnWidth(column++, 140);
+        this->ui->tableReservationTableWidget->setColumnWidth(column++, 40);
         this->ui->tableReservationTableWidget->setColumnWidth(column++, 75);
-        this->ui->tableReservationTableWidget->setColumnWidth(column++, 75);
-        this->ui->tableReservationTableWidget->setColumnWidth(column++, 150);
+        this->ui->tableReservationTableWidget->setColumnWidth(column++, 40);
+        this->ui->tableReservationTableWidget->setColumnWidth(column++, 165);
+
     }
     //
     void TableReservationView::init()
@@ -121,6 +124,13 @@ namespace PenyaManager {
             this->ui->tablePushButton->setEnabled(false);
             this->ui->ovenPushButton->setEnabled(false);
             this->ui->fireplacePushButton->setEnabled(false);
+            // fill empty data
+            MemberPtr pMemberPtr = Singletons::m_pCurrMember;
+
+            ReservationItemListStatsPtr pReservationItemListStatsPtr(new ReservationItemListStats);
+            pReservationItemListStatsPtr->m_listStats = ReservationListStatsPtr(new ReservationListStats);
+            fillReservationsItems(pMemberPtr, ReservationListPtr(new ReservationList), ReservationItemListPtr(new ReservationItemList),
+                                  pReservationItemListStatsPtr);
         } else {
             // reservation type (midmorning,lunch,supper,dinner) buttons
             this->ui->midMorningButton->setEnabled(true);
@@ -151,8 +161,20 @@ namespace PenyaManager {
         }
     }
     //
-    void TableReservationView::fillReservationsItems(const MemberPtr &pMemberPtr, const ReservationListPtr &pReservationListPtr, const ReservationItemListPtr &pReservationItemListPtr)
+    void TableReservationView::fillReservationsItems(const MemberPtr &pMemberPtr, const ReservationListPtr &pReservationListPtr, const ReservationItemListPtr &pReservationItemListPtr,
+                                                     const ReservationItemListStatsPtr &pReservationItemListStatsPtr)
     {
+        // enable-disable pagination buttons
+        // total num pages
+        Uint32 numPages = (Uint32)ceil((Float)pReservationItemListStatsPtr->m_listStats->m_totalNum/Constants::kReservationListPageCount);
+        // when just single page, hide pagingWidget
+        this->ui->pagingWidget->setHidden(numPages <= 1);
+        if (numPages > 1) {
+            this->ui->prevPagePushButton->setEnabled(m_currentPage > 0);
+            this->ui->nextPagePushButton->setEnabled(m_currentPage < numPages-1);
+            this->ui->pageInfoLabel->setText(QString("%1 / %2").arg(m_currentPage+1).arg(numPages));
+        }
+
         // table reset
         this->ui->tableReservationTableWidget->clearContents();
 
@@ -174,7 +196,7 @@ namespace PenyaManager {
             // not showing action buttons when: a)has reservation for unreserved tables and b)reservation of other members
             if (tableReservationMapItem == tableReservationMap.end()) {
                 // this table is not reserved
-                if (!hasReservation) {
+                if (!(hasReservation)) {
                     // show reservation action
                     // only when there is no reserved table for this (date, reservationType)
                     QPushButton *pReservationButton = new QPushButton(tr("Reserve"), this->ui->tableReservationTableWidget);
@@ -188,10 +210,10 @@ namespace PenyaManager {
                 // do not show cancel when reservation is from Admin
                 if (pReservationPtr->m_isAdmin)
                 {
-                    this->ui->tableReservationTableWidget->setItem(rowCount, 2, new QTableWidgetItem(QString(tr("BLOCKED"))));
+                    // mark row as reserved by admin
+                    this->ui->tableReservationTableWidget->setItem(rowCount, 2, new QTableWidgetItem("-"));
                 } else {
-                    QString guestName = QString("%1 %2 %3").arg(pReservationPtr->m_memberName).arg(pReservationPtr->m_memberSurname1).arg(pReservationPtr->m_memberSurname2);
-                    this->ui->tableReservationTableWidget->setItem(rowCount, 2, new QTableWidgetItem(guestName));
+                    this->ui->tableReservationTableWidget->setItem(rowCount, 2, new QTableWidgetItem(QString::number(pReservationPtr->m_memberUsername)));
                     if (pReservationPtr->m_idMember == pMemberPtr->m_id) {
                         // show cancel button action
                         QPushButton *pCancelButton = new QPushButton(tr("Cancel"), this->ui->tableReservationTableWidget);
@@ -201,6 +223,8 @@ namespace PenyaManager {
                 }
 
             }
+            // SET ROW HEIGHT
+            this->ui->tableReservationTableWidget->setRowHeight(rowCount, 40);
             rowCount++;
         }
     }
@@ -225,19 +249,9 @@ namespace PenyaManager {
             QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
-        // enable-disable pagination buttons
-        // total num pages
-        Uint32 numPages = (Uint32)ceil((Float)pFireplaceListStatsPtr->m_listStats->m_totalNum/Constants::kReservationListPageCount);
-        // when just single page, hide pagingWidget
-        this->ui->pagingWidget->setHidden(numPages <= 1);
-        if (numPages > 1) {
-            this->ui->prevPagePushButton->setEnabled(m_currentPage > 0);
-            this->ui->nextPagePushButton->setEnabled(m_currentPage < numPages-1);
-            this->ui->pageInfoLabel->setText(QString("%1 / %2").arg(m_currentPage+1).arg(numPages));
-        }
 
         // fill fireplace data
-        fillReservationsItems(pMemberPtr, pFireplaceReservationListResultPtr->m_list, pFireplaceListResultPtr->m_list);
+        fillReservationsItems(pMemberPtr, pFireplaceReservationListResultPtr->m_list, pFireplaceListResultPtr->m_list, pFireplaceListStatsPtr);
     }
     //
     void TableReservationView::fillOvenReservations(const MemberPtr &pMemberPtr, const QDate &nowDate, ReservationType reservationType)
@@ -260,19 +274,9 @@ namespace PenyaManager {
             QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
-        // enable-disable pagination buttons
-        // total num pages
-        Uint32 numPages = (Uint32)ceil((Float)pOvenListStatsPtr->m_listStats->m_totalNum/Constants::kReservationListPageCount);
-        // when just single page, hide pagingWidget
-        this->ui->pagingWidget->setHidden(numPages <= 1);
-        if (numPages > 1) {
-            this->ui->prevPagePushButton->setEnabled(m_currentPage > 0);
-            this->ui->nextPagePushButton->setEnabled(m_currentPage < numPages-1);
-            this->ui->pageInfoLabel->setText(QString("%1 / %2").arg(m_currentPage+1).arg(numPages));
-        }
 
         // fill oven data
-        fillReservationsItems(pMemberPtr, pOvenReservationListResultPtr->m_list, pOvenListResultPtr->m_list);
+        fillReservationsItems(pMemberPtr, pOvenReservationListResultPtr->m_list, pOvenListResultPtr->m_list, pOvenListStatsPtr);
     }
     //
     void TableReservationView::fillTableReservations(const MemberPtr &pMemberPtr, const QDate &nowDate, ReservationType reservationType)
@@ -295,19 +299,9 @@ namespace PenyaManager {
             QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
-        // enable-disable pagination buttons
-        // total num pages
-        Uint32 numPages = (Uint32)ceil((Float)pTableListStatsPtr->m_listStats->m_totalNum/Constants::kReservationListPageCount);
-        // when just single page, hide pagingWidget
-        this->ui->pagingWidget->setHidden(numPages <= 1);
-        if (numPages > 1) {
-            this->ui->prevPagePushButton->setEnabled(m_currentPage > 0);
-            this->ui->nextPagePushButton->setEnabled(m_currentPage < numPages-1);
-            this->ui->pageInfoLabel->setText(QString("%1 / %2").arg(m_currentPage+1).arg(numPages));
-        }
 
         // fill table data
-        fillReservationsItems(pMemberPtr, pTableReservationListResultPtr->m_list, pTableListResultPtr->m_list);
+        fillReservationsItems(pMemberPtr, pTableReservationListResultPtr->m_list, pTableListResultPtr->m_list, pTableListStatsPtr);
     }
     //
     void TableReservationView::prepareTableReservationMap(ReservationMap &tableReservationMap, const ReservationListPtr &pReservationListPtr, const MemberPtr &pMemberPtr, bool &hasReservation)

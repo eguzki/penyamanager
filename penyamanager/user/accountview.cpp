@@ -36,10 +36,10 @@ namespace PenyaManager {
         header->setSectionResizeMode(QHeaderView::Fixed);
         translateTable();
         Uint32 column = 0;
-        this->ui->accountTableWidget->setColumnWidth(column++, 200);
-        this->ui->accountTableWidget->setColumnWidth(column++, 200);
-        this->ui->accountTableWidget->setColumnWidth(column++, 200);
-        this->ui->accountTableWidget->setColumnWidth(column++, 130);
+        this->ui->accountTableWidget->setColumnWidth(column++, 190);
+        this->ui->accountTableWidget->setColumnWidth(column++, 90);
+        this->ui->accountTableWidget->setColumnWidth(column++, 90);
+        this->ui->accountTableWidget->setColumnWidth(column++, 90);
     }
     //
     void AccountView::init()

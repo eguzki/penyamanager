@@ -35,9 +35,9 @@ namespace PenyaManager {
         this->ui->invoiceProductTableWidget->setColumnCount(4);
         translateTable();
         Uint32 column = 0;
-        this->ui->invoiceProductTableWidget->setColumnWidth(column++, 300);
-        this->ui->invoiceProductTableWidget->setColumnWidth(column++, 100);
-        this->ui->invoiceProductTableWidget->setColumnWidth(column++, 100);
+        this->ui->invoiceProductTableWidget->setColumnWidth(column++, 231);
+        this->ui->invoiceProductTableWidget->setColumnWidth(column++, 83);
+        this->ui->invoiceProductTableWidget->setColumnWidth(column++, 45);
         this->ui->invoiceProductTableWidget->setColumnWidth(column++, 100);
     }
     //
@@ -171,6 +171,7 @@ namespace PenyaManager {
             this->ui->invoiceProductTableWidget->setItem(rowCount, 2, new QTableWidgetItem(QString("%1").arg(pInvoiceProductItemPtr->m_count)));
             Float totalPrice = pInvoiceProductItemPtr->m_priceperunit * pInvoiceProductItemPtr->m_count;
             this->ui->invoiceProductTableWidget->setItem(rowCount, 3, new QTableWidgetItem(QString("%1 €").arg(totalPrice, 0, 'f', 2)));
+            this->ui->invoiceProductTableWidget->setRowHeight(rowCount, 35);
             rowCount++;
         }
 

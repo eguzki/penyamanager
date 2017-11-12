@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1024</width>
+    <width>1264</width>
     <height>768</height>
    </rect>
   </property>
@@ -16,8 +16,6 @@
   <property name="styleSheet">
    <string notr="true">QListWidget {
     alternate-background-color:  rgb(158,158,158);
-    
-    selection-color: green;
     background: rgb(158,158,158);
 }
 
@@ -71,7 +69,22 @@ font: 40pt &quot;Calibri&quot;;
   <property name="locale">
    <locale language="Spanish" country="Spain"/>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QVBoxLayout">
+   <property name="spacing">
+    <number>6</number>
+   </property>
+   <property name="leftMargin">
+    <number>9</number>
+   </property>
+   <property name="topMargin">
+    <number>9</number>
+   </property>
+   <property name="rightMargin">
+    <number>9</number>
+   </property>
+   <property name="bottomMargin">
+    <number>9</number>
+   </property>
    <item>
     <widget class="QWidget" name="topPanelWidget" native="true">
      <property name="minimumSize">
@@ -86,7 +99,19 @@ font: 40pt &quot;Calibri&quot;;
        <height>150</height>
       </size>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout">
+     <layout class="QHBoxLayout" name="horizontalLayout_5">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
       <item>
        <widget class="QPushButton" name="newinvoiceButton">
         <property name="enabled">
@@ -124,6 +149,9 @@ font: 40pt &quot;Calibri&quot;;
       </item>
       <item>
        <widget class="QPushButton" name="invoicesPushButton">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
           <horstretch>0</horstretch>
@@ -132,6 +160,12 @@ font: 40pt &quot;Calibri&quot;;
         </property>
         <property name="text">
          <string>Invoices</string>
+        </property>
+        <property name="checkable">
+         <bool>false</bool>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -207,6 +241,18 @@ font: 40pt &quot;Calibri&quot;;
    <item>
     <widget class="QWidget" name="mainWidget" native="true">
      <layout class="QHBoxLayout" name="verticalLayout_2">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
       <item>
        <widget class="QListWidget" name="familyListWidget">
         <property name="minimumSize">
@@ -292,7 +338,7 @@ font: 40pt &quot;Calibri&quot;;
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_4">
          <property name="spacing">
-          <number>0</number>
+          <number>6</number>
          </property>
          <property name="leftMargin">
           <number>0</number>
@@ -322,19 +368,19 @@ font: 40pt &quot;Calibri&quot;;
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_5">
             <property name="spacing">
-             <number>10</number>
+             <number>6</number>
             </property>
             <property name="leftMargin">
-             <number>1</number>
+             <number>0</number>
             </property>
             <property name="topMargin">
-             <number>1</number>
+             <number>0</number>
             </property>
             <property name="rightMargin">
-             <number>1</number>
+             <number>0</number>
             </property>
             <property name="bottomMargin">
-             <number>1</number>
+             <number>0</number>
             </property>
             <item>
              <widget class="QWidget" name="pagingWidget" native="true">
@@ -443,6 +489,18 @@ font: 40pt &quot;Calibri&quot;;
             </size>
            </property>
            <layout class="QHBoxLayout" name="horizontalLayout_8">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
             <item>
              <widget class="QLabel" name="totalLabel">
               <property name="text">
@@ -479,19 +537,19 @@ font: 40pt &quot;Calibri&quot;;
            </property>
            <layout class="QHBoxLayout" name="horizontalLayout_9">
             <property name="spacing">
-             <number>10</number>
+             <number>6</number>
             </property>
             <property name="leftMargin">
-             <number>1</number>
+             <number>0</number>
             </property>
             <property name="topMargin">
-             <number>1</number>
+             <number>0</number>
             </property>
             <property name="rightMargin">
-             <number>1</number>
+             <number>0</number>
             </property>
             <property name="bottomMargin">
-             <number>1</number>
+             <number>0</number>
             </property>
             <item>
              <widget class="QPushButton" name="invoiceResetButton">
@@ -530,7 +588,6 @@ font: 40pt &quot;Calibri&quot;;
    </item>
   </layout>
  </widget>
- <layoutdefault spacing="6" margin="11"/>
  <resources/>
  <connections/>
 </ui>

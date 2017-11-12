@@ -29,9 +29,9 @@ namespace PenyaManager {
     void InvoiceListWindow::initializeTable()
     {
         // table
-        this->ui->invoicesTableWidget->setColumnCount(2);
         QHeaderView* header = this->ui->invoicesTableWidget->horizontalHeader();
         header->setSectionResizeMode(QHeaderView::Fixed);
+        this->ui->invoicesTableWidget->setColumnCount(2);
         translateTable();
         Uint32 column = 0;
         this->ui->invoicesTableWidget->setColumnWidth(column++, 360);

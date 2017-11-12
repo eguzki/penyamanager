@@ -26,13 +26,16 @@ namespace PenyaManager {
     //
     void InvoiceDetailsWidget::initializeTable()
     {
+        // Table
+        QHeaderView* header = this->ui->productTableWidget->horizontalHeader();
+        header->setSectionResizeMode(QHeaderView::Fixed);
         this->ui->productTableWidget->setColumnCount(5);
         translateTable();
         Uint32 column = 0;
-        this->ui->productTableWidget->setColumnWidth(column++, 100);
-        this->ui->productTableWidget->setColumnWidth(column++, 200);
-        this->ui->productTableWidget->setColumnWidth(column++, 100);
-        this->ui->productTableWidget->setColumnWidth(column++, 60);
+        this->ui->productTableWidget->setColumnWidth(column++, 1);
+        this->ui->productTableWidget->setColumnWidth(column++, 230);
+        this->ui->productTableWidget->setColumnWidth(column++, 85);
+        this->ui->productTableWidget->setColumnWidth(column++, 45);
         this->ui->productTableWidget->setColumnWidth(column++, 100);
     }
     //
