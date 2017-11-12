@@ -107,7 +107,7 @@ namespace PenyaManager {
             return;
         }
         // fetch tables data
-        ReservationItemListResultPtr pTableListResultPtr = Singletons::m_pDAO->getLunchTableList();
+        ReservationItemListResultPtr pTableListResultPtr = Singletons::m_pDAO->getAllLunchTableList();
         if (pTableListResultPtr->m_error) {
             QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
             return;
@@ -120,7 +120,7 @@ namespace PenyaManager {
             return;
         }
         // fetch oven data
-        ReservationItemListResultPtr pOvenListResultPtr = Singletons::m_pDAO->getOvenList();
+        ReservationItemListResultPtr pOvenListResultPtr = Singletons::m_pDAO->getAllOvenList();
         if (pOvenListResultPtr->m_error) {
             QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
             return;
@@ -133,7 +133,7 @@ namespace PenyaManager {
             return;
         }
         // fetch fireplace data
-        ReservationItemListResultPtr pFireplaceListResultPtr = Singletons::m_pDAO->getFireplaceList();
+        ReservationItemListResultPtr pFireplaceListResultPtr = Singletons::m_pDAO->getAllFireplaceList();
         if (pFireplaceListResultPtr->m_error) {
             QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
             return;

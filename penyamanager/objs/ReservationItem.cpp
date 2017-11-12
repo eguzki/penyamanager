@@ -25,5 +25,20 @@ namespace PenyaManager
         :
             m_error(0)
     {}
+    //
+    ReservationItemListStats::ReservationItemListStats()
+        :
+            m_error(0)
+    {}
+    //
+    ReservationListStats::ReservationListStats()
+        :
+            m_totalNum(0)
+    {}
+    //
+    ReservationListStats::ReservationListStats(Int32 totalNum)
+        :
+            m_totalNum(totalNum)
+    {}
 }
 
