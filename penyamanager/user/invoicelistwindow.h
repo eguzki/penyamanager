@@ -47,18 +47,16 @@ namespace PenyaManager {
             //
             void on_nextPagePushButton_clicked();
             //
-            void on_invoicesTableWidget_cellClicked(int row, int column);
+            void on_invoicesTableWidget_cellPressed(int row, int column);
             //
-            void on_exitButton_2_clicked();
-
             void on_newinvoiceButton_clicked();
-
+            //
             void on_tableReservationButton_clicked();
-
+            //
             void on_depositsButton_clicked();
-
+            //
             void on_accountButton_clicked();
-
+            //
             void on_exitButton_clicked();
 
     private:

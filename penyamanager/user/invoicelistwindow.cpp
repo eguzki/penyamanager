@@ -182,7 +182,7 @@ namespace PenyaManager {
         }
     }
     //
-    void PenyaManager::InvoiceListWindow::on_invoicesTableWidget_cellClicked(int row, int column)
+    void PenyaManager::InvoiceListWindow::on_invoicesTableWidget_cellPressed(int row, int column)
     {
         UNUSEDPARAMETER(column);
         auto rowMap = m_rowProductIdMap.find(row);
@@ -199,11 +199,6 @@ namespace PenyaManager {
         m_switchCentralWidgetCallback(WindowKey::kInvoiceDetailsWindowKey);
     }
     //
-    void InvoiceListWindow::on_exitButton_2_clicked()
-    {
-        // call login window on exit
-        m_switchCentralWidgetCallback(WindowKey::kLoginWindowKey);
-    }
     void InvoiceListWindow::on_exitButton_clicked()
     {
         // call login window on exit
