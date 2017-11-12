@@ -35,11 +35,11 @@ namespace PenyaManager {
             //
             void initializeTable();
             //
+            void selectionChanged();
+            //
             void updateResults();
 
         private slots:
-            //
-            void on_searchButton_clicked();
             //
             void on_prevPagePushButton_clicked();
             //
@@ -54,6 +54,10 @@ namespace PenyaManager {
             void on_depositsButton_clicked();
 
             void on_exitButton_clicked();
+            //
+            void on_fromCalendarWidget_selectionChanged();
+            //
+            void on_toCalendarWidget_selectionChanged();
 
     private:
             //
@@ -62,8 +66,6 @@ namespace PenyaManager {
             MemberProfileGroupBox       *m_pMemberProfileGroupBox;
             //
             Uint32                      m_currentPage;
-            //
-            bool                        m_firstTime;
             //
             Int32                       m_currentMemberId;
             //

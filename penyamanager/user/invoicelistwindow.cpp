@@ -47,6 +47,7 @@ namespace PenyaManager {
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
         this->m_pMemberProfileGroupBox->init(pCurrMemberPtr);
 
+        // update when current member changed
         if (m_currentMemberId != pCurrMemberPtr->m_id) {
             m_currentMemberId = pCurrMemberPtr->m_id;
             // initialize calendar inital values
