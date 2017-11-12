@@ -562,6 +562,7 @@ namespace PenyaManager {
                     "SELECT product_item.idproduct_item, product_item.name, product_item.image, product_item.price, inv_prod.count "
                     "FROM inv_prod INNER JOIN product_item ON inv_prod.idproduct_item=product_item.idproduct_item "
                     "WHERE idinvoice=:invoiceid "
+                    "ORDER BY inv_prod.date DESC "
                     "LIMIT :limit OFFSET :offset"
                     );
             // bind value
