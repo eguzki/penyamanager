@@ -58,12 +58,6 @@ namespace PenyaManager {
         this->ui->retranslateUi(this);
     }
     //
-    void DepositWindow::on_backButton_clicked()
-    {
-        // load main window
-        m_switchCentralWidgetCallback(WindowKey::kMemberDashboardWindowKey);
-    }
-    //
     void DepositWindow::on_confirmButton_clicked()
     {
         if (m_depositValue <= 0){

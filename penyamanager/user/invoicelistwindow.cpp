@@ -12,20 +12,11 @@ namespace PenyaManager {
         ui(new Ui::InvoiceListWindow),
         m_pMemberProfileGroupBox(new MemberProfileGroupBox),
         m_currentPage(0),
-        m_firstTime(true),
         m_currentMemberId(-1),
         m_switchCentralWidgetCallback(callback)
     {
         ui->setupUi(this);
         this->ui->topPanelWidget->layout()->addWidget(m_pMemberProfileGroupBox);
-
-        // initialize calendar inital values
-        QDate toInitialDate = QDate::currentDate();
-        // from 30 days before
-        QDate fromIntialDate = toInitialDate.addDays(-30);
-
-        this->ui->fromCalendarWidget->setSelectedDate(fromIntialDate);
-        this->ui->toCalendarWidget->setSelectedDate(toInitialDate);
 
         initializeTable();
     }
@@ -56,8 +47,17 @@ namespace PenyaManager {
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
         this->m_pMemberProfileGroupBox->init(pCurrMemberPtr);
 
-        if (this->m_firstTime || m_currentMemberId != pCurrMemberPtr->m_id) {
-            updateResults();
+        // update when current member changed
+        if (m_currentMemberId != pCurrMemberPtr->m_id) {
+            m_currentMemberId = pCurrMemberPtr->m_id;
+            // initialize calendar inital values
+            QDate toInitialDate = QDate::currentDate();
+            // from 30 days before
+            QDate fromIntialDate = toInitialDate.addDays(-30);
+            // should trigger selectionChanged event
+            this->ui->fromCalendarWidget->setSelectedDate(fromIntialDate);
+            // This is not triggered :( why??
+            this->ui->toCalendarWidget->setSelectedDate(toInitialDate);
         }
     }
     //
@@ -74,40 +74,6 @@ namespace PenyaManager {
         headers.append(tr("Date"));
         headers.append(tr("Total"));
         this->ui->invoicesTableWidget->setHorizontalHeaderLabels(headers);
-    }
-    //
-    void InvoiceListWindow::on_searchPushButton_clicked()
-    {
-        QDate fromDate = this->ui->fromCalendarWidget->selectedDate();
-        QDate toDate = this->ui->toCalendarWidget->selectedDate();
-        if (fromDate > toDate)
-        {
-            QMessageBox::information(this, tr("Wrong search criteria"), tr("From date must be before To date"));
-            return;
-        }
-        // check selected date is shown checking monthShown and yearShown
-        int fromMonthShown = this->ui->fromCalendarWidget->monthShown();
-        int fromYearShown = this->ui->fromCalendarWidget->yearShown();
-        int toMonthShown = this->ui->toCalendarWidget->monthShown();
-        int toYearShown = this->ui->toCalendarWidget->yearShown();
-        if ( fromDate.month() != fromMonthShown ||
-            toDate.month() != toMonthShown ||
-            fromDate.year() != fromYearShown ||
-            toDate.year() != toYearShown ) {
-            QMessageBox::warning(this, tr("Date not selected"), tr("Select date"));
-            return;
-        }
-
-        // when user pushes search, afterwards, on init() results are not updated
-        this->m_firstTime = false;
-        m_currentPage = 0;
-        updateResults();
-    }
-    //
-    void InvoiceListWindow::on_backPushButton_clicked()
-    {
-        // Go to dashboard window
-        m_switchCentralWidgetCallback(WindowKey::kMemberDashboardWindowKey);
     }
     //
     void InvoiceListWindow::on_prevPagePushButton_clicked()
@@ -224,7 +190,30 @@ namespace PenyaManager {
         // call deposits window
         m_switchCentralWidgetCallback(WindowKey::kDepositsWindowKey);
     }
+    //
+    void InvoiceListWindow::on_fromCalendarWidget_selectionChanged()
+    {
+        selectionChanged();
+    }
+    //
+    void InvoiceListWindow::on_toCalendarWidget_selectionChanged()
+    {
+        selectionChanged();
+    }
+    //
+    void InvoiceListWindow::selectionChanged()
+    {
+        // By default, the selected date is the current date.
+        QDate fromDate = this->ui->fromCalendarWidget->selectedDate();
+        QDate toDate = this->ui->toCalendarWidget->selectedDate();
+        if (fromDate > toDate)
+        {
+            QMessageBox::information(this, tr("Wrong search criteria"), tr("From date must be before To date"));
+            return;
+        }
 
-
+        m_currentPage = 0;
+        updateResults();
+    }
 }
 
