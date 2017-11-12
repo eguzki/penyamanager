@@ -14,23 +14,12 @@ namespace PenyaManager {
         ui(new Ui::AccountView),
         m_pMemberProfileGroupBox(new MemberProfileGroupBox),
         m_currentPage(0),
-        m_firstTime(true),
         m_currentMemberId(-1),
         m_switchCentralWidgetCallback(callback)
     {
         ui->setupUi(this);
         this->ui->topPanelwidget->layout()->addWidget(m_pMemberProfileGroupBox);
 
-        // initialize calendar inital values
-        QDate toInitialDate = QDate::currentDate();
-        // from 30 days before
-        QDate fromIntialDate = toInitialDate.addDays(-30);
-
-        this->ui->fromCalendarWidget->setSelectedDate(fromIntialDate);
-        this->ui->toCalendarWidget->setSelectedDate(toInitialDate);
-
-        this->ui->fromDateResultValueLabel->clear();
-        this->ui->toDateResultValueLabel->clear();
         initializeTable();
     }
     //
@@ -61,8 +50,17 @@ namespace PenyaManager {
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
         this->m_pMemberProfileGroupBox->init(pCurrMemberPtr);
 
-        if (this->m_firstTime || m_currentMemberId != pCurrMemberPtr->m_id) {
-            updateResults();
+        // update when current member changed
+        if (m_currentMemberId != pCurrMemberPtr->m_id) {
+            m_currentMemberId = pCurrMemberPtr->m_id;
+            // initialize calendar inital values
+            QDate toInitialDate = QDate::currentDate();
+            // from 30 days before
+            QDate fromIntialDate = toInitialDate.addDays(-30);
+            // should trigger selectionChanged event
+            this->ui->fromCalendarWidget->setSelectedDate(fromIntialDate);
+            // This is not triggered :( why??
+            this->ui->toCalendarWidget->setSelectedDate(toInitialDate);
         }
     }
     //
@@ -107,13 +105,7 @@ namespace PenyaManager {
         }
     }
     //
-    void AccountView::on_backPushButton_clicked()
-    {
-        // Go to dashboard window
-        m_switchCentralWidgetCallback(WindowKey::kMemberDashboardWindowKey);
-    }
-    //
-    void AccountView::on_searchButton_clicked()
+    void AccountView::selectionChanged()
     {
         QDate fromDate = this->ui->fromCalendarWidget->selectedDate();
         QDate toDate = this->ui->toCalendarWidget->selectedDate();
@@ -122,21 +114,7 @@ namespace PenyaManager {
             QMessageBox::information(this, "Wrong search criteria", "From date must be before To date");
             return;
         }
-        // check selected date is shown checking monthShown and yearShown
-        int fromMonthShown = this->ui->fromCalendarWidget->monthShown();
-        int fromYearShown = this->ui->fromCalendarWidget->yearShown();
-        int toMonthShown = this->ui->toCalendarWidget->monthShown();
-        int toYearShown = this->ui->toCalendarWidget->yearShown();
-        if ( fromDate.month() != fromMonthShown ||
-            toDate.month() != toMonthShown ||
-            fromDate.year() != fromYearShown ||
-            toDate.year() != toYearShown ) {
-            QMessageBox::warning(this, tr("Date not selected"), tr("Select date"));
-            return;
-        }
 
-        // when user pushes search, afterwards, on init() results are not updated
-        this->m_firstTime = false;
         m_currentPage = 0;
         updateResults();
     }
@@ -176,23 +154,17 @@ namespace PenyaManager {
         // enable-disable pagination buttons
         // total num pages
         Uint32 numPages = (Uint32)ceil((Float)pTransactionListStatsResultPtr->m_listStats->m_totalNumTransactions/Constants::kAccountListPageCount);
-        this->ui->prevPagePushButton->setEnabled(m_currentPage > 0);
-        this->ui->nextPagePushButton->setEnabled(m_currentPage < numPages-1);
-        // fill page view
-        this->ui->pageInfoLabel->setText(QString("%1 / %2").arg(m_currentPage+1).arg(numPages));
+        // when just single page, hide pagingWidget
+        this->ui->pagingWidget->setHidden(numPages <= 1);
+        if (numPages > 1) {
+            this->ui->prevPagePushButton->setEnabled(m_currentPage > 0);
+            this->ui->nextPagePushButton->setEnabled(m_currentPage < numPages-1);
+            this->ui->pageInfoLabel->setText(QString("%1 / %2").arg(m_currentPage+1).arg(numPages));
+        }
+
         // fill total stats view
         this->ui->totalTransactionsValueLabel->setText(QString::number(pTransactionListStatsResultPtr->m_listStats->m_totalNumTransactions));
 
-        Float totalTransactions = 0.0;
-        totalTransactions += pTransactionListStatsResultPtr->m_listStats->m_totalBankCharges;
-        totalTransactions += pTransactionListStatsResultPtr->m_listStats->m_totalInvoices;
-        totalTransactions += pTransactionListStatsResultPtr->m_listStats->m_totalDeposits;
-        this->ui->totalCountValueLabel->setText(QString("%1 €").arg(totalTransactions, 0, 'f', 2));
-        // fill dates used for query
-        QString dateLocalized = Singletons::m_translationManager.getLocale().toString(fromDate, QLocale::NarrowFormat);
-        this->ui->fromDateResultValueLabel->setText(dateLocalized);
-        dateLocalized = Singletons::m_translationManager.getLocale().toString(toDate.addDays(-1), QLocale::NarrowFormat);
-        this->ui->toDateResultValueLabel->setText(dateLocalized);
         fillAccountData(pTransactionListResultPtr);
     }
     void AccountView::on_newinvoiceButton_clicked()
@@ -224,7 +196,17 @@ namespace PenyaManager {
         // call login window on exit
         m_switchCentralWidgetCallback(WindowKey::kLoginWindowKey);
     }
-
+    //
+    void AccountView::on_fromCalendarWidget_selectionChanged()
+    {
+        selectionChanged();
+    }
+    //
+    void AccountView::on_toCalendarWidget_selectionChanged()
+    {
+        selectionChanged();
+    }
 }
+
 
 

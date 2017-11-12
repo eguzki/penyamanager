@@ -20,6 +20,7 @@ namespace PenyaManager {
     MemberDashboardWindow::MemberDashboardWindow(QWidget *parent, const CentralWidgetCallback &callback) :
         IPartner(parent),
         ui(new Ui::MemberDashboardWindow),
+        m_currentPage(0),
         m_pMemberProfileGroupBox(new MemberProfileGroupBox),
         m_switchCentralWidgetCallback(callback)
     {
@@ -115,6 +116,7 @@ namespace PenyaManager {
             return;
         }
         // pInvoicePtr could be null
+        m_currentPage = 0;
         fillInvoiceData(pInvoiceResultPtr->m_pInvoice);
 
         //
@@ -219,28 +221,42 @@ namespace PenyaManager {
             // invoice table reset
             this->ui->invoiceTableWidget->clearContents();
             this->ui->invoiceTableWidget->setRowCount(0);
-            this->ui->totalDisplayLabel->setText("0 €");
+            this->ui->pagingWidget->setHidden(true);
+            this->ui->totalDisplayLabel->setText("0.00 €");
             return;
         }
 
-
         // get invoice products
-        InvoiceProductItemListResultPtr pInvoiceProductItemListResultPtr = Singletons::m_pDAO->getInvoiceProductItems(pInvoicePtr->m_id);
+        InvoiceProductItemListResultPtr pInvoiceProductItemListResultPtr = Singletons::m_pDAO->getInvoiceProductItems(pInvoicePtr->m_id, m_currentPage, Constants::kDashboardProductListPageCount);
         if (pInvoiceProductItemListResultPtr->m_error) {
             QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
+        InvoiceProductItemStatsResultPtr invoiceProductItemStatsResultPtr = Singletons::m_pDAO->getInvoiceProductItemsStats(pInvoicePtr->m_id);
+        if (invoiceProductItemStatsResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            return;
+        }
+        // enable-disable pagination buttons
+        // total num pages
+        Uint32 numPages = (Uint32)ceil((Float)invoiceProductItemStatsResultPtr->m_stats->m_totalProducts/Constants::kDashboardProductListPageCount);
+        // when just single page, hide pagingWidget
+        this->ui->pagingWidget->setHidden(numPages <= 1);
+        if (numPages > 1) {
+            this->ui->prevPagePushButton->setEnabled(m_currentPage > 0);
+            this->ui->nextPagePushButton->setEnabled(m_currentPage < numPages-1);
+            this->ui->pageInfoLabel->setText(QString("%1 / %2").arg(m_currentPage+1).arg(numPages));
+        }
+        // invoice table reset
+        this->ui->invoiceTableWidget->clearContents();
 
         // table
         this->ui->invoiceTableWidget->setRowCount(pInvoiceProductItemListResultPtr->m_list->size());
 
-        // invoice table reset
-        this->ui->invoiceTableWidget->clearContents();
         // internal data structure reset
         this->m_rowProductIdMap.clear();
 
         Uint32 rowCount = 0;
-        Float totalInvoice = 0.0;
         for (InvoiceProductItemList::iterator iter = pInvoiceProductItemListResultPtr->m_list->begin(); iter != pInvoiceProductItemListResultPtr->m_list->end(); ++iter)
         {
             InvoiceProductItemPtr pInvoiceProductItemPtr = *iter;
@@ -257,7 +273,6 @@ namespace PenyaManager {
             item = new QTableWidgetItem(QString("%1 €").arg(totalPrice, 0, 'f', 2));
             item->setData(Qt::TextAlignmentRole, Qt::AlignRight);
             this->ui->invoiceTableWidget->setItem(rowCount, 3, item);
-            totalInvoice += totalPrice;
             this->m_rowProductIdMap[rowCount] = pInvoiceProductItemPtr->m_productId;
             // show remove action
             QPushButton *pRemoveButton = new QPushButton("", this->ui->invoiceTableWidget);
@@ -274,7 +289,7 @@ namespace PenyaManager {
             this->ui->invoiceTableWidget->setRowHeight(rowCount, 35);
             rowCount++;
         }
-        this->ui->totalDisplayLabel->setText(QString("%1 €").arg(totalInvoice));
+        this->ui->totalDisplayLabel->setText(QString("%1 €").arg(invoiceProductItemStatsResultPtr->m_stats->m_totalAmount, 0, 'f', 2));
     }
     //
     void MemberDashboardWindow::on_invoiceCloseButton_clicked()
@@ -307,6 +322,7 @@ namespace PenyaManager {
             Singletons::m_pDAO->deleteInvoice(pInvoicePtr->m_pInvoice->m_id);
         }
         // nothing to fill
+        m_currentPage = 0;
         fillInvoiceData(InvoicePtr());
     }
     //
@@ -353,14 +369,16 @@ namespace PenyaManager {
             }
             // Check invoice was removed
             InvoiceResultPtr pNewInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
+            m_currentPage = 0;
             fillInvoiceData(pNewInvoicePtr->m_pInvoice);
         } else {
             // count was not 0 -> update item from invoice
-            bool ok = Singletons::m_pServices->updateInvoiceInfo(pInvoiceResultPtr->m_pInvoice->m_id, productId, count);
-            if (!ok) {
+            BoolResult boolResult = Singletons::m_pServices->increaseProductInvoice(pInvoiceResultPtr->m_pInvoice->m_id, productId, count);
+            if (boolResult.error) {
                 QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
                 return;
             }
+            // no need to reset m_currentPage
             fillInvoiceData(pInvoiceResultPtr->m_pInvoice);
         }
     }
@@ -408,11 +426,16 @@ namespace PenyaManager {
             }
         }
         // increase product count
-        bool ok = Singletons::m_pServices->increaseProductInvoice(pInvoiceResultPtr->m_pInvoice->m_id, productId, count);
-        if (!ok) {
+        BoolResult boolResult = Singletons::m_pServices->increaseProductInvoice(pInvoiceResultPtr->m_pInvoice->m_id, productId, count);
+        if (boolResult.error) {
             QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
+        // when no rowsAffected (new invoice), reset m_currentPage
+        if (!boolResult.result) {
+            m_currentPage = 0;
+        }
+        // no need to reset m_currentPage
         fillInvoiceData(pInvoiceResultPtr->m_pInvoice);
     }
     //
@@ -448,13 +471,39 @@ namespace PenyaManager {
             QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
+        m_currentPage = 0;
         fillInvoiceData(pNewInvoiceResultPtr->m_pInvoice);
+    }
+    //
+    void MemberDashboardWindow::on_newinvoiceButton_clicked()
+    {
+        // Go to dashboard window
+        m_switchCentralWidgetCallback(WindowKey::kMemberDashboardWindowKey);
+    }
+    //
+    void MemberDashboardWindow::on_prevPagePushButton_clicked()
+    {
+        MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
+        InvoiceResultPtr pInvoiceResultPtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMemberPtr->m_id);
+        if (pInvoiceResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            return;
+        }
+        m_currentPage--;
+        fillInvoiceData(pInvoiceResultPtr->m_pInvoice);
+    }
+    //
+    void MemberDashboardWindow::on_nextPagePushButton_clicked()
+    {
+        MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
+        InvoiceResultPtr pInvoiceResultPtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMemberPtr->m_id);
+        if (pInvoiceResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            return;
+        }
+        m_currentPage++;
+        fillInvoiceData(pInvoiceResultPtr->m_pInvoice);
     }
 }
 
 
-void PenyaManager::MemberDashboardWindow::on_newinvoiceButton_clicked()
-{
-    // Go to dashboard window
-    m_switchCentralWidgetCallback(WindowKey::kMemberDashboardWindowKey);
-}

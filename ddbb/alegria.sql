@@ -177,6 +177,7 @@ CREATE TABLE IF NOT EXISTS `alegria`.`inv_prod` (
   `idinvoice` INT(11) NOT NULL COMMENT '',
   `idproduct_item` INT(11) NOT NULL COMMENT '',
   `count` INT(11) NOT NULL COMMENT '',
+  `date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`idinvoice`, `idproduct_item`)  COMMENT '',
   INDEX `fk_invoice_has_product_item_product_item1_idx` (`idproduct_item` ASC)  COMMENT '',
   INDEX `fk_invoice_has_product_item_invoice1_idx` (`idinvoice` ASC)  COMMENT '',

@@ -89,7 +89,7 @@ namespace PenyaManager {
         //
         // Product List
         //
-        InvoiceProductItemListResultPtr pInvoiceProductItemListResultPtr = Singletons::m_pDAO->getInvoiceProductItems(pInvoicePtr->m_id);
+        InvoiceProductItemListResultPtr pInvoiceProductItemListResultPtr = Singletons::m_pDAO->getAllInvoiceProductItems(pInvoicePtr->m_id);
         if (pInvoiceProductItemListResultPtr->m_error) {
             QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
             return;

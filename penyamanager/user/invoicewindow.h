@@ -41,10 +41,16 @@ namespace PenyaManager {
             void on_backPushButton_clicked();
             //
             void on_confirmPushButton_clicked();
+            //
+            void on_prevPagePushButton_clicked();
+            //
+            void on_nextPagePushButton_clicked();
 
         private:
             //
             Ui::InvoiceWindow *ui;
+            //
+            Uint32                      m_currentPage;
             //
             MemberProfileGroupBox       *m_pMemberProfileGroupBox;
             //

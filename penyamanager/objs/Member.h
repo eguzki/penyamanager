@@ -119,6 +119,8 @@ namespace PenyaManager
             //
             MemberListStats();
             //
+            MemberListStats(Uint32 totalMembers);
+            //
             virtual ~MemberListStats(){}
 
         public:

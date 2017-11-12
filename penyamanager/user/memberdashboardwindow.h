@@ -52,6 +52,8 @@ namespace PenyaManager {
             //
             Ui::MemberDashboardWindow   *ui;
             //
+            Uint32                      m_currentPage;
+            //
             RowIdMap                    m_rowProductIdMap;
             //
             MemberProfileGroupBox       *m_pMemberProfileGroupBox;
@@ -81,7 +83,12 @@ namespace PenyaManager {
             void on_familyListWidget_itemClicked(QListWidgetItem *item);
             //
             void on_productListWidget_itemClicked(QListWidgetItem *item);
+            //
             void on_newinvoiceButton_clicked();
+            //
+            void on_prevPagePushButton_clicked();
+            //
+            void on_nextPagePushButton_clicked();
     };
 }
 

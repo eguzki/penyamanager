@@ -18,6 +18,7 @@ namespace PenyaManager {
     LoginWindow::LoginWindow(QWidget *parent, QTranslator *pTranslator, const CentralWidgetCallback &callback) :
         IPartner(parent),
         ui(new Ui::LoginWindow),
+        m_currentPage(0),
         m_password(),
         m_username(-1),
         m_pTranslator(pTranslator),
@@ -58,7 +59,6 @@ namespace PenyaManager {
         InvoiceResultPtr pLastInvoiceResultPtr = Singletons::m_pDAO->getLastInvoiceInfo();
         if (pLastInvoiceResultPtr->m_error) {
             // Last invoice not found
-            QLOG_INFO() << QString("Last invoice not found");
             QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
@@ -85,6 +85,7 @@ namespace PenyaManager {
         //
         // Loading Last Invoice info
         //
+        m_currentPage = 0;
         fillLastInvoiceInfo(pLastInvoiceResultPtr->m_pInvoice);
     }
     //
@@ -125,7 +126,7 @@ namespace PenyaManager {
     void LoginWindow::on_loginPushButton_clicked()
     {
         // Ask for userId
-        NumItemDialog numItemDialog(this);
+        NumItemDialog numItemDialog(this, tr("Insert member ID"));
         numItemDialog.exec();
         this->m_username = numItemDialog.getKey();
         // check member username input
@@ -136,7 +137,7 @@ namespace PenyaManager {
         }
 
         // Ask for password
-        NumItemDialog passNumItemDialog(this, true);
+        NumItemDialog passNumItemDialog(this, tr("Insert password"), true);
         passNumItemDialog.exec();
         this->m_password = passNumItemDialog.getKeyStr();
         // check password input
@@ -243,18 +244,33 @@ namespace PenyaManager {
         //
         // Product List
         //
-        InvoiceProductItemListResultPtr pInvoiceProductItemListResultPtr = Singletons::m_pDAO->getInvoiceProductItems(pLastInvoicePtr->m_id);
+        InvoiceProductItemListResultPtr pInvoiceProductItemListResultPtr = Singletons::m_pDAO->getInvoiceProductItems(pLastInvoicePtr->m_id, m_currentPage, Constants::kLoginWindowProductListPageCount);
         if (pInvoiceProductItemListResultPtr->m_error) {
             QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
             return;
         }
-        this->ui->lastInvoiceTableWidget->setRowCount(pInvoiceProductItemListResultPtr->m_list->size());
+        InvoiceProductItemStatsResultPtr invoiceProductItemStatsResultPtr = Singletons::m_pDAO->getInvoiceProductItemsStats(pLastInvoicePtr->m_id);
+        if (invoiceProductItemStatsResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            return;
+        }
+        // enable-disable pagination buttons
+        // total num pages
+        Uint32 numPages = (Uint32)ceil((Float)invoiceProductItemStatsResultPtr->m_stats->m_totalProducts/Constants::kLoginWindowProductListPageCount);
+        // when just single page, hide pagingWidget
+        this->ui->pagingWidget->setHidden(numPages <= 1);
+        if (numPages > 1) {
+            this->ui->prevPagePushButton->setEnabled(m_currentPage > 0);
+            this->ui->nextPagePushButton->setEnabled(m_currentPage < numPages-1);
+            this->ui->pageInfoLabel->setText(QString("%1 / %2").arg(m_currentPage+1).arg(numPages));
+        }
+
         // invoice table reset
         this->ui->lastInvoiceTableWidget->clearContents();
+        this->ui->lastInvoiceTableWidget->setRowCount(pInvoiceProductItemListResultPtr->m_list->size());
 
         //fill data
         Uint32 rowCount = 0;
-        Float totalInvoice = 0.0;
         for (InvoiceProductItemList::iterator iter = pInvoiceProductItemListResultPtr->m_list->begin(); iter != pInvoiceProductItemListResultPtr->m_list->end(); ++iter)
         {
             InvoiceProductItemPtr pInvoiceProductItemPtr = *iter;
@@ -271,7 +287,6 @@ namespace PenyaManager {
             item = new QTableWidgetItem(QString("%1 €").arg(totalPrice, 0, 'f', 2));
             item->setData(Qt::TextAlignmentRole, Qt::AlignRight);
             this->ui->lastInvoiceTableWidget->setItem(rowCount, 3, item);
-            totalInvoice += totalPrice;
             rowCount++;
         }
 
@@ -283,7 +298,50 @@ namespace PenyaManager {
         QString lastModifDateLocalized = Singletons::m_translationManager.getLocale().toString(pLastInvoicePtr->m_lastModified, QLocale::NarrowFormat);
         this->ui->lastInvoiceDateLabel->setText(QString("%1: %2     %3: %4").arg(tr("Created on")).arg(dateLocalized).arg(tr("Modified on")).arg(lastModifDateLocalized));
         // Total
-        this->ui->lastInvoiceTotalLabel->setText(QString("%1 €").arg(totalInvoice, 0, 'f', 2));
+        this->ui->lastInvoiceTotalLabel->setText(QString("%1 €").arg(invoiceProductItemStatsResultPtr->m_stats->m_totalAmount, 0, 'f', 2));
+    }
+    //
+    void LoginWindow::on_prevPagePushButton_clicked()
+    {
+        //
+        // Loading Last Invoice
+        //
+        InvoiceResultPtr pLastInvoiceResultPtr = Singletons::m_pDAO->getLastInvoiceInfo();
+        if (pLastInvoiceResultPtr->m_error) {
+            // Last invoice not found
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            return;
+        }
+        if (!pLastInvoiceResultPtr->m_pInvoice) {
+            // Last invoice not found
+            QLOG_WARN() << QString("Last invoice not found");
+            return;
+        }
+
+        m_currentPage--;
+        fillLastInvoiceInfo(pLastInvoiceResultPtr->m_pInvoice);
+
+    }
+    //
+    void LoginWindow::on_nextPagePushButton_clicked()
+    {
+        //
+        // Loading Last Invoice
+        //
+        InvoiceResultPtr pLastInvoiceResultPtr = Singletons::m_pDAO->getLastInvoiceInfo();
+        if (pLastInvoiceResultPtr->m_error) {
+            // Last invoice not found
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            return;
+        }
+        if (!pLastInvoiceResultPtr->m_pInvoice) {
+            // Last invoice not found
+            QLOG_WARN() << QString("Last invoice not found");
+            return;
+        }
+        m_currentPage++;
+        fillLastInvoiceInfo(pLastInvoiceResultPtr->m_pInvoice);
     }
 }
+
 

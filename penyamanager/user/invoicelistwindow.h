@@ -35,31 +35,33 @@ namespace PenyaManager {
             //
             void initializeTable();
             //
+            void selectionChanged();
+            //
             void updateResults();
 
         private slots:
-            //
-            void on_searchPushButton_clicked();
-            //
-            void on_backPushButton_clicked();
             //
             void on_prevPagePushButton_clicked();
             //
             void on_nextPagePushButton_clicked();
             //
-            void on_invoicesTableWidget_cellClicked(int row, int column);
-
+            void on_invoicesTableWidget_cellPressed(int row, int column);
+            //
             void on_newinvoiceButton_clicked();
-
+            //
             void on_tableReservationButton_clicked();
-
+            //
             void on_depositsButton_clicked();
-
+            //
             void on_accountButton_clicked();
-
+            //
             void on_exitButton_clicked();
+            //
+            void on_fromCalendarWidget_selectionChanged();
+            //
+            void on_toCalendarWidget_selectionChanged();
 
-    private:
+        private:
             //
             Ui::InvoiceListWindow *ui;
             //
@@ -68,8 +70,6 @@ namespace PenyaManager {
             Uint32                      m_currentPage;
             //
             RowIdMap                    m_rowProductIdMap;
-            //
-            bool                        m_firstTime;
             //
             Int32                       m_currentMemberId;
             //

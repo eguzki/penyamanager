@@ -41,19 +41,21 @@ namespace PenyaManager {
             //
             void fillTableReservations(const MemberPtr &, const QDate &, ReservationType);
             //
-            void fillReservationsItems(const MemberPtr &pMemberPtr, const ReservationListPtr &pReservationListPtr, const ReservationItemListPtr &pReservationItemListPtr, Uint32 &rowCount);
+            void fillOvenReservations(const MemberPtr &, const QDate &, ReservationType);
+            //
+            void fillFireplaceReservations(const MemberPtr &, const QDate &, ReservationType);
+            //
+            void fillReservationsItems(const MemberPtr &pMemberPtr, const ReservationListPtr &pReservationListPtr, const ReservationItemListPtr &pReservationItemListPtr);
             //
             void prepareTableReservationMap(ReservationMap &, const ReservationListPtr &, const MemberPtr &, bool &);
 
         private slots:
             //
-            void on_backButton_clicked();
-            //
             void on_calendarWidget_clicked(const QDate &date);
             //
-            void on_reservedButton_clicked(int itemId, ReservationItemType itemType);
+            void on_reservedButton_clicked(int itemId);
             //
-            void on_cancelButton_clicked(int reservationId, ReservationItemType itemType);
+            void on_cancelButton_clicked(int reservationId);
             //
             void on_midMorningButton_clicked(bool checked);
             //
@@ -62,20 +64,31 @@ namespace PenyaManager {
             void on_supperButton_clicked(bool checked);
             //
             void on_dinnerButton_clicked(bool checked);
-
+            //
             void on_newinvoiceButton_clicked();
-
+            //
             void on_invoicesPushButton_clicked();
-
+            //
             void on_accountButton_clicked();
-
+            //
             void on_depositsButton_clicked();
-
+            //
             void on_exitButton_clicked();
-
+            //
+            void on_prevPagePushButton_clicked();
+            //
+            void on_nextPagePushButton_clicked();
+            //
+            void on_tablePushButton_clicked();
+            //
+            void on_ovenPushButton_clicked();
+            //
+            void on_fireplacePushButton_clicked();
     private:
             //
-            Ui::TableReservationView *ui;
+            Ui::TableReservationView    *ui;
+            //
+            Uint32                      m_currentPage;
             //
             MemberProfileGroupBox       *m_pMemberProfileGroupBox;
             //

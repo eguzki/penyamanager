@@ -14,15 +14,7 @@
    <string>Account View</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QLabel{
-	font: 18pt &quot;Calibri&quot;;	
-}
-
-QTableWidget{
-	font: 18pt &quot;Calibri&quot;;
-}
-
-QCalendarWidget QAbstractItemView:enabled 
+   <string notr="true">QCalendarWidget QAbstractItemView:enabled 
 {
   	
 	background-color: rgb(189,189,189);
@@ -46,18 +38,6 @@ QCalendarWidget QAbstractItemView:enabled
       </size>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_5">
-      <property name="leftMargin">
-       <number>0</number>
-      </property>
-      <property name="topMargin">
-       <number>0</number>
-      </property>
-      <property name="rightMargin">
-       <number>0</number>
-      </property>
-      <property name="bottomMargin">
-       <number>0</number>
-      </property>
       <item>
        <widget class="QPushButton" name="newinvoiceButton">
         <property name="sizePolicy">
@@ -187,54 +167,42 @@ QCalendarWidget QAbstractItemView:enabled
    <item>
     <widget class="QWidget" name="accountWidget" native="true">
      <layout class="QHBoxLayout" name="horizontalLayout">
-      <property name="leftMargin">
-       <number>0</number>
-      </property>
-      <property name="topMargin">
-       <number>0</number>
-      </property>
-      <property name="rightMargin">
-       <number>0</number>
-      </property>
-      <property name="bottomMargin">
-       <number>0</number>
-      </property>
       <item>
        <widget class="QWidget" name="calendarWidget" native="true">
-        <property name="minimumSize">
-         <size>
-          <width>600</width>
-          <height>0</height>
-         </size>
-        </property>
         <property name="maximumSize">
          <size>
-          <width>600</width>
+          <width>450</width>
           <height>16777215</height>
          </size>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <property name="spacing">
-          <number>6</number>
+          <number>10</number>
          </property>
          <property name="leftMargin">
-          <number>0</number>
+          <number>1</number>
          </property>
          <property name="topMargin">
-          <number>0</number>
+          <number>1</number>
          </property>
          <property name="rightMargin">
-          <number>0</number>
+          <number>1</number>
          </property>
          <property name="bottomMargin">
-          <number>0</number>
+          <number>1</number>
          </property>
          <item>
           <widget class="QCalendarWidget" name="fromCalendarWidget">
            <property name="minimumSize">
             <size>
-             <width>0</width>
+             <width>450</width>
              <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>400</width>
+             <height>16777215</height>
             </size>
            </property>
            <property name="gridVisible">
@@ -255,8 +223,14 @@ QCalendarWidget QAbstractItemView:enabled
           <widget class="QCalendarWidget" name="toCalendarWidget">
            <property name="minimumSize">
             <size>
-             <width>0</width>
+             <width>450</width>
              <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>400</width>
+             <height>16777215</height>
             </size>
            </property>
            <property name="gridVisible">
@@ -277,183 +251,78 @@ QCalendarWidget QAbstractItemView:enabled
        </widget>
       </item>
       <item>
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
-       <widget class="QWidget" name="pagingWidget" native="true">
-        <property name="maximumSize">
-         <size>
-          <width>150</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_4">
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-         <item>
-          <widget class="QLabel" name="totalTransactionsLabel">
-           <property name="text">
-            <string>Total entries:</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="totalTransactionsValueLabel">
-           <property name="minimumSize">
-            <size>
-             <width>100</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>100</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>0</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="totalCountLabel">
-           <property name="text">
-            <string>Total:</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="totalCountValueLabel">
-           <property name="minimumSize">
-            <size>
-             <width>100</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>100</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>0 €</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="fromDateResultLabel">
-           <property name="text">
-            <string>From:</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="toDateResultValueLabel">
-           <property name="minimumSize">
-            <size>
-             <width>200</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>200</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="toDateResultLabel">
-           <property name="text">
-            <string>To:</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="fromDateResultValueLabel">
-           <property name="minimumSize">
-            <size>
-             <width>200</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>200</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item>
        <widget class="QWidget" name="resultsWidget" native="true">
-        <property name="minimumSize">
-         <size>
-          <width>460</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>460</width>
-          <height>16777215</height>
-         </size>
-        </property>
         <layout class="QVBoxLayout" name="verticalLayout_3">
-         <property name="spacing">
-          <number>6</number>
-         </property>
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
+         <item>
+          <widget class="QWidget" name="pagingWidget" native="true">
+           <layout class="QHBoxLayout" name="horizontalLayout_9">
+            <item>
+             <widget class="QLabel" name="totalTransactionsLabel">
+              <property name="text">
+               <string>Total entries:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="totalTransactionsValueLabel">
+              <property name="minimumSize">
+               <size>
+                <width>100</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>100</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>0</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_2">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="prevPagePushButton">
+              <property name="text">
+               <string>&lt;</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="pageInfoLabel">
+              <property name="text">
+               <string notr="true">X / Y</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="nextPagePushButton">
+              <property name="text">
+               <string>&gt;</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
          <item>
           <widget class="QTableWidget" name="accountTableWidget">
            <property name="editTriggers">
             <set>QAbstractItemView::NoEditTriggers</set>
-           </property>
-           <property name="alternatingRowColors">
-            <bool>true</bool>
            </property>
            <property name="selectionMode">
             <enum>QAbstractItemView::NoSelection</enum>
@@ -472,70 +341,9 @@ QCalendarWidget QAbstractItemView:enabled
            </attribute>
           </widget>
          </item>
-         <item>
-          <widget class="QWidget" name="botPanelwidget" native="true">
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>75</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>16777215</width>
-             <height>75</height>
-            </size>
-           </property>
-           <layout class="QHBoxLayout" name="horizontalLayout_2">
-            <property name="leftMargin">
-             <number>0</number>
-            </property>
-            <property name="topMargin">
-             <number>0</number>
-            </property>
-            <property name="rightMargin">
-             <number>0</number>
-            </property>
-            <property name="bottomMargin">
-             <number>0</number>
-            </property>
-            <item>
-             <widget class="QPushButton" name="prevPagePushButton">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="text">
-               <string>&lt;</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="pageInfoLabel">
-              <property name="text">
-               <string notr="true">X / Y</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="nextPagePushButton">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="text">
-               <string>&gt;</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
         </layout>
+        <zorder>accountTableWidget</zorder>
+        <zorder>pagingWidget</zorder>
        </widget>
       </item>
      </layout>

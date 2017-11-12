@@ -35,7 +35,7 @@ namespace PenyaManager {
             //
             bool removeInvoiceProductId(Int32 invoiceId, Int32 productId);
             //
-            bool increaseProductInvoice(Int32 invoiceId, Int32 productId, Int32 count);
+            BoolResult increaseProductInvoice(Int32 invoiceId, Int32 productId, Int32 count);
             //
             MemberResultPtr getMemberById(Int32 memberId);
             //

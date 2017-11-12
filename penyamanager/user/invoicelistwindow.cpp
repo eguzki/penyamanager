@@ -12,23 +12,12 @@ namespace PenyaManager {
         ui(new Ui::InvoiceListWindow),
         m_pMemberProfileGroupBox(new MemberProfileGroupBox),
         m_currentPage(0),
-        m_firstTime(true),
         m_currentMemberId(-1),
         m_switchCentralWidgetCallback(callback)
     {
         ui->setupUi(this);
         this->ui->topPanelWidget->layout()->addWidget(m_pMemberProfileGroupBox);
 
-        // initialize calendar inital values
-        QDate toInitialDate = QDate::currentDate();
-        // from 30 days before
-        QDate fromIntialDate = toInitialDate.addDays(-30);
-
-        this->ui->fromCalendarWidget->setSelectedDate(fromIntialDate);
-        this->ui->toCalendarWidget->setSelectedDate(toInitialDate);
-
-        this->ui->fromDateResultValueLabel->clear();
-        this->ui->toDateResultValueLabel->clear();
         initializeTable();
     }
     //
@@ -58,8 +47,17 @@ namespace PenyaManager {
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
         this->m_pMemberProfileGroupBox->init(pCurrMemberPtr);
 
-        if (this->m_firstTime || m_currentMemberId != pCurrMemberPtr->m_id) {
-            updateResults();
+        // update when current member changed
+        if (m_currentMemberId != pCurrMemberPtr->m_id) {
+            m_currentMemberId = pCurrMemberPtr->m_id;
+            // initialize calendar inital values
+            QDate toInitialDate = QDate::currentDate();
+            // from 30 days before
+            QDate fromIntialDate = toInitialDate.addDays(-30);
+            // should trigger selectionChanged event
+            this->ui->fromCalendarWidget->setSelectedDate(fromIntialDate);
+            // This is not triggered :( why??
+            this->ui->toCalendarWidget->setSelectedDate(toInitialDate);
         }
     }
     //
@@ -76,40 +74,6 @@ namespace PenyaManager {
         headers.append(tr("Date"));
         headers.append(tr("Total"));
         this->ui->invoicesTableWidget->setHorizontalHeaderLabels(headers);
-    }
-    //
-    void InvoiceListWindow::on_searchPushButton_clicked()
-    {
-        QDate fromDate = this->ui->fromCalendarWidget->selectedDate();
-        QDate toDate = this->ui->toCalendarWidget->selectedDate();
-        if (fromDate > toDate)
-        {
-            QMessageBox::information(this, tr("Wrong search criteria"), tr("From date must be before To date"));
-            return;
-        }
-        // check selected date is shown checking monthShown and yearShown
-        int fromMonthShown = this->ui->fromCalendarWidget->monthShown();
-        int fromYearShown = this->ui->fromCalendarWidget->yearShown();
-        int toMonthShown = this->ui->toCalendarWidget->monthShown();
-        int toYearShown = this->ui->toCalendarWidget->yearShown();
-        if ( fromDate.month() != fromMonthShown ||
-            toDate.month() != toMonthShown ||
-            fromDate.year() != fromYearShown ||
-            toDate.year() != toYearShown ) {
-            QMessageBox::warning(this, tr("Date not selected"), tr("Select date"));
-            return;
-        }
-
-        // when user pushes search, afterwards, on init() results are not updated
-        this->m_firstTime = false;
-        m_currentPage = 0;
-        updateResults();
-    }
-    //
-    void InvoiceListWindow::on_backPushButton_clicked()
-    {
-        // Go to dashboard window
-        m_switchCentralWidgetCallback(WindowKey::kMemberDashboardWindowKey);
     }
     //
     void InvoiceListWindow::on_prevPagePushButton_clicked()
@@ -142,28 +106,20 @@ namespace PenyaManager {
             QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
-        if (!pInvoiceListStatsResult->m_stats) {
-            // no invoices found
-            InvoiceListStatsPtr stats(new InvoiceListStats);
-            stats->m_totalNumInvoices = 0;
-            stats->m_totalAmount = 0;
-            pInvoiceListStatsResult->m_stats = stats;
-        }
         // enable-disable pagination buttons
         // total num pages
         Uint32 numPages = (Uint32)ceil((Float)pInvoiceListStatsResult->m_stats->m_totalNumInvoices/Constants::kInvoiceListPageCount);
-        this->ui->prevPagePushButton->setEnabled(m_currentPage > 0);
-        this->ui->nextPagePushButton->setEnabled(m_currentPage < numPages-1);
-        // fill page view
-        this->ui->pageInfoLabel->setText(QString("%1 / %2").arg(m_currentPage+1).arg(numPages));
+        // when just single page, hide pagingWidget
+        this->ui->pagingWidget->setHidden(numPages <= 1);
+        if (numPages > 1) {
+            this->ui->prevPagePushButton->setEnabled(m_currentPage > 0);
+            this->ui->nextPagePushButton->setEnabled(m_currentPage < numPages-1);
+            this->ui->pageInfoLabel->setText(QString("%1 / %2").arg(m_currentPage+1).arg(numPages));
+        }
+
         // fill total stats view
         this->ui->totalInvoicesValueLabel->setText(QString::number(pInvoiceListStatsResult->m_stats->m_totalNumInvoices));
         this->ui->totalCountValueLabel->setText(QString("%1 €").arg(pInvoiceListStatsResult->m_stats->m_totalAmount, 0, 'f', 2));
-        // fill dates used for query
-        QString dateLocalized = Singletons::m_translationManager.getLocale().toString(fromDate, QLocale::NarrowFormat);
-        this->ui->fromDateResultValueLabel->setText(dateLocalized);
-        dateLocalized = Singletons::m_translationManager.getLocale().toString(toDate.addDays(-1), QLocale::NarrowFormat);
-        this->ui->toDateResultValueLabel->setText(dateLocalized);
         // fill invoice list
         fillInvoiceList(pInvoiceListResult->m_list);
     }
@@ -192,7 +148,7 @@ namespace PenyaManager {
         }
     }
     //
-    void PenyaManager::InvoiceListWindow::on_invoicesTableWidget_cellClicked(int row, int column)
+    void PenyaManager::InvoiceListWindow::on_invoicesTableWidget_cellPressed(int row, int column)
     {
         UNUSEDPARAMETER(column);
         auto rowMap = m_rowProductIdMap.find(row);
@@ -209,7 +165,6 @@ namespace PenyaManager {
         m_switchCentralWidgetCallback(WindowKey::kInvoiceDetailsWindowKey);
     }
     //
-
     void InvoiceListWindow::on_exitButton_clicked()
     {
         // call login window on exit
@@ -235,7 +190,30 @@ namespace PenyaManager {
         // call deposits window
         m_switchCentralWidgetCallback(WindowKey::kDepositsWindowKey);
     }
+    //
+    void InvoiceListWindow::on_fromCalendarWidget_selectionChanged()
+    {
+        selectionChanged();
+    }
+    //
+    void InvoiceListWindow::on_toCalendarWidget_selectionChanged()
+    {
+        selectionChanged();
+    }
+    //
+    void InvoiceListWindow::selectionChanged()
+    {
+        // By default, the selected date is the current date.
+        QDate fromDate = this->ui->fromCalendarWidget->selectedDate();
+        QDate toDate = this->ui->toCalendarWidget->selectedDate();
+        if (fromDate > toDate)
+        {
+            QMessageBox::information(this, tr("Wrong search criteria"), tr("From date must be before To date"));
+            return;
+        }
 
-
+        m_currentPage = 0;
+        updateResults();
+    }
 }
 
