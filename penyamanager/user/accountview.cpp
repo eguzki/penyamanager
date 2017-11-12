@@ -105,12 +105,6 @@ namespace PenyaManager {
         }
     }
     //
-    void AccountView::on_backPushButton_clicked()
-    {
-        // Go to dashboard window
-        m_switchCentralWidgetCallback(WindowKey::kMemberDashboardWindowKey);
-    }
-    //
     void AccountView::on_searchButton_clicked()
     {
         QDate fromDate = this->ui->fromCalendarWidget->selectedDate();

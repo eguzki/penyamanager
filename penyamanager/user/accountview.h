@@ -39,8 +39,6 @@ namespace PenyaManager {
 
         private slots:
             //
-            void on_backPushButton_clicked();
-            //
             void on_searchButton_clicked();
             //
             void on_prevPagePushButton_clicked();

@@ -86,12 +86,6 @@ namespace PenyaManager {
         initializeTableReservations(pCurrMemberPtr);
     }
     //
-    void TableReservationView::on_backButton_clicked()
-    {
-        // Go to dashboard window
-        m_switchCentralWidgetCallback(WindowKey::kMemberDashboardWindowKey);
-    }
-    //
     void TableReservationView::initializeTableReservations(const MemberPtr &pCurrMemberPtr)
     {
         //QDateTime nowDateTime = QDateTime(QDate(2015, 5, 11), QTime(0,0)); // when reservations cannot be done

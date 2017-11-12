@@ -47,8 +47,6 @@ namespace PenyaManager {
 
         private slots:
             //
-            void on_backButton_clicked();
-            //
             void on_calendarWidget_clicked(const QDate &date);
             //
             void on_reservedButton_clicked(int itemId, ReservationItemType itemType);
