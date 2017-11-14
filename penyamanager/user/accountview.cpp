@@ -14,7 +14,6 @@ namespace PenyaManager {
         ui(new Ui::AccountView),
         m_pMemberProfileGroupBox(new MemberProfileGroupBox),
         m_currentPage(0),
-        m_currentMemberId(-1),
         m_switchCentralWidgetCallback(callback)
     {
         ui->setupUi(this);
@@ -50,17 +49,25 @@ namespace PenyaManager {
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
         this->m_pMemberProfileGroupBox->init(pCurrMemberPtr);
 
-        // update when current member changed
-        if (m_currentMemberId != pCurrMemberPtr->m_id) {
-            m_currentMemberId = pCurrMemberPtr->m_id;
-            // initialize calendar inital values
-            QDate toInitialDate = QDate::currentDate();
-            // from 30 days before
-            QDate fromIntialDate = toInitialDate.addDays(-30);
-            // should trigger selectionChanged event
+        // initialize calendar inital values
+        QDate toInitialDate = QDate::currentDate();
+        // from 30 days before
+        QDate fromIntialDate = toInitialDate.addDays(-30);
+        bool shouldUpdate = true;
+        QDate fromDate = this->ui->fromCalendarWidget->selectedDate();
+        if (fromDate != fromIntialDate) {
+            // since dates are different, selectionChanged event will be triggered
             this->ui->fromCalendarWidget->setSelectedDate(fromIntialDate);
-            // This is not triggered :( why??
+            shouldUpdate = false;
+        }
+        QDate toDate = this->ui->toCalendarWidget->selectedDate().addDays(1);
+        if (toDate != toInitialDate) {
+            // since dates are different, selectionChanged event will be triggered
             this->ui->toCalendarWidget->setSelectedDate(toInitialDate);
+            shouldUpdate = false;
+        }
+        if (shouldUpdate) {
+            updateResults();
         }
     }
     //

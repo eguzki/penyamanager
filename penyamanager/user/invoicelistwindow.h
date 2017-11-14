@@ -71,8 +71,6 @@ namespace PenyaManager {
             //
             RowIdMap                    m_rowProductIdMap;
             //
-            Int32                       m_currentMemberId;
-            //
             CentralWidgetCallback       m_switchCentralWidgetCallback;
     };
 }

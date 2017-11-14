@@ -67,8 +67,6 @@ namespace PenyaManager {
             //
             Uint32                      m_currentPage;
             //
-            Int32                       m_currentMemberId;
-            //
             CentralWidgetCallback       m_switchCentralWidgetCallback;
     };
 }
