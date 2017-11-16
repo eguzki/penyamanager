@@ -51,6 +51,9 @@ namespace PenyaManager {
 
         // initialize calendar inital values
         QDate toInitialDate = QDate::currentDate();
+        // set maximum selectable date
+        this->ui->fromCalendarWidget->setMaximumDate(toInitialDate);
+        this->ui->toCalendarWidget->setMaximumDate(toInitialDate);
         // from 30 days before
         QDate fromIntialDate = toInitialDate.addDays(-30);
         bool shouldUpdate = true;
