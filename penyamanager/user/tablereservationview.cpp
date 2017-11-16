@@ -93,16 +93,19 @@ namespace PenyaManager {
         //
         // Initial state
         //
-        initializeTableReservations(pCurrMemberPtr);
+        initializeTableReservations();
     }
     //
-    void TableReservationView::initializeTableReservations(const MemberPtr &pCurrMemberPtr)
+    void TableReservationView::initializeTableReservations()
     {
         //QDateTime nowDateTime = QDateTime(QDate(2015, 5, 11), QTime(0,0)); // when reservations cannot be done
         //QDateTime nowDateTime = QDateTime(QDate(2015, 5, 11), QTime(7,0)); // monday after deadline
         //QDateTime nowDateTime = QDateTime(QDate(2015, 5, 17), QTime(7,0)); // sunday (same day min and max)
         QDateTime nowDateTime = QDateTime::currentDateTime();
         QDate nowDate = nowDateTime.date();
+
+        // initially show hidden. Table will not be filled.
+        this->ui->pagingWidget->setHidden(true);
 
         this->ui->calendarWidget->setSelectedDate(nowDate);
         // set minimum selectable date
@@ -142,7 +145,7 @@ namespace PenyaManager {
             this->ui->supperButton->setCheckable(true);
             this->ui->dinnerButton->setCheckable(true);
             this->ui->midMorningButton->setChecked(false);
-            this->ui->lunchButton->setChecked(true);
+            this->ui->lunchButton->setChecked(false);
             this->ui->supperButton->setChecked(false);
             this->ui->dinnerButton->setChecked(false);
             this->ui->calendarWidget->setSelectionMode(QCalendarWidget::SingleSelection);
@@ -153,11 +156,9 @@ namespace PenyaManager {
             this->ui->tablePushButton->setCheckable(true);
             this->ui->ovenPushButton->setCheckable(true);
             this->ui->fireplacePushButton->setCheckable(true);
-            this->ui->tablePushButton->setChecked(true);
+            this->ui->tablePushButton->setChecked(false);
             this->ui->ovenPushButton->setChecked(false);
             this->ui->fireplacePushButton->setChecked(false);
-            m_currentPage = 0;
-            fillTableReservations(pCurrMemberPtr, nowDate, ReservationType::Lunch);
         }
     }
     //
