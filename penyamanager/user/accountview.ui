@@ -14,13 +14,8 @@
    <string>Account View</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QCalendarWidget QAbstractItemView:enabled 
-{
-  	
-	background-color: rgb(189,189,189);
-	
-  }
-   </string>
+   <string notr="true">
+</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>

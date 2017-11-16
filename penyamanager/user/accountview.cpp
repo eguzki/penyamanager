@@ -19,6 +19,21 @@ namespace PenyaManager {
         ui->setupUi(this);
         this->ui->topPanelwidget->layout()->addWidget(m_pMemberProfileGroupBox);
 
+        QTableView *view = this->ui->fromCalendarWidget->findChild<QTableView*>("qt_calendar_calendarview");
+        if (view)
+        {
+            QPalette pal = view->palette();
+            pal.setColor(QPalette::Base, QColor(189,189,189));
+            view->setPalette(pal);
+        }
+        view = this->ui->toCalendarWidget->findChild<QTableView*>("qt_calendar_calendarview");
+        if (view)
+        {
+            QPalette pal = view->palette();
+            pal.setColor(QPalette::Base, QColor(189,189,189));
+            view->setPalette(pal);
+        }
+
         initializeTable();
     }
     //

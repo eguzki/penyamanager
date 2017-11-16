@@ -21,18 +21,7 @@
 QTableWidget{
 	font: 18pt &quot;Calibri&quot;;
 }
-
-QCalendarWidget QAbstractItemView:enabled 
-{
-  	
-	background-color: rgb(189,189,189);
-	
-}
-
-
-/*QTableWidget::item:selected{
-	background-color: rgb(198,40,40);
-}*/</string>
+</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
