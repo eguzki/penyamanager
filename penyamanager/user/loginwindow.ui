@@ -421,7 +421,7 @@ font-size: 35px;
              <widget class="QWidget" name="memberImageWidget" native="true">
               <layout class="QHBoxLayout" name="horizontalLayout_7">
                <item>
-                <spacer name="horizontalSpacer_4">
+                <spacer name="horizontalSpacer_6">
                  <property name="orientation">
                   <enum>Qt::Horizontal</enum>
                  </property>

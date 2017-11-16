@@ -37,7 +37,7 @@ namespace PenyaManager {
             //
             void translateTable();
             //
-            void initializeTableReservations(const MemberPtr &);
+            void initializeTableReservations();
             //
             void fillTableReservations(const MemberPtr &, const QDate &, ReservationType);
             //
