@@ -28,6 +28,15 @@ namespace PenyaManager {
     {
         ui->setupUi(this);
         this->ui->topPanelWidget->layout()->addWidget(m_pMemberProfileGroupBox);
+
+        QTableView *view = this->ui->calendarWidget->findChild<QTableView*>("qt_calendar_calendarview");
+        if (view)
+        {
+            QPalette pal = view->palette();
+            pal.setColor(QPalette::Base, QColor(189,189,189));
+            view->setPalette(pal);
+        }
+
         // reservation type
         this->ui->reservationTypeButtonGroup->setId(this->ui->midMorningButton, static_cast<Int32>(ReservationType::MidMorning));
         this->ui->reservationTypeButtonGroup->setId(this->ui->lunchButton, static_cast<Int32>(ReservationType::Lunch));
