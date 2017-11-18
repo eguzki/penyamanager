@@ -1,6 +1,8 @@
 //
 
 #include <QMessageBox>
+#include <QsLog.h>
+
 #include <commons/singletons.h>
 #include "invoicelistwindow.h"
 #include "ui_invoicelistwindow.h"
@@ -178,7 +180,7 @@ namespace PenyaManager {
         auto rowMap = m_rowProductIdMap.find(row);
         if (rowMap == m_rowProductIdMap.end()) {
             //this should never happen
-            qDebug() << "[ERROR] invoiceID not found and should be in the map";
+            QLOG_ERROR() << "[ERROR] invoiceID not found and should be in the map";
             return;
         }
         Int32 invoiceId = rowMap->second;

@@ -8,6 +8,7 @@ QT       += core gui
 QT       += printsupport
 QT       += sql
 QT       += widgets
+QT       += network
 
 QTPLUGIN += qsqlmysql
 
@@ -59,7 +60,8 @@ SOURCES += main.cpp\
         commons/translationmanager.cpp \
         user/mainwindow.cpp \
         commons/familyitemwidget.cpp \
-        commons/productitemwidget.cpp
+        commons/productitemwidget.cpp \
+        commons/logging.cpp
 
 HEADERS  += user/memberdashboardwindow.h\
         commons/singletons.h\
@@ -96,7 +98,8 @@ HEADERS  += user/memberdashboardwindow.h\
         commons/guiutils.h \
         commons/translationmanager.h \
         commons/DataTypes.h \
-        user/mainwindow.h
+        user/mainwindow.h \
+        commons/logging.h
 
 FORMS    += user/memberdashboardwindow.ui\
         user/loginwindow.ui \

@@ -8,6 +8,7 @@ QT       += core gui
 QT       += printsupport
 QT       += sql
 QT       += widgets
+QT       += network
 
 QTPLUGIN += qsqlmysql
 
@@ -69,7 +70,8 @@ SOURCES += adminmain.cpp\
         admin/adminreservationswindow.cpp \
         admin/providerinvoiceview.cpp \
         commons/familyitemwidget.cpp \
-        commons/productitemwidget.cpp
+        commons/productitemwidget.cpp \
+        commons/logging.cpp
 
 HEADERS += commons/singletons.h\
         commons/dao.h\
@@ -117,6 +119,7 @@ HEADERS += commons/singletons.h\
         admin/passchangedialog.h \
         admin/adminreservationswindow.h \
         admin/providerinvoiceview.h \
+        commons/logging.h
 
 FORMS   += admin/adminloginwindow.ui\
         admin/adminmainwindow.ui \

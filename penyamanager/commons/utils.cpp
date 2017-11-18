@@ -52,25 +52,4 @@ namespace PenyaManager {
         SimpleCrypt crypto(Constants::kCryptKey);
         return crypto.decryptToString(plainText);
     }
-    //
-    // valid log level strings:
-    // debug
-    // info
-    // warn
-    // error
-    QsLogging::Level Utils::getLogLevel(const QString& plainText)
-    {
-        // if plainText is unknown => info
-        QsLogging::Level level(QsLogging::InfoLevel);
-        if (plainText == "debug") {
-            level = QsLogging::DebugLevel;
-        } else if (plainText == "info"){
-            level = QsLogging::InfoLevel;
-        } else if (plainText == "warn"){
-            level = QsLogging::WarnLevel;
-        } else if (plainText == "error"){
-            level = QsLogging::ErrorLevel;
-        }
-        return level;
-    }
 }

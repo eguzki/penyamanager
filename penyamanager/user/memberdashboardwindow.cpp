@@ -85,7 +85,6 @@ namespace PenyaManager {
         if (!pMemberResultPtr->m_member) {
             // member not found, should not happen
             QLOG_WARN() << QString("Unable to find owner by id: %1").arg(Singletons::m_pCurrMember->m_id);
-            qDebug() << QString("Unable to find owner by id: %1").arg(Singletons::m_pCurrMember->m_id);
             return;
         }
 
