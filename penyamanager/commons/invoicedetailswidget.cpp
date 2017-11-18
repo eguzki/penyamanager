@@ -33,7 +33,7 @@ namespace PenyaManager {
         translateTable();
         Uint32 column = 0;
         this->ui->productTableWidget->setColumnWidth(column++, 1);
-        this->ui->productTableWidget->setColumnWidth(column++, 230);
+        this->ui->productTableWidget->setColumnWidth(column++, 228);
         this->ui->productTableWidget->setColumnWidth(column++, 85);
         this->ui->productTableWidget->setColumnWidth(column++, 45);
         this->ui->productTableWidget->setColumnWidth(column++, 100);

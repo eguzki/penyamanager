@@ -287,6 +287,7 @@ namespace PenyaManager {
             item = new QTableWidgetItem(QString("%1 €").arg(totalPrice, 0, 'f', 2));
             item->setData(Qt::TextAlignmentRole, Qt::AlignRight);
             this->ui->lastInvoiceTableWidget->setItem(rowCount, 3, item);
+            this->ui->lastInvoiceTableWidget->setRowHeight(rowCount, 35);
             rowCount++;
         }
 
