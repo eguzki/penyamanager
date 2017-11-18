@@ -1,7 +1,6 @@
 //
 
 #include <QMessageBox>
-#include <QsLog.h>
 #include <commons/singletons.h>
 #include "admininvoicelistview.h"
 #include "ui_admininvoicelistview.h"

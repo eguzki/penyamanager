@@ -4,8 +4,6 @@
 #include <QFileDialog>
 #include <QDateTime>
 
-#include <QsLog.h>
-
 #include <commons/guiutils.h>
 #include <commons/utils.h>
 #include <commons/singletons.h>

@@ -4,8 +4,6 @@
 #include <QPushButton>
 #include <QMessageBox>
 
-#include <QsLog.h>
-
 #include <commons/singletons.h>
 #include "depositlistview.h"
 #include "ui_depositlistview.h"

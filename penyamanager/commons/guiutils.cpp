@@ -6,7 +6,6 @@
 #include <QTextDocument>
 #include <QFile>
 #include <mustache.h>
-#include <QsLog.h>
 
 #include "guiutils.h"
 

@@ -4,9 +4,6 @@
 #include <QTranslator>
 #include <QMessageBox>
 
-#include <QsLogDest.h>
-#include <QsLog.h>
-
 #include <commons/IPartner.h>
 #include <commons/invoicedetailswidget.h>
 #include <commons/constants.h>

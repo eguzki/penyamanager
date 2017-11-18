@@ -3,8 +3,6 @@
 #include <QMessageBox>
 #include <QFileDialog>
 
-#include <QsLog.h>
-
 #include <commons/guiutils.h>
 #include <commons/utils.h>
 #include <commons/singletons.h>

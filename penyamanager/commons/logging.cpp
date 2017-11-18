@@ -19,6 +19,10 @@ namespace PenyaManager {
                 return "main";
             case LogAction::kLogin:
                 return "login";
+            case LogAction::kInvoice:
+                return "invoice";
+            case LogAction::kDb:
+                return "db";
         }
         return "Unknown";
     }

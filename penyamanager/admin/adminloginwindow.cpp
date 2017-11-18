@@ -1,9 +1,7 @@
 //
 
-#include <QDebug>
 #include <QMessageBox>
 #include <QFile>
-#include <QsLog.h>
 
 #include <commons/utils.h>
 #include <commons/constants.h>

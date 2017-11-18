@@ -1,7 +1,5 @@
 //
 
-#include <QsLog.h>
-
 #include "singletons.h"
 #include "objs/Invoice.h"
 #include "objs/Deposit.h"

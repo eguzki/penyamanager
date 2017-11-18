@@ -5,8 +5,6 @@
 #include <QSpacerItem>
 #include <QMessageBox>
 
-#include <QsLog.h>
-
 #include <commons/guiutils.h>
 #include <commons/singletons.h>
 #include "newproviderinvoiceview.h"

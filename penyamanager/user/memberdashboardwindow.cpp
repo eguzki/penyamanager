@@ -1,9 +1,6 @@
 //
 
-#include <QLabel>
-#include <QDateTime>
 #include <QMessageBox>
-#include <QsLog.h>
 
 #include <commons/constants.h>
 #include <commons/guiutils.h>

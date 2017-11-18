@@ -4,9 +4,6 @@
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QDateTime>
-#include <QDebug>
-
-#include <QsLog.h>
 
 #include <commons/guiutils.h>
 #include <commons/constants.h>

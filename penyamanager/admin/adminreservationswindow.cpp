@@ -1,7 +1,7 @@
 //
 
 #include <QMessageBox>
-#include <QsLog.h>
+
 #include <commons/numitemdialog.h>
 #include <commons/singletons.h>
 #include "adminreservationswindow.h"

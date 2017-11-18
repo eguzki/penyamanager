@@ -1,7 +1,5 @@
 //
 
-#include <QDebug>
-#include <QsLog.h>
 #include <QMessageBox>
 
 #include <commons/guiutils.h>

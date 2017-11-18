@@ -1,7 +1,6 @@
 //
 
-#include <QsLog.h>
-
+#include "singletons.h"
 #include "dao.h"
 
 namespace PenyaManager {
@@ -67,8 +66,7 @@ namespace PenyaManager {
             bool ok = m_db.open();
             if (!ok) {
                 // database open error
-                qDebug() << m_db.lastError();
-                QLOG_ERROR() << m_db.lastError();
+                Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb, m_db.lastError().text());
                 return queryResponse;
             }
         }
@@ -76,8 +74,7 @@ namespace PenyaManager {
         queryResponse.error = !queryResponse.query->exec();
         if (queryResponse.error) {
             int err = queryResponse.query->lastError().number();
-            qDebug() << queryResponse.query->lastError();
-            QLOG_ERROR() << queryResponse.query->lastError();
+            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb, queryResponse.query->lastError().text());
             // in case error can not be recovered, return null
             queryResponse.query.reset();
             // try to handle server timeout connection closes by inactivity
@@ -91,14 +88,13 @@ namespace PenyaManager {
                     queryResponse.error = !queryResponse.query->exec();
                     if (queryResponse.error) {
                         qDebug() << queryResponse.query->lastError();
-                        QLOG_ERROR() << queryResponse.query->lastError();
+                        Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb, queryResponse.query->lastError().text());
                         // in case error can not be recovered, return null
                         queryResponse.query.reset();
                     }
                 } else {
                     // database open error
-                    qDebug() << m_db.lastError();
-                    QLOG_ERROR() << m_db.lastError();
+                    Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb, m_db.lastError().text());
                 }
             }
         }
@@ -122,7 +118,8 @@ namespace PenyaManager {
         QueryResponse queryResponse = exec(createQuery);
 
         if (queryResponse.error) {
-            QLOG_ERROR() << QString("getProductFamilies: onlyActive: %1").arg(onlyActive);
+            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+                    QString("getProductFamilies: onlyActive: %1").arg(onlyActive));
             pfListPrt->m_error = 1;
         } else {
             pfListPrt->m_list = ProductFamilyListPtr(new ProductFamilyList);
@@ -159,7 +156,8 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            QLOG_ERROR() << QString("getProductsFromFamily: family: %1 onlyActive: %2").arg(familyId).arg(onlyActive);
+            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+                    QString("getProductsFromFamily: family: %1 onlyActive: %2").arg(familyId).arg(onlyActive));
             pIListResultPtr->m_error = 1;
         } else {
             pIListResultPtr->m_list = ProductItemListPtr(new ProductItemList);
@@ -203,7 +201,8 @@ namespace PenyaManager {
         QueryResponse queryResponse = exec(createQuery);
 
         if (queryResponse.error) {
-            QLOG_ERROR() << QString("fetchMemberById: memberId: %1").arg(memberId);
+            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+                    QString("fetchMemberById: memberId: %1").arg(memberId));
             pMemberResultPtr->m_error = 1;
         } else if (queryResponse.query->next())
         {
@@ -258,7 +257,8 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            QLOG_ERROR() << QString("fetchMemberByUsername: member: %1").arg(username);
+            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+                    QString("fetchMemberByUsername: member: %1").arg(username));
             pMemberResultPtr->m_error = 1;
         } else if (queryResponse.query->next()) {
             MemberPtr pMemberPtr(new Member);
@@ -311,7 +311,8 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            QLOG_ERROR() << QString("getAccountBalance: member: %1").arg(memberId);
+            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+                    QString("getAccountBalance: member: %1").arg(memberId));
             pResult->m_error = 1;
         } else if (queryResponse.query->next())
         {
@@ -340,7 +341,8 @@ namespace PenyaManager {
         QueryResponse queryResponse = exec(createQuery);
 
         if (queryResponse.error) {
-            QLOG_ERROR() << QString("getInvoice: invoice: %1").arg(invoiceId);
+            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+                    QString("getInvoice: invoice: %1").arg(invoiceId));
             pInvoiceResultPtr->m_error = 1;
         } else if (queryResponse.query->next())
         {
@@ -377,7 +379,8 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            QLOG_ERROR() << QString("getMemberActiveInvoice: member: %1").arg(memberId);
+            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+                    QString("getMemberActiveInvoice: member: %1").arg(memberId));
             pInvoiceResultPtr->m_error = 1;
         } else if (queryResponse.query->next())
         {
@@ -409,7 +412,8 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            QLOG_ERROR() << QString("removeProductInvoice: invoice: %1 product: %2").arg(invoiceId).arg(productId);
+            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+                    QString("removeProductInvoice: invoice: %1 product: %2").arg(invoiceId).arg(productId));
         }
         return !queryResponse.error;
     }
@@ -435,7 +439,8 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            QLOG_ERROR() << QString("updateProductInvoice: invoice: %1 product: %2 count: %3").arg(invoiceId).arg(productId).arg(count);
+            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+                    QString("updateProductInvoice: invoice: %1 product: %2 count: %3").arg(invoiceId).arg(productId).arg(count));
         }
         return !queryResponse.error;
     }
@@ -462,7 +467,8 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            QLOG_ERROR() << QString("increaseProductInvoice: invoice: %1 product: %2 count: %3").arg(invoiceId).arg(productId).arg(count);
+            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+                    QString("increaseProductInvoice: invoice: %1 product: %2 count: %3").arg(invoiceId).arg(productId).arg(count));
         } else {
             numRowsAffected = queryResponse.query->numRowsAffected();
         }
@@ -500,7 +506,8 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            QLOG_ERROR() << QString("createInvoice: member: %1").arg(memberId);
+            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+                    QString("createInvoice: member: %1").arg(memberId));
             pInvoiceResultPtr->m_error = 1;
             return pInvoiceResultPtr;
         }
@@ -512,7 +519,8 @@ namespace PenyaManager {
         // For LAST_INSERT_ID(), the most recently generated ID is maintained in the server on a per-connection basis
         QueryResponse lastQueryResponse = exec(lastQuery);
         if (lastQueryResponse.error) {
-            QLOG_ERROR() << QString("createInvoice: could not get last ID created in db");
+            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+                    QString("createInvoice: could not get last ID created in db"));
             pInvoiceResultPtr->m_error = 1;
         } else if (lastQueryResponse.query->next()) {
             pInvoiceResultPtr->m_pInvoice->m_id = lastQueryResponse.query->value(0).toUInt();

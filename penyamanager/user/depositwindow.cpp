@@ -1,8 +1,8 @@
 //
 
 #include <QMessageBox>
+#include <QPushButton>
 #include <mustache.h>
-#include <QsLog.h>
 
 #include <commons/guiutils.h>
 #include <commons/singletons.h>
