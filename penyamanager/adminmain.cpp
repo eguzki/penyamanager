@@ -36,13 +36,15 @@ int main(int argc, char *argv[])
 
     // Settings
     QSettings settings(PenyaManager::Constants::kOrganizationName, PenyaManager::Constants::kApplicationName);
+
+    PenyaManager::PenyaManagerLoggerPtr pLogger = PenyaManager::NewLoggerInstance(&settings, "penyamanageradmin");
+
     if (!settings.contains(PenyaManager::Constants::kResourcePathKey))
     {
+        pLogger->Error(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kMain, "Settings file not found. Call the stupid administrator and complain for incompetence");
         QMessageBox::critical(NULL, QObject::tr("Error"), QObject::tr("Settings file not found. Call the stupid administrator and complain for incompetence"));
         return 1;
     }
-
-    PenyaManager::PenyaManagerLoggerPtr pLogger = PenyaManager::NewLoggerInstance(&settings, "penyamanageradmin");
 
     pLogger->Info(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kMain, "Init");
 
@@ -51,7 +53,7 @@ int main(int argc, char *argv[])
     PenyaManager::Singletons::Create(&settings, pLogger);
 
     if (!PenyaManager::Singletons::m_pDAO->isOpen()) {
-        QLOG_ERROR() << QString("Database connection failed");
+        PenyaManager::Singletons::m_pLogger->Error(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kMain, "Database connection failed");
         QMessageBox::critical(NULL, QObject::tr("Error"), QObject::tr("Database connection failed. Call the stupid administrator and complain for incompetence"));
         return 1;
     }
@@ -108,6 +110,6 @@ int main(int argc, char *argv[])
 
     PenyaManager::Singletons::Destroy();
 
-    QLOG_INFO() << QString("[Exit]");
+    pLogger->Info(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kMain, "Exit");
     return returnValue;
 }

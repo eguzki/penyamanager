@@ -33,6 +33,14 @@ namespace PenyaManager {
                 return "reservation";
             case LogAction::kPrint:
                 return "print";
+            case LogAction::kProvider:
+                return "provider";
+            case LogAction::kProduct:
+                return "product";
+            case LogAction::kFamily:
+                return "family";
+            case LogAction::kMember:
+                return "member";
         }
         return "Unknown";
     }

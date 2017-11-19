@@ -48,11 +48,12 @@ namespace PenyaManager {
         QString providerInvoiceId(Singletons::m_currentProviderInvoiceId);
         ProviderInvoiceResultPtr providerInvoiceResultPtr = Singletons::m_pDAO->getProviderInvoiceById(providerInvoiceId);
         if (providerInvoiceResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
         if (!providerInvoiceResultPtr->m_pProviderInvoice) {
-            QLOG_WARN() << QString("provider invoice id {%1} not found in ddbb").arg(providerInvoiceId);
+            Singletons::m_pLogger->Warn(Constants::kSystemUserId, PenyaManager::LogAction::kDashboard,
+                    QString("provider invoice id %1 not found in ddbb").arg(providerInvoiceId));
             QMessageBox::warning(this, tr("Unexpected state"), tr("Operation not performed. Contact administrator"));
             return;
         }
@@ -86,7 +87,7 @@ namespace PenyaManager {
     {
         ProviderInvoiceProductItemListResultPtr pListResultPtr = Singletons::m_pDAO->getProviderInvoiceProductsByInvoiceId(providerInvoiceId);
         if (pListResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
         // num rows

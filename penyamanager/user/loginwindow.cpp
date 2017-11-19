@@ -71,6 +71,8 @@ namespace PenyaManager {
         //
         MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberById(pLastInvoiceResultPtr->m_pInvoice->m_memberId);
         if (pMemberResultPtr->m_error) {
+            Singletons::m_pLogger->Error(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kLogin,
+                    QString("getMemberById: %1").arg(pLastInvoiceResultPtr->m_pInvoice->m_memberId));
             QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
             return;
         }
@@ -149,16 +151,17 @@ namespace PenyaManager {
         // Loading user Profile
         MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberByUsername(this->m_username);
         if (pMemberResultPtr->m_error) {
+            Singletons::m_pLogger->Error(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kLogin,
+                    QString("getMemberByUsername: %1").arg(this->m_username));
             QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
             return;
         }
         if (!pMemberResultPtr->m_member)
         {
             Singletons::m_pLogger->Info(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kLogin,
-                    QString("[LoginFailed] username %1 does not exist").arg(this->m_username));
+                    QString("username %1 does not exist").arg(this->m_username));
             // User could not be found
-            QMessageBox::about(this, tr("Login failed"),
-                    tr("User not registered in the system: %1").arg(this->m_username));
+            QMessageBox::about(this, tr("Login failed"), tr("User not registered in the system: %1").arg(this->m_username));
             return;
         }
 
@@ -166,7 +169,7 @@ namespace PenyaManager {
         if (pMemberResultPtr->m_member->m_pwd != hashedPwd)
         {
             Singletons::m_pLogger->Info(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kLogin,
-                    QString("[LoginFailed] id %1 username %2 pass check failed").arg(pMemberResultPtr->m_member->m_id).arg(this->m_username));
+                    QString("id %1 username %2 pass check failed").arg(pMemberResultPtr->m_member->m_id).arg(this->m_username));
             // User not active
             QMessageBox::about(this, tr("Login failed"), tr("Password incorrect"));
             return;
@@ -175,7 +178,7 @@ namespace PenyaManager {
         if (!pMemberResultPtr->m_member->m_active)
         {
             Singletons::m_pLogger->Info(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kLogin,
-                    QString("[LoginFailed] User id %1 not active").arg(pMemberResultPtr->m_member->m_id));
+                    QString("User id %1 not active").arg(pMemberResultPtr->m_member->m_id));
             // User not active
             QMessageBox::about(this, "Login failed",
                     tr("User not active in the system: %1").arg(pMemberResultPtr->m_member->m_id));
@@ -196,6 +199,7 @@ namespace PenyaManager {
         // It is supossed that only few invoices would be open
         bool ok = Singletons::m_pServices->cleanOutdatedInvoices();
         if (!ok) {
+            Singletons::m_pLogger->Error(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kLogin, QString("cleanOutdatedInvoices"));
             QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
             return;
         }

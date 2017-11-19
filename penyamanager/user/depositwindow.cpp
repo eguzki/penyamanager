@@ -99,7 +99,7 @@ namespace PenyaManager {
             return;
         }
         Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kDeposit,
-                QString("Deposit id: %1. Ammount: %2").arg(pDepositResultPtr->m_deposit->m_id).arg(QString::number(m_depositValue, 'f', 2)));
+                QString("Deposit id: %1. Amount: %2").arg(pDepositResultPtr->m_deposit->m_id).arg(QString::number(m_depositValue, 'f', 2)));
         // print deposit
         printDeposit(pCurrMemberPtr, pDepositResultPtr->m_deposit);
         QMessageBox::information(this, tr("Deposit"), tr("Deposit for %1 € created sucessfully").arg(QString::number(m_depositValue, 'f', 2)));

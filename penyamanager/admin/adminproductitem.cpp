@@ -77,11 +77,12 @@ namespace PenyaManager {
             // edit previous item
             ProductItemResultPtr pProductResultPtr = Singletons::m_pDAO->getProductItem(Singletons::m_currentProductId);
             if (pProductResultPtr->m_error) {
-                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
                 return;
             }
             if (!pProductResultPtr->m_item) {
-                QLOG_WARN() << QString("Editing item [id: %1] not found in ddbb").arg(Singletons::m_currentProductId);
+                Singletons::m_pLogger->Warn(Constants::kSystemUserId, PenyaManager::LogAction::kProduct,
+                        QString("item not found: %1").arg(Singletons::m_currentProductId));
                 QMessageBox::warning(this, tr("Unexpected state"), tr("Operation not performed. Contact administrator"));
                 return;
             }
@@ -115,7 +116,7 @@ namespace PenyaManager {
             // update in ddbb
             bool ok = Singletons::m_pDAO->updateProductItem(pProductResultPtr->m_item);
             if (!ok) {
-                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
                 return;
             }
 
@@ -127,7 +128,8 @@ namespace PenyaManager {
                 QFile oldFile(oldImagePath);
                 oldFile.remove();
             }
-            QLOG_INFO() << QString("[EditItem] ID %1").arg(pProductResultPtr->m_item->m_id);
+            Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kProduct,
+                    QString("edititem: %1").arg(pProductResultPtr->m_item->m_id));
         } else {
             // new item
             ProductItemPtr pProductItemPtr(new ProductItem);
@@ -163,10 +165,11 @@ namespace PenyaManager {
             // create in ddbb
             Int32 itemId = Singletons::m_pDAO->createProductItem(pProductItemPtr);
             if (itemId < 0) {
-                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
                 return;
             }
-            QLOG_INFO() << QString("[NewItem] ID %1").arg(itemId);
+            Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kProduct,
+                    QString("new item: %1").arg(itemId));
         }
 
         // reset var
@@ -179,11 +182,12 @@ namespace PenyaManager {
     {
         ProductItemResultPtr pProductItemResultPtr = Singletons::m_pDAO->getProductItem(productId);
         if (pProductItemResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
         if (!pProductItemResultPtr->m_item) {
-            QLOG_WARN() << QString("Fetching item [id: %1] not found in ddbb").arg(productId);
+            Singletons::m_pLogger->Warn(Constants::kSystemUserId, PenyaManager::LogAction::kProduct,
+                    QString("item not found: %1").arg(productId));
             QMessageBox::warning(this, tr("Unexpected state"), tr("Operation not performed. Contact administrator"));
             return;
         }
@@ -205,7 +209,7 @@ namespace PenyaManager {
         this->ui->providerComboBox->clear();
         ProviderListResultPtr pProviderListResultPtr = Singletons::m_pDAO->getProviderList();
         if (pProviderListResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
         Int32 currentIndex = 0;
@@ -227,7 +231,7 @@ namespace PenyaManager {
         this->ui->familyComboBox->clear();
         ProductFamilyListResultPtr pfListPtr = Singletons::m_pDAO->getProductFamilies(false);
         if (pfListPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
         currentIndex = 0;
@@ -266,7 +270,7 @@ namespace PenyaManager {
         this->ui->providerComboBox->clear();
         ProviderListResultPtr pProviderListResultPtr = Singletons::m_pDAO->getProviderList();
         if (pProviderListResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
         Int32 currentIndex = 0;
@@ -281,7 +285,7 @@ namespace PenyaManager {
         this->ui->familyComboBox->clear();
         ProductFamilyListResultPtr pfListPtr = Singletons::m_pDAO->getProductFamilies(false);
         if (pfListPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
         currentIndex = 0;

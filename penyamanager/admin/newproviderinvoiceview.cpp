@@ -65,7 +65,7 @@ namespace PenyaManager {
         pProviderInvoicePtr->m_providerid = this->ui->providerComboBox->currentData().toInt();
         bool ok = Singletons::m_pDAO->createProviderInvoice(pProviderInvoicePtr);
         if (!ok) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
 
@@ -79,7 +79,8 @@ namespace PenyaManager {
             QWidget *pCountWidget = pLayout->itemAt(3)->widget();
             QSpinBox *pCountSpinBox = qobject_cast<QSpinBox *>(pCountWidget);
             if (pCountSpinBox == 0) {
-                QLOG_WARN() << "NewProviderInvoiceView failed taking SpinBox";
+                Singletons::m_pLogger->Warn(Constants::kSystemUserId, PenyaManager::LogAction::kProvider,
+                        QString("NewProviderInvoiceView failed taking SpinBox"));
                 QMessageBox::warning(this, tr("Unexpected state"), tr("Operation not performed. Contact administrator"));
                 return;
             }
@@ -90,18 +91,19 @@ namespace PenyaManager {
                 // create provider invoice product item
                 bool ok = Singletons::m_pDAO->createProviderInvoiceProduct(pProviderInvoicePtr->m_id, productId, pCountSpinBox->value());
                 if (!ok) {
-                    QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                    QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
                     return;
                 }
                 // update stock
                 ok = Singletons::m_pDAO->updateStock(productId, pCountSpinBox->value());
                 if (!ok) {
-                    QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                    QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
                     return;
                 }
             }
         }
-        QLOG_INFO() << QString("[ProviderInvoice] ID %1 providerID %2").arg(pProviderInvoicePtr->m_id).arg(pProviderInvoicePtr->m_providerid);
+        Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kProvider,
+                QString("new invoice id: %1, provider id: %2").arg(pProviderInvoicePtr->m_id).arg(pProviderInvoicePtr->m_providerid));
         QMessageBox::information(this, tr("New provider invoice"), tr("Saved Successfully"));
         // call provider invoice list
         m_switchCentralWidgetCallback(WindowKey::kProviderInvoiceListViewKey);
@@ -117,7 +119,7 @@ namespace PenyaManager {
 
         ProviderListResultPtr pProviderListResultPtr = Singletons::m_pDAO->getProviderList();
         if (pProviderListResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
 
@@ -156,7 +158,8 @@ namespace PenyaManager {
         auto rowMap = m_rowProviderIdMap.find(m_currentProviderIndex);
         if (rowMap == m_rowProviderIdMap.end()) {
             //this should never happen
-            QLOG_ERROR() << "[ERROR] providerId not found and should be in the map";
+            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kProvider,
+                    QString("providerId not found and should be in the map"));
             QMessageBox::warning(this, tr("Error"), tr("Unexpected error"));
             return;
         }
@@ -168,7 +171,7 @@ namespace PenyaManager {
 
         ProductItemListResultPtr pfListPtr = Singletons::m_pDAO->getProductsFromProvider(providerId);
         if (pfListPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
 

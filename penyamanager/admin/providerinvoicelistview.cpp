@@ -196,7 +196,8 @@ namespace PenyaManager {
         auto rowMap = m_rowProviderInvoiceIdMap.find(row);
         if (rowMap == m_rowProviderInvoiceIdMap.end()) {
             //this should never happen
-            QLOG_ERROR() << "[ERROR] provider invoice Id not found and should be in the map";
+            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kProvider,
+                    QString("providerinvoicelistview: provider invoice Id not found and should be in the map"));
             return;
         }
         QString providerInvoiceId = rowMap->second;
@@ -207,5 +208,4 @@ namespace PenyaManager {
         m_switchCentralWidgetCallback(WindowKey::kProviderInvoiceViewKey);
     }
 }
-
 
