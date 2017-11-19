@@ -1,7 +1,6 @@
 //
 
 #include <QMessageBox>
-#include <QsLog.h>
 #include <QPainter>
 
 #include <commons/singletons.h>

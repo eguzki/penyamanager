@@ -4,8 +4,6 @@
 #include <QFileDialog>
 #include <QDateTime>
 
-#include <QsLog.h>
-
 #include <commons/singletons.h>
 #include <commons/utils.h>
 #include <commons/guiutils.h>
@@ -60,11 +58,12 @@ namespace PenyaManager {
             // edit previous item
             ProductFamilyResultPtr pFamilyResultPtr = Singletons::m_pDAO->getProductFamily(Singletons::m_currentFamilyId);
             if (pFamilyResultPtr->m_error) {
-                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
                 return;
             }
             if (!pFamilyResultPtr->m_family) {
-                QLOG_WARN() << QString("Editing item [id: %1] not found in ddbb").arg(Singletons::m_currentFamilyId);
+                Singletons::m_pLogger->Warn(Constants::kSystemUserId, PenyaManager::LogAction::kFamily,
+                        QString("item not found: %1").arg(Singletons::m_currentFamilyId));
                 QMessageBox::warning(this, tr("Unexpected state"), tr("Operation not performed. Contact administrator"));
                 return;
             }
@@ -92,7 +91,7 @@ namespace PenyaManager {
             // update in ddbb
             bool ok = Singletons::m_pDAO->updateProductFamilyItem(pFamilyResultPtr->m_family);
             if (!ok) {
-                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
                 return;
             }
             // if there is previously one image, and it has been changed -> delete it
@@ -103,7 +102,8 @@ namespace PenyaManager {
                 QFile oldFile(oldImagePath);
                 oldFile.remove();
             }
-            QLOG_INFO() << QString("[EditFamily] ID %1").arg(pFamilyResultPtr->m_family->m_id);
+            Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kFamily,
+                    QString("edititem: %1").arg(pFamilyResultPtr->m_family->m_id));
         } else {
             // new item
             ProductFamilyPtr pFamilyPtr(new ProductFamily);
@@ -131,10 +131,11 @@ namespace PenyaManager {
             // create in ddbb
             Int32 familyId = Singletons::m_pDAO->createProductFamilyItem(pFamilyPtr);
             if (familyId < 0) {
-                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
                 return;
             }
-            QLOG_INFO() << QString("[NewFamily] ID %1").arg(familyId);
+            Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kFamily,
+                    QString("newitem: %1").arg(familyId));
         }
 
         // reset var
@@ -174,11 +175,12 @@ namespace PenyaManager {
     {
         ProductFamilyResultPtr pProductFamilyResultPtr = Singletons::m_pDAO->getProductFamily(familyId);
         if (pProductFamilyResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
         if (!pProductFamilyResultPtr->m_family) {
-            QLOG_WARN() << QString("fetching item [id: %1] not found in ddbb").arg(familyId);
+            Singletons::m_pLogger->Warn(Constants::kSystemUserId, PenyaManager::LogAction::kFamily,
+                    QString("item not found: %1").arg(familyId));
             QMessageBox::warning(this, tr("Unexpected state"), tr("Operation not performed. Contact administrator"));
             return;
         }
@@ -209,3 +211,4 @@ namespace PenyaManager {
         this->ui->activeCheckBox->setChecked(true);
     }
 }
+

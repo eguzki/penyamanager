@@ -84,8 +84,6 @@ namespace PenyaManager {
             //
             void on_productListWidget_itemClicked(QListWidgetItem *item);
             //
-            void on_newinvoiceButton_clicked();
-            //
             void on_prevPagePushButton_clicked();
             //
             void on_nextPagePushButton_clicked();

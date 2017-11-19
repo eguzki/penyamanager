@@ -15,7 +15,9 @@ namespace PenyaManager {
     //
     const QString   Constants::kDatabaseHost                    = "host";
     //
-    const QString   Constants::kLogLevel                        = "loglevel";
+    const QString   Constants::kSyslogServer                    = "syslogserver";
+    //
+    const QString   Constants::kDebugConfig                     = "debug";
     //
     const QString   Constants::kDatabaseName                    = "name";
     //
@@ -59,5 +61,7 @@ namespace PenyaManager {
     const Uint32    Constants::kInvoiceWindowProductListPageCount = 2;
     //
     const Uint32    Constants::kReservationListPageCount        = 18;
+    //
+    const Uint32    Constants::kSystemUserId                    = 0;
 }
 

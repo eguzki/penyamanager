@@ -3,8 +3,6 @@
 #include <QMessageBox>
 #include <QFileDialog>
 
-#include <QsLog.h>
-
 #include <commons/guiutils.h>
 #include <commons/utils.h>
 #include <commons/singletons.h>
@@ -144,11 +142,12 @@ namespace PenyaManager {
             // edit previous item
             MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberById(Singletons::m_currentMemberId);
             if (pMemberResultPtr->m_error) {
-                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
                 return;
             }
             if (!pMemberResultPtr->m_member) {
-                QLOG_WARN() << QString("Editing item [id: %1] not found in ddbb").arg(Singletons::m_currentMemberId);
+                Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kMember,
+                        QString("Editing item [id: %1] not found in ddbb").arg(Singletons::m_currentMemberId));
                 QMessageBox::warning(this, tr("Unexpected state"), tr("Operation not performed. Contact administrator"));
                 return;
             }
@@ -210,7 +209,7 @@ namespace PenyaManager {
             // update in ddbb
             bool ok = Singletons::m_pDAO->updateMember(pMemberResultPtr->m_member);
             if (!ok) {
-                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
                 return;
             }
             // if there is previously one image, and it has been changed -> delete it
@@ -221,7 +220,8 @@ namespace PenyaManager {
                 QFile oldFile(oldImagePath);
                 oldFile.remove();
             }
-            QLOG_INFO() << QString("[EditMember] ID %1").arg(pMemberResultPtr->m_member->m_id);
+            Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kMember,
+                    QString("editmember: %1").arg(pMemberResultPtr->m_member->m_id));
         } else {
             // new item
             MemberPtr pMemberPtr(new Member);
@@ -235,7 +235,7 @@ namespace PenyaManager {
             // Check username is not in use
             BoolResult usernameUsed = Singletons::m_pDAO->checkUsername(pMemberPtr->m_username);
             if (usernameUsed.error) {
-                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
                 return;
             }
             if (usernameUsed.result) {
@@ -293,16 +293,17 @@ namespace PenyaManager {
             // create in ddbb
             Int32 memberId = Singletons::m_pDAO->createMember(pMemberPtr);
             if (memberId < 0) {
-                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
                 return;
             }
             // create account
             bool ok = Singletons::m_pServices->createAccountTransaction(memberId, 0.0, "new account", TransactionType::DepositFix);
             if (!ok) {
-                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
                 return;
             }
-            QLOG_INFO() << QString("[NewMember] ID %1").arg(memberId);
+            Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kMember,
+                    QString("newmember: %1").arg(memberId));
         }
 
         // reset var
@@ -316,7 +317,7 @@ namespace PenyaManager {
     {
         MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberById(memberId);
         if (pMemberResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
         if (!pMemberResultPtr->m_member){
@@ -421,12 +422,13 @@ namespace PenyaManager {
         // save new password in ddbb
         bool ok = Singletons::m_pDAO->changeMemberPassword(Singletons::m_currentMemberId, pwdHash, QDateTime::currentDateTime());
         if (!ok) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
 
-        QLOG_INFO() << QString("[PassChange] ID %1").arg(Singletons::m_currentMemberId);
-        QMessageBox::information(this, "Change password", "Password changed successfully");
+        Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kMember,
+                QString("passchange: memberid: %1").arg(Singletons::m_currentMemberId));
+        QMessageBox::information(this, tr("Change password"), tr("Password changed successfully"));
     }
 }
 

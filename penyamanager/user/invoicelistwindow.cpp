@@ -1,6 +1,7 @@
 //
 
 #include <QMessageBox>
+
 #include <commons/singletons.h>
 #include "invoicelistwindow.h"
 #include "ui_invoicelistwindow.h"
@@ -178,7 +179,8 @@ namespace PenyaManager {
         auto rowMap = m_rowProductIdMap.find(row);
         if (rowMap == m_rowProductIdMap.end()) {
             //this should never happen
-            qDebug() << "[ERROR] invoiceID not found and should be in the map";
+            Singletons::m_pLogger->Error(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kInvoice,
+                    QString("On invoice table list clicked, product id not found."));
             return;
         }
         Int32 invoiceId = rowMap->second;

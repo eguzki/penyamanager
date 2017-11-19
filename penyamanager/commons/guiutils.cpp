@@ -6,8 +6,9 @@
 #include <QTextDocument>
 #include <QFile>
 #include <mustache.h>
-#include <QsLog.h>
 
+#include "singletons.h"
+#include "constants.h"
 #include "guiutils.h"
 
 namespace PenyaManager {
@@ -25,7 +26,8 @@ namespace PenyaManager {
     {
         QPrinterInfo defaultPrinter = QPrinterInfo::defaultPrinter();
         if (defaultPrinter.isNull()) {
-            QLOG_ERROR() << QString("[Print] default printer is null");
+            Singletons::m_pLogger->Error(Constants::kSystemUserId, LogAction::kPrint,
+                    QString("default printer is null"));
             return;
         }
         QPrinter printer( defaultPrinter);
@@ -59,14 +61,15 @@ namespace PenyaManager {
     {
         QFile invoiceTemplateFile(":resources/invoice.html");
         if (!invoiceTemplateFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            QLOG_ERROR() << QString("[Invoice] invoice.html not found");
+            Singletons::m_pLogger->Error(memberId, LogAction::kPrint,
+                    QString("invoice.html not found"));
             return;
         }
         QTextStream invoiceTemplateStream(&invoiceTemplateFile);
         invoiceTemplateStream.setCodec("UTF-8");
         QString invoiceTemplate = invoiceTemplateStream.readAll();
         QString invoiceHtml = Mustache::renderTemplate(invoiceTemplate, invoiceData);
-        QLOG_INFO() << QString("[Print] print invoice user %1 invoice %2").arg(memberId).arg(invoiceId);
+        Singletons::m_pLogger->Info(memberId, LogAction::kPrint, QString("Invoice printed: %1").arg(invoiceId));
         GuiUtils::printText(invoiceHtml);
     }
     //
@@ -74,7 +77,8 @@ namespace PenyaManager {
     {
         QFile membersTemplateFile(":resources/members.html");
         if (!membersTemplateFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            QLOG_ERROR() << QString("[Members] members.html not found");
+            Singletons::m_pLogger->Error(Constants::kSystemUserId, LogAction::kPrint,
+                    QString("members.html not found"));
             return;
         }
         QTextStream membersTemplateStream(&membersTemplateFile);
@@ -83,7 +87,8 @@ namespace PenyaManager {
 
         QFile singleMembersTemplateFile(":resources/singlemember.html");
         if (!singleMembersTemplateFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            QLOG_ERROR() << QString("[Members] singlemember.html not found");
+            Singletons::m_pLogger->Error(Constants::kSystemUserId, LogAction::kPrint,
+                    QString("singlemember.html not found"));
             return;
         }
         QTextStream singleMembersTemplateStream(&singleMembersTemplateFile);
@@ -92,7 +97,8 @@ namespace PenyaManager {
 
         QFile doubleMembersTemplateFile(":resources/doublemember.html");
         if (!doubleMembersTemplateFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            QLOG_ERROR() << QString("[Members] doublemember.html not found");
+            Singletons::m_pLogger->Error(Constants::kSystemUserId, LogAction::kPrint,
+                    QString("doublemember.html not found"));
             return;
         }
         QTextStream doubleMembersTemplateStream(&doubleMembersTemplateFile);
@@ -133,7 +139,7 @@ namespace PenyaManager {
         QVariantHash htmlVariant;
         htmlVariant["members"] = membersHtml;
         QString html = Mustache::renderTemplate(memberTemplate, htmlVariant);
-        QLOG_INFO() << QString("[Print] print member list");
+        Singletons::m_pLogger->Info(Constants::kSystemUserId, LogAction::kPrint, QString("printed member list"));
         GuiUtils::printText(html);
     }
 }

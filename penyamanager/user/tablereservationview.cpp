@@ -3,8 +3,6 @@
 #include <QMessageBox>
 #include <QPushButton>
 
-#include <QsLog.h>
-
 #include <commons/utils.h>
 #include <commons/singletons.h>
 #include <commons/numitemdialog.h>

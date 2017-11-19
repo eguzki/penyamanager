@@ -1,7 +1,7 @@
 //
 
 #include <QMessageBox>
-#include <QsLog.h>
+
 #include <commons/numitemdialog.h>
 #include <commons/singletons.h>
 #include "adminreservationswindow.h"
@@ -103,39 +103,39 @@ namespace PenyaManager {
         // fetch table reservation data
         ReservationListResultPtr pTableReservationListResultPtr = Singletons::m_pDAO->getTableReservation(reservationType, date);
         if (pTableReservationListResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
         // fetch tables data
         ReservationItemListResultPtr pTableListResultPtr = Singletons::m_pDAO->getAllLunchTableList();
         if (pTableListResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
 
         // fetch oven reservation data
         ReservationListResultPtr pOvenReservationListResultPtr = Singletons::m_pDAO->getOvenReservation(reservationType, date);
         if (pOvenReservationListResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
         // fetch oven data
         ReservationItemListResultPtr pOvenListResultPtr = Singletons::m_pDAO->getAllOvenList();
         if (pOvenListResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
 
         // fetch fireplace reservation data
         ReservationListResultPtr pFireplaceReservationListResultPtr = Singletons::m_pDAO->getFireplaceReservation(reservationType, date);
         if (pFireplaceReservationListResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
         // fetch fireplace data
         ReservationItemListResultPtr pFireplaceListResultPtr = Singletons::m_pDAO->getAllFireplaceList();
         if (pFireplaceListResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
 
@@ -281,10 +281,11 @@ namespace PenyaManager {
         QString title = "Table";
         bool ok = Singletons::m_pDAO->makeTableReservation(date, reservationType, guestNum, pCurrMemberPtr->m_id, itemId, isAdmin);
         if (!ok) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
-        QLOG_INFO() << QString("[%1][ADMIN] item %2").arg(title).arg(itemId);
+        Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kReservation,
+                QString("%1 %2").arg(title).arg(itemId));
         QMessageBox::information(this, title, tr("Reservation done"));
         fillReservations(date, reservationType);
     }
@@ -306,10 +307,11 @@ namespace PenyaManager {
         QString title = "Table";
         bool ok = Singletons::m_pDAO->updateTableReservation(reservationId, isAdmin);
         if (!ok) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
-        QLOG_INFO() << QString("[%1][ADMIN][BLOCKED] reservationId: %2").arg(title).arg(reservationId);
+        Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kReservation,
+                QString("[BLOCKED] %1 %2").arg(title).arg(reservationId));
         QMessageBox::information(this, title, tr("Reservation done"));
         fillReservations(date, reservationType);
     }
@@ -324,10 +326,11 @@ namespace PenyaManager {
         QString title = "Fireplace";
         bool ok = Singletons::m_pDAO->makeFireplaceReservation(date, reservationType, pCurrMemberPtr->m_id, itemId, isAdmin);
         if (!ok) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
-        QLOG_INFO() << QString("[%1][ADMIN] item %2").arg(title).arg(itemId);
+        Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kReservation,
+                QString("%1 %2").arg(title).arg(itemId));
         QMessageBox::information(this, title, tr("Reservation done"));
         fillReservations(date, reservationType);
     }
@@ -340,10 +343,11 @@ namespace PenyaManager {
         QString title = "Fireplace";
         bool ok = Singletons::m_pDAO->updateFireplaceReservation(reservationId, isAdmin);
         if (!ok) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
-        QLOG_INFO() << QString("[%1][ADMIN][BLOCKED] reservationId: %2").arg(title).arg(reservationId);
+        Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kReservation,
+                QString("[BLOCKED] %1 %2").arg(title).arg(reservationId));
         QMessageBox::information(this, title, tr("Reservation done"));
         fillReservations(date, reservationType);
     }
@@ -358,10 +362,11 @@ namespace PenyaManager {
         QString title = "Oven";
         bool ok = Singletons::m_pDAO->makeOvenReservation(date, reservationType, pCurrMemberPtr->m_id, itemId, isAdmin);
         if (!ok) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
-        QLOG_INFO() << QString("[%1][ADMIN] item %2").arg(title).arg(itemId);
+        Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kReservation,
+                QString("%1 %2").arg(title).arg(itemId));
         QMessageBox::information(this, title, tr("Reservation done"));
         fillReservations(date, reservationType);
     }
@@ -375,10 +380,11 @@ namespace PenyaManager {
         QString title = "Oven";
         bool ok = Singletons::m_pDAO->updateOvenReservation(reservationId, isAdmin);
         if (!ok) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
-        QLOG_INFO() << QString("[%1][ADMIN][BLOCKED] reservationId: %2").arg(title).arg(reservationId);
+        Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kReservation,
+                QString("[BLOCKED] %1 %2").arg(title).arg(reservationId));
         QMessageBox::information(this, title, tr("Reservation done"));
         fillReservations(date, reservationType);
     }
@@ -407,10 +413,10 @@ namespace PenyaManager {
                 break;
         }
         if (!ok) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
-        QMessageBox::information(this, title, "Reservation cancelled");
+        QMessageBox::information(this, title, tr("Reservation cancelled"));
         fillReservations(date, reservationType);
     }
 }

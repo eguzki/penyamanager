@@ -3,7 +3,6 @@
 #include <QCoreApplication>
 #include <QCommandLineParser>
 #include <QSettings>
-#include <QDebug>
 #include <stdio.h>
 
 #include <commons/utils.h>
@@ -46,7 +45,7 @@ int main(int argc, char *argv[])
     const QCommandLineOption ddbbUserOption(
             QStringList() << "u" << "user",
             "Database username",
-            "host");
+            "user");
     parser.addOption(ddbbUserOption);
 
     // An option value with multiples names (-p, --password)
@@ -55,6 +54,19 @@ int main(int argc, char *argv[])
             "Database password",
             "password");
     parser.addOption(ddbbPassOption);
+
+    // An option value (--syslog). Optional.
+    const QCommandLineOption sysLogServerOption(
+            "syslog",
+            "Syslog Server host. IP or hostname. Default database host.",
+            "syslog");
+    parser.addOption(sysLogServerOption);
+
+    // An option value (--debug). Optional.
+    const QCommandLineOption debugOption(
+            "debug",
+            "Debug mode");
+    parser.addOption(debugOption);
 
     if (!parser.parse(QCoreApplication::arguments())) {
         fputs(qPrintable(parser.errorText()), stderr);
@@ -75,6 +87,7 @@ int main(int argc, char *argv[])
     }
 
     QString resourcePath = parser.value(resourcePathOption);
+    QString syslogServerHost = parser.value(sysLogServerOption);
     QString ddbbHost = parser.value(ddbbHostOption);
     QString ddbbName = parser.value(ddbbNameOption);
     QString ddbbUser = parser.value(ddbbUserOption);
@@ -93,6 +106,10 @@ int main(int argc, char *argv[])
     QSettings settings(PenyaManager::Constants::kOrganizationName, PenyaManager::Constants::kApplicationName);
     // resource path
     settings.setValue(PenyaManager::Constants::kResourcePathKey, resourcePath);
+    // syslog server host
+    settings.setValue(PenyaManager::Constants::kSyslogServer, syslogServerHost);
+    // debug
+    settings.setValue(PenyaManager::Constants::kDebugConfig, parser.isSet(debugOption)?(1):(0));
 
     // ddbb settings
     settings.beginGroup(PenyaManager::Constants::kDatabaseGroupName);

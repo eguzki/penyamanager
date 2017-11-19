@@ -4,9 +4,6 @@
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QDateTime>
-#include <QDebug>
-
-#include <QsLog.h>
 
 #include <commons/guiutils.h>
 #include <commons/constants.h>
@@ -104,7 +101,7 @@ namespace PenyaManager {
             return;
         }
 
-        QLOG_INFO() << QString("[NewProvider] name %1").arg(providerName);
+        Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kProvider, QString("new provider name %1").arg(providerName));
         QMessageBox::information(this, tr("New Provider"), tr("Provider created successfully"));
 
         // reset var

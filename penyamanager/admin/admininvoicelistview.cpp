@@ -1,7 +1,6 @@
 //
 
 #include <QMessageBox>
-#include <QsLog.h>
 #include <commons/singletons.h>
 #include "admininvoicelistview.h"
 #include "ui_admininvoicelistview.h"
@@ -75,12 +74,12 @@ namespace PenyaManager {
             this->ui->memberIdLineEdit->clear();
             pInvoiceListResult = Singletons::m_pDAO->getInvoiceList(fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
             if (pInvoiceListResult->m_error) {
-                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
                 return;
             }
             pInvoiceListStatsResult = Singletons::m_pDAO->getInvoiceListStats(fromDate, toDate);
             if (pInvoiceListStatsResult->m_error) {
-                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
                 return;
             }
         } else {
@@ -92,7 +91,7 @@ namespace PenyaManager {
             } else {
                 MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberByUsername(memberUsername);
                 if (pMemberResultPtr->m_error) {
-                    QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                    QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
                     return;
                 }
                 if (!pMemberResultPtr->m_member)
@@ -103,12 +102,12 @@ namespace PenyaManager {
                 }
                 pInvoiceListResult = Singletons::m_pDAO->getInvoiceListByMemberId(pMemberResultPtr->m_member->m_id, fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
                 if (pInvoiceListResult->m_error) {
-                    QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                    QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
                     return;
                 }
                 pInvoiceListStatsResult = Singletons::m_pDAO->getInvoiceListByMemberIdStats(pMemberResultPtr->m_member->m_id, fromDate, toDate);
                 if (pInvoiceListStatsResult->m_error) {
-                    QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                    QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
                     return;
                 }
             }
@@ -184,8 +183,8 @@ namespace PenyaManager {
         auto rowMap = m_rowProductIdMap.find(row);
         if (rowMap == m_rowProductIdMap.end()) {
             //this should never happen
-            QLOG_ERROR() << QString("invoiceID not found and should be in the map");
-            qDebug() << "invoiceID not found and should be in the map";
+            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kInvoice,
+                    QString("On invoice table list clicked, invoice id not found."));
             return;
         }
         Int32 invoiceId = rowMap->second;

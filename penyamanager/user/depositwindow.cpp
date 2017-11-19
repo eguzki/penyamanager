@@ -1,8 +1,8 @@
 //
 
 #include <QMessageBox>
+#include <QPushButton>
 #include <mustache.h>
-#include <QsLog.h>
 
 #include <commons/guiutils.h>
 #include <commons/singletons.h>
@@ -79,11 +79,13 @@ namespace PenyaManager {
         // Create deposit info
         DepositResultPtr pDepositResultPtr = Singletons::m_pServices->createDeposit(pCurrMemberPtr, m_depositValue);
         if (pDepositResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
         if (!pDepositResultPtr->m_deposit) {
-            QMessageBox::warning(this, "Could not create deposit", "Contact administrator");
+            Singletons::m_pLogger->Error(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kDeposit,
+                    QString("createDeposit. Deposit: %1").arg(m_depositValue, 0, 'f', 2));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
 
@@ -91,10 +93,13 @@ namespace PenyaManager {
         QString description = QString("deposit id: %1").arg(pDepositResultPtr->m_deposit->m_id);
         bool transactionOk = Singletons::m_pServices->createAccountTransaction(pCurrMemberPtr->m_id, m_depositValue, description, TransactionType::Deposit);
         if (!transactionOk) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            Singletons::m_pLogger->Error(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kDeposit,
+                    QString("createAccountTransaction. Deposit: %1").arg(m_depositValue, 0, 'f', 2));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
-        QLOG_INFO() << QString("[Deposit] User %1 deposit ID %2 val: %3").arg(pCurrMemberPtr->m_id).arg(pDepositResultPtr->m_deposit->m_id).arg(QString::number(m_depositValue, 'f', 2));
+        Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kDeposit,
+                QString("Deposit id: %1. Amount: %2").arg(pDepositResultPtr->m_deposit->m_id).arg(QString::number(m_depositValue, 'f', 2)));
         // print deposit
         printDeposit(pCurrMemberPtr, pDepositResultPtr->m_deposit);
         QMessageBox::information(this, tr("Deposit"), tr("Deposit for %1 € created sucessfully").arg(QString::number(m_depositValue, 'f', 2)));
@@ -175,14 +180,13 @@ namespace PenyaManager {
     {
         QFile depositTemplateFile(":resources/deposit.html");
         if (!depositTemplateFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            QLOG_ERROR() << QString("[Deposit] deposit.html not found");
+            Singletons::m_pLogger->Error(pMemberPtr->m_id, PenyaManager::LogAction::kDeposit, QString("deposit.html not found"));
             return;
         }
         QTextStream depositTemplateStream(&depositTemplateFile);
         depositTemplateStream.setCodec("UTF-8");
         QString depositTemplate = depositTemplateStream.readAll();
         QString depositHtml = renderDepositTemplate(depositTemplate, pMemberPtr, pDepositPtr);
-        QLOG_INFO() << QString("[Print] print deposit user %1 deposit %2").arg(pMemberPtr->m_id).arg(pDepositPtr->m_id);
         GuiUtils::printText(depositHtml);
     }
     //
@@ -237,6 +241,4 @@ void PenyaManager::DepositWindow::on_exitButton_clicked()
     // call login window on exit
     m_switchCentralWidgetCallback(WindowKey::kLoginWindowKey);
 }
-
-
 

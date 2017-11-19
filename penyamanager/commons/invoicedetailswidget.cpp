@@ -1,7 +1,6 @@
 //
 
 #include <QMessageBox>
-#include <QsLog.h>
 
 #include "guiutils.h"
 #include "constants.h"
@@ -66,7 +65,9 @@ namespace PenyaManager {
         }
         if (!pInvoicePtr->m_pInvoice) {
             // invoice not found, should not happen
-            QLOG_ERROR() << QString("[ERROR] unable to find expected invoice by id: %1").arg(invoiceId);
+            MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
+            Singletons::m_pLogger->Error(pCurrMemberPtr->m_id, PenyaManager::LogAction::kInvoice,
+                    QString("unable to find expected invoice by id: %1").arg(invoiceId));
             return;
         }
         fillInvoiceData(pInvoicePtr->m_pInvoice);

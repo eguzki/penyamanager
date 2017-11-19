@@ -1,9 +1,7 @@
 //
 
-#include <QDebug>
 #include <QMessageBox>
 #include <QFile>
-#include <QsLog.h>
 
 #include <commons/utils.h>
 #include <commons/constants.h>
@@ -64,7 +62,9 @@ namespace PenyaManager {
 
         if (!pMemberResultPtr->m_member)
         {
-            QLOG_INFO() << QString("[LoginFailed] username %1 does not exist").arg(loginName);
+            Singletons::m_pLogger->Info(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kLogin,
+                    QString("username %1 does not exist").arg(loginName));
+
             // User could not be found
             QMessageBox::about(this, tr("Login failed"),
                     tr("User not registered in the system: %1").arg(this->ui->loginInput->text()));
@@ -75,7 +75,8 @@ namespace PenyaManager {
         QString hashedPwd = Utils::hashSHA256asHex(plainPwd);
         if (pMemberResultPtr->m_member->m_pwd != hashedPwd)
         {
-            QLOG_INFO() << QString("[LoginFailed] User id %1 pass check failed").arg(pMemberResultPtr->m_member->m_id);
+            Singletons::m_pLogger->Info(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kLogin,
+                    QString("id %1 username %2 pass check failed").arg(pMemberResultPtr->m_member->m_id).arg(loginName));
             // User not active
             QMessageBox::about(this, tr("Login failed"), tr("Password incorrect"));
             return;
@@ -83,7 +84,8 @@ namespace PenyaManager {
 
         if (!pMemberResultPtr->m_member->m_active)
         {
-            QLOG_INFO() << QString("[LoginFailed] User id %1 not active").arg(pMemberResultPtr->m_member->m_id);
+            Singletons::m_pLogger->Info(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kLogin,
+                    QString("User id %1 not active").arg(pMemberResultPtr->m_member->m_id));
             // User not active
             QMessageBox::about(this, tr("Login failed"), tr("User not active in the system: %1").arg(this->ui->loginInput->text()));
             return;
@@ -91,14 +93,15 @@ namespace PenyaManager {
 
         if (!pMemberResultPtr->m_member->m_isAdmin)
         {
-            QLOG_INFO() << QString("[LoginFailed] User id %1 not admin").arg(pMemberResultPtr->m_member->m_id);
+            Singletons::m_pLogger->Info(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kLogin,
+                    QString("User id %1 not admin").arg(pMemberResultPtr->m_member->m_id));
             // User not admin
             QMessageBox::about(this, tr("Login failed"), tr("User does not have permissions to login"));
             return;
         }
 
         // login granted
-        QLOG_INFO() << QString("[LoginSucess] User %1").arg(loginName);
+        Singletons::m_pLogger->Info(pMemberResultPtr->m_member->m_id, PenyaManager::LogAction::kLogin, QString("login in"));
 
         // switch
         this->hide();

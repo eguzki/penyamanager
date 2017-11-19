@@ -8,6 +8,7 @@
 #include "services.h"
 #include "partnerfinder.h"
 #include "dao.h"
+#include "logging.h"
 
 namespace PenyaManager {
     //
@@ -15,7 +16,7 @@ namespace PenyaManager {
     {
         public:
             //
-            static void Create(QSettings *pSettings);
+            static void Create(QSettings *pSettings, PenyaManagerLoggerPtr pLogger);
             //
             static void Destroy();
 
@@ -31,6 +32,8 @@ namespace PenyaManager {
             static PartnerFinder            *m_pParnetFinder;
             //
             static QSettings                *m_pSettings;
+            //
+            static PenyaManagerLoggerPtr    m_pLogger;
             //
             static Int32                    m_currentInvoiceId;
             //

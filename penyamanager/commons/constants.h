@@ -38,8 +38,10 @@ namespace PenyaManager {
             static const QString    kDatabaseUser;
             // Config settings ddbb pass
             static const QString    kDatabasePass;
-            // Config settings log level
-            static const QString    kLogLevel;
+            // Config settings syslogserver
+            static const QString    kSyslogServer;
+            // Config settings debug
+            static const QString    kDebugConfig;
             // FamilyWidget width
             static const Uint32     kFamilyWidgetWidth;
             // FamilyWidget image width
@@ -76,6 +78,8 @@ namespace PenyaManager {
             static const Uint32     kInvoiceWindowProductListPageCount;
             // Reservation item list
             static const Uint32     kReservationListPageCount;
+            //
+            static const Uint32     kSystemUserId;
 
         private:
             Constants() {}

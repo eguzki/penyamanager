@@ -13,6 +13,7 @@ namespace PenyaManager {
     Services *Singletons::m_pServices = NULL;
     PartnerFinder *Singletons::m_pParnetFinder = NULL;
     QSettings *Singletons::m_pSettings = NULL;
+    PenyaManagerLoggerPtr Singletons::m_pLogger;
     Int32 Singletons::m_currentInvoiceId = 0;
     Int32 Singletons::m_currentProductId = 0;
     Int32 Singletons::m_currentFamilyId = 0;
@@ -20,9 +21,10 @@ namespace PenyaManager {
     QString Singletons::m_currentProviderInvoiceId;
     TranslationManager Singletons::m_translationManager;
 
-    void Singletons::Create(QSettings *pSettings)
+    void Singletons::Create(QSettings *pSettings, PenyaManagerLoggerPtr pLogger)
     {
         m_pSettings = pSettings;
+        m_pLogger = pLogger;
         m_pSettings->beginGroup(Constants::kDatabaseGroupName);
         QString ddbbHost(m_pSettings->value(Constants::kDatabaseHost).toString());
         QString ddbbName(m_pSettings->value(Constants::kDatabaseName).toString());
@@ -33,10 +35,6 @@ namespace PenyaManager {
         // DAO Acces
         // decrypt pass
         QString ddbbPass(Utils::decryptToString(cryptedDDBBPass));
-        //qDebug() << "host: " << ddbbHost;
-        //qDebug() << "name: " << ddbbName;
-        //qDebug() << "user: " << ddbbUser;
-        //qDebug() << "pass: " << ddbbPass;
         m_pDAO = new DAO(ddbbHost, ddbbName, ddbbUser, ddbbPass);
         m_pServices = new Services;
         m_pParnetFinder = new PartnerFinder;

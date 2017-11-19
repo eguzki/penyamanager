@@ -4,9 +4,6 @@
 #include <QTranslator>
 #include <QMessageBox>
 
-#include <QsLogDest.h>
-#include <QsLog.h>
-
 #include <commons/IPartner.h>
 #include <commons/invoicedetailswidget.h>
 #include <commons/constants.h>
@@ -39,36 +36,24 @@ int main(int argc, char *argv[])
 
     // Settings
     QSettings settings(PenyaManager::Constants::kOrganizationName, PenyaManager::Constants::kApplicationName);
+
+    PenyaManager::PenyaManagerLoggerPtr pLogger = PenyaManager::NewLoggerInstance(&settings, "penyamanageradmin");
+
     if (!settings.contains(PenyaManager::Constants::kResourcePathKey))
     {
+        pLogger->Error(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kMain, "Settings file not found. Call the stupid administrator and complain for incompetence");
         QMessageBox::critical(NULL, QObject::tr("Error"), QObject::tr("Settings file not found. Call the stupid administrator and complain for incompetence"));
         return 1;
     }
 
-    // LOGGING
-    // init the logging mechanism
-    QsLogging::Logger& logger = QsLogging::Logger::instance();
-    // set log level and file name
-    logger.setLoggingLevel(PenyaManager::Utils::getLogLevel(settings.value(PenyaManager::Constants::kLogLevel, "info").toString()));
-    const QString sLogPath(QDir(app.applicationDirPath()).filePath("penyamanageradmin.log"));
-
-    // Create log destinations
-    QsLogging::DestinationPtr fileDestination( QsLogging::DestinationFactory::MakeFileDestination(
-                sLogPath,
-                QsLogging::LogRotationOption::EnableLogRotation,
-                QsLogging::MaxSizeBytes(PenyaManager::Constants::kLogMaxSizeBytes)
-                ));
-    // set log destinations on the logger
-    logger.addDestination(fileDestination);
-
-    QLOG_INFO() << QString("[Start]");
+    pLogger->Info(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kMain, "Init");
 
     // Singletons initialization
     // Includes ddbb connection
-    PenyaManager::Singletons::Create(&settings);
+    PenyaManager::Singletons::Create(&settings, pLogger);
 
     if (!PenyaManager::Singletons::m_pDAO->isOpen()) {
-        QLOG_ERROR() << QString("Database connection failed");
+        PenyaManager::Singletons::m_pLogger->Error(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kMain, "Database connection failed");
         QMessageBox::critical(NULL, QObject::tr("Error"), QObject::tr("Database connection failed. Call the stupid administrator and complain for incompetence"));
         return 1;
     }
@@ -125,6 +110,6 @@ int main(int argc, char *argv[])
 
     PenyaManager::Singletons::Destroy();
 
-    QLOG_INFO() << QString("[Exit]");
+    pLogger->Info(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kMain, "Exit");
     return returnValue;
 }

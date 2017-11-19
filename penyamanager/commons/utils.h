@@ -2,7 +2,6 @@
 #define UTILS_H
 
 #include <QString>
-#include <QsLog.h>
 
 namespace PenyaManager {
     //
@@ -17,8 +16,6 @@ namespace PenyaManager {
             static QString encryptToString(const QString& plainText);
             //
             static QString decryptToString(const QString& plainText);
-            //
-            static QsLogging::Level getLogLevel(const QString& plainText);
 
         private:
             //

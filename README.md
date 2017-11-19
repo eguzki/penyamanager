@@ -120,9 +120,9 @@ penyamanager
 * QT 5.7.0
 * GCC 4.8.4, 64 bit
 
-## Log level:
-* QSettings key **loglevel** in General section
-* Valid values: debug, info, warn, error
+## Enable DEBUG mode:
+* QSettings key **debug** in General section
+* Valid values: 1
 
 ## Package deployment for windows 7
 

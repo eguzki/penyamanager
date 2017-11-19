@@ -4,8 +4,6 @@
 #include <QPushButton>
 #include <QMessageBox>
 
-#include <QsLog.h>
-
 #include <commons/singletons.h>
 #include "depositlistview.h"
 #include "ui_depositlistview.h"
@@ -96,7 +94,7 @@ namespace PenyaManager {
             pQDoubleSpinBox->setMaximum(999999.99);
             pQDoubleSpinBox->setValue(pDepositPtr->m_total);
             this->ui->depositTableWidget->setCellWidget(rowCount, column++, pQDoubleSpinBox);
-            QPushButton *pQPushButton = new QPushButton("OK", this->ui->depositTableWidget);
+            QPushButton *pQPushButton = new QPushButton(tr("OK"), this->ui->depositTableWidget);
             this->ui->depositTableWidget->setCellWidget(rowCount, column++, pQPushButton);
             this->connect(pQPushButton, &QPushButton::clicked, std::bind(&DepositListView::on_deposit_check_clicked, this, rowCount));
             rowCount++;
@@ -109,8 +107,7 @@ namespace PenyaManager {
         QWidget *pCashWidget = this->ui->depositTableWidget->cellWidget(rowCount, 4);
         QDoubleSpinBox *pDoubleSpinBox = qobject_cast<QDoubleSpinBox *>(pCashWidget);
         if (pDoubleSpinBox == 0) {
-            QMessageBox::critical(this, "Unexpected error",
-                    "DepositListView failed taking SpinBox");
+            QMessageBox::critical(this, tr("Unexpected error"), tr("DepositListView failed taking SpinBox"));
             return;
         }
         // get memberId
@@ -135,7 +132,8 @@ namespace PenyaManager {
             QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
             return;
         }
-        QLOG_INFO() << QString("[DepositCheck] deposit ID %1 member ID %2 total %3€ diff %4€").arg(depositId).arg(memberId).arg(total, 0, 'f', 2).arg(amount, 0, 'f', 2);
+        Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kDeposit,
+                QString("deposit ID %1 member ID %2 total %3€ diff %4€").arg(depositId).arg(memberId).arg(total, 0, 'f', 2).arg(amount, 0, 'f', 2));
         QMessageBox::information(this, tr("Deposit checked"), tr("Difference: %1 €").arg(amount, 0, 'f', 2));
         showUncheckedDeposits();
     }
