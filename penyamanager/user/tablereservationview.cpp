@@ -86,7 +86,6 @@ namespace PenyaManager {
         this->ui->tableReservationTableWidget->setColumnWidth(column++, 75);
         this->ui->tableReservationTableWidget->setColumnWidth(column++, 40);
         this->ui->tableReservationTableWidget->setColumnWidth(column++, 165);
-
     }
     //
     void TableReservationView::init()
@@ -395,8 +394,8 @@ namespace PenyaManager {
             QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
-        QLOG_INFO() << QString("[%1] [User %2] [item %3]").arg(title).arg(pCurrMemberPtr->m_id).arg(itemId);
-        QMessageBox::information(this, title, "Reservation done");
+        Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kReservation, QString("%1 %2").arg(title).arg(itemId));
+        QMessageBox::information(this, title, tr("Reservation done"));
         // currentPage does not need to be changed
         switch (reservationItemType)
         {

@@ -23,6 +23,16 @@ namespace PenyaManager {
                 return "invoice";
             case LogAction::kDb:
                 return "db";
+            case LogAction::kDashboard:
+                return "dashboard";
+            case LogAction::kService:
+                return "service";
+            case LogAction::kDeposit:
+                return "deposit";
+            case LogAction::kReservation:
+                return "reservation";
+            case LogAction::kPrint:
+                return "print";
         }
         return "Unknown";
     }

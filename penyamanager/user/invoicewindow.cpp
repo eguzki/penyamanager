@@ -41,14 +41,6 @@ namespace PenyaManager {
     //
     void InvoiceWindow::init()
     {
-        if (!Singletons::m_pDAO->isOpen()) {
-            QSqlError err = Singletons::m_pDAO->lastError();
-            QLOG_ERROR() << QString("Unable to initialize Database: %1").arg(err.text());
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
-            qApp->exit(1);
-            return;
-        }
-
         //
         // Loading User profile
         //
@@ -64,8 +56,9 @@ namespace PenyaManager {
             return;
         }
         if (!pInvoiceResultPtr->m_pInvoice) {
-            QMessageBox::critical(this, tr("No active invoice found."), tr("Program will exit"));
-            qApp->exit(0);
+            Singletons::m_pLogger->Error(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kInvoice,
+                    QString("No active invoice found. User id: %1").arg(pCurrMember->m_id));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
             return;
         }
         m_currentPage = 0;
@@ -108,19 +101,22 @@ namespace PenyaManager {
             return;
         }
         if (!pInvoiceResultPtr->m_pInvoice) {
-            QMessageBox::warning(this, tr("Unexpected state"), tr("Operation not performed. Contact administrator"));
-            QLOG_WARN() << QString("No active invoice found");
-            qApp->exit(0);
+            Singletons::m_pLogger->Error(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kInvoice,
+                    QString("No active invoice found. User id: %1").arg(pCurrMember->m_id));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
             return;
         }
 
         // Update member balance
         bool ok = Singletons::m_pServices->closeInvoice(pCurrMember->m_id, pInvoiceResultPtr->m_pInvoice->m_id);
         if (!ok) {
+            Singletons::m_pLogger->Error(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kInvoice,
+                    QString("Error closing invoice. InvoiceId: %1").arg(pInvoiceResultPtr->m_pInvoice->m_id));
             QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
             return;
         }
-        QLOG_INFO() << QString("[Invoice] User %1 Invoice ID %2").arg(pCurrMember->m_id).arg(pInvoiceResultPtr->m_pInvoice->m_id);
+        Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kInvoice,
+                QString("InvoiceId: %1").arg(pInvoiceResultPtr->m_pInvoice->m_id));
 
         printInvoice(pCurrMember, pInvoiceResultPtr->m_pInvoice);
 

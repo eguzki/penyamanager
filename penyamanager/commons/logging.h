@@ -10,7 +10,7 @@
 namespace PenyaManager {
     //
     enum class LogAction {
-            kMain, kLogin, kInvoice, kDb
+            kMain, kLogin, kInvoice, kDb, kDashboard, kService, kDeposit, kReservation, kPrint
     };
     //
     QString LogActionToString(LogAction logAction);

@@ -27,7 +27,6 @@ namespace PenyaManager {
         pDepositPtr->m_total = amount;
         // currently simple description. Maybe let user set some subject?
         pDepositPtr->m_descr = QString("deposit");
-
         // store in ddbb
         return Singletons::m_pDAO->createDeposit(pDepositPtr);
     }
@@ -131,7 +130,8 @@ namespace PenyaManager {
             if (!ok) {
                 return false;
             }
-            QLOG_INFO() << QString("[ResetSlowPayer] member ID %1 amount %2€").arg(pMemberPtr->m_id).arg(-pMemberPtr->m_balance, 0, 'f', 2);
+            Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kService,
+                    QString("ResetSlowPayer member ID %1 amount %2€").arg(pMemberPtr->m_id).arg(-pMemberPtr->m_balance, 0, 'f', 2));
         }
         return true;
     }
@@ -269,11 +269,12 @@ namespace PenyaManager {
             if (pInvoicePtr->m_lastModified.secsTo(now) > 60*60 * Constants::kOpenInvoiceTimeoutH) {
                 // invoice timed out
                 // close it
-                bool ok = Singletons::m_pServices->closeInvoice(pInvoicePtr->m_memberId, pInvoicePtr->m_id);
+                bool ok = closeInvoice(pInvoicePtr->m_memberId, pInvoicePtr->m_id);
                 if (!ok) {
                     return false;
                 }
-                QLOG_INFO() << QString("[Invoice][OUTDATED] User %1 Invoice ID %2").arg(pInvoicePtr->m_memberId).arg(pInvoicePtr->m_id);
+                Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kService,
+                        QString("[Invoice][OUTDATED] User %1 Invoice ID %2").arg(pInvoicePtr->m_memberId).arg(pInvoicePtr->m_id));
                 // leave returnInvoicePtr empty
             }
         }
