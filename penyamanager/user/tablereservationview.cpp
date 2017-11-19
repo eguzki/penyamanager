@@ -85,7 +85,8 @@ namespace PenyaManager {
         this->ui->tableReservationTableWidget->setColumnWidth(column++, 40);
         this->ui->tableReservationTableWidget->setColumnWidth(column++, 75);
         this->ui->tableReservationTableWidget->setColumnWidth(column++, 40);
-        this->ui->tableReservationTableWidget->setColumnWidth(column++, 165);
+        this->ui->tableReservationTableWidget->setColumnWidth(column++, 163);
+
     }
     //
     void TableReservationView::init()
@@ -133,13 +134,7 @@ namespace PenyaManager {
             this->ui->tablePushButton->setEnabled(false);
             this->ui->ovenPushButton->setEnabled(false);
             this->ui->fireplacePushButton->setEnabled(false);
-            // fill empty data
-            MemberPtr pMemberPtr = Singletons::m_pCurrMember;
 
-            ReservationItemListStatsPtr pReservationItemListStatsPtr(new ReservationItemListStats);
-            pReservationItemListStatsPtr->m_listStats = ReservationListStatsPtr(new ReservationListStats);
-            fillReservationsItems(pMemberPtr, ReservationListPtr(new ReservationList), ReservationItemListPtr(new ReservationItemList),
-                                  pReservationItemListStatsPtr);
         } else {
             // reservation type (midmorning,lunch,supper,dinner) buttons
             this->ui->midMorningButton->setEnabled(true);
@@ -165,7 +160,13 @@ namespace PenyaManager {
             this->ui->tablePushButton->setChecked(false);
             this->ui->ovenPushButton->setChecked(false);
             this->ui->fireplacePushButton->setChecked(false);
-        }
+            }
+        // fill empty data
+        MemberPtr pMemberPtr = Singletons::m_pCurrMember;
+        ReservationItemListStatsPtr pReservationItemListStatsPtr(new ReservationItemListStats);
+        pReservationItemListStatsPtr->m_listStats = ReservationListStatsPtr(new ReservationListStats);
+        fillReservationsItems(pMemberPtr, ReservationListPtr(new ReservationList), ReservationItemListPtr(new ReservationItemList),
+                              pReservationItemListStatsPtr);
     }
     //
     void TableReservationView::fillReservationsItems(const MemberPtr &pMemberPtr, const ReservationListPtr &pReservationListPtr, const ReservationItemListPtr &pReservationItemListPtr,
@@ -231,7 +232,7 @@ namespace PenyaManager {
 
             }
             // SET ROW HEIGHT
-            this->ui->tableReservationTableWidget->setRowHeight(rowCount, 40);
+            this->ui->tableReservationTableWidget->setRowHeight(rowCount, 41);
             rowCount++;
         }
     }
@@ -360,7 +361,7 @@ namespace PenyaManager {
         Uint32 guestNum = 0;
         if (reservationItemType == ReservationItemType::LunchTableType)
         {
-            NumItemDialog numItemDialog(this);
+            NumItemDialog numItemDialog(this, tr("Number of guests?"));
             numItemDialog.exec();
             guestNum = numItemDialog.getKey();
             if (guestNum == 0)
@@ -394,8 +395,8 @@ namespace PenyaManager {
             QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
-        Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kReservation, QString("%1 %2").arg(title).arg(itemId));
-        QMessageBox::information(this, title, tr("Reservation done"));
+        QLOG_INFO() << QString("[%1] [User %2] [item %3]").arg(title).arg(pCurrMemberPtr->m_id).arg(itemId);
+        QMessageBox::information(this, title, "Reservation done");
         // currentPage does not need to be changed
         switch (reservationItemType)
         {

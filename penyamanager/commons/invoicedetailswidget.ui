@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1000</width>
-    <height>700</height>
+    <width>1614</width>
+    <height>1286</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -208,9 +208,15 @@ font: 40pt &quot;Calibri&quot;;
    </item>
    <item>
     <widget class="QWidget" name="invoiceInfoWidget" native="true">
+     <property name="minimumSize">
+      <size>
+       <width>458</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="maximumSize">
       <size>
-       <width>460</width>
+       <width>458</width>
        <height>16777215</height>
       </size>
      </property>
@@ -229,6 +235,12 @@ font: 40pt &quot;Calibri&quot;;
       </property>
       <item>
        <widget class="QTableWidget" name="productTableWidget">
+        <property name="verticalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
+        </property>
+        <property name="horizontalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
+        </property>
         <property name="editTriggers">
          <set>QAbstractItemView::NoEditTriggers</set>
         </property>

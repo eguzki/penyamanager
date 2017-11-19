@@ -50,7 +50,7 @@ namespace PenyaManager {
         header->setSectionResizeMode(QHeaderView::Fixed);
         translateTable();
         Uint32 column = 0;
-        this->ui->accountTableWidget->setColumnWidth(column++, 190);
+        this->ui->accountTableWidget->setColumnWidth(column++, 188);
         this->ui->accountTableWidget->setColumnWidth(column++, 90);
         this->ui->accountTableWidget->setColumnWidth(column++, 90);
         this->ui->accountTableWidget->setColumnWidth(column++, 90);
@@ -188,7 +188,7 @@ namespace PenyaManager {
         }
 
         // fill total stats view
-        this->ui->totalTransactionsValueLabel->setText(QString::number(pTransactionListStatsResultPtr->m_listStats->m_totalNumTransactions));
+        //this->ui->totalTransactionsValueLabel->setText(QString::number(pTransactionListStatsResultPtr->m_listStats->m_totalNumTransactions));
 
         fillAccountData(pTransactionListResultPtr);
     }
