@@ -86,6 +86,25 @@ font: 12pt &quot;Calibri&quot;;
 color: white;
 }
 
+/* Warning Windows */
+
+QMessageBox {
+background-color: yellow;
+}
+
+QMessageBox QLabel {
+color: green;
+min-width:500 px;
+font-size: 24px;
+}
+
+QMessageBox QPushButton {
+width:250px;
+height: 100px;
+font-size: 30px;
+}
+
+
 /* CALENDAR */
 
 

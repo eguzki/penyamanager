@@ -62,7 +62,8 @@ qproperty-alignment: AlignCenter;
 
 #memberNameLabel{
 color: black;
-font: 18pt &quot;Calibri&quot;;
+font: 26pt &quot;Calibri&quot;;
+qproperty-alignment: AlignCenter;
 }
 
 #languagePushButton {
@@ -529,6 +530,22 @@ font-size: 35px;
              </widget>
             </item>
             <item>
+             <spacer name="verticalSpacer_4">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Fixed</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
              <widget class="QLabel" name="memberNameLabel">
               <property name="minimumSize">
                <size>
@@ -539,7 +556,7 @@ font-size: 35px;
               <property name="maximumSize">
                <size>
                 <width>16777215</width>
-                <height>30</height>
+                <height>50</height>
                </size>
               </property>
               <property name="text">
