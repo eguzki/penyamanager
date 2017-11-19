@@ -87,7 +87,7 @@ namespace PenyaManager {
         this->ui->tableReservationTableWidget->setColumnWidth(column++, 40);
         this->ui->tableReservationTableWidget->setColumnWidth(column++, 75);
         this->ui->tableReservationTableWidget->setColumnWidth(column++, 40);
-        this->ui->tableReservationTableWidget->setColumnWidth(column++, 165);
+        this->ui->tableReservationTableWidget->setColumnWidth(column++, 163);
 
     }
     //
@@ -136,13 +136,7 @@ namespace PenyaManager {
             this->ui->tablePushButton->setEnabled(false);
             this->ui->ovenPushButton->setEnabled(false);
             this->ui->fireplacePushButton->setEnabled(false);
-            // fill empty data
-            MemberPtr pMemberPtr = Singletons::m_pCurrMember;
 
-            ReservationItemListStatsPtr pReservationItemListStatsPtr(new ReservationItemListStats);
-            pReservationItemListStatsPtr->m_listStats = ReservationListStatsPtr(new ReservationListStats);
-            fillReservationsItems(pMemberPtr, ReservationListPtr(new ReservationList), ReservationItemListPtr(new ReservationItemList),
-                                  pReservationItemListStatsPtr);
         } else {
             // reservation type (midmorning,lunch,supper,dinner) buttons
             this->ui->midMorningButton->setEnabled(true);
@@ -168,7 +162,13 @@ namespace PenyaManager {
             this->ui->tablePushButton->setChecked(false);
             this->ui->ovenPushButton->setChecked(false);
             this->ui->fireplacePushButton->setChecked(false);
-        }
+            }
+        // fill empty data
+        MemberPtr pMemberPtr = Singletons::m_pCurrMember;
+        ReservationItemListStatsPtr pReservationItemListStatsPtr(new ReservationItemListStats);
+        pReservationItemListStatsPtr->m_listStats = ReservationListStatsPtr(new ReservationListStats);
+        fillReservationsItems(pMemberPtr, ReservationListPtr(new ReservationList), ReservationItemListPtr(new ReservationItemList),
+                              pReservationItemListStatsPtr);
     }
     //
     void TableReservationView::fillReservationsItems(const MemberPtr &pMemberPtr, const ReservationListPtr &pReservationListPtr, const ReservationItemListPtr &pReservationItemListPtr,
@@ -234,7 +234,7 @@ namespace PenyaManager {
 
             }
             // SET ROW HEIGHT
-            this->ui->tableReservationTableWidget->setRowHeight(rowCount, 40);
+            this->ui->tableReservationTableWidget->setRowHeight(rowCount, 41);
             rowCount++;
         }
     }
@@ -363,7 +363,7 @@ namespace PenyaManager {
         Uint32 guestNum = 0;
         if (reservationItemType == ReservationItemType::LunchTableType)
         {
-            NumItemDialog numItemDialog(this);
+            NumItemDialog numItemDialog(this, tr("Number of guests?"));
             numItemDialog.exec();
             guestNum = numItemDialog.getKey();
             if (guestNum == 0)

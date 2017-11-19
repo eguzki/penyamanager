@@ -47,7 +47,7 @@ namespace PenyaManager {
         this->ui->invoiceTableWidget->setColumnWidth(column++, 83);
         this->ui->invoiceTableWidget->setColumnWidth(column++, 45);
         this->ui->invoiceTableWidget->setColumnWidth(column++, 100);
-        this->ui->invoiceTableWidget->setColumnWidth(column++, 58);
+        this->ui->invoiceTableWidget->setColumnWidth(column++, 56);
 
 
     }
@@ -357,7 +357,7 @@ namespace PenyaManager {
             return;
         }
 
-        NumItemDialog numItemDialog(this);
+        NumItemDialog numItemDialog(this, tr("Number of items?"));
         numItemDialog.exec();
         Uint32 count = numItemDialog.getKey();
         if (!count) {
@@ -404,7 +404,7 @@ namespace PenyaManager {
     void MemberDashboardWindow::on_productListWidget_itemClicked(QListWidgetItem *item)
     {
         Int32 productId = item->data(Constants::kIdRole).toInt();
-        NumItemDialog numItemDialog(this);
+        NumItemDialog numItemDialog(this, tr("Number of items?"));
         numItemDialog.exec();
         Uint32 count = numItemDialog.getKey();
         if (!count) {

@@ -35,9 +35,9 @@ namespace PenyaManager {
     //
     const Uint32    Constants::kMemberImageHeigth               = 80;
     //
-    const Uint32    Constants::kInvoiceListPageCount            = 10;
+    const Uint32    Constants::kInvoiceListPageCount            = 3;
     //
-    const Uint32    Constants::kAccountListPageCount            = 10;
+    const Uint32    Constants::kAccountListPageCount            = 3;
     //
     const Uint32    Constants::kProductListPageCount            = 25;
     // Put your own key here
@@ -52,12 +52,12 @@ namespace PenyaManager {
     //
     const Float     Constants::kCreditLimit                     = 100;
     //
-    const Uint32    Constants::kDashboardProductListPageCount   = 20;
+    const Uint32    Constants::kDashboardProductListPageCount   = 19;
     //
-    const Uint32    Constants::kLoginWindowProductListPageCount = 10;
+    const Uint32    Constants::kLoginWindowProductListPageCount = 7;
     //
-    const Uint32    Constants::kInvoiceWindowProductListPageCount = 20;
+    const Uint32    Constants::kInvoiceWindowProductListPageCount = 2;
     //
-    const Uint32    Constants::kReservationListPageCount        = 10;
+    const Uint32    Constants::kReservationListPageCount        = 18;
 }
 

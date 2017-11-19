@@ -234,7 +234,7 @@ namespace PenyaManager {
         this->ui->memberImageLabel->setFixedHeight(Constants::kMemberImageHeigth*2);
         this->ui->memberImageLabel->setScaledContents(true);
         // name
-        this->ui->memberNameLabel->setText(QString("%1 %2 %3").arg(pLastInvoiceOwnerPtr->m_name).arg(pLastInvoiceOwnerPtr->m_surname1).arg(pLastInvoiceOwnerPtr->m_surname2));
+        this->ui->memberNameLabel->setText(QString("%1").arg(pLastInvoiceOwnerPtr->m_name));
         // id
         this->ui->memberIdLabel->setText(QString::number(pLastInvoiceOwnerPtr->m_username));
     }
@@ -287,6 +287,7 @@ namespace PenyaManager {
             item = new QTableWidgetItem(QString("%1 €").arg(totalPrice, 0, 'f', 2));
             item->setData(Qt::TextAlignmentRole, Qt::AlignRight);
             this->ui->lastInvoiceTableWidget->setItem(rowCount, 3, item);
+            this->ui->lastInvoiceTableWidget->setRowHeight(rowCount, 35);
             rowCount++;
         }
 
