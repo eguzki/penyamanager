@@ -145,10 +145,13 @@ namespace PenyaManager {
             this->ui->lunchButton->setCheckable(true);
             this->ui->supperButton->setCheckable(true);
             this->ui->dinnerButton->setCheckable(true);
+            // http://blubbqt.blogspot.com.es/2015/04/uncheck-all-buttons-in-qbuttongroup.html
+            this->ui->reservationTypeButtonGroup->setExclusive(false);
             this->ui->midMorningButton->setChecked(false);
             this->ui->lunchButton->setChecked(false);
             this->ui->supperButton->setChecked(false);
             this->ui->dinnerButton->setChecked(false);
+            this->ui->reservationTypeButtonGroup->setExclusive(true);
             this->ui->calendarWidget->setSelectionMode(QCalendarWidget::SingleSelection);
             // reservation item buttons
             this->ui->tablePushButton->setEnabled(true);
@@ -157,9 +160,12 @@ namespace PenyaManager {
             this->ui->tablePushButton->setCheckable(true);
             this->ui->ovenPushButton->setCheckable(true);
             this->ui->fireplacePushButton->setCheckable(true);
+            // http://blubbqt.blogspot.com.es/2015/04/uncheck-all-buttons-in-qbuttongroup.html
+            this->ui->reservationItemButtonGroup->setExclusive(false);
             this->ui->tablePushButton->setChecked(false);
             this->ui->ovenPushButton->setChecked(false);
             this->ui->fireplacePushButton->setChecked(false);
+            this->ui->reservationItemButtonGroup->setExclusive(true);
             }
         // fill empty data
         MemberPtr pMemberPtr = Singletons::m_pCurrMember;
@@ -330,11 +336,21 @@ namespace PenyaManager {
     void TableReservationView::on_calendarWidget_clicked(const QDate &date)
     {
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
-        ReservationType reservationType = static_cast<ReservationType>(this->ui->reservationTypeButtonGroup->checkedId());
+        int reservationTypeInt = this->ui->reservationTypeButtonGroup->checkedId();
+        if (reservationTypeInt == -1) {
+            return;
+        }
+
+        ReservationType reservationType = static_cast<ReservationType>(reservationTypeInt);
         m_currentPage = 0;
 
 
-        ReservationItemType reservationItemType = static_cast<ReservationItemType>(this->ui->reservationItemButtonGroup->checkedId());
+        int reservationItemTypeInt = this->ui->reservationItemButtonGroup->checkedId();
+        if (reservationItemTypeInt == -1) {
+            return;
+        }
+
+        ReservationItemType reservationItemType = static_cast<ReservationItemType>(reservationItemTypeInt);
         switch (reservationItemType)
         {
             case ReservationItemType::LunchTableType:
@@ -372,19 +388,15 @@ namespace PenyaManager {
 
         bool isAdmin = false;
         bool ok = false;
-        QString title;
         switch (reservationItemType)
         {
             case ReservationItemType::LunchTableType:
-                title = "Table reservation";
                 ok = Singletons::m_pDAO->makeTableReservation(date, reservationType, guestNum, pCurrMemberPtr->m_id, itemId, isAdmin);
                 break;
             case ReservationItemType::OvenType:
-                title = "Oven reservation";
                 ok = Singletons::m_pDAO->makeOvenReservation(date, reservationType, pCurrMemberPtr->m_id, itemId, isAdmin);
                 break;
             case ReservationItemType::FireplaceType:
-                title = "Fireplace reservation";
                 ok = Singletons::m_pDAO->makeFireplaceReservation(date, reservationType, pCurrMemberPtr->m_id, itemId, isAdmin);
                 break;
             default:
@@ -395,8 +407,11 @@ namespace PenyaManager {
             QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
-        QLOG_INFO() << QString("[%1] [User %2] [item %3]").arg(title).arg(pCurrMemberPtr->m_id).arg(itemId);
-        QMessageBox::information(this, title, "Reservation done");
+        QLocale enLocale = QLocale("en");
+        Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kReservation,
+                QString("reserved %1, itemid %2, %3 %4").arg(GetStringFromReservationItemTypeEnum(reservationItemType)).arg(itemId).arg(GetStringFromReservationTypeEnum(reservationType)).arg(enLocale.toString(date)));
+        QMessageBox::information(this, tr("Reservation done"), tr("Reserved %1 at %2").arg(GetStringFromReservationItemTypeEnum(reservationItemType, true)).arg(GetStringFromReservationTypeEnum(reservationType, true)));
+
         // currentPage does not need to be changed
         switch (reservationItemType)
         {
@@ -416,21 +431,20 @@ namespace PenyaManager {
     //
     void TableReservationView::on_cancelButton_clicked(int reservationId)
     {
-        QString title;
         bool ok = false;
+        MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
         ReservationItemType reservationItemType = static_cast<ReservationItemType>(this->ui->reservationItemButtonGroup->checkedId());
+        ReservationType reservationType = static_cast<ReservationType>(this->ui->reservationTypeButtonGroup->checkedId());
+        QDate date = this->ui->calendarWidget->selectedDate();
         switch (reservationItemType)
         {
             case ReservationItemType::LunchTableType:
-                title = "Table reservation";
                 ok = Singletons::m_pDAO->cancelTableReservation(reservationId);
                 break;
             case ReservationItemType::OvenType:
-                title = "Oven reservation";
                 ok = Singletons::m_pDAO->cancelOvenReservation(reservationId);
                 break;
             case ReservationItemType::FireplaceType:
-                title = "Fireplace reservation";
                 ok = Singletons::m_pDAO->cancelFireplaceReservation(reservationId);
                 break;
             default:
@@ -440,10 +454,11 @@ namespace PenyaManager {
             QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
-        QMessageBox::information(this, title, "Reservation cancelled");
-        MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
-        QDate date = this->ui->calendarWidget->selectedDate();
-        ReservationType reservationType = static_cast<ReservationType>(this->ui->reservationTypeButtonGroup->checkedId());
+        QLocale enLocale = QLocale("en");
+        Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kReservation,
+                QString("canceled %1, reservationid %2, %3 %4").arg(GetStringFromReservationItemTypeEnum(reservationItemType)).arg(reservationId).arg(GetStringFromReservationTypeEnum(reservationType)).arg(enLocale.toString(date)));
+        QMessageBox::information(this, tr("Reservation cancelled"), tr("Cancelled %1 at %2").arg(GetStringFromReservationItemTypeEnum(reservationItemType, true)).arg(GetStringFromReservationTypeEnum(reservationType, true)));
+
         // currentPage does not need to be changed
         switch (reservationItemType)
         {
@@ -467,10 +482,15 @@ namespace PenyaManager {
             // discard event of unchecked button
             return;
         }
+        int reservationItemTypeInt = this->ui->reservationItemButtonGroup->checkedId();
+        if (reservationItemTypeInt == -1) {
+            return;
+        }
+
+        ReservationItemType reservationItemType = static_cast<ReservationItemType>(reservationItemTypeInt);
 
         QDate date = this->ui->calendarWidget->selectedDate();
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
-        ReservationItemType reservationItemType = static_cast<ReservationItemType>(this->ui->reservationItemButtonGroup->checkedId());
         m_currentPage = 0;
         switch (reservationItemType)
         {
@@ -494,10 +514,15 @@ namespace PenyaManager {
             // discard event of unchecked button
             return;
         }
+        int reservationItemTypeInt = this->ui->reservationItemButtonGroup->checkedId();
+        if (reservationItemTypeInt == -1) {
+            return;
+        }
+
+        ReservationItemType reservationItemType = static_cast<ReservationItemType>(reservationItemTypeInt);
 
         QDate date = this->ui->calendarWidget->selectedDate();
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
-        ReservationItemType reservationItemType = static_cast<ReservationItemType>(this->ui->reservationItemButtonGroup->checkedId());
         m_currentPage = 0;
         switch (reservationItemType)
         {
@@ -521,10 +546,15 @@ namespace PenyaManager {
             // discard event of unchecked button
             return;
         }
+        int reservationItemTypeInt = this->ui->reservationItemButtonGroup->checkedId();
+        if (reservationItemTypeInt == -1) {
+            return;
+        }
+
+        ReservationItemType reservationItemType = static_cast<ReservationItemType>(reservationItemTypeInt);
 
         QDate date = this->ui->calendarWidget->selectedDate();
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
-        ReservationItemType reservationItemType = static_cast<ReservationItemType>(this->ui->reservationItemButtonGroup->checkedId());
         m_currentPage = 0;
         switch (reservationItemType)
         {
@@ -548,10 +578,15 @@ namespace PenyaManager {
             // discard event of unchecked button
             return;
         }
+        int reservationItemTypeInt = this->ui->reservationItemButtonGroup->checkedId();
+        if (reservationItemTypeInt == -1) {
+            return;
+        }
+
+        ReservationItemType reservationItemType = static_cast<ReservationItemType>(reservationItemTypeInt);
 
         QDate date = this->ui->calendarWidget->selectedDate();
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
-        ReservationItemType reservationItemType = static_cast<ReservationItemType>(this->ui->reservationItemButtonGroup->checkedId());
         m_currentPage = 0;
         switch (reservationItemType)
         {
@@ -647,27 +682,40 @@ namespace PenyaManager {
     //
     void TableReservationView::on_tablePushButton_clicked()
     {
+        int reservationTypeInt = this->ui->reservationTypeButtonGroup->checkedId();
+        if (reservationTypeInt == -1) {
+            return;
+        }
+        ReservationType reservationType = static_cast<ReservationType>(reservationTypeInt);
+
         QDate date = this->ui->calendarWidget->selectedDate();
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
-        ReservationType reservationType = static_cast<ReservationType>(this->ui->reservationTypeButtonGroup->checkedId());
         m_currentPage = 0;
         fillTableReservations(pCurrMemberPtr, date, reservationType);
     }
     //
     void TableReservationView::on_ovenPushButton_clicked()
     {
+        int reservationTypeInt = this->ui->reservationTypeButtonGroup->checkedId();
+        if (reservationTypeInt == -1) {
+            return;
+        }
+        ReservationType reservationType = static_cast<ReservationType>(reservationTypeInt);
         QDate date = this->ui->calendarWidget->selectedDate();
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
-        ReservationType reservationType = static_cast<ReservationType>(this->ui->reservationTypeButtonGroup->checkedId());
         m_currentPage = 0;
         fillOvenReservations(pCurrMemberPtr, date, reservationType);
     }
     //
     void TableReservationView::on_fireplacePushButton_clicked()
     {
+        int reservationTypeInt = this->ui->reservationTypeButtonGroup->checkedId();
+        if (reservationTypeInt == -1) {
+            return;
+        }
+        ReservationType reservationType = static_cast<ReservationType>(reservationTypeInt);
         QDate date = this->ui->calendarWidget->selectedDate();
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
-        ReservationType reservationType = static_cast<ReservationType>(this->ui->reservationTypeButtonGroup->checkedId());
         m_currentPage = 0;
         fillFireplaceReservations(pCurrMemberPtr, date, reservationType);
     }

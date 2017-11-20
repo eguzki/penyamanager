@@ -57,7 +57,7 @@ namespace PenyaManager {
         }
         if (!pInvoiceResultPtr->m_pInvoice) {
             Singletons::m_pLogger->Error(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kInvoice,
-                    QString("No active invoice found. User id: %1").arg(pCurrMember->m_id));
+                    QString("no active invoice found. userid %1").arg(pCurrMember->m_id));
             QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
             return;
         }
@@ -102,7 +102,7 @@ namespace PenyaManager {
         }
         if (!pInvoiceResultPtr->m_pInvoice) {
             Singletons::m_pLogger->Error(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kInvoice,
-                    QString("No active invoice found. User id: %1").arg(pCurrMember->m_id));
+                    QString("no active invoice found. userid %1").arg(pCurrMember->m_id));
             QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
             return;
         }
@@ -111,12 +111,12 @@ namespace PenyaManager {
         bool ok = Singletons::m_pServices->closeInvoice(pCurrMember->m_id, pInvoiceResultPtr->m_pInvoice->m_id);
         if (!ok) {
             Singletons::m_pLogger->Error(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kInvoice,
-                    QString("Error closing invoice. InvoiceId: %1").arg(pInvoiceResultPtr->m_pInvoice->m_id));
+                    QString("error closing invoice. invoiceId %1").arg(pInvoiceResultPtr->m_pInvoice->m_id));
             QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
             return;
         }
         Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kInvoice,
-                QString("InvoiceId: %1").arg(pInvoiceResultPtr->m_pInvoice->m_id));
+                QString("invoiceId %1").arg(pInvoiceResultPtr->m_pInvoice->m_id));
 
         printInvoice(pCurrMember, pInvoiceResultPtr->m_pInvoice);
 

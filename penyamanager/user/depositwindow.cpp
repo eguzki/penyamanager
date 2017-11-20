@@ -84,7 +84,7 @@ namespace PenyaManager {
         }
         if (!pDepositResultPtr->m_deposit) {
             Singletons::m_pLogger->Error(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kDeposit,
-                    QString("createDeposit. Deposit: %1").arg(m_depositValue, 0, 'f', 2));
+                    QString("createDeposit. amount %1").arg(m_depositValue, 0, 'f', 2));
             QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
@@ -94,12 +94,12 @@ namespace PenyaManager {
         bool transactionOk = Singletons::m_pServices->createAccountTransaction(pCurrMemberPtr->m_id, m_depositValue, description, TransactionType::Deposit);
         if (!transactionOk) {
             Singletons::m_pLogger->Error(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kDeposit,
-                    QString("createAccountTransaction. Deposit: %1").arg(m_depositValue, 0, 'f', 2));
+                    QString("createaccounttransaction. amount %1").arg(m_depositValue, 0, 'f', 2));
             QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
         Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kDeposit,
-                QString("Deposit id: %1. Amount: %2").arg(pDepositResultPtr->m_deposit->m_id).arg(QString::number(m_depositValue, 'f', 2)));
+                QString("Deposit id %1. Amount %2").arg(pDepositResultPtr->m_deposit->m_id).arg(QString::number(m_depositValue, 'f', 2)));
         // print deposit
         printDeposit(pCurrMemberPtr, pDepositResultPtr->m_deposit);
         QMessageBox::information(this, tr("Deposit"), tr("Deposit for %1 € created sucessfully").arg(QString::number(m_depositValue, 'f', 2)));

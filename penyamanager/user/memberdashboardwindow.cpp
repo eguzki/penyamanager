@@ -74,7 +74,7 @@ namespace PenyaManager {
         if (!pMemberResultPtr->m_member) {
             // member not found, should not happen
             Singletons::m_pLogger->Warn(Constants::kSystemUserId, PenyaManager::LogAction::kDashboard,
-                    QString("Unable to find owner by id: %1").arg(Singletons::m_pCurrMember->m_id));
+                    QString("Unable to find owner by id %1").arg(Singletons::m_pCurrMember->m_id));
             return;
         }
 
@@ -308,7 +308,7 @@ namespace PenyaManager {
         }
         if (pInvoicePtr->m_pInvoice) {
             Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kDashboard,
-                    QString("Reset invoice. Invoice id: %1").arg(pInvoicePtr->m_pInvoice->m_id));
+                    QString("reset invoice. Invoice id %1").arg(pInvoicePtr->m_pInvoice->m_id));
             Singletons::m_pDAO->deleteInvoice(pInvoicePtr->m_pInvoice->m_id);
         }
         // nothing to fill
@@ -359,7 +359,7 @@ namespace PenyaManager {
             bool ok = Singletons::m_pServices->removeInvoiceProductId(pInvoiceResultPtr->m_pInvoice->m_id, productId);
             if (!ok) {
                 Singletons::m_pLogger->Error(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kDashboard,
-                        QString("Could not remove invoice product. Invoice id: %1 Product id: %2").arg(pInvoiceResultPtr->m_pInvoice->m_id).arg(productId));
+                        QString("Could not remove invoice product. Invoice id %1 Product id %2").arg(pInvoiceResultPtr->m_pInvoice->m_id).arg(productId));
                 QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
                 return;
             }
@@ -372,7 +372,7 @@ namespace PenyaManager {
             BoolResult boolResult = Singletons::m_pServices->increaseProductInvoice(pInvoiceResultPtr->m_pInvoice->m_id, productId, count);
             if (boolResult.error) {
                 Singletons::m_pLogger->Error(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kDashboard,
-                        QString("Could not increase invoice product. Invoice id: %1, product id: %2, count: %3").arg(pInvoiceResultPtr->m_pInvoice->m_id).arg(productId).arg(count));
+                        QString("Could not increase invoice product. Invoice id %1, product id %2, count %3").arg(pInvoiceResultPtr->m_pInvoice->m_id).arg(productId).arg(count));
                 QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
                 return;
             }
@@ -427,7 +427,7 @@ namespace PenyaManager {
         BoolResult boolResult = Singletons::m_pServices->increaseProductInvoice(pInvoiceResultPtr->m_pInvoice->m_id, productId, count);
         if (boolResult.error) {
             Singletons::m_pLogger->Error(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kDashboard,
-                    QString("Could not increase invoice product. Invoice id: %1, product id: %2, count: %3").arg(pInvoiceResultPtr->m_pInvoice->m_id).arg(productId).arg(count));
+                    QString("Could not increase invoice product. Invoice id %1, product id %2, count %3").arg(pInvoiceResultPtr->m_pInvoice->m_id).arg(productId).arg(count));
             QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
@@ -451,7 +451,7 @@ namespace PenyaManager {
         if (!pInvoiceResultPtr->m_pInvoice)
         {
             Singletons::m_pLogger->Warn(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kDashboard,
-                    QString("Unable to find current active invoice. User id: %1").arg(pCurrMember->m_id));
+                    QString("Unable to find current active invoice, userid %1").arg(pCurrMember->m_id));
             QMessageBox::warning(this, tr("Error happened"), tr("Invoice not found"));
             return;
         }
@@ -464,7 +464,7 @@ namespace PenyaManager {
         bool ok = Singletons::m_pServices->removeInvoiceProductId(pInvoiceResultPtr->m_pInvoice->m_id, productId);
         if (!ok) {
             Singletons::m_pLogger->Error(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kDashboard,
-                    QString("removeInvoiceProductId. Invoiceid: %1, productId: %2").arg(pInvoiceResultPtr->m_pInvoice->m_id).arg(productId));
+                    QString("removeInvoiceProductId. invoiceid %1, productid %2").arg(pInvoiceResultPtr->m_pInvoice->m_id).arg(productId));
             QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }

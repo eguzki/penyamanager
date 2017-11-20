@@ -1,5 +1,7 @@
 //
 
+#include <QObject>
+
 #include "ReservationItem.h"
 
 namespace PenyaManager
@@ -10,15 +12,15 @@ namespace PenyaManager
     }
 
     //
-    QString getStringFromReservationTypeEnum(ReservationItemType e)
+    QString GetStringFromReservationItemTypeEnum(ReservationItemType e, bool translate)
     {
         switch (e)
         {
-            case ReservationItemType::LunchTableType: return "Table";
-            case ReservationItemType::OvenType: return "Oven";
-            case ReservationItemType::FireplaceType: return "Fireplace";
-            default: return "Bad ReservationItemType";
+            case ReservationItemType::LunchTableType: return translate?(QObject::tr("table")):("table");
+            case ReservationItemType::OvenType: return translate?(QObject::tr("oven")):("oven");
+            case ReservationItemType::FireplaceType: return translate?(QObject::tr("fireplace")):("fireplace");
         }
+        return "Bad ReservationItemType";
     }
     //
     ReservationItemListResult::ReservationItemListResult()

@@ -48,7 +48,7 @@ namespace PenyaManager {
         if (!pInvoicePtr->m_pInvoice) {
             // invoice not found, should not happen
             Singletons::m_pLogger->Error(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kInvoice,
-                    QString("Unable to find expected invoice. InvoiceId: %1").arg(invoiceId));
+                    QString("unable to find expected invoice. invoiceId %1").arg(invoiceId));
             return;
         }
 
@@ -80,7 +80,7 @@ namespace PenyaManager {
         if (!pInvoiceResultPtr->m_pInvoice) {
             // member not found, should not happen
             Singletons::m_pLogger->Error(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kInvoice,
-                    QString("Unable to find expected invoice. InvoiceId: %1").arg(invoiceId));
+                    QString("unable to find expected invoice. invoiceId %1").arg(invoiceId));
             return;
         }
         // Loading Current Invoice products

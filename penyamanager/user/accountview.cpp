@@ -187,9 +187,6 @@ namespace PenyaManager {
             this->ui->pageInfoLabel->setText(QString("%1 / %2").arg(m_currentPage+1).arg(numPages));
         }
 
-        // fill total stats view
-        //this->ui->totalTransactionsValueLabel->setText(QString::number(pTransactionListStatsResultPtr->m_listStats->m_totalNumTransactions));
-
         fillAccountData(pTransactionListResultPtr);
     }
     void AccountView::on_newinvoiceButton_clicked()

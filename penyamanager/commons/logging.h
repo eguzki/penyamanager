@@ -63,10 +63,13 @@ namespace PenyaManager {
             //
             ~SysLogLogger();
             //
+            // message param should not contain colon (:)
             void Error(Uint32 userId, LogAction logAction, const QString &message);
             //
+            // message param should not contain colon (:)
             void Warn(Uint32 userId, LogAction logAction, const QString &message);
             //
+            // message param should not contain colon (:)
             void Info(Uint32 userId, LogAction logAction, const QString &message);
 
         private:

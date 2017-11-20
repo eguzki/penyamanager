@@ -69,7 +69,7 @@ namespace PenyaManager {
         invoiceTemplateStream.setCodec("UTF-8");
         QString invoiceTemplate = invoiceTemplateStream.readAll();
         QString invoiceHtml = Mustache::renderTemplate(invoiceTemplate, invoiceData);
-        Singletons::m_pLogger->Info(memberId, LogAction::kPrint, QString("Invoice printed: %1").arg(invoiceId));
+        Singletons::m_pLogger->Info(memberId, LogAction::kPrint, QString("Invoice printed %1").arg(invoiceId));
         GuiUtils::printText(invoiceHtml);
     }
     //
