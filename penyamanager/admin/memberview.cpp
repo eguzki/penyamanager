@@ -147,7 +147,7 @@ namespace PenyaManager {
             }
             if (!pMemberResultPtr->m_member) {
                 Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kMember,
-                        QString("Editing item [id: %1] not found in ddbb").arg(Singletons::m_currentMemberId));
+                        QString("Editing itemid %1 not found in ddbb").arg(Singletons::m_currentMemberId));
                 QMessageBox::warning(this, tr("Unexpected state"), tr("Operation not performed. Contact administrator"));
                 return;
             }
@@ -221,7 +221,7 @@ namespace PenyaManager {
                 oldFile.remove();
             }
             Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kMember,
-                    QString("editmember: %1").arg(pMemberResultPtr->m_member->m_id));
+                    QString("editmember %1").arg(pMemberResultPtr->m_member->m_id));
         } else {
             // new item
             MemberPtr pMemberPtr(new Member);
@@ -303,7 +303,7 @@ namespace PenyaManager {
                 return;
             }
             Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kMember,
-                    QString("newmember: %1").arg(memberId));
+                    QString("newmember %1").arg(memberId));
         }
 
         // reset var
@@ -427,7 +427,7 @@ namespace PenyaManager {
         }
 
         Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kMember,
-                QString("passchange: memberid: %1").arg(Singletons::m_currentMemberId));
+                QString("passchange memberid %1").arg(Singletons::m_currentMemberId));
         QMessageBox::information(this, tr("Change password"), tr("Password changed successfully"));
     }
 }

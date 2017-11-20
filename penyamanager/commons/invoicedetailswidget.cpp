@@ -67,7 +67,7 @@ namespace PenyaManager {
             // invoice not found, should not happen
             MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
             Singletons::m_pLogger->Error(pCurrMemberPtr->m_id, PenyaManager::LogAction::kInvoice,
-                    QString("unable to find expected invoice by id: %1").arg(invoiceId));
+                    QString("unable to find expected invoice by id %1").arg(invoiceId));
             return;
         }
         fillInvoiceData(pInvoicePtr->m_pInvoice);

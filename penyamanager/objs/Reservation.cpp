@@ -1,5 +1,7 @@
 //
 
+#include <QObject>
+
 #include "Reservation.h"
 
 namespace PenyaManager
@@ -13,4 +15,16 @@ namespace PenyaManager
         :
             m_error(0)
     {}
+    //
+    QString GetStringFromReservationTypeEnum(ReservationType e, bool translate)
+    {
+        switch (e)
+        {
+            case ReservationType::MidMorning: return translate?(QObject::tr("midmorning")):("midmorning");
+            case ReservationType::Lunch: return translate?(QObject::tr("lunch")):("lunch");
+            case ReservationType::Supper: return translate?(QObject::tr("supper")):("supper");
+            case ReservationType::Dinner: return translate?(QObject::tr("dinner")):("dinner");
+        }
+        return "Bad ReservationType";
+    }
 }

@@ -103,7 +103,7 @@ namespace PenyaManager {
             }
         }
         Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kProvider,
-                QString("new invoice id: %1, provider id: %2").arg(pProviderInvoicePtr->m_id).arg(pProviderInvoicePtr->m_providerid));
+                QString("new invoice id: %1, provider id %2").arg(pProviderInvoicePtr->m_id).arg(pProviderInvoicePtr->m_providerid));
         QMessageBox::information(this, tr("New provider invoice"), tr("Saved Successfully"));
         // call provider invoice list
         m_switchCentralWidgetCallback(WindowKey::kProviderInvoiceListViewKey);

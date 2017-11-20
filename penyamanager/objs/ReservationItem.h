@@ -15,8 +15,8 @@ namespace PenyaManager
         OvenType,
         FireplaceType
     };
-
-    QString getStringFromReservationTypeEnum(ReservationItemType e);
+    //
+    QString GetStringFromReservationItemTypeEnum(ReservationItemType e, bool tr = false);
 
     //
     class ReservationItem

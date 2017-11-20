@@ -183,7 +183,7 @@ namespace PenyaManager {
         for (ReservationItemList::iterator iter = pReservationItemListPtr->begin(); iter != pReservationItemListPtr->end(); ++iter) {
             ReservationItemPtr pReservationItemPtr = *iter;
             this->ui->tableReservationTableWidget->setRowHeight(rowCount, 50);
-            this->ui->tableReservationTableWidget->setItem(rowCount, 0, new QTableWidgetItem(getStringFromReservationTypeEnum(pReservationItemPtr->m_itemType)));
+            this->ui->tableReservationTableWidget->setItem(rowCount, 0, new QTableWidgetItem(GetStringFromReservationItemTypeEnum(pReservationItemPtr->m_itemType, true)));
             this->ui->tableReservationTableWidget->setItem(rowCount, 1, new QTableWidgetItem(pReservationItemPtr->m_itemName));
             this->ui->tableReservationTableWidget->setItem(rowCount, 2, new QTableWidgetItem(QString::number(pReservationItemPtr->m_guestNum)));
             auto tableReservationMapItem = tableReservationMap.find(pReservationItemPtr->m_idItem);
@@ -278,15 +278,15 @@ namespace PenyaManager {
 
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
         bool isAdmin = true;
-        QString title = "Table";
         bool ok = Singletons::m_pDAO->makeTableReservation(date, reservationType, guestNum, pCurrMemberPtr->m_id, itemId, isAdmin);
         if (!ok) {
             QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
+        QLocale enLocale = QLocale("en");
         Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kReservation,
-                QString("%1 %2").arg(title).arg(itemId));
-        QMessageBox::information(this, title, tr("Reservation done"));
+                QString("reserved table, itemid %1, %2 %3").arg(itemId).arg(GetStringFromReservationTypeEnum(reservationType)).arg(enLocale.toString(date)));
+        QMessageBox::information(this, tr("Reservation done"), tr("Reserved %1 at %2").arg(GetStringFromReservationItemTypeEnum(ReservationItemType::LunchTableType, true)).arg(GetStringFromReservationTypeEnum(reservationType, true)));
         fillReservations(date, reservationType);
     }
     //
@@ -304,15 +304,15 @@ namespace PenyaManager {
         }
 
         bool isAdmin = true;
-        QString title = "Table";
         bool ok = Singletons::m_pDAO->updateTableReservation(reservationId, isAdmin);
         if (!ok) {
             QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
+        QLocale enLocale = QLocale("en");
         Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kReservation,
-                QString("[BLOCKED] %1 %2").arg(title).arg(reservationId));
-        QMessageBox::information(this, title, tr("Reservation done"));
+                QString("blocked table, reservationid %1 %2 on %3").arg(reservationId).arg(GetStringFromReservationTypeEnum(reservationType)).arg(enLocale.toString(date)));
+        QMessageBox::information(this, tr("Reservation done"), tr("reservation table %1 at %2").arg(GetStringFromReservationItemTypeEnum(ReservationItemType::LunchTableType, true)).arg(GetStringFromReservationTypeEnum(reservationType, true)));
         fillReservations(date, reservationType);
     }
     //
@@ -323,15 +323,15 @@ namespace PenyaManager {
 
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
         bool isAdmin = true;
-        QString title = "Fireplace";
         bool ok = Singletons::m_pDAO->makeFireplaceReservation(date, reservationType, pCurrMemberPtr->m_id, itemId, isAdmin);
         if (!ok) {
             QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
+        QLocale enLocale = QLocale("en");
         Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kReservation,
-                QString("%1 %2").arg(title).arg(itemId));
-        QMessageBox::information(this, title, tr("Reservation done"));
+                QString("reserved fireplace, itemid %1, %2 %3").arg(itemId).arg(GetStringFromReservationTypeEnum(reservationType)).arg(enLocale.toString(date)));
+        QMessageBox::information(this, tr("Reservation done"), tr("Reserved %1 at %2").arg(GetStringFromReservationItemTypeEnum(ReservationItemType::FireplaceType, true)).arg(GetStringFromReservationTypeEnum(reservationType, true)));
         fillReservations(date, reservationType);
     }
     //
@@ -340,15 +340,15 @@ namespace PenyaManager {
         ReservationType reservationType = static_cast<ReservationType>(this->ui->reservationTypeButtonGroup->checkedId());
         QDate date = this->ui->calendarWidget->selectedDate();
         bool isAdmin = true;
-        QString title = "Fireplace";
         bool ok = Singletons::m_pDAO->updateFireplaceReservation(reservationId, isAdmin);
         if (!ok) {
             QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
+        QLocale enLocale = QLocale("en");
         Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kReservation,
-                QString("[BLOCKED] %1 %2").arg(title).arg(reservationId));
-        QMessageBox::information(this, title, tr("Reservation done"));
+                QString("blocked firetable, reservationid %1 %2 on %3").arg(reservationId).arg(GetStringFromReservationTypeEnum(reservationType)).arg(enLocale.toString(date)));
+        QMessageBox::information(this, tr("Reservation done"), tr("reservation fireplace %1 at %2").arg(GetStringFromReservationItemTypeEnum(ReservationItemType::LunchTableType, true)).arg(GetStringFromReservationTypeEnum(reservationType, true)));
         fillReservations(date, reservationType);
     }
     //
@@ -359,15 +359,15 @@ namespace PenyaManager {
 
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
         bool isAdmin = true;
-        QString title = "Oven";
         bool ok = Singletons::m_pDAO->makeOvenReservation(date, reservationType, pCurrMemberPtr->m_id, itemId, isAdmin);
         if (!ok) {
             QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
+        QLocale enLocale = QLocale("en");
         Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kReservation,
-                QString("%1 %2").arg(title).arg(itemId));
-        QMessageBox::information(this, title, tr("Reservation done"));
+                QString("reserved oven, itemid %1, %2 %3").arg(itemId).arg(GetStringFromReservationTypeEnum(reservationType)).arg(enLocale.toString(date)));
+        QMessageBox::information(this, tr("Reservation done"), tr("Reserved %1 at %2").arg(GetStringFromReservationItemTypeEnum(ReservationItemType::OvenType, true)).arg(GetStringFromReservationTypeEnum(reservationType, true)));
         fillReservations(date, reservationType);
     }
     //
@@ -377,15 +377,15 @@ namespace PenyaManager {
         QDate date = this->ui->calendarWidget->selectedDate();
 
         bool isAdmin = true;
-        QString title = "Oven";
         bool ok = Singletons::m_pDAO->updateOvenReservation(reservationId, isAdmin);
         if (!ok) {
             QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
+        QLocale enLocale = QLocale("en");
         Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kReservation,
-                QString("[BLOCKED] %1 %2").arg(title).arg(reservationId));
-        QMessageBox::information(this, title, tr("Reservation done"));
+                QString("blocked oven, reservationid %1 %2 on %3").arg(reservationId).arg(GetStringFromReservationTypeEnum(reservationType)).arg(enLocale.toString(date)));
+        QMessageBox::information(this, tr("Reservation done"), tr("reservation oven %1 at %2").arg(GetStringFromReservationItemTypeEnum(ReservationItemType::OvenType, true)).arg(GetStringFromReservationTypeEnum(reservationType, true)));
         fillReservations(date, reservationType);
     }
     //
@@ -393,20 +393,16 @@ namespace PenyaManager {
     {
         QDate date = this->ui->calendarWidget->selectedDate();
         ReservationType reservationType = static_cast<ReservationType>(this->ui->reservationTypeButtonGroup->checkedId());
-        QString title;
         bool ok = false;
         switch (itemType)
         {
             case ReservationItemType::LunchTableType:
-                title = "Table reservation";
                 ok = Singletons::m_pDAO->cancelTableReservation(reservationId);
                 break;
             case ReservationItemType::OvenType:
-                title = "Oven reservation";
                 ok = Singletons::m_pDAO->cancelOvenReservation(reservationId);
                 break;
             case ReservationItemType::FireplaceType:
-                title = "Fireplace reservation";
                 ok = Singletons::m_pDAO->cancelFireplaceReservation(reservationId);
                 break;
             default:
@@ -416,7 +412,10 @@ namespace PenyaManager {
             QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
-        QMessageBox::information(this, title, tr("Reservation cancelled"));
+        QLocale enLocale = QLocale("en");
+        Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kReservation,
+                QString("canceled %1, reservationid %2, %3 %4").arg(GetStringFromReservationItemTypeEnum(itemType)).arg(reservationId).arg(GetStringFromReservationTypeEnum(reservationType)).arg(enLocale.toString(date)));
+        QMessageBox::information(this, tr("Reservation cancelled"), tr("Cancelled %1 at %2").arg(GetStringFromReservationItemTypeEnum(itemType, true)).arg(GetStringFromReservationTypeEnum(reservationType, true)));
         fillReservations(date, reservationType);
     }
 }

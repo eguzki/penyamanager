@@ -82,7 +82,7 @@ namespace PenyaManager {
             }
             if (!pProductResultPtr->m_item) {
                 Singletons::m_pLogger->Warn(Constants::kSystemUserId, PenyaManager::LogAction::kProduct,
-                        QString("item not found: %1").arg(Singletons::m_currentProductId));
+                        QString("item not found %1").arg(Singletons::m_currentProductId));
                 QMessageBox::warning(this, tr("Unexpected state"), tr("Operation not performed. Contact administrator"));
                 return;
             }
@@ -129,7 +129,7 @@ namespace PenyaManager {
                 oldFile.remove();
             }
             Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kProduct,
-                    QString("edititem: %1").arg(pProductResultPtr->m_item->m_id));
+                    QString("edititem %1").arg(pProductResultPtr->m_item->m_id));
         } else {
             // new item
             ProductItemPtr pProductItemPtr(new ProductItem);
@@ -169,7 +169,7 @@ namespace PenyaManager {
                 return;
             }
             Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kProduct,
-                    QString("new item: %1").arg(itemId));
+                    QString("new item %1").arg(itemId));
         }
 
         // reset var
@@ -187,7 +187,7 @@ namespace PenyaManager {
         }
         if (!pProductItemResultPtr->m_item) {
             Singletons::m_pLogger->Warn(Constants::kSystemUserId, PenyaManager::LogAction::kProduct,
-                    QString("item not found: %1").arg(productId));
+                    QString("item not found %1").arg(productId));
             QMessageBox::warning(this, tr("Unexpected state"), tr("Operation not performed. Contact administrator"));
             return;
         }

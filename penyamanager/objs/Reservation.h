@@ -17,6 +17,8 @@ namespace PenyaManager
         Dinner
     };
     //
+    QString GetStringFromReservationTypeEnum(ReservationType e, bool tr = false);
+    //
     class Reservation
     {
         public:
