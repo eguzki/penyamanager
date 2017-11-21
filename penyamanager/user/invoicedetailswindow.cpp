@@ -13,17 +13,43 @@ namespace PenyaManager {
         IPartner(parent),
         ui(new Ui::InvoiceDetailsWindow),
         m_pMemberProfileGroupBox(new MemberProfileGroupBox),
-        m_pInvoiceDetailsWidget(new InvoiceDetailsWidget),
         m_switchCentralWidgetCallback(callback)
     {
         ui->setupUi(this);
-        this->ui->verticalLayout->addWidget(m_pInvoiceDetailsWidget);
         this->ui->topPanelWidget->layout()->addWidget(m_pMemberProfileGroupBox);
+        initializeTable();
     }
     //
     InvoiceDetailsWindow::~InvoiceDetailsWindow()
     {
         delete ui;
+    }
+    //
+    void InvoiceDetailsWindow::initializeTable()
+    {
+        // Table
+        QHeaderView* header = this->ui->productTableWidget->horizontalHeader();
+        header->setSectionResizeMode(QHeaderView::Fixed);
+        this->ui->productTableWidget->setColumnCount(5);
+        translateTable();
+        Uint32 column = 0;
+        this->ui->productTableWidget->setColumnWidth(column++, 1);
+        this->ui->productTableWidget->setColumnWidth(column++, 228);
+        this->ui->productTableWidget->setColumnWidth(column++, 85);
+        this->ui->productTableWidget->setColumnWidth(column++, 45);
+        this->ui->productTableWidget->setColumnWidth(column++, 100);
+    }
+    //
+    void InvoiceDetailsWindow::translateTable()
+    {
+        // table Header
+        QStringList headers;
+        headers.append(tr("icon"));
+        headers.append(tr("article"));
+        headers.append(tr("price/u"));
+        headers.append("#");
+        headers.append(tr("total"));
+        this->ui->productTableWidget->setHorizontalHeaderLabels(headers);
     }
     //
     void InvoiceDetailsWindow::init()
@@ -47,22 +73,70 @@ namespace PenyaManager {
         }
         if (!pInvoicePtr->m_pInvoice) {
             // invoice not found, should not happen
-            Singletons::m_pLogger->Error(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kInvoice,
-                    QString("unable to find expected invoice. invoiceId %1").arg(invoiceId));
+            MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
+            Singletons::m_pLogger->Error(pCurrMemberPtr->m_id, PenyaManager::LogAction::kInvoice,
+                    QString("unable to find expected invoice by id %1").arg(invoiceId));
             return;
         }
+        fillInvoiceData(pInvoicePtr->m_pInvoice);
+    }
+    //
+    void InvoiceDetailsWindow::fillInvoiceData(const InvoicePtr &pInvoicePtr)
+    {
+        //
+        // Product List
+        //
+        InvoiceProductItemListResultPtr pInvoiceProductItemListResultPtr = Singletons::m_pDAO->getAllInvoiceProductItems(pInvoicePtr->m_id);
+        if (pInvoiceProductItemListResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            return;
+        }
+        this->ui->productTableWidget->setRowCount(pInvoiceProductItemListResultPtr->m_list->size());
+        // invoice table reset
+        this->ui->productTableWidget->clearContents();
+        Uint32 rowCount = 0;
+        Float totalInvoice = 0.0;
+        for (InvoiceProductItemList::iterator iter = pInvoiceProductItemListResultPtr->m_list->begin(); iter != pInvoiceProductItemListResultPtr->m_list->end(); ++iter)
+        {
+            InvoiceProductItemPtr pInvoiceProductItemPtr = *iter;
 
-        this->m_pInvoiceDetailsWidget->init(pInvoicePtr);
+            // image
+            QTableWidgetItem *productImage = new QTableWidgetItem;
+            QString imagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pInvoiceProductItemPtr->m_imagePath);
+            QPixmap productItemPixmap = GuiUtils::getImage(imagePath).scaled(Constants::kFamilyImageWidth, Constants::kFamilyImageHeigth);
+            productImage->setData(Qt::DecorationRole, productItemPixmap);
+            this->ui->productTableWidget->setRowHeight(rowCount, Constants::kFamilyImageHeigth);
+            this->ui->productTableWidget->setItem(rowCount, 0, productImage);
+            this->ui->productTableWidget->setItem(rowCount, 1, new QTableWidgetItem(pInvoiceProductItemPtr->m_productname));
+            this->ui->productTableWidget->setItem(rowCount, 2, new QTableWidgetItem(QString("%1 €").arg(pInvoiceProductItemPtr->m_priceperunit, 0, 'f', 2)));
+            this->ui->productTableWidget->setItem(rowCount, 3, new QTableWidgetItem(QString("%1").arg(pInvoiceProductItemPtr->m_count)));
+            Float totalPrice = pInvoiceProductItemPtr->m_priceperunit * pInvoiceProductItemPtr->m_count;
+            this->ui->productTableWidget->setItem(rowCount, 4, new QTableWidgetItem(QString("%1 €").arg(totalPrice, 0, 'f', 2)));
+            totalInvoice += totalPrice;
+            rowCount++;
+        }
+
+        //
+        // Invoice Information
+        //
+        // ID
+        this->ui->invoiceIdValueLabel->setText(QString("%1").arg(pInvoicePtr->m_id));
+        // Date
+        QString dateLocalized = Singletons::m_translationManager.getLocale().toString(pInvoicePtr->m_date, QLocale::NarrowFormat);
+        this->ui->invoiceDateValueLabel->setText(dateLocalized);
+        // LastModified
+        dateLocalized = Singletons::m_translationManager.getLocale().toString(pInvoicePtr->m_lastModified, QLocale::NarrowFormat);
+        this->ui->invoiceLastModifValueLabel->setText(dateLocalized);
+        // Total
+        this->ui->invoiceTotalValueLabel->setText(QString("%1 €").arg(totalInvoice, 0, 'f', 2));
+        // memberid
+        this->ui->memberIdValueLabel->setText(QString("%1").arg(pInvoicePtr->m_memberId));
     }
     //
     void InvoiceDetailsWindow::retranslate()
     {
         this->ui->retranslateUi(this);
-    }
-    //
-    void InvoiceDetailsWindow::on_backPushButton_clicked()
-    {
-        m_switchCentralWidgetCallback(WindowKey::kInvoiceListWindoKey);
+        translateTable();
     }
     //
     void InvoiceDetailsWindow::on_printButton_clicked()
@@ -122,6 +196,36 @@ namespace PenyaManager {
         // print invoice
         GuiUtils::printInvoice(invoiceData, pCurrMemberPtr->m_id, invoiceId);
         QMessageBox::information(this, tr("Print Invoice"), tr("Invoice #%1 sent to printer").arg(QString::number(invoiceId)));
+    }
+    //
+    void InvoiceDetailsWindow::on_newinvoiceButton_clicked()
+    {
+        m_switchCentralWidgetCallback(WindowKey::kMemberDashboardWindowKey);
+    }
+    //
+    void InvoiceDetailsWindow::on_tableReservationButton_clicked()
+    {
+        m_switchCentralWidgetCallback(WindowKey::kTableReservationViewWindowKey);
+    }
+    //
+    void InvoiceDetailsWindow::on_invoicesPushButton_clicked()
+    {
+        m_switchCentralWidgetCallback(WindowKey::kInvoiceListWindoKey);
+    }
+    //
+    void InvoiceDetailsWindow::on_accountButton_clicked()
+    {
+        m_switchCentralWidgetCallback(WindowKey::kAccountViewWindowKey);
+    }
+    //
+    void InvoiceDetailsWindow::on_depositsButton_clicked()
+    {
+        m_switchCentralWidgetCallback(WindowKey::kDepositsWindowKey);
+    }
+    //
+    void InvoiceDetailsWindow::on_exitButton_clicked()
+    {
+        m_switchCentralWidgetCallback(WindowKey::kLoginWindowKey);
     }
 }
 

@@ -208,37 +208,37 @@ namespace PenyaManager {
         QString depositHtml = Mustache::renderTemplate(depositTemplate, depositData);
         return depositHtml;
     }
-}
+    //
+    void DepositWindow::on_newinvoiceButton_clicked()
+    {
+        //call new invoice window
+        m_switchCentralWidgetCallback(WindowKey::kMemberDashboardWindowKey);
+    }
+    //
+    void DepositWindow::on_tableReservationButton_clicked()
+    {
+        // call table reservation window
+        m_switchCentralWidgetCallback(WindowKey::kTableReservationViewWindowKey);
 
-void PenyaManager::DepositWindow::on_newinvoiceButton_clicked()
-{
-    //call new invoice window
-    m_switchCentralWidgetCallback(WindowKey::kMemberDashboardWindowKey);
-}
+    }
+    //
+    void DepositWindow::on_invoicesPushButton_clicked()
+    {
+        // call invoices window
+        m_switchCentralWidgetCallback(WindowKey::kInvoiceListWindoKey);
 
-void PenyaManager::DepositWindow::on_tableReservationButton_clicked()
-{
-    // call table reservation window
-    m_switchCentralWidgetCallback(WindowKey::kTableReservationViewWindowKey);
-
-}
-
-void PenyaManager::DepositWindow::on_invoicesPushButton_clicked()
-{
-    // call invoices window
-    m_switchCentralWidgetCallback(WindowKey::kInvoiceListWindoKey);
-
-}
-
-void PenyaManager::DepositWindow::on_accountButton_clicked()
-{
-    // call account window
-    m_switchCentralWidgetCallback(WindowKey::kAccountViewWindowKey);
-}
-
-void PenyaManager::DepositWindow::on_exitButton_clicked()
-{
-    // call login window on exit
-    m_switchCentralWidgetCallback(WindowKey::kLoginWindowKey);
+    }
+    //
+    void DepositWindow::on_accountButton_clicked()
+    {
+        // call account window
+        m_switchCentralWidgetCallback(WindowKey::kAccountViewWindowKey);
+    }
+    //
+    void DepositWindow::on_exitButton_clicked()
+    {
+        // call login window on exit
+        m_switchCentralWidgetCallback(WindowKey::kLoginWindowKey);
+    }
 }
 

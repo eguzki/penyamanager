@@ -34,7 +34,6 @@ SOURCES += adminmain.cpp\
         commons/IPartner.cpp\
         commons/partnerfinder.cpp\
         commons/numitemdialog.cpp \
-        commons/invoicedetailswidget.cpp \
         commons/guiutils.cpp \
         commons/translationmanager.cpp \
         objs/Transaction.cpp\
@@ -69,6 +68,7 @@ SOURCES += adminmain.cpp\
         admin/passchangedialog.cpp \
         admin/adminreservationswindow.cpp \
         admin/providerinvoiceview.cpp \
+        admin/invoicedetailsview.cpp \
         commons/familyitemwidget.cpp \
         commons/productitemwidget.cpp \
         commons/logging.cpp
@@ -82,7 +82,6 @@ HEADERS += commons/singletons.h\
         commons/partnerfinder.h\
         commons/numitemdialog.h \
         commons/DataTypes.h \
-        commons/invoicedetailswidget.h \
         commons/guiutils.h \
         commons/translationmanager.h \
         commons/familyitemwidget.h\
@@ -119,13 +118,13 @@ HEADERS += commons/singletons.h\
         admin/passchangedialog.h \
         admin/adminreservationswindow.h \
         admin/providerinvoiceview.h \
+        admin/invoicedetailsview.h \
         commons/logging.h
 
 FORMS   += admin/adminloginwindow.ui\
         admin/adminmainwindow.ui \
         admin/slowpayersview.ui \
         admin/admininvoicelistview.ui \
-        commons/invoicedetailswidget.ui \
         commons/numitemdialog.ui \
         admin/providermanagerview.ui \
         admin/adminnewprovider.ui \
@@ -143,6 +142,7 @@ FORMS   += admin/adminloginwindow.ui\
         admin/passchangedialog.ui \
         admin/adminreservationswindow.ui \
         admin/providerinvoiceview.ui \
+        admin/invoicedetailsview.ui \
         commons/familyitemwidget.ui \
         commons/productitemwidget.ui
 

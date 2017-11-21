@@ -2,28 +2,28 @@
 
 #include <QMessageBox>
 
-#include "guiutils.h"
-#include "constants.h"
-#include "singletons.h"
-#include "invoicedetailswidget.h"
-#include "ui_invoicedetailswidget.h"
+#include <commons/guiutils.h>
+#include <commons/constants.h>
+#include <commons/singletons.h>
+#include "invoicedetailsview.h"
+#include "ui_invoicedetailsview.h"
 
 namespace PenyaManager {
     //
-    InvoiceDetailsWidget::InvoiceDetailsWidget(QWidget *parent) :
+    InvoiceDetailsView::InvoiceDetailsView(QWidget *parent) :
         IPartner(parent),
-        ui(new Ui::InvoiceDetailsWidget)
+        ui(new Ui::InvoiceDetailsView)
     {
         ui->setupUi(this);
         initializeTable();
     }
     //
-    InvoiceDetailsWidget::~InvoiceDetailsWidget()
+    InvoiceDetailsView::~InvoiceDetailsView()
     {
         delete ui;
     }
     //
-    void InvoiceDetailsWidget::initializeTable()
+    void InvoiceDetailsView::initializeTable()
     {
         // Table
         QHeaderView* header = this->ui->productTableWidget->horizontalHeader();
@@ -38,7 +38,7 @@ namespace PenyaManager {
         this->ui->productTableWidget->setColumnWidth(column++, 100);
     }
     //
-    void InvoiceDetailsWidget::translateTable()
+    void InvoiceDetailsView::translateTable()
     {
         // table Header
         QStringList headers;
@@ -50,7 +50,7 @@ namespace PenyaManager {
         this->ui->productTableWidget->setHorizontalHeaderLabels(headers);
     }
     // called from admin framework
-    void InvoiceDetailsWidget::init()
+    void InvoiceDetailsView::init()
     {
         //
         // Loading invoice data
@@ -72,20 +72,14 @@ namespace PenyaManager {
         }
         fillInvoiceData(pInvoicePtr->m_pInvoice);
     }
-    // called from user framework
-    void InvoiceDetailsWidget::init(InvoiceResultPtr pInvoicePtr)
-    {
-        fillInvoiceData(pInvoicePtr->m_pInvoice);
-        show();
-    }
     //
-    void InvoiceDetailsWidget::retranslate()
+    void InvoiceDetailsView::retranslate()
     {
         this->ui->retranslateUi(this);
         translateTable();
     }
     //
-    void InvoiceDetailsWidget::fillInvoiceData(const InvoicePtr &pInvoicePtr)
+    void InvoiceDetailsView::fillInvoiceData(const InvoicePtr &pInvoicePtr)
     {
         //
         // Product List

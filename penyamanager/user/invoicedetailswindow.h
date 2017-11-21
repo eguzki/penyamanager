@@ -3,8 +3,8 @@
 
 #include <QWidget>
 
+#include <objs/Invoice.h>
 #include <commons/IPartner.h>
-#include <commons/invoicedetailswidget.h>
 #include "memberprofilegroupbox.h"
 
 namespace Ui {
@@ -27,19 +27,35 @@ namespace PenyaManager {
             //
             void retranslate();
 
+        private:
+            //
+            void fillInvoiceData(const InvoicePtr &pInvoicePtr);
+            //
+            void initializeTable();
+            //
+            void translateTable();
+
         private slots:
             //
-            void on_backPushButton_clicked();
-            //
             void on_printButton_clicked();
+            //
+            void on_newinvoiceButton_clicked();
+            //
+            void on_tableReservationButton_clicked();
+            //
+            void on_invoicesPushButton_clicked();
+            //
+            void on_accountButton_clicked();
+            //
+            void on_depositsButton_clicked();
+            //
+            void on_exitButton_clicked();
 
         private:
             //
             Ui::InvoiceDetailsWindow *ui;
             //
             MemberProfileGroupBox       *m_pMemberProfileGroupBox;
-            //
-            InvoiceDetailsWidget        *m_pInvoiceDetailsWidget;
             //
             CentralWidgetCallback       m_switchCentralWidgetCallback;
     };

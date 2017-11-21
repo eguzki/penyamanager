@@ -8,22 +8,20 @@
 
 namespace Ui {
     //
-    class InvoiceDetailsWidget;
+    class InvoiceDetailsView;
 }
 
 namespace PenyaManager {
     //
-    class InvoiceDetailsWidget : public IPartner
+    class InvoiceDetailsView : public IPartner
     {
         Q_OBJECT
 
         public:
             //
-            explicit InvoiceDetailsWidget(QWidget *parent = 0);
+            explicit InvoiceDetailsView(QWidget *parent = 0);
             //
-            ~InvoiceDetailsWidget();
-            //
-            void init(InvoiceResultPtr pInvoicePtr);
+            ~InvoiceDetailsView();
             //
             void init();
             //
@@ -39,7 +37,7 @@ namespace PenyaManager {
 
         private:
             //
-            Ui::InvoiceDetailsWidget *ui;
+            Ui::InvoiceDetailsView *ui;
     };
 
 }
