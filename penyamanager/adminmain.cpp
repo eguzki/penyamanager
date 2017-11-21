@@ -5,10 +5,10 @@
 #include <QMessageBox>
 
 #include <commons/IPartner.h>
-#include <commons/invoicedetailswidget.h>
 #include <commons/constants.h>
 #include <commons/singletons.h>
 #include <commons/utils.h>
+#include <admin/invoicedetailsview.h>
 #include <admin/adminmainwindow.h>
 #include <admin/adminloginwindow.h>
 #include <admin/slowpayersview.h>
@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
     // instantiate adminmain widgets
     PenyaManager::AdminInvoiceListView *pAdminInvoiceListView = new PenyaManager::AdminInvoiceListView(NULL, adminMainWindowSwitchCallback);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kAdminInvoiceListWindowKey, pAdminInvoiceListView);
-    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kInvoiceDetailsWindowKey, new PenyaManager::InvoiceDetailsWidget);
+    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kInvoiceDetailsWindowKey, new PenyaManager::InvoiceDetailsView);
     PenyaManager::ProviderManagerView *pProviderManagerView = new PenyaManager::ProviderManagerView(NULL, adminMainWindowSwitchCallback);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kAdminProviderWindowKey, pProviderManagerView);
     PenyaManager::AdminNewProvider *pAdminNewProvider = new PenyaManager::AdminNewProvider(NULL, adminMainWindowSwitchCallback);

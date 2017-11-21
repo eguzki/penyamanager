@@ -53,7 +53,6 @@ SOURCES += main.cpp\
         user/accountview.cpp \
         user/tablereservationview.cpp \
         user/invoicelistwindow.cpp \
-        commons/invoicedetailswidget.cpp \
         user/memberprofilegroupbox.cpp \
         user/invoicedetailswindow.cpp \
         commons/guiutils.cpp \
@@ -92,7 +91,6 @@ HEADERS  += user/memberdashboardwindow.h\
         user/accountview.h \
         user/tablereservationview.h \
         user/invoicelistwindow.h \
-        commons/invoicedetailswidget.h \
         user/memberprofilegroupbox.h \
         user/invoicedetailswindow.h \
         commons/guiutils.h \
@@ -109,7 +107,6 @@ FORMS    += user/memberdashboardwindow.ui\
         user/accountview.ui \
         user/tablereservationview.ui \
         user/invoicelistwindow.ui \
-        commons/invoicedetailswidget.ui \
         user/memberprofilegroupbox.ui \
         user/invoicedetailswindow.ui \
         user/mainwindow.ui \
