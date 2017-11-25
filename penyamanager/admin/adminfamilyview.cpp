@@ -127,7 +127,7 @@ namespace PenyaManager {
             // active
             pFamilyPtr->m_active = this->ui->activeCheckBox->isChecked();
             // regDate
-            pFamilyPtr->m_regDate = QDateTime::currentDateTime();
+            pFamilyPtr->m_regDate = QDateTime::currentDateTimeUtc();
             // create in ddbb
             Int32 familyId = Singletons::m_pDAO->createProductFamilyItem(pFamilyPtr);
             if (familyId < 0) {

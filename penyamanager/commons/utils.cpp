@@ -15,9 +15,8 @@ namespace PenyaManager {
     {
         QFileInfo imageInfo(filename);
         // Copy file to destination
-        QDateTime currentDateTime = QDateTime::currentDateTime();
-        QString nameTemplate("%1-%2.%3");
-        return nameTemplate.arg(prefix).arg(QString::number(currentDateTime.toMSecsSinceEpoch()/1000)).arg(imageInfo.suffix());
+        QDateTime currentDateTime = QDateTime::currentDateTimeUtc();
+        return QString("%1-%2.%3").arg(prefix).arg(QString::number(currentDateTime.toMSecsSinceEpoch()/1000)).arg(imageInfo.suffix());
     }
     //
     QString Utils::hashSHA256asHex(const QString& plainText)

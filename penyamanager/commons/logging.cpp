@@ -143,7 +143,7 @@ namespace PenyaManager {
         // Example: "<132>Nov 17 22:14:15 myHostName penya: syslog client at 10.0.0.6 started."
         Uint16 facility = 16; // local0
         Uint32 pri = facility * 8 + severity;
-        QDateTime now = QDateTime::currentDateTime();
+        QDateTime now = QDateTime::currentDateTimeUtc();
         QString datagramMessage = m_messageTemplate.arg(QString::number(userId)).arg(LogActionToString(logAction)).arg(message);
         QLocale enLocale = QLocale("en");
         return  m_datagramTemplate.arg(QString::number(pri)).arg(enLocale.toString(now, "MMM d hh:mm:ss")).arg(m_localAddress).arg(m_program).arg(datagramMessage);

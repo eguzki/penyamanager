@@ -76,6 +76,7 @@ namespace PenyaManager {
     //
     void AdminReservationsWindow::initializeCalendar()
     {
+        // this date should be localized
         QDateTime nowDateTime = QDateTime::currentDateTime();
         QDate nowDate = nowDateTime.date();
         this->ui->calendarWidget->setSelectedDate(nowDate);

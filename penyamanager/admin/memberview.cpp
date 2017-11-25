@@ -204,7 +204,7 @@ namespace PenyaManager {
             pMemberResultPtr->m_member->m_notes = this->ui->notesTextEdit->toPlainText();
             // regDate -> no change
             // lastmodfies
-            pMemberResultPtr->m_member->m_lastModified = QDateTime::currentDateTime();
+            pMemberResultPtr->m_member->m_lastModified = QDateTime::currentDateTimeUtc();
 
             // update in ddbb
             bool ok = Singletons::m_pDAO->updateMember(pMemberResultPtr->m_member);
@@ -283,11 +283,11 @@ namespace PenyaManager {
             // notes (optional)
             pMemberPtr->m_notes = this->ui->notesTextEdit->toPlainText();
             // regDate
-            pMemberPtr->m_regDate = QDateTime::currentDateTime();
+            pMemberPtr->m_regDate = QDateTime::currentDateTimeUtc();
             // lastmodfies
-            pMemberPtr->m_lastModified = QDateTime::currentDateTime();
+            pMemberPtr->m_lastModified = QDateTime::currentDateTimeUtc();
             // last Login
-            pMemberPtr->m_lastLogin = QDateTime::currentDateTime();
+            pMemberPtr->m_lastLogin = QDateTime::currentDateTimeUtc();
             // default password: "0000"
             pMemberPtr->m_pwd = Utils::hashSHA256asHex("0000");
             // create in ddbb
@@ -420,7 +420,7 @@ namespace PenyaManager {
         QString pwdHash = Utils::hashSHA256asHex(passChangeDialg.getPassword());
 
         // save new password in ddbb
-        bool ok = Singletons::m_pDAO->changeMemberPassword(Singletons::m_currentMemberId, pwdHash, QDateTime::currentDateTime());
+        bool ok = Singletons::m_pDAO->changeMemberPassword(Singletons::m_currentMemberId, pwdHash, QDateTime::currentDateTimeUtc());
         if (!ok) {
             QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;

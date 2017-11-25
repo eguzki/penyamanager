@@ -23,7 +23,7 @@ namespace PenyaManager {
         pDepositPtr->m_memberId = pMemberPtr->m_id;
         // create unconfirmed deposit. Admin has to validate and process.
         pDepositPtr->m_state = DepositState::Unchecked;
-        pDepositPtr->m_date = QDateTime::currentDateTime();
+        pDepositPtr->m_date = QDateTime::currentDateTimeUtc();
         pDepositPtr->m_total = amount;
         // currently simple description. Maybe let user set some subject?
         pDepositPtr->m_descr = QString("deposit");
@@ -43,7 +43,7 @@ namespace PenyaManager {
         // memberId
         pInvoicePtr->m_memberId = memberId;
         // invoice date: now
-        pInvoicePtr->m_date = QDateTime::currentDateTime();
+        pInvoicePtr->m_date = QDateTime::currentDateTimeUtc();
         // state: closed
         pInvoicePtr->m_state = InvoiceState::Closed;
         // total
@@ -63,7 +63,7 @@ namespace PenyaManager {
         }
         pInvoicePtr->m_total = totalInvoice;
         // invoice lastModified date: now
-        pInvoicePtr->m_lastModified = QDateTime::currentDateTime();
+        pInvoicePtr->m_lastModified = QDateTime::currentDateTimeUtc();
 
         // update invoice data
         bool ok = Singletons::m_pDAO->updateInvoice(pInvoicePtr);
@@ -109,7 +109,7 @@ namespace PenyaManager {
         pNewTransaction->m_type = type;
         pNewTransaction->m_memberId = memberId;
         pNewTransaction->m_amount = amount;
-        pNewTransaction->m_date = QDateTime::currentDateTime();
+        pNewTransaction->m_date = QDateTime::currentDateTimeUtc();
         pNewTransaction->m_balance = lastBalance + amount;
         pNewTransaction->m_descr = description;
         // update account balance info
@@ -214,7 +214,7 @@ namespace PenyaManager {
         if (!ok) {
             return false;
         }
-        return Singletons::m_pDAO->updateInvoiceLastModDate(invoiceId, QDateTime::currentDateTime());
+        return Singletons::m_pDAO->updateInvoiceLastModDate(invoiceId, QDateTime::currentDateTimeUtc());
     }
     //
     bool Services::removeInvoiceProductId(Int32 invoiceId, Int32 productId)
@@ -229,7 +229,7 @@ namespace PenyaManager {
         if (invoiceProductItemStatsResultPtr->m_error) {
             return false;
         } else if (invoiceProductItemStatsResultPtr->m_stats->m_totalProducts > 0) {
-            ok = Singletons::m_pDAO->updateInvoiceLastModDate(invoiceId, QDateTime::currentDateTime());
+            ok = Singletons::m_pDAO->updateInvoiceLastModDate(invoiceId, QDateTime::currentDateTimeUtc());
         } else {
             // no products left, remove invoice
             ok = Singletons::m_pDAO->deleteInvoice(invoiceId);
@@ -251,7 +251,7 @@ namespace PenyaManager {
                 return boolResult;
             }
         }
-        boolResult.error = !Singletons::m_pDAO->updateInvoiceLastModDate(invoiceId, QDateTime::currentDateTime());
+        boolResult.error = !Singletons::m_pDAO->updateInvoiceLastModDate(invoiceId, QDateTime::currentDateTimeUtc());
         return boolResult;
     }
     //
@@ -262,7 +262,7 @@ namespace PenyaManager {
             return false;
         }
 
-        QDateTime now = QDateTime::currentDateTime();
+        QDateTime now = QDateTime::currentDateTimeUtc();
         for (InvoiceList::iterator iter = pActiveInvoiceList->m_list->begin(); iter != pActiveInvoiceList->m_list->end(); ++iter) {
             InvoicePtr pInvoicePtr = *iter;
             // check modified

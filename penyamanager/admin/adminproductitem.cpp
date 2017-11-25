@@ -153,7 +153,7 @@ namespace PenyaManager {
             // active
             pProductItemPtr->m_active = this->ui->activeCheckBox->isChecked();
             // regDate
-            pProductItemPtr->m_regDate = QDateTime::currentDateTime();
+            pProductItemPtr->m_regDate = QDateTime::currentDateTimeUtc();
             // family
             pProductItemPtr->m_familyId = this->ui->familyComboBox->currentData().toInt();
             // price (already validated)

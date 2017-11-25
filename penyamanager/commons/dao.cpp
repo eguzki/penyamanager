@@ -478,13 +478,14 @@ namespace PenyaManager {
     InvoiceResultPtr DAO::createInvoice(Int32 memberId)
     {
         InvoiceResultPtr pInvoiceResultPtr(new InvoiceResult);
+        auto now = QDateTime::currentDateTimeUtc();
         InvoicePtr pInvoicePtr(new Invoice);
         pInvoicePtr->m_id = 0;
         pInvoicePtr->m_memberId = memberId;
         pInvoicePtr->m_state = InvoiceState::Open;
-        pInvoicePtr->m_date = QDateTime::currentDateTime();
+        pInvoicePtr->m_date = now;
         pInvoicePtr->m_total = 0.0;
-        pInvoicePtr->m_lastModified = QDateTime::currentDateTime();
+        pInvoicePtr->m_lastModified = now;
         pInvoiceResultPtr->m_pInvoice = pInvoicePtr;
 
         auto createQuery = [=](){
@@ -2115,7 +2116,7 @@ namespace PenyaManager {
     //
     bool DAO::createProvider(const QString &name, const QString &imageFileName, const QString &phone)
     {
-        QDate today(QDateTime::currentDateTime().date());
+        QDate today(QDateTime::currentDateTimeUtc().date());
 
         auto createQuery = [=](){
             QueryPtr queryPtr(new QSqlQuery);

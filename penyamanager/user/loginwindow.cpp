@@ -208,7 +208,7 @@ namespace PenyaManager {
         Singletons::m_pCurrMember = pMemberResultPtr->m_member;
 
         // change last login date
-        ok = Singletons::m_pDAO->changeMemberLastLogin(pMemberResultPtr->m_member->m_id, QDateTime::currentDateTime());
+        ok = Singletons::m_pDAO->changeMemberLastLogin(pMemberResultPtr->m_member->m_id, QDateTime::currentDateTimeUtc());
         if (!ok) {
             QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
             return;

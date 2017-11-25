@@ -225,6 +225,7 @@ namespace PenyaManager {
         // invoice date is invoice creation date
         // Can be old (e.g. an unclosed invoice created some days ago)
         // print current date
+        // this date should be localized
         invoiceData["dateValue"] = QDateTime::currentDateTime();
 
         // invoice products info
