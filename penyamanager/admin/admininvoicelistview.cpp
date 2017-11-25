@@ -72,7 +72,7 @@ namespace PenyaManager {
         QString memberUsernameStr = this->ui->memberIdLineEdit->text().trimmed();
         if (memberUsernameStr.isEmpty()) {
             this->ui->memberIdLineEdit->clear();
-            pInvoiceListResult = Singletons::m_pDAO->getInvoiceList(fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
+            pInvoiceListResult = Singletons::m_pDAO->getInvoiceList(fromDate, toDate, m_currentPage, Constants::kAdminInvoiceListPageCount);
             if (pInvoiceListResult->m_error) {
                 QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
                 return;
@@ -100,7 +100,7 @@ namespace PenyaManager {
                     QMessageBox::about(this, tr("Invalid data"), tr("Username found"));
                     return;
                 }
-                pInvoiceListResult = Singletons::m_pDAO->getInvoiceListByMemberId(pMemberResultPtr->m_member->m_id, fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
+                pInvoiceListResult = Singletons::m_pDAO->getInvoiceListByMemberId(pMemberResultPtr->m_member->m_id, fromDate, toDate, m_currentPage, Constants::kAdminInvoiceListPageCount);
                 if (pInvoiceListResult->m_error) {
                     QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
                     return;
@@ -114,7 +114,7 @@ namespace PenyaManager {
         }
         // enable-disable pagination buttons
         // total num pages
-        Uint32 numPages = (Uint32)ceil((Float)pInvoiceListStatsResult->m_stats->m_totalNumInvoices/Constants::kInvoiceListPageCount);
+        Uint32 numPages = (Uint32)ceil((Float)pInvoiceListStatsResult->m_stats->m_totalNumInvoices/Constants::kAdminInvoiceListPageCount);
         this->ui->prevPagePushButton->setEnabled(m_currentPage > 0);
         this->ui->nextPagePushButton->setEnabled(m_currentPage < numPages-1);
         // fill page view
