@@ -57,8 +57,20 @@ namespace PenyaManager {
         //
         // Loading User profile
         //
+        MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberById(Singletons::m_pCurrMember->m_id);
+        if (pMemberResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            return;
+        }
+        if (!pMemberResultPtr->m_member) {
+            // member not found, should not happen
+            Singletons::m_pLogger->Warn(Constants::kSystemUserId, PenyaManager::LogAction::kDashboard,
+                    QString("Unable to find owner by id %1").arg(Singletons::m_pCurrMember->m_id));
+            return;
+        }
 
-        MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
+        MemberPtr pCurrMemberPtr = pMemberResultPtr->m_member;
+        Singletons::m_pCurrMember = pCurrMemberPtr;
         this->m_pMemberProfileGroupBox->init(pCurrMemberPtr);
 
         // initialize calendar inital values
