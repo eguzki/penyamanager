@@ -17,7 +17,6 @@ namespace PenyaManager {
         m_switchCentralWidgetCallback(callback)
     {
         ui->setupUi(this);
-        this->connect(this->ui->providersListWidget, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(providerItemClicked(QListWidgetItem*)));
     }
     //
     ProviderManagerView::~ProviderManagerView()
@@ -27,6 +26,9 @@ namespace PenyaManager {
     //
     void ProviderManagerView::init()
     {
+        Singletons::m_currentProviderId = -1;
+        this->ui->editProviderPushButton->setEnabled(false);
+        clearAll();
         //
         // Loading providers
         //
@@ -36,6 +38,12 @@ namespace PenyaManager {
     void ProviderManagerView::retranslate()
     {
         this->ui->retranslateUi(this);
+    }
+    //
+    void ProviderManagerView::clearAll()
+    {
+        this->ui->providersListWidget->clear();
+        this->ui->productsListWidget->clear();
     }
     //
     void ProviderManagerView::fillProviders()
@@ -81,12 +89,6 @@ namespace PenyaManager {
         pProviderItem->setFlags(Qt::ItemIsSelectable);
         pProviderItem->setBackgroundColor(this->ui->providersListWidget->count() % 2 == 0 ? (Qt::lightGray) : (Qt::darkGray));
         this->ui->providersListWidget->setItemWidget(pProviderItem, pProviderWidget);
-    }
-    //
-    void ProviderManagerView::providerItemClicked(QListWidgetItem* item)
-    {
-        Int32 providerId = item->data(Constants::kIdRole).toInt();
-        fillProductItems(providerId);
     }
     //
     void ProviderManagerView::fillProductItems(Int32 providerId)
@@ -145,8 +147,29 @@ namespace PenyaManager {
     //
     void ProviderManagerView::on_newProviderPushButton_clicked()
     {
-        // call invoice details window throw adminmainwindow
+        Singletons::m_currentProviderId = -1;
+        // call new provider window throw adminmainwindow
+        m_switchCentralWidgetCallback(WindowKey::kAdminNewProviderKey);
+    }
+    //
+    void ProviderManagerView::on_providersListWidget_itemClicked(QListWidgetItem *item)
+    {
+        Int32 providerId = item->data(Constants::kIdRole).toInt();
+        Singletons::m_currentProviderId = providerId;
+        if (!this->ui->editProviderPushButton->isEnabled()) {
+            this->ui->editProviderPushButton->setEnabled(true);
+        }
+        fillProductItems(providerId);
+    }
+    //
+    void ProviderManagerView::on_editProviderPushButton_clicked()
+    {
+        // call new provider window throw adminmainwindow
         m_switchCentralWidgetCallback(WindowKey::kAdminNewProviderKey);
     }
 }
+
+
+
+
 

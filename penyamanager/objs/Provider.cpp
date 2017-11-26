@@ -10,7 +10,7 @@ namespace PenyaManager
     }
 
     //
-    Provider::Provider(Int32 id, const QString &name, const QString &image, const QDateTime &regDate, const QString &phone)
+    Provider::Provider(Int32 id, const QString &name, const QString &image, const QDate &regDate, const QString &phone)
         :
             m_id(id),
             m_name(name),
@@ -21,6 +21,11 @@ namespace PenyaManager
     }
     //
     ProviderListResult::ProviderListResult()
+        :
+            m_error(0)
+    {}
+    //
+    ProviderResult::ProviderResult()
         :
             m_error(0)
     {}

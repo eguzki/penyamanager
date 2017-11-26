@@ -81,10 +81,11 @@ namespace PenyaManager {
     //
     void MemberView::init()
     {
+        this->m_memberImageFilename.clear();
         // change password button
         this->ui->changePasswordPushButton->setEnabled(Singletons::m_currentMemberId >= 0);
         //
-        // Product info
+        // Member info
         //
         if (Singletons::m_currentMemberId >= 0) {
             fillMemberInfo(Singletons::m_currentMemberId);
@@ -222,6 +223,7 @@ namespace PenyaManager {
             }
             Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kMember,
                     QString("editmember %1").arg(pMemberResultPtr->m_member->m_id));
+            QMessageBox::information(this, tr("Update Member"), tr("Done successfully"));
         } else {
             // new item
             MemberPtr pMemberPtr(new Member);
@@ -304,11 +306,11 @@ namespace PenyaManager {
             }
             Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kMember,
                     QString("newmember %1").arg(memberId));
+            QMessageBox::information(this, tr("Create new member"), tr("Done successfully"));
         }
 
         // reset var
         this->m_memberImageFilename.clear();
-        QMessageBox::information(this, "Create Member", "Done successfully");
         // call family product management window throw adminmainwindow
         m_switchCentralWidgetCallback(WindowKey::kMemberListViewWindowKey);
     }
@@ -383,7 +385,10 @@ namespace PenyaManager {
         // Check write permissions
         QFileInfo imagePath(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString());
         if (!imagePath.isDir() || !imagePath.isWritable()) {
-            QMessageBox::warning(this, "Could not write", Singletons::m_pSettings->value(Constants::kResourcePathKey).toString());
+            Singletons::m_pLogger->Warn(Constants::kSystemUserId, PenyaManager::LogAction::kMember,
+                    QString("Unable to write to %1").arg(imagePath.absoluteFilePath()));
+            QMessageBox::warning(this, tr("Unable to upload image"),
+                    QString("Unable to write to %1").arg(imagePath.absoluteFilePath()));
             return;
         }
         // open file dialog
@@ -392,9 +397,11 @@ namespace PenyaManager {
         QString fn = QFileDialog::getOpenFileName(this, tr("Open File..."),
                 QDir::homePath(), tr("Image Files (*.gif *.jpeg *.jpg *.png)"));
         if (fn.isEmpty()) {
-            QMessageBox::information(this, "Information", "No file selected");
+            QMessageBox::information(this, tr("Information"), tr("No file selected"));
             return;
         }
+        // this object member is being assigned only on image push.
+        // On save, it will be known new image has been assigned
         this->m_memberImageFilename = fn;
         // show image
         QPixmap providerPixmap = GuiUtils::getImage(fn);

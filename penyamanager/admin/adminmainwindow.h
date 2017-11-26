@@ -25,31 +25,31 @@ namespace PenyaManager {
 
         private slots:
             //
-            void on_exit_button_triggered();
+            void on_actionExit_triggered();
             //
-            void on_slow_payers_button_triggered();
+            void on_actionSlow_payers_triggered();
             //
-            void on_invoice_list_button_triggered();
+            void on_actionInvoice_list_triggered();
             //
-            void on_manage_providers_button_triggered();
+            void on_actionManage_providers_triggered();
             //
-            void on_manage_stock_button_triggered();
+            void on_actionManage_Stock_triggered();
             //
-            void on_manage_family_items_button_triggered();
+            void on_actionManage_family_items_triggered();
             //
-            void on_product_expenses_button_triggered();
+            void on_actionProduct_consumption_triggered();
             //
-            void on_provider_invoice_button_triggered();
+            void on_actionProvider_invoice_triggered();
             //
-            void on_provider_invoice_list_button_triggered();
+            void on_actionProvider_invoice_list_triggered();
             //
-            void on_deposit_list_button_triggered();
+            void on_actionDeposit_Check_triggered();
             //
-            void on_account_balance_list_button_triggered();
+            void on_actionAccount_Balance_triggered();
             //
-            void on_member_list_view_button_triggered();
+            void on_actionMember_management_triggered();
             //
-            void on_reservation_view_button_triggered();
+            void on_actionManager_reservations_triggered();
 
         private:
             //

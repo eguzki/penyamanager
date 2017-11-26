@@ -40,13 +40,15 @@ namespace PenyaManager {
         private:
             //
             void initialize();
+            //
+            void fillProviderInfo(Int32 providerId);
 
         private:
             //
             Ui::AdminNewProvider        *ui;
             //
             CentralWidgetCallback       m_switchCentralWidgetCallback;
-            //
+            // only set when user selects image to be uploaded
             QString                     m_providerImageFilename;
     };
 }

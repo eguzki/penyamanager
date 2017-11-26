@@ -28,6 +28,7 @@ namespace PenyaManager {
     //
     void AdminFamilyView::init()
     {
+        this->m_familyImageFilename.clear();
         //
         // Family info
         //
@@ -149,7 +150,10 @@ namespace PenyaManager {
         // Check write permissions
         QFileInfo imagePath(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString());
         if (!imagePath.isDir() || !imagePath.isWritable()) {
-            QMessageBox::warning(this, "Could not write", Singletons::m_pSettings->value(Constants::kResourcePathKey).toString());
+            Singletons::m_pLogger->Warn(Constants::kSystemUserId, PenyaManager::LogAction::kFamily,
+                    QString("Unable to write to %1").arg(imagePath.absoluteFilePath()));
+            QMessageBox::warning(this, tr("Unable to upload image"),
+                    QString("Unable to write to %1").arg(imagePath.absoluteFilePath()));
             return;
         }
         // open file dialog
@@ -158,7 +162,7 @@ namespace PenyaManager {
         QString fn = QFileDialog::getOpenFileName(this, tr("Open File..."),
                 QDir::homePath(), tr("Image Files (*.gif *.jpeg *.jpg *.png)"));
         if (fn.isEmpty()) {
-            QMessageBox::information(this, "Information", "No file selected");
+            QMessageBox::information(this, tr("Information"), tr("No file selected"));
             return;
         }
         this->m_familyImageFilename = fn;

@@ -160,9 +160,13 @@ namespace PenyaManager {
             //
             ProviderListResultPtr getProviderList();
             //
+            ProviderResultPtr getProviderById(Int32 providerId);
+            //
+            bool updateProvider(const ProviderPtr &pProviderPtr);
+            //
             ProductItemListResultPtr getProductsFromProvider(Int32 providerId);
             //
-            bool createProvider(const QString &name, const QString &imageFileName, const QString &phone);
+            Int32 createProvider(const ProviderPtr &pProviderPtr);
             //
             ProductItemListResultPtr getProductsList(Uint32 page, Uint32 count);
             //

@@ -36,7 +36,7 @@ namespace PenyaManager {
 
         private slots:
             //
-            void on_deposit_check_clicked(Uint32 rowCount);
+            void onDeposit_check_clicked(Uint32 rowCount);
 
         private:
             //

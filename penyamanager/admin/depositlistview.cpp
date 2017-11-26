@@ -96,12 +96,12 @@ namespace PenyaManager {
             this->ui->depositTableWidget->setCellWidget(rowCount, column++, pQDoubleSpinBox);
             QPushButton *pQPushButton = new QPushButton(tr("OK"), this->ui->depositTableWidget);
             this->ui->depositTableWidget->setCellWidget(rowCount, column++, pQPushButton);
-            this->connect(pQPushButton, &QPushButton::clicked, std::bind(&DepositListView::on_deposit_check_clicked, this, rowCount));
+            this->connect(pQPushButton, &QPushButton::clicked, std::bind(&DepositListView::onDeposit_check_clicked, this, rowCount));
             rowCount++;
         }
     }
     //
-    void DepositListView::on_deposit_check_clicked(Uint32 rowCount)
+    void DepositListView::onDeposit_check_clicked(Uint32 rowCount)
     {
         // get cash
         QWidget *pCashWidget = this->ui->depositTableWidget->cellWidget(rowCount, 4);

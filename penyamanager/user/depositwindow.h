@@ -40,7 +40,7 @@ namespace PenyaManager {
             //
             void on_confirmButton_clicked();
             //
-            void on_pushButton_number_clicked(Uint32 num);
+            void onPushButton_number_clicked(Uint32 num);
             //
             void on_pushButton_coma_clicked();
             //

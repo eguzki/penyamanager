@@ -54,9 +54,9 @@ namespace PenyaManager {
             //
             void on_calendarWidget_clicked(const QDate &date);
             //
-            void on_reservedButton_clicked(int itemId);
+            void onReservedButton_clicked(int itemId);
             //
-            void on_cancelButton_clicked(int reservationId);
+            void onCancelButton_clicked(int reservationId);
             //
             void on_midMorningButton_clicked(bool checked);
             //

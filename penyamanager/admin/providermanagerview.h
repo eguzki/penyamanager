@@ -37,12 +37,16 @@ namespace PenyaManager {
             void fillProductItems(Int32 providerId);
             //
             void createProductItemWidget(const ProductItemPtr &pfPtr, QListWidget *pList);
+            //
+            void clearAll();
 
         private slots:
             //
-            void providerItemClicked(QListWidgetItem* item);
-            //
             void on_newProviderPushButton_clicked();
+            //
+            void on_providersListWidget_itemClicked(QListWidgetItem *item);
+            //
+            void on_editProviderPushButton_clicked();
 
     private:
             //
