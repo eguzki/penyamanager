@@ -18,6 +18,7 @@ namespace PenyaManager {
     Int32 Singletons::m_currentProductId = 0;
     Int32 Singletons::m_currentFamilyId = 0;
     Int32 Singletons::m_currentMemberId = 0;
+    Int32 Singletons::m_currentProviderId = 0;
     QString Singletons::m_currentProviderInvoiceId;
     TranslationManager Singletons::m_translationManager;
 

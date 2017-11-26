@@ -28,6 +28,7 @@ namespace PenyaManager {
     //
     void AdminProductItem::init()
     {
+        this->m_productImageFilename.clear();
         //
         // Product info
         //
@@ -153,7 +154,7 @@ namespace PenyaManager {
             // active
             pProductItemPtr->m_active = this->ui->activeCheckBox->isChecked();
             // regDate
-            pProductItemPtr->m_regDate = QDateTime::currentDateTime();
+            pProductItemPtr->m_regDate = QDateTime::currentDateTimeUtc();
             // family
             pProductItemPtr->m_familyId = this->ui->familyComboBox->currentData().toInt();
             // price (already validated)
@@ -304,7 +305,10 @@ namespace PenyaManager {
         // Check write permissions
         QFileInfo imagePath(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString());
         if (!imagePath.isDir() || !imagePath.isWritable()) {
-            QMessageBox::warning(this, "Could not write", Singletons::m_pSettings->value(Constants::kResourcePathKey).toString());
+            Singletons::m_pLogger->Warn(Constants::kSystemUserId, PenyaManager::LogAction::kProduct,
+                    QString("Unable to write to %1").arg(imagePath.absoluteFilePath()));
+            QMessageBox::warning(this, tr("Unable to upload image"),
+                    QString("Unable to write to %1").arg(imagePath.absoluteFilePath()));
             return;
         }
         // open file dialog
@@ -313,7 +317,7 @@ namespace PenyaManager {
         QString fn = QFileDialog::getOpenFileName(this, tr("Open File..."),
                 QDir::homePath(), tr("Image Files (*.gif *.jpeg *.jpg *.png)"));
         if (fn.isEmpty()) {
-            QMessageBox::information(this, "Information", "No file selected");
+            QMessageBox::information(this, tr("Information"), tr("No file selected"));
             return;
         }
         this->m_productImageFilename = fn;

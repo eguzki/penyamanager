@@ -91,6 +91,16 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
        </spacer>
       </item>
       <item>
+       <widget class="QPushButton" name="editProviderPushButton">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>details</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="newProviderPushButton">
         <property name="text">
          <string>new provider</string>

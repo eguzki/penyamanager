@@ -76,6 +76,7 @@ namespace PenyaManager {
     //
     void AdminReservationsWindow::initializeCalendar()
     {
+        // this date should be localized
         QDateTime nowDateTime = QDateTime::currentDateTime();
         QDate nowDate = nowDateTime.date();
         this->ui->calendarWidget->setSelectedDate(nowDate);
@@ -148,19 +149,19 @@ namespace PenyaManager {
         Uint32 rowCount = 0;
         // fill table data
         fillReservationsItems(pTableReservationListResultPtr->m_list, pTableListResultPtr->m_list, rowCount,
-                std::bind(&AdminReservationsWindow::on_new_table_reservation_button_clicked, this, _1),
-                std::bind(&AdminReservationsWindow::on_update_table_reservation_button_clicked, this, _1)
+                std::bind(&AdminReservationsWindow::onNew_table_reservation_button_clicked, this, _1),
+                std::bind(&AdminReservationsWindow::onUpdate_table_reservation_button_clicked, this, _1)
                 );
         // fill oven data
         fillReservationsItems(pOvenReservationListResultPtr->m_list, pOvenListResultPtr->m_list, rowCount,
-                std::bind(&AdminReservationsWindow::on_new_oven_reservation_button_clicked, this, _1),
-                std::bind(&AdminReservationsWindow::on_update_oven_reservation_button_clicked, this, _1)
+                std::bind(&AdminReservationsWindow::onNew_oven_reservation_button_clicked, this, _1),
+                std::bind(&AdminReservationsWindow::onUpdate_oven_reservation_button_clicked, this, _1)
                 );
 
         // fill fireplace data
         fillReservationsItems(pFireplaceReservationListResultPtr->m_list, pFireplaceListResultPtr->m_list, rowCount,
-                std::bind(&AdminReservationsWindow::on_new_fireplace_reservation_button_clicked, this, _1),
-                std::bind(&AdminReservationsWindow::on_update_fireplace_reservation_button_clicked, this, _1)
+                std::bind(&AdminReservationsWindow::onNew_fireplace_reservation_button_clicked, this, _1),
+                std::bind(&AdminReservationsWindow::onUpdate_fireplace_reservation_button_clicked, this, _1)
                 );
 
     }
@@ -203,7 +204,7 @@ namespace PenyaManager {
                     this->ui->tableReservationTableWidget->setItem(rowCount, 3, new QTableWidgetItem(QString(tr("BLOCKED"))));
                     // show cancel button action
                     QPushButton *pCancelButton = new QPushButton(tr("Cancel"), this->ui->tableReservationTableWidget);
-                    this->connect(pCancelButton, &QPushButton::clicked, std::bind(&AdminReservationsWindow::on_cancelButton_clicked, this, pReservationPtr->m_reservationId, pReservationItemPtr->m_itemType));
+                    this->connect(pCancelButton, &QPushButton::clicked, std::bind(&AdminReservationsWindow::onCancelButton_clicked, this, pReservationPtr->m_reservationId, pReservationItemPtr->m_itemType));
                     this->ui->tableReservationTableWidget->setCellWidget(rowCount, 5, pCancelButton);
                 } else {
                     QString guestName = QString("%1 %2 %3").arg(pReservationPtr->m_memberName).arg(pReservationPtr->m_memberSurname1).arg(pReservationPtr->m_memberSurname2);
@@ -263,7 +264,7 @@ namespace PenyaManager {
         fillReservations(date, reservationType);
     }
     //
-    void AdminReservationsWindow::on_new_table_reservation_button_clicked(int itemId)
+    void AdminReservationsWindow::onNew_table_reservation_button_clicked(int itemId)
     {
         ReservationType reservationType = static_cast<ReservationType>(this->ui->reservationTypeButtonGroup->checkedId());
         QDate date = this->ui->calendarWidget->selectedDate();
@@ -290,7 +291,7 @@ namespace PenyaManager {
         fillReservations(date, reservationType);
     }
     //
-    void AdminReservationsWindow::on_update_table_reservation_button_clicked(int reservationId)
+    void AdminReservationsWindow::onUpdate_table_reservation_button_clicked(int reservationId)
     {
         ReservationType reservationType = static_cast<ReservationType>(this->ui->reservationTypeButtonGroup->checkedId());
         QDate date = this->ui->calendarWidget->selectedDate();
@@ -316,7 +317,7 @@ namespace PenyaManager {
         fillReservations(date, reservationType);
     }
     //
-    void AdminReservationsWindow::on_new_fireplace_reservation_button_clicked(int itemId)
+    void AdminReservationsWindow::onNew_fireplace_reservation_button_clicked(int itemId)
     {
         ReservationType reservationType = static_cast<ReservationType>(this->ui->reservationTypeButtonGroup->checkedId());
         QDate date = this->ui->calendarWidget->selectedDate();
@@ -335,7 +336,7 @@ namespace PenyaManager {
         fillReservations(date, reservationType);
     }
     //
-    void AdminReservationsWindow::on_update_fireplace_reservation_button_clicked(int reservationId)
+    void AdminReservationsWindow::onUpdate_fireplace_reservation_button_clicked(int reservationId)
     {
         ReservationType reservationType = static_cast<ReservationType>(this->ui->reservationTypeButtonGroup->checkedId());
         QDate date = this->ui->calendarWidget->selectedDate();
@@ -352,7 +353,7 @@ namespace PenyaManager {
         fillReservations(date, reservationType);
     }
     //
-    void AdminReservationsWindow::on_new_oven_reservation_button_clicked(int itemId)
+    void AdminReservationsWindow::onNew_oven_reservation_button_clicked(int itemId)
     {
         ReservationType reservationType = static_cast<ReservationType>(this->ui->reservationTypeButtonGroup->checkedId());
         QDate date = this->ui->calendarWidget->selectedDate();
@@ -371,7 +372,7 @@ namespace PenyaManager {
         fillReservations(date, reservationType);
     }
     //
-    void AdminReservationsWindow::on_update_oven_reservation_button_clicked(int reservationId)
+    void AdminReservationsWindow::onUpdate_oven_reservation_button_clicked(int reservationId)
     {
         ReservationType reservationType = static_cast<ReservationType>(this->ui->reservationTypeButtonGroup->checkedId());
         QDate date = this->ui->calendarWidget->selectedDate();
@@ -389,7 +390,7 @@ namespace PenyaManager {
         fillReservations(date, reservationType);
     }
     //
-    void AdminReservationsWindow::on_cancelButton_clicked(int reservationId, ReservationItemType itemType)
+    void AdminReservationsWindow::onCancelButton_clicked(int reservationId, ReservationItemType itemType)
     {
         QDate date = this->ui->calendarWidget->selectedDate();
         ReservationType reservationType = static_cast<ReservationType>(this->ui->reservationTypeButtonGroup->checkedId());

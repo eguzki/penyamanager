@@ -21,16 +21,16 @@ namespace PenyaManager {
     {
         ui->setupUi(this);
         this->ui->topPanelWidget->layout()->addWidget(m_pMemberProfileGroupBox);
-        this->connect(this->ui->pushButton_00, &QPushButton::clicked, std::bind(&DepositWindow::on_pushButton_number_clicked, this, 0));
-        this->connect(this->ui->pushButton_01, &QPushButton::clicked, std::bind(&DepositWindow::on_pushButton_number_clicked, this, 1));
-        this->connect(this->ui->pushButton_02, &QPushButton::clicked, std::bind(&DepositWindow::on_pushButton_number_clicked, this, 2));
-        this->connect(this->ui->pushButton_03, &QPushButton::clicked, std::bind(&DepositWindow::on_pushButton_number_clicked, this, 3));
-        this->connect(this->ui->pushButton_04, &QPushButton::clicked, std::bind(&DepositWindow::on_pushButton_number_clicked, this, 4));
-        this->connect(this->ui->pushButton_05, &QPushButton::clicked, std::bind(&DepositWindow::on_pushButton_number_clicked, this, 5));
-        this->connect(this->ui->pushButton_06, &QPushButton::clicked, std::bind(&DepositWindow::on_pushButton_number_clicked, this, 6));
-        this->connect(this->ui->pushButton_07, &QPushButton::clicked, std::bind(&DepositWindow::on_pushButton_number_clicked, this, 7));
-        this->connect(this->ui->pushButton_08, &QPushButton::clicked, std::bind(&DepositWindow::on_pushButton_number_clicked, this, 8));
-        this->connect(this->ui->pushButton_09, &QPushButton::clicked, std::bind(&DepositWindow::on_pushButton_number_clicked, this, 9));
+        this->connect(this->ui->pushButton_00, &QPushButton::clicked, std::bind(&DepositWindow::onPushButton_number_clicked, this, 0));
+        this->connect(this->ui->pushButton_01, &QPushButton::clicked, std::bind(&DepositWindow::onPushButton_number_clicked, this, 1));
+        this->connect(this->ui->pushButton_02, &QPushButton::clicked, std::bind(&DepositWindow::onPushButton_number_clicked, this, 2));
+        this->connect(this->ui->pushButton_03, &QPushButton::clicked, std::bind(&DepositWindow::onPushButton_number_clicked, this, 3));
+        this->connect(this->ui->pushButton_04, &QPushButton::clicked, std::bind(&DepositWindow::onPushButton_number_clicked, this, 4));
+        this->connect(this->ui->pushButton_05, &QPushButton::clicked, std::bind(&DepositWindow::onPushButton_number_clicked, this, 5));
+        this->connect(this->ui->pushButton_06, &QPushButton::clicked, std::bind(&DepositWindow::onPushButton_number_clicked, this, 6));
+        this->connect(this->ui->pushButton_07, &QPushButton::clicked, std::bind(&DepositWindow::onPushButton_number_clicked, this, 7));
+        this->connect(this->ui->pushButton_08, &QPushButton::clicked, std::bind(&DepositWindow::onPushButton_number_clicked, this, 8));
+        this->connect(this->ui->pushButton_09, &QPushButton::clicked, std::bind(&DepositWindow::onPushButton_number_clicked, this, 9));
     }
     //
     DepositWindow::~DepositWindow()
@@ -43,7 +43,20 @@ namespace PenyaManager {
         //
         // Loading User profile
         //
-        MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
+        MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberById(Singletons::m_pCurrMember->m_id);
+        if (pMemberResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            return;
+        }
+        if (!pMemberResultPtr->m_member) {
+            // member not found, should not happen
+            Singletons::m_pLogger->Warn(Constants::kSystemUserId, PenyaManager::LogAction::kDashboard,
+                    QString("Unable to find owner by id %1").arg(Singletons::m_pCurrMember->m_id));
+            return;
+        }
+
+        MemberPtr pCurrMemberPtr = pMemberResultPtr->m_member;
+        Singletons::m_pCurrMember = pCurrMemberPtr;
         this->m_pMemberProfileGroupBox->init(pCurrMemberPtr);
 
         // Current deposit reset
@@ -113,7 +126,7 @@ namespace PenyaManager {
         this->ui->newBalanceLabel->setText(QString("%1 €").arg(QString::number(pCurrMemberPtr->m_balance + deposit, 'f', 2)));
     }
     //
-    void DepositWindow::on_pushButton_number_clicked(Uint32 num)
+    void DepositWindow::onPushButton_number_clicked(Uint32 num)
     {
         // Check number is not too high and few decimals
         if (m_depositValue > std::pow(10, 7))

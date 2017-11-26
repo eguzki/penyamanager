@@ -15,7 +15,7 @@ namespace PenyaManager
             //
             Provider();
             //
-            Provider(Int32 id, const QString &name, const QString &image, const QDateTime &regDate, const QString &phone);
+            Provider(Int32 id, const QString &name, const QString &image, const QDate &regDate, const QString &phone);
             //
             virtual ~Provider(){}
 
@@ -27,13 +27,30 @@ namespace PenyaManager
             //
             QString             m_image;
             //
-            QDateTime           m_regDate;
+            QDate               m_regDate;
             //
             QString             m_phone;
     };
 
     //
     typedef QSharedPointer<Provider> ProviderPtr;
+    //
+    class ProviderResult
+    {
+        public:
+            //
+            ProviderResult();
+            //
+            virtual ~ProviderResult(){}
+
+        public:
+            //
+            Int32                   m_error;
+            //
+            ProviderPtr             m_provider;
+    };
+    //
+    typedef QSharedPointer<ProviderResult> ProviderResultPtr;
     //
     typedef std::vector<ProviderPtr> ProviderList;
     //

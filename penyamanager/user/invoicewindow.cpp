@@ -44,25 +44,38 @@ namespace PenyaManager {
         //
         // Loading User profile
         //
-        MemberPtr pCurrMember = Singletons::m_pCurrMember;
-        this->m_pMemberProfileGroupBox->init(pCurrMember);
+        MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberById(Singletons::m_pCurrMember->m_id);
+        if (pMemberResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            return;
+        }
+        if (!pMemberResultPtr->m_member) {
+            // member not found, should not happen
+            Singletons::m_pLogger->Warn(Constants::kSystemUserId, PenyaManager::LogAction::kDashboard,
+                    QString("Unable to find owner by id %1").arg(Singletons::m_pCurrMember->m_id));
+            return;
+        }
+
+        MemberPtr pCurrMemberPtr = pMemberResultPtr->m_member;
+        Singletons::m_pCurrMember = pCurrMemberPtr;
+        this->m_pMemberProfileGroupBox->init(pCurrMemberPtr);
 
         //
         // Loading Current Invoice
         //
-        InvoiceResultPtr pInvoiceResultPtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
+        InvoiceResultPtr pInvoiceResultPtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMemberPtr->m_id);
         if (pInvoiceResultPtr->m_error) {
             QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
             return;
         }
         if (!pInvoiceResultPtr->m_pInvoice) {
             Singletons::m_pLogger->Error(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kInvoice,
-                    QString("no active invoice found. userid %1").arg(pCurrMember->m_id));
+                    QString("no active invoice found. userid %1").arg(pCurrMemberPtr->m_id));
             QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
             return;
         }
         m_currentPage = 0;
-        fillInvoiceData(pCurrMember, pInvoiceResultPtr->m_pInvoice);
+        fillInvoiceData(pCurrMemberPtr, pInvoiceResultPtr->m_pInvoice);
     }
     //
     void InvoiceWindow::retranslate()
@@ -94,21 +107,21 @@ namespace PenyaManager {
         //
         // Loading Current Invoice
         //
-        MemberPtr pCurrMember = Singletons::m_pCurrMember;
-        InvoiceResultPtr pInvoiceResultPtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
+        MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
+        InvoiceResultPtr pInvoiceResultPtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMemberPtr->m_id);
         if (pInvoiceResultPtr->m_error) {
             QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
             return;
         }
         if (!pInvoiceResultPtr->m_pInvoice) {
             Singletons::m_pLogger->Error(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kInvoice,
-                    QString("no active invoice found. userid %1").arg(pCurrMember->m_id));
+                    QString("no active invoice found. userid %1").arg(pCurrMemberPtr->m_id));
             QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
             return;
         }
 
         // Update member balance
-        bool ok = Singletons::m_pServices->closeInvoice(pCurrMember->m_id, pInvoiceResultPtr->m_pInvoice->m_id);
+        bool ok = Singletons::m_pServices->closeInvoice(pCurrMemberPtr->m_id, pInvoiceResultPtr->m_pInvoice->m_id);
         if (!ok) {
             Singletons::m_pLogger->Error(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kInvoice,
                     QString("error closing invoice. invoiceId %1").arg(pInvoiceResultPtr->m_pInvoice->m_id));
@@ -118,7 +131,7 @@ namespace PenyaManager {
         Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kInvoice,
                 QString("invoiceId %1").arg(pInvoiceResultPtr->m_pInvoice->m_id));
 
-        printInvoice(pCurrMember, pInvoiceResultPtr->m_pInvoice);
+        printInvoice(pCurrMemberPtr, pInvoiceResultPtr->m_pInvoice);
 
         // call dashboard window
         m_switchCentralWidgetCallback(WindowKey::kMemberDashboardWindowKey);
@@ -212,6 +225,7 @@ namespace PenyaManager {
         // invoice date is invoice creation date
         // Can be old (e.g. an unclosed invoice created some days ago)
         // print current date
+        // this date should be localized
         invoiceData["dateValue"] = QDateTime::currentDateTime();
 
         // invoice products info
@@ -241,8 +255,8 @@ namespace PenyaManager {
         //
         // Loading Current Invoice
         //
-        MemberPtr pCurrMember = Singletons::m_pCurrMember;
-        InvoiceResultPtr pInvoiceResultPtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
+        MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
+        InvoiceResultPtr pInvoiceResultPtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMemberPtr->m_id);
         if (pInvoiceResultPtr->m_error) {
             QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
             return;
@@ -253,7 +267,7 @@ namespace PenyaManager {
             return;
         }
         m_currentPage--;
-        fillInvoiceData(pCurrMember, pInvoiceResultPtr->m_pInvoice);
+        fillInvoiceData(pCurrMemberPtr, pInvoiceResultPtr->m_pInvoice);
     }
     //
     void InvoiceWindow::on_nextPagePushButton_clicked()
@@ -261,8 +275,8 @@ namespace PenyaManager {
         //
         // Loading Current Invoice
         //
-        MemberPtr pCurrMember = Singletons::m_pCurrMember;
-        InvoiceResultPtr pInvoiceResultPtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
+        MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
+        InvoiceResultPtr pInvoiceResultPtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMemberPtr->m_id);
         if (pInvoiceResultPtr->m_error) {
             QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
             return;
@@ -273,7 +287,7 @@ namespace PenyaManager {
             return;
         }
         m_currentPage++;
-        fillInvoiceData(pCurrMember, pInvoiceResultPtr->m_pInvoice);
+        fillInvoiceData(pCurrMemberPtr, pInvoiceResultPtr->m_pInvoice);
     }
 }
 

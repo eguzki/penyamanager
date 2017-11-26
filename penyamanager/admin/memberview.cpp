@@ -81,10 +81,11 @@ namespace PenyaManager {
     //
     void MemberView::init()
     {
+        this->m_memberImageFilename.clear();
         // change password button
         this->ui->changePasswordPushButton->setEnabled(Singletons::m_currentMemberId >= 0);
         //
-        // Product info
+        // Member info
         //
         if (Singletons::m_currentMemberId >= 0) {
             fillMemberInfo(Singletons::m_currentMemberId);
@@ -204,7 +205,7 @@ namespace PenyaManager {
             pMemberResultPtr->m_member->m_notes = this->ui->notesTextEdit->toPlainText();
             // regDate -> no change
             // lastmodfies
-            pMemberResultPtr->m_member->m_lastModified = QDateTime::currentDateTime();
+            pMemberResultPtr->m_member->m_lastModified = QDateTime::currentDateTimeUtc();
 
             // update in ddbb
             bool ok = Singletons::m_pDAO->updateMember(pMemberResultPtr->m_member);
@@ -222,6 +223,7 @@ namespace PenyaManager {
             }
             Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kMember,
                     QString("editmember %1").arg(pMemberResultPtr->m_member->m_id));
+            QMessageBox::information(this, tr("Update Member"), tr("Done successfully"));
         } else {
             // new item
             MemberPtr pMemberPtr(new Member);
@@ -283,11 +285,11 @@ namespace PenyaManager {
             // notes (optional)
             pMemberPtr->m_notes = this->ui->notesTextEdit->toPlainText();
             // regDate
-            pMemberPtr->m_regDate = QDateTime::currentDateTime();
+            pMemberPtr->m_regDate = QDateTime::currentDateTimeUtc();
             // lastmodfies
-            pMemberPtr->m_lastModified = QDateTime::currentDateTime();
+            pMemberPtr->m_lastModified = QDateTime::currentDateTimeUtc();
             // last Login
-            pMemberPtr->m_lastLogin = QDateTime::currentDateTime();
+            pMemberPtr->m_lastLogin = QDateTime::currentDateTimeUtc();
             // default password: "0000"
             pMemberPtr->m_pwd = Utils::hashSHA256asHex("0000");
             // create in ddbb
@@ -304,11 +306,11 @@ namespace PenyaManager {
             }
             Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kMember,
                     QString("newmember %1").arg(memberId));
+            QMessageBox::information(this, tr("Create new member"), tr("Done successfully"));
         }
 
         // reset var
         this->m_memberImageFilename.clear();
-        QMessageBox::information(this, "Create Member", "Done successfully");
         // call family product management window throw adminmainwindow
         m_switchCentralWidgetCallback(WindowKey::kMemberListViewWindowKey);
     }
@@ -383,7 +385,10 @@ namespace PenyaManager {
         // Check write permissions
         QFileInfo imagePath(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString());
         if (!imagePath.isDir() || !imagePath.isWritable()) {
-            QMessageBox::warning(this, "Could not write", Singletons::m_pSettings->value(Constants::kResourcePathKey).toString());
+            Singletons::m_pLogger->Warn(Constants::kSystemUserId, PenyaManager::LogAction::kMember,
+                    QString("Unable to write to %1").arg(imagePath.absoluteFilePath()));
+            QMessageBox::warning(this, tr("Unable to upload image"),
+                    QString("Unable to write to %1").arg(imagePath.absoluteFilePath()));
             return;
         }
         // open file dialog
@@ -392,9 +397,11 @@ namespace PenyaManager {
         QString fn = QFileDialog::getOpenFileName(this, tr("Open File..."),
                 QDir::homePath(), tr("Image Files (*.gif *.jpeg *.jpg *.png)"));
         if (fn.isEmpty()) {
-            QMessageBox::information(this, "Information", "No file selected");
+            QMessageBox::information(this, tr("Information"), tr("No file selected"));
             return;
         }
+        // this object member is being assigned only on image push.
+        // On save, it will be known new image has been assigned
         this->m_memberImageFilename = fn;
         // show image
         QPixmap providerPixmap = GuiUtils::getImage(fn);
@@ -420,7 +427,7 @@ namespace PenyaManager {
         QString pwdHash = Utils::hashSHA256asHex(passChangeDialg.getPassword());
 
         // save new password in ddbb
-        bool ok = Singletons::m_pDAO->changeMemberPassword(Singletons::m_currentMemberId, pwdHash, QDateTime::currentDateTime());
+        bool ok = Singletons::m_pDAO->changeMemberPassword(Singletons::m_currentMemberId, pwdHash, QDateTime::currentDateTimeUtc());
         if (!ok) {
             QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;

@@ -94,7 +94,20 @@ namespace PenyaManager {
         //
         // Loading User profile
         //
-        MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
+        MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberById(Singletons::m_pCurrMember->m_id);
+        if (pMemberResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            return;
+        }
+        if (!pMemberResultPtr->m_member) {
+            // member not found, should not happen
+            Singletons::m_pLogger->Warn(Constants::kSystemUserId, PenyaManager::LogAction::kDashboard,
+                    QString("Unable to find owner by id %1").arg(Singletons::m_pCurrMember->m_id));
+            return;
+        }
+
+        MemberPtr pCurrMemberPtr = pMemberResultPtr->m_member;
+        Singletons::m_pCurrMember = pCurrMemberPtr;
         this->m_pMemberProfileGroupBox->init(pCurrMemberPtr);
 
         //
@@ -108,6 +121,7 @@ namespace PenyaManager {
         //QDateTime nowDateTime = QDateTime(QDate(2015, 5, 11), QTime(0,0)); // when reservations cannot be done
         //QDateTime nowDateTime = QDateTime(QDate(2015, 5, 11), QTime(7,0)); // monday after deadline
         //QDateTime nowDateTime = QDateTime(QDate(2015, 5, 17), QTime(7,0)); // sunday (same day min and max)
+        // this date should be localized
         QDateTime nowDateTime = QDateTime::currentDateTime();
         QDate nowDate = nowDateTime.date();
 
@@ -214,7 +228,7 @@ namespace PenyaManager {
                     // show reservation action
                     // only when there is no reserved table for this (date, reservationType)
                     QPushButton *pReservationButton = new QPushButton(tr("Reserve"), this->ui->tableReservationTableWidget);
-                    this->connect(pReservationButton, &QPushButton::clicked, std::bind(&TableReservationView::on_reservedButton_clicked, this, pReservationItemPtr->m_idItem));
+                    this->connect(pReservationButton, &QPushButton::clicked, std::bind(&TableReservationView::onReservedButton_clicked, this, pReservationItemPtr->m_idItem));
                     this->ui->tableReservationTableWidget->setCellWidget(rowCount, 4, pReservationButton);
                 }
             } else {
@@ -231,7 +245,7 @@ namespace PenyaManager {
                     if (pReservationPtr->m_idMember == pMemberPtr->m_id) {
                         // show cancel button action
                         QPushButton *pCancelButton = new QPushButton(tr("Cancel"), this->ui->tableReservationTableWidget);
-                        this->connect(pCancelButton, &QPushButton::clicked, std::bind(&TableReservationView::on_cancelButton_clicked, this, pReservationPtr->m_reservationId));
+                        this->connect(pCancelButton, &QPushButton::clicked, std::bind(&TableReservationView::onCancelButton_clicked, this, pReservationPtr->m_reservationId));
                         this->ui->tableReservationTableWidget->setCellWidget(rowCount, 4, pCancelButton);
                     }
                 }
@@ -367,7 +381,7 @@ namespace PenyaManager {
         }
     }
     //
-    void TableReservationView::on_reservedButton_clicked(int itemId)
+    void TableReservationView::onReservedButton_clicked(int itemId)
     {
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
         QDate date = this->ui->calendarWidget->selectedDate();
@@ -429,7 +443,7 @@ namespace PenyaManager {
         }
     }
     //
-    void TableReservationView::on_cancelButton_clicked(int reservationId)
+    void TableReservationView::onCancelButton_clicked(int reservationId)
     {
         bool ok = false;
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;

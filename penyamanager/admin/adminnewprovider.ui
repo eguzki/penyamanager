@@ -127,6 +127,40 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <item>
+          <widget class="QWidget" name="providerInfoWidget" native="true">
+           <layout class="QHBoxLayout" name="horizontalLayout_6">
+            <item>
+             <widget class="QLabel" name="idLabel">
+              <property name="text">
+               <string>Id:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="idValueLabel">
+              <property name="text">
+               <string>TextLabel</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="regDateLabel">
+              <property name="text">
+               <string>Created on:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="regDateValueLabel">
+              <property name="text">
+               <string>TextLabel</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
           <widget class="QWidget" name="nameFormWidget" native="true">
            <layout class="QHBoxLayout" name="horizontalLayout_3">
             <item>
