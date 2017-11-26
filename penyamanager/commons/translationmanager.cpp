@@ -24,9 +24,11 @@ namespace PenyaManager {
         m_translationLanguageFile = QString("penyamanager_%1").arg(m_pLanguagesPrefixArray[m_currentLangIndex]);
         m_adminTranslationLanguageFile = QString("penyamanageradmin_%1").arg(m_pLanguagesPrefixArray[m_currentLangIndex]);
         if (m_pLanguagesPrefixArray[m_currentLangIndex] == "eu") {
-            m_locale = QLocale(QLocale::Basque);
+            // lang and country
+            m_locale = QLocale(QLocale::Basque, QLocale::Spain);
         } else if (m_pLanguagesPrefixArray[m_currentLangIndex] == "es") {
-            m_locale = QLocale(QLocale::Spanish);
+            // lang and country
+            m_locale = QLocale(QLocale::Spanish, QLocale::Spain);
         }
     }
     //
