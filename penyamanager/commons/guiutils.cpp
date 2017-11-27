@@ -142,4 +142,23 @@ namespace PenyaManager {
         Singletons::m_pLogger->Info(Constants::kSystemUserId, LogAction::kPrint, QString("printed member list"));
         GuiUtils::printText(html);
     }
+    //
+    void GuiUtils::infoMessageBox(QWidget *parent, const QString &message)
+    {
+        QMessageBox qAboutMessageBox(QMessageBox::Information, QString(), message, QMessageBox::Ok, parent, Qt::FramelessWindowHint);
+        qAboutMessageBox.exec();
+    }
+    //
+    void GuiUtils::criticalMessageBox(QWidget *parent, const QString &message)
+    {
+        QMessageBox qcriticalMessageBox(QMessageBox::Critical, QString(), message, QMessageBox::Ok, parent, Qt::FramelessWindowHint);
+        qcriticalMessageBox.exec();
+    }
+    //
+    QMessageBox::StandardButton GuiUtils::questionMessageBox(QWidget *parent, const QString &message)
+    {
+        QMessageBox qQuestionMessageBox(QMessageBox::Question, QString(), message, QMessageBox::Yes|QMessageBox::No, parent, Qt::FramelessWindowHint);
+        int res = qQuestionMessageBox.exec();
+        return static_cast<QMessageBox::StandardButton>(res);
+    }
 }

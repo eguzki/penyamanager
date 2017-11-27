@@ -1,8 +1,8 @@
 //
 
-#include <QMessageBox>
 #include <QPushButton>
 #include <mustache.h>
+#include <QMessageBox>
 
 #include <commons/guiutils.h>
 #include <commons/singletons.h>
@@ -45,7 +45,7 @@ namespace PenyaManager {
         //
         MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberById(Singletons::m_pCurrMember->m_id);
         if (pMemberResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            GuiUtils::criticalMessageBox(this, tr("Database error. Contact administrator"));
             return;
         }
         if (!pMemberResultPtr->m_member) {
@@ -74,14 +74,11 @@ namespace PenyaManager {
     void DepositWindow::on_confirmButton_clicked()
     {
         if (m_depositValue <= 0){
-            QMessageBox::warning(this, tr("deposit not valid"), tr("deposit should be more than 0€"));
+            GuiUtils::criticalMessageBox(this, tr("Deposit not valid"));
             return;
         }
 
-        QMessageBox::StandardButton reply = QMessageBox::question(this, tr("Create Deposit"),
-                tr("Create deposit for %1 €?").arg(QString::number(m_depositValue, 'f', 2)),
-                QMessageBox::Yes|QMessageBox::No);
-
+        QMessageBox::StandardButton reply = GuiUtils::questionMessageBox(this, tr("Create deposit for %1 €?").arg(QString::number(m_depositValue, 'f', 2)));
         if (reply == QMessageBox::No){
             return;
         }
@@ -92,13 +89,13 @@ namespace PenyaManager {
         // Create deposit info
         DepositResultPtr pDepositResultPtr = Singletons::m_pServices->createDeposit(pCurrMemberPtr, m_depositValue);
         if (pDepositResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            GuiUtils::criticalMessageBox(this, tr("Database error. Contact administrator"));
             return;
         }
         if (!pDepositResultPtr->m_deposit) {
             Singletons::m_pLogger->Error(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kDeposit,
                     QString("createDeposit. amount %1").arg(m_depositValue, 0, 'f', 2));
-            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            GuiUtils::criticalMessageBox(this, tr("Database error. Contact administrator"));
             return;
         }
 
@@ -108,14 +105,14 @@ namespace PenyaManager {
         if (!transactionOk) {
             Singletons::m_pLogger->Error(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kDeposit,
                     QString("createaccounttransaction. amount %1").arg(m_depositValue, 0, 'f', 2));
-            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            GuiUtils::criticalMessageBox(this, tr("Database error. Contact administrator"));
             return;
         }
         Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kDeposit,
                 QString("Deposit id %1. Amount %2").arg(pDepositResultPtr->m_deposit->m_id).arg(QString::number(m_depositValue, 'f', 2)));
         // print deposit
         printDeposit(pCurrMemberPtr, pDepositResultPtr->m_deposit);
-        QMessageBox::information(this, tr("Deposit"), tr("Deposit for %1 € created sucessfully").arg(QString::number(m_depositValue, 'f', 2)));
+        GuiUtils::infoMessageBox(this, tr("Deposit for %1 € created sucessfully").arg(QString::number(m_depositValue, 'f', 2)));
         // Go to dashboard window
         m_switchCentralWidgetCallback(WindowKey::kMemberDashboardWindowKey);
     }
