@@ -15,6 +15,7 @@
   </property>
   <property name="styleSheet">
    <string notr="true">#pageInfoLabel{
+color: black;
 font: 18pt &quot;Calibri&quot;;
 qproperty-alignment: AlignCenter;
 }
@@ -24,6 +25,7 @@ QListWidget {
     alternate-background-color:  rgb(158,158,158);
     background: rgb(158,158,158);
 }
+
 
 
 
@@ -40,6 +42,7 @@ font: 18pt &quot;Calibri&quot;;
 #familyListWidget {
     alternate-background-color:  rgb(158,158,158);
     background: rgb(189,189,189);
+    selection-background-color: rgb(56,142,60);
 }
 
 #invoiceTableWidget {
@@ -58,18 +61,74 @@ PenyaManager--ProductItemWidget * {
 }
 
 
+#prevPagePushButton{
+qproperty-icon: url(&quot;:/images/left.png&quot;);
+qproperty-iconSize: 50px 50px;
+}
+
+#nextPagePushButton{
+qproperty-icon: url(&quot;:/images/right.png&quot;);
+qproperty-iconSize: 50px 50px;
+}
 
 
+#invoiceResetButton{
+qproperty-icon: url(&quot;:/images/reset.png&quot;);
+qproperty-iconSize: 60px 60px;
+}
+
+#invoiceCloseButton{
+qproperty-icon: url(&quot;:/images/ok.png&quot;);
+qproperty-iconSize: 60px 60px;
+}
 
 
 #totalDisplayLabel {
+color: black;
 font-weight: bold;
 font: 40pt &quot;Calibri&quot;;
 }
 
 #totalLabel {
+color: black;
 font-weight: bold;
 font: 40pt &quot;Calibri&quot;;
+}
+
+#invoiceInfoWidget {
+background: rgb(158,158,158);
+}
+
+#newinvoiceButton{
+qproperty-icon: url(&quot;:/images/newinvoice.png&quot;);
+qproperty-iconSize: 120px 120px;
+}
+
+#tableReservationButton{
+qproperty-icon: url(&quot;:/images/reservation.png&quot;);
+qproperty-iconSize: 120px 120px;
+}
+
+
+#invoicesPushButton{
+qproperty-icon: url(&quot;:/images/invoices.png&quot;);
+qproperty-iconSize: 120px 120px;
+}
+
+#accountButton{
+qproperty-icon: url(&quot;:/images/account.png&quot;);
+qproperty-iconSize: 120px 120px;
+}
+
+
+#depositsButton{
+qproperty-icon: url(&quot;:/images/deposits.png&quot;);
+qproperty-iconSize: 120px 120px;
+}
+
+#exitButton{
+qproperty-icon: url(&quot;:/images/exit.png&quot;);
+qproperty-iconSize: 120px 120px;
 }</string>
   </property>
   <property name="locale">
@@ -129,9 +188,6 @@ font: 40pt &quot;Calibri&quot;;
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="text">
-         <string>NewInvoice</string>
-        </property>
         <property name="checkable">
          <bool>true</bool>
         </property>
@@ -148,9 +204,6 @@ font: 40pt &quot;Calibri&quot;;
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="text">
-         <string>Reservations</string>
-        </property>
        </widget>
       </item>
       <item>
@@ -165,7 +218,7 @@ font: 40pt &quot;Calibri&quot;;
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Invoices</string>
+         <string/>
         </property>
         <property name="checkable">
          <bool>false</bool>
@@ -184,7 +237,7 @@ font: 40pt &quot;Calibri&quot;;
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Account</string>
+         <string/>
         </property>
        </widget>
       </item>
@@ -207,9 +260,6 @@ font: 40pt &quot;Calibri&quot;;
           <width>16777215</width>
           <height>16777215</height>
          </size>
-        </property>
-        <property name="text">
-         <string>Deposits</string>
         </property>
        </widget>
       </item>
@@ -237,7 +287,7 @@ font: 40pt &quot;Calibri&quot;;
          <bool>false</bool>
         </property>
         <property name="text">
-         <string>Exit</string>
+         <string/>
         </property>
        </widget>
       </item>
@@ -246,6 +296,9 @@ font: 40pt &quot;Calibri&quot;;
    </item>
    <item>
     <widget class="QWidget" name="mainWidget" native="true">
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
      <layout class="QHBoxLayout" name="verticalLayout_2">
       <property name="leftMargin">
        <number>0</number>
@@ -279,7 +332,7 @@ font: 40pt &quot;Calibri&quot;;
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">selection-background-color: rgba(229, 92, 92, 122);</string>
+         <string notr="true"/>
         </property>
         <property name="verticalScrollBarPolicy">
          <enum>Qt::ScrollBarAlwaysOff</enum>
@@ -468,16 +521,16 @@ font: 40pt &quot;Calibri&quot;;
               </property>
               <layout class="QHBoxLayout" name="horizontalLayout_10">
                <property name="leftMargin">
-                <number>0</number>
+                <number>2</number>
                </property>
                <property name="topMargin">
-                <number>0</number>
+                <number>6</number>
                </property>
                <property name="rightMargin">
-                <number>0</number>
+                <number>2</number>
                </property>
                <property name="bottomMargin">
-                <number>0</number>
+                <number>6</number>
                </property>
                <item>
                 <widget class="QPushButton" name="prevPagePushButton">
@@ -486,9 +539,6 @@ font: 40pt &quot;Calibri&quot;;
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
-                 </property>
-                 <property name="text">
-                  <string>&lt;</string>
                  </property>
                 </widget>
                </item>
@@ -506,9 +556,6 @@ font: 40pt &quot;Calibri&quot;;
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
-                 </property>
-                 <property name="text">
-                  <string>&gt;</string>
                  </property>
                 </widget>
                </item>
@@ -534,13 +581,13 @@ font: 40pt &quot;Calibri&quot;;
            </property>
            <layout class="QHBoxLayout" name="horizontalLayout_8">
             <property name="leftMargin">
-             <number>0</number>
+             <number>2</number>
             </property>
             <property name="topMargin">
              <number>0</number>
             </property>
             <property name="rightMargin">
-             <number>0</number>
+             <number>2</number>
             </property>
             <property name="bottomMargin">
              <number>0</number>
@@ -584,16 +631,16 @@ font: 40pt &quot;Calibri&quot;;
              <number>6</number>
             </property>
             <property name="leftMargin">
-             <number>0</number>
+             <number>2</number>
             </property>
             <property name="topMargin">
-             <number>0</number>
+             <number>2</number>
             </property>
             <property name="rightMargin">
-             <number>0</number>
+             <number>2</number>
             </property>
             <property name="bottomMargin">
-             <number>0</number>
+             <number>2</number>
             </property>
             <item>
              <widget class="QPushButton" name="invoiceResetButton">
@@ -602,9 +649,6 @@ font: 40pt &quot;Calibri&quot;;
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
-              </property>
-              <property name="text">
-               <string>Reset</string>
               </property>
              </widget>
             </item>
@@ -615,9 +659,6 @@ font: 40pt &quot;Calibri&quot;;
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
-              </property>
-              <property name="text">
-               <string>Close</string>
               </property>
              </widget>
             </item>

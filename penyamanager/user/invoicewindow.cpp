@@ -33,8 +33,8 @@ namespace PenyaManager {
         this->ui->invoiceProductTableWidget->setColumnCount(4);
         translateTable();
         Uint32 column = 0;
-        this->ui->invoiceProductTableWidget->setColumnWidth(column++, 231);
-        this->ui->invoiceProductTableWidget->setColumnWidth(column++, 83);
+        this->ui->invoiceProductTableWidget->setColumnWidth(column++, 228);
+        this->ui->invoiceProductTableWidget->setColumnWidth(column++, 85);
         this->ui->invoiceProductTableWidget->setColumnWidth(column++, 45);
         this->ui->invoiceProductTableWidget->setColumnWidth(column++, 100);
     }
@@ -93,12 +93,6 @@ namespace PenyaManager {
         headers.append(tr("count"));
         headers.append(tr("total"));
         this->ui->invoiceProductTableWidget->setHorizontalHeaderLabels(headers);
-    }
-    //
-    void InvoiceWindow::on_backPushButton_clicked()
-    {
-        // Go to dashboard window
-        m_switchCentralWidgetCallback(WindowKey::kMemberDashboardWindowKey);
     }
     //
     void InvoiceWindow::on_confirmPushButton_clicked()
@@ -185,8 +179,6 @@ namespace PenyaManager {
         //
         // Invoice Information
         //
-        // ID
-        this->ui->invoiceIdInfoLabel->setText(QString("%1").arg(pInvoicePtr->m_id));
         // Date
         QString dateLocalized = Singletons::m_translationManager.getLocale().toString(pInvoicePtr->m_date, QLocale::NarrowFormat);
         this->ui->invoiceDateInfoLabel->setText(dateLocalized);
@@ -289,5 +281,36 @@ namespace PenyaManager {
         m_currentPage++;
         fillInvoiceData(pCurrMemberPtr, pInvoiceResultPtr->m_pInvoice);
     }
+
+    void InvoiceWindow::on_newinvoiceButton_clicked()
+    {
+        m_switchCentralWidgetCallback(WindowKey::kMemberDashboardWindowKey);
+    }
+    //
+    void InvoiceWindow::on_tableReservationButton_clicked()
+    {
+        m_switchCentralWidgetCallback(WindowKey::kTableReservationViewWindowKey);
+    }
+    //
+    void InvoiceWindow::on_invoicesPushButton_clicked()
+    {
+        m_switchCentralWidgetCallback(WindowKey::kInvoiceListWindoKey);
+    }
+    //
+    void InvoiceWindow::on_accountButton_clicked()
+    {
+        m_switchCentralWidgetCallback(WindowKey::kAccountViewWindowKey);
+    }
+    //
+    void InvoiceWindow::on_depositsButton_clicked()
+    {
+        m_switchCentralWidgetCallback(WindowKey::kDepositsWindowKey);
+    }
+    //
+    void InvoiceWindow::on_exitButton_clicked()
+    {
+        m_switchCentralWidgetCallback(WindowKey::kLoginWindowKey);
+    }
+
 }
 
