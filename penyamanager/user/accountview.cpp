@@ -1,9 +1,8 @@
 //
 
-#include <QMessageBox>
-
 #include <commons/utils.h>
 #include <commons/singletons.h>
+#include <commons/guiutils.h>
 #include "accountview.h"
 #include "ui_accountview.h"
 
@@ -63,7 +62,7 @@ namespace PenyaManager {
         //
         MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberById(Singletons::m_pCurrMember->m_id);
         if (pMemberResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            GuiUtils::criticalMessageBox(this, tr("Database error. Contact administrator"));
             return;
         }
         if (!pMemberResultPtr->m_member) {
@@ -149,7 +148,7 @@ namespace PenyaManager {
         QDate toDate = this->ui->toCalendarWidget->selectedDate();
         if (fromDate > toDate)
         {
-            QMessageBox::information(this, "Wrong search criteria", "From date must be before To date");
+            GuiUtils::infoMessageBox(this, tr("'From' date must be before 'To' date"));
             return;
         }
 
@@ -180,13 +179,13 @@ namespace PenyaManager {
         // fetch data
         pTransactionListResultPtr = Singletons::m_pDAO->getAccountListByMemberId(pCurrMemberPtr->m_id, fromDate, toDate, m_currentPage, Constants::kAccountListPageCount);
         if (pTransactionListResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            GuiUtils::criticalMessageBox(this, tr("Database error. Contact administrator"));
             return;
         }
 
         pTransactionListStatsResultPtr = Singletons::m_pServices->getAccountListByMemberIdStats(pCurrMemberPtr->m_id, fromDate, toDate);
         if (pTransactionListStatsResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            GuiUtils::criticalMessageBox(this, tr("Database error. Contact administrator"));
             return;
         }
         // enable-disable pagination buttons

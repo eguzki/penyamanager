@@ -2,7 +2,6 @@
 
 #include <functional>
 using namespace std::placeholders;
-#include <QMessageBox>
 
 #include "numitemdialog.h"
 #include "ui_numitemdialog.h"

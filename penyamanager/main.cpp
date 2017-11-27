@@ -2,12 +2,12 @@
 
 #include <QApplication>
 #include <QTranslator>
-#include <QMessageBox>
 
 #include <commons/constants.h>
 #include <commons/logging.h>
 #include <commons/IPartner.h>
 #include <commons/singletons.h>
+#include <commons/guiutils.h>
 #include <commons/utils.h>
 #include <user/mainwindow.h>
 #include <user/memberdashboardwindow.h>
@@ -27,13 +27,13 @@ int main(int argc, char *argv[])
 
     // Settings
     QSettings settings(PenyaManager::Constants::kOrganizationName, PenyaManager::Constants::kApplicationName);
-    
+
     PenyaManager::PenyaManagerLoggerPtr pLogger = PenyaManager::NewLoggerInstance(&settings,"penyamanager");
 
     if (!settings.contains(PenyaManager::Constants::kResourcePathKey))
     {
         pLogger->Error(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kMain, "Settings file not found. Call the stupid administrator and complain for incompetence");
-        QMessageBox::critical(NULL, QObject::tr("Error"), QObject::tr("Settings file not found. Call the stupid administrator and complain for incompetence"));
+        PenyaManager::GuiUtils::criticalMessageBox(NULL, QObject::tr("Settings file not found. Call the stupid administrator and complain for incompetence"));
         return 1;
     }
 
@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
 
     if (!PenyaManager::Singletons::m_pDAO->isOpen()) {
         PenyaManager::Singletons::m_pLogger->Error(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kMain, "Database connection failed");
-        QMessageBox::critical(NULL, QObject::tr("Error"), QObject::tr("Database connection failed. Call the stupid administrator and complain for incompetence"));
+        PenyaManager::GuiUtils::criticalMessageBox(NULL, QObject::tr("Database connection failed. Call the stupid administrator and complain for incompetence"));
         return 1;
     }
 

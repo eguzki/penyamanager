@@ -1,6 +1,4 @@
 //
-#include <QMessageBox>
-
 #include <commons/utils.h>
 #include <commons/guiutils.h>
 #include <commons/constants.h>
@@ -46,7 +44,7 @@ namespace PenyaManager {
             QSqlError err = Singletons::m_pDAO->lastError();
             Singletons::m_pLogger->Error(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kLogin,
                     QString("Unable to initialize Database, %1").arg(err.text()));
-            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            GuiUtils::criticalMessageBox(this, tr("Database error. Contact administrator"));
             qApp->exit(1);
             return;
         }
@@ -57,7 +55,7 @@ namespace PenyaManager {
         InvoiceResultPtr pLastInvoiceResultPtr = Singletons::m_pDAO->getLastInvoiceInfo();
         if (pLastInvoiceResultPtr->m_error) {
             // Last invoice not found
-            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            GuiUtils::criticalMessageBox(this, tr("Database error. Contact administrator"));
             return;
         }
         if (!pLastInvoiceResultPtr->m_pInvoice) {
@@ -73,7 +71,7 @@ namespace PenyaManager {
         if (pMemberResultPtr->m_error) {
             Singletons::m_pLogger->Error(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kLogin,
                     QString("getMemberById %1").arg(pLastInvoiceResultPtr->m_pInvoice->m_memberId));
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            GuiUtils::criticalMessageBox(this, tr("Database error. Contact administrator"));
             return;
         }
         if (!pMemberResultPtr->m_member) {
@@ -127,13 +125,13 @@ namespace PenyaManager {
     void LoginWindow::on_loginPushButton_clicked()
     {
         // Ask for userId
-        NumItemDialog numItemDialog(this, tr("Insert member ID"));
+        NumItemDialog numItemDialog(this, tr("Insert username"));
         numItemDialog.exec();
         this->m_username = numItemDialog.getKey();
         // check member username input
         if (this->m_username < 0)
         {
-            QMessageBox::about(this, tr("Login failed"), tr("Member code not set"));
+            GuiUtils::infoMessageBox(this, tr("Username required"));
             return;
         }
 
@@ -144,7 +142,7 @@ namespace PenyaManager {
         // check password input
         if (this->m_password.isEmpty())
         {
-            QMessageBox::about(this, tr("Login failed"), tr("Password not set"));
+            GuiUtils::infoMessageBox(this, tr("Password not set"));
             return;
         }
 
@@ -153,7 +151,7 @@ namespace PenyaManager {
         if (pMemberResultPtr->m_error) {
             Singletons::m_pLogger->Error(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kLogin,
                     QString("getMemberByUsername %1").arg(this->m_username));
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            GuiUtils::criticalMessageBox(this, tr("Database error. Contact administrator"));
             return;
         }
         if (!pMemberResultPtr->m_member)
@@ -161,35 +159,33 @@ namespace PenyaManager {
             Singletons::m_pLogger->Info(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kLogin,
                     QString("username %1 does not exist").arg(this->m_username));
             // User could not be found
-            QMessageBox::about(this, tr("Login failed"), tr("User not registered in the system: %1").arg(this->m_username));
+            GuiUtils::infoMessageBox(this, tr("User not registered in the system: %1").arg(this->m_username));
             return;
         }
 
         QString hashedPwd = Utils::hashSHA256asHex(this->m_password);
         if (pMemberResultPtr->m_member->m_pwd != hashedPwd)
         {
+            // User not active
             Singletons::m_pLogger->Info(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kLogin,
                     QString("id %1 username %2 pass check failed").arg(pMemberResultPtr->m_member->m_id).arg(this->m_username));
-            // User not active
-            QMessageBox::about(this, tr("Login failed"), tr("Password incorrect"));
+            GuiUtils::infoMessageBox(this, tr("Password incorrect"));
             return;
         }
 
         if (!pMemberResultPtr->m_member->m_active)
         {
+            // User not active
             Singletons::m_pLogger->Info(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kLogin,
                     QString("User id %1 not active").arg(pMemberResultPtr->m_member->m_id));
-            // User not active
-            QMessageBox::about(this, "Login failed",
-                    tr("User not active in the system: %1").arg(pMemberResultPtr->m_member->m_id));
+            GuiUtils::infoMessageBox(this, tr("User not active in the system: %1").arg(pMemberResultPtr->m_member->m_id));
             return;
         }
 
         if (pMemberResultPtr->m_member->m_balance < 0)
         {
             // User is slow payer
-            QMessageBox::warning(this, "Slow Payer",
-                    tr("Your current balance is negative: %1 €").arg(pMemberResultPtr->m_member->m_balance, 0, 'f', 2));
+            GuiUtils::criticalMessageBox(this, tr("Your current balance is negative: %1 €").arg(pMemberResultPtr->m_member->m_balance, 0, 'f', 2));
         }
 
         // login granted
@@ -200,7 +196,7 @@ namespace PenyaManager {
         bool ok = Singletons::m_pServices->cleanOutdatedInvoices();
         if (!ok) {
             Singletons::m_pLogger->Error(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kLogin, QString("cleanOutdatedInvoices"));
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            GuiUtils::criticalMessageBox(this, tr("Database error. Contact administrator"));
             return;
         }
 
@@ -210,7 +206,7 @@ namespace PenyaManager {
         // change last login date
         ok = Singletons::m_pDAO->changeMemberLastLogin(pMemberResultPtr->m_member->m_id, QDateTime::currentDateTimeUtc());
         if (!ok) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            GuiUtils::criticalMessageBox(this, tr("Database error. Contact administrator"));
             return;
         }
 
@@ -252,12 +248,12 @@ namespace PenyaManager {
         //
         InvoiceProductItemListResultPtr pInvoiceProductItemListResultPtr = Singletons::m_pDAO->getInvoiceProductItems(pLastInvoicePtr->m_id, m_currentPage, Constants::kLoginWindowProductListPageCount);
         if (pInvoiceProductItemListResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            GuiUtils::criticalMessageBox(this, tr("Database error. Contact administrator"));
             return;
         }
         InvoiceProductItemStatsResultPtr invoiceProductItemStatsResultPtr = Singletons::m_pDAO->getInvoiceProductItemsStats(pLastInvoicePtr->m_id);
         if (invoiceProductItemStatsResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            GuiUtils::criticalMessageBox(this, tr("Database error. Contact administrator"));
             return;
         }
         // enable-disable pagination buttons
@@ -316,7 +312,7 @@ namespace PenyaManager {
         InvoiceResultPtr pLastInvoiceResultPtr = Singletons::m_pDAO->getLastInvoiceInfo();
         if (pLastInvoiceResultPtr->m_error) {
             // Last invoice not found
-            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            GuiUtils::criticalMessageBox(this, tr("Database error. Contact administrator"));
             return;
         }
         if (!pLastInvoiceResultPtr->m_pInvoice) {
@@ -338,7 +334,7 @@ namespace PenyaManager {
         InvoiceResultPtr pLastInvoiceResultPtr = Singletons::m_pDAO->getLastInvoiceInfo();
         if (pLastInvoiceResultPtr->m_error) {
             // Last invoice not found
-            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            GuiUtils::criticalMessageBox(this, tr("Database error. Contact administrator"));
             return;
         }
         if (!pLastInvoiceResultPtr->m_pInvoice) {
