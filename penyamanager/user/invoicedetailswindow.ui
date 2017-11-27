@@ -13,6 +13,93 @@
   <property name="windowTitle">
    <string>Invoice Details</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">#invoiceInfoWidget {
+/*border: 1px solid gray;
+border-radius: 0px;*/
+background: rgb(158,158,158);
+}
+
+
+#invoiceTotalValueLabel{
+font-weight: bold;
+color: black;
+font: 35pt &quot;Calibri&quot;;
+}
+
+#invoiceTotalLabel{
+font-weight: bold;
+color: black;
+font: 35pt &quot;Calibri&quot;;
+}
+
+#invoiceDateLabel{
+font-weight: bold;
+font: 12pt &quot;Calibri&quot;;
+color: black;
+}
+
+
+#invoiceDateValueLabel{
+font-weight: bold;
+font: 12pt &quot;Calibri&quot;;
+color: black;
+}
+
+
+#invoiceLastModifLabel{
+font-weight: bold;
+font: 12pt &quot;Calibri&quot;;
+color: black;
+}
+
+
+#invoiceLastModifValueLabel{
+font-weight: bold;
+font: 12pt &quot;Calibri&quot;;
+color: black;
+}
+
+
+#newinvoiceButton{
+qproperty-icon: url(&quot;:/images/newinvoice.png&quot;);
+qproperty-iconSize: 120px 120px;
+}
+
+#tableReservationButton{
+qproperty-icon: url(&quot;:/images/reservation.png&quot;);
+qproperty-iconSize: 120px 120px;
+}
+
+
+#invoicesPushButton{
+qproperty-icon: url(&quot;:/images/invoices.png&quot;);
+qproperty-iconSize: 120px 120px;
+}
+
+#accountButton{
+qproperty-icon: url(&quot;:/images/account.png&quot;);
+qproperty-iconSize: 120px 120px;
+}
+
+
+#depositsButton{
+qproperty-icon: url(&quot;:/images/deposits.png&quot;);
+qproperty-iconSize: 120px 120px;
+}
+
+#exitButton{
+qproperty-icon: url(&quot;:/images/exit.png&quot;);
+qproperty-iconSize: 120px 120px;
+}
+
+
+#printButton{
+qproperty-icon: url(&quot;:/images/print.png&quot;);
+qproperty-iconSize: 60px 60px;
+}
+</string>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QWidget" name="topPanelWidget" native="true">
@@ -52,11 +139,8 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="text">
-         <string>NewInvoice</string>
-        </property>
         <property name="checkable">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -71,9 +155,6 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="text">
-         <string>Reservations</string>
-        </property>
        </widget>
       </item>
       <item>
@@ -86,9 +167,6 @@
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Invoices</string>
         </property>
         <property name="checkable">
          <bool>false</bool>
@@ -105,9 +183,6 @@
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Account</string>
         </property>
        </widget>
       </item>
@@ -130,9 +205,6 @@
           <width>16777215</width>
           <height>16777215</height>
          </size>
-        </property>
-        <property name="text">
-         <string>Deposits</string>
         </property>
        </widget>
       </item>
@@ -159,9 +231,6 @@
         <property name="autoFillBackground">
          <bool>false</bool>
         </property>
-        <property name="text">
-         <string>Exit</string>
-        </property>
        </widget>
       </item>
      </layout>
@@ -170,163 +239,30 @@
    <item>
     <widget class="QWidget" name="InvoiceWidget" native="true">
      <layout class="QHBoxLayout" name="horizontalLayout_9">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
       <item>
-       <widget class="QWidget" name="pruductListWidget" native="true">
-        <layout class="QVBoxLayout" name="verticalLayout_3">
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-         <item>
-          <widget class="QWidget" name="invoiceIdWidget" native="true">
-           <layout class="QHBoxLayout" name="horizontalLayout_3">
-            <property name="leftMargin">
-             <number>0</number>
-            </property>
-            <property name="topMargin">
-             <number>0</number>
-            </property>
-            <property name="rightMargin">
-             <number>0</number>
-            </property>
-            <property name="bottomMargin">
-             <number>0</number>
-            </property>
-            <item>
-             <widget class="QLabel" name="invoiceIdLabel">
-              <property name="text">
-               <string>#ref:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="invoiceIdValueLabel">
-              <property name="minimumSize">
-               <size>
-                <width>200</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="text">
-               <string notr="true">1</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <widget class="QWidget" name="memberIdWidget" native="true">
-           <layout class="QHBoxLayout" name="horizontalLayout_6">
-            <property name="leftMargin">
-             <number>0</number>
-            </property>
-            <property name="topMargin">
-             <number>0</number>
-            </property>
-            <property name="rightMargin">
-             <number>0</number>
-            </property>
-            <property name="bottomMargin">
-             <number>0</number>
-            </property>
-            <item>
-             <widget class="QLabel" name="memberIdLabel">
-              <property name="text">
-               <string>MemberId:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="memberIdValueLabel">
-              <property name="text">
-               <string notr="true">1</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <widget class="QWidget" name="invoiceDateWidget" native="true">
-           <layout class="QHBoxLayout" name="horizontalLayout_7">
-            <property name="leftMargin">
-             <number>0</number>
-            </property>
-            <property name="topMargin">
-             <number>0</number>
-            </property>
-            <property name="rightMargin">
-             <number>0</number>
-            </property>
-            <property name="bottomMargin">
-             <number>0</number>
-            </property>
-            <item>
-             <widget class="QLabel" name="invoiceDateLabel">
-              <property name="text">
-               <string>Date:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="invoiceDateValueLabel">
-              <property name="minimumSize">
-               <size>
-                <width>200</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>01/05/2015</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <widget class="QWidget" name="invoiceLastModifWidget" native="true">
-           <layout class="QHBoxLayout" name="horizontalLayout_8">
-            <property name="leftMargin">
-             <number>0</number>
-            </property>
-            <property name="topMargin">
-             <number>0</number>
-            </property>
-            <property name="rightMargin">
-             <number>0</number>
-            </property>
-            <property name="bottomMargin">
-             <number>0</number>
-            </property>
-            <item>
-             <widget class="QLabel" name="invoiceLastModifLabel">
-              <property name="text">
-               <string>Last Modified:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="invoiceLastModifValueLabel">
-              <property name="text">
-               <string notr="true"/>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-        </layout>
-       </widget>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
       </item>
       <item>
        <widget class="QWidget" name="invoiceInfoWidget" native="true">
@@ -356,6 +292,52 @@
           <number>0</number>
          </property>
          <item>
+          <widget class="QWidget" name="invoiceDateWidget" native="true">
+           <layout class="QHBoxLayout" name="horizontalLayout_7">
+            <property name="leftMargin">
+             <number>2</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>2</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="invoiceDateLabel">
+              <property name="text">
+               <string>Date:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="invoiceDateValueLabel">
+              <property name="text">
+               <string>01/05/2015</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="invoiceLastModifLabel">
+              <property name="text">
+               <string>Last Modified:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="invoiceLastModifValueLabel">
+              <property name="text">
+               <string notr="true"/>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
           <widget class="QTableWidget" name="productTableWidget">
            <property name="verticalScrollBarPolicy">
             <enum>Qt::ScrollBarAlwaysOff</enum>
@@ -381,13 +363,13 @@
           <widget class="QWidget" name="invoiceTotalWidget" native="true">
            <layout class="QHBoxLayout" name="horizontalLayout_4">
             <property name="leftMargin">
-             <number>0</number>
+             <number>2</number>
             </property>
             <property name="topMargin">
              <number>0</number>
             </property>
             <property name="rightMargin">
-             <number>0</number>
+             <number>2</number>
             </property>
             <property name="bottomMargin">
              <number>0</number>
@@ -418,65 +400,44 @@
            </layout>
           </widget>
          </item>
-        </layout>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QWidget" name="topPanelWidgetd" native="true">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>150</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>150</height>
-      </size>
-     </property>
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <property name="leftMargin">
-       <number>0</number>
-      </property>
-      <property name="topMargin">
-       <number>0</number>
-      </property>
-      <property name="rightMargin">
-       <number>0</number>
-      </property>
-      <property name="bottomMargin">
-       <number>0</number>
-      </property>
-      <item>
-       <widget class="QWidget" name="optionsWidget" native="true">
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
          <item>
-          <widget class="QPushButton" name="printButton">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
+          <widget class="QWidget" name="optionsWidget" native="true">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>75</height>
+            </size>
            </property>
-           <property name="text">
-            <string>Print Invoice</string>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>75</height>
+            </size>
            </property>
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <property name="leftMargin">
+             <number>2</number>
+            </property>
+            <property name="topMargin">
+             <number>2</number>
+            </property>
+            <property name="rightMargin">
+             <number>2</number>
+            </property>
+            <property name="bottomMargin">
+             <number>2</number>
+            </property>
+            <item>
+             <widget class="QPushButton" name="printButton">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </widget>
          </item>
         </layout>

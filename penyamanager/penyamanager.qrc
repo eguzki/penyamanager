@@ -7,9 +7,27 @@
         <file>resources/singlemember.html</file>
         <file>resources/doublemember.html</file>
         <file>VERSION</file>
-        <file>images/alegrialogo.png</file>
-        <file>images/logogrande.png</file>
-        <file>images/3.png</file>
+        <file>images/penyabackground.png</file>
         <file>images/trash.png</file>
+        <file>images/alegrialogo.png</file>
+        <file>images/newinvoice.png</file>
+        <file>images/deposits.png</file>
+        <file>images/reservation.png</file>
+        <file>images/invoices.png</file>
+        <file>images/account.png</file>
+        <file>images/exit.png</file>
+        <file>images/moon.png</file>
+        <file>images/sun.png</file>
+        <file>images/dusk.png</file>
+        <file>images/dawn.png</file>
+        <file>images/left.png</file>
+        <file>images/right.png</file>
+        <file>images/reset.png</file>
+        <file>images/print.png</file>
+        <file>images/ok.png</file>
+        <file>images/oven.png</file>
+        <file>images/fire.png</file>
+        <file>images/table.png</file>
+        <file>images/login.png</file>
     </qresource>
 </RCC>

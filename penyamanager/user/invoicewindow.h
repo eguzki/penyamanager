@@ -38,15 +38,25 @@ namespace PenyaManager {
 
         private slots:
             //
-            void on_backPushButton_clicked();
-            //
             void on_confirmPushButton_clicked();
             //
             void on_prevPagePushButton_clicked();
             //
             void on_nextPagePushButton_clicked();
 
-        private:
+            void on_newinvoiceButton_clicked();
+
+            void on_tableReservationButton_clicked();
+            //
+            void on_invoicesPushButton_clicked();
+            //
+            void on_accountButton_clicked();
+            //
+            void on_depositsButton_clicked();
+            //
+            void on_exitButton_clicked();
+
+    private:
             //
             Ui::InvoiceWindow *ui;
             //

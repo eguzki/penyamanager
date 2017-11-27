@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1117</width>
-    <height>768</height>
+    <width>1280</width>
+    <height>1024</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,8 +15,95 @@
   </property>
   <property name="styleSheet">
    <string notr="true">#pageInfoLabel{
+color: black;
 font: 18pt &quot;Calibri&quot;;
 qproperty-alignment: AlignCenter;
+}
+
+#resultsWidget {
+background: rgb(158,158,158);
+}
+
+
+#newinvoiceButton{
+qproperty-icon: url(&quot;:/images/newinvoice.png&quot;);
+qproperty-iconSize: 120px 120px;
+}
+
+#tableReservationButton{
+qproperty-icon: url(&quot;:/images/reservation.png&quot;);
+qproperty-iconSize: 120px 120px;
+}
+
+
+#invoicesPushButton{
+qproperty-icon: url(&quot;:/images/invoices.png&quot;);
+qproperty-iconSize: 120px 120px;
+}
+
+#accountButton{
+qproperty-icon: url(&quot;:/images/account.png&quot;);
+qproperty-iconSize: 120px 120px;
+}
+
+
+#depositsButton{
+qproperty-icon: url(&quot;:/images/deposits.png&quot;);
+qproperty-iconSize: 120px 120px;
+}
+
+#exitButton{
+qproperty-icon: url(&quot;:/images/exit.png&quot;);
+qproperty-iconSize: 120px 120px;
+}
+
+#midMorningButton{
+qproperty-icon: url(&quot;:/images/dawn.png&quot;);
+qproperty-iconSize: 120px 120px;
+}
+
+#lunchButton{
+qproperty-icon: url(&quot;:/images/sun.png&quot;);
+qproperty-iconSize: 120px 120px;
+}
+
+#supperButton{
+qproperty-icon: url(&quot;:/images/dusk.png&quot;);
+qproperty-iconSize: 120px 120px;
+}
+
+#dinnerButton{
+qproperty-icon: url(&quot;:/images/moon.png&quot;);
+qproperty-iconSize: 120px 120px;
+}
+
+
+#prevPagePushButton{
+qproperty-icon: url(&quot;:/images/left.png&quot;);
+qproperty-iconSize: 50px 50px;
+}
+
+#nextPagePushButton{
+qproperty-icon: url(&quot;:/images/right.png&quot;);
+qproperty-iconSize: 50px 50px;
+}
+
+
+#fireplacePushButton{
+qproperty-icon: url(&quot;:/images/fire.png&quot;);
+qproperty-iconSize: 160px 160px;
+}
+
+#ovenPushButton{
+qproperty-icon: url(&quot;:/images/oven.png&quot;);
+qproperty-iconSize: 120px 120px;
+}
+
+
+
+#tablePushButton{
+qproperty-icon: url(&quot;:/images/table.png&quot;);
+qproperty-iconSize: 120px 120px;
 }
 </string>
   </property>
@@ -56,9 +143,6 @@ qproperty-alignment: AlignCenter;
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="text">
-         <string>NewInvoice</string>
-        </property>
        </widget>
       </item>
       <item>
@@ -71,9 +155,6 @@ qproperty-alignment: AlignCenter;
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Reservations</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -94,9 +175,6 @@ qproperty-alignment: AlignCenter;
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="text">
-         <string>Invoices</string>
-        </property>
         <property name="checkable">
          <bool>false</bool>
         </property>
@@ -112,9 +190,6 @@ qproperty-alignment: AlignCenter;
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Account</string>
         </property>
        </widget>
       </item>
@@ -137,9 +212,6 @@ qproperty-alignment: AlignCenter;
           <width>16777215</width>
           <height>16777215</height>
          </size>
-        </property>
-        <property name="text">
-         <string>Deposits</string>
         </property>
        </widget>
       </item>
@@ -165,9 +237,6 @@ qproperty-alignment: AlignCenter;
         </property>
         <property name="autoFillBackground">
          <bool>false</bool>
-        </property>
-        <property name="text">
-         <string>Exit</string>
         </property>
        </widget>
       </item>
@@ -285,9 +354,6 @@ qproperty-alignment: AlignCenter;
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
-                 <property name="text">
-                  <string>MidMorning</string>
-                 </property>
                  <attribute name="buttonGroup">
                   <string notr="true">reservationTypeButtonGroup</string>
                  </attribute>
@@ -316,9 +382,6 @@ qproperty-alignment: AlignCenter;
                  <property name="layoutDirection">
                   <enum>Qt::LeftToRight</enum>
                  </property>
-                 <property name="text">
-                  <string>Lunch</string>
-                 </property>
                  <attribute name="buttonGroup">
                   <string notr="true">reservationTypeButtonGroup</string>
                  </attribute>
@@ -331,9 +394,6 @@ qproperty-alignment: AlignCenter;
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
-                 </property>
-                 <property name="text">
-                  <string>Supper</string>
                  </property>
                  <attribute name="buttonGroup">
                   <string notr="true">reservationTypeButtonGroup</string>
@@ -362,9 +422,6 @@ qproperty-alignment: AlignCenter;
                  </property>
                  <property name="layoutDirection">
                   <enum>Qt::LeftToRight</enum>
-                 </property>
-                 <property name="text">
-                  <string>Diner</string>
                  </property>
                  <attribute name="buttonGroup">
                   <string notr="true">reservationTypeButtonGroup</string>
@@ -397,9 +454,6 @@ qproperty-alignment: AlignCenter;
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
-                 <property name="text">
-                  <string>Tables</string>
-                 </property>
                  <attribute name="buttonGroup">
                   <string notr="true">reservationItemButtonGroup</string>
                  </attribute>
@@ -413,9 +467,6 @@ qproperty-alignment: AlignCenter;
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
-                 <property name="text">
-                  <string>Oven</string>
-                 </property>
                  <attribute name="buttonGroup">
                   <string notr="true">reservationItemButtonGroup</string>
                  </attribute>
@@ -428,9 +479,6 @@ qproperty-alignment: AlignCenter;
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
-                 </property>
-                 <property name="text">
-                  <string>Fireplace</string>
                  </property>
                  <attribute name="buttonGroup">
                   <string notr="true">reservationItemButtonGroup</string>
@@ -530,16 +578,16 @@ qproperty-alignment: AlignCenter;
            </property>
            <layout class="QHBoxLayout" name="horizontalLayout_9">
             <property name="leftMargin">
-             <number>0</number>
+             <number>2</number>
             </property>
             <property name="topMargin">
-             <number>0</number>
+             <number>6</number>
             </property>
             <property name="rightMargin">
-             <number>0</number>
+             <number>2</number>
             </property>
             <property name="bottomMargin">
-             <number>0</number>
+             <number>6</number>
             </property>
             <item>
              <widget class="QPushButton" name="prevPagePushButton">
@@ -548,9 +596,6 @@ qproperty-alignment: AlignCenter;
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
-              </property>
-              <property name="text">
-               <string>&lt;</string>
               </property>
              </widget>
             </item>
@@ -569,9 +614,6 @@ qproperty-alignment: AlignCenter;
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
-              <property name="text">
-               <string>&gt;</string>
-              </property>
              </widget>
             </item>
            </layout>
@@ -588,7 +630,7 @@ qproperty-alignment: AlignCenter;
  <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="reservationTypeButtonGroup"/>
   <buttongroup name="reservationItemButtonGroup"/>
+  <buttongroup name="reservationTypeButtonGroup"/>
  </buttongroups>
 </ui>

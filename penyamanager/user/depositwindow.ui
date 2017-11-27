@@ -92,6 +92,46 @@ font: 30pt &quot;Calibri&quot;;
 #pushButton_coma {
 font-weight: bold;
 font: 30pt &quot;Calibri&quot;;
+}
+
+
+#confirmButton{
+qproperty-icon: url(&quot;:/images/ok.png&quot;);
+qproperty-iconSize: 60px 60px;
+}
+
+
+
+#newinvoiceButton{
+qproperty-icon: url(&quot;:/images/newinvoice.png&quot;);
+qproperty-iconSize: 120px 120px;
+}
+
+#tableReservationButton{
+qproperty-icon: url(&quot;:/images/reservation.png&quot;);
+qproperty-iconSize: 120px 120px;
+}
+
+
+#invoicesPushButton{
+qproperty-icon: url(&quot;:/images/invoices.png&quot;);
+qproperty-iconSize: 120px 120px;
+}
+
+#accountButton{
+qproperty-icon: url(&quot;:/images/account.png&quot;);
+qproperty-iconSize: 120px 120px;
+}
+
+
+#depositsButton{
+qproperty-icon: url(&quot;:/images/deposits.png&quot;);
+qproperty-iconSize: 120px 120px;
+}
+
+#exitButton{
+qproperty-icon: url(&quot;:/images/exit.png&quot;);
+qproperty-iconSize: 120px 120px;
 }</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -130,9 +170,6 @@ font: 30pt &quot;Calibri&quot;;
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="text">
-         <string>NewInvoice</string>
-        </property>
        </widget>
       </item>
       <item>
@@ -142,9 +179,6 @@ font: 30pt &quot;Calibri&quot;;
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Reservations</string>
         </property>
        </widget>
       </item>
@@ -158,9 +192,6 @@ font: 30pt &quot;Calibri&quot;;
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Invoices</string>
         </property>
         <property name="checkable">
          <bool>false</bool>
@@ -177,9 +208,6 @@ font: 30pt &quot;Calibri&quot;;
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Account</string>
         </property>
        </widget>
       </item>
@@ -205,9 +233,6 @@ font: 30pt &quot;Calibri&quot;;
           <width>16777215</width>
           <height>16777215</height>
          </size>
-        </property>
-        <property name="text">
-         <string>Deposits</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -239,9 +264,6 @@ font: 30pt &quot;Calibri&quot;;
         </property>
         <property name="autoFillBackground">
          <bool>false</bool>
-        </property>
-        <property name="text">
-         <string>Exit</string>
         </property>
        </widget>
       </item>
@@ -723,9 +745,6 @@ font: 30pt &quot;Calibri&quot;;
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
-           </property>
-           <property name="text">
-            <string>Make Deposit</string>
            </property>
           </widget>
          </item>

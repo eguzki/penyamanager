@@ -23,30 +23,84 @@ QTableWidget{
 }
 
 #pageInfoLabel{
+color: black;
 font: 18pt &quot;Calibri&quot;;
 font-weight: bold;
 qproperty-alignment: AlignCenter;
 }
 
 #totalCountLabel {
+color: black;
 font-weight: bold;
 font: 18pt &quot;Calibri&quot;;
 }
 
 #totalCountValueLabel {
+color: black;
 font-weight: bold;
 font: 18pt &quot;Calibri&quot;;
 }
 
 #totalInvoicesLabel {
+color: black;
 font-weight: bold;
 font: 18pt &quot;Calibri&quot;;
 }
 
 #totalInvoicesValueLabel {
+color: black;
 font-weight: bold;
 font: 18pt &quot;Calibri&quot;;
-}</string>
+}
+
+#resultsWidget{
+background: rgb(158,158,158);
+}
+
+
+#newinvoiceButton{
+qproperty-icon: url(&quot;:/images/newinvoice.png&quot;);
+qproperty-iconSize: 120px 120px;
+}
+
+#tableReservationButton{
+qproperty-icon: url(&quot;:/images/reservation.png&quot;);
+qproperty-iconSize: 120px 120px;
+}
+
+
+#invoicesPushButton{
+qproperty-icon: url(&quot;:/images/invoices.png&quot;);
+qproperty-iconSize: 120px 120px;
+}
+
+#accountButton{
+qproperty-icon: url(&quot;:/images/account.png&quot;);
+qproperty-iconSize: 120px 120px;
+}
+
+
+#depositsButton{
+qproperty-icon: url(&quot;:/images/deposits.png&quot;);
+qproperty-iconSize: 120px 120px;
+}
+
+#exitButton{
+qproperty-icon: url(&quot;:/images/exit.png&quot;);
+qproperty-iconSize: 120px 120px;
+}
+
+
+#prevPagePushButton{
+qproperty-icon: url(&quot;:/images/left.png&quot;);
+qproperty-iconSize: 50px 50px;
+}
+
+#nextPagePushButton{
+qproperty-icon: url(&quot;:/images/right.png&quot;);
+qproperty-iconSize: 50px 50px;
+}
+</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -84,9 +138,6 @@ font: 18pt &quot;Calibri&quot;;
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="text">
-         <string>NewInvoice</string>
-        </property>
        </widget>
       </item>
       <item>
@@ -96,9 +147,6 @@ font: 18pt &quot;Calibri&quot;;
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Reservations</string>
         </property>
        </widget>
       </item>
@@ -112,9 +160,6 @@ font: 18pt &quot;Calibri&quot;;
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Invoices</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -131,9 +176,6 @@ font: 18pt &quot;Calibri&quot;;
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Account</string>
         </property>
        </widget>
       </item>
@@ -156,9 +198,6 @@ font: 18pt &quot;Calibri&quot;;
           <width>16777215</width>
           <height>16777215</height>
          </size>
-        </property>
-        <property name="text">
-         <string>Deposits</string>
         </property>
        </widget>
       </item>
@@ -184,9 +223,6 @@ font: 18pt &quot;Calibri&quot;;
         </property>
         <property name="autoFillBackground">
          <bool>false</bool>
-        </property>
-        <property name="text">
-         <string>Exit</string>
         </property>
        </widget>
       </item>
@@ -309,6 +345,12 @@ font: 18pt &quot;Calibri&quot;;
              <height>0</height>
             </size>
            </property>
+           <property name="verticalScrollBarPolicy">
+            <enum>Qt::ScrollBarAlwaysOff</enum>
+           </property>
+           <property name="horizontalScrollBarPolicy">
+            <enum>Qt::ScrollBarAlwaysOff</enum>
+           </property>
            <property name="editTriggers">
             <set>QAbstractItemView::NoEditTriggers</set>
            </property>
@@ -348,16 +390,16 @@ font: 18pt &quot;Calibri&quot;;
            </property>
            <layout class="QHBoxLayout" name="horizontalLayout_6">
             <property name="leftMargin">
-             <number>0</number>
+             <number>2</number>
             </property>
             <property name="topMargin">
-             <number>0</number>
+             <number>6</number>
             </property>
             <property name="rightMargin">
-             <number>0</number>
+             <number>2</number>
             </property>
             <property name="bottomMargin">
-             <number>0</number>
+             <number>6</number>
             </property>
             <item>
              <widget class="QPushButton" name="prevPagePushButton">
@@ -366,9 +408,6 @@ font: 18pt &quot;Calibri&quot;;
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
-              </property>
-              <property name="text">
-               <string>&lt;</string>
               </property>
              </widget>
             </item>
@@ -387,9 +426,6 @@ font: 18pt &quot;Calibri&quot;;
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
-              <property name="text">
-               <string>&gt;</string>
-              </property>
              </widget>
             </item>
            </layout>
@@ -399,13 +435,13 @@ font: 18pt &quot;Calibri&quot;;
           <widget class="QWidget" name="totalWidget" native="true">
            <layout class="QHBoxLayout" name="horizontalLayout">
             <property name="leftMargin">
-             <number>0</number>
+             <number>2</number>
             </property>
             <property name="topMargin">
              <number>0</number>
             </property>
             <property name="rightMargin">
-             <number>0</number>
+             <number>2</number>
             </property>
             <property name="bottomMargin">
              <number>0</number>

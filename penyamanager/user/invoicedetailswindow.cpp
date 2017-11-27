@@ -30,10 +30,9 @@ namespace PenyaManager {
         // Table
         QHeaderView* header = this->ui->productTableWidget->horizontalHeader();
         header->setSectionResizeMode(QHeaderView::Fixed);
-        this->ui->productTableWidget->setColumnCount(5);
+        this->ui->productTableWidget->setColumnCount(4);
         translateTable();
         Uint32 column = 0;
-        this->ui->productTableWidget->setColumnWidth(column++, 1);
         this->ui->productTableWidget->setColumnWidth(column++, 228);
         this->ui->productTableWidget->setColumnWidth(column++, 85);
         this->ui->productTableWidget->setColumnWidth(column++, 45);
@@ -44,7 +43,6 @@ namespace PenyaManager {
     {
         // table Header
         QStringList headers;
-        headers.append(tr("icon"));
         headers.append(tr("article"));
         headers.append(tr("price/u"));
         headers.append("#");
@@ -113,27 +111,19 @@ namespace PenyaManager {
         {
             InvoiceProductItemPtr pInvoiceProductItemPtr = *iter;
 
-            // image
-            QTableWidgetItem *productImage = new QTableWidgetItem;
-            QString imagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pInvoiceProductItemPtr->m_imagePath);
-            QPixmap productItemPixmap = GuiUtils::getImage(imagePath).scaled(Constants::kFamilyImageWidth, Constants::kFamilyImageHeigth);
-            productImage->setData(Qt::DecorationRole, productItemPixmap);
-            this->ui->productTableWidget->setRowHeight(rowCount, Constants::kFamilyImageHeigth);
-            this->ui->productTableWidget->setItem(rowCount, 0, productImage);
-            this->ui->productTableWidget->setItem(rowCount, 1, new QTableWidgetItem(pInvoiceProductItemPtr->m_productname));
-            this->ui->productTableWidget->setItem(rowCount, 2, new QTableWidgetItem(QString("%1 €").arg(pInvoiceProductItemPtr->m_priceperunit, 0, 'f', 2)));
-            this->ui->productTableWidget->setItem(rowCount, 3, new QTableWidgetItem(QString("%1").arg(pInvoiceProductItemPtr->m_count)));
+            this->ui->productTableWidget->setItem(rowCount, 0, new QTableWidgetItem(pInvoiceProductItemPtr->m_productname));
+            this->ui->productTableWidget->setItem(rowCount, 1, new QTableWidgetItem(QString("%1 €").arg(pInvoiceProductItemPtr->m_priceperunit, 0, 'f', 2)));
+            this->ui->productTableWidget->setItem(rowCount, 2, new QTableWidgetItem(QString("%1").arg(pInvoiceProductItemPtr->m_count)));
             Float totalPrice = pInvoiceProductItemPtr->m_priceperunit * pInvoiceProductItemPtr->m_count;
-            this->ui->productTableWidget->setItem(rowCount, 4, new QTableWidgetItem(QString("%1 €").arg(totalPrice, 0, 'f', 2)));
+            this->ui->productTableWidget->setItem(rowCount, 3, new QTableWidgetItem(QString("%1 €").arg(totalPrice, 0, 'f', 2)));
             totalInvoice += totalPrice;
+            this->ui->productTableWidget->setRowHeight(rowCount, 35);
             rowCount++;
         }
 
         //
         // Invoice Information
         //
-        // ID
-        this->ui->invoiceIdValueLabel->setText(QString("%1").arg(pInvoicePtr->m_id));
         // Date
         QString dateLocalized = Singletons::m_translationManager.getLocale().toString(pInvoicePtr->m_date, QLocale::NarrowFormat);
         this->ui->invoiceDateValueLabel->setText(dateLocalized);
@@ -143,7 +133,6 @@ namespace PenyaManager {
         // Total
         this->ui->invoiceTotalValueLabel->setText(QString("%1 €").arg(totalInvoice, 0, 'f', 2));
         // memberid
-        this->ui->memberIdValueLabel->setText(QString("%1").arg(pInvoicePtr->m_memberId));
     }
     //
     void InvoiceDetailsWindow::retranslate()
