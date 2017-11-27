@@ -120,7 +120,7 @@ namespace PenyaManager {
     //
     void StockManagementWindow::updateResults()
     {
-        ProductItemListResultPtr pfListPtr = Singletons::m_pDAO->getProductsList(m_currentPage, Constants::kProductListPageCount);
+        ProductItemListResultPtr pfListPtr = Singletons::m_pDAO->getProductsList(m_currentPage, Constants::kAdminProductListPageCount);
         if (pfListPtr->m_error) {
             QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
             return;
@@ -132,7 +132,7 @@ namespace PenyaManager {
         }
         // enable-disable pagination buttons
         // total num pages
-        Uint32 numPages = (Uint32)ceil((Float)pProductListStatsResultPtr->m_stats->m_totalNumProducts/Constants::kProductListPageCount);
+        Uint32 numPages = (Uint32)ceil((Float)pProductListStatsResultPtr->m_stats->m_totalNumProducts/Constants::kAdminProductListPageCount);
         this->ui->prevPagePushButton->setEnabled(m_currentPage > 0);
         this->ui->nextPagePushButton->setEnabled(m_currentPage < numPages-1);
         // fill page view

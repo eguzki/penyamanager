@@ -45,7 +45,7 @@ namespace PenyaManager {
     //
     const Uint32    Constants::kAdminAccountListPageCount       = 15;
     //
-    const Uint32    Constants::kProductListPageCount            = 25;
+    const Uint32    Constants::kAdminProductListPageCount       = 25;
     // Put your own key here
     // Must be changed on compile time
     const quint64   Constants::kCryptKey                        = Q_UINT64_C(932833457959459);
@@ -62,7 +62,9 @@ namespace PenyaManager {
     //
     const Uint32    Constants::kLoginWindowProductListPageCount = 7;
     //
-    const Uint32    Constants::kInvoiceWindowProductListPageCount = 2;
+    const Uint32    Constants::kInvoiceWindowProductListPageCount = 10;
+    //
+    const Uint32    Constants::kInvoiceDetailsWindowProductListPageCount = 10;
     //
     const Uint32    Constants::kReservationListPageCount        = 18;
     //

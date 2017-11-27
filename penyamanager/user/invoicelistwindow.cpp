@@ -87,7 +87,7 @@ namespace PenyaManager {
             this->ui->fromCalendarWidget->setSelectedDate(fromIntialDate);
             shouldUpdate = false;
         }
-        QDate toDate = this->ui->toCalendarWidget->selectedDate().addDays(1);
+        QDate toDate = this->ui->toCalendarWidget->selectedDate();
         if (toDate != toInitialDate) {
             // since dates are different, selectionChanged event will be triggered
             this->ui->toCalendarWidget->setSelectedDate(toInitialDate);

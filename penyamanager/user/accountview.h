@@ -44,15 +44,15 @@ namespace PenyaManager {
             void on_prevPagePushButton_clicked();
             //
             void on_nextPagePushButton_clicked();
-
+            //
             void on_newinvoiceButton_clicked();
-
+            //
             void on_tableReservationButton_clicked();
-
+            //
             void on_invoicesPushButton_clicked();
-
+            //
             void on_depositsButton_clicked();
-
+            //
             void on_exitButton_clicked();
             //
             void on_fromCalendarWidget_selectionChanged();
