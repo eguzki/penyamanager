@@ -13,6 +13,7 @@ namespace PenyaManager {
         IPartner(parent),
         ui(new Ui::InvoiceDetailsWindow),
         m_pMemberProfileGroupBox(new MemberProfileGroupBox),
+        m_currentPage(0),
         m_switchCentralWidgetCallback(callback)
     {
         ui->setupUi(this);
@@ -70,43 +71,77 @@ namespace PenyaManager {
         MemberPtr pCurrMemberPtr = pMemberResultPtr->m_member;
         Singletons::m_pCurrMember = pCurrMemberPtr;
         this->m_pMemberProfileGroupBox->init(pCurrMemberPtr);
-
+        m_currentPage = 0;
+        updateResults();
+    }
+    //
+    void InvoiceDetailsWindow::updateResults()
+    {
         //
         // Loading invoice data
         // current invoice is Singletons::m_currentInvoiceId read by widget
         //
         // use static global variable to get invoiceId
         Int32 invoiceId = Singletons::m_currentInvoiceId;
-        InvoiceResultPtr pInvoicePtr = Singletons::m_pDAO->getInvoice(invoiceId);
-        if (pInvoicePtr->m_error) {
+        InvoiceResultPtr pInvoiceResultPtr = Singletons::m_pDAO->getInvoice(invoiceId);
+        if (pInvoiceResultPtr->m_error) {
             QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
             return;
         }
-        if (!pInvoicePtr->m_pInvoice) {
+        if (!pInvoiceResultPtr->m_pInvoice) {
             // invoice not found, should not happen
             MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
             Singletons::m_pLogger->Error(pCurrMemberPtr->m_id, PenyaManager::LogAction::kInvoice,
                     QString("unable to find expected invoice by id %1").arg(invoiceId));
             return;
         }
-        fillInvoiceData(pInvoicePtr->m_pInvoice);
-    }
-    //
-    void InvoiceDetailsWindow::fillInvoiceData(const InvoicePtr &pInvoicePtr)
-    {
         //
         // Product List
         //
-        InvoiceProductItemListResultPtr pInvoiceProductItemListResultPtr = Singletons::m_pDAO->getAllInvoiceProductItems(pInvoicePtr->m_id);
+        InvoiceProductItemListResultPtr pInvoiceProductItemListResultPtr = Singletons::m_pDAO->getInvoiceProductItems(pInvoiceResultPtr->m_pInvoice->m_id, m_currentPage, Constants::kInvoiceDetailsWindowProductListPageCount);
         if (pInvoiceProductItemListResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
-        this->ui->productTableWidget->setRowCount(pInvoiceProductItemListResultPtr->m_list->size());
+        InvoiceProductItemStatsResultPtr invoiceProductItemStatsResultPtr = Singletons::m_pDAO->getInvoiceProductItemsStats(pInvoiceResultPtr->m_pInvoice->m_id);
+        if (invoiceProductItemStatsResultPtr->m_error) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            return;
+        }
+
+        // enable-disable pagination buttons
+        // total num pages
+        Uint32 numPages = (Uint32)ceil((Float)invoiceProductItemStatsResultPtr->m_stats->m_totalProducts/Constants::kInvoiceDetailsWindowProductListPageCount);
+        // when just single page, hide pagingWidget
+        this->ui->pagingWidget->setHidden(numPages <= 1);
+        if (numPages > 1) {
+            this->ui->prevPagePushButton->setEnabled(m_currentPage > 0);
+            this->ui->nextPagePushButton->setEnabled(m_currentPage < numPages-1);
+            this->ui->pageInfoLabel->setText(QString("%1 / %2").arg(m_currentPage+1).arg(numPages));
+        }
+
+        //
+        // Invoice Information
+        //
+        // Date
+        QString dateLocalized = Singletons::m_translationManager.getLocale().toString(pInvoiceResultPtr->m_pInvoice->m_date, QLocale::NarrowFormat);
+        this->ui->invoiceDateValueLabel->setText(dateLocalized);
+        // LastModified
+        dateLocalized = Singletons::m_translationManager.getLocale().toString(pInvoiceResultPtr->m_pInvoice->m_lastModified, QLocale::NarrowFormat);
+        this->ui->invoiceLastModifValueLabel->setText(dateLocalized);
+        // Total
+        this->ui->invoiceTotalValueLabel->setText(QString("%1 €").arg(invoiceProductItemStatsResultPtr->m_stats->m_totalAmount, 0, 'f', 2));
+        // fill items
+        fillInvoiceData(pInvoiceProductItemListResultPtr);
+    }
+    //
+    void InvoiceDetailsWindow::fillInvoiceData(const InvoiceProductItemListResultPtr &pInvoiceProductItemListResultPtr)
+    {
         // invoice table reset
         this->ui->productTableWidget->clearContents();
+
+        this->ui->productTableWidget->setRowCount(pInvoiceProductItemListResultPtr->m_list->size());
         Uint32 rowCount = 0;
-        Float totalInvoice = 0.0;
         for (InvoiceProductItemList::iterator iter = pInvoiceProductItemListResultPtr->m_list->begin(); iter != pInvoiceProductItemListResultPtr->m_list->end(); ++iter)
         {
             InvoiceProductItemPtr pInvoiceProductItemPtr = *iter;
@@ -116,23 +151,9 @@ namespace PenyaManager {
             this->ui->productTableWidget->setItem(rowCount, 2, new QTableWidgetItem(QString("%1").arg(pInvoiceProductItemPtr->m_count)));
             Float totalPrice = pInvoiceProductItemPtr->m_priceperunit * pInvoiceProductItemPtr->m_count;
             this->ui->productTableWidget->setItem(rowCount, 3, new QTableWidgetItem(QString("%1 €").arg(totalPrice, 0, 'f', 2)));
-            totalInvoice += totalPrice;
             this->ui->productTableWidget->setRowHeight(rowCount, 35);
             rowCount++;
         }
-
-        //
-        // Invoice Information
-        //
-        // Date
-        QString dateLocalized = Singletons::m_translationManager.getLocale().toString(pInvoicePtr->m_date, QLocale::NarrowFormat);
-        this->ui->invoiceDateValueLabel->setText(dateLocalized);
-        // LastModified
-        dateLocalized = Singletons::m_translationManager.getLocale().toString(pInvoicePtr->m_lastModified, QLocale::NarrowFormat);
-        this->ui->invoiceLastModifValueLabel->setText(dateLocalized);
-        // Total
-        this->ui->invoiceTotalValueLabel->setText(QString("%1 €").arg(totalInvoice, 0, 'f', 2));
-        // memberid
     }
     //
     void InvoiceDetailsWindow::retranslate()
@@ -228,6 +249,18 @@ namespace PenyaManager {
     void InvoiceDetailsWindow::on_exitButton_clicked()
     {
         m_switchCentralWidgetCallback(WindowKey::kLoginWindowKey);
+    }
+    //
+    void InvoiceDetailsWindow::on_prevPagePushButton_clicked()
+    {
+        m_currentPage--;
+        updateResults();
+    }
+    //
+    void InvoiceDetailsWindow::on_nextPagePushButton_clicked()
+    {
+        m_currentPage++;
+        updateResults();
     }
 }
 

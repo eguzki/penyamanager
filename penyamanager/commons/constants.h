@@ -62,8 +62,8 @@ namespace PenyaManager {
             static const Uint32     kAccountListPageCount;
             // Admin account List page count
             static const Uint32     kAdminAccountListPageCount;
-            // Product List page count
-            static const Uint32     kProductListPageCount;
+            // Admin Product List page count
+            static const Uint32     kAdminProductListPageCount;
             // Crypt key
             static const quint64    kCryptKey;
             // Num languages available
@@ -80,6 +80,8 @@ namespace PenyaManager {
             static const Uint32     kLoginWindowProductListPageCount;
             // InvoiceWindow product item list
             static const Uint32     kInvoiceWindowProductListPageCount;
+            // InvoiceDetailsWindow product item list
+            static const Uint32     kInvoiceDetailsWindowProductListPageCount;
             // Reservation item list
             static const Uint32     kReservationListPageCount;
             //
