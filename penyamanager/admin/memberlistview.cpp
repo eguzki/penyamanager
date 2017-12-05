@@ -32,12 +32,12 @@ namespace PenyaManager {
         translateTable();
         Uint32 column = 0;
         this->ui->memberTableWidget->setColumnWidth(column++, Constants::kFamilyImageWidth);
-        this->ui->memberTableWidget->setColumnWidth(column++, 300);
-        this->ui->memberTableWidget->setColumnWidth(column++, 150);
+        this->ui->memberTableWidget->setColumnWidth(column++, 00);
         this->ui->memberTableWidget->setColumnWidth(column++, 100);
-        this->ui->memberTableWidget->setColumnWidth(column++, 150);
+        this->ui->memberTableWidget->setColumnWidth(column++, 20);
+        this->ui->memberTableWidget->setColumnWidth(column++, 60);
         this->ui->memberTableWidget->setColumnWidth(column++, 300);
-        this->ui->memberTableWidget->setColumnWidth(column++, 100);
+        this->ui->memberTableWidget->setColumnWidth(column++, 20);
     }
     //
     void MemberListView::translateTable()

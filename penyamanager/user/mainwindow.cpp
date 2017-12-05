@@ -36,7 +36,7 @@ namespace PenyaManager {
         // To disable Full Screen, comment the line below. Que no la above.
         showFullScreen();
         // To disable windowed mode, comment the line below. Que sí, que la de abajo.
-        // show();
+         //show();
     }
     //
     void MainWindow::switchCentralWidget(WindowKey key)
