@@ -14,7 +14,7 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">#topFrame {
+   <string notr="true">/*#topFrame {
 border: none;
 background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
 stop: 0 #a6a6a6, stop: 0.08 #7f7f7f,
@@ -53,7 +53,7 @@ background: qradialgradient(cx: 0.4, cy: -0.1,
 fx: 0.4, fy: -0.1,
 radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
 }
-</string>
+*/</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -90,13 +90,6 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
          </size>
         </property>
        </spacer>
-      </item>
-      <item>
-       <widget class="QPushButton" name="searchPushButton">
-        <property name="text">
-         <string>Search</string>
-        </property>
-       </widget>
       </item>
      </layout>
     </widget>
@@ -178,6 +171,13 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
             </size>
            </property>
           </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="searchPushButton">
+           <property name="text">
+            <string>Search</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>
@@ -368,7 +368,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
             <enum>QAbstractItemView::SelectRows</enum>
            </property>
            <attribute name="horizontalHeaderVisible">
-            <bool>true</bool>
+            <bool>false</bool>
            </attribute>
            <attribute name="verticalHeaderVisible">
             <bool>false</bool>

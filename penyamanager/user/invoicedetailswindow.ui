@@ -348,6 +348,9 @@ qproperty-iconSize: 60px 60px;
            <property name="editTriggers">
             <set>QAbstractItemView::NoEditTriggers</set>
            </property>
+           <property name="alternatingRowColors">
+            <bool>true</bool>
+           </property>
            <property name="selectionMode">
             <enum>QAbstractItemView::NoSelection</enum>
            </property>

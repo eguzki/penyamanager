@@ -123,7 +123,7 @@ qproperty-iconSize: 120px 120px;
 
 #depositsButton{
 qproperty-icon: url(&quot;:/images/deposits.png&quot;);
-qproperty-iconSize: 120px 120px;
+qproperty-iconSize: 120px;
 }
 
 #exitButton{
