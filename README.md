@@ -103,6 +103,8 @@ penyamanager
 * Print post activated members
 * Provider Invoice View from provider invoice list
 * Notes in member information
+* Database backup scripts
+  * [HOWTO backup database](db/backup/README.md)
 
 # Development
 
