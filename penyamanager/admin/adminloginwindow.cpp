@@ -56,7 +56,7 @@ namespace PenyaManager {
         QString loginName = this->ui->loginInput->text();
         MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberByUsername(loginName.toInt());
         if (pMemberResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
 

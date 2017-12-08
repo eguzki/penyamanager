@@ -47,14 +47,14 @@ namespace PenyaManager {
         this->ui->productsTableWidget->setColumnCount(9);
         translateTable();
         this->ui->productsTableWidget->setColumnWidth(0, Constants::kFamilyImageWidth);
-        this->ui->productsTableWidget->setColumnWidth(1, 100);
-        this->ui->productsTableWidget->setColumnWidth(2, 300);
+        this->ui->productsTableWidget->setColumnWidth(1, 60);
+        this->ui->productsTableWidget->setColumnWidth(2, 200);
         this->ui->productsTableWidget->setColumnWidth(3, 50);
-        this->ui->productsTableWidget->setColumnWidth(4, 200);
+        this->ui->productsTableWidget->setColumnWidth(4, 150);
         this->ui->productsTableWidget->setColumnWidth(5, 100);
-        this->ui->productsTableWidget->setColumnWidth(6, 100);
+        this->ui->productsTableWidget->setColumnWidth(6, 80);
         this->ui->productsTableWidget->setColumnWidth(7, 100);
-        this->ui->productsTableWidget->setColumnWidth(8, 100);
+        this->ui->productsTableWidget->setColumnWidth(8, 80);
     }
     //
     void StockManagementWindow::init()
@@ -83,7 +83,7 @@ namespace PenyaManager {
         // fetch data
         ProductItemListResultPtr pfListPtr = Singletons::m_pDAO->getProductsList(0, 100000);
         if (pfListPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
 
@@ -122,12 +122,12 @@ namespace PenyaManager {
     {
         ProductItemListResultPtr pfListPtr = Singletons::m_pDAO->getProductsList(m_currentPage, Constants::kAdminProductListPageCount);
         if (pfListPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
         ProductListStatsResultPtr pProductListStatsResultPtr = Singletons::m_pDAO->getProductsListStats();
         if (pProductListStatsResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
         // enable-disable pagination buttons

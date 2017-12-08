@@ -92,28 +92,6 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="supperButton">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>150</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>Supper</string>
-        </property>
-        <attribute name="buttonGroup">
-         <string notr="true">reservationTypeButtonGroup</string>
-        </attribute>
-       </widget>
-      </item>
-      <item>
        <widget class="QPushButton" name="lunchButton">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
@@ -142,6 +120,28 @@
        </widget>
       </item>
       <item>
+       <widget class="QPushButton" name="supperButton">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>150</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Supper</string>
+        </property>
+        <attribute name="buttonGroup">
+         <string notr="true">reservationTypeButtonGroup</string>
+        </attribute>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="dinnerButton">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
@@ -162,7 +162,7 @@
          </size>
         </property>
         <property name="text">
-         <string>Diner</string>
+         <string>Dinner</string>
         </property>
         <attribute name="buttonGroup">
          <string notr="true">reservationTypeButtonGroup</string>

@@ -48,52 +48,51 @@ font: 40pt &quot;Calibri&quot;;
 
 #pushButton_00 {
 font-weight: bold;
-font: 30pt &quot;Calibri&quot;;
+font: 40pt &quot;Calibri&quot;;
 }
 #pushButton_01 {
 font-weight: bold;
-font: 30pt &quot;Calibri&quot;;
+font: 40pt &quot;Calibri&quot;;
 }
 #pushButton_02 {
 font-weight: bold;
-font: 30pt &quot;Calibri&quot;;
+font: 40pt &quot;Calibri&quot;;
 }
 #pushButton_03 {
 font-weight: bold;
-font: 30pt &quot;Calibri&quot;;
+font: 40pt &quot;Calibri&quot;;
 }
 #pushButton_04 {
 font-weight: bold;
-font: 30pt &quot;Calibri&quot;;
+font: 40pt &quot;Calibri&quot;;
 }#pushButton_05 {
 font-weight: bold;
-font: 30pt &quot;Calibri&quot;;
+font: 40pt &quot;Calibri&quot;;
 }
 #pushButton_06 {
 font-weight: bold;
-font: 30pt &quot;Calibri&quot;;
+font: 40pt &quot;Calibri&quot;;
 }
 #pushButton_07 {
 font-weight: bold;
-font: 30pt &quot;Calibri&quot;;
+font: 40pt &quot;Calibri&quot;;
 }
 #pushButton_08 {
 font-weight: bold;
-font: 30pt &quot;Calibri&quot;;
+font: 40pt &quot;Calibri&quot;;
 }
 #pushButton_09 {
 font-weight: bold;
-font: 30pt &quot;Calibri&quot;;
+font: 40pt &quot;Calibri&quot;;
 }
 #pushButton_C {
 font-weight: bold;
-font: 30pt &quot;Calibri&quot;;
+font: 40pt &quot;Calibri&quot;;
 }
 #pushButton_coma {
 font-weight: bold;
-font: 30pt &quot;Calibri&quot;;
+font: 40pt &quot;Calibri&quot;;
 }
-
 
 #confirmButton{
 qproperty-icon: url(&quot;:/images/ok.png&quot;);

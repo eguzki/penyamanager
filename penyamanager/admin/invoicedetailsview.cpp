@@ -60,7 +60,7 @@ namespace PenyaManager {
         Int32 invoiceId = Singletons::m_currentInvoiceId;
         InvoiceResultPtr pInvoicePtr = Singletons::m_pDAO->getInvoice(invoiceId);
         if (pInvoicePtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
         if (!pInvoicePtr->m_pInvoice) {
@@ -86,7 +86,7 @@ namespace PenyaManager {
         //
         InvoiceProductItemListResultPtr pInvoiceProductItemListResultPtr = Singletons::m_pDAO->getAllInvoiceProductItems(pInvoicePtr->m_id);
         if (pInvoiceProductItemListResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
         this->ui->productTableWidget->setRowCount(pInvoiceProductItemListResultPtr->m_list->size());

@@ -149,12 +149,12 @@ namespace PenyaManager {
             this->ui->memberIdLineEdit->clear();
             pInvoiceProductItemListResultPtr = Singletons::m_pDAO->getProductExpensesList(fromDate, toDate, m_currentPage, Constants::kAdminInvoiceListPageCount);
             if (pInvoiceProductItemListResultPtr->m_error) {
-                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
                 return;
             }
             pInvoiceProductItemCounterStatsResultPtr = Singletons::m_pDAO->getProductExpensesListStats(fromDate, toDate);
             if (pInvoiceProductItemCounterStatsResultPtr->m_error) {
-                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
                 return;
             }
         } else {
@@ -167,7 +167,7 @@ namespace PenyaManager {
             } else {
                 MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberByUsername(memberUsername);
                 if (pMemberResultPtr->m_error) {
-                    QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                    QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
                     return;
                 }
                 if (!pMemberResultPtr->m_member) {
@@ -177,12 +177,12 @@ namespace PenyaManager {
                 }
                 pInvoiceProductItemListResultPtr = Singletons::m_pDAO->getProductExpensesListByMemberId(pMemberResultPtr->m_member->m_id, fromDate, toDate, m_currentPage, Constants::kAdminInvoiceListPageCount);
                 if (pInvoiceProductItemListResultPtr->m_error) {
-                    QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                    QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
                     return;
                 }
                 pInvoiceProductItemCounterStatsResultPtr = Singletons::m_pDAO->getProductExpensesListByMemberIdStats(pMemberResultPtr->m_member->m_id, fromDate, toDate);
                 if (pInvoiceProductItemCounterStatsResultPtr->m_error) {
-                    QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                    QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
                     return;
                 }
             }
@@ -231,7 +231,7 @@ namespace PenyaManager {
             this->ui->memberIdLineEdit->clear();
             pInvoiceProductItemListResultPtr = Singletons::m_pDAO->getProductExpensesList(fromDate, toDate, m_currentPage, Constants::kAdminInvoiceListPageCount);
             if (pInvoiceProductItemListResultPtr->m_error) {
-                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
                 return;
             }
         } else {
@@ -244,7 +244,7 @@ namespace PenyaManager {
             } else {
                 MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberByUsername(memberUsername);
                 if (pMemberResultPtr->m_error) {
-                    QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                    QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
                     return;
                 }
                 if (!pMemberResultPtr->m_member)
@@ -255,7 +255,7 @@ namespace PenyaManager {
                 }
                 pInvoiceProductItemListResultPtr = Singletons::m_pDAO->getProductExpensesListByMemberId(pMemberResultPtr->m_member->m_id, fromDate, toDate, m_currentPage, Constants::kAdminInvoiceListPageCount);
                 if (pInvoiceProductItemListResultPtr->m_error) {
-                    QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                    QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
                     return;
                 }
             }

@@ -198,7 +198,7 @@ namespace PenyaManager {
             }
             Int32 providerId = Singletons::m_pDAO->createProvider(pProviderPtr);
             if (providerId < 0) {
-                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
                 return;
             }
             Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kProvider,

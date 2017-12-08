@@ -61,7 +61,7 @@ namespace PenyaManager {
         MemberListResultPtr pMemberListResultPtr = Singletons::m_pDAO->getSlowPayersList();
 
         if (pMemberListResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
 
@@ -103,13 +103,13 @@ namespace PenyaManager {
         // fetch data
         MemberListResultPtr pMemberListResultPtr = Singletons::m_pDAO->getSlowPayersList();
         if (pMemberListResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
 
         QFile f(filename);
         if (!f.open( QIODevice::WriteOnly )) {
-            QMessageBox::warning(this, "Unable to save file", "Error opening " + filename);
+            QMessageBox::warning(this, tr("Unable to save file"), tr("Error opening %1").arg(filename));
             return;
         }
         QTextStream out(&f);
@@ -128,13 +128,13 @@ namespace PenyaManager {
     void SlowPayersView::on_resetAccountsPushButton_clicked()
     {
         // assume slow payers list is not empty (button would be disabled)
-        QMessageBox::StandardButton answerButton = QMessageBox::question(this, "reset accounts", "Are you sure?");
+        QMessageBox::StandardButton answerButton = QMessageBox::question(this, tr("reset accounts"), tr("Are you sure?"));
         if (answerButton == QMessageBox::Yes) {
             // reset accounts balance
             Singletons::m_pServices->resetSlowPayersBalance();
-            QMessageBox::information(this, "reset accounts", "Operation done");
+            QMessageBox::information(this, tr("reset accounts"), tr("Operation done"));
         } else {
-            QMessageBox::information(this, "reset accounts", "Operation cancelled");
+            QMessageBox::information(this, tr("reset accounts"), tr("Operation cancelled"));
         }
         fillSlowPayersData();
     }

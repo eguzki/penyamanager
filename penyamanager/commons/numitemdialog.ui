@@ -59,7 +59,7 @@ border-color: rgb(27,94,32);
 border-style: solid;
 border-radius: 0;
 padding: 3px;
-font: 75 40pt &quot;Calibri&quot;;
+font: 40pt &quot;Calibri&quot;;
 font-weight: bold;
 padding-left: 5px;
 padding-right: 5px;

@@ -27,9 +27,9 @@ namespace PenyaManager {
     //
     const Uint32    Constants::kFamilyWidgetWidth               = 80;
     //
-    const Uint32    Constants::kFamilyImageWidth                = 40;
+    const Uint32    Constants::kFamilyImageWidth                = 60;
     //
-    const Uint32    Constants::kFamilyImageHeigth               = 40;
+    const Uint32    Constants::kFamilyImageHeigth               = 60;
     //
     const Int32     Constants::kIdRole                          = 101;
     //
@@ -41,7 +41,7 @@ namespace PenyaManager {
     //
     const Uint32    Constants::kAdminInvoiceListPageCount       = 15;
     //
-    const Uint32    Constants::kAccountListPageCount            = 14;
+    const Uint32    Constants::kAccountListPageCount            = 15;
     //
     const Uint32    Constants::kAdminAccountListPageCount       = 15;
     //
@@ -64,7 +64,7 @@ namespace PenyaManager {
     //
     const Uint32    Constants::kInvoiceWindowProductListPageCount = 14;
     //
-    const Uint32    Constants::kInvoiceDetailsWindowProductListPageCount = 10;
+    const Uint32    Constants::kInvoiceDetailsWindowProductListPageCount = 17;
     //
     const Uint32    Constants::kReservationListPageCount        = 18;
     //
