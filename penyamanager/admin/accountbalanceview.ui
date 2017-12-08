@@ -14,7 +14,7 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">#topFrame {
+   <string notr="true">/*#topFrame {
 border: none;
 background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
 stop: 0 #a6a6a6, stop: 0.08 #7f7f7f,
@@ -53,22 +53,16 @@ background: qradialgradient(cx: 0.4, cy: -0.1,
 fx: 0.4, fy: -0.1,
 radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
 }
-</string>
+*/</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QFrame" name="topFrame">
+    <widget class="QWidget" name="topWidget" native="true">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_3">
       <item>
@@ -95,28 +89,16 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
     </widget>
    </item>
    <item>
-    <widget class="QFrame" name="searchFrame">
+    <widget class="QWidget" name="searchWidget" native="true">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
-       <widget class="QFrame" name="dateFrame">
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
+       <widget class="QWidget" name="dateWidget" native="true">
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
           <widget class="QCalendarWidget" name="fromCalendarWidget">
@@ -148,13 +130,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
        </widget>
       </item>
       <item>
-       <widget class="QFrame" name="memberFrame">
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
+       <widget class="QWidget" name="memberWidget" native="true">
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
           <widget class="QLabel" name="memberIdLabel">
@@ -219,22 +195,10 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
     </widget>
    </item>
    <item>
-    <widget class="QFrame" name="resultsFrame">
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
+    <widget class="QWidget" name="resultsWidget" native="true">
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
-       <widget class="QFrame" name="pagingFrame">
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
+       <widget class="QWidget" name="pagingWidget" native="true">
         <layout class="QHBoxLayout" name="horizontalLayout_4">
          <item>
           <widget class="QLabel" name="fromDateResultLabel">
@@ -426,13 +390,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
        </widget>
       </item>
       <item>
-       <widget class="QFrame" name="transactionsFrame">
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
+       <widget class="QWidget" name="transactionsWidget" native="true">
         <layout class="QVBoxLayout" name="verticalLayout_4">
          <item>
           <widget class="QTableWidget" name="transactionsTableWidget">

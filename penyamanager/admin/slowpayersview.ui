@@ -14,7 +14,7 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">#topFrame {
+   <string notr="true">/*#topFrame {
 border: none;
 background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
 stop: 0 #a6a6a6, stop: 0.08 #7f7f7f,
@@ -53,22 +53,16 @@ background: qradialgradient(cx: 0.4, cy: -0.1,
 fx: 0.4, fy: -0.1,
 radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
 }
-</string>
+*/</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QFrame" name="topFrame">
+    <widget class="QWidget" name="topWidget" native="true">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
@@ -109,13 +103,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
     </widget>
    </item>
    <item>
-    <widget class="QFrame" name="bottonFrame">
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
+    <widget class="QWidget" name="bottonWidget" native="true">
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
        <widget class="QTableWidget" name="slowPayersTableWidget">

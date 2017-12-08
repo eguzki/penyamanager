@@ -65,7 +65,7 @@ namespace PenyaManager {
     {
         DepositListResultPtr pDepositListResultPtr = Singletons::m_pDAO->getUncheckedDeposits();
         if (pDepositListResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
         // num rows
@@ -107,7 +107,7 @@ namespace PenyaManager {
         QWidget *pCashWidget = this->ui->depositTableWidget->cellWidget(rowCount, 4);
         QDoubleSpinBox *pDoubleSpinBox = qobject_cast<QDoubleSpinBox *>(pCashWidget);
         if (pDoubleSpinBox == 0) {
-            QMessageBox::critical(this, tr("Unexpected error"), tr("DepositListView failed taking SpinBox"));
+            QMessageBox::critical(this, tr("Unexpected error"), tr("Contact administrator"));
             return;
         }
         // get memberId
@@ -119,17 +119,17 @@ namespace PenyaManager {
         Float amount = pDoubleSpinBox->value() - total;
         if (amount != 0) {
             // create account entry with difference when not equal
-            QString descr = QString("deposit fix. Ref: %1").arg(depositId);
+            QString descr = tr("deposit fix. Ref: %1").arg(depositId);
             bool ok = Singletons::m_pServices->createAccountTransaction(memberId, amount, descr, TransactionType::DepositFix);
             if (!ok) {
-                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
                 return;
             }
         }
         // close deposit
         bool ok = Singletons::m_pDAO->closeDeposit(depositId);
         if (!ok) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
         Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kDeposit,

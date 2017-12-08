@@ -49,9 +49,9 @@ namespace PenyaManager {
     //
     QString TranslationManager::getLanguageLabel()
     {
-        QString langLabel("Euskera");
+        QString langLabel("EUS");
         if (m_pLanguagesPrefixArray[m_currentLangIndex] == "es") {
-            langLabel = "Gaztelania";
+            langLabel = "ES";
         }
         return langLabel;
     }

@@ -35,7 +35,7 @@ namespace PenyaManager {
 
         ProductFamilyListResultPtr pfListPtr = Singletons::m_pDAO->getProductFamilies(false);
         if (pfListPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
 
@@ -114,7 +114,7 @@ namespace PenyaManager {
 
         ProductItemListResultPtr pfListPtr = Singletons::m_pDAO->getProductsFromFamily(familyId, false);
         if (pfListPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
 

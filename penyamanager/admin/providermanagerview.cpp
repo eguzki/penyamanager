@@ -52,7 +52,7 @@ namespace PenyaManager {
 
         ProviderListResultPtr pProviderListResultPtr = Singletons::m_pDAO->getProviderList();
         if (pProviderListResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
 
@@ -97,7 +97,7 @@ namespace PenyaManager {
 
         ProductItemListResultPtr pfListPtr = Singletons::m_pDAO->getProductsFromProvider(providerId);
         if (pfListPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
 

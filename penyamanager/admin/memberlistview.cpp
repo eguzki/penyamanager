@@ -32,12 +32,12 @@ namespace PenyaManager {
         translateTable();
         Uint32 column = 0;
         this->ui->memberTableWidget->setColumnWidth(column++, Constants::kFamilyImageWidth);
-        this->ui->memberTableWidget->setColumnWidth(column++, 300);
-        this->ui->memberTableWidget->setColumnWidth(column++, 150);
+        this->ui->memberTableWidget->setColumnWidth(column++, 200);
         this->ui->memberTableWidget->setColumnWidth(column++, 100);
-        this->ui->memberTableWidget->setColumnWidth(column++, 150);
+        this->ui->memberTableWidget->setColumnWidth(column++, 80);
+        this->ui->memberTableWidget->setColumnWidth(column++, 60);
         this->ui->memberTableWidget->setColumnWidth(column++, 300);
-        this->ui->memberTableWidget->setColumnWidth(column++, 100);
+        this->ui->memberTableWidget->setColumnWidth(column++, 60);
     }
     //
     void MemberListView::translateTable()
@@ -77,12 +77,12 @@ namespace PenyaManager {
         bool filterPostalSend = this->ui->filterPostalUsersCheckBox->checkState() == Qt::CheckState::Checked;
         pMemberListResultPtr = Singletons::m_pDAO->getMemberList(filterPostalSend, m_currentPage, Constants::kInvoiceListPageCount);
         if (pMemberListResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
         pMemberListStatsResultPtr = Singletons::m_pDAO->getMemberListStats(filterPostalSend);
         if (pMemberListStatsResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
         // enable-disable pagination buttons
@@ -188,7 +188,7 @@ namespace PenyaManager {
         // max 1M users
         MemberListResultPtr pMemberListResultPtr = Singletons::m_pDAO->getMemberList(filterPostalSend, 0, 1000000);
         if (pMemberListResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
 
@@ -222,7 +222,7 @@ namespace PenyaManager {
         // get post activated members
         MemberListResultPtr pMemberListResultPtr = Singletons::m_pDAO->getMemberList(true, 0, 1000000);
         if (pMemberListResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
         if (pMemberListResultPtr->m_list->size() == 0) {

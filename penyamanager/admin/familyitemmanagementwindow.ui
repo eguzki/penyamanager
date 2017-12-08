@@ -14,7 +14,7 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">#topFrame {
+   <string notr="true">/*#topFrame {
 border: none;
 background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
 stop: 0 #a6a6a6, stop: 0.08 #7f7f7f,
@@ -54,22 +54,16 @@ fx: 0.4, fy: -0.1,
 radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
 }
 
-</string>
+*/</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QFrame" name="topFrame">
+    <widget class="QWidget" name="topWidget" native="true">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
@@ -117,16 +111,10 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
     </widget>
    </item>
    <item>
-    <widget class="QFrame" name="bottonFrame">
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
+    <widget class="QWidget" name="bottonWidget" native="true">
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
-       <widget class="QFrame" name="familyFrame">
+       <widget class="QWidget" name="familyWidget" native="true">
         <property name="minimumSize">
          <size>
           <width>300</width>
@@ -138,12 +126,6 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
           <width>300</width>
           <height>16777215</height>
          </size>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
@@ -157,13 +139,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
        </widget>
       </item>
       <item>
-       <widget class="QFrame" name="productFrame">
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
+       <widget class="QWidget" name="productWidget" native="true">
         <layout class="QHBoxLayout" name="horizontalLayout_4">
          <item>
           <widget class="QListWidget" name="productListWidget">

@@ -69,7 +69,8 @@ qproperty-alignment: AlignCenter;
 #languagePushButton {
 color: white;
 /*border-radius: 0;*/
-font: 75 20pt &quot;Calibri&quot;;
+/*font: 60pt &quot;Segoe Print&quot;;*/
+font: 40pt &quot;Arial&quot;;
 }
 
 #loginPushButton {
@@ -950,10 +951,7 @@ qproperty-iconSize: 140px 140px;
          </size>
         </property>
         <property name="text">
-         <string notr="true">Euskera</string>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
+         <string notr="true">EUS</string>
         </property>
        </widget>
       </item>

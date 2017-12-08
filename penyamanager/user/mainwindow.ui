@@ -86,14 +86,25 @@ font: 12pt &quot;Calibri&quot;;
 color: white;
 }
 
+
+/***************************************************************************************/
 /* Warning Windows */
 
 QMessageBox {
+/*background: white;*/
 background: rgb(158,158,158);
+
+border-width: 8px;
+border-color:  rgb(117,117,117);
+/*border-color:  rgb(239,83,80);*/
+border-style: solid;
+border-radius: 0;
+
 }
 
 QMessageBox QLabel {
 /*min-width:500 px;*/
+min-height: 100px;
 color: black;
 font: 18pt &quot;Calibri&quot;;  
 qproperty-alignment: AlignCenter;
@@ -104,6 +115,8 @@ width:60px;
 height: 40px;
 font: 16pt &quot;Calibri&quot;;  
 }
+
+
 
 /********************************************************************************/
 /* CALENDAR */

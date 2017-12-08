@@ -98,13 +98,13 @@ namespace PenyaManager {
 
         ProviderListResultPtr pProviderListResultPtr = Singletons::m_pDAO->getProviderList();
         if (pProviderListResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
 
         Int32 idx = 0;
         // first element: No Provider
-        this->ui->providerComboBox->insertItem(idx, "No Provider", -1);
+        this->ui->providerComboBox->insertItem(idx, tr("All providers"), -1);
         idx++;
         // providers
         for (auto iter = pProviderListResultPtr->m_list->begin(); iter != pProviderListResultPtr->m_list->end(); ++iter)
@@ -129,23 +129,23 @@ namespace PenyaManager {
         if (providerId >= 0) {
             pProviderInvoiceListResult = Singletons::m_pDAO->getProviderInvoiceListByProviderId(providerId, fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
             if (pProviderInvoiceListResult->m_error) {
-                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
                 return;
             }
             pProviderInvoiceListStatsResult = Singletons::m_pDAO->getProviderInvoiceListByProviderIdStats(providerId, fromDate, toDate);
             if (pProviderInvoiceListStatsResult->m_error) {
-                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
                 return;
             }
         } else {
             pProviderInvoiceListResult = Singletons::m_pDAO->getProviderInvoiceList(fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
             if (pProviderInvoiceListResult->m_error) {
-                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
                 return;
             }
             pProviderInvoiceListStatsResult = Singletons::m_pDAO->getProviderInvoiceListStats(fromDate, toDate);
             if (pProviderInvoiceListStatsResult->m_error) {
-                QMessageBox::critical(this, tr("Database error"), tr("Contact adminstrator"));
+                QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
                 return;
             }
         }
