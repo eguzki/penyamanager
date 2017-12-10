@@ -749,14 +749,13 @@ namespace PenyaManager {
             // insert new deposit
             queryPtr->prepare(
                     "INSERT INTO deposit "
-                    "(idmember, state, date, total, description) "
-                    "VALUES (:memberid, :state, :date, :total, :description)"
+                    "(idmember, state, date, total) "
+                    "VALUES (:memberid, :state, :date, :total)"
                     );
             queryPtr->bindValue(":memberid", pDepositPtr->m_memberId);
             queryPtr->bindValue(":state", static_cast<Int32>(pDepositPtr->m_state));
             queryPtr->bindValue(":date", pDepositPtr->m_date);
             queryPtr->bindValue(":total", pDepositPtr->m_total);
-            queryPtr->bindValue(":description", pDepositPtr->m_descr);
             return queryPtr;
         };
 
@@ -2938,7 +2937,7 @@ namespace PenyaManager {
             QueryPtr queryPtr(new QSqlQuery);
             // unchecked deposit list
             queryPtr->prepare(
-                    "SELECT member.username, deposit.iddeposit, deposit.date, deposit.total, deposit.description, deposit.idmember "
+                    "SELECT member.username, deposit.iddeposit, deposit.date, deposit.total, deposit.idmember "
                     "FROM deposit "
                     "INNER JOIN member ON member.idmember = deposit.idmember "
                     "WHERE deposit.state = 0"
@@ -2961,7 +2960,6 @@ namespace PenyaManager {
                 pDepositPtr->m_id = queryResponse.query->value(column++).toInt();
                 pDepositPtr->m_date = queryResponse.query->value(column++).toDateTime();
                 pDepositPtr->m_total = queryResponse.query->value(column++).toFloat();
-                pDepositPtr->m_descr = queryResponse.query->value(column++).toString();
                 pDepositPtr->m_memberId = queryResponse.query->value(column++).toInt();
                 pDepositListResultPtr->m_list->push_back(pDepositPtr);
             }

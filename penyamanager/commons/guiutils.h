@@ -4,6 +4,7 @@
 #include <QPixmap>
 #include <QMessageBox>
 
+#include <objs/Transaction.h>
 #include <objs/Member.h>
 #include "DataTypes.h"
 
@@ -26,6 +27,18 @@ namespace PenyaManager {
             static void criticalMessageBox(QWidget *parent, const QString &message);
             //
             static QMessageBox::StandardButton questionMessageBox(QWidget *parent, const QString &message);
+            //
+            static QString invoiceAccountDescription(const Int32 invoiceId);
+            //
+            static QString depositFixDescription(const Int32 depositId);
+            //
+            static QString depositDescription(const Int32 depositId);
+            //
+            static QString getTransactionDescr(const QString& descr, TransactionType type);
+            //
+            static QString getInvoiceDescr(const QString& descr);
+            //
+            static QString getDepositFixDescr(const QString& descr);
 
         private:
             //

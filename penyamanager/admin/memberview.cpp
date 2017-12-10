@@ -299,7 +299,7 @@ namespace PenyaManager {
                 return;
             }
             // create account
-            bool ok = Singletons::m_pServices->createAccountTransaction(memberId, 0.0, "new account", TransactionType::DepositFix);
+            bool ok = Singletons::m_pServices->createAccountTransaction(memberId, 0.0, QString(""), TransactionType::NewAccount);
             if (!ok) {
                 QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
                 return;

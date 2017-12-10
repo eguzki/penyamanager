@@ -5,6 +5,7 @@
 #include <QMessageBox>
 
 #include <commons/singletons.h>
+#include <commons/guiutils.h>
 #include "depositlistview.h"
 #include "ui_depositlistview.h"
 
@@ -119,8 +120,8 @@ namespace PenyaManager {
         Float amount = pDoubleSpinBox->value() - total;
         if (amount != 0) {
             // create account entry with difference when not equal
-            QString descr = tr("deposit fix. Ref: %1").arg(depositId);
-            bool ok = Singletons::m_pServices->createAccountTransaction(memberId, amount, descr, TransactionType::DepositFix);
+            QString description = GuiUtils::depositFixDescription(depositId);
+            bool ok = Singletons::m_pServices->createAccountTransaction(memberId, amount, description, TransactionType::DepositFix);
             if (!ok) {
                 QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
                 return;

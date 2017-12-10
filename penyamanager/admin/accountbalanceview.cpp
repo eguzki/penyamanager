@@ -3,6 +3,9 @@
 #include <QMessageBox>
 
 #include <commons/singletons.h>
+#include <commons/guiutils.h>
+#include <objs/Transaction.h>
+
 #include "accountbalanceview.h"
 #include "ui_accountbalanceview.h"
 
@@ -54,6 +57,7 @@ namespace PenyaManager {
         headers.append(tr("username"));
         headers.append(tr("description"));
         headers.append(tr("amount"));
+        headers.append(tr("type"));
         this->ui->transactionsTableWidget->setHorizontalHeaderLabels(headers);
     }
     //
@@ -68,12 +72,13 @@ namespace PenyaManager {
     void AccountBalanceView::initializeTable()
     {
         // table
-        this->ui->transactionsTableWidget->setColumnCount(4);
+        this->ui->transactionsTableWidget->setColumnCount(5);
         translateTable();
         Uint32 column = 0;
         this->ui->transactionsTableWidget->setColumnWidth(column++, 200);
         this->ui->transactionsTableWidget->setColumnWidth(column++, 100);
         this->ui->transactionsTableWidget->setColumnWidth(column++, 300);
+        this->ui->transactionsTableWidget->setColumnWidth(column++, 200);
         this->ui->transactionsTableWidget->setColumnWidth(column++, 200);
     }
     //
@@ -118,8 +123,9 @@ namespace PenyaManager {
             QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pTransactionPtr->m_date, QLocale::NarrowFormat);
             this->ui->transactionsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(dateLocalized));
             this->ui->transactionsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(QString::number(pTransactionPtr->m_memberUsername)));
-            this->ui->transactionsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(pTransactionPtr->m_descr));
+            this->ui->transactionsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(GuiUtils::getTransactionDescr(pTransactionPtr->m_descr, pTransactionPtr->m_type)));
             this->ui->transactionsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(QString("%1 €").arg(pTransactionPtr->m_amount, 0, 'f', 2)));
+            this->ui->transactionsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(getStringFromTransactionTypeEnum(pTransactionPtr->m_type)));
             rowCount++;
         }
     }

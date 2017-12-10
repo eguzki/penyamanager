@@ -131,12 +131,16 @@ namespace PenyaManager {
         QMessageBox::StandardButton answerButton = QMessageBox::question(this, tr("reset accounts"), tr("Are you sure?"));
         if (answerButton == QMessageBox::Yes) {
             // reset accounts balance
-            Singletons::m_pServices->resetSlowPayersBalance();
-            QMessageBox::information(this, tr("reset accounts"), tr("Operation done"));
+            bool ok = Singletons::m_pServices->resetSlowPayersBalance();
+            if (ok) {
+                QMessageBox::information(this, tr("reset accounts"), tr("Operation done"));
+            } else {
+                QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            }
         } else {
             QMessageBox::information(this, tr("reset accounts"), tr("Operation cancelled"));
         }
-        fillSlowPayersData();
+        init();
     }
 }
 

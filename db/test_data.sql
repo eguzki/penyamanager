@@ -1,11 +1,8 @@
 INSERT INTO `member` (idmember, username, name, surname1, surname2, image, lastmodified, reg_date, active, isAdmin, bank_account, postal_send, pwd, lastlogin) VALUES (1,1,'Eguzki','Astiz Etxea','Lezaun','mypicture.png','2014-12-01 00:00:00','2014-12-01 00:00:00',1, 1, "123456789",1, "9af15b336e6a9619928537df30b2e6a2376569fcf9d7e773eccede65606529a0", '2014-12-01 00:00:00'),(2,2,'Urko','Usunariz','Fernandez','mypicture2.png','2014-12-01 00:00:00','2014-12-01 00:00:00',1, 1, "123456789",1, "9af15b336e6a9619928537df30b2e6a2376569fcf9d7e773eccede65606529a0", '2014-12-01 00:00:00');
 INSERT INTO `provider` VALUES (1,'provider1','image1','2014-12-01 00:00:00',"12345678"),(2,'provider2','image1','2014-12-01 00:00:00',"12345678");
-INSERT INTO `account` VALUES (1,1,76.54,'2014-12-01 00:00:00',76.54,'deposit',1),(2,1,-54.50,'2014-12-01 00:00:01',22.04,'invoice id: 1',0),(3,2,20.00,'2014-12-01 00:00:01',20.00,'deposit',1);
+INSERT INTO `account` VALUES (1,1,76.54,'2014-12-01 00:00:00',76.54,'',0);
 INSERT INTO `product_family` VALUES (1,'refreshments','refresh.jpg',1,'2014-12-14 13:31:19'),(2,'liquors','liquors.jpg',1,'2014-12-14 13:34:23'),(3,'beers','beers.jpg',1,'2014-12-14 13:34:23'),(4,'wines','wines.jpg',1,'2014-12-14 13:34:23'),(5,'patxaranak','patxaranak.jpg',2,'2014-12-14 13:34:23');
 INSERT INTO `product_item` VALUES (1,'water','water.jpg',1,'2014-12-14 13:38:57',1,1.00,1,100),(2,'coke','coke.jpg',1,'2014-12-14 13:38:57',1,2.00,1,100),(3,'licor43','licor43.jpg',1,'2014-12-14 13:38:57',2,3.00,2,100),(4,'orujo','orujo.jpg',1,'2014-12-14 13:38:57',2,2.50,1,100),(5,'franziskaner','franziskaner.jpg',1,'2014-12-14 13:38:57',3,3.50,1,100),(6,'naparbier','naparbier.jpg',1,'2014-12-14 13:38:57',3,1.00,2,100);
-INSERT INTO `invoice` VALUES (1,1,'2014-12-23 17:11:52',-54.50,1,'2014-12-01 00:00:00'),(2,0,'2014-12-23 17:11:52',-3.50,2,'2014-12-01 00:00:00');
-INSERT INTO `inv_prod` VALUES (1,1,10,'2014-12-23 17:11:52'),(1,2,10,'2014-12-23 17:11:52'),(1,5,7,'2014-12-23 17:11:52'),(2,5,1,'2014-12-23 17:11:52');
-INSERT INTO `deposit` VALUES (1,1,'2014-12-01 00:00:00',76.54,"deposit",1);
 INSERT INTO `lunchtables` (idtable, name, guestnum) VALUES ('1', 'mahaia 1', '8');
 INSERT INTO `lunchtables` (idtable, name, guestnum) VALUES ('2', 'mahaia 2', '8');
 INSERT INTO `ovens` (idoven, name) VALUES ('1', 'labea 1');
