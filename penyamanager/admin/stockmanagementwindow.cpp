@@ -30,7 +30,6 @@ namespace PenyaManager {
         // invoice table Header
         QStringList headers;
         headers.append(tr("Image"));
-        headers.append(tr("Ref#"));
         headers.append(tr("name"));
         headers.append(tr("active"));
         headers.append(tr("registration date"));
@@ -44,10 +43,9 @@ namespace PenyaManager {
     void StockManagementWindow::initializeTable()
     {
         // table
-        this->ui->productsTableWidget->setColumnCount(9);
+        this->ui->productsTableWidget->setColumnCount(8);
         translateTable();
         this->ui->productsTableWidget->setColumnWidth(0, Constants::kFamilyImageWidth);
-        this->ui->productsTableWidget->setColumnWidth(1, 60);
         this->ui->productsTableWidget->setColumnWidth(2, 200);
         this->ui->productsTableWidget->setColumnWidth(3, 50);
         this->ui->productsTableWidget->setColumnWidth(4, 150);
@@ -94,6 +92,7 @@ namespace PenyaManager {
         }
 
         QTextStream out(&f);
+        out.setCodec("UTF-8");
         // print header
         out << tr("name") << "," << tr("stock") << endl;
 
@@ -103,7 +102,7 @@ namespace PenyaManager {
             out << pProductPtr->m_name << ", " << QString::number(pProductPtr->m_stock) << endl;
         }
         f.close();
-        QMessageBox::information(this, tr("CSV export"), tr("Successfully exported. Filename: %1").arg(filename));
+        QMessageBox::information(this, tr("Export CSV"), tr("Successfully exported. Filename: %1").arg(filename));
     }
     //
     void StockManagementWindow::on_prevPagePushButton_clicked()
@@ -163,8 +162,6 @@ namespace PenyaManager {
             productImage->setData(Qt::DecorationRole, productItemPixmap);
             this->ui->productsTableWidget->setRowHeight(rowCount, Constants::kFamilyImageHeigth);
             this->ui->productsTableWidget->setItem(rowCount, 0, productImage);
-            //  product id
-            this->ui->productsTableWidget->setItem(rowCount, 1, new QTableWidgetItem(QString::number(pProductPtr->m_id)));
             //  product name
             this->ui->productsTableWidget->setItem(rowCount, 2, new QTableWidgetItem(pProductPtr->m_name));
             //  product active status

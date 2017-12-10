@@ -263,6 +263,8 @@ namespace PenyaManager {
 
         // save to file
         QTextStream out(&f);
+        out.setCodec("UTF-8");
+
         // header
         out << tr("product ID") << ", " << tr("name") << ", " << tr("count") << endl;
         // iterate over results

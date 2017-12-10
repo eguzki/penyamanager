@@ -113,6 +113,7 @@ namespace PenyaManager {
             return;
         }
         QTextStream out(&f);
+        out.setCodec("UTF-8");
         // print header
         out << tr("Name") << "," << tr("Balance") << endl;
 
