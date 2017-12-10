@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
     // Translators
     QTranslator penyamanagerTranslator;
     // Initial dictionary
-    penyamanagerTranslator.load(PenyaManager::Singletons::m_translationManager.getAdminTranslationFile());
+    penyamanagerTranslator.load(PenyaManager::Singletons::m_pTranslationManager->getAdminTranslationFile());
     app.installTranslator(&penyamanagerTranslator);
 
     PenyaManager::AdminMainWindow adminMainWindow;

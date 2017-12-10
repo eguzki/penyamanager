@@ -19,7 +19,7 @@ namespace PenyaManager {
         this->ui->reservationTypeButtonGroup->setId(this->ui->supperButton, static_cast<Int32>(ReservationType::Supper));
         this->ui->reservationTypeButtonGroup->setId(this->ui->dinnerButton, static_cast<Int32>(ReservationType::Dinner));
         initializeTable();
-        this->ui->calendarWidget->setLocale(Singletons::m_translationManager.getLocale());
+        this->ui->calendarWidget->setLocale(Singletons::m_pTranslationManager->getLocale());
     }
     //
     AdminReservationsWindow::~AdminReservationsWindow()
@@ -31,7 +31,7 @@ namespace PenyaManager {
     {
         this->ui->retranslateUi(this);
         translateTable();
-        this->ui->calendarWidget->setLocale(Singletons::m_translationManager.getLocale());
+        this->ui->calendarWidget->setLocale(Singletons::m_pTranslationManager->getLocale());
     }
     //
     void AdminReservationsWindow::translateTable()

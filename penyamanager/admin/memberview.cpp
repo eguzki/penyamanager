@@ -34,7 +34,7 @@ namespace PenyaManager {
         // member username
         this->ui->usernameLineEdit->clear();
         // reg date
-        QString dateLocalized = Singletons::m_translationManager.getLocale().toString(QDate::currentDate(), QLocale::NarrowFormat);
+        QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(QDate::currentDate(), QLocale::NarrowFormat);
         this->ui->regDateValueLabel->setText(dateLocalized);
         // reg date
         this->ui->lastLoginValueLabel->setText("-");
@@ -328,10 +328,10 @@ namespace PenyaManager {
         // memberId
         this->ui->memberIdValueLabel->setText(QString::number(pMemberResultPtr->m_member->m_id));
         // reg date
-        QString dateLocalized = Singletons::m_translationManager.getLocale().toString(pMemberResultPtr->m_member->m_regDate, QLocale::NarrowFormat);
+        QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pMemberResultPtr->m_member->m_regDate, QLocale::NarrowFormat);
         this->ui->regDateValueLabel->setText(dateLocalized);
         // last login date
-        dateLocalized = Singletons::m_translationManager.getLocale().toString(pMemberResultPtr->m_member->m_lastLogin, QLocale::NarrowFormat);
+        dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pMemberResultPtr->m_member->m_lastLogin, QLocale::NarrowFormat);
         this->ui->lastLoginValueLabel->setText(dateLocalized);
         // username
         this->ui->usernameLineEdit->setText(QString::number(pMemberResultPtr->m_member->m_username));

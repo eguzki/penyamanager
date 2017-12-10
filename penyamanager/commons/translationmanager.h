@@ -38,6 +38,8 @@ namespace PenyaManager {
             QString                 m_translationLanguageFile;
             //
             QString                 m_adminTranslationLanguageFile;
+            //
+            QString                 m_translationFilePath;
     };
 }
 

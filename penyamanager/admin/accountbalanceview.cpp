@@ -21,9 +21,9 @@ namespace PenyaManager {
         // from 30 days before
         QDate fromIntialDate = toInitialDate.addDays(-30);
 
-        this->ui->fromCalendarWidget->setLocale(Singletons::m_translationManager.getLocale());
+        this->ui->fromCalendarWidget->setLocale(Singletons::m_pTranslationManager->getLocale());
         this->ui->fromCalendarWidget->setSelectedDate(fromIntialDate);
-        this->ui->toCalendarWidget->setLocale(Singletons::m_translationManager.getLocale());
+        this->ui->toCalendarWidget->setLocale(Singletons::m_pTranslationManager->getLocale());
         this->ui->toCalendarWidget->setSelectedDate(toInitialDate);
 
         this->ui->fromDateResultValueLabel->clear();
@@ -61,8 +61,8 @@ namespace PenyaManager {
     {
         this->ui->retranslateUi(this);
         translateTable();
-        this->ui->fromCalendarWidget->setLocale(Singletons::m_translationManager.getLocale());
-        this->ui->toCalendarWidget->setLocale(Singletons::m_translationManager.getLocale());
+        this->ui->fromCalendarWidget->setLocale(Singletons::m_pTranslationManager->getLocale());
+        this->ui->toCalendarWidget->setLocale(Singletons::m_pTranslationManager->getLocale());
     }
     //
     void AccountBalanceView::initializeTable()
@@ -115,7 +115,7 @@ namespace PenyaManager {
         {
             Uint32 column = 0;
             TransactionPtr pTransactionPtr = *iter;
-            QString dateLocalized = Singletons::m_translationManager.getLocale().toString(pTransactionPtr->m_date, QLocale::NarrowFormat);
+            QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pTransactionPtr->m_date, QLocale::NarrowFormat);
             this->ui->transactionsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(dateLocalized));
             this->ui->transactionsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(QString::number(pTransactionPtr->m_memberUsername)));
             this->ui->transactionsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(pTransactionPtr->m_descr));
@@ -190,9 +190,9 @@ namespace PenyaManager {
         this->ui->totalInvoicesValueLabel->setText(QString("%1 €").arg(pTransactionListStatsResultPtr->m_listStats->m_totalInvoices, 0, 'f', 2));
         this->ui->totalBankChargesValueLabel->setText(QString("%1 €").arg(pTransactionListStatsResultPtr->m_listStats->m_totalBankCharges, 0, 'f', 2));
         // fill dates used for query
-        QString dateLocalized = Singletons::m_translationManager.getLocale().toString(fromDate, QLocale::NarrowFormat);
+        QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(fromDate, QLocale::NarrowFormat);
         this->ui->fromDateResultValueLabel->setText(dateLocalized);
-        dateLocalized = Singletons::m_translationManager.getLocale().toString(toDate.addDays(-1), QLocale::NarrowFormat);
+        dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(toDate.addDays(-1), QLocale::NarrowFormat);
         this->ui->toDateResultValueLabel->setText(dateLocalized);
         // fill transaction list
         fillTransactionList(pTransactionListResultPtr->m_list);

@@ -74,7 +74,7 @@ namespace PenyaManager {
         // id
         this->ui->idValueLabel->setText(QString::number(pProviderResultPtr->m_provider->m_id));
         // reg date
-        QString dateLocalized = Singletons::m_translationManager.getLocale().toString(pProviderResultPtr->m_provider->m_regDate, QLocale::NarrowFormat);
+        QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pProviderResultPtr->m_provider->m_regDate, QLocale::NarrowFormat);
         this->ui->regDateValueLabel->setText(dateLocalized);
         // name
         this->ui->nameLineEdit->setText(pProviderResultPtr->m_provider->m_name);

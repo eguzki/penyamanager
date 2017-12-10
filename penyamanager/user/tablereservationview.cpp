@@ -46,7 +46,7 @@ namespace PenyaManager {
         this->ui->reservationItemButtonGroup->setId(this->ui->fireplacePushButton, static_cast<Int32>(ReservationItemType::FireplaceType));
 
         initializeTable();
-        this->ui->calendarWidget->setLocale(Singletons::m_translationManager.getLocale());
+        this->ui->calendarWidget->setLocale(Singletons::m_pTranslationManager->getLocale());
     }
     //
     TableReservationView::~TableReservationView()
@@ -58,7 +58,7 @@ namespace PenyaManager {
     {
         this->ui->retranslateUi(this);
         translateTable();
-        this->ui->calendarWidget->setLocale(Singletons::m_translationManager.getLocale());
+        this->ui->calendarWidget->setLocale(Singletons::m_pTranslationManager->getLocale());
     }
     //
     void TableReservationView::translateTable()

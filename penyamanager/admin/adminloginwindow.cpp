@@ -47,7 +47,7 @@ namespace PenyaManager {
     void AdminLoginWindow::retranslate()
     {
         this->ui->retranslateUi(this);
-        this->ui->languagePushButton->setText(Singletons::m_translationManager.getLanguageLabel());
+        this->ui->languagePushButton->setText(Singletons::m_pTranslationManager->getLanguageLabel());
     }
     //
     void AdminLoginWindow::on_loginButton_clicked()
@@ -115,9 +115,9 @@ namespace PenyaManager {
     {
         // change translator
         qApp->removeTranslator(m_pTranslator);
-        Singletons::m_translationManager.switchLanguage();
+        Singletons::m_pTranslationManager->switchLanguage();
         // load new dictionary
-        m_pTranslator->load(Singletons::m_translationManager.getAdminTranslationFile());
+        m_pTranslator->load(Singletons::m_pTranslationManager->getAdminTranslationFile());
         // installTranslator() will create a change event which will be sent to every single widget
         qApp->installTranslator(m_pTranslator);
     }

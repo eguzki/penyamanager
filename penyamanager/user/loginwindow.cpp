@@ -92,7 +92,7 @@ namespace PenyaManager {
     {
         this->ui->retranslateUi(this);
         translateTable();
-        this->ui->languagePushButton->setText(Singletons::m_translationManager.getLanguageLabel());
+        this->ui->languagePushButton->setText(Singletons::m_pTranslationManager->getLanguageLabel());
     }
     //
     void LoginWindow::initializeTable()
@@ -218,9 +218,9 @@ namespace PenyaManager {
     {
         // change translator
         qApp->removeTranslator(m_pTranslator);
-        Singletons::m_translationManager.switchLanguage();
+        Singletons::m_pTranslationManager->switchLanguage();
         // load new dictionary
-        m_pTranslator->load(Singletons::m_translationManager.getTranslationFile());
+        m_pTranslator->load(Singletons::m_pTranslationManager->getTranslationFile());
         // installTranslator() will create a change event which will be sent to every single widget
         qApp->installTranslator(m_pTranslator);
     }
@@ -297,8 +297,8 @@ namespace PenyaManager {
         // Invoice Information
         //
         // Date
-        QString dateLocalized = Singletons::m_translationManager.getLocale().toString(pLastInvoicePtr->m_date, QLocale::NarrowFormat);
-        QString lastModifDateLocalized = Singletons::m_translationManager.getLocale().toString(pLastInvoicePtr->m_lastModified, QLocale::NarrowFormat);
+        QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pLastInvoicePtr->m_date, QLocale::NarrowFormat);
+        QString lastModifDateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pLastInvoicePtr->m_lastModified, QLocale::NarrowFormat);
         this->ui->lastInvoiceDateLabel->setText(QString("%1: %2     %3: %4").arg(tr("Created on")).arg(dateLocalized).arg(tr("Modified on")).arg(lastModifDateLocalized));
         // Total
         this->ui->lastInvoiceTotalLabel->setText(QString("%1 €").arg(invoiceProductItemStatsResultPtr->m_stats->m_totalAmount, 0, 'f', 2));

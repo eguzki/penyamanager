@@ -44,6 +44,7 @@ LRELEASE="/opt/Qt5.7/5.7/gcc_64/bin/lrelease"
 PROJECT_NAME="penyamanager"
 CURRENT_PATH="$( cd "$( dirname "$0" )" && pwd )"
 TARGETPATH=$CURRENT_PATH/dist
+TRANSLATIONSPATH=$TARGETPATH/translations
 PROJECT_PATH=$CURRENT_PATH/$PROJECT_NAME
 CONF_APP=$PROJECT_PATH/penyamanagerconf.pro
 USER_APP=$PROJECT_PATH/penyamanager.pro
@@ -78,6 +79,7 @@ if [ "$CLEAN" = "yes" ] ; then
     rm -rf build-*
 else
     [ -d $TARGETPATH ] || mkdir -p $TARGETPATH
+    [ -d $TRANSLATIONSPATH ] || mkdir -p $TRANSLATIONSPATH
 
     echo "** BUILD:: running \"$QMAKE\" and \"$MAKE $TARGET\" in $TARGETPATH [DEBUG build]"
     cd $TARGETPATH
@@ -88,7 +90,7 @@ else
     echo "** TRANSLATION:: making with: $LRELEASE**"
     $LRELEASE $USER_APP
     echo "** DEPLOY:: qm files**"
-    mv $PROJECT_PATH/translations/*.qm $TARGETPATH
+    mv $PROJECT_PATH/translations/*.qm $TRANSLATIONSPATH
     echo "** BUILD:: building \"$ADMIN_APP\""
     $QMAKE $QMAKE_FLAGS $ADMIN_APP
     echo "** BUILD:: making with: $MAKE**"
@@ -96,7 +98,7 @@ else
     echo "** TRANSLATION:: making with: $LRELEASE**"
     $LRELEASE $ADMIN_APP
     echo "** DEPLOY:: qm files**"
-    mv $PROJECT_PATH/translations/*.qm $TARGETPATH
+    mv $PROJECT_PATH/translations/*.qm $TRANSLATIONSPATH
     echo "** BUILD:: building \"$CONF_APP\""
     $QMAKE $QMAKE_FLAGS $CONF_APP
     echo "** BUILD:: making with: $MAKE**"

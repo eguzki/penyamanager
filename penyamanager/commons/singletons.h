@@ -47,7 +47,7 @@ namespace PenyaManager {
             //
             static QString                  m_currentProviderInvoiceId;
             //
-            static TranslationManager       m_translationManager;
+            static TranslationManager       *m_pTranslationManager;
     };
 }
 

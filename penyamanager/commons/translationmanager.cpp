@@ -1,5 +1,8 @@
 //
 
+#include <QCoreApplication>
+#include <QDir>
+
 #include "translationmanager.h"
 
 namespace PenyaManager {
@@ -10,7 +13,8 @@ namespace PenyaManager {
             m_pLanguagesPrefixArray{"eu", "es"},
             m_locale(QLocale::Basque),
             m_translationLanguageFile(QString("penyamanager_%1").arg(m_pLanguagesPrefixArray[m_currentLangIndex])),
-            m_adminTranslationLanguageFile(QString("penyamanageradmin_%1").arg(m_pLanguagesPrefixArray[m_currentLangIndex]))
+            m_adminTranslationLanguageFile(QString("penyamanageradmin_%1").arg(m_pLanguagesPrefixArray[m_currentLangIndex])),
+            m_translationFilePath(QDir::cleanPath(QCoreApplication::applicationDirPath() + QDir::separator() + "translations"))
     {
     }
     //
@@ -34,12 +38,12 @@ namespace PenyaManager {
     //
     QString TranslationManager::getTranslationFile()
     {
-        return m_translationLanguageFile;
+        return QDir(m_translationFilePath).filePath(m_translationLanguageFile);
     }
     //
     QString TranslationManager::getAdminTranslationFile()
     {
-        return m_adminTranslationLanguageFile;
+        return QDir(m_translationFilePath).filePath(m_adminTranslationLanguageFile);
     }
     //
     QLocale TranslationManager::getLocale()

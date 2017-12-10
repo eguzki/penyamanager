@@ -59,7 +59,7 @@ namespace PenyaManager {
         }
         this->ui->invoiceIdValueLabel->setText(providerInvoiceId);
         this->ui->invoiceTotalValueLabel->setText(QString("%1 €").arg(providerInvoiceResultPtr->m_pProviderInvoice->m_total, 0, 'f', 2));
-        QString dateLocalized = Singletons::m_translationManager.getLocale().toString(providerInvoiceResultPtr->m_pProviderInvoice->m_regDate, QLocale::NarrowFormat);
+        QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(providerInvoiceResultPtr->m_pProviderInvoice->m_regDate, QLocale::NarrowFormat);
         this->ui->providerInvoiceDateValueLabel->setText(dateLocalized);
         this->ui->providerNameLabel->setText(providerInvoiceResultPtr->m_pProviderInvoice->m_providerName);
         // provider image
