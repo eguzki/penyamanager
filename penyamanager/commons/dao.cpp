@@ -1434,8 +1434,7 @@ namespace PenyaManager {
             // oven list
             queryPtr->prepare(
                     "SELECT idoven, name "
-                    "FROM ovens "
-                    "LIMIT :limit OFFSET :offset"
+                    "FROM ovens"
                     );
             return queryPtr;
         };
@@ -1533,8 +1532,7 @@ namespace PenyaManager {
             // fireplace list
             queryPtr->prepare(
                     "SELECT idfireplace, name "
-                    "FROM fireplaces "
-                    "LIMIT :limit OFFSET :offset"
+                    "FROM fireplaces"
                     );
             return queryPtr;
         };
