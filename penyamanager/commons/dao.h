@@ -168,7 +168,9 @@ namespace PenyaManager {
             //
             Int32 createProvider(const ProviderPtr &pProviderPtr);
             //
-            ProductItemListResultPtr getProductsList(Uint32 page, Uint32 count);
+            StockProductItemListResultPtr getAllStockProductsList();
+            //
+            StockProductItemListResultPtr getStockProductsList(Uint32 page, Uint32 count);
             //
             ProductListStatsResultPtr getProductsListStats();
             //

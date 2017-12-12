@@ -34,8 +34,8 @@ namespace PenyaManager {
         headers.append(tr("active"));
         headers.append(tr("registration date"));
         headers.append(tr("price/unit"));
-        headers.append(tr("familyId"));
-        headers.append(tr("providerId"));
+        headers.append(tr("family"));
+        headers.append(tr("provider"));
         headers.append(tr("# units"));
         this->ui->productsTableWidget->setHorizontalHeaderLabels(headers);
     }
@@ -45,14 +45,16 @@ namespace PenyaManager {
         // table
         this->ui->productsTableWidget->setColumnCount(8);
         translateTable();
-        this->ui->productsTableWidget->setColumnWidth(0, Constants::kFamilyImageWidth);
-        this->ui->productsTableWidget->setColumnWidth(2, 200);
-        this->ui->productsTableWidget->setColumnWidth(3, 50);
-        this->ui->productsTableWidget->setColumnWidth(4, 150);
-        this->ui->productsTableWidget->setColumnWidth(5, 100);
-        this->ui->productsTableWidget->setColumnWidth(6, 80);
-        this->ui->productsTableWidget->setColumnWidth(7, 100);
-        this->ui->productsTableWidget->setColumnWidth(8, 80);
+
+        Uint32 column = 0;
+        this->ui->productsTableWidget->setColumnWidth(column++, Constants::kFamilyImageWidth);
+        this->ui->productsTableWidget->setColumnWidth(column++, 200);
+        this->ui->productsTableWidget->setColumnWidth(column++, 50);
+        this->ui->productsTableWidget->setColumnWidth(column++, 150);
+        this->ui->productsTableWidget->setColumnWidth(column++, 100);
+        this->ui->productsTableWidget->setColumnWidth(column++, 80);
+        this->ui->productsTableWidget->setColumnWidth(column++, 100);
+        this->ui->productsTableWidget->setColumnWidth(column++, 80);
     }
     //
     void StockManagementWindow::init()
@@ -79,8 +81,8 @@ namespace PenyaManager {
         }
 
         // fetch data
-        ProductItemListResultPtr pfListPtr = Singletons::m_pDAO->getProductsList(0, 100000);
-        if (pfListPtr->m_error) {
+        StockProductItemListResultPtr pStockProductItemListResultPtr = Singletons::m_pDAO->getAllStockProductsList();
+        if (pStockProductItemListResultPtr->m_error) {
             QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
@@ -96,10 +98,10 @@ namespace PenyaManager {
         // print header
         out << tr("name") << "," << tr("stock") << endl;
 
-        for (ProductItemList::iterator iter = pfListPtr->m_list->begin(); iter != pfListPtr->m_list->end(); ++iter)
+        for (StockProductItemList::iterator iter = pStockProductItemListResultPtr->m_list->begin(); iter != pStockProductItemListResultPtr->m_list->end(); ++iter)
         {
-            ProductItemPtr pProductPtr = *iter;
-            out << pProductPtr->m_name << ", " << QString::number(pProductPtr->m_stock) << endl;
+            StockProductItemPtr pStockProductItemPtr = *iter;
+            out << pStockProductItemPtr->m_name << ", " << QString::number(pStockProductItemPtr->m_stock) << endl;
         }
         f.close();
         QMessageBox::information(this, tr("Export CSV"), tr("Successfully exported. Filename: %1").arg(filename));
@@ -119,8 +121,8 @@ namespace PenyaManager {
     //
     void StockManagementWindow::updateResults()
     {
-        ProductItemListResultPtr pfListPtr = Singletons::m_pDAO->getProductsList(m_currentPage, Constants::kAdminProductListPageCount);
-        if (pfListPtr->m_error) {
+        StockProductItemListResultPtr pStockProductItemListResultPtr = Singletons::m_pDAO->getStockProductsList(m_currentPage, Constants::kAdminProductListPageCount);
+        if (pStockProductItemListResultPtr->m_error) {
             QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
         }
@@ -132,51 +134,56 @@ namespace PenyaManager {
         // enable-disable pagination buttons
         // total num pages
         Uint32 numPages = (Uint32)ceil((Float)pProductListStatsResultPtr->m_stats->m_totalNumProducts/Constants::kAdminProductListPageCount);
-        this->ui->prevPagePushButton->setEnabled(m_currentPage > 0);
-        this->ui->nextPagePushButton->setEnabled(m_currentPage < numPages-1);
-        // fill page view
-        this->ui->pageInfoLabel->setText(tr("page %1 out of %2").arg(m_currentPage+1).arg(numPages));
-        // fill total stats view
-        this->ui->totalProductsValueLabel->setText(QString::number(pProductListStatsResultPtr->m_stats->m_totalNumProducts));
+        // when just single page, hide pagingWidget
+        this->ui->pagingWidget->setHidden(numPages <= 1);
+        if (numPages > 1) {
+            this->ui->prevPagePushButton->setEnabled(m_currentPage > 0);
+            this->ui->nextPagePushButton->setEnabled(m_currentPage < numPages-1);
+            this->ui->pageInfoLabel->setText(QString("%1 / %2").arg(m_currentPage+1).arg(numPages));
+            // fill total stats view
+            this->ui->totalProductsValueLabel->setText(QString::number(pProductListStatsResultPtr->m_stats->m_totalNumProducts));
+        }
+
         // fill product list
-        fillProductList(pfListPtr->m_list);
+        fillProductList(pStockProductItemListResultPtr->m_list);
         //
-        this->ui->csvPushButton->setEnabled(pfListPtr->m_list->size() > 0);
+        this->ui->csvPushButton->setEnabled(pStockProductItemListResultPtr->m_list->size() > 0);
     }
     //
-    void StockManagementWindow::fillProductList(const ProductItemListPtr &pProductItemListPtr)
+    void StockManagementWindow::fillProductList(const StockProductItemListPtr &pStockProductItemListPtr)
     {
-        // num rows
-        this->ui->productsTableWidget->setRowCount(pProductItemListPtr->size());
         // invoice table reset
         this->ui->productsTableWidget->clearContents();
+        // num rows
+        this->ui->productsTableWidget->setRowCount(pStockProductItemListPtr->size());
         // fill data
         Uint32 rowCount = 0;
-        for (ProductItemList::iterator iter = pProductItemListPtr->begin(); iter != pProductItemListPtr->end(); ++iter)
+        for (StockProductItemList::iterator iter = pStockProductItemListPtr->begin(); iter != pStockProductItemListPtr->end(); ++iter)
         {
-            ProductItemPtr pProductPtr = *iter;
+            StockProductItemPtr pStockProductItemPtr = *iter;
+            Uint32 column = 0;
             // image
             QTableWidgetItem *productImage = new QTableWidgetItem;
-            QString imagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pProductPtr->m_imagePath);
+            QString imagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pStockProductItemPtr->m_imagePath);
             QPixmap productItemPixmap = GuiUtils::getImage(imagePath).scaled(Constants::kFamilyImageWidth, Constants::kFamilyImageHeigth);
             productImage->setData(Qt::DecorationRole, productItemPixmap);
             this->ui->productsTableWidget->setRowHeight(rowCount, Constants::kFamilyImageHeigth);
-            this->ui->productsTableWidget->setItem(rowCount, 0, productImage);
+            this->ui->productsTableWidget->setItem(rowCount, column++, productImage);
             //  product name
-            this->ui->productsTableWidget->setItem(rowCount, 2, new QTableWidgetItem(pProductPtr->m_name));
+            this->ui->productsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(pStockProductItemPtr->m_name));
             //  product active status
-            this->ui->productsTableWidget->setItem(rowCount, 3, new QTableWidgetItem((pProductPtr->m_active)?(QString::number(1)):(QString::number(0))));
+            this->ui->productsTableWidget->setItem(rowCount, column++, new QTableWidgetItem((pStockProductItemPtr->m_active)?(QString::number(1)):(QString::number(0))));
             //  product reg date
-            QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pProductPtr->m_regDate, QLocale::NarrowFormat);
-            this->ui->productsTableWidget->setItem(rowCount, 4, new QTableWidgetItem(dateLocalized));
+            QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pStockProductItemPtr->m_regDate, QLocale::NarrowFormat);
+            this->ui->productsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(dateLocalized));
             //  product price
-            this->ui->productsTableWidget->setItem(rowCount, 5, new QTableWidgetItem(QString::number(pProductPtr->m_price)));
+            this->ui->productsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(QString::number(pStockProductItemPtr->m_price)));
             //  product familyid
-            this->ui->productsTableWidget->setItem(rowCount, 6, new QTableWidgetItem(QString::number(pProductPtr->m_familyId)));
+            this->ui->productsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(pStockProductItemPtr->m_familyName));
             //  product productid
-            this->ui->productsTableWidget->setItem(rowCount, 7, new QTableWidgetItem(QString::number(pProductPtr->m_providerId)));
+            this->ui->productsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(pStockProductItemPtr->m_providerName));
             //  product stock
-            this->ui->productsTableWidget->setItem(rowCount, 8, new QTableWidgetItem(QString::number(pProductPtr->m_stock)));
+            this->ui->productsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(QString::number(pStockProductItemPtr->m_stock)));
             rowCount++;
         }
     }

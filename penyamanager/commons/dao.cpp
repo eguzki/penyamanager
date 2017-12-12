@@ -2235,19 +2235,62 @@ namespace PenyaManager {
         return providerId;
     }
     //
-    ProductItemListResultPtr DAO::getProductsList(Uint32 page, Uint32 count)
+    StockProductItemListResultPtr DAO::getAllStockProductsList()
     {
-        ProductItemListResultPtr pIListResultPtr(new ProductItemListResult);
+        StockProductItemListResultPtr pStockProductItemListResultPtr(new StockProductItemListResult);
+
+        auto createQuery = [](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // product items query
+            queryPtr->prepare(
+                    "SELECT product_item.idproduct_item, product_item.name, product_item.active, product_item.image, product_item.reg_date, product_item.price, product_family.name, provider.name, product_item.stock "
+                    "FROM product_item "
+                    "INNER JOIN product_family ON product_family.idproduct_family=product_item.idproduct_family "
+                    "INNER JOIN provider ON provider.idprovider=product_item.idprovider "
+                    "ORDER BY product_item.idproduct_item DESC "
+                    );
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb, QString("getAllStockProductsList"));
+            pStockProductItemListResultPtr->m_error = 1;
+        } else {
+            pStockProductItemListResultPtr->m_list = StockProductItemListPtr(new StockProductItemList);
+            while (queryResponse.query->next()) {
+                StockProductItemPtr pStockProductItemPtr(new StockProductItem);
+                pStockProductItemPtr->m_id = queryResponse.query->value(0).toInt();
+                pStockProductItemPtr->m_name = queryResponse.query->value(1).toString();
+                pStockProductItemPtr->m_active = queryResponse.query->value(2).toInt() == 1;
+                pStockProductItemPtr->m_imagePath = queryResponse.query->value(3).toString();
+                pStockProductItemPtr->m_regDate = queryResponse.query->value(4).toDateTime();
+                pStockProductItemPtr->m_price = queryResponse.query->value(5).toFloat();
+                pStockProductItemPtr->m_familyName = queryResponse.query->value(6).toString();
+                pStockProductItemPtr->m_providerName = queryResponse.query->value(7).toString();
+                pStockProductItemPtr->m_stock = queryResponse.query->value(8).toInt();
+                pStockProductItemListResultPtr->m_list->push_back(pStockProductItemPtr);
+            }
+        }
+        return pStockProductItemListResultPtr;
+    }
+    //
+    StockProductItemListResultPtr DAO::getStockProductsList(Uint32 page, Uint32 count)
+    {
+        StockProductItemListResultPtr pStockProductItemListResultPtr(new StockProductItemListResult);
 
         auto createQuery = [=](){
             QueryPtr queryPtr(new QSqlQuery);
             // product items query
             queryPtr->prepare(
-                    "SELECT idproduct_item, name, active, image, reg_date, price, idproduct_family, idprovider, stock FROM product_item "
-                    "ORDER BY reg_date DESC "
+                    "SELECT product_item.idproduct_item, product_item.name, product_item.active, product_item.image, product_item.reg_date, product_item.price, product_family.name, provider.name, product_item.stock "
+                    "FROM product_item "
+                    "INNER JOIN product_family ON product_family.idproduct_family=product_item.idproduct_family "
+                    "INNER JOIN provider ON provider.idprovider=product_item.idprovider "
+                    "ORDER BY product_item.idproduct_item DESC "
                     "LIMIT :limit OFFSET :offset"
                     );
-            // only active invoices
             queryPtr->bindValue(":limit", count);
             queryPtr->bindValue(":offset", page * count);
             return queryPtr;
@@ -2257,25 +2300,25 @@ namespace PenyaManager {
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
             Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
-                    QString("getProductsList page %1 count %2").arg(page).arg(count));
-            pIListResultPtr->m_error = 1;
+                    QString("getStockProductsList page %1 count %2").arg(page).arg(count));
+            pStockProductItemListResultPtr->m_error = 1;
         } else {
-            pIListResultPtr->m_list = ProductItemListPtr(new ProductItemList);
+            pStockProductItemListResultPtr->m_list = StockProductItemListPtr(new StockProductItemList);
             while (queryResponse.query->next()) {
-                ProductItemPtr pProductItemPtr(new ProductItem);
-                pProductItemPtr->m_id =  queryResponse.query->value(0).toInt();
-                pProductItemPtr->m_name =  queryResponse.query->value(1).toString();
-                pProductItemPtr->m_active =  queryResponse.query->value(2).toInt() == 1;
-                pProductItemPtr->m_imagePath =  queryResponse.query->value(3).toString();
-                pProductItemPtr->m_regDate =  queryResponse.query->value(4).toDateTime();
-                pProductItemPtr->m_price =  queryResponse.query->value(5).toFloat();
-                pProductItemPtr->m_familyId =  queryResponse.query->value(6).toInt();
-                pProductItemPtr->m_providerId =  queryResponse.query->value(7).toInt();
-                pProductItemPtr->m_stock =  queryResponse.query->value(8).toInt();
-                pIListResultPtr->m_list->push_back(pProductItemPtr);
+                StockProductItemPtr pStockProductItemPtr(new StockProductItem);
+                pStockProductItemPtr->m_id = queryResponse.query->value(0).toInt();
+                pStockProductItemPtr->m_name = queryResponse.query->value(1).toString();
+                pStockProductItemPtr->m_active = queryResponse.query->value(2).toInt() == 1;
+                pStockProductItemPtr->m_imagePath = queryResponse.query->value(3).toString();
+                pStockProductItemPtr->m_regDate = queryResponse.query->value(4).toDateTime();
+                pStockProductItemPtr->m_price = queryResponse.query->value(5).toFloat();
+                pStockProductItemPtr->m_familyName = queryResponse.query->value(6).toString();
+                pStockProductItemPtr->m_providerName = queryResponse.query->value(7).toString();
+                pStockProductItemPtr->m_stock = queryResponse.query->value(8).toInt();
+                pStockProductItemListResultPtr->m_list->push_back(pStockProductItemPtr);
             }
         }
-        return pIListResultPtr;
+        return pStockProductItemListResultPtr;
     }
     //
     ProductListStatsResultPtr DAO::getProductsListStats()
