@@ -202,15 +202,57 @@ namespace PenyaManager {
 
         // header
         // print header
-        out << tr("Name") << "," << tr("Balance") << endl;
+        out << tr("Username") << "," 
+            << tr("Name") << ","
+            << tr("Surname 1") << ","
+            << tr("Surname 2") << ","
+            << tr("Registration Date") << ","
+            << tr("Active") << ","
+            << tr("Is Admin") << ","
+            << tr("Birthdate") << ","
+            << tr("Address") << ","
+            << tr("Zipcode") << ","
+            << tr("Town") << ","
+            << tr("State") << ","
+            << tr("Phone") << ","
+            << tr("Phone 2") << ","
+            << tr("Email") << ","
+            << tr("Banc Account") << ","
+            << tr("Postal Send") << ","
+            << tr("Notes") << ","
+            << tr("Balance") << ","
+            << endl;
 
         for (MemberList::iterator iter = pMemberListResultPtr->m_list->begin(); iter != pMemberListResultPtr->m_list->end(); ++iter)
         {
             MemberPtr pMemberPtr = *iter;
-            out << pMemberPtr->m_name << " " << pMemberPtr->m_surname1 << " " << pMemberPtr->m_surname2 << ", " << QString("%1 €").arg(pMemberPtr->m_balance, 0, 'f', 2) << endl;
+            QString regDateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pMemberPtr->m_regDate, QLocale::NarrowFormat);
+            QString birthDateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pMemberPtr->m_birthdate, QLocale::NarrowFormat);
+            QString cleanAddress = QString("\"%1\"").arg(pMemberPtr->m_address.replace('"', '\''));
+            QString cleanNotes = QString("\"%1\"").arg(pMemberPtr->m_notes.replace('"', '\'').simplified());
+            out << pMemberPtr->m_username << ", " 
+                << pMemberPtr->m_name << ", "
+                << pMemberPtr->m_surname1 << ", "
+                << pMemberPtr->m_surname2 << ", "
+                << regDateLocalized << ", "
+                << pMemberPtr->m_active << ", "
+                << pMemberPtr->m_isAdmin << ", "
+                << birthDateLocalized << ", "
+                << cleanAddress << ", "
+                << pMemberPtr->m_zipCode << ", "
+                << pMemberPtr->m_town << ", "
+                << pMemberPtr->m_state << ", "
+                << pMemberPtr->m_phone << ", "
+                << pMemberPtr->m_phone2 << ", "
+                << pMemberPtr->m_email << ", "
+                << pMemberPtr->m_bank_account << ", "
+                << pMemberPtr->m_postalSend << ", "
+                << cleanNotes << ", "
+                << QString("%1").arg(pMemberPtr->m_balance, 0, 'f', 2) 
+                << endl;
         }
         f.close();
-        QMessageBox::information(this, tr("CSV export"), tr("Successfully exported. Filename: %1").arg(filename));
+        QMessageBox::information(this, tr("Export CSV"), tr("Successfully exported. Filename: %1").arg(filename));
     }
     //
     void MemberListView::on_filterPostalUsersCheckBox_clicked()
