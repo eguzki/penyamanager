@@ -73,31 +73,31 @@ int main(int argc, char *argv[])
     // central widgets need adminmainwindow callback to call each other
     PenyaManager::CentralWidgetCallback adminMainWindowSwitchCallback = std::bind(&PenyaManager::AdminMainWindow::switchCentralWidget, &adminMainWindow, _1);
     // instantiate adminmain widgets
-    PenyaManager::AdminInvoiceListView *pAdminInvoiceListView = new PenyaManager::AdminInvoiceListView(NULL, adminMainWindowSwitchCallback);
+    PenyaManager::AdminInvoiceListView *pAdminInvoiceListView = new PenyaManager::AdminInvoiceListView(&adminMainWindow, adminMainWindowSwitchCallback);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kAdminInvoiceListWindowKey, pAdminInvoiceListView);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kInvoiceDetailsWindowKey, new PenyaManager::InvoiceDetailsView);
-    PenyaManager::ProviderManagerView *pProviderManagerView = new PenyaManager::ProviderManagerView(NULL, adminMainWindowSwitchCallback);
+    PenyaManager::ProviderManagerView *pProviderManagerView = new PenyaManager::ProviderManagerView(&adminMainWindow, adminMainWindowSwitchCallback);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kAdminProviderWindowKey, pProviderManagerView);
-    PenyaManager::AdminNewProvider *pAdminNewProvider = new PenyaManager::AdminNewProvider(NULL, adminMainWindowSwitchCallback);
+    PenyaManager::AdminNewProvider *pAdminNewProvider = new PenyaManager::AdminNewProvider(&adminMainWindow, adminMainWindowSwitchCallback);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kAdminNewProviderKey, pAdminNewProvider);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kStockManagementWindowKey, new PenyaManager::StockManagementWindow);
-    PenyaManager::FamilyItemManagementWindow *pFamilyItemManagementWindow = new PenyaManager::FamilyItemManagementWindow(NULL, adminMainWindowSwitchCallback);
+    PenyaManager::FamilyItemManagementWindow *pFamilyItemManagementWindow = new PenyaManager::FamilyItemManagementWindow(&adminMainWindow, adminMainWindowSwitchCallback);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kFamilyItemManagementWindowKey, pFamilyItemManagementWindow);
-    PenyaManager::AdminProductItem *pAdminProductItem = new PenyaManager::AdminProductItem(NULL, adminMainWindowSwitchCallback);
+    PenyaManager::AdminProductItem *pAdminProductItem = new PenyaManager::AdminProductItem(&adminMainWindow, adminMainWindowSwitchCallback);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kAdminProductItemKey, pAdminProductItem);
-    PenyaManager::AdminFamilyView *pAdminFamilyView = new PenyaManager::AdminFamilyView(NULL, adminMainWindowSwitchCallback);
+    PenyaManager::AdminFamilyView *pAdminFamilyView = new PenyaManager::AdminFamilyView(&adminMainWindow, adminMainWindowSwitchCallback);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kAdminFamilyViewKey, pAdminFamilyView);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kProductExpensesViewKey, new PenyaManager::ProductExpensesView);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kProviderInvoiceViewKey, new PenyaManager::ProviderInvoiceView);
-    PenyaManager::NewProviderInvoiceView *pNewProviderInvoiceView = new PenyaManager::NewProviderInvoiceView(NULL, adminMainWindowSwitchCallback);
+    PenyaManager::NewProviderInvoiceView *pNewProviderInvoiceView = new PenyaManager::NewProviderInvoiceView(&adminMainWindow, adminMainWindowSwitchCallback);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kNewProviderInvoiceViewKey, pNewProviderInvoiceView);
-    PenyaManager::ProviderInvoiceListView *pProviderInvoiceListView = new PenyaManager::ProviderInvoiceListView(NULL, adminMainWindowSwitchCallback);
+    PenyaManager::ProviderInvoiceListView *pProviderInvoiceListView = new PenyaManager::ProviderInvoiceListView(&adminMainWindow, adminMainWindowSwitchCallback);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kProviderInvoiceListViewKey, pProviderInvoiceListView);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kAdminDepositListViewKey, new PenyaManager::DepositListView);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kAdminAccountBalanceViewKey, new PenyaManager::AccountBalanceView);
-    PenyaManager::MemberListView *pMemberListView = new PenyaManager::MemberListView(NULL, adminMainWindowSwitchCallback);
+    PenyaManager::MemberListView *pMemberListView = new PenyaManager::MemberListView(&adminMainWindow, adminMainWindowSwitchCallback);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kMemberListViewWindowKey, pMemberListView);
-    PenyaManager::MemberView *pMemberView = new PenyaManager::MemberView(NULL, adminMainWindowSwitchCallback);
+    PenyaManager::MemberView *pMemberView = new PenyaManager::MemberView(&adminMainWindow, adminMainWindowSwitchCallback);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kMemberViewKey, pMemberView);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kAdminReservationViewKey, new PenyaManager::AdminReservationsWindow);
 

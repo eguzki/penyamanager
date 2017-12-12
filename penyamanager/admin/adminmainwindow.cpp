@@ -11,14 +11,42 @@ namespace PenyaManager {
     //
     AdminMainWindow::AdminMainWindow(QWidget *parent) :
         QMainWindow(parent),
-        ui(new Ui::AdminMainWindow)
+        ui(new Ui::AdminMainWindow),
+        m_pEmptyWidget()
     {
         ui->setupUi(this);
+        setCentralWidget(m_pEmptyWidget);
     }
     //
     AdminMainWindow::~AdminMainWindow()
     {
         delete ui;
+        delete m_pEmptyWidget;
+    }
+    //
+    void AdminMainWindow::init()
+    {
+        // when central widget is empty, takecentralwidget can lead to core dump
+        if (this->centralWidget()) {
+            // takeCentralWidget removes central widget. When setting new one, current one is not deleted
+            this->takeCentralWidget();
+        }
+        this->setCentralWidget(m_pEmptyWidget);
+    }
+    //
+    void AdminMainWindow::changeEvent(QEvent* event)
+    {
+        if (event->type() == QEvent::LanguageChange)
+        {
+            // retranslate designer form
+            this->retranslate();
+        }
+        QWidget::changeEvent(event);
+    }
+    //
+    void AdminMainWindow::retranslate()
+    {
+        this->ui->retranslateUi(this);
     }
     //
     void AdminMainWindow::on_actionExit_triggered()

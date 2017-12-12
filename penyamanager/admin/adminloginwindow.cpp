@@ -108,6 +108,7 @@ namespace PenyaManager {
         // assign user
         Singletons::m_pCurrMember = pMemberResultPtr->m_member;
         // call admin main window
+        m_pAdminMainWindow->init();
         m_pAdminMainWindow->show();
     }
     //

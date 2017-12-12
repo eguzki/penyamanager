@@ -40,15 +40,6 @@ namespace PenyaManager {
         this->m_username = -1;
         this->m_password = QString();
 
-        if (!Singletons::m_pDAO->isOpen()) {
-            QSqlError err = Singletons::m_pDAO->lastError();
-            Singletons::m_pLogger->Error(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kLogin,
-                    QString("Unable to initialize Database, %1").arg(err.text()));
-            GuiUtils::criticalMessageBox(this, tr("Database error. Contact administrator"));
-            qApp->exit(1);
-            return;
-        }
-
         //
         // Loading Last Invoice
         //
