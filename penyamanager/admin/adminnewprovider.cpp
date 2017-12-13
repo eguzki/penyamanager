@@ -56,6 +56,8 @@ namespace PenyaManager {
         this->ui->imageLabel->setFixedWidth(Constants::kMemberImageWidth);
         this->ui->imageLabel->setFixedHeight(Constants::kMemberImageHeigth);
         this->ui->imageLabel->setScaledContents(true);
+        // notes
+        this->ui->notesTextEdit->clear();
     }
     //
     void AdminNewProvider::fillProviderInfo(Int32 providerId)
@@ -87,6 +89,8 @@ namespace PenyaManager {
         this->ui->imageLabel->setFixedWidth(Constants::kMemberImageWidth);
         this->ui->imageLabel->setFixedHeight(Constants::kMemberImageHeigth);
         this->ui->imageLabel->setScaledContents(true);
+        // notes
+        this->ui->notesTextEdit->setPlainText(pProviderResultPtr->m_provider->m_notes);
     }
     //
     void AdminNewProvider::on_imagePushButton_clicked()
@@ -167,6 +171,8 @@ namespace PenyaManager {
                 // new image was selected
                 pProviderPtr->m_image = destFileName;
             }
+            // notes (optional)
+            pProviderPtr->m_notes = this->ui->notesTextEdit->toPlainText();
             // update in ddbb
             bool ok = Singletons::m_pDAO->updateProvider(pProviderPtr);
             if (!ok) {
@@ -196,6 +202,8 @@ namespace PenyaManager {
                 QFile::copy(this->m_providerImageFilename, destFilePath);
                 pProviderPtr->m_image = destFileName;
             }
+            // notes (optional)
+            pProviderPtr->m_notes = this->ui->notesTextEdit->toPlainText();
             Int32 providerId = Singletons::m_pDAO->createProvider(pProviderPtr);
             if (providerId < 0) {
                 QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));

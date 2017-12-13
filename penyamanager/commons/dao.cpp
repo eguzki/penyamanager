@@ -2082,7 +2082,7 @@ namespace PenyaManager {
             QueryPtr queryPtr(new QSqlQuery);
             // Member by id
             queryPtr->prepare(
-                    "SELECT provider.name, provider.image, provider.reg_date, provider.phone "
+                    "SELECT provider.name, provider.image, provider.reg_date, provider.phone, provider.notes "
                     "FROM provider "
                     "WHERE provider.idprovider=:providerid"
                     );
@@ -2107,6 +2107,7 @@ namespace PenyaManager {
             pProviderPtr->m_image = queryResponse.query->value(column++).toString();
             pProviderPtr->m_regDate = queryResponse.query->value(column++).toDate();
             pProviderPtr->m_phone = queryResponse.query->value(column++).toString();
+            pProviderPtr->m_notes = queryResponse.query->value(column++).toString();
             pProviderResulPtr->m_provider = pProviderPtr;
         }
         return pProviderResulPtr;
@@ -2119,7 +2120,7 @@ namespace PenyaManager {
             // update  member
             queryPtr->prepare(
                     "UPDATE provider "
-                    "SET name=:name, image=:image, reg_date=:reg_date, phone=:phone "
+                    "SET name=:name, image=:image, reg_date=:reg_date, phone=:phone, notes=:notes "
                     "WHERE idprovider = :providerid"
                     );
             // obligatory
@@ -2136,6 +2137,11 @@ namespace PenyaManager {
                 queryPtr->bindValue(":phone", QVariant());
             } else {
                 queryPtr->bindValue(":phone", pProviderPtr->m_phone);
+            }
+            if (pProviderPtr->m_notes.isEmpty()) {
+                queryPtr->bindValue(":notes", QVariant());
+            } else {
+                queryPtr->bindValue(":notes", pProviderPtr->m_notes);
             }
             return queryPtr;
         };
@@ -2193,8 +2199,8 @@ namespace PenyaManager {
             // create provider
             queryPtr->prepare(
                     "INSERT INTO provider "
-                    "(name, image, reg_date, phone) "
-                    "VALUES (:name, :image, :reg_date, :phone)"
+                    "(name, image, reg_date, phone, notes) "
+                    "VALUES (:name, :image, :reg_date, :phone, :notes)"
                     );
             queryPtr->bindValue(":name", pProviderPtr->m_name);
             if (pProviderPtr->m_image.isEmpty()) {
@@ -2207,6 +2213,11 @@ namespace PenyaManager {
                 queryPtr->bindValue(":phone", QVariant());
             } else {
                 queryPtr->bindValue(":phone", pProviderPtr->m_phone);
+            }
+            if (pProviderPtr->m_notes.isEmpty()) {
+                queryPtr->bindValue(":notes", QVariant());
+            } else {
+                queryPtr->bindValue(":notes", pProviderPtr->m_notes);
             }
             return queryPtr;
         };

@@ -132,6 +132,7 @@ CREATE TABLE IF NOT EXISTS `alegria`.`provider` (
   `image` VARCHAR(200) NULL,
   `reg_date` DATE NULL,
   `phone` VARCHAR(45) NULL,
+  `notes` VARCHAR(2000) NULL,
   PRIMARY KEY (`idprovider`))
 ENGINE = InnoDB;
 
