@@ -59,11 +59,7 @@ namespace PenyaManager {
             //
             void onCancelButton_clicked(int reservationId, ReservationItemType itemType);
             //
-            void on_midMorningButton_clicked(bool checked);
-            //
             void on_lunchButton_clicked(bool checked);
-            //
-            void on_supperButton_clicked(bool checked);
             //
             void on_dinnerButton_clicked(bool checked);
 
