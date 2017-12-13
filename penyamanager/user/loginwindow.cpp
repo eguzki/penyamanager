@@ -37,6 +37,8 @@ namespace PenyaManager {
     //
     void LoginWindow::init()
     {
+        initializeLang();
+
         this->m_username = -1;
         this->m_password = QString();
 
@@ -84,6 +86,21 @@ namespace PenyaManager {
         this->ui->retranslateUi(this);
         translateTable();
         this->ui->languagePushButton->setText(Singletons::m_pTranslationManager->getLanguageLabel());
+    }
+    //
+    void LoginWindow::initializeLang()
+    {
+        // Init with basque language
+        if (Singletons::m_pTranslationManager->getLanguageLabel() != TranslationManager::kBasqueLangLabel)
+        {
+            // change translator
+            qApp->removeTranslator(m_pTranslator);
+            Singletons::m_pTranslationManager->switchLanguage();
+            // load new dictionary
+            m_pTranslator->load(Singletons::m_pTranslationManager->getTranslationFile());
+            // installTranslator() will create a change event which will be sent to every single widget
+            qApp->installTranslator(m_pTranslator);
+        }
     }
     //
     void LoginWindow::initializeTable()

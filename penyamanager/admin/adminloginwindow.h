@@ -28,6 +28,10 @@ namespace PenyaManager {
 
         private:
             //
+            void initializeLang();
+
+        private:
+            //
             AdminMainWindow *m_pAdminMainWindow;
             //
             Ui::AdminLoginWindow *ui;

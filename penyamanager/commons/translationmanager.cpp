@@ -7,6 +7,10 @@
 
 namespace PenyaManager {
     //
+    const QString   TranslationManager::kBasqueLangLabel        = "EUS";
+    //
+    const QString   TranslationManager::kEspLangLabel           = "ES";
+    //
     TranslationManager::TranslationManager()
         :
             m_currentLangIndex(0), // initial index -> eu
@@ -53,9 +57,9 @@ namespace PenyaManager {
     //
     QString TranslationManager::getLanguageLabel()
     {
-        QString langLabel("EUS");
+        QString langLabel(kBasqueLangLabel);
         if (m_pLanguagesPrefixArray[m_currentLangIndex] == "es") {
-            langLabel = "ES";
+            langLabel = kEspLangLabel;
         }
         return langLabel;
     }
