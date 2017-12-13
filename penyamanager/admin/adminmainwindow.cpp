@@ -205,7 +205,6 @@ namespace PenyaManager {
     //
     void AdminMainWindow::switchCentralWidget(WindowKey key)
     {
-        // call invoice list window
         IPartner* pPartner = Singletons::m_pParnetFinder->getPartner(key);
         pPartner->init();
         this->ui->stackedWidget->setCurrentWidget(pPartner);
