@@ -10,9 +10,17 @@
 namespace PenyaManager
 {
     //
+    QString GetStringFromMemberType(Uint32 memberType);
+    //
     class Member
     {
         public:
+            //
+            static const Uint32 NORMAL;
+            //
+            static const Uint32 RETIRED;
+            //
+            static const Uint32 HONORARY;
             //
             Member();
             //
@@ -67,6 +75,12 @@ namespace PenyaManager
             QDateTime           m_lastLogin;
             //
             Float               m_balance;
+            //
+            QString             m_idCard;
+            //
+            QString             m_cardNumber;
+            //
+            Uint32              m_memberType;
     };
 
     //

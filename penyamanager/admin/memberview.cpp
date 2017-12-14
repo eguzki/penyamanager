@@ -77,6 +77,16 @@ namespace PenyaManager {
         this->ui->postalSendCheckBox->setChecked(false);
         // notes
         this->ui->notesTextEdit->clear();
+        // idCard
+        this->ui->idCardLineEdit->clear();
+        // Card number
+        this->ui->cardLineEdit->clear();
+        // MemberType
+        this->ui->memberTypeComboBox->clear();
+        this->ui->memberTypeComboBox->insertItem(Member::NORMAL, GetStringFromMemberType(Member::NORMAL), Member::NORMAL);
+        this->ui->memberTypeComboBox->insertItem(Member::RETIRED, GetStringFromMemberType(Member::RETIRED), Member::RETIRED);
+        this->ui->memberTypeComboBox->insertItem(Member::HONORARY, GetStringFromMemberType(Member::HONORARY), Member::HONORARY);
+        this->ui->memberTypeComboBox->setCurrentIndex(Member::NORMAL);
     }
     //
     void MemberView::init()
@@ -206,6 +216,12 @@ namespace PenyaManager {
             // regDate -> no change
             // lastmodfies
             pMemberResultPtr->m_member->m_lastModified = QDateTime::currentDateTimeUtc();
+            // card id
+            pMemberResultPtr->m_member->m_idCard = this->ui->idCardLineEdit->text();
+            // card number
+            pMemberResultPtr->m_member->m_cardNumber = this->ui->cardLineEdit->text();
+            // member type
+            pMemberResultPtr->m_member->m_memberType = this->ui->memberTypeComboBox->currentData().toUInt();
 
             // update in ddbb
             bool ok = Singletons::m_pDAO->updateMember(pMemberResultPtr->m_member);
@@ -292,6 +308,12 @@ namespace PenyaManager {
             pMemberPtr->m_lastLogin = QDateTime::currentDateTimeUtc();
             // default password: "0000"
             pMemberPtr->m_pwd = Utils::hashSHA256asHex("0000");
+            // card id
+            pMemberPtr->m_idCard = this->ui->idCardLineEdit->text();
+            // card number
+            pMemberPtr->m_cardNumber = this->ui->cardLineEdit->text();
+            // member type
+            pMemberPtr->m_memberType = this->ui->memberTypeComboBox->currentData().toUInt();
             // create in ddbb
             Int32 memberId = Singletons::m_pDAO->createMember(pMemberPtr);
             if (memberId < 0) {
@@ -378,6 +400,16 @@ namespace PenyaManager {
         this->ui->postalSendCheckBox->setChecked(pMemberResultPtr->m_member->m_postalSend);
         // notes
         this->ui->notesTextEdit->setPlainText(pMemberResultPtr->m_member->m_notes);
+        // id card
+        this->ui->idCardLineEdit->setText(pMemberResultPtr->m_member->m_idCard);
+        // card number
+        this->ui->cardLineEdit->setText(pMemberResultPtr->m_member->m_cardNumber);
+        // member type
+        this->ui->memberTypeComboBox->clear();
+        this->ui->memberTypeComboBox->insertItem(Member::NORMAL, GetStringFromMemberType(Member::NORMAL), Member::NORMAL);
+        this->ui->memberTypeComboBox->insertItem(Member::RETIRED, GetStringFromMemberType(Member::RETIRED), Member::RETIRED);
+        this->ui->memberTypeComboBox->insertItem(Member::HONORARY, GetStringFromMemberType(Member::HONORARY), Member::HONORARY);
+        this->ui->memberTypeComboBox->setCurrentIndex(pMemberResultPtr->m_member->m_memberType);
     }
     //
     void MemberView::on_imagePushButton_clicked()

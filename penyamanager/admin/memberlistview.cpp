@@ -206,6 +206,9 @@ namespace PenyaManager {
             << tr("Name") << ","
             << tr("Surname 1") << ","
             << tr("Surname 2") << ","
+            << tr("Card ID") << ","
+            << tr("Card Number") << ","
+            << tr("Member Type") << ","
             << tr("Registration Date") << ","
             << tr("Active") << ","
             << tr("Is Admin") << ","
@@ -230,10 +233,14 @@ namespace PenyaManager {
             QString birthDateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pMemberPtr->m_birthdate, QLocale::NarrowFormat);
             QString cleanAddress = QString("\"%1\"").arg(pMemberPtr->m_address.replace('"', '\''));
             QString cleanNotes = QString("\"%1\"").arg(pMemberPtr->m_notes.replace('"', '\'').simplified());
+            QString memberType = GetStringFromMemberType(pMemberPtr->m_memberType);
             out << pMemberPtr->m_username << ", " 
                 << pMemberPtr->m_name << ", "
                 << pMemberPtr->m_surname1 << ", "
                 << pMemberPtr->m_surname2 << ", "
+                << pMemberPtr->m_idCard << ", "
+                << pMemberPtr->m_cardNumber << ", "
+                << memberType << ", "
                 << regDateLocalized << ", "
                 << pMemberPtr->m_active << ", "
                 << pMemberPtr->m_isAdmin << ", "

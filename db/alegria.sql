@@ -47,6 +47,9 @@ CREATE TABLE IF NOT EXISTS `alegria`.`member` (
   `notes` VARCHAR(2000) NULL,
   `pwd` VARCHAR(128) NOT NULL,
   `lastlogin` DATETIME NOT NULL,
+  `id_card` VARCHAR(45) NULL,
+  `card` VARCHAR(45) NULL,
+  `type` INT(11) NOT NULL,
   PRIMARY KEY (`idmember`),
   UNIQUE INDEX `username_UNIQUE` (`username` ASC))
 ENGINE = InnoDB

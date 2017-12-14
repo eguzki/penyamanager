@@ -188,7 +188,7 @@ namespace PenyaManager {
             queryPtr->prepare(
                     "SELECT member.name, member.username, member.surname1, member.surname2, member.image, member.lastmodified, member.reg_date, member.active, member.isAdmin, member.birth, "
                     "member.address, member.zip_code, member.town, member.state, member.tel, member.tel2, member.email, member.bank_account, member.postal_send, "
-                    "member.notes, member.pwd, member.lastlogin "
+                    "member.notes, member.pwd, member.lastlogin, member.id_card, member.card, member.type "
                     "FROM member "
                     "WHERE member.idmember=:memberid"
                     );
@@ -231,6 +231,9 @@ namespace PenyaManager {
             pMemberPtr->m_notes = queryResponse.query->value(column++).toString();
             pMemberPtr->m_pwd = queryResponse.query->value(column++).toString();
             pMemberPtr->m_lastLogin = queryResponse.query->value(column++).toDateTime();
+            pMemberPtr->m_idCard = queryResponse.query->value(column++).toString();
+            pMemberPtr->m_cardNumber = queryResponse.query->value(column++).toString();
+            pMemberPtr->m_memberType = queryResponse.query->value(column++).toUInt();
             pMemberResultPtr->m_member = pMemberPtr;
         }
         return pMemberResultPtr;
@@ -245,7 +248,7 @@ namespace PenyaManager {
             queryPtr->prepare(
                     "SELECT member.idmember, member.name, member.surname1, member.surname2, member.image, member.lastmodified, member.reg_date, member.active, member.isAdmin, member.birth, "
                     "member.address, member.zip_code, member.town, member.state, member.tel, member.tel2, member.email, member.bank_account, member.postal_send, "
-                    "member.notes, member.pwd, member.lastlogin "
+                    "member.notes, member.pwd, member.lastlogin, member.id_card, member.card, member.type "
                     "FROM member "
                     "WHERE member.username=:username"
                     );
@@ -286,6 +289,9 @@ namespace PenyaManager {
             pMemberPtr->m_notes = queryResponse.query->value(column++).toString();
             pMemberPtr->m_pwd = queryResponse.query->value(column++).toString();
             pMemberPtr->m_lastLogin = queryResponse.query->value(column++).toDateTime();
+            pMemberPtr->m_idCard = queryResponse.query->value(column++).toString();
+            pMemberPtr->m_cardNumber = queryResponse.query->value(column++).toString();
+            pMemberPtr->m_memberType = queryResponse.query->value(column++).toUInt();
             pMemberResultPtr->m_member = pMemberPtr;
         }
         return pMemberResultPtr;
@@ -3053,7 +3059,7 @@ namespace PenyaManager {
                 // member filtered list
                 queryPtr->prepare(
                         "SELECT member.idmember, member.username, member.name, member.surname1, member.surname2, member.image, member.lastmodified, member.reg_date, member.active, member.isAdmin, member.birth, "
-                        "member.address, member.zip_code, member.town, member.state, member.tel, member.tel2, member.email, member.bank_account, member.postal_send, "
+                        "member.address, member.zip_code, member.town, member.state, member.tel, member.tel2, member.email, member.bank_account, member.postal_send, member.id_card, member.card, member.type, "
                         "member.notes, ac.balance "
                         "FROM account ac "
                         "INNER JOIN (SELECT account.idmember, MAX(account.date) AS MaxDate FROM account GROUP BY account.idmember) groupedAccount "
@@ -3067,7 +3073,7 @@ namespace PenyaManager {
                 // member list
                 queryPtr->prepare(
                         "SELECT member.idmember, member.username, member.name, member.surname1, member.surname2, member.image, member.lastmodified, member.reg_date, member.active, member.isAdmin, member.birth, "
-                        "member.address, member.zip_code, member.town, member.state, member.tel, member.tel2, member.email, member.bank_account, member.postal_send, "
+                        "member.address, member.zip_code, member.town, member.state, member.tel, member.tel2, member.email, member.bank_account, member.postal_send, member.id_card, member.card, member.type, "
                         "member.notes, ac.balance "
                         "FROM account ac "
                         "INNER JOIN (SELECT account.idmember, MAX(account.date) AS MaxDate FROM account GROUP BY account.idmember) groupedAccount "
@@ -3113,6 +3119,9 @@ namespace PenyaManager {
                 pMemberPtr->m_email = queryResponse.query->value(column++).toString();
                 pMemberPtr->m_bank_account = queryResponse.query->value(column++).toString();
                 pMemberPtr->m_postalSend = queryResponse.query->value(column++).toInt() == 1;
+                pMemberPtr->m_idCard = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_cardNumber = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_memberType = queryResponse.query->value(column++).toUInt();
                 pMemberPtr->m_notes = queryResponse.query->value(column++).toString();
                 pMemberPtr->m_balance = queryResponse.query->value(column++).toFloat();
                 pMemberListResultPtr->m_list->push_back(pMemberPtr);
@@ -3166,7 +3175,7 @@ namespace PenyaManager {
                     "UPDATE member "
                     "SET username=:username, name=:name, surname1=:surname1, surname2=:surname2, image=:image, lastmodified=:lastmodified, active=:active, isAdmin=:isadmin, birth=:birth, "
                     "address=:address, zip_code=:zip_code, town=:town, state=:state, tel=:tel, tel2=:tel2, email=:email, bank_account=:bank_account, postal_send=:postal_send, "
-                    "notes=:notes "
+                    "notes=:notes, id_card=:id_card, card=:card, type=:type "
                     "WHERE idmember = :memberid"
                     );
             // obligatory
@@ -3180,6 +3189,7 @@ namespace PenyaManager {
             queryPtr->bindValue(":isadmin", pMemberPtr->m_isAdmin?1:0);
             queryPtr->bindValue(":bank_account", pMemberPtr->m_bank_account);
             queryPtr->bindValue(":postal_send", pMemberPtr->m_postalSend?1:0);
+            queryPtr->bindValue(":type", pMemberPtr->m_memberType);
             // optional
             if (pMemberPtr->m_imagePath.isEmpty()) {
                 queryPtr->bindValue(":image", QVariant());
@@ -3230,6 +3240,16 @@ namespace PenyaManager {
                 queryPtr->bindValue(":notes", QVariant());
             } else {
                 queryPtr->bindValue(":notes", pMemberPtr->m_notes);
+            }
+            if (pMemberPtr->m_idCard.isEmpty()) {
+                queryPtr->bindValue(":id_card", QVariant());
+            } else {
+                queryPtr->bindValue(":id_card", pMemberPtr->m_idCard);
+            }
+            if (pMemberPtr->m_cardNumber.isEmpty()) {
+                queryPtr->bindValue(":card", QVariant());
+            } else {
+                queryPtr->bindValue(":card", pMemberPtr->m_cardNumber);
             }
             return queryPtr;
         };
@@ -3252,10 +3272,10 @@ namespace PenyaManager {
                     "INSERT INTO member "
                     "(username, name, surname1, surname2, image, lastmodified, reg_date, active, isAdmin, birth, "
                     "address, zip_code, town, state, tel, tel2, email, bank_account, postal_send, "
-                    "notes, pwd, lastlogin) "
+                    "notes, pwd, lastlogin, id_card, card, type) "
                     "VALUES (:username, :name, :surname1, :surname2, :image, :lastmodified, :reg_date, :active, :isadmin, :birth, "
                     ":address, :zip_code, :town, :state, :tel, :tel2, :email, :bank_account, :postal_send, "
-                    ":notes, :pwd, :lastlogin)"
+                    ":notes, :pwd, :lastlogin, :id_card, :card, :type)"
                     );
             // obligatory
             queryPtr->bindValue(":username", pMemberPtr->m_username);
@@ -3270,6 +3290,7 @@ namespace PenyaManager {
             queryPtr->bindValue(":postal_send", pMemberPtr->m_postalSend?1:0);
             queryPtr->bindValue(":pwd", pMemberPtr->m_pwd);
             queryPtr->bindValue(":lastlogin", pMemberPtr->m_lastLogin);
+            queryPtr->bindValue(":type", pMemberPtr->m_memberType);
             // optional
             if (pMemberPtr->m_imagePath.isEmpty()) {
                 queryPtr->bindValue(":image", QVariant());
@@ -3320,6 +3341,16 @@ namespace PenyaManager {
                 queryPtr->bindValue(":notes", QVariant());
             } else {
                 queryPtr->bindValue(":notes", pMemberPtr->m_notes);
+            }
+            if (pMemberPtr->m_idCard.isEmpty()) {
+                queryPtr->bindValue(":id_card", QVariant());
+            } else {
+                queryPtr->bindValue(":id_card", pMemberPtr->m_idCard);
+            }
+            if (pMemberPtr->m_cardNumber.isEmpty()) {
+                queryPtr->bindValue(":card", QVariant());
+            } else {
+                queryPtr->bindValue(":card", pMemberPtr->m_cardNumber);
             }
             return queryPtr;
         };

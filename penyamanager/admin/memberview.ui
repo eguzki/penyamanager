@@ -68,41 +68,33 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
 */</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
-    <widget class="QWidget" name="topWidget" native="true">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <widget class="QLabel" name="titleLabel">
-        <property name="text">
-         <string>Member Detail View</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>548</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-     </layout>
-    </widget>
-   </item>
+   <property name="leftMargin">
+    <number>1</number>
+   </property>
+   <property name="topMargin">
+    <number>1</number>
+   </property>
+   <property name="rightMargin">
+    <number>1</number>
+   </property>
+   <property name="bottomMargin">
+    <number>1</number>
+   </property>
    <item>
     <widget class="QWidget" name="memberIdWidget" native="true">
      <layout class="QHBoxLayout" name="horizontalLayout_4">
+      <property name="leftMargin">
+       <number>1</number>
+      </property>
+      <property name="topMargin">
+       <number>1</number>
+      </property>
+      <property name="rightMargin">
+       <number>1</number>
+      </property>
+      <property name="bottomMargin">
+       <number>1</number>
+      </property>
       <item>
        <widget class="QLabel" name="memberIdLabel">
         <property name="minimumSize">
@@ -194,7 +186,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
        </widget>
       </item>
       <item>
-       <spacer name="horizontalSpacer_4">
+       <spacer name="horizontalSpacer">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -244,12 +236,48 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
    <item>
     <widget class="QWidget" name="widget" native="true">
      <layout class="QHBoxLayout" name="horizontalLayout_20">
+      <property name="leftMargin">
+       <number>1</number>
+      </property>
+      <property name="topMargin">
+       <number>1</number>
+      </property>
+      <property name="rightMargin">
+       <number>1</number>
+      </property>
+      <property name="bottomMargin">
+       <number>1</number>
+      </property>
       <item>
        <widget class="QWidget" name="widget_2" native="true">
         <layout class="QVBoxLayout" name="verticalLayout_2">
+         <property name="leftMargin">
+          <number>1</number>
+         </property>
+         <property name="topMargin">
+          <number>1</number>
+         </property>
+         <property name="rightMargin">
+          <number>1</number>
+         </property>
+         <property name="bottomMargin">
+          <number>1</number>
+         </property>
          <item>
           <widget class="QWidget" name="usernameWidget" native="true">
            <layout class="QHBoxLayout" name="horizontalLayout_5">
+            <property name="leftMargin">
+             <number>1</number>
+            </property>
+            <property name="topMargin">
+             <number>1</number>
+            </property>
+            <property name="rightMargin">
+             <number>1</number>
+            </property>
+            <property name="bottomMargin">
+             <number>1</number>
+            </property>
             <item>
              <widget class="QLabel" name="usernameLabel">
               <property name="minimumSize">
@@ -285,6 +313,18 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
          <item>
           <widget class="QWidget" name="nameFormWidget" native="true">
            <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <property name="leftMargin">
+             <number>1</number>
+            </property>
+            <property name="topMargin">
+             <number>1</number>
+            </property>
+            <property name="rightMargin">
+             <number>1</number>
+            </property>
+            <property name="bottomMargin">
+             <number>1</number>
+            </property>
             <item>
              <widget class="QLabel" name="nameLabel">
               <property name="minimumSize">
@@ -333,6 +373,18 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
          <item>
           <widget class="QWidget" name="memberSurnameWidget" native="true">
            <layout class="QHBoxLayout" name="horizontalLayout_6">
+            <property name="leftMargin">
+             <number>1</number>
+            </property>
+            <property name="topMargin">
+             <number>1</number>
+            </property>
+            <property name="rightMargin">
+             <number>1</number>
+            </property>
+            <property name="bottomMargin">
+             <number>1</number>
+            </property>
             <item>
              <widget class="QLabel" name="memberSurnameLabel">
               <property name="minimumSize">
@@ -398,6 +450,18 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
          <item>
           <widget class="QWidget" name="bankAccountWidget" native="true">
            <layout class="QHBoxLayout" name="horizontalLayout_12">
+            <property name="leftMargin">
+             <number>1</number>
+            </property>
+            <property name="topMargin">
+             <number>1</number>
+            </property>
+            <property name="rightMargin">
+             <number>1</number>
+            </property>
+            <property name="bottomMargin">
+             <number>1</number>
+            </property>
             <item>
              <widget class="QLabel" name="bankAccountLabel">
               <property name="minimumSize">
@@ -446,6 +510,18 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
          <item>
           <widget class="QWidget" name="birthdateWidget" native="true">
            <layout class="QHBoxLayout" name="horizontalLayout_8">
+            <property name="leftMargin">
+             <number>1</number>
+            </property>
+            <property name="topMargin">
+             <number>1</number>
+            </property>
+            <property name="rightMargin">
+             <number>1</number>
+            </property>
+            <property name="bottomMargin">
+             <number>1</number>
+            </property>
             <item>
              <widget class="QLabel" name="birthdateLabel">
               <property name="minimumSize">
@@ -488,6 +564,18 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
          <item>
           <widget class="QWidget" name="emailWidget" native="true">
            <layout class="QHBoxLayout" name="horizontalLayout_16">
+            <property name="leftMargin">
+             <number>1</number>
+            </property>
+            <property name="topMargin">
+             <number>1</number>
+            </property>
+            <property name="rightMargin">
+             <number>1</number>
+            </property>
+            <property name="bottomMargin">
+             <number>1</number>
+            </property>
             <item>
              <widget class="QLabel" name="emailLabel">
               <property name="minimumSize">
@@ -536,6 +624,18 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
          <item>
           <widget class="QWidget" name="addressWidget" native="true">
            <layout class="QHBoxLayout" name="horizontalLayout_9">
+            <property name="leftMargin">
+             <number>1</number>
+            </property>
+            <property name="topMargin">
+             <number>1</number>
+            </property>
+            <property name="rightMargin">
+             <number>1</number>
+            </property>
+            <property name="bottomMargin">
+             <number>1</number>
+            </property>
             <item>
              <widget class="QLabel" name="addressLabel">
               <property name="minimumSize">
@@ -584,6 +684,18 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
          <item>
           <widget class="QWidget" name="zipCodeWidget" native="true">
            <layout class="QHBoxLayout" name="horizontalLayout_10">
+            <property name="leftMargin">
+             <number>1</number>
+            </property>
+            <property name="topMargin">
+             <number>1</number>
+            </property>
+            <property name="rightMargin">
+             <number>1</number>
+            </property>
+            <property name="bottomMargin">
+             <number>1</number>
+            </property>
             <item>
              <widget class="QLabel" name="zipCodeLabel">
               <property name="minimumSize">
@@ -619,6 +731,18 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
          <item>
           <widget class="QWidget" name="townWidget" native="true">
            <layout class="QHBoxLayout" name="horizontalLayout_11">
+            <property name="leftMargin">
+             <number>1</number>
+            </property>
+            <property name="topMargin">
+             <number>1</number>
+            </property>
+            <property name="rightMargin">
+             <number>1</number>
+            </property>
+            <property name="bottomMargin">
+             <number>1</number>
+            </property>
             <item>
              <widget class="QLabel" name="townLabel">
               <property name="minimumSize">
@@ -667,6 +791,18 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
          <item>
           <widget class="QWidget" name="stateWidget" native="true">
            <layout class="QHBoxLayout" name="horizontalLayout_13">
+            <property name="leftMargin">
+             <number>1</number>
+            </property>
+            <property name="topMargin">
+             <number>1</number>
+            </property>
+            <property name="rightMargin">
+             <number>1</number>
+            </property>
+            <property name="bottomMargin">
+             <number>1</number>
+            </property>
             <item>
              <widget class="QLabel" name="stateLabel">
               <property name="minimumSize">
@@ -702,6 +838,18 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
          <item>
           <widget class="QWidget" name="phoneWidget" native="true">
            <layout class="QHBoxLayout" name="horizontalLayout_14">
+            <property name="leftMargin">
+             <number>1</number>
+            </property>
+            <property name="topMargin">
+             <number>1</number>
+            </property>
+            <property name="rightMargin">
+             <number>1</number>
+            </property>
+            <property name="bottomMargin">
+             <number>1</number>
+            </property>
             <item>
              <widget class="QLabel" name="phoneLabel">
               <property name="minimumSize">
@@ -737,6 +885,18 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
          <item>
           <widget class="QWidget" name="phone2Widget" native="true">
            <layout class="QHBoxLayout" name="horizontalLayout_15">
+            <property name="leftMargin">
+             <number>1</number>
+            </property>
+            <property name="topMargin">
+             <number>1</number>
+            </property>
+            <property name="rightMargin">
+             <number>1</number>
+            </property>
+            <property name="bottomMargin">
+             <number>1</number>
+            </property>
             <item>
              <widget class="QLabel" name="phone2Label">
               <property name="minimumSize">
@@ -769,6 +929,129 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
            </layout>
           </widget>
          </item>
+         <item>
+          <widget class="QWidget" name="idcardWidget" native="true">
+           <layout class="QHBoxLayout" name="horizontalLayout_18">
+            <property name="leftMargin">
+             <number>1</number>
+            </property>
+            <property name="topMargin">
+             <number>1</number>
+            </property>
+            <property name="rightMargin">
+             <number>1</number>
+            </property>
+            <property name="bottomMargin">
+             <number>1</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="idCardLabel">
+              <property name="text">
+               <string>Card ID</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="idCardLineEdit"/>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_18">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>305</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QWidget" name="cardWidget" native="true">
+           <layout class="QHBoxLayout" name="horizontalLayout_21">
+            <property name="leftMargin">
+             <number>1</number>
+            </property>
+            <property name="topMargin">
+             <number>1</number>
+            </property>
+            <property name="rightMargin">
+             <number>1</number>
+            </property>
+            <property name="bottomMargin">
+             <number>1</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="cardLabel">
+              <property name="text">
+               <string>Card Number</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="cardLineEdit"/>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_20">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>287</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QWidget" name="memberTypeWidget" native="true">
+           <layout class="QHBoxLayout" name="horizontalLayout_22">
+            <property name="leftMargin">
+             <number>1</number>
+            </property>
+            <property name="topMargin">
+             <number>1</number>
+            </property>
+            <property name="rightMargin">
+             <number>1</number>
+            </property>
+            <property name="bottomMargin">
+             <number>1</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="memberTypeLabel">
+              <property name="text">
+               <string>Member Type</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="memberTypeComboBox"/>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_21">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>496</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </widget>
+         </item>
         </layout>
        </widget>
       </item>
@@ -787,6 +1070,18 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
          </size>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_3">
+         <property name="leftMargin">
+          <number>1</number>
+         </property>
+         <property name="topMargin">
+          <number>1</number>
+         </property>
+         <property name="rightMargin">
+          <number>1</number>
+         </property>
+         <property name="bottomMargin">
+          <number>1</number>
+         </property>
          <item>
           <widget class="QWidget" name="notesLabelwidget" native="true">
            <layout class="QHBoxLayout" name="horizontalLayout_19">
