@@ -29,10 +29,15 @@ namespace PenyaManager {
     //
     void MemberView::initialize()
     {
-        // memberId
-        this->ui->memberIdValueLabel->clear();
         // member username
-        this->ui->usernameLineEdit->clear();
+        Int32 proposedUsername = Singletons::m_pDAO->getLastUsername();
+        if (proposedUsername < 0) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            // call family product management window throw adminmainwindow
+            m_switchCentralWidgetCallback(WindowKey::kMemberListViewWindowKey);
+            return;
+        }
+        this->ui->usernameLineEdit->setText(QString::number(proposedUsername + 1));
         // reg date
         QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(QDate::currentDate(), QLocale::NarrowFormat);
         this->ui->regDateValueLabel->setText(dateLocalized);
@@ -347,8 +352,6 @@ namespace PenyaManager {
         if (!pMemberResultPtr->m_member){
             return;
         }
-        // memberId
-        this->ui->memberIdValueLabel->setText(QString::number(pMemberResultPtr->m_member->m_id));
         // reg date
         QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pMemberResultPtr->m_member->m_regDate, QLocale::NarrowFormat);
         this->ui->regDateValueLabel->setText(dateLocalized);

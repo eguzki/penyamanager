@@ -235,6 +235,8 @@ namespace PenyaManager {
             ProviderInvoiceResultPtr getProviderInvoiceById(const QString &providerInvoiceId);
             //
             ProviderInvoiceProductItemListResultPtr getProviderInvoiceProductsByInvoiceId(const QString &providerInvoiceId);
+            //
+            Int32 getLastUsername();
 
         private:
             //

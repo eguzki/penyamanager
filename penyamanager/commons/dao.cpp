@@ -3656,5 +3656,31 @@ namespace PenyaManager {
         }
         return pListResultPtr;
     }
+    //
+    Int32 DAO::getLastUsername()
+    {
+        Uint32 lastUsername = -1;
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // Get last invoice (closed or open)
+            queryPtr->prepare(
+                    "SELECT username "
+                    "FROM member "
+                    "ORDER BY username DESC "
+                    "LIMIT 1"
+                    );
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb, QString("getLastUsername"));
+        } else if (queryResponse.query->next())
+        {
+            lastUsername = queryResponse.query->value(0).toInt();;
+        }
+        return lastUsername;
+    }
 }
 
