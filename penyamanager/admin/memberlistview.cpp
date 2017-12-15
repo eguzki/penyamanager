@@ -13,8 +13,7 @@ namespace PenyaManager {
     MemberListView::MemberListView(QWidget *parent, const CentralWidgetCallback &callback) :
         IPartner(parent),
         ui(new Ui::MemberListView),
-        m_switchCentralWidgetCallback(callback),
-        m_currentPage(0)
+        m_switchCentralWidgetCallback(callback)
     {
         ui->setupUi(this);
         initializeTable();
@@ -56,11 +55,13 @@ namespace PenyaManager {
     //
     void MemberListView::init()
     {
-        //
-        // Loading User profile
-        //
-        m_currentPage = 0;
-        updateResults();
+        // will emit valueChanged() if the new value is different from the old one
+        int page = this->ui->pageNumberSpinBox->value();
+        if (page != 1) {
+            this->ui->pageNumberSpinBox->setValue(1);
+        } else {
+            updateResults();
+        }
     }
     //
     void MemberListView::retranslate()
@@ -74,8 +75,9 @@ namespace PenyaManager {
         MemberListResultPtr pMemberListResultPtr;
         MemberListStatsResultPtr pMemberListStatsResultPtr;
 
+        Int32 currentPage = this->ui->pageNumberSpinBox->value();
         bool filterPostalSend = this->ui->filterPostalUsersCheckBox->checkState() == Qt::CheckState::Checked;
-        pMemberListResultPtr = Singletons::m_pDAO->getMemberList(filterPostalSend, m_currentPage, Constants::kInvoiceListPageCount);
+        pMemberListResultPtr = Singletons::m_pDAO->getMemberList(filterPostalSend, currentPage-1, Constants::kInvoiceListPageCount);
         if (pMemberListResultPtr->m_error) {
             QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
             return;
@@ -87,11 +89,17 @@ namespace PenyaManager {
         }
         // enable-disable pagination buttons
         // total num pages
-        Uint32 numPages = (Uint32)ceil((Float)pMemberListStatsResultPtr->m_stats->m_totalMembers/Constants::kInvoiceListPageCount);
-        this->ui->prevPagePushButton->setEnabled(m_currentPage > 0);
-        this->ui->nextPagePushButton->setEnabled(m_currentPage < numPages-1);
-        // fill page view
-        this->ui->pageInfoLabel->setText(tr("page %1 out of %2").arg(m_currentPage+1).arg(numPages));
+        Int32 numPages = (Int32)ceil((Float)pMemberListStatsResultPtr->m_stats->m_totalMembers/Constants::kInvoiceListPageCount);
+        // when just single page, hide pagingWidget
+        this->ui->pagingWidget->setHidden(numPages <= 1);
+        if (numPages > 1) {
+            this->ui->prevPagePushButton->setEnabled(currentPage > 1);
+            this->ui->prev10PagePushButton->setEnabled(currentPage > 10);
+            this->ui->nextPagePushButton->setEnabled(currentPage < numPages);
+            this->ui->next10PagePushButton->setEnabled(currentPage < numPages-9);
+            this->ui->totalPagesValueLabel->setText(QString::number(numPages));
+            this->ui->pageNumberSpinBox->setRange(1, numPages);
+        }
         // fill total stats view
         this->ui->totalMembersValueLabel->setText(QString::number(pMemberListStatsResultPtr->m_stats->m_totalMembers));
         // fill invoice list
@@ -104,18 +112,6 @@ namespace PenyaManager {
         Singletons::m_currentMemberId = -1;
         // call member window throw adminmainwindow
         m_switchCentralWidgetCallback(WindowKey::kMemberViewKey);
-    }
-    //
-    void MemberListView::on_prevPagePushButton_clicked()
-    {
-        m_currentPage--;
-        updateResults();
-    }
-    //
-    void MemberListView::on_nextPagePushButton_clicked()
-    {
-        m_currentPage++;
-        updateResults();
     }
     //
     void MemberListView::fillMemberList(const MemberListPtr &pMemberListPtr)
@@ -202,7 +198,7 @@ namespace PenyaManager {
 
         // header
         // print header
-        out << tr("Username") << "," 
+        out << tr("Username") << ","
             << tr("Name") << ","
             << tr("Surname 1") << ","
             << tr("Surname 2") << ","
@@ -234,7 +230,7 @@ namespace PenyaManager {
             QString cleanAddress = QString("\"%1\"").arg(pMemberPtr->m_address.replace('"', '\''));
             QString cleanNotes = QString("\"%1\"").arg(pMemberPtr->m_notes.replace('"', '\'').simplified());
             QString memberType = GetStringFromMemberType(pMemberPtr->m_memberType);
-            out << pMemberPtr->m_username << ", " 
+            out << pMemberPtr->m_username << ", "
                 << pMemberPtr->m_name << ", "
                 << pMemberPtr->m_surname1 << ", "
                 << pMemberPtr->m_surname2 << ", "
@@ -255,7 +251,7 @@ namespace PenyaManager {
                 << pMemberPtr->m_bank_account << ", "
                 << pMemberPtr->m_postalSend << ", "
                 << cleanNotes << ", "
-                << QString("%1").arg(pMemberPtr->m_balance, 0, 'f', 2) 
+                << QString("%1").arg(pMemberPtr->m_balance, 0, 'f', 2)
                 << endl;
         }
         f.close();
@@ -282,6 +278,35 @@ namespace PenyaManager {
         // print post activated member list
         GuiUtils::printPostalMembers(pMemberListResultPtr->m_list);
         QMessageBox::information(this, tr("Print postal members"), tr("successfull"));
+    }
+    //
+    void MemberListView::on_prevPagePushButton_clicked()
+    {
+        Uint32 currentPage = this->ui->pageNumberSpinBox->value();
+        this->ui->pageNumberSpinBox->setValue(currentPage-1);
+    }
+    //
+    void MemberListView::on_nextPagePushButton_clicked()
+    {
+        Uint32 currentPage = this->ui->pageNumberSpinBox->value();
+        this->ui->pageNumberSpinBox->setValue(currentPage+1);
+    }
+    //
+    void MemberListView::on_prev10PagePushButton_clicked()
+    {
+        Uint32 currentPage = this->ui->pageNumberSpinBox->value();
+        this->ui->pageNumberSpinBox->setValue(currentPage-10);
+    }
+    //
+    void MemberListView::on_next10PagePushButton_clicked()
+    {
+        Uint32 currentPage = this->ui->pageNumberSpinBox->value();
+        this->ui->pageNumberSpinBox->setValue(currentPage+10);
+    }
+    void MemberListView::on_pageNumberSpinBox_valueChanged(int page)
+    {
+        UNUSEDPARAMETER(page);
+        updateResults();
     }
 }
 
