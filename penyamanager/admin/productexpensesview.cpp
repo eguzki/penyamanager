@@ -27,9 +27,9 @@ namespace PenyaManager {
         // from 30 days before
         QDate fromIntialDate = toInitialDate.addDays(-30);
 
-        this->ui->fromCalendarWidget->setLocale(Singletons::m_translationManager.getLocale());
+        this->ui->fromCalendarWidget->setLocale(Singletons::m_pTranslationManager->getLocale());
         this->ui->fromCalendarWidget->setSelectedDate(fromIntialDate);
-        this->ui->toCalendarWidget->setLocale(Singletons::m_translationManager.getLocale());
+        this->ui->toCalendarWidget->setLocale(Singletons::m_pTranslationManager->getLocale());
         this->ui->toCalendarWidget->setSelectedDate(toInitialDate);
 
         this->ui->fromDateResultValueLabel->clear();
@@ -62,8 +62,8 @@ namespace PenyaManager {
     {
         this->ui->retranslateUi(this);
         translateTable();
-        this->ui->fromCalendarWidget->setLocale(Singletons::m_translationManager.getLocale());
-        this->ui->toCalendarWidget->setLocale(Singletons::m_translationManager.getLocale());
+        this->ui->fromCalendarWidget->setLocale(Singletons::m_pTranslationManager->getLocale());
+        this->ui->toCalendarWidget->setLocale(Singletons::m_pTranslationManager->getLocale());
     }
     //
     void ProductExpensesView::initializeTable()
@@ -197,9 +197,9 @@ namespace PenyaManager {
         // fill total stats view
         this->ui->totalProductsValueLabel->setText(QString::number(pInvoiceProductItemCounterStatsResultPtr->m_stats->m_totalProducts));
         // fill dates used for query
-        QString dateLocalized = Singletons::m_translationManager.getLocale().toString(fromDate, QLocale::NarrowFormat);
+        QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(fromDate, QLocale::NarrowFormat);
         this->ui->fromDateResultValueLabel->setText(dateLocalized);
-        dateLocalized = Singletons::m_translationManager.getLocale().toString(toDate.addDays(-1), QLocale::NarrowFormat);
+        dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(toDate.addDays(-1), QLocale::NarrowFormat);
         this->ui->toDateResultValueLabel->setText(dateLocalized);
         // fill invoice list
         fillProductList(pInvoiceProductItemListResultPtr->m_list);
@@ -263,6 +263,8 @@ namespace PenyaManager {
 
         // save to file
         QTextStream out(&f);
+        out.setCodec("UTF-8");
+
         // header
         out << tr("product ID") << ", " << tr("name") << ", " << tr("count") << endl;
         // iterate over results

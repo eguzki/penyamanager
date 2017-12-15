@@ -29,12 +29,17 @@ namespace PenyaManager {
     //
     void MemberView::initialize()
     {
-        // memberId
-        this->ui->memberIdValueLabel->clear();
         // member username
-        this->ui->usernameLineEdit->clear();
+        Int32 proposedUsername = Singletons::m_pDAO->getLastUsername();
+        if (proposedUsername < 0) {
+            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            // call family product management window throw adminmainwindow
+            m_switchCentralWidgetCallback(WindowKey::kMemberListViewWindowKey);
+            return;
+        }
+        this->ui->usernameLineEdit->setText(QString::number(proposedUsername + 1));
         // reg date
-        QString dateLocalized = Singletons::m_translationManager.getLocale().toString(QDate::currentDate(), QLocale::NarrowFormat);
+        QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(QDate::currentDate(), QLocale::NarrowFormat);
         this->ui->regDateValueLabel->setText(dateLocalized);
         // reg date
         this->ui->lastLoginValueLabel->setText("-");
@@ -77,6 +82,16 @@ namespace PenyaManager {
         this->ui->postalSendCheckBox->setChecked(false);
         // notes
         this->ui->notesTextEdit->clear();
+        // idCard
+        this->ui->idCardLineEdit->clear();
+        // Card number
+        this->ui->cardLineEdit->clear();
+        // MemberType
+        this->ui->memberTypeComboBox->clear();
+        this->ui->memberTypeComboBox->insertItem(Member::NORMAL, GetStringFromMemberType(Member::NORMAL), Member::NORMAL);
+        this->ui->memberTypeComboBox->insertItem(Member::RETIRED, GetStringFromMemberType(Member::RETIRED), Member::RETIRED);
+        this->ui->memberTypeComboBox->insertItem(Member::HONORARY, GetStringFromMemberType(Member::HONORARY), Member::HONORARY);
+        this->ui->memberTypeComboBox->setCurrentIndex(Member::NORMAL);
     }
     //
     void MemberView::init()
@@ -206,6 +221,12 @@ namespace PenyaManager {
             // regDate -> no change
             // lastmodfies
             pMemberResultPtr->m_member->m_lastModified = QDateTime::currentDateTimeUtc();
+            // card id
+            pMemberResultPtr->m_member->m_idCard = this->ui->idCardLineEdit->text();
+            // card number
+            pMemberResultPtr->m_member->m_cardNumber = this->ui->cardLineEdit->text();
+            // member type
+            pMemberResultPtr->m_member->m_memberType = this->ui->memberTypeComboBox->currentData().toUInt();
 
             // update in ddbb
             bool ok = Singletons::m_pDAO->updateMember(pMemberResultPtr->m_member);
@@ -292,6 +313,12 @@ namespace PenyaManager {
             pMemberPtr->m_lastLogin = QDateTime::currentDateTimeUtc();
             // default password: "0000"
             pMemberPtr->m_pwd = Utils::hashSHA256asHex("0000");
+            // card id
+            pMemberPtr->m_idCard = this->ui->idCardLineEdit->text();
+            // card number
+            pMemberPtr->m_cardNumber = this->ui->cardLineEdit->text();
+            // member type
+            pMemberPtr->m_memberType = this->ui->memberTypeComboBox->currentData().toUInt();
             // create in ddbb
             Int32 memberId = Singletons::m_pDAO->createMember(pMemberPtr);
             if (memberId < 0) {
@@ -299,7 +326,7 @@ namespace PenyaManager {
                 return;
             }
             // create account
-            bool ok = Singletons::m_pServices->createAccountTransaction(memberId, 0.0, "new account", TransactionType::DepositFix);
+            bool ok = Singletons::m_pServices->createAccountTransaction(memberId, 0.0, QString(""), TransactionType::NewAccount);
             if (!ok) {
                 QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
                 return;
@@ -325,13 +352,11 @@ namespace PenyaManager {
         if (!pMemberResultPtr->m_member){
             return;
         }
-        // memberId
-        this->ui->memberIdValueLabel->setText(QString::number(pMemberResultPtr->m_member->m_id));
         // reg date
-        QString dateLocalized = Singletons::m_translationManager.getLocale().toString(pMemberResultPtr->m_member->m_regDate, QLocale::NarrowFormat);
+        QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pMemberResultPtr->m_member->m_regDate, QLocale::NarrowFormat);
         this->ui->regDateValueLabel->setText(dateLocalized);
         // last login date
-        dateLocalized = Singletons::m_translationManager.getLocale().toString(pMemberResultPtr->m_member->m_lastLogin, QLocale::NarrowFormat);
+        dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pMemberResultPtr->m_member->m_lastLogin, QLocale::NarrowFormat);
         this->ui->lastLoginValueLabel->setText(dateLocalized);
         // username
         this->ui->usernameLineEdit->setText(QString::number(pMemberResultPtr->m_member->m_username));
@@ -378,6 +403,16 @@ namespace PenyaManager {
         this->ui->postalSendCheckBox->setChecked(pMemberResultPtr->m_member->m_postalSend);
         // notes
         this->ui->notesTextEdit->setPlainText(pMemberResultPtr->m_member->m_notes);
+        // id card
+        this->ui->idCardLineEdit->setText(pMemberResultPtr->m_member->m_idCard);
+        // card number
+        this->ui->cardLineEdit->setText(pMemberResultPtr->m_member->m_cardNumber);
+        // member type
+        this->ui->memberTypeComboBox->clear();
+        this->ui->memberTypeComboBox->insertItem(Member::NORMAL, GetStringFromMemberType(Member::NORMAL), Member::NORMAL);
+        this->ui->memberTypeComboBox->insertItem(Member::RETIRED, GetStringFromMemberType(Member::RETIRED), Member::RETIRED);
+        this->ui->memberTypeComboBox->insertItem(Member::HONORARY, GetStringFromMemberType(Member::HONORARY), Member::HONORARY);
+        this->ui->memberTypeComboBox->setCurrentIndex(pMemberResultPtr->m_member->m_memberType);
     }
     //
     void MemberView::on_imagePushButton_clicked()

@@ -49,4 +49,12 @@ namespace PenyaManager
         :
             m_error(0)
     {}
+    //
+    StockProductItem::StockProductItem()
+    {}
+    //
+    StockProductItemListResult::StockProductItemListResult()
+        :
+            m_error(0)
+    {}
 }

@@ -10,6 +10,10 @@ namespace PenyaManager {
     class TranslationManager
     {
         public:
+            // Basque lang label
+            static const QString    kBasqueLangLabel;
+            // Esp lang label
+            static const QString    kEspLangLabel;
             //
             TranslationManager();
             //
@@ -38,6 +42,8 @@ namespace PenyaManager {
             QString                 m_translationLanguageFile;
             //
             QString                 m_adminTranslationLanguageFile;
+            //
+            QString                 m_translationFilePath;
     };
 }
 

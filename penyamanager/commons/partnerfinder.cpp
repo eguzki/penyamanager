@@ -12,10 +12,6 @@ namespace PenyaManager {
     //
     PartnerFinder::~PartnerFinder()
     {
-        for (auto iter = m_partnerMap.begin(), end = m_partnerMap.end(); iter != end; ++iter)
-        {
-            delete iter->second;
-        }
         m_partnerMap.clear();
     }
     //

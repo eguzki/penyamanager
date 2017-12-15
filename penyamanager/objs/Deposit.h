@@ -36,8 +36,6 @@ namespace PenyaManager
             QDateTime           m_date;
             //
             Float               m_total;
-            //
-            QString             m_descr;
     };
 
     //

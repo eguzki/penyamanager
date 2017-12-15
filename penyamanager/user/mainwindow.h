@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QWidget>
+#include <QTranslator>
 
 #include <commons/constants.h>
 
@@ -19,7 +20,7 @@ namespace PenyaManager {
 
         public:
             //
-            explicit MainWindow(QWidget *parent = NULL);
+            explicit MainWindow(QWidget *parent, QTranslator *pTranslator);
             //
             ~MainWindow();
             //

@@ -117,6 +117,59 @@ namespace PenyaManager
     };
     //
     typedef QSharedPointer<ProductListStatsResult> ProductListStatsResultPtr;
+
+    //
+    class StockProductItem
+    {
+        public:
+            //
+            StockProductItem();
+            //
+            virtual ~StockProductItem(){}
+
+        public:
+            //
+            Int32               m_id;
+            //
+            QString             m_name;
+            //
+            QString             m_imagePath;
+            //
+            bool                m_active;
+            //
+            QDateTime           m_regDate;
+            //
+            QString             m_familyName;
+            //
+            Float               m_price;
+            //
+            QString             m_providerName;
+            //
+            Int32               m_stock;
+    };
+    //
+    typedef QSharedPointer<StockProductItem> StockProductItemPtr;
+    //
+    typedef std::vector<StockProductItemPtr> StockProductItemList;
+    //
+    typedef QSharedPointer<StockProductItemList> StockProductItemListPtr;
+    //
+    class StockProductItemListResult
+    {
+        public:
+            //
+            StockProductItemListResult();
+            //
+            virtual ~StockProductItemListResult(){}
+
+        public:
+            //
+            Int32                       m_error;
+            //
+            StockProductItemListPtr     m_list;
+    };
+    //
+    typedef QSharedPointer<StockProductItemListResult> StockProductItemListResultPtr;
 }
 
 #endif // PRODUCTITEM_H

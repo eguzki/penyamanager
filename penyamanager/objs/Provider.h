@@ -30,6 +30,8 @@ namespace PenyaManager
             QDate               m_regDate;
             //
             QString             m_phone;
+            //
+            QString             m_notes;
     };
 
     //

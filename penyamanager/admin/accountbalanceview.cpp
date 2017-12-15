@@ -3,6 +3,9 @@
 #include <QMessageBox>
 
 #include <commons/singletons.h>
+#include <commons/guiutils.h>
+#include <objs/Transaction.h>
+
 #include "accountbalanceview.h"
 #include "ui_accountbalanceview.h"
 
@@ -21,9 +24,9 @@ namespace PenyaManager {
         // from 30 days before
         QDate fromIntialDate = toInitialDate.addDays(-30);
 
-        this->ui->fromCalendarWidget->setLocale(Singletons::m_translationManager.getLocale());
+        this->ui->fromCalendarWidget->setLocale(Singletons::m_pTranslationManager->getLocale());
         this->ui->fromCalendarWidget->setSelectedDate(fromIntialDate);
-        this->ui->toCalendarWidget->setLocale(Singletons::m_translationManager.getLocale());
+        this->ui->toCalendarWidget->setLocale(Singletons::m_pTranslationManager->getLocale());
         this->ui->toCalendarWidget->setSelectedDate(toInitialDate);
 
         this->ui->fromDateResultValueLabel->clear();
@@ -54,6 +57,7 @@ namespace PenyaManager {
         headers.append(tr("username"));
         headers.append(tr("description"));
         headers.append(tr("amount"));
+        headers.append(tr("type"));
         this->ui->transactionsTableWidget->setHorizontalHeaderLabels(headers);
     }
     //
@@ -61,19 +65,20 @@ namespace PenyaManager {
     {
         this->ui->retranslateUi(this);
         translateTable();
-        this->ui->fromCalendarWidget->setLocale(Singletons::m_translationManager.getLocale());
-        this->ui->toCalendarWidget->setLocale(Singletons::m_translationManager.getLocale());
+        this->ui->fromCalendarWidget->setLocale(Singletons::m_pTranslationManager->getLocale());
+        this->ui->toCalendarWidget->setLocale(Singletons::m_pTranslationManager->getLocale());
     }
     //
     void AccountBalanceView::initializeTable()
     {
         // table
-        this->ui->transactionsTableWidget->setColumnCount(4);
+        this->ui->transactionsTableWidget->setColumnCount(5);
         translateTable();
         Uint32 column = 0;
         this->ui->transactionsTableWidget->setColumnWidth(column++, 200);
         this->ui->transactionsTableWidget->setColumnWidth(column++, 100);
         this->ui->transactionsTableWidget->setColumnWidth(column++, 300);
+        this->ui->transactionsTableWidget->setColumnWidth(column++, 200);
         this->ui->transactionsTableWidget->setColumnWidth(column++, 200);
     }
     //
@@ -115,11 +120,12 @@ namespace PenyaManager {
         {
             Uint32 column = 0;
             TransactionPtr pTransactionPtr = *iter;
-            QString dateLocalized = Singletons::m_translationManager.getLocale().toString(pTransactionPtr->m_date, QLocale::NarrowFormat);
+            QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pTransactionPtr->m_date, QLocale::NarrowFormat);
             this->ui->transactionsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(dateLocalized));
             this->ui->transactionsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(QString::number(pTransactionPtr->m_memberUsername)));
-            this->ui->transactionsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(pTransactionPtr->m_descr));
+            this->ui->transactionsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(GuiUtils::getTransactionDescr(pTransactionPtr->m_descr, pTransactionPtr->m_type)));
             this->ui->transactionsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(QString("%1 €").arg(pTransactionPtr->m_amount, 0, 'f', 2)));
+            this->ui->transactionsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(getStringFromTransactionTypeEnum(pTransactionPtr->m_type)));
             rowCount++;
         }
     }
@@ -190,9 +196,9 @@ namespace PenyaManager {
         this->ui->totalInvoicesValueLabel->setText(QString("%1 €").arg(pTransactionListStatsResultPtr->m_listStats->m_totalInvoices, 0, 'f', 2));
         this->ui->totalBankChargesValueLabel->setText(QString("%1 €").arg(pTransactionListStatsResultPtr->m_listStats->m_totalBankCharges, 0, 'f', 2));
         // fill dates used for query
-        QString dateLocalized = Singletons::m_translationManager.getLocale().toString(fromDate, QLocale::NarrowFormat);
+        QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(fromDate, QLocale::NarrowFormat);
         this->ui->fromDateResultValueLabel->setText(dateLocalized);
-        dateLocalized = Singletons::m_translationManager.getLocale().toString(toDate.addDays(-1), QLocale::NarrowFormat);
+        dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(toDate.addDays(-1), QLocale::NarrowFormat);
         this->ui->toDateResultValueLabel->setText(dateLocalized);
         // fill transaction list
         fillTransactionList(pTransactionListResultPtr->m_list);

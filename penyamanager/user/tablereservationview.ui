@@ -347,19 +347,6 @@ qproperty-iconSize: 120px 120px;
                 <number>0</number>
                </property>
                <item>
-                <widget class="QPushButton" name="midMorningButton">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <attribute name="buttonGroup">
-                  <string notr="true">reservationTypeButtonGroup</string>
-                 </attribute>
-                </widget>
-               </item>
-               <item>
                 <widget class="QPushButton" name="lunchButton">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
@@ -381,19 +368,6 @@ qproperty-iconSize: 120px 120px;
                  </property>
                  <property name="layoutDirection">
                   <enum>Qt::LeftToRight</enum>
-                 </property>
-                 <attribute name="buttonGroup">
-                  <string notr="true">reservationTypeButtonGroup</string>
-                 </attribute>
-                </widget>
-               </item>
-               <item>
-                <widget class="QPushButton" name="supperButton">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
                  </property>
                  <attribute name="buttonGroup">
                   <string notr="true">reservationTypeButtonGroup</string>

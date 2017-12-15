@@ -1,9 +1,17 @@
 //
 
+#include <QObject>
+
 #include "Member.h"
 
 namespace PenyaManager
 {
+    //
+    const Uint32 Member::NORMAL = 0;
+    //
+    const Uint32 Member::RETIRED = 1;
+    //
+    const Uint32 Member::HONORARY = 2;
     //
     Member::Member()
     {}
@@ -30,4 +38,15 @@ namespace PenyaManager
         :
             m_error(0)
     {}
+    //
+    QString GetStringFromMemberType(Uint32 memberType)
+    {
+        switch (memberType)
+        {
+            case Member::NORMAL: return QObject::tr("Normal");
+            case Member::RETIRED: return QObject::tr("Retired");
+            case Member::HONORARY: return QObject::tr("Honorary");
+        }
+        return "-";
+    }
 }

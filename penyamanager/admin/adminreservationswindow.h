@@ -30,7 +30,9 @@ namespace PenyaManager {
 
         private:
             //
-            typedef std::function<void(Int32)>  ReservationCallback;
+            typedef std::function<void(Int32, Int32)> NewReservationCallback;
+            //
+            typedef std::function<void(Int32)> UpdateReservationCallback;
             //
             void translateTable();
             //
@@ -44,32 +46,20 @@ namespace PenyaManager {
                     const ReservationListPtr &pReservationListPtr,
                     const ReservationItemListPtr &pReservationItemListPtr,
                     Uint32 &rowCount,
-                    const ReservationCallback newReservationCallback,
-                    const ReservationCallback updateRervationCallback);
+                    const NewReservationCallback newReservationCallback,
+                    const UpdateReservationCallback updateRervationCallback);
 
         private slots:
             //
             void on_calendarWidget_clicked(const QDate &date);
             //
-            void onNew_table_reservation_button_clicked(int itemId);
+            void onNew_table_reservation_button_clicked(int itemId, int guestNum);
             //
             void onUpdate_table_reservation_button_clicked(int itemId);
             //
-            void onNew_oven_reservation_button_clicked(int itemId);
-            //
-            void onUpdate_oven_reservation_button_clicked(int itemId);
-            //
-            void onNew_fireplace_reservation_button_clicked(int itemId);
-            //
-            void onUpdate_fireplace_reservation_button_clicked(int itemId);
-            //
             void onCancelButton_clicked(int reservationId, ReservationItemType itemType);
             //
-            void on_midMorningButton_clicked(bool checked);
-            //
             void on_lunchButton_clicked(bool checked);
-            //
-            void on_supperButton_clicked(bool checked);
             //
             void on_dinnerButton_clicked(bool checked);
 

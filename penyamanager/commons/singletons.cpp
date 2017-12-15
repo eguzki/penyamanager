@@ -20,7 +20,7 @@ namespace PenyaManager {
     Int32 Singletons::m_currentMemberId = 0;
     Int32 Singletons::m_currentProviderId = 0;
     QString Singletons::m_currentProviderInvoiceId;
-    TranslationManager Singletons::m_translationManager;
+    TranslationManager *Singletons::m_pTranslationManager;
 
     void Singletons::Create(QSettings *pSettings, PenyaManagerLoggerPtr pLogger)
     {
@@ -32,6 +32,9 @@ namespace PenyaManager {
         QString ddbbUser(m_pSettings->value(Constants::kDatabaseUser).toString());
         QString cryptedDDBBPass(m_pSettings->value(Constants::kDatabasePass).toString());
         m_pSettings->endGroup();
+
+        // Translation Manager
+        m_pTranslationManager = new TranslationManager;
 
         // DAO Acces
         // decrypt pass
@@ -57,6 +60,11 @@ namespace PenyaManager {
         {
             delete m_pParnetFinder;
             m_pParnetFinder = 0;
+        }
+        if (m_pTranslationManager)
+        {
+            delete m_pTranslationManager;
+            m_pTranslationManager = 0;
         }
     }
 }

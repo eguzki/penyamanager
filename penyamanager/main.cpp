@@ -5,19 +5,9 @@
 
 #include <commons/constants.h>
 #include <commons/logging.h>
-#include <commons/IPartner.h>
 #include <commons/singletons.h>
 #include <commons/guiutils.h>
-#include <commons/utils.h>
 #include <user/mainwindow.h>
-#include <user/memberdashboardwindow.h>
-#include <user/loginwindow.h>
-#include <user/invoicewindow.h>
-#include <user/depositwindow.h>
-#include <user/accountview.h>
-#include <user/tablereservationview.h>
-#include <user/invoicelistwindow.h>
-#include <user/invoicedetailswindow.h>
 
 int main(int argc, char *argv[])
 {
@@ -52,24 +42,16 @@ int main(int argc, char *argv[])
     // Translators
     QTranslator penyamanagerTranslator;
     // Initial dictionary
-    penyamanagerTranslator.load(PenyaManager::Singletons::m_translationManager.getTranslationFile());
+    penyamanagerTranslator.load(PenyaManager::Singletons::m_pTranslationManager->getTranslationFile());
     app.installTranslator(&penyamanagerTranslator);
 
-    PenyaManager::MainWindow mainWindow;
-    // central widgets need mainwindow callback to call each other
-    PenyaManager::CentralWidgetCallback mainWindowSwitchCallback = std::bind(&PenyaManager::MainWindow::switchCentralWidget, &mainWindow, _1);
-    // Fill views
-    PenyaManager::LoginWindow *pLoginWindow = new PenyaManager::LoginWindow(&mainWindow, &penyamanagerTranslator, mainWindowSwitchCallback);
-    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kLoginWindowKey, pLoginWindow);
-    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kMemberDashboardWindowKey, new PenyaManager::MemberDashboardWindow(&mainWindow, mainWindowSwitchCallback));
-    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kInvoiceWindowKey, new PenyaManager::InvoiceWindow(&mainWindow, mainWindowSwitchCallback));
-    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kDepositsWindowKey, new PenyaManager::DepositWindow(&mainWindow, mainWindowSwitchCallback));
-    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kAccountViewWindowKey, new PenyaManager::AccountView(&mainWindow, mainWindowSwitchCallback));
-    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kTableReservationViewWindowKey, new PenyaManager::TableReservationView(&mainWindow, mainWindowSwitchCallback));
-    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kInvoiceListWindoKey, new PenyaManager::InvoiceListWindow(&mainWindow, mainWindowSwitchCallback));
-    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kInvoiceDetailsWindowKey, new PenyaManager::InvoiceDetailsWindow(&mainWindow, mainWindowSwitchCallback));
+    PenyaManager::MainWindow mainWindow(NULL, &penyamanagerTranslator);
 
     mainWindow.init();
+    // To disable Full Screen, comment the line below. Que no la above.
+    //showFullScreen();
+    // To disable windowed mode, comment the line below. Que sí, que la de abajo.
+    mainWindow.show();
 
     // run qt event loop
     int returnValue = app.exec();

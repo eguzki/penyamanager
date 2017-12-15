@@ -160,9 +160,9 @@ namespace PenyaManager {
         this->ui->totalInvoicesValueLabel->setText(QString::number(pProviderInvoiceListStatsResult->m_stats->m_totalNumInvoices));
         this->ui->totalCostValueLabel->setText(QString("%1 €").arg(pProviderInvoiceListStatsResult->m_stats->m_totalAmount, 0, 'f', 2));
         // fill dates used for query
-        QString dateLocalized = Singletons::m_translationManager.getLocale().toString(fromDate, QLocale::NarrowFormat);
+        QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(fromDate, QLocale::NarrowFormat);
         this->ui->fromDateResultValueLabel->setText(dateLocalized);
-        dateLocalized = Singletons::m_translationManager.getLocale().toString(toDate.addDays(-1), QLocale::NarrowFormat);
+        dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(toDate.addDays(-1), QLocale::NarrowFormat);
         this->ui->toDateResultValueLabel->setText(dateLocalized);
         // fill invoice list
         fillInvoiceList(pProviderInvoiceListResult->m_list);
@@ -182,7 +182,7 @@ namespace PenyaManager {
             ProviderInvoicePtr pInvoicePtr = *iter;
             this->ui->invoicesTableWidget->setItem(rowCount, 0, new QTableWidgetItem(pInvoicePtr->m_id));
             this->ui->invoicesTableWidget->setItem(rowCount, 1, new QTableWidgetItem(QString("%1 €").arg(pInvoicePtr->m_total, 0, 'f', 2)));
-            QString dateLocalized = Singletons::m_translationManager.getLocale().toString(pInvoicePtr->m_regDate, QLocale::NarrowFormat);
+            QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pInvoicePtr->m_regDate, QLocale::NarrowFormat);
             this->ui->invoicesTableWidget->setItem(rowCount, 2, new QTableWidgetItem(dateLocalized));
             this->ui->invoicesTableWidget->setItem(rowCount, 3, new QTableWidgetItem(QString::number(pInvoicePtr->m_providerid)));
             this->m_rowProviderInvoiceIdMap[rowCount] = pInvoicePtr->m_id;
