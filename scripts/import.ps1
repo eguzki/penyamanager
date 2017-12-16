@@ -7,7 +7,7 @@ Write-Host "********************************************************************
 Read-Host "Pulsa INTRO para continuar"
 
 
-#####    Nº SOCIO,NOMBRE,APELLIDOS,type,NTARJETA,ALTA,DIRECCION,CP,POBLACION,PROVINCIA,TELEFONO,TELEFONO2,email,NCUENTA,NOTES,Cuadro combinado36,NOMANDAR,birth
+#####    NSOCIO,NOMBRE,APELLIDOS,type,NTARJETA,ALTA,DIRECCION,CP,POBLACION,PROVINCIA,TELEFONO,TELEFONO2,email,NCUENTA,NOTES,Cuadro combinado36,NOMANDAR,birth
 
 $users = Import-CSV -LiteralPath c:\penyamanager\memberlist.csv -Encoding UTF8
 
@@ -19,11 +19,8 @@ ForEach($user in $users)
 {
     
     $idmember = (1+$count)
-    write-host $idmember
     $username = $count
-    Write-Host $username
     $name = $user.nombre
-    Write-Host $name
     $name = (Get-Culture).textinfo.totitlecase($name.tolower())
     write-host $name
 
@@ -33,9 +30,12 @@ ForEach($user in $users)
     if (( $surnames | Measure-Object -Word | select Words).Words -gt 2)
     {
 
+        Write-Host "******************************"
         Write-Host "Apellidos en conflicto: "
         Write-Host "******************************"
+        Write-Host "******************************"
         Write-Host $surnames
+        Write-Host "******************************"
         Write-Host "******************************"
 
         $surname1 = Read-Host "Introduce 1er apellido:"
@@ -45,19 +45,40 @@ ForEach($user in $users)
 
     }else{
     
-        $surname1 , $surname2 = $surnames.split(' ')
+        $surname1 , $surname2 = $surnames.split(" ")
         $surname1 = (Get-Culture).textinfo.totitlecase($surname1.tolower())
-        Write-Host $surname1
         $surname2 = (Get-Culture).textinfo.totitlecase($surname2.tolower())
-        Write-Host $surname256
+        
+
     }
     
-    $image = ""
-    $lastmodified = $user.alta
-    $reg_date = $user.alta
+    if (![string]::IsNullOrEmpty($user.alta)){
+        
+        $lastmodifiedpart = $user.alta -split "/"
+        [string]$lastmodified = "$($lastmodifiedpart[2])-$($lastmodifiedpart[1])-$($lastmodifiedpart[0])"
+        [string]$lastmodified = $lastmodified + " 00:00:00"
+            
+    }
+    
+    if (![string]::IsNullOrEmpty($user.alta)){
+        
+        $reg_datepart = $user.alta -split "/"
+        [string]$reg_date = "$($reg_datepart[2])-$($reg_datepart[1])-$($reg_datepart[0])"
+        [string]$reg_date = $reg_date + " 00:00:00"
+    
+    }
+
     $active = 0
     $isAdmin = 0
-    $birth = $user.birth
+        
+    if (![string]::IsNullOrEmpty($user.birth)){
+        
+        $birthpart = $user.birth -split "/"
+        [string]$birth = "$($birthpart[2])-$($birthpart[1])-$($birthpart[0])"
+
+    
+    }
+        
     $address = $user.direccion
     $address = (Get-Culture).textinfo.totitlecase($address.tolower())
     $zip_code = $user.cp
@@ -84,7 +105,13 @@ ForEach($user in $users)
 
     $notes = $user.notes
     $pwd = "9af15b336e6a9619928537df30b2e6a2376569fcf9d7e773eccede65606529a0"
-    $lastlogin = $user.alta
+    if (![string]::IsNullOrEmpty($user.alta)){
+        
+        $lastloginpart = $user.alta -split "/"
+        [string]$lastlogin = "$($lastloginpart[2])-$($lastloginpart[1])-$($lastloginpart[0])"
+        [string]$lastlogin = $lastlogin + " 00:00:00"
+           
+    }
     $id_card = ""
     $card = $user.ntarjeta
     $type = $user.type
@@ -114,7 +141,7 @@ ForEach($user in $users)
     Write-Host $address
     Write-Host $zip_code
     Write-Host $town
-    Write-Host $state
+    Write-Host $statefads
     Write-Host $tel
     Write-Host $tel2
     Write-Host $email
@@ -131,15 +158,20 @@ ForEach($user in $users)
 
 
 
-    $line = "INSERT INTO member (idmember , username , name , surname1 , surname2 , image , lastmodified , reg_date , active , isAdmin , birth , address , zip_code , town , state , tel , tel2 , email , bank_account , postal_send , notes , pwd , lastlogin , id_card , card , type ) VALUES ($idmember , $username , `"$name`" , `"$surname1`" , `"$surname2`" , `"$image`" , `"$lastmodified`" , `"$reg_date`" , $active , $isAdmin , $birth , `"$address`" , `"$zip_code`" , `"$town`" , `"$state`" , `"$tel`" , `"$tel2`" , `"$email`" , `"$bank_account`" , $postal_send  , `"$notes`" , `"$pwd`" , `"$lastlogin`" , `"$id_card`" , `"$card`" , $type )"
+    $line = "INSERT INTO member (idmember , username , name , surname1 , surname2 , image , lastmodified , reg_date , active , isAdmin , birth , address , zip_code , town , state , tel , tel2 , email , bank_account , postal_send , notes , pwd , lastlogin , id_card , card , type ) VALUES ($idmember , $username , `"$name`" , `"$surname1`" , `"$surname2`" , `"$image`" , `"$lastmodified`" , `"$reg_date`" , $active , $isAdmin , `"$birth`" , `"$address`" , `"$zip_code`" , `"$town`" , `"$state`" , `"$tel`" , `"$tel2`" , `"$email`" , `"$bank_account`" , $postal_send  , `"$notes`" , `"$pwd`" , `"$lastlogin`" , `"$id_card`" , `"$card`" , $type );"
 
-    $line >> F:\DDBB_import_script\import.sql
+    $line >> c:\penyamanager\import.sql
 
-    $accountdate = $user.alta
-    $line2 = "INSERT INTO account VALUES ($idmember, 0 , `"$accountdate`" , 0 , `"`" , 0)"
 
-    $line2 >> F:\DDBB_import_script\import.sql
+    $accountdatepart = $user.alta -split "/"
+    [string]$accountdate = "$($accountdatepart[2])-$($accountdatepart[1])-$($accountdatepart[0])"
+    [string]$accountdate = $accountdate + " 00:00:00"
+
+    $line2 = "INSERT INTO account ( idmember ,  amount ,  date ,  balance ,  description ,  type ) VALUES ($idmember, 0 , `"$accountdate`" , 0 , `"`" , 0);"
+
+    $line2 >> c:\penyamanager\import.sql
 
     $count = $count + 1
 }
+
 
