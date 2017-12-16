@@ -100,14 +100,45 @@ ForEach($user in $users)
 
     #Call function to insert line on SQL file to import
 
+    Write-Host $idmember 
+    Write-Host $username 
+    Write-Host $name
+    Write-Host $surname1
+    Write-Host $surname2
+    Write-Host $image
+    Write-Host $lastmodified
+    Write-Host $reg_date
+    Write-Host $active
+    Write-Host $isAdmin
+    Write-Host $birth 
+    Write-Host $address
+    Write-Host $zip_code
+    Write-Host $town
+    Write-Host $state
+    Write-Host $tel
+    Write-Host $tel2
+    Write-Host $email
+    Write-Host $bank_account
+    Write-Host $postal_send
+    Write-Host $notes
+    Write-Host $pwd
+    Write-Host $lastlogin
+    Write-Host $id_card
+    Write-Host $card
+    Write-Host $type 
+
+
+
+
+
     $line = "INSERT INTO member (idmember , username , name , surname1 , surname2 , image , lastmodified , reg_date , active , isAdmin , birth , address , zip_code , town , state , tel , tel2 , email , bank_account , postal_send , notes , pwd , lastlogin , id_card , card , type ) VALUES ($idmember , $username , `"$name`" , `"$surname1`" , `"$surname2`" , `"$image`" , `"$lastmodified`" , `"$reg_date`" , $active , $isAdmin , $birth , `"$address`" , `"$zip_code`" , `"$town`" , `"$state`" , `"$tel`" , `"$tel2`" , `"$email`" , `"$bank_account`" , $postal_send  , `"$notes`" , `"$pwd`" , `"$lastlogin`" , `"$id_card`" , `"$card`" , $type )"
 
-    $line >> c:\penyamanager\import.sql
+    $line >> F:\DDBB_import_script\import.sql
 
     $accountdate = $user.alta
     $line2 = "INSERT INTO account VALUES ($idmember, 0 , `"$accountdate`" , 0 , `"`" , 0)"
 
-    $line2 >> c:\penyamanager\import.sql
+    $line2 >> F:\DDBB_import_script\import.sql
 
     $count = $count + 1
 }
