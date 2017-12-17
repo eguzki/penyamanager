@@ -11,7 +11,7 @@
 
 namespace PenyaManager {
     // Rules:
-    // * One member, one reservation in a given (day, reservationtype {mid-morning, lunch, supper, dinner})
+    // * One member, one reservation in a given (day, reservationtype {lunch, dinner})
     // * Reservations can be done only for the current week days
     // * Reservations are available since Monday 06:00AM till Sunday 23:59PM
     // * Reservations can be cancelled
@@ -36,9 +36,7 @@ namespace PenyaManager {
         }
 
         // reservation type
-        this->ui->reservationTypeButtonGroup->setId(this->ui->midMorningButton, static_cast<Int32>(ReservationType::MidMorning));
         this->ui->reservationTypeButtonGroup->setId(this->ui->lunchButton, static_cast<Int32>(ReservationType::Lunch));
-        this->ui->reservationTypeButtonGroup->setId(this->ui->supperButton, static_cast<Int32>(ReservationType::Supper));
         this->ui->reservationTypeButtonGroup->setId(this->ui->dinnerButton, static_cast<Int32>(ReservationType::Dinner));
         // reservation item
         this->ui->reservationItemButtonGroup->setId(this->ui->tablePushButton, static_cast<Int32>(ReservationItemType::LunchTableType));
@@ -46,7 +44,7 @@ namespace PenyaManager {
         this->ui->reservationItemButtonGroup->setId(this->ui->fireplacePushButton, static_cast<Int32>(ReservationItemType::FireplaceType));
 
         initializeTable();
-        this->ui->calendarWidget->setLocale(Singletons::m_translationManager.getLocale());
+        this->ui->calendarWidget->setLocale(Singletons::m_pTranslationManager->getLocale());
     }
     //
     TableReservationView::~TableReservationView()
@@ -58,7 +56,7 @@ namespace PenyaManager {
     {
         this->ui->retranslateUi(this);
         translateTable();
-        this->ui->calendarWidget->setLocale(Singletons::m_translationManager.getLocale());
+        this->ui->calendarWidget->setLocale(Singletons::m_pTranslationManager->getLocale());
     }
     //
     void TableReservationView::translateTable()
@@ -139,10 +137,8 @@ namespace PenyaManager {
         if (nowDate.dayOfWeek() == 1 && nowDateTime.time().hour() < 6) {
             // monday before deadline, user cannot select for reservation
             this->ui->calendarWidget->setSelectionMode(QCalendarWidget::NoSelection);
-            // reservation type (midmorning,lunch,supper,dinner) buttons
-            this->ui->midMorningButton->setEnabled(false);
+            // reservation type (lunch,dinner) buttons
             this->ui->lunchButton->setEnabled(false);
-            this->ui->supperButton->setEnabled(false);
             this->ui->dinnerButton->setEnabled(false);
             // reservation item buttons
             this->ui->tablePushButton->setEnabled(false);
@@ -150,20 +146,14 @@ namespace PenyaManager {
             this->ui->fireplacePushButton->setEnabled(false);
 
         } else {
-            // reservation type (midmorning,lunch,supper,dinner) buttons
-            this->ui->midMorningButton->setEnabled(true);
+            // reservation type (lunch,dinner) buttons
             this->ui->lunchButton->setEnabled(true);
-            this->ui->supperButton->setEnabled(true);
             this->ui->dinnerButton->setEnabled(true);
-            this->ui->midMorningButton->setCheckable(true);
             this->ui->lunchButton->setCheckable(true);
-            this->ui->supperButton->setCheckable(true);
             this->ui->dinnerButton->setCheckable(true);
             // http://blubbqt.blogspot.com.es/2015/04/uncheck-all-buttons-in-qbuttongroup.html
             this->ui->reservationTypeButtonGroup->setExclusive(false);
-            this->ui->midMorningButton->setChecked(false);
             this->ui->lunchButton->setChecked(false);
-            this->ui->supperButton->setChecked(false);
             this->ui->dinnerButton->setChecked(false);
             this->ui->reservationTypeButtonGroup->setExclusive(true);
             this->ui->calendarWidget->setSelectionMode(QCalendarWidget::SingleSelection);
@@ -490,38 +480,6 @@ namespace PenyaManager {
         }
     }
     //
-    void TableReservationView::on_midMorningButton_clicked(bool checked)
-    {
-        if (!checked) {
-            // discard event of unchecked button
-            return;
-        }
-        int reservationItemTypeInt = this->ui->reservationItemButtonGroup->checkedId();
-        if (reservationItemTypeInt == -1) {
-            return;
-        }
-
-        ReservationItemType reservationItemType = static_cast<ReservationItemType>(reservationItemTypeInt);
-
-        QDate date = this->ui->calendarWidget->selectedDate();
-        MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
-        m_currentPage = 0;
-        switch (reservationItemType)
-        {
-            case ReservationItemType::LunchTableType:
-                fillTableReservations(pCurrMemberPtr, date, ReservationType::MidMorning);
-                break;
-            case ReservationItemType::OvenType:
-                fillOvenReservations(pCurrMemberPtr, date, ReservationType::MidMorning);
-                break;
-            case ReservationItemType::FireplaceType:
-                fillFireplaceReservations(pCurrMemberPtr, date, ReservationType::MidMorning);
-                break;
-            default:
-                break;
-        }
-    }
-    //
     void TableReservationView::on_lunchButton_clicked(bool checked)
     {
         if (!checked) {
@@ -548,38 +506,6 @@ namespace PenyaManager {
                 break;
             case ReservationItemType::FireplaceType:
                 fillFireplaceReservations(pCurrMemberPtr, date, ReservationType::Lunch);
-                break;
-            default:
-                break;
-        }
-    }
-    //
-    void TableReservationView::on_supperButton_clicked(bool checked)
-    {
-        if (!checked) {
-            // discard event of unchecked button
-            return;
-        }
-        int reservationItemTypeInt = this->ui->reservationItemButtonGroup->checkedId();
-        if (reservationItemTypeInt == -1) {
-            return;
-        }
-
-        ReservationItemType reservationItemType = static_cast<ReservationItemType>(reservationItemTypeInt);
-
-        QDate date = this->ui->calendarWidget->selectedDate();
-        MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
-        m_currentPage = 0;
-        switch (reservationItemType)
-        {
-            case ReservationItemType::LunchTableType:
-                fillTableReservations(pCurrMemberPtr, date, ReservationType::Supper);
-                break;
-            case ReservationItemType::OvenType:
-                fillOvenReservations(pCurrMemberPtr, date, ReservationType::Supper);
-                break;
-            case ReservationItemType::FireplaceType:
-                fillFireplaceReservations(pCurrMemberPtr, date, ReservationType::Supper);
                 break;
             default:
                 break;

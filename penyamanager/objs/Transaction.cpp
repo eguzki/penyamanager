@@ -1,5 +1,6 @@
 //
-#include <qwidget.h>
+
+#include <QWidget>
 #include "Transaction.h"
 
 namespace PenyaManager {
@@ -8,11 +9,12 @@ namespace PenyaManager {
     {
         switch (e)
         {
+            case TransactionType::NewAccount: return QWidget::tr("New Account");
             case TransactionType::Invoice: return QWidget::tr("Invoice");
             case TransactionType::Deposit: return QWidget::tr("Deposit");
             case TransactionType::AccountPayment: return QWidget::tr("Account Payment");
             case TransactionType::DepositFix: return QWidget::tr("Deposit Fix");
-            default: return "Bad TransactionType";
+            default: return "-";
         }
     }
     //

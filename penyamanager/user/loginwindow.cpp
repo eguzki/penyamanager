@@ -37,17 +37,10 @@ namespace PenyaManager {
     //
     void LoginWindow::init()
     {
+        initializeLang();
+
         this->m_username = -1;
         this->m_password = QString();
-
-        if (!Singletons::m_pDAO->isOpen()) {
-            QSqlError err = Singletons::m_pDAO->lastError();
-            Singletons::m_pLogger->Error(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kLogin,
-                    QString("Unable to initialize Database, %1").arg(err.text()));
-            GuiUtils::criticalMessageBox(this, tr("Database error. Contact administrator"));
-            qApp->exit(1);
-            return;
-        }
 
         //
         // Loading Last Invoice
@@ -92,7 +85,22 @@ namespace PenyaManager {
     {
         this->ui->retranslateUi(this);
         translateTable();
-        this->ui->languagePushButton->setText(Singletons::m_translationManager.getLanguageLabel());
+        this->ui->languagePushButton->setText(Singletons::m_pTranslationManager->getLanguageLabel());
+    }
+    //
+    void LoginWindow::initializeLang()
+    {
+        // Init with basque language
+        if (Singletons::m_pTranslationManager->getLanguageLabel() != TranslationManager::kBasqueLangLabel)
+        {
+            // change translator
+            qApp->removeTranslator(m_pTranslator);
+            Singletons::m_pTranslationManager->switchLanguage();
+            // load new dictionary
+            m_pTranslator->load(Singletons::m_pTranslationManager->getTranslationFile());
+            // installTranslator() will create a change event which will be sent to every single widget
+            qApp->installTranslator(m_pTranslator);
+        }
     }
     //
     void LoginWindow::initializeTable()
@@ -218,9 +226,9 @@ namespace PenyaManager {
     {
         // change translator
         qApp->removeTranslator(m_pTranslator);
-        Singletons::m_translationManager.switchLanguage();
+        Singletons::m_pTranslationManager->switchLanguage();
         // load new dictionary
-        m_pTranslator->load(Singletons::m_translationManager.getTranslationFile());
+        m_pTranslator->load(Singletons::m_pTranslationManager->getTranslationFile());
         // installTranslator() will create a change event which will be sent to every single widget
         qApp->installTranslator(m_pTranslator);
     }
@@ -297,8 +305,8 @@ namespace PenyaManager {
         // Invoice Information
         //
         // Date
-        QString dateLocalized = Singletons::m_translationManager.getLocale().toString(pLastInvoicePtr->m_date, QLocale::NarrowFormat);
-        QString lastModifDateLocalized = Singletons::m_translationManager.getLocale().toString(pLastInvoicePtr->m_lastModified, QLocale::NarrowFormat);
+        QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pLastInvoicePtr->m_date, QLocale::NarrowFormat);
+        QString lastModifDateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pLastInvoicePtr->m_lastModified, QLocale::NarrowFormat);
         this->ui->lastInvoiceDateLabel->setText(QString("%1: %2     %3: %4").arg(tr("Created on")).arg(dateLocalized).arg(tr("Modified on")).arg(lastModifDateLocalized));
         // Total
         this->ui->lastInvoiceTotalLabel->setText(QString("%1 €").arg(invoiceProductItemStatsResultPtr->m_stats->m_totalAmount, 0, 'f', 2));

@@ -178,7 +178,7 @@ namespace PenyaManager {
         // Invoice Information
         //
         // Date
-        QString dateLocalized = Singletons::m_translationManager.getLocale().toString(pInvoicePtr->m_date, QLocale::NarrowFormat);
+        QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pInvoicePtr->m_date, QLocale::NarrowFormat);
         this->ui->invoiceDateInfoLabel->setText(dateLocalized);
         // Total
         Float totalInvoice = invoiceProductItemStatsResultPtr->m_stats->m_totalAmount;

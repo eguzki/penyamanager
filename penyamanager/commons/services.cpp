@@ -4,6 +4,7 @@
 #include "objs/Invoice.h"
 #include "objs/Deposit.h"
 #include "services.h"
+#include "guiutils.h"
 
 namespace PenyaManager {
 
@@ -25,8 +26,6 @@ namespace PenyaManager {
         pDepositPtr->m_state = DepositState::Unchecked;
         pDepositPtr->m_date = QDateTime::currentDateTimeUtc();
         pDepositPtr->m_total = amount;
-        // currently simple description. Maybe let user set some subject?
-        pDepositPtr->m_descr = QString("deposit");
         // store in ddbb
         return Singletons::m_pDAO->createDeposit(pDepositPtr);
     }
@@ -72,7 +71,7 @@ namespace PenyaManager {
         }
 
         // create account register info
-        QString description = QString("invoice ref %1").arg(invoiceId);
+        QString description = GuiUtils::invoiceAccountDescription(invoiceId);
         // account transaction has totalInvoice as negative amount
         ok = this->createAccountTransaction(memberId, -totalInvoice, description, TransactionType::Invoice);
         if (!ok) {
@@ -126,7 +125,7 @@ namespace PenyaManager {
         for (MemberList::iterator iter = pMemberListResultPtr->m_list->begin(); iter != pMemberListResultPtr->m_list->end(); ++iter)
         {
             MemberPtr pMemberPtr = *iter;
-            bool ok = createAccountTransaction(pMemberPtr->m_id, -pMemberPtr->m_balance, "reset account", TransactionType::AccountPayment);
+            bool ok = createAccountTransaction(pMemberPtr->m_id, -pMemberPtr->m_balance, QString(""), TransactionType::AccountPayment);
             if (!ok) {
                 return false;
             }

@@ -50,14 +50,18 @@ namespace PenyaManager {
             void on_filterPostalUsersCheckBox_clicked();
             //
             void on_printPostalMembersPushButton_clicked();
+            //
+            void on_prev10PagePushButton_clicked();
+            //
+            void on_next10PagePushButton_clicked();
+            //
+            void on_pageNumberSpinBox_valueChanged(int page);
 
     private:
             //
             Ui::MemberListView *ui;
             //
             CentralWidgetCallback       m_switchCentralWidgetCallback;
-            //
-            Uint32                      m_currentPage;
             //
             RowIdMap                    m_rowProductIdMap;
     };

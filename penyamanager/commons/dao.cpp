@@ -188,7 +188,7 @@ namespace PenyaManager {
             queryPtr->prepare(
                     "SELECT member.name, member.username, member.surname1, member.surname2, member.image, member.lastmodified, member.reg_date, member.active, member.isAdmin, member.birth, "
                     "member.address, member.zip_code, member.town, member.state, member.tel, member.tel2, member.email, member.bank_account, member.postal_send, "
-                    "member.notes, member.pwd, member.lastlogin "
+                    "member.notes, member.pwd, member.lastlogin, member.id_card, member.card, member.type "
                     "FROM member "
                     "WHERE member.idmember=:memberid"
                     );
@@ -231,6 +231,9 @@ namespace PenyaManager {
             pMemberPtr->m_notes = queryResponse.query->value(column++).toString();
             pMemberPtr->m_pwd = queryResponse.query->value(column++).toString();
             pMemberPtr->m_lastLogin = queryResponse.query->value(column++).toDateTime();
+            pMemberPtr->m_idCard = queryResponse.query->value(column++).toString();
+            pMemberPtr->m_cardNumber = queryResponse.query->value(column++).toString();
+            pMemberPtr->m_memberType = queryResponse.query->value(column++).toUInt();
             pMemberResultPtr->m_member = pMemberPtr;
         }
         return pMemberResultPtr;
@@ -245,7 +248,7 @@ namespace PenyaManager {
             queryPtr->prepare(
                     "SELECT member.idmember, member.name, member.surname1, member.surname2, member.image, member.lastmodified, member.reg_date, member.active, member.isAdmin, member.birth, "
                     "member.address, member.zip_code, member.town, member.state, member.tel, member.tel2, member.email, member.bank_account, member.postal_send, "
-                    "member.notes, member.pwd, member.lastlogin "
+                    "member.notes, member.pwd, member.lastlogin, member.id_card, member.card, member.type "
                     "FROM member "
                     "WHERE member.username=:username"
                     );
@@ -286,6 +289,9 @@ namespace PenyaManager {
             pMemberPtr->m_notes = queryResponse.query->value(column++).toString();
             pMemberPtr->m_pwd = queryResponse.query->value(column++).toString();
             pMemberPtr->m_lastLogin = queryResponse.query->value(column++).toDateTime();
+            pMemberPtr->m_idCard = queryResponse.query->value(column++).toString();
+            pMemberPtr->m_cardNumber = queryResponse.query->value(column++).toString();
+            pMemberPtr->m_memberType = queryResponse.query->value(column++).toUInt();
             pMemberResultPtr->m_member = pMemberPtr;
         }
         return pMemberResultPtr;
@@ -749,14 +755,13 @@ namespace PenyaManager {
             // insert new deposit
             queryPtr->prepare(
                     "INSERT INTO deposit "
-                    "(idmember, state, date, total, description) "
-                    "VALUES (:memberid, :state, :date, :total, :description)"
+                    "(idmember, state, date, total) "
+                    "VALUES (:memberid, :state, :date, :total)"
                     );
             queryPtr->bindValue(":memberid", pDepositPtr->m_memberId);
             queryPtr->bindValue(":state", static_cast<Int32>(pDepositPtr->m_state));
             queryPtr->bindValue(":date", pDepositPtr->m_date);
             queryPtr->bindValue(":total", pDepositPtr->m_total);
-            queryPtr->bindValue(":description", pDepositPtr->m_descr);
             return queryPtr;
         };
 
@@ -1435,8 +1440,7 @@ namespace PenyaManager {
             // oven list
             queryPtr->prepare(
                     "SELECT idoven, name "
-                    "FROM ovens "
-                    "LIMIT :limit OFFSET :offset"
+                    "FROM ovens"
                     );
             return queryPtr;
         };
@@ -1534,8 +1538,7 @@ namespace PenyaManager {
             // fireplace list
             queryPtr->prepare(
                     "SELECT idfireplace, name "
-                    "FROM fireplaces "
-                    "LIMIT :limit OFFSET :offset"
+                    "FROM fireplaces"
                     );
             return queryPtr;
         };
@@ -2085,7 +2088,7 @@ namespace PenyaManager {
             QueryPtr queryPtr(new QSqlQuery);
             // Member by id
             queryPtr->prepare(
-                    "SELECT provider.name, provider.image, provider.reg_date, provider.phone "
+                    "SELECT provider.name, provider.image, provider.reg_date, provider.phone, provider.notes "
                     "FROM provider "
                     "WHERE provider.idprovider=:providerid"
                     );
@@ -2110,6 +2113,7 @@ namespace PenyaManager {
             pProviderPtr->m_image = queryResponse.query->value(column++).toString();
             pProviderPtr->m_regDate = queryResponse.query->value(column++).toDate();
             pProviderPtr->m_phone = queryResponse.query->value(column++).toString();
+            pProviderPtr->m_notes = queryResponse.query->value(column++).toString();
             pProviderResulPtr->m_provider = pProviderPtr;
         }
         return pProviderResulPtr;
@@ -2122,7 +2126,7 @@ namespace PenyaManager {
             // update  member
             queryPtr->prepare(
                     "UPDATE provider "
-                    "SET name=:name, image=:image, reg_date=:reg_date, phone=:phone "
+                    "SET name=:name, image=:image, reg_date=:reg_date, phone=:phone, notes=:notes "
                     "WHERE idprovider = :providerid"
                     );
             // obligatory
@@ -2139,6 +2143,11 @@ namespace PenyaManager {
                 queryPtr->bindValue(":phone", QVariant());
             } else {
                 queryPtr->bindValue(":phone", pProviderPtr->m_phone);
+            }
+            if (pProviderPtr->m_notes.isEmpty()) {
+                queryPtr->bindValue(":notes", QVariant());
+            } else {
+                queryPtr->bindValue(":notes", pProviderPtr->m_notes);
             }
             return queryPtr;
         };
@@ -2196,8 +2205,8 @@ namespace PenyaManager {
             // create provider
             queryPtr->prepare(
                     "INSERT INTO provider "
-                    "(name, image, reg_date, phone) "
-                    "VALUES (:name, :image, :reg_date, :phone)"
+                    "(name, image, reg_date, phone, notes) "
+                    "VALUES (:name, :image, :reg_date, :phone, :notes)"
                     );
             queryPtr->bindValue(":name", pProviderPtr->m_name);
             if (pProviderPtr->m_image.isEmpty()) {
@@ -2210,6 +2219,11 @@ namespace PenyaManager {
                 queryPtr->bindValue(":phone", QVariant());
             } else {
                 queryPtr->bindValue(":phone", pProviderPtr->m_phone);
+            }
+            if (pProviderPtr->m_notes.isEmpty()) {
+                queryPtr->bindValue(":notes", QVariant());
+            } else {
+                queryPtr->bindValue(":notes", pProviderPtr->m_notes);
             }
             return queryPtr;
         };
@@ -2238,19 +2252,62 @@ namespace PenyaManager {
         return providerId;
     }
     //
-    ProductItemListResultPtr DAO::getProductsList(Uint32 page, Uint32 count)
+    StockProductItemListResultPtr DAO::getAllStockProductsList()
     {
-        ProductItemListResultPtr pIListResultPtr(new ProductItemListResult);
+        StockProductItemListResultPtr pStockProductItemListResultPtr(new StockProductItemListResult);
+
+        auto createQuery = [](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // product items query
+            queryPtr->prepare(
+                    "SELECT product_item.idproduct_item, product_item.name, product_item.active, product_item.image, product_item.reg_date, product_item.price, product_family.name, provider.name, product_item.stock "
+                    "FROM product_item "
+                    "INNER JOIN product_family ON product_family.idproduct_family=product_item.idproduct_family "
+                    "INNER JOIN provider ON provider.idprovider=product_item.idprovider "
+                    "ORDER BY product_item.idproduct_item DESC "
+                    );
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb, QString("getAllStockProductsList"));
+            pStockProductItemListResultPtr->m_error = 1;
+        } else {
+            pStockProductItemListResultPtr->m_list = StockProductItemListPtr(new StockProductItemList);
+            while (queryResponse.query->next()) {
+                StockProductItemPtr pStockProductItemPtr(new StockProductItem);
+                pStockProductItemPtr->m_id = queryResponse.query->value(0).toInt();
+                pStockProductItemPtr->m_name = queryResponse.query->value(1).toString();
+                pStockProductItemPtr->m_active = queryResponse.query->value(2).toInt() == 1;
+                pStockProductItemPtr->m_imagePath = queryResponse.query->value(3).toString();
+                pStockProductItemPtr->m_regDate = queryResponse.query->value(4).toDateTime();
+                pStockProductItemPtr->m_price = queryResponse.query->value(5).toFloat();
+                pStockProductItemPtr->m_familyName = queryResponse.query->value(6).toString();
+                pStockProductItemPtr->m_providerName = queryResponse.query->value(7).toString();
+                pStockProductItemPtr->m_stock = queryResponse.query->value(8).toInt();
+                pStockProductItemListResultPtr->m_list->push_back(pStockProductItemPtr);
+            }
+        }
+        return pStockProductItemListResultPtr;
+    }
+    //
+    StockProductItemListResultPtr DAO::getStockProductsList(Uint32 page, Uint32 count)
+    {
+        StockProductItemListResultPtr pStockProductItemListResultPtr(new StockProductItemListResult);
 
         auto createQuery = [=](){
             QueryPtr queryPtr(new QSqlQuery);
             // product items query
             queryPtr->prepare(
-                    "SELECT idproduct_item, name, active, image, reg_date, price, idproduct_family, idprovider, stock FROM product_item "
-                    "ORDER BY reg_date DESC "
+                    "SELECT product_item.idproduct_item, product_item.name, product_item.active, product_item.image, product_item.reg_date, product_item.price, product_family.name, provider.name, product_item.stock "
+                    "FROM product_item "
+                    "INNER JOIN product_family ON product_family.idproduct_family=product_item.idproduct_family "
+                    "INNER JOIN provider ON provider.idprovider=product_item.idprovider "
+                    "ORDER BY product_item.idproduct_item DESC "
                     "LIMIT :limit OFFSET :offset"
                     );
-            // only active invoices
             queryPtr->bindValue(":limit", count);
             queryPtr->bindValue(":offset", page * count);
             return queryPtr;
@@ -2260,25 +2317,25 @@ namespace PenyaManager {
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
             Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
-                    QString("getProductsList page %1 count %2").arg(page).arg(count));
-            pIListResultPtr->m_error = 1;
+                    QString("getStockProductsList page %1 count %2").arg(page).arg(count));
+            pStockProductItemListResultPtr->m_error = 1;
         } else {
-            pIListResultPtr->m_list = ProductItemListPtr(new ProductItemList);
+            pStockProductItemListResultPtr->m_list = StockProductItemListPtr(new StockProductItemList);
             while (queryResponse.query->next()) {
-                ProductItemPtr pProductItemPtr(new ProductItem);
-                pProductItemPtr->m_id =  queryResponse.query->value(0).toInt();
-                pProductItemPtr->m_name =  queryResponse.query->value(1).toString();
-                pProductItemPtr->m_active =  queryResponse.query->value(2).toInt() == 1;
-                pProductItemPtr->m_imagePath =  queryResponse.query->value(3).toString();
-                pProductItemPtr->m_regDate =  queryResponse.query->value(4).toDateTime();
-                pProductItemPtr->m_price =  queryResponse.query->value(5).toFloat();
-                pProductItemPtr->m_familyId =  queryResponse.query->value(6).toInt();
-                pProductItemPtr->m_providerId =  queryResponse.query->value(7).toInt();
-                pProductItemPtr->m_stock =  queryResponse.query->value(8).toInt();
-                pIListResultPtr->m_list->push_back(pProductItemPtr);
+                StockProductItemPtr pStockProductItemPtr(new StockProductItem);
+                pStockProductItemPtr->m_id = queryResponse.query->value(0).toInt();
+                pStockProductItemPtr->m_name = queryResponse.query->value(1).toString();
+                pStockProductItemPtr->m_active = queryResponse.query->value(2).toInt() == 1;
+                pStockProductItemPtr->m_imagePath = queryResponse.query->value(3).toString();
+                pStockProductItemPtr->m_regDate = queryResponse.query->value(4).toDateTime();
+                pStockProductItemPtr->m_price = queryResponse.query->value(5).toFloat();
+                pStockProductItemPtr->m_familyName = queryResponse.query->value(6).toString();
+                pStockProductItemPtr->m_providerName = queryResponse.query->value(7).toString();
+                pStockProductItemPtr->m_stock = queryResponse.query->value(8).toInt();
+                pStockProductItemListResultPtr->m_list->push_back(pStockProductItemPtr);
             }
         }
-        return pIListResultPtr;
+        return pStockProductItemListResultPtr;
     }
     //
     ProductListStatsResultPtr DAO::getProductsListStats()
@@ -2938,7 +2995,7 @@ namespace PenyaManager {
             QueryPtr queryPtr(new QSqlQuery);
             // unchecked deposit list
             queryPtr->prepare(
-                    "SELECT member.username, deposit.iddeposit, deposit.date, deposit.total, deposit.description, deposit.idmember "
+                    "SELECT member.username, deposit.iddeposit, deposit.date, deposit.total, deposit.idmember "
                     "FROM deposit "
                     "INNER JOIN member ON member.idmember = deposit.idmember "
                     "WHERE deposit.state = 0"
@@ -2961,7 +3018,6 @@ namespace PenyaManager {
                 pDepositPtr->m_id = queryResponse.query->value(column++).toInt();
                 pDepositPtr->m_date = queryResponse.query->value(column++).toDateTime();
                 pDepositPtr->m_total = queryResponse.query->value(column++).toFloat();
-                pDepositPtr->m_descr = queryResponse.query->value(column++).toString();
                 pDepositPtr->m_memberId = queryResponse.query->value(column++).toInt();
                 pDepositListResultPtr->m_list->push_back(pDepositPtr);
             }
@@ -3003,7 +3059,7 @@ namespace PenyaManager {
                 // member filtered list
                 queryPtr->prepare(
                         "SELECT member.idmember, member.username, member.name, member.surname1, member.surname2, member.image, member.lastmodified, member.reg_date, member.active, member.isAdmin, member.birth, "
-                        "member.address, member.zip_code, member.town, member.state, member.tel, member.tel2, member.email, member.bank_account, member.postal_send, "
+                        "member.address, member.zip_code, member.town, member.state, member.tel, member.tel2, member.email, member.bank_account, member.postal_send, member.id_card, member.card, member.type, "
                         "member.notes, ac.balance "
                         "FROM account ac "
                         "INNER JOIN (SELECT account.idmember, MAX(account.date) AS MaxDate FROM account GROUP BY account.idmember) groupedAccount "
@@ -3017,7 +3073,7 @@ namespace PenyaManager {
                 // member list
                 queryPtr->prepare(
                         "SELECT member.idmember, member.username, member.name, member.surname1, member.surname2, member.image, member.lastmodified, member.reg_date, member.active, member.isAdmin, member.birth, "
-                        "member.address, member.zip_code, member.town, member.state, member.tel, member.tel2, member.email, member.bank_account, member.postal_send, "
+                        "member.address, member.zip_code, member.town, member.state, member.tel, member.tel2, member.email, member.bank_account, member.postal_send, member.id_card, member.card, member.type, "
                         "member.notes, ac.balance "
                         "FROM account ac "
                         "INNER JOIN (SELECT account.idmember, MAX(account.date) AS MaxDate FROM account GROUP BY account.idmember) groupedAccount "
@@ -3063,6 +3119,9 @@ namespace PenyaManager {
                 pMemberPtr->m_email = queryResponse.query->value(column++).toString();
                 pMemberPtr->m_bank_account = queryResponse.query->value(column++).toString();
                 pMemberPtr->m_postalSend = queryResponse.query->value(column++).toInt() == 1;
+                pMemberPtr->m_idCard = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_cardNumber = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_memberType = queryResponse.query->value(column++).toUInt();
                 pMemberPtr->m_notes = queryResponse.query->value(column++).toString();
                 pMemberPtr->m_balance = queryResponse.query->value(column++).toFloat();
                 pMemberListResultPtr->m_list->push_back(pMemberPtr);
@@ -3116,7 +3175,7 @@ namespace PenyaManager {
                     "UPDATE member "
                     "SET username=:username, name=:name, surname1=:surname1, surname2=:surname2, image=:image, lastmodified=:lastmodified, active=:active, isAdmin=:isadmin, birth=:birth, "
                     "address=:address, zip_code=:zip_code, town=:town, state=:state, tel=:tel, tel2=:tel2, email=:email, bank_account=:bank_account, postal_send=:postal_send, "
-                    "notes=:notes "
+                    "notes=:notes, id_card=:id_card, card=:card, type=:type "
                     "WHERE idmember = :memberid"
                     );
             // obligatory
@@ -3130,6 +3189,7 @@ namespace PenyaManager {
             queryPtr->bindValue(":isadmin", pMemberPtr->m_isAdmin?1:0);
             queryPtr->bindValue(":bank_account", pMemberPtr->m_bank_account);
             queryPtr->bindValue(":postal_send", pMemberPtr->m_postalSend?1:0);
+            queryPtr->bindValue(":type", pMemberPtr->m_memberType);
             // optional
             if (pMemberPtr->m_imagePath.isEmpty()) {
                 queryPtr->bindValue(":image", QVariant());
@@ -3180,6 +3240,16 @@ namespace PenyaManager {
                 queryPtr->bindValue(":notes", QVariant());
             } else {
                 queryPtr->bindValue(":notes", pMemberPtr->m_notes);
+            }
+            if (pMemberPtr->m_idCard.isEmpty()) {
+                queryPtr->bindValue(":id_card", QVariant());
+            } else {
+                queryPtr->bindValue(":id_card", pMemberPtr->m_idCard);
+            }
+            if (pMemberPtr->m_cardNumber.isEmpty()) {
+                queryPtr->bindValue(":card", QVariant());
+            } else {
+                queryPtr->bindValue(":card", pMemberPtr->m_cardNumber);
             }
             return queryPtr;
         };
@@ -3202,10 +3272,10 @@ namespace PenyaManager {
                     "INSERT INTO member "
                     "(username, name, surname1, surname2, image, lastmodified, reg_date, active, isAdmin, birth, "
                     "address, zip_code, town, state, tel, tel2, email, bank_account, postal_send, "
-                    "notes, pwd, lastlogin) "
+                    "notes, pwd, lastlogin, id_card, card, type) "
                     "VALUES (:username, :name, :surname1, :surname2, :image, :lastmodified, :reg_date, :active, :isadmin, :birth, "
                     ":address, :zip_code, :town, :state, :tel, :tel2, :email, :bank_account, :postal_send, "
-                    ":notes, :pwd, :lastlogin)"
+                    ":notes, :pwd, :lastlogin, :id_card, :card, :type)"
                     );
             // obligatory
             queryPtr->bindValue(":username", pMemberPtr->m_username);
@@ -3220,6 +3290,7 @@ namespace PenyaManager {
             queryPtr->bindValue(":postal_send", pMemberPtr->m_postalSend?1:0);
             queryPtr->bindValue(":pwd", pMemberPtr->m_pwd);
             queryPtr->bindValue(":lastlogin", pMemberPtr->m_lastLogin);
+            queryPtr->bindValue(":type", pMemberPtr->m_memberType);
             // optional
             if (pMemberPtr->m_imagePath.isEmpty()) {
                 queryPtr->bindValue(":image", QVariant());
@@ -3270,6 +3341,16 @@ namespace PenyaManager {
                 queryPtr->bindValue(":notes", QVariant());
             } else {
                 queryPtr->bindValue(":notes", pMemberPtr->m_notes);
+            }
+            if (pMemberPtr->m_idCard.isEmpty()) {
+                queryPtr->bindValue(":id_card", QVariant());
+            } else {
+                queryPtr->bindValue(":id_card", pMemberPtr->m_idCard);
+            }
+            if (pMemberPtr->m_cardNumber.isEmpty()) {
+                queryPtr->bindValue(":card", QVariant());
+            } else {
+                queryPtr->bindValue(":card", pMemberPtr->m_cardNumber);
             }
             return queryPtr;
         };
@@ -3574,6 +3655,32 @@ namespace PenyaManager {
             }
         }
         return pListResultPtr;
+    }
+    //
+    Int32 DAO::getLastUsername()
+    {
+        Uint32 lastUsername = -1;
+        auto createQuery = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // Get last invoice (closed or open)
+            queryPtr->prepare(
+                    "SELECT username "
+                    "FROM member "
+                    "ORDER BY username DESC "
+                    "LIMIT 1"
+                    );
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(createQuery);
+        if (queryResponse.error) {
+            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb, QString("getLastUsername"));
+        } else if (queryResponse.query->next())
+        {
+            lastUsername = queryResponse.query->value(0).toInt();;
+        }
+        return lastUsername;
     }
 }
 

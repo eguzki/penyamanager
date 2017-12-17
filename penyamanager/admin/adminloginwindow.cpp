@@ -40,6 +40,7 @@ namespace PenyaManager {
     //
     void AdminLoginWindow::init()
     {
+        initializeLang();
         this->ui->passInput->clear();
         this->ui->loginInput->clear();
     }
@@ -47,7 +48,22 @@ namespace PenyaManager {
     void AdminLoginWindow::retranslate()
     {
         this->ui->retranslateUi(this);
-        this->ui->languagePushButton->setText(Singletons::m_translationManager.getLanguageLabel());
+        this->ui->languagePushButton->setText(Singletons::m_pTranslationManager->getLanguageLabel());
+    }
+    //
+    void AdminLoginWindow::initializeLang()
+    {
+        // Init with basque language
+        if (Singletons::m_pTranslationManager->getLanguageLabel() != TranslationManager::kBasqueLangLabel)
+        {
+            // change translator
+            qApp->removeTranslator(m_pTranslator);
+            Singletons::m_pTranslationManager->switchLanguage();
+            // load new dictionary
+            m_pTranslator->load(Singletons::m_pTranslationManager->getAdminTranslationFile());
+            // installTranslator() will create a change event which will be sent to every single widget
+            qApp->installTranslator(m_pTranslator);
+        }
     }
     //
     void AdminLoginWindow::on_loginButton_clicked()
@@ -108,6 +124,7 @@ namespace PenyaManager {
         // assign user
         Singletons::m_pCurrMember = pMemberResultPtr->m_member;
         // call admin main window
+        m_pAdminMainWindow->init();
         m_pAdminMainWindow->show();
     }
     //
@@ -115,9 +132,9 @@ namespace PenyaManager {
     {
         // change translator
         qApp->removeTranslator(m_pTranslator);
-        Singletons::m_translationManager.switchLanguage();
+        Singletons::m_pTranslationManager->switchLanguage();
         // load new dictionary
-        m_pTranslator->load(Singletons::m_translationManager.getAdminTranslationFile());
+        m_pTranslator->load(Singletons::m_pTranslationManager->getAdminTranslationFile());
         // installTranslator() will create a change event which will be sent to every single widget
         qApp->installTranslator(m_pTranslator);
     }

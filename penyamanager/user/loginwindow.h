@@ -27,7 +27,7 @@ namespace PenyaManager {
             //
             void retranslate();
 
-        private slots:
+        private:
             //
             void init();
             //
@@ -35,9 +35,13 @@ namespace PenyaManager {
             //
             void initializeTable();
             //
+            void initializeLang();
+            //
             void fillLastInvoiceOwnerInfo(const MemberPtr &pLastInvoiceOwnerPtr);
             //
             void fillLastInvoiceInfo(const InvoicePtr &pLastInvoicePtr);
+
+        private slots:
             //
             void on_loginPushButton_clicked();
             //

@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# error when empty vars
+set -eu
+# on piped commands, return error if one of them returns error
+set -o pipefail
+
+LOGGER=/usr/syno/bin/synologset1
+ROOTDIR=/volume1/backup/sqlbackup
+DAILYDIR=$ROOTDIR/backup.daily
+MONTHLYDIR=$ROOTDIR/backup.monthly
+
+backup_filename="`date +"%m-%Y"`.sql.gz"
+
+# create backup dir if it does not exist
+mkdir -p ${MONTHLYDIR}
+
+# keep for last 300 days
+find ${MONTHLYDIR} -maxdepth 1 -mtime +300 -type f -exec rm -rv {} \;
+
+# Get newest backup
+daily_backup=`find $DAILYDIR -type f -name "*.sql.gz" -printf "%T+\t%p\n" | sort -r | head -n 1 | awk '{print $2}'`
+
+cp $daily_backup ${MONTHLYDIR}/$backup_filename
+
+$LOGGER sys info 0x11100000 "[BACKUP] created $backup_filename"

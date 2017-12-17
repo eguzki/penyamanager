@@ -161,4 +161,58 @@ namespace PenyaManager {
         int res = qQuestionMessageBox.exec();
         return static_cast<QMessageBox::StandardButton>(res);
     }
+    //
+    // Build account invoice description json
+    QString GuiUtils::invoiceAccountDescription(const Int32 invoiceId)
+    {
+        QJsonObject rootObject;
+        rootObject["id"] = invoiceId;
+        QJsonDocument doc(rootObject);
+        return doc.toJson(QJsonDocument::Compact);
+    }
+    // Build account deposit fix description json
+    QString GuiUtils::depositFixDescription(const Int32 depositId)
+    {
+        QJsonObject rootObject;
+        rootObject["id"] = depositId;
+        QJsonDocument doc(rootObject);
+        return doc.toJson(QJsonDocument::Compact);
+    }
+    // Build account deposit description json
+    QString GuiUtils::depositDescription(const Int32 depositId)
+    {
+        QJsonObject rootObject;
+        rootObject["id"] = depositId;
+        QJsonDocument doc(rootObject);
+        return doc.toJson(QJsonDocument::Compact);
+    }
+    //
+    QString GuiUtils::getTransactionDescr(const QString& descr, TransactionType type)
+    {
+        switch (type)
+        {
+            case TransactionType::NewAccount: return getStringFromTransactionTypeEnum(type);
+            case TransactionType::Invoice: return getInvoiceDescr(descr);
+            case TransactionType::Deposit: return getStringFromTransactionTypeEnum(type);
+            case TransactionType::AccountPayment: return getStringFromTransactionTypeEnum(type);
+            case TransactionType::DepositFix: return getDepositFixDescr(descr);
+            default: return "-";
+        }
+    }
+    //
+    QString GuiUtils::getInvoiceDescr(const QString& descr)
+    {
+        QJsonDocument doc(QJsonDocument::fromJson(descr.toUtf8()));
+        QJsonObject json(doc.object());
+        Int32 invoiceId = json["id"].toInt();
+        return QWidget::tr("invoice ref: %1").arg(invoiceId);
+    }
+    //
+    QString GuiUtils::getDepositFixDescr(const QString& descr)
+    {
+        QJsonDocument doc(QJsonDocument::fromJson(descr.toUtf8()));
+        QJsonObject json(doc.object());
+        Int32 depositId = json["id"].toInt();
+        return QWidget::tr("deposit ref: %1").arg(depositId);
+    }
 }

@@ -147,7 +147,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
          <item>
           <widget class="QLabel" name="totalMembersLabel">
            <property name="text">
-            <string>Total:</string>
+            <string>Num members:</string>
            </property>
           </widget>
          </item>
@@ -155,7 +155,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
           <widget class="QLabel" name="totalMembersValueLabel">
            <property name="minimumSize">
             <size>
-             <width>100</width>
+             <width>40</width>
              <height>0</height>
             </size>
            </property>
@@ -167,6 +167,20 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
            </property>
            <property name="text">
             <string>0</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="totalPagesLabel">
+           <property name="text">
+            <string>Num pages:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="totalPagesValueLabel">
+           <property name="text">
+            <string notr="true">0</string>
            </property>
           </widget>
          </item>
@@ -184,6 +198,13 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
           </spacer>
          </item>
          <item>
+          <widget class="QPushButton" name="prev10PagePushButton">
+           <property name="text">
+            <string notr="true">&lt;&lt;</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QPushButton" name="prevPagePushButton">
            <property name="text">
             <string>&lt;</string>
@@ -193,14 +214,24 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
          <item>
           <widget class="QLabel" name="pageInfoLabel">
            <property name="text">
-            <string>page X out of Y</string>
+            <string>page num</string>
            </property>
           </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="pageNumberSpinBox"/>
          </item>
          <item>
           <widget class="QPushButton" name="nextPagePushButton">
            <property name="text">
             <string>&gt;</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="next10PagePushButton">
+           <property name="text">
+            <string notr="true">&gt;&gt;</string>
            </property>
           </widget>
          </item>

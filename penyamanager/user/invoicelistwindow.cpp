@@ -176,7 +176,7 @@ namespace PenyaManager {
         for (InvoiceList::iterator iter = pInvoiceListPtr->begin(); iter != pInvoiceListPtr->end(); ++iter)
         {
             InvoicePtr pInvoicePtr = *iter;
-            QString dateLocalized = Singletons::m_translationManager.getLocale().toString(pInvoicePtr->m_date, QLocale::NarrowFormat);
+            QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pInvoicePtr->m_date, QLocale::NarrowFormat);
             this->ui->invoicesTableWidget->setItem(rowCount, 0, new QTableWidgetItem(dateLocalized));
             this->ui->invoicesTableWidget->setItem(rowCount, 1, new QTableWidgetItem(QString("%1 €").arg(pInvoicePtr->m_total, 0, 'f', 2)));
             this->m_rowProductIdMap[rowCount] = pInvoicePtr->m_id;

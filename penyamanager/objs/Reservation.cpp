@@ -20,9 +20,7 @@ namespace PenyaManager
     {
         switch (e)
         {
-            case ReservationType::MidMorning: return translate?(QObject::tr("midmorning")):("midmorning");
             case ReservationType::Lunch: return translate?(QObject::tr("lunch")):("lunch");
-            case ReservationType::Supper: return translate?(QObject::tr("supper")):("supper");
             case ReservationType::Dinner: return translate?(QObject::tr("dinner")):("dinner");
         }
         return "Bad ReservationType";

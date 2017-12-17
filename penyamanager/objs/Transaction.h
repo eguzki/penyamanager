@@ -13,6 +13,7 @@ namespace PenyaManager
     //
     enum class TransactionType
     {
+        NewAccount,
         Invoice,
         Deposit,
         AccountPayment,

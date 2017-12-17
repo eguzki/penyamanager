@@ -122,10 +122,10 @@ namespace PenyaManager {
         // Invoice Information
         //
         // Date
-        QString dateLocalized = Singletons::m_translationManager.getLocale().toString(pInvoiceResultPtr->m_pInvoice->m_date, QLocale::NarrowFormat);
+        QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pInvoiceResultPtr->m_pInvoice->m_date, QLocale::NarrowFormat);
         this->ui->invoiceDateValueLabel->setText(dateLocalized);
         // LastModified
-        dateLocalized = Singletons::m_translationManager.getLocale().toString(pInvoiceResultPtr->m_pInvoice->m_lastModified, QLocale::NarrowFormat);
+        dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pInvoiceResultPtr->m_pInvoice->m_lastModified, QLocale::NarrowFormat);
         this->ui->invoiceLastModifValueLabel->setText(dateLocalized);
         // Total
         this->ui->invoiceTotalValueLabel->setText(QString("%1 €").arg(invoiceProductItemStatsResultPtr->m_stats->m_totalAmount, 0, 'f', 2));

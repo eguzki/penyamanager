@@ -5,6 +5,7 @@
 #include <QMessageBox>
 
 #include <commons/singletons.h>
+#include <commons/guiutils.h>
 #include "depositlistview.h"
 #include "ui_depositlistview.h"
 
@@ -82,7 +83,7 @@ namespace PenyaManager {
             QTableWidgetItem *pTableItem = new QTableWidgetItem(QString::number(pDepositPtr->m_id));
             pTableItem->setData(Qt::UserRole, pDepositPtr->m_id);
             this->ui->depositTableWidget->setItem(rowCount, column++, pTableItem);
-            QString dateLocalized = Singletons::m_translationManager.getLocale().toString(pDepositPtr->m_date, QLocale::NarrowFormat);
+            QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pDepositPtr->m_date, QLocale::NarrowFormat);
             this->ui->depositTableWidget->setItem(rowCount, column++, new QTableWidgetItem(dateLocalized));
             pTableItem = new QTableWidgetItem(QString::number(pDepositPtr->m_memberUsername));
             pTableItem->setData(Qt::UserRole, pDepositPtr->m_memberId);
@@ -119,8 +120,8 @@ namespace PenyaManager {
         Float amount = pDoubleSpinBox->value() - total;
         if (amount != 0) {
             // create account entry with difference when not equal
-            QString descr = tr("deposit fix. Ref: %1").arg(depositId);
-            bool ok = Singletons::m_pServices->createAccountTransaction(memberId, amount, descr, TransactionType::DepositFix);
+            QString description = GuiUtils::depositFixDescription(depositId);
+            bool ok = Singletons::m_pServices->createAccountTransaction(memberId, amount, description, TransactionType::DepositFix);
             if (!ok) {
                 QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
                 return;

@@ -22,6 +22,12 @@ namespace PenyaManager {
             ~AdminMainWindow();
             //
             void switchCentralWidget(WindowKey key);
+            //
+            void init();
+            //
+            void retranslate();
+            //
+            virtual void changeEvent(QEvent* event);
 
         private slots:
             //
@@ -53,7 +59,9 @@ namespace PenyaManager {
 
         private:
             //
-            Ui::AdminMainWindow *ui;
+            Ui::AdminMainWindow     *ui;
+            //
+            QWidget                 *m_pEmptyWidget;
     };
 }
 #endif // ADMINMAINWINDOW_H

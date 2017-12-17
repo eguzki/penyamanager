@@ -33,7 +33,7 @@ namespace PenyaManager {
             //
             void updateResults();
             //
-            void fillProductList(const ProductItemListPtr &pProductItemListPtr);
+            void fillProductList(const StockProductItemListPtr &pStockProductItemListPtr);
             //
             void initializeTable();
 
