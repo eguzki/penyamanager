@@ -25,6 +25,11 @@
   <property name="windowTitle">
    <string>Penyamanager Application Manager</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QLabel#titleLabel{
+font: 20pt &quot;Calibri&quot;;
+}</string>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
