@@ -219,7 +219,17 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
           </widget>
          </item>
          <item>
-          <widget class="QSpinBox" name="pageNumberSpinBox"/>
+          <widget class="QSpinBox" name="pageNumberSpinBox">
+           <property name="minimumSize">
+            <size>
+             <width>50</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
          </item>
          <item>
           <widget class="QPushButton" name="nextPagePushButton">

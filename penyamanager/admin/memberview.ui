@@ -410,6 +410,116 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
           </widget>
          </item>
          <item>
+          <widget class="QWidget" name="idcardWidget" native="true">
+           <layout class="QHBoxLayout" name="horizontalLayout_18">
+            <property name="leftMargin">
+             <number>1</number>
+            </property>
+            <property name="topMargin">
+             <number>1</number>
+            </property>
+            <property name="rightMargin">
+             <number>1</number>
+            </property>
+            <property name="bottomMargin">
+             <number>1</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="idCardLabel">
+              <property name="minimumSize">
+               <size>
+                <width>70</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Card ID</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="idCardLineEdit"/>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_18">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>305</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QWidget" name="birthdateWidget" native="true">
+           <layout class="QHBoxLayout" name="horizontalLayout_8">
+            <property name="leftMargin">
+             <number>1</number>
+            </property>
+            <property name="topMargin">
+             <number>1</number>
+            </property>
+            <property name="rightMargin">
+             <number>1</number>
+            </property>
+            <property name="bottomMargin">
+             <number>1</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="birthdateLabel">
+              <property name="minimumSize">
+               <size>
+                <width>70</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>BirthDate:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QDateEdit" name="birthdateDateEdit">
+              <property name="minimumSize">
+               <size>
+                <width>90</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+              <property name="displayFormat">
+               <string>dd/MM/yyyy</string>
+              </property>
+              <property name="calendarPopup">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_8">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>376</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
           <widget class="QWidget" name="bankAccountWidget" native="true">
            <layout class="QHBoxLayout" name="horizontalLayout_12">
             <property name="leftMargin">
@@ -461,120 +571,6 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
               <property name="sizeHint" stdset="0">
                <size>
                 <width>152</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <widget class="QWidget" name="birthdateWidget" native="true">
-           <layout class="QHBoxLayout" name="horizontalLayout_8">
-            <property name="leftMargin">
-             <number>1</number>
-            </property>
-            <property name="topMargin">
-             <number>1</number>
-            </property>
-            <property name="rightMargin">
-             <number>1</number>
-            </property>
-            <property name="bottomMargin">
-             <number>1</number>
-            </property>
-            <item>
-             <widget class="QLabel" name="birthdateLabel">
-              <property name="minimumSize">
-               <size>
-                <width>70</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>BirthDate:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QDateEdit" name="birthdateDateEdit">
-              <property name="displayFormat">
-               <string>dd/MM/yyyy</string>
-              </property>
-              <property name="calendarPopup">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="horizontalSpacer_8">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>376</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <widget class="QWidget" name="emailWidget" native="true">
-           <layout class="QHBoxLayout" name="horizontalLayout_16">
-            <property name="leftMargin">
-             <number>1</number>
-            </property>
-            <property name="topMargin">
-             <number>1</number>
-            </property>
-            <property name="rightMargin">
-             <number>1</number>
-            </property>
-            <property name="bottomMargin">
-             <number>1</number>
-            </property>
-            <item>
-             <widget class="QLabel" name="emailLabel">
-              <property name="minimumSize">
-               <size>
-                <width>70</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>Email:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="emailLineEdit">
-              <property name="minimumSize">
-               <size>
-                <width>500</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>500</width>
-                <height>16777215</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="horizontalSpacer_16">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>208</width>
                 <height>20</height>
                </size>
               </property>
@@ -892,8 +888,8 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
           </widget>
          </item>
          <item>
-          <widget class="QWidget" name="idcardWidget" native="true">
-           <layout class="QHBoxLayout" name="horizontalLayout_18">
+          <widget class="QWidget" name="emailWidget" native="true">
+           <layout class="QHBoxLayout" name="horizontalLayout_16">
             <property name="leftMargin">
              <number>1</number>
             </property>
@@ -907,23 +903,42 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
              <number>1</number>
             </property>
             <item>
-             <widget class="QLabel" name="idCardLabel">
+             <widget class="QLabel" name="emailLabel">
+              <property name="minimumSize">
+               <size>
+                <width>70</width>
+                <height>0</height>
+               </size>
+              </property>
               <property name="text">
-               <string>Card ID</string>
+               <string>Email:</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="idCardLineEdit"/>
+             <widget class="QLineEdit" name="emailLineEdit">
+              <property name="minimumSize">
+               <size>
+                <width>500</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>500</width>
+                <height>16777215</height>
+               </size>
+              </property>
+             </widget>
             </item>
             <item>
-             <spacer name="horizontalSpacer_18">
+             <spacer name="horizontalSpacer_16">
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
               </property>
               <property name="sizeHint" stdset="0">
                <size>
-                <width>305</width>
+                <width>208</width>
                 <height>20</height>
                </size>
               </property>
@@ -949,6 +964,12 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
             </property>
             <item>
              <widget class="QLabel" name="cardLabel">
+              <property name="minimumSize">
+               <size>
+                <width>70</width>
+                <height>0</height>
+               </size>
+              </property>
               <property name="text">
                <string>Card Number</string>
               </property>
@@ -990,13 +1011,26 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
             </property>
             <item>
              <widget class="QLabel" name="memberTypeLabel">
+              <property name="minimumSize">
+               <size>
+                <width>70</width>
+                <height>0</height>
+               </size>
+              </property>
               <property name="text">
                <string>Member Type</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QComboBox" name="memberTypeComboBox"/>
+             <widget class="QComboBox" name="memberTypeComboBox">
+              <property name="minimumSize">
+               <size>
+                <width>120</width>
+                <height>0</height>
+               </size>
+              </property>
+             </widget>
             </item>
             <item>
              <spacer name="horizontalSpacer_21">
@@ -1044,6 +1078,32 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
          <property name="bottomMargin">
           <number>1</number>
          </property>
+         <item>
+          <widget class="QWidget" name="isAdminWidget" native="true">
+           <layout class="QHBoxLayout" name="horizontalLayout_7">
+            <item>
+             <widget class="QCheckBox" name="isAdminCheckBox">
+              <property name="text">
+               <string>Admin</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_7">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>681</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </widget>
+         </item>
          <item>
           <widget class="QWidget" name="notesLabelwidget" native="true">
            <layout class="QHBoxLayout" name="horizontalLayout_19">
@@ -1143,39 +1203,13 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
              </widget>
             </item>
             <item>
-             <widget class="QWidget" name="isAdminWidget" native="true">
-              <layout class="QHBoxLayout" name="horizontalLayout_7">
-               <item>
-                <widget class="QCheckBox" name="isAdminCheckBox">
-                 <property name="text">
-                  <string>Admin</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <spacer name="horizontalSpacer_7">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>681</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-              </layout>
+             <widget class="QPushButton" name="savePushButton">
+              <property name="text">
+               <string>Save</string>
+              </property>
              </widget>
             </item>
            </layout>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="savePushButton">
-           <property name="text">
-            <string>Save</string>
-           </property>
           </widget>
          </item>
         </layout>

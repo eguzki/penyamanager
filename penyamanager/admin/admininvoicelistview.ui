@@ -185,13 +185,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
     <widget class="QWidget" name="resultsWidget" native="true">
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
-       <widget class="QFrame" name="pagingFrame">
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
+       <widget class="QWidget" name="pagingWidget" native="true">
         <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
           <widget class="QLabel" name="fromDateResultLabel">

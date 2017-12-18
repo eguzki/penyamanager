@@ -570,86 +570,85 @@
 <context>
     <name>PenyaManager::LoginWindow</name>
     <message>
-        <location filename="../user/loginwindow.cpp" line="118"/>
+        <location filename="../user/loginwindow.cpp" line="126"/>
         <source>article</source>
         <translation type="unfinished">Artículo</translation>
     </message>
     <message>
-        <location filename="../user/loginwindow.cpp" line="119"/>
+        <location filename="../user/loginwindow.cpp" line="127"/>
         <source>price/u</source>
         <translation type="unfinished">precio/u</translation>
     </message>
     <message>
-        <location filename="../user/loginwindow.cpp" line="120"/>
+        <location filename="../user/loginwindow.cpp" line="128"/>
         <source>count</source>
         <translation type="unfinished">cantidad</translation>
     </message>
     <message>
-        <location filename="../user/loginwindow.cpp" line="121"/>
+        <location filename="../user/loginwindow.cpp" line="129"/>
         <source>total</source>
         <translation type="unfinished">total</translation>
     </message>
     <message>
-        <location filename="../user/loginwindow.cpp" line="47"/>
-        <location filename="../user/loginwindow.cpp" line="58"/>
-        <location filename="../user/loginwindow.cpp" line="74"/>
-        <location filename="../user/loginwindow.cpp" line="154"/>
-        <location filename="../user/loginwindow.cpp" line="199"/>
-        <location filename="../user/loginwindow.cpp" line="209"/>
-        <location filename="../user/loginwindow.cpp" line="251"/>
-        <location filename="../user/loginwindow.cpp" line="256"/>
-        <location filename="../user/loginwindow.cpp" line="315"/>
-        <location filename="../user/loginwindow.cpp" line="337"/>
+        <location filename="../user/loginwindow.cpp" line="51"/>
+        <location filename="../user/loginwindow.cpp" line="67"/>
+        <location filename="../user/loginwindow.cpp" line="162"/>
+        <location filename="../user/loginwindow.cpp" line="207"/>
+        <location filename="../user/loginwindow.cpp" line="217"/>
+        <location filename="../user/loginwindow.cpp" line="259"/>
+        <location filename="../user/loginwindow.cpp" line="264"/>
+        <location filename="../user/loginwindow.cpp" line="323"/>
+        <location filename="../user/loginwindow.cpp" line="345"/>
         <source>Database error. Contact administrator</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../user/loginwindow.cpp" line="128"/>
+        <location filename="../user/loginwindow.cpp" line="136"/>
         <source>Insert username</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../user/loginwindow.cpp" line="134"/>
+        <location filename="../user/loginwindow.cpp" line="142"/>
         <source>Username required</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../user/loginwindow.cpp" line="139"/>
+        <location filename="../user/loginwindow.cpp" line="147"/>
         <source>Insert password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../user/loginwindow.cpp" line="145"/>
+        <location filename="../user/loginwindow.cpp" line="153"/>
         <source>Password not set</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../user/loginwindow.cpp" line="162"/>
+        <location filename="../user/loginwindow.cpp" line="170"/>
         <source>User not registered in the system: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../user/loginwindow.cpp" line="172"/>
+        <location filename="../user/loginwindow.cpp" line="180"/>
         <source>Password incorrect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../user/loginwindow.cpp" line="181"/>
+        <location filename="../user/loginwindow.cpp" line="189"/>
         <source>User not active in the system: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../user/loginwindow.cpp" line="188"/>
+        <location filename="../user/loginwindow.cpp" line="196"/>
         <source>Your current balance is negative: %1 €</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../user/loginwindow.cpp" line="302"/>
+        <location filename="../user/loginwindow.cpp" line="310"/>
         <source>Created on</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../user/loginwindow.cpp" line="302"/>
+        <location filename="../user/loginwindow.cpp" line="310"/>
         <source>Modified on</source>
         <translation type="unfinished"></translation>
     </message>
@@ -729,68 +728,68 @@
 <context>
     <name>PenyaManager::TableReservationView</name>
     <message>
-        <location filename="../user/tablereservationview.cpp" line="68"/>
+        <location filename="../user/tablereservationview.cpp" line="66"/>
         <source>Name</source>
         <translation>Nombre</translation>
     </message>
     <message>
-        <location filename="../user/tablereservationview.cpp" line="69"/>
+        <location filename="../user/tablereservationview.cpp" line="67"/>
         <source>Size</source>
         <translation>Tamaño</translation>
     </message>
     <message>
-        <location filename="../user/tablereservationview.cpp" line="70"/>
+        <location filename="../user/tablereservationview.cpp" line="68"/>
         <source>Reserved By Guest</source>
         <translation>Reservado por invitado</translation>
     </message>
     <message>
-        <location filename="../user/tablereservationview.cpp" line="71"/>
+        <location filename="../user/tablereservationview.cpp" line="69"/>
         <source># reserved</source>
         <translation># reservado</translation>
     </message>
     <message>
-        <location filename="../user/tablereservationview.cpp" line="72"/>
+        <location filename="../user/tablereservationview.cpp" line="70"/>
         <source>Action</source>
         <translation>Acción</translation>
     </message>
     <message>
-        <location filename="../user/tablereservationview.cpp" line="99"/>
-        <location filename="../user/tablereservationview.cpp" line="265"/>
-        <location filename="../user/tablereservationview.cpp" line="271"/>
-        <location filename="../user/tablereservationview.cpp" line="277"/>
-        <location filename="../user/tablereservationview.cpp" line="290"/>
-        <location filename="../user/tablereservationview.cpp" line="296"/>
-        <location filename="../user/tablereservationview.cpp" line="302"/>
-        <location filename="../user/tablereservationview.cpp" line="315"/>
-        <location filename="../user/tablereservationview.cpp" line="321"/>
-        <location filename="../user/tablereservationview.cpp" line="327"/>
-        <location filename="../user/tablereservationview.cpp" line="421"/>
-        <location filename="../user/tablereservationview.cpp" line="468"/>
+        <location filename="../user/tablereservationview.cpp" line="97"/>
+        <location filename="../user/tablereservationview.cpp" line="255"/>
+        <location filename="../user/tablereservationview.cpp" line="261"/>
+        <location filename="../user/tablereservationview.cpp" line="267"/>
+        <location filename="../user/tablereservationview.cpp" line="280"/>
+        <location filename="../user/tablereservationview.cpp" line="286"/>
+        <location filename="../user/tablereservationview.cpp" line="292"/>
+        <location filename="../user/tablereservationview.cpp" line="305"/>
+        <location filename="../user/tablereservationview.cpp" line="311"/>
+        <location filename="../user/tablereservationview.cpp" line="317"/>
+        <location filename="../user/tablereservationview.cpp" line="411"/>
+        <location filename="../user/tablereservationview.cpp" line="458"/>
         <source>Database error. Contact administrator</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../user/tablereservationview.cpp" line="230"/>
+        <location filename="../user/tablereservationview.cpp" line="220"/>
         <source>Reserve</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../user/tablereservationview.cpp" line="394"/>
+        <location filename="../user/tablereservationview.cpp" line="384"/>
         <source>Number of guests?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../user/tablereservationview.cpp" line="427"/>
+        <location filename="../user/tablereservationview.cpp" line="417"/>
         <source>Reserved %1 at %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../user/tablereservationview.cpp" line="474"/>
+        <location filename="../user/tablereservationview.cpp" line="464"/>
         <source>Cancelled %1 at %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../user/tablereservationview.cpp" line="247"/>
+        <location filename="../user/tablereservationview.cpp" line="237"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -806,32 +805,22 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../main.cpp" line="36"/>
+        <location filename="../main.cpp" line="26"/>
         <source>Settings file not found. Call the stupid administrator and complain for incompetence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="48"/>
+        <location filename="../main.cpp" line="38"/>
         <source>Database connection failed. Call the stupid administrator and complain for incompetence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../objs/Reservation.cpp" line="23"/>
-        <source>midmorning</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../objs/Reservation.cpp" line="24"/>
         <source>lunch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../objs/Reservation.cpp" line="25"/>
-        <source>supper</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../objs/Reservation.cpp" line="26"/>
+        <location filename="../objs/Reservation.cpp" line="24"/>
         <source>dinner</source>
         <translation type="unfinished"></translation>
     </message>
@@ -848,6 +837,59 @@
     <message>
         <location filename="../objs/ReservationItem.cpp" line="21"/>
         <source>fireplace</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../objs/Member.cpp" line="46"/>
+        <source>Normal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../objs/Member.cpp" line="47"/>
+        <source>Retired</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../objs/Member.cpp" line="48"/>
+        <source>Honorary</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QWidget</name>
+    <message>
+        <location filename="../commons/guiutils.cpp" line="208"/>
+        <source>invoice ref: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../commons/guiutils.cpp" line="216"/>
+        <source>deposit ref: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../objs/Transaction.cpp" line="12"/>
+        <source>New Account</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../objs/Transaction.cpp" line="13"/>
+        <source>Invoice</source>
+        <translation type="unfinished">Recibo</translation>
+    </message>
+    <message>
+        <location filename="../objs/Transaction.cpp" line="14"/>
+        <source>Deposit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../objs/Transaction.cpp" line="15"/>
+        <source>Account Payment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../objs/Transaction.cpp" line="16"/>
+        <source>Deposit Fix</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
