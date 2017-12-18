@@ -325,9 +325,6 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
            <property name="selectionBehavior">
             <enum>QAbstractItemView::SelectRows</enum>
            </property>
-           <attribute name="horizontalHeaderVisible">
-            <bool>false</bool>
-           </attribute>
            <attribute name="verticalHeaderVisible">
             <bool>false</bool>
            </attribute>

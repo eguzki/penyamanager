@@ -54,19 +54,17 @@ ForEach($user in $users)
     
     if (![string]::IsNullOrEmpty($user.alta)){
         
-        $lastmodifiedpart = $user.alta -split "/"
-        [string]$lastmodified = "$($lastmodifiedpart[2])-$($lastmodifiedpart[1])-$($lastmodifiedpart[0])"
-        [string]$lastmodified = $lastmodified + " 00:00:00"
-            
-    }
-    
-    if (![string]::IsNullOrEmpty($user.alta)){
-        
         $reg_datepart = $user.alta -split "/"
         [string]$reg_date = "$($reg_datepart[2])-$($reg_datepart[1])-$($reg_datepart[0])"
         [string]$reg_date = $reg_date + " 00:00:00"
     
+    }else{
+        
+        $reg_date = (get-date -Format "yyyy-MM-dd HH:mm:ss")
+
     }
+
+    $lastmodified = $reg_date
 
     $active = 0
     $isAdmin = 0
@@ -111,7 +109,12 @@ ForEach($user in $users)
         [string]$lastlogin = "$($lastloginpart[2])-$($lastloginpart[1])-$($lastloginpart[0])"
         [string]$lastlogin = $lastlogin + " 00:00:00"
            
+    }else{
+
+        $lastlogin = $reg_date
+
     }
+
     $id_card = ""
     $card = $user.ntarjeta
     $type = $user.type
@@ -162,10 +165,17 @@ ForEach($user in $users)
 
     $line >> c:\penyamanager\import.sql
 
+    if (![string]::IsNullOrEmpty($user.alta)){
+        
+        $accountdatepart = $user.alta -split "/"
+        [string]$accountdate = "$($accountdatepart[2])-$($accountdatepart[1])-$($accountdatepart[0])"
+        [string]$accountdate = $accountdate + " 00:00:00"
 
-    $accountdatepart = $user.alta -split "/"
-    [string]$accountdate = "$($accountdatepart[2])-$($accountdatepart[1])-$($accountdatepart[0])"
-    [string]$accountdate = $accountdate + " 00:00:00"
+    }else{
+
+        $accountdate = $reg_date
+
+    }
 
     $line2 = "INSERT INTO account ( idmember ,  amount ,  date ,  balance ,  description ,  type ) VALUES ($idmember, 0 , `"$accountdate`" , 0 , `"`" , 0);"
 
