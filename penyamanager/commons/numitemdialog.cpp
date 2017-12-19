@@ -1,8 +1,5 @@
 //
 
-#include <functional>
-using namespace std::placeholders;
-
 #include "numitemdialog.h"
 #include "ui_numitemdialog.h"
 

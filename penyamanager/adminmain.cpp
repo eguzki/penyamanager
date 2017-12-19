@@ -8,6 +8,7 @@
 #include <commons/constants.h>
 #include <commons/singletons.h>
 #include <commons/utils.h>
+#include <commons/inactivityeventfilter.h>
 #include <admin/adminmainwindow.h>
 #include <admin/adminloginwindow.h>
 
@@ -46,7 +47,13 @@ int main(int argc, char *argv[])
     penyamanagerTranslator.load(PenyaManager::Singletons::m_pTranslationManager->getAdminTranslationFile());
     app.installTranslator(&penyamanagerTranslator);
 
-    PenyaManager::AdminMainWindow adminMainWindow;
+    QTimer inactivityTimer(NULL);
+    inactivityTimer.setInterval(PenyaManager::Constants::kAdminInactivityTimeoutSec * 1000);
+
+    PenyaManager::InactivityEventFilter inactivityEventFilter(&inactivityTimer);
+    app.installEventFilter(&inactivityEventFilter);
+
+    PenyaManager::AdminMainWindow adminMainWindow(NULL, &inactivityTimer);
 
     PenyaManager::AdminLoginWindow *pLoginWindow = new PenyaManager::AdminLoginWindow(NULL, &adminMainWindow, &penyamanagerTranslator);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kAdminLoginWindowKey, pLoginWindow);

@@ -69,5 +69,9 @@ namespace PenyaManager {
     const Uint32    Constants::kReservationListPageCount        = 18;
     //
     const Uint32    Constants::kSystemUserId                    = 0;
+    //
+    const Uint32    Constants::kInactivityTimeoutSec            = 120;
+    //
+    const Uint32    Constants::kAdminInactivityTimeoutSec       = 300;
 }
 

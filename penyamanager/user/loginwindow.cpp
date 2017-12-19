@@ -1,4 +1,5 @@
 //
+
 #include <commons/utils.h>
 #include <commons/guiutils.h>
 #include <commons/constants.h>
@@ -10,13 +11,14 @@
 namespace PenyaManager {
 
     //
-    LoginWindow::LoginWindow(QWidget *parent, QTranslator *pTranslator, const CentralWidgetCallback &callback) :
+    LoginWindow::LoginWindow(QWidget *parent, QTranslator *pTranslator, QTimer *pInactivityTimer, const CentralWidgetCallback &callback) :
         IPartner(parent),
         ui(new Ui::LoginWindow),
         m_currentPage(0),
         m_password(),
         m_username(-1),
         m_pTranslator(pTranslator),
+        m_pInactivityTimer(pInactivityTimer),
         m_switchCentralWidgetCallback(callback)
     {
         ui->setupUi(this);
@@ -28,6 +30,8 @@ namespace PenyaManager {
         versionStream.setCodec("UTF-8");
         QString versionStr = versionStream.readAll();
         this->ui->versionLabel->setText(QString("code build %1").arg(versionStr));
+        // connect QTimer timeout event
+        this->connect(m_pInactivityTimer, &QTimer::timeout, std::bind(&LoginWindow::onInactivityTimeout, this));
     }
     //
     LoginWindow::~LoginWindow()
@@ -38,6 +42,8 @@ namespace PenyaManager {
     void LoginWindow::init()
     {
         initializeLang();
+
+        m_pInactivityTimer->stop();
 
         this->m_username = -1;
         this->m_password = QString();
@@ -217,7 +223,8 @@ namespace PenyaManager {
             GuiUtils::criticalMessageBox(this, tr("Database error. Contact administrator"));
             return;
         }
-
+        // initialize inactivity timer
+        m_pInactivityTimer->start();
         // load main window
         m_switchCentralWidgetCallback(WindowKey::kMemberDashboardWindowKey);
     }
@@ -331,7 +338,6 @@ namespace PenyaManager {
 
         m_currentPage--;
         fillLastInvoiceInfo(pLastInvoiceResultPtr->m_pInvoice);
-
     }
     //
     void LoginWindow::on_nextPagePushButton_clicked()
@@ -352,6 +358,12 @@ namespace PenyaManager {
         }
         m_currentPage++;
         fillLastInvoiceInfo(pLastInvoiceResultPtr->m_pInvoice);
+    }
+    //
+    void LoginWindow::onInactivityTimeout()
+    {
+        // load login window
+        m_switchCentralWidgetCallback(WindowKey::kLoginWindowKey);
     }
 }
 
