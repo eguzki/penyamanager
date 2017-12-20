@@ -60,7 +60,8 @@ SOURCES += main.cpp\
         user/mainwindow.cpp \
         commons/familyitemwidget.cpp \
         commons/productitemwidget.cpp \
-        commons/logging.cpp
+        commons/logging.cpp \
+        commons/inactivityeventfilter.cpp
 
 HEADERS  += user/memberdashboardwindow.h\
         commons/singletons.h\
@@ -97,7 +98,8 @@ HEADERS  += user/memberdashboardwindow.h\
         commons/translationmanager.h \
         commons/DataTypes.h \
         user/mainwindow.h \
-        commons/logging.h
+        commons/logging.h \
+        commons/inactivityeventfilter.h
 
 FORMS    += user/memberdashboardwindow.ui\
         user/loginwindow.ui \

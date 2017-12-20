@@ -17,7 +17,7 @@ namespace PenyaManager {
 
         public:
             //
-            explicit AdminMainWindow(QWidget *parent = 0);
+            explicit AdminMainWindow(QWidget *parent, QTimer *pInactivityTimer);
             //
             ~AdminMainWindow();
             //
@@ -62,6 +62,8 @@ namespace PenyaManager {
             Ui::AdminMainWindow     *ui;
             //
             QWidget                 *m_pEmptyWidget;
+            //
+            QTimer                  *m_pInactivityTimer;
     };
 }
 #endif // ADMINMAINWINDOW_H

@@ -21,7 +21,7 @@ namespace PenyaManager {
 
         public:
             //
-            explicit LoginWindow(QWidget *parent, QTranslator *pTranslator, const CentralWidgetCallback &callback);
+            explicit LoginWindow(QWidget *parent, QTranslator *pTranslator, QTimer *pInactivityTimer, const CentralWidgetCallback &callback);
             //
             ~LoginWindow();
             //
@@ -50,6 +50,8 @@ namespace PenyaManager {
             void on_prevPagePushButton_clicked();
             //
             void on_nextPagePushButton_clicked();
+            //
+            void onInactivityTimeout();
 
         private:
             //
@@ -62,6 +64,8 @@ namespace PenyaManager {
             Int32                       m_username;
             //
             QTranslator                 *m_pTranslator;
+            //
+            QTimer                      *m_pInactivityTimer;
             //
             CentralWidgetCallback       m_switchCentralWidgetCallback;
     };
