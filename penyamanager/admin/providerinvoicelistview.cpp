@@ -40,7 +40,7 @@ namespace PenyaManager {
         headers.append(tr("invoice ID"));
         headers.append(tr("Total"));
         headers.append(tr("Date"));
-        headers.append(tr("provider ID"));
+        headers.append(tr("Provider"));
         this->ui->invoicesTableWidget->setHorizontalHeaderLabels(headers);
     }
     //
@@ -184,7 +184,7 @@ namespace PenyaManager {
             this->ui->invoicesTableWidget->setItem(rowCount, 1, new QTableWidgetItem(QString("%1 €").arg(pInvoicePtr->m_total, 0, 'f', 2)));
             QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pInvoicePtr->m_regDate, QLocale::NarrowFormat);
             this->ui->invoicesTableWidget->setItem(rowCount, 2, new QTableWidgetItem(dateLocalized));
-            this->ui->invoicesTableWidget->setItem(rowCount, 3, new QTableWidgetItem(QString::number(pInvoicePtr->m_providerid)));
+            this->ui->invoicesTableWidget->setItem(rowCount, 3, new QTableWidgetItem(pInvoicePtr->m_providerName));
             this->m_rowProviderInvoiceIdMap[rowCount] = pInvoicePtr->m_id;
             rowCount++;
         }
