@@ -17,7 +17,7 @@
 namespace PenyaManager {
 
     //
-    MainWindow::MainWindow(QWidget *parent, QTranslator *pTranslator) :
+    MainWindow::MainWindow(QWidget *parent, QTranslator *pTranslator, QTimer *pInactivityTimer) :
         QWidget(parent),
         ui(new Ui::MainWindow)
     {
@@ -26,7 +26,7 @@ namespace PenyaManager {
         // central widgets need mainwindow callback to call each other
         CentralWidgetCallback mainWindowSwitchCallback = std::bind(&MainWindow::switchCentralWidget, this, _1);
         // Fill views
-        LoginWindow *pLoginWindow = new LoginWindow(this, pTranslator, mainWindowSwitchCallback);
+        LoginWindow *pLoginWindow = new LoginWindow(this, pTranslator, pInactivityTimer, mainWindowSwitchCallback);
         Singletons::m_pParnetFinder->addPartner(WindowKey::kLoginWindowKey, pLoginWindow);
         this->ui->stackedWidget->addWidget(pLoginWindow);
         MemberDashboardWindow *pMemberDashboardWindow = new MemberDashboardWindow(this, mainWindowSwitchCallback);

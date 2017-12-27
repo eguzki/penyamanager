@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QTranslator>
+#include <QTimer>
 
 #include <commons/constants.h>
 
@@ -20,7 +21,7 @@ namespace PenyaManager {
 
         public:
             //
-            explicit MainWindow(QWidget *parent, QTranslator *pTranslator);
+            explicit MainWindow(QWidget *parent, QTranslator *pTranslator, QTimer *pInactivityTimer);
             //
             ~MainWindow();
             //

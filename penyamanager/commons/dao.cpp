@@ -2833,7 +2833,9 @@ namespace PenyaManager {
             QueryPtr queryPtr(new QSqlQuery);
             // provider invoice list
             queryPtr->prepare(
-                    "SELECT idprovider_invoices, date, total, idprovider FROM provider_invoices "
+                    "SELECT provider_invoices.idprovider_invoices, provider_invoices.date, provider_invoices.total, provider_invoices.idprovider, provider.name "
+                    "FROM provider_invoices "
+                    "INNER JOIN provider ON provider.idprovider = provider_invoices.idprovider "
                     "WHERE date BETWEEN :fromDate AND :toDate "
                     "ORDER BY date DESC "
                     "LIMIT :limit OFFSET :offset"
@@ -2862,6 +2864,7 @@ namespace PenyaManager {
                 pInvoicePtr->m_regDate = queryResponse.query->value(1).toDate();
                 pInvoicePtr->m_total = queryResponse.query->value(2).toFloat();
                 pInvoicePtr->m_providerid = queryResponse.query->value(3).toInt();
+                pInvoicePtr->m_providerName = queryResponse.query->value(4).toString();
                 pInvoiceListResultPtr->m_list->push_back(pInvoicePtr);
             }
         }

@@ -1,6 +1,5 @@
 //
 
-#include <QDebug>
 #include <QMessageBox>
 
 #include <commons/singletons.h>
@@ -28,10 +27,11 @@
 
 namespace PenyaManager {
     //
-    AdminMainWindow::AdminMainWindow(QWidget *parent) :
+    AdminMainWindow::AdminMainWindow(QWidget *parent, QTimer *pInactivityTimer) :
         QMainWindow(parent),
         ui(new Ui::AdminMainWindow),
-        m_pEmptyWidget(new QWidget(this))
+        m_pEmptyWidget(new QWidget(this)),
+        m_pInactivityTimer(pInactivityTimer)
     {
         ui->setupUi(this);
 
@@ -94,6 +94,8 @@ namespace PenyaManager {
         AdminReservationsWindow *pAdminReservationsWindow = new AdminReservationsWindow(this);
         PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kAdminReservationViewKey, pAdminReservationsWindow);
         this->ui->stackedWidget->addWidget(pAdminReservationsWindow);
+        // connect QTimer timeout
+        this->connect(m_pInactivityTimer, &QTimer::timeout, std::bind(&AdminMainWindow::on_actionExit_triggered, this));
     }
     //
     AdminMainWindow::~AdminMainWindow()
@@ -104,6 +106,8 @@ namespace PenyaManager {
     void AdminMainWindow::init()
     {
         this->ui->stackedWidget->setCurrentWidget(this->m_pEmptyWidget);
+        // start timer
+        this->m_pInactivityTimer->start();
     }
     //
     void AdminMainWindow::changeEvent(QEvent* event)
@@ -123,6 +127,8 @@ namespace PenyaManager {
     //
     void AdminMainWindow::on_actionExit_triggered()
     {
+        // stop timer
+        this->m_pInactivityTimer->stop();
         // call admin login window
         hide();
         IPartner* pPartner = Singletons::m_pParnetFinder->getPartner(WindowKey::kAdminLoginWindowKey);

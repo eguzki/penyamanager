@@ -71,7 +71,8 @@ SOURCES += adminmain.cpp\
         admin/invoicedetailsview.cpp \
         commons/familyitemwidget.cpp \
         commons/productitemwidget.cpp \
-        commons/logging.cpp
+        commons/logging.cpp \
+        commons/inactivityeventfilter.cpp
 
 HEADERS += commons/singletons.h\
         commons/dao.h\
@@ -119,7 +120,8 @@ HEADERS += commons/singletons.h\
         admin/adminreservationswindow.h \
         admin/providerinvoiceview.h \
         admin/invoicedetailsview.h \
-        commons/logging.h
+        commons/logging.h \
+        commons/inactivityeventfilter.h
 
 FORMS   += admin/adminloginwindow.ui\
         admin/adminmainwindow.ui \

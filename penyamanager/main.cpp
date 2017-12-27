@@ -7,6 +7,7 @@
 #include <commons/logging.h>
 #include <commons/singletons.h>
 #include <commons/guiutils.h>
+#include <commons/inactivityeventfilter.h>
 #include <user/mainwindow.h>
 
 int main(int argc, char *argv[])
@@ -45,7 +46,13 @@ int main(int argc, char *argv[])
     penyamanagerTranslator.load(PenyaManager::Singletons::m_pTranslationManager->getTranslationFile());
     app.installTranslator(&penyamanagerTranslator);
 
-    PenyaManager::MainWindow mainWindow(NULL, &penyamanagerTranslator);
+    QTimer inactivityTimer(NULL);
+    inactivityTimer.setInterval(PenyaManager::Constants::kInactivityTimeoutSec * 1000);
+
+    PenyaManager::InactivityEventFilter inactivityEventFilter(&inactivityTimer);
+    app.installEventFilter(&inactivityEventFilter);
+
+    PenyaManager::MainWindow mainWindow(NULL, &penyamanagerTranslator, &inactivityTimer);
 
     mainWindow.init();
     // To disable Full Screen, comment the line below. Que no la above.
