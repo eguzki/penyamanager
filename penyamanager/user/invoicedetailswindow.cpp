@@ -44,7 +44,7 @@ namespace PenyaManager {
         QStringList headers;
         headers.append(tr("article"));
         headers.append(tr("price/u"));
-        headers.append("#");
+        headers.append(tr("count"));
         headers.append(tr("total"));
         this->ui->productTableWidget->setHorizontalHeaderLabels(headers);
     }
@@ -216,7 +216,7 @@ namespace PenyaManager {
         invoiceData["products"] = productList;
         // print invoice
         GuiUtils::printInvoice(invoiceData, pCurrMemberPtr->m_id, invoiceId);
-        GuiUtils::infoMessageBox(this, tr("Invoice #%1 sent to printer").arg(QString::number(invoiceId)));
+        GuiUtils::infoMessageBox(this, tr("Invoice sent to printer"));
     }
     //
     void InvoiceDetailsWindow::on_newinvoiceButton_clicked()

@@ -53,7 +53,7 @@ namespace PenyaManager {
         QStringList headers;
         headers.append(tr("article"));
         headers.append(tr("price/u"));
-        headers.append("#");
+        headers.append(tr("Count"));
         headers.append(tr("total"));
         headers.append(tr("Remove"));
         this->ui->invoiceTableWidget->setHorizontalHeaderLabels(headers);

@@ -67,7 +67,7 @@ namespace PenyaManager {
         headers.append(tr("Size"));
         headers.append(tr("Reserved By Guest"));
         headers.append(tr("# reserved"));
-        headers.append(tr("Action"));
+        headers.append("");
         this->ui->tableReservationTableWidget->setHorizontalHeaderLabels(headers);
     }
     //

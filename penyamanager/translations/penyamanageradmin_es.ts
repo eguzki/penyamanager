@@ -170,53 +170,53 @@
         <translation>Buscar</translation>
     </message>
     <message>
-        <location filename="../admin/admininvoicelistview.ui" line="211"/>
+        <location filename="../admin/admininvoicelistview.ui" line="205"/>
         <source>From:</source>
         <translation>Desde:</translation>
     </message>
     <message>
-        <location filename="../admin/admininvoicelistview.ui" line="230"/>
-        <location filename="../admin/admininvoicelistview.ui" line="284"/>
+        <location filename="../admin/admininvoicelistview.ui" line="224"/>
+        <location filename="../admin/admininvoicelistview.ui" line="278"/>
         <source>10-10-2015</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../admin/admininvoicelistview.ui" line="265"/>
+        <location filename="../admin/admininvoicelistview.ui" line="259"/>
         <source>To:</source>
         <translation>Hasta:</translation>
     </message>
     <message>
-        <location filename="../admin/admininvoicelistview.ui" line="307"/>
+        <location filename="../admin/admininvoicelistview.ui" line="301"/>
         <source>Total Invoices:</source>
         <translation>Total recibos:</translation>
     </message>
     <message>
-        <location filename="../admin/admininvoicelistview.ui" line="326"/>
+        <location filename="../admin/admininvoicelistview.ui" line="320"/>
         <source>0</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../admin/admininvoicelistview.ui" line="333"/>
+        <location filename="../admin/admininvoicelistview.ui" line="327"/>
         <source>Total:</source>
         <translation>Total:</translation>
     </message>
     <message>
-        <location filename="../admin/admininvoicelistview.ui" line="352"/>
+        <location filename="../admin/admininvoicelistview.ui" line="346"/>
         <source>0 €</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../admin/admininvoicelistview.ui" line="359"/>
+        <location filename="../admin/admininvoicelistview.ui" line="353"/>
         <source>&lt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../admin/admininvoicelistview.ui" line="366"/>
+        <location filename="../admin/admininvoicelistview.ui" line="360"/>
         <source>page X out of Y</source>
         <translation>página X de Y</translation>
     </message>
     <message>
-        <location filename="../admin/admininvoicelistview.ui" line="373"/>
+        <location filename="../admin/admininvoicelistview.ui" line="367"/>
         <source>&gt;</source>
         <translation></translation>
     </message>
@@ -289,7 +289,7 @@
     <message>
         <location filename="../admin/adminmainwindow.ui" line="109"/>
         <source>Member management</source>
-        <translation>Administración socio</translation>
+        <translation>Administración socios</translation>
     </message>
     <message>
         <location filename="../admin/adminmainwindow.ui" line="114"/>
@@ -405,34 +405,34 @@
         <translation>Creado:</translation>
     </message>
     <message>
-        <location filename="../admin/adminnewprovider.ui" line="151"/>
+        <location filename="../admin/adminnewprovider.ui" line="157"/>
         <source>Name:</source>
         <translation>Nombre:</translation>
     </message>
     <message>
-        <location filename="../admin/adminnewprovider.ui" line="180"/>
+        <location filename="../admin/adminnewprovider.ui" line="192"/>
         <source>Phone:</source>
         <translation>Teléfono:</translation>
     </message>
     <message>
-        <location filename="../admin/adminnewprovider.ui" line="206"/>
+        <location filename="../admin/adminnewprovider.ui" line="218"/>
         <source>Image</source>
         <translation>Imagen</translation>
     </message>
     <message>
-        <location filename="../admin/adminnewprovider.ui" line="212"/>
+        <location filename="../admin/adminnewprovider.ui" line="247"/>
         <source>Open</source>
         <translation>Abrir</translation>
     </message>
     <message>
-        <location filename="../admin/adminnewprovider.ui" line="248"/>
+        <location filename="../admin/adminnewprovider.ui" line="282"/>
         <source>Notes</source>
         <translation>Notas:</translation>
     </message>
     <message>
         <location filename="../admin/adminnewprovider.ui" line="124"/>
         <location filename="../admin/adminnewprovider.ui" line="138"/>
-        <location filename="../admin/adminnewprovider.ui" line="232"/>
+        <location filename="../admin/adminnewprovider.ui" line="224"/>
         <source>TextLabel</source>
         <translation></translation>
     </message>
@@ -455,42 +455,42 @@
         <translation>Guardar</translation>
     </message>
     <message>
-        <location filename="../admin/adminproductitem.ui" line="104"/>
+        <location filename="../admin/adminproductitem.ui" line="110"/>
         <source>Name:</source>
         <translation>Nombre:</translation>
     </message>
     <message>
-        <location filename="../admin/adminproductitem.ui" line="130"/>
+        <location filename="../admin/adminproductitem.ui" line="136"/>
         <source>Image</source>
         <translation>Imagen</translation>
     </message>
     <message>
-        <location filename="../admin/adminproductitem.ui" line="136"/>
+        <location filename="../admin/adminproductitem.ui" line="142"/>
         <source>Open</source>
         <translation>Abrir</translation>
     </message>
     <message>
-        <location filename="../admin/adminproductitem.ui" line="156"/>
+        <location filename="../admin/adminproductitem.ui" line="162"/>
         <source>TextLabel</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../admin/adminproductitem.ui" line="169"/>
+        <location filename="../admin/adminproductitem.ui" line="175"/>
         <source>Active</source>
         <translation>Activo</translation>
     </message>
     <message>
-        <location filename="../admin/adminproductitem.ui" line="195"/>
+        <location filename="../admin/adminproductitem.ui" line="207"/>
         <source>Price:</source>
         <translation>Precio:</translation>
     </message>
     <message>
-        <location filename="../admin/adminproductitem.ui" line="221"/>
+        <location filename="../admin/adminproductitem.ui" line="246"/>
         <source>Provider</source>
         <translation>Proveedor</translation>
     </message>
     <message>
-        <location filename="../admin/adminproductitem.ui" line="246"/>
+        <location filename="../admin/adminproductitem.ui" line="278"/>
         <source>Family</source>
         <translation>Familia</translation>
     </message>
@@ -547,19 +547,6 @@
         <location filename="../admin/familyitemmanagementwindow.ui" line="106"/>
         <source>edit Family</source>
         <translation>Editar familia</translation>
-    </message>
-</context>
-<context>
-    <name>FamilyItemWidget</name>
-    <message>
-        <location filename="../commons/familyitemwidget.ui" line="26"/>
-        <source>Form</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../commons/familyitemwidget.ui" line="72"/>
-        <source>TextLabel</source>
-        <translation></translation>
     </message>
 </context>
 <context>
@@ -658,7 +645,7 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../admin/memberlistview.ui" line="227"/>
+        <location filename="../admin/memberlistview.ui" line="237"/>
         <source>&gt;</source>
         <translation></translation>
     </message>
@@ -671,12 +658,12 @@
         <translation>Vista socio</translation>
     </message>
     <message>
-        <location filename="../admin/memberview.ui" line="1141"/>
+        <location filename="../admin/memberview.ui" line="1201"/>
         <source>change password</source>
         <translation>Cambiar contraseña</translation>
     </message>
     <message>
-        <location filename="../admin/memberview.ui" line="1177"/>
+        <location filename="../admin/memberview.ui" line="1208"/>
         <source>Save</source>
         <translation>Guardar</translation>
     </message>
@@ -721,19 +708,19 @@
         <translation>Nombre:</translation>
     </message>
     <message>
-        <location filename="../admin/memberview.ui" line="1092"/>
+        <location filename="../admin/memberview.ui" line="1152"/>
         <source>Active</source>
         <translation>Activo</translation>
     </message>
     <message>
-        <location filename="../admin/memberview.ui" line="1151"/>
+        <location filename="../admin/memberview.ui" line="1087"/>
         <source>Admin</source>
         <translation>Administrador</translation>
     </message>
     <message>
-        <location filename="../admin/memberview.ui" line="436"/>
+        <location filename="../admin/memberview.ui" line="546"/>
         <source>Bank Account:</source>
-        <translation>Número cuenta:</translation>
+        <translation>N. cuenta:</translation>
     </message>
     <message>
         <location filename="../admin/memberview.ui" line="359"/>
@@ -746,72 +733,72 @@
         <translation>Apellido 2:</translation>
     </message>
     <message>
-        <location filename="../admin/memberview.ui" line="496"/>
+        <location filename="../admin/memberview.ui" line="483"/>
         <source>BirthDate:</source>
-        <translation>Fecha nacimiento:</translation>
+        <translation>Fecha. nac.:</translation>
     </message>
     <message>
-        <location filename="../admin/memberview.ui" line="503"/>
+        <location filename="../admin/memberview.ui" line="499"/>
         <source>dd/MM/yyyy</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../admin/memberview.ui" line="550"/>
+        <location filename="../admin/memberview.ui" line="914"/>
         <source>Email:</source>
         <translation>eMail:</translation>
     </message>
     <message>
-        <location filename="../admin/memberview.ui" line="610"/>
+        <location filename="../admin/memberview.ui" line="606"/>
         <source>Address:</source>
         <translation>Dirección:</translation>
     </message>
     <message>
-        <location filename="../admin/memberview.ui" line="670"/>
+        <location filename="../admin/memberview.ui" line="666"/>
         <source>Zip Code:</source>
         <translation>C.P:</translation>
     </message>
     <message>
-        <location filename="../admin/memberview.ui" line="717"/>
+        <location filename="../admin/memberview.ui" line="713"/>
         <source>Town:</source>
         <translation>Ciudad:</translation>
     </message>
     <message>
-        <location filename="../admin/memberview.ui" line="777"/>
+        <location filename="../admin/memberview.ui" line="773"/>
         <source>State:</source>
         <translation>Provincia:</translation>
     </message>
     <message>
-        <location filename="../admin/memberview.ui" line="824"/>
+        <location filename="../admin/memberview.ui" line="820"/>
         <source>Phone:</source>
-        <translation>Teléfono móvil:</translation>
+        <translation>Tfno. móvil:</translation>
     </message>
     <message>
-        <location filename="../admin/memberview.ui" line="871"/>
+        <location filename="../admin/memberview.ui" line="867"/>
         <source>Phone2:</source>
-        <translation>Teléfono fijo:</translation>
+        <translation>Tfno fijo:</translation>
     </message>
     <message>
-        <location filename="../admin/memberview.ui" line="912"/>
+        <location filename="../admin/memberview.ui" line="436"/>
         <source>Card ID</source>
         <translation>DNI:</translation>
     </message>
     <message>
-        <location filename="../admin/memberview.ui" line="953"/>
+        <location filename="../admin/memberview.ui" line="974"/>
         <source>Card Number</source>
         <translation>Nº Tarjeta:</translation>
     </message>
     <message>
-        <location filename="../admin/memberview.ui" line="994"/>
+        <location filename="../admin/memberview.ui" line="1021"/>
         <source>Member Type</source>
         <translation>Tipo. Socio</translation>
     </message>
     <message>
-        <location filename="../admin/memberview.ui" line="1118"/>
+        <location filename="../admin/memberview.ui" line="1178"/>
         <source>Postal Send</source>
         <translation>Envío postal</translation>
     </message>
     <message>
-        <location filename="../admin/memberview.ui" line="1053"/>
+        <location filename="../admin/memberview.ui" line="1113"/>
         <source>Notes:</source>
         <translation>Notas:</translation>
     </message>
@@ -829,17 +816,17 @@
         <translation>Guardar</translation>
     </message>
     <message>
-        <location filename="../admin/newproviderinvoiceview.ui" line="107"/>
+        <location filename="../admin/newproviderinvoiceview.ui" line="113"/>
         <source>InvoiceID:</source>
         <translation>Id Recibo:</translation>
     </message>
     <message>
-        <location filename="../admin/newproviderinvoiceview.ui" line="136"/>
+        <location filename="../admin/newproviderinvoiceview.ui" line="148"/>
         <source>Total</source>
         <translation>Total</translation>
     </message>
     <message>
-        <location filename="../admin/newproviderinvoiceview.ui" line="166"/>
+        <location filename="../admin/newproviderinvoiceview.ui" line="178"/>
         <source>Provider</source>
         <translation>Proveedor</translation>
     </message>
@@ -852,62 +839,62 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../commons/numitemdialog.ui" line="133"/>
+        <location filename="../commons/numitemdialog.ui" line="136"/>
         <source>8</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../commons/numitemdialog.ui" line="146"/>
+        <location filename="../commons/numitemdialog.ui" line="152"/>
         <source>1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../commons/numitemdialog.ui" line="159"/>
+        <location filename="../commons/numitemdialog.ui" line="168"/>
         <source>2</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../commons/numitemdialog.ui" line="172"/>
+        <location filename="../commons/numitemdialog.ui" line="184"/>
         <source>3</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../commons/numitemdialog.ui" line="185"/>
+        <location filename="../commons/numitemdialog.ui" line="200"/>
         <source>4</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../commons/numitemdialog.ui" line="198"/>
+        <location filename="../commons/numitemdialog.ui" line="216"/>
         <source>5</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../commons/numitemdialog.ui" line="211"/>
+        <location filename="../commons/numitemdialog.ui" line="232"/>
         <source>6</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../commons/numitemdialog.ui" line="224"/>
+        <location filename="../commons/numitemdialog.ui" line="248"/>
         <source>9</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../commons/numitemdialog.ui" line="237"/>
+        <location filename="../commons/numitemdialog.ui" line="264"/>
         <source>7</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../commons/numitemdialog.ui" line="250"/>
+        <location filename="../commons/numitemdialog.ui" line="280"/>
         <source>C</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../commons/numitemdialog.ui" line="263"/>
+        <location filename="../commons/numitemdialog.ui" line="296"/>
         <source>Ok</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../commons/numitemdialog.ui" line="276"/>
+        <location filename="../commons/numitemdialog.ui" line="312"/>
         <source>0</source>
         <translation></translation>
     </message>
@@ -2044,8 +2031,8 @@
     </message>
     <message>
         <location filename="../admin/providerinvoicelistview.cpp" line="43"/>
-        <source>provider ID</source>
-        <translation>Id Proveedor</translation>
+        <source>Provider</source>
+        <translation>Proveedor</translation>
     </message>
     <message>
         <location filename="../admin/providerinvoicelistview.cpp" line="101"/>
@@ -2366,14 +2353,6 @@
     </message>
 </context>
 <context>
-    <name>ProductItemWidget</name>
-    <message>
-        <location filename="../commons/productitemwidget.ui" line="56"/>
-        <source>TextLabel</source>
-        <translation></translation>
-    </message>
-</context>
-<context>
     <name>ProviderInvoiceListView</name>
     <message>
         <location filename="../admin/providerinvoicelistview.ui" line="14"/>
@@ -2386,54 +2365,54 @@
         <translation>Lista albaranes de proveedores</translation>
     </message>
     <message>
-        <location filename="../admin/providerinvoicelistview.ui" line="154"/>
+        <location filename="../admin/providerinvoicelistview.ui" line="161"/>
         <source>Search</source>
         <translation>Buscar</translation>
     </message>
     <message>
-        <location filename="../admin/providerinvoicelistview.ui" line="176"/>
+        <location filename="../admin/providerinvoicelistview.ui" line="183"/>
         <source>From:</source>
         <translation>Desde:</translation>
     </message>
     <message>
-        <location filename="../admin/providerinvoicelistview.ui" line="195"/>
-        <location filename="../admin/providerinvoicelistview.ui" line="221"/>
+        <location filename="../admin/providerinvoicelistview.ui" line="202"/>
+        <location filename="../admin/providerinvoicelistview.ui" line="228"/>
         <source>10-10-2015</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../admin/providerinvoicelistview.ui" line="202"/>
+        <location filename="../admin/providerinvoicelistview.ui" line="209"/>
         <source>To:</source>
         <translation>Hasta:</translation>
     </message>
     <message>
-        <location filename="../admin/providerinvoicelistview.ui" line="228"/>
+        <location filename="../admin/providerinvoicelistview.ui" line="235"/>
         <source>Total Invoices:</source>
         <translation>Total recibos:</translation>
     </message>
     <message>
-        <location filename="../admin/providerinvoicelistview.ui" line="247"/>
-        <location filename="../admin/providerinvoicelistview.ui" line="273"/>
+        <location filename="../admin/providerinvoicelistview.ui" line="254"/>
+        <location filename="../admin/providerinvoicelistview.ui" line="280"/>
         <source>0</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../admin/providerinvoicelistview.ui" line="254"/>
+        <location filename="../admin/providerinvoicelistview.ui" line="261"/>
         <source>Total:</source>
         <translation>Total:</translation>
     </message>
     <message>
-        <location filename="../admin/providerinvoicelistview.ui" line="293"/>
+        <location filename="../admin/providerinvoicelistview.ui" line="300"/>
         <source>&lt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../admin/providerinvoicelistview.ui" line="300"/>
+        <location filename="../admin/providerinvoicelistview.ui" line="307"/>
         <source>page X out of Y</source>
         <translation>página X de Y</translation>
     </message>
     <message>
-        <location filename="../admin/providerinvoicelistview.ui" line="307"/>
+        <location filename="../admin/providerinvoicelistview.ui" line="314"/>
         <source>&gt;</source>
         <translation></translation>
     </message>
@@ -2482,18 +2461,18 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../adminmain.cpp" line="27"/>
-        <location filename="../adminmain.cpp" line="39"/>
+        <location filename="../adminmain.cpp" line="28"/>
+        <location filename="../adminmain.cpp" line="40"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../adminmain.cpp" line="27"/>
+        <location filename="../adminmain.cpp" line="28"/>
         <source>Settings file not found. Call the stupid administrator and complain for incompetence</source>
         <translation>No se ha encontrado el archivo de configuración. Ponte en contacto con el administrador</translation>
     </message>
     <message>
-        <location filename="../adminmain.cpp" line="39"/>
+        <location filename="../adminmain.cpp" line="40"/>
         <source>Database connection failed. Call the stupid administrator and complain for incompetence</source>
         <translation>Errorr en la conexión con la Base de Datos. Ponte en contacto con el administrador</translation>
     </message>
@@ -2520,7 +2499,7 @@
     <message>
         <location filename="../objs/ReservationItem.cpp" line="21"/>
         <source>fireplace</source>
-        <translation>Fuego</translation>
+        <translation>asador</translation>
     </message>
     <message>
         <location filename="../objs/Member.cpp" line="46"/>

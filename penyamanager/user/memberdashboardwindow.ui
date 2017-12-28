@@ -602,7 +602,7 @@ qproperty-iconSize: 120px 120px;
             <item>
              <widget class="QLabel" name="totalDisplayLabel">
               <property name="text">
-               <string>TextLabel</string>
+               <string notr="true">TextLabel</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
