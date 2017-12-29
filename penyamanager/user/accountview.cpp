@@ -34,6 +34,8 @@ namespace PenyaManager {
         }
 
         initializeTable();
+        this->ui->fromCalendarWidget->setLocale(Singletons::m_pTranslationManager->getLocale());
+        this->ui->toCalendarWidget->setLocale(Singletons::m_pTranslationManager->getLocale());
     }
     //
     AccountView::~AccountView()
@@ -104,7 +106,10 @@ namespace PenyaManager {
     void AccountView::retranslate()
     {
         this->ui->retranslateUi(this);
+        this->m_pMemberProfileGroupBox->retranslate();
         translateTable();
+        this->ui->fromCalendarWidget->setLocale(Singletons::m_pTranslationManager->getLocale());
+        this->ui->toCalendarWidget->setLocale(Singletons::m_pTranslationManager->getLocale());
     }
     //
     void AccountView::translateTable()

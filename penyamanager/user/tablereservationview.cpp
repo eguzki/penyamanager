@@ -55,6 +55,7 @@ namespace PenyaManager {
     void TableReservationView::retranslate()
     {
         this->ui->retranslateUi(this);
+        this->m_pMemberProfileGroupBox->retranslate();
         translateTable();
         this->ui->calendarWidget->setLocale(Singletons::m_pTranslationManager->getLocale());
     }

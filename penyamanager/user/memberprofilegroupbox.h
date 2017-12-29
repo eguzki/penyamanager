@@ -23,6 +23,8 @@ namespace PenyaManager {
             ~MemberProfileGroupBox();
             //
             void init(const MemberPtr &member);
+            //
+            void retranslate();
 
         private:
             //

@@ -69,6 +69,7 @@ namespace PenyaManager {
     void DepositWindow::retranslate()
     {
         this->ui->retranslateUi(this);
+        this->m_pMemberProfileGroupBox->retranslate();
     }
     //
     void DepositWindow::on_confirmButton_clicked()

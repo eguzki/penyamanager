@@ -36,4 +36,9 @@ namespace PenyaManager {
         this->ui->memberUsernameValueLabel->setText(QString::number(pMemberPtr->m_username));
         this->ui->memberAccountValueLabel->setText(QString("%1 €").arg(pMemberPtr->m_balance, 0, 'f', 2));
     }
+    //
+    void MemberProfileGroupBox::retranslate()
+    {
+        this->ui->retranslateUi(this);
+    }
 }

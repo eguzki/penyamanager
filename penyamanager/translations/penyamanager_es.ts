@@ -201,34 +201,34 @@
 <context>
     <name>PenyaManager::AccountView</name>
     <message>
-        <location filename="../user/accountview.cpp" line="114"/>
+        <location filename="../user/accountview.cpp" line="119"/>
         <source>Date</source>
         <translation>Fecha</translation>
     </message>
     <message>
-        <location filename="../user/accountview.cpp" line="65"/>
-        <location filename="../user/accountview.cpp" line="182"/>
-        <location filename="../user/accountview.cpp" line="188"/>
+        <location filename="../user/accountview.cpp" line="67"/>
+        <location filename="../user/accountview.cpp" line="187"/>
+        <location filename="../user/accountview.cpp" line="193"/>
         <source>Database error. Contact administrator</source>
         <translation>Error de base de datos. Contacta con el administrador.</translation>
     </message>
     <message>
-        <location filename="../user/accountview.cpp" line="115"/>
+        <location filename="../user/accountview.cpp" line="120"/>
         <source>Amount</source>
         <translation>Importe</translation>
     </message>
     <message>
-        <location filename="../user/accountview.cpp" line="116"/>
+        <location filename="../user/accountview.cpp" line="121"/>
         <source>Balance</source>
         <translation>Saldo</translation>
     </message>
     <message>
-        <location filename="../user/accountview.cpp" line="117"/>
+        <location filename="../user/accountview.cpp" line="122"/>
         <source>Type</source>
         <translation>Tipo</translation>
     </message>
     <message>
-        <location filename="../user/accountview.cpp" line="151"/>
+        <location filename="../user/accountview.cpp" line="156"/>
         <source>&apos;From&apos; date must be before &apos;To&apos; date</source>
         <translation>La fecha &quot;desde&quot; tiene que ser anterior a la fecha &quot;hasta&quot;</translation>
     </message>
@@ -237,49 +237,49 @@
     <name>PenyaManager::DepositWindow</name>
     <message>
         <location filename="../user/depositwindow.cpp" line="48"/>
-        <location filename="../user/depositwindow.cpp" line="92"/>
-        <location filename="../user/depositwindow.cpp" line="98"/>
-        <location filename="../user/depositwindow.cpp" line="108"/>
+        <location filename="../user/depositwindow.cpp" line="93"/>
+        <location filename="../user/depositwindow.cpp" line="99"/>
+        <location filename="../user/depositwindow.cpp" line="109"/>
         <source>Database error. Contact administrator</source>
         <translation>Error de base de datos. Contacta con el administrador.</translation>
     </message>
     <message>
-        <location filename="../user/depositwindow.cpp" line="77"/>
+        <location filename="../user/depositwindow.cpp" line="78"/>
         <source>Deposit not valid</source>
         <translation>Importe no válido</translation>
     </message>
     <message>
-        <location filename="../user/depositwindow.cpp" line="81"/>
+        <location filename="../user/depositwindow.cpp" line="82"/>
         <source>Create deposit for %1 €?</source>
         <translation>Crear ingreso de %1 €?</translation>
     </message>
     <message>
-        <location filename="../user/depositwindow.cpp" line="115"/>
+        <location filename="../user/depositwindow.cpp" line="116"/>
         <source>Deposit for %1 € created sucessfully</source>
         <translation>Ingreso de %1 € creado correctamente</translation>
     </message>
     <message>
-        <location filename="../user/depositwindow.cpp" line="207"/>
+        <location filename="../user/depositwindow.cpp" line="208"/>
         <source>Deposit Id</source>
         <translation>Id ingreso</translation>
     </message>
     <message>
-        <location filename="../user/depositwindow.cpp" line="208"/>
+        <location filename="../user/depositwindow.cpp" line="209"/>
         <source>Member Id</source>
         <translation>Id socio</translation>
     </message>
     <message>
-        <location filename="../user/depositwindow.cpp" line="209"/>
+        <location filename="../user/depositwindow.cpp" line="210"/>
         <source>Member Name</source>
         <translation>Nombre socio</translation>
     </message>
     <message>
-        <location filename="../user/depositwindow.cpp" line="210"/>
+        <location filename="../user/depositwindow.cpp" line="211"/>
         <source>Date</source>
         <translation>Fecha</translation>
     </message>
     <message>
-        <location filename="../user/depositwindow.cpp" line="211"/>
+        <location filename="../user/depositwindow.cpp" line="212"/>
         <source>Deposit Total</source>
         <translation>Total ingreso</translation>
     </message>
@@ -311,43 +311,43 @@
         <location filename="../user/invoicedetailswindow.cpp" line="86"/>
         <location filename="../user/invoicedetailswindow.cpp" line="101"/>
         <location filename="../user/invoicedetailswindow.cpp" line="106"/>
-        <location filename="../user/invoicedetailswindow.cpp" line="172"/>
-        <location filename="../user/invoicedetailswindow.cpp" line="184"/>
+        <location filename="../user/invoicedetailswindow.cpp" line="173"/>
+        <location filename="../user/invoicedetailswindow.cpp" line="185"/>
         <source>Database error. Contact administrator</source>
         <translation>Error de base de datos. Contacta con el administrador.</translation>
     </message>
     <message>
-        <location filename="../user/invoicedetailswindow.cpp" line="190"/>
+        <location filename="../user/invoicedetailswindow.cpp" line="191"/>
         <source>Invoice</source>
         <translation>Recibo</translation>
     </message>
     <message>
-        <location filename="../user/invoicedetailswindow.cpp" line="191"/>
+        <location filename="../user/invoicedetailswindow.cpp" line="192"/>
         <source>Member Id</source>
         <translation>Id socio</translation>
     </message>
     <message>
-        <location filename="../user/invoicedetailswindow.cpp" line="192"/>
+        <location filename="../user/invoicedetailswindow.cpp" line="193"/>
         <source>Product</source>
         <translation>Producto</translation>
     </message>
     <message>
-        <location filename="../user/invoicedetailswindow.cpp" line="193"/>
+        <location filename="../user/invoicedetailswindow.cpp" line="194"/>
         <source>Count</source>
         <translation>Cantidad</translation>
     </message>
     <message>
-        <location filename="../user/invoicedetailswindow.cpp" line="194"/>
+        <location filename="../user/invoicedetailswindow.cpp" line="195"/>
         <source>Total</source>
         <translation>Total</translation>
     </message>
     <message>
-        <location filename="../user/invoicedetailswindow.cpp" line="195"/>
+        <location filename="../user/invoicedetailswindow.cpp" line="196"/>
         <source>Invoice Total</source>
         <translation>Total sobre</translation>
     </message>
     <message>
-        <location filename="../user/invoicedetailswindow.cpp" line="219"/>
+        <location filename="../user/invoicedetailswindow.cpp" line="220"/>
         <source>Invoice sent to printer</source>
         <translation>Recibo imprimido</translation>
     </message>
@@ -355,24 +355,24 @@
 <context>
     <name>PenyaManager::InvoiceListWindow</name>
     <message>
-        <location filename="../user/invoicelistwindow.cpp" line="61"/>
-        <location filename="../user/invoicelistwindow.cpp" line="137"/>
+        <location filename="../user/invoicelistwindow.cpp" line="63"/>
         <location filename="../user/invoicelistwindow.cpp" line="142"/>
+        <location filename="../user/invoicelistwindow.cpp" line="147"/>
         <source>Database error. Contact administrator</source>
         <translation>Error de base de datos. Contacta con el administrador.</translation>
     </message>
     <message>
-        <location filename="../user/invoicelistwindow.cpp" line="110"/>
+        <location filename="../user/invoicelistwindow.cpp" line="115"/>
         <source>Date</source>
         <translation>fecha</translation>
     </message>
     <message>
-        <location filename="../user/invoicelistwindow.cpp" line="111"/>
+        <location filename="../user/invoicelistwindow.cpp" line="116"/>
         <source>Total</source>
         <translation>total</translation>
     </message>
     <message>
-        <location filename="../user/invoicelistwindow.cpp" line="248"/>
+        <location filename="../user/invoicelistwindow.cpp" line="253"/>
         <source>&apos;From&apos; date must be before &apos;To&apos; date</source>
         <translation>La fecha &quot;desde&quot; tiene que ser anterior a la fecha &quot;hasta&quot;</translation>
     </message>
@@ -383,75 +383,75 @@
         <location filename="../user/invoicewindow.cpp" line="47"/>
         <location filename="../user/invoicewindow.cpp" line="66"/>
         <location filename="../user/invoicewindow.cpp" line="72"/>
-        <location filename="../user/invoicewindow.cpp" line="105"/>
-        <location filename="../user/invoicewindow.cpp" line="111"/>
-        <location filename="../user/invoicewindow.cpp" line="120"/>
-        <location filename="../user/invoicewindow.cpp" line="139"/>
-        <location filename="../user/invoicewindow.cpp" line="144"/>
-        <location filename="../user/invoicewindow.cpp" line="198"/>
-        <location filename="../user/invoicewindow.cpp" line="251"/>
-        <location filename="../user/invoicewindow.cpp" line="271"/>
+        <location filename="../user/invoicewindow.cpp" line="106"/>
+        <location filename="../user/invoicewindow.cpp" line="112"/>
+        <location filename="../user/invoicewindow.cpp" line="121"/>
+        <location filename="../user/invoicewindow.cpp" line="140"/>
+        <location filename="../user/invoicewindow.cpp" line="145"/>
+        <location filename="../user/invoicewindow.cpp" line="199"/>
+        <location filename="../user/invoicewindow.cpp" line="252"/>
+        <location filename="../user/invoicewindow.cpp" line="272"/>
         <source>Database error. Contact administrator</source>
         <translation>Error de base de datos. Contacta con el administrador.</translation>
     </message>
     <message>
-        <location filename="../user/invoicewindow.cpp" line="89"/>
+        <location filename="../user/invoicewindow.cpp" line="90"/>
         <source>article</source>
         <translation>artículo</translation>
     </message>
     <message>
-        <location filename="../user/invoicewindow.cpp" line="90"/>
+        <location filename="../user/invoicewindow.cpp" line="91"/>
         <source>price/u</source>
         <translation>precio</translation>
     </message>
     <message>
-        <location filename="../user/invoicewindow.cpp" line="91"/>
+        <location filename="../user/invoicewindow.cpp" line="92"/>
         <source>count</source>
         <translation>cant.</translation>
     </message>
     <message>
-        <location filename="../user/invoicewindow.cpp" line="92"/>
+        <location filename="../user/invoicewindow.cpp" line="93"/>
         <source>total</source>
         <translation>total</translation>
     </message>
     <message>
-        <location filename="../user/invoicewindow.cpp" line="204"/>
+        <location filename="../user/invoicewindow.cpp" line="205"/>
         <source>Invoice</source>
         <translation>Recibo</translation>
     </message>
     <message>
-        <location filename="../user/invoicewindow.cpp" line="205"/>
+        <location filename="../user/invoicewindow.cpp" line="206"/>
         <source>Member Id</source>
         <translation>Id socio</translation>
     </message>
     <message>
-        <location filename="../user/invoicewindow.cpp" line="206"/>
+        <location filename="../user/invoicewindow.cpp" line="207"/>
         <source>Product</source>
         <translation>Producto</translation>
     </message>
     <message>
-        <location filename="../user/invoicewindow.cpp" line="207"/>
+        <location filename="../user/invoicewindow.cpp" line="208"/>
         <source>Count</source>
         <translation>Cant.</translation>
     </message>
     <message>
-        <location filename="../user/invoicewindow.cpp" line="208"/>
+        <location filename="../user/invoicewindow.cpp" line="209"/>
         <source>Total</source>
         <translation>Total</translation>
     </message>
     <message>
-        <location filename="../user/invoicewindow.cpp" line="209"/>
+        <location filename="../user/invoicewindow.cpp" line="210"/>
         <source>Invoice Total</source>
         <translation>Total sobre</translation>
     </message>
     <message>
-        <location filename="../user/invoicewindow.cpp" line="240"/>
+        <location filename="../user/invoicewindow.cpp" line="241"/>
         <source>Invoice sent to printer</source>
         <translation>Recibo imprimido</translation>
     </message>
     <message>
-        <location filename="../user/invoicewindow.cpp" line="255"/>
-        <location filename="../user/invoicewindow.cpp" line="275"/>
+        <location filename="../user/invoicewindow.cpp" line="256"/>
+        <location filename="../user/invoicewindow.cpp" line="276"/>
         <source>Unexpected error. Contact administrator</source>
         <translation>Error no esperado. Contacta con el administrador.</translation>
     </message>
@@ -568,22 +568,22 @@
         <location filename="../user/memberdashboardwindow.cpp" line="69"/>
         <location filename="../user/memberdashboardwindow.cpp" line="89"/>
         <location filename="../user/memberdashboardwindow.cpp" line="102"/>
-        <location filename="../user/memberdashboardwindow.cpp" line="184"/>
-        <location filename="../user/memberdashboardwindow.cpp" line="217"/>
-        <location filename="../user/memberdashboardwindow.cpp" line="222"/>
-        <location filename="../user/memberdashboardwindow.cpp" line="302"/>
-        <location filename="../user/memberdashboardwindow.cpp" line="341"/>
-        <location filename="../user/memberdashboardwindow.cpp" line="359"/>
-        <location filename="../user/memberdashboardwindow.cpp" line="372"/>
-        <location filename="../user/memberdashboardwindow.cpp" line="411"/>
-        <location filename="../user/memberdashboardwindow.cpp" line="418"/>
-        <location filename="../user/memberdashboardwindow.cpp" line="427"/>
-        <location filename="../user/memberdashboardwindow.cpp" line="444"/>
-        <location filename="../user/memberdashboardwindow.cpp" line="451"/>
-        <location filename="../user/memberdashboardwindow.cpp" line="463"/>
-        <location filename="../user/memberdashboardwindow.cpp" line="469"/>
-        <location filename="../user/memberdashboardwindow.cpp" line="481"/>
-        <location filename="../user/memberdashboardwindow.cpp" line="493"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="185"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="218"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="223"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="303"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="342"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="360"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="373"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="412"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="419"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="428"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="445"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="452"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="464"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="470"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="482"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="494"/>
         <source>Database error. Contact administrator</source>
         <translation>Error de base de datos. Contacta con el administrador.</translation>
     </message>
@@ -593,23 +593,23 @@
         <translation>Balance negativo excedido (%1). Tu balance actual es de: %2</translation>
     </message>
     <message>
-        <location filename="../user/memberdashboardwindow.cpp" line="293"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="294"/>
         <source>Are you sure to reset invoice?</source>
         <translation>Estás seguro de borrar el sobre actual?</translation>
     </message>
     <message>
-        <location filename="../user/memberdashboardwindow.cpp" line="350"/>
-        <location filename="../user/memberdashboardwindow.cpp" line="401"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="351"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="402"/>
         <source>Number of items?</source>
         <translation>Cantidad?</translation>
     </message>
     <message>
-        <location filename="../user/memberdashboardwindow.cpp" line="455"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="456"/>
         <source>Delete %1 for %2 €?</source>
         <translation>Borrar %1 (%2 €)?</translation>
     </message>
     <message>
-        <location filename="../user/memberdashboardwindow.cpp" line="284"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="285"/>
         <source>Current invoice is empty</source>
         <translation>El recibo actual está vacío</translation>
     </message>
@@ -617,63 +617,63 @@
 <context>
     <name>PenyaManager::TableReservationView</name>
     <message>
-        <location filename="../user/tablereservationview.cpp" line="66"/>
+        <location filename="../user/tablereservationview.cpp" line="67"/>
         <source>Name</source>
         <translation>nombre</translation>
     </message>
     <message>
-        <location filename="../user/tablereservationview.cpp" line="67"/>
+        <location filename="../user/tablereservationview.cpp" line="68"/>
         <source>Size</source>
         <translation>Tam.</translation>
     </message>
     <message>
-        <location filename="../user/tablereservationview.cpp" line="68"/>
+        <location filename="../user/tablereservationview.cpp" line="69"/>
         <source>Reserved By Guest</source>
         <translation>socio</translation>
     </message>
     <message>
-        <location filename="../user/tablereservationview.cpp" line="69"/>
+        <location filename="../user/tablereservationview.cpp" line="70"/>
         <source># reserved</source>
         <translation>cant.</translation>
     </message>
     <message>
-        <location filename="../user/tablereservationview.cpp" line="97"/>
-        <location filename="../user/tablereservationview.cpp" line="255"/>
-        <location filename="../user/tablereservationview.cpp" line="261"/>
-        <location filename="../user/tablereservationview.cpp" line="267"/>
-        <location filename="../user/tablereservationview.cpp" line="280"/>
-        <location filename="../user/tablereservationview.cpp" line="286"/>
-        <location filename="../user/tablereservationview.cpp" line="292"/>
-        <location filename="../user/tablereservationview.cpp" line="305"/>
-        <location filename="../user/tablereservationview.cpp" line="311"/>
-        <location filename="../user/tablereservationview.cpp" line="317"/>
-        <location filename="../user/tablereservationview.cpp" line="411"/>
-        <location filename="../user/tablereservationview.cpp" line="458"/>
+        <location filename="../user/tablereservationview.cpp" line="98"/>
+        <location filename="../user/tablereservationview.cpp" line="256"/>
+        <location filename="../user/tablereservationview.cpp" line="262"/>
+        <location filename="../user/tablereservationview.cpp" line="268"/>
+        <location filename="../user/tablereservationview.cpp" line="281"/>
+        <location filename="../user/tablereservationview.cpp" line="287"/>
+        <location filename="../user/tablereservationview.cpp" line="293"/>
+        <location filename="../user/tablereservationview.cpp" line="306"/>
+        <location filename="../user/tablereservationview.cpp" line="312"/>
+        <location filename="../user/tablereservationview.cpp" line="318"/>
+        <location filename="../user/tablereservationview.cpp" line="412"/>
+        <location filename="../user/tablereservationview.cpp" line="459"/>
         <source>Database error. Contact administrator</source>
         <translation>Error de base de datos. Contacta con el administrador.</translation>
     </message>
     <message>
-        <location filename="../user/tablereservationview.cpp" line="220"/>
+        <location filename="../user/tablereservationview.cpp" line="221"/>
         <source>Reserve</source>
         <translation>Reservar</translation>
     </message>
     <message>
-        <location filename="../user/tablereservationview.cpp" line="384"/>
+        <location filename="../user/tablereservationview.cpp" line="385"/>
         <source>Number of guests?</source>
         <translation>Comensales?</translation>
     </message>
     <message>
-        <location filename="../user/tablereservationview.cpp" line="417"/>
+        <location filename="../user/tablereservationview.cpp" line="418"/>
         <source>Reserved %1 at %2</source>
         <translation>Reservado %1 para %2</translation>
     </message>
     <message>
-        <location filename="../user/tablereservationview.cpp" line="464"/>
+        <location filename="../user/tablereservationview.cpp" line="465"/>
         <source>Cancelled %1 at %2</source>
         <translation>Cancelado %1 para %2</translation>
     </message>
     <message>
-        <location filename="../user/tablereservationview.cpp" line="237"/>
+        <location filename="../user/tablereservationview.cpp" line="238"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
@@ -734,12 +734,22 @@
 <context>
     <name>QWidget</name>
     <message>
-        <location filename="../commons/guiutils.cpp" line="208"/>
+        <location filename="../commons/guiutils.cpp" line="162"/>
+        <source>Yes</source>
+        <translation>Si</translation>
+    </message>
+    <message>
+        <location filename="../commons/guiutils.cpp" line="163"/>
+        <source>No</source>
+        <translation>No</translation>
+    </message>
+    <message>
+        <location filename="../commons/guiutils.cpp" line="211"/>
         <source>invoice ref: %1</source>
         <translation>ref de sobre %1</translation>
     </message>
     <message>
-        <location filename="../commons/guiutils.cpp" line="216"/>
+        <location filename="../commons/guiutils.cpp" line="219"/>
         <source>deposit ref: %1</source>
         <translation>Ref. deposito %1 :</translation>
     </message>

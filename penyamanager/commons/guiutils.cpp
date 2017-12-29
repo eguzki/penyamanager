@@ -158,6 +158,9 @@ namespace PenyaManager {
     QMessageBox::StandardButton GuiUtils::questionMessageBox(QWidget *parent, const QString &message)
     {
         QMessageBox qQuestionMessageBox(QMessageBox::Question, QString(), message, QMessageBox::Yes|QMessageBox::No, parent, Qt::FramelessWindowHint);
+        // The right way is not to manually translate those strings. Qt already includes translations.
+        qQuestionMessageBox.setButtonText(QMessageBox::Yes, QWidget::tr("Yes"));
+        qQuestionMessageBox.setButtonText(QMessageBox::No, QWidget::tr("No"));
         int res = qQuestionMessageBox.exec();
         return static_cast<QMessageBox::StandardButton>(res);
     }

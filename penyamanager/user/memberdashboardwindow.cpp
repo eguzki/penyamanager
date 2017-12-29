@@ -124,6 +124,7 @@ namespace PenyaManager {
     void MemberDashboardWindow::retranslate()
     {
         this->ui->retranslateUi(this);
+        this->m_pMemberProfileGroupBox->retranslate();
         translateTable();
     }
     //

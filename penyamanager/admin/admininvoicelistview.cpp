@@ -23,14 +23,40 @@ namespace PenyaManager {
 
         this->ui->fromCalendarWidget->setSelectedDate(fromIntialDate);
         this->ui->toCalendarWidget->setSelectedDate(toInitialDate);
+        this->ui->fromCalendarWidget->setLocale(Singletons::m_pTranslationManager->getLocale());
+        this->ui->toCalendarWidget->setLocale(Singletons::m_pTranslationManager->getLocale());
 
         this->ui->fromDateResultValueLabel->clear();
         this->ui->toDateResultValueLabel->clear();
+        initializeTable();
     }
     //
     AdminInvoiceListView::~AdminInvoiceListView()
     {
         delete ui;
+    }
+    //
+    void AdminInvoiceListView::initializeTable()
+    {
+        // table Header
+        // table
+        this->ui->invoicesTableWidget->setColumnCount(4);
+        translateTable();
+        Uint32 column = 0;
+        this->ui->invoicesTableWidget->setColumnWidth(column++, 100);
+        this->ui->invoicesTableWidget->setColumnWidth(column++, 300);
+        this->ui->invoicesTableWidget->setColumnWidth(column++, 200);
+        this->ui->invoicesTableWidget->setColumnWidth(column++, 100);
+    }
+    //
+    void AdminInvoiceListView::translateTable()
+    {
+        QStringList headers;
+        headers.append(tr("Ref#"));
+        headers.append(tr("Date"));
+        headers.append(tr("Total"));
+        headers.append(tr("Username"));
+        this->ui->invoicesTableWidget->setHorizontalHeaderLabels(headers);
     }
     //
     void AdminInvoiceListView::init()
@@ -43,6 +69,9 @@ namespace PenyaManager {
     void AdminInvoiceListView::retranslate()
     {
         this->ui->retranslateUi(this);
+        translateTable();
+        this->ui->fromCalendarWidget->setLocale(Singletons::m_pTranslationManager->getLocale());
+        this->ui->toCalendarWidget->setLocale(Singletons::m_pTranslationManager->getLocale());
     }
     //
     void AdminInvoiceListView::on_clearPushButton_clicked()
@@ -141,20 +170,6 @@ namespace PenyaManager {
     //
     void AdminInvoiceListView::fillInvoiceList(InvoiceListPtr pInvoiceListPtr)
     {
-        // table
-        this->ui->invoicesTableWidget->setColumnCount(4);
-
-        // invoice table Header
-        QStringList headers;
-        headers.append(tr("Ref#"));
-        headers.append(tr("Date"));
-        headers.append(tr("Total"));
-        headers.append(tr("Username"));
-        this->ui->invoicesTableWidget->setHorizontalHeaderLabels(headers);
-        this->ui->invoicesTableWidget->setColumnWidth(0, 100);
-        this->ui->invoicesTableWidget->setColumnWidth(1, 300);
-        this->ui->invoicesTableWidget->setColumnWidth(2, 200);
-        this->ui->invoicesTableWidget->setColumnWidth(3, 100);
         // invoice table reset
         this->ui->invoicesTableWidget->clearContents();
         // internal data structure reset

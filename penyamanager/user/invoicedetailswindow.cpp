@@ -157,6 +157,7 @@ namespace PenyaManager {
     void InvoiceDetailsWindow::retranslate()
     {
         this->ui->retranslateUi(this);
+        this->m_pMemberProfileGroupBox->retranslate();
         translateTable();
     }
     //

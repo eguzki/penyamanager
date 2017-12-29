@@ -252,122 +252,122 @@
         <translation>Penyamanager Admin</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="51"/>
+        <location filename="../admin/adminmainwindow.ui" line="54"/>
         <source>Members</source>
         <translation>Bazkideak</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="59"/>
+        <location filename="../admin/adminmainwindow.ui" line="62"/>
         <source>Invoices</source>
         <translation>Ordainagiriak</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="65"/>
+        <location filename="../admin/adminmainwindow.ui" line="68"/>
         <source>Items</source>
         <translation>Produktuak</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="73"/>
+        <location filename="../admin/adminmainwindow.ui" line="76"/>
         <source>Account</source>
         <translation>Kontua</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="80"/>
+        <location filename="../admin/adminmainwindow.ui" line="83"/>
         <source>Main</source>
         <translation>Fitxategia</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="86"/>
+        <location filename="../admin/adminmainwindow.ui" line="89"/>
         <source>Providers</source>
         <translation>Hornitzaileak</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="94"/>
+        <location filename="../admin/adminmainwindow.ui" line="97"/>
         <source>Reservations</source>
         <translation>Erreserbak</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="109"/>
+        <location filename="../admin/adminmainwindow.ui" line="112"/>
         <source>Member management</source>
         <translation>Bazkideen kudeaketa</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="114"/>
+        <location filename="../admin/adminmainwindow.ui" line="117"/>
         <source>New member</source>
         <translation>Bazkide berria</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="119"/>
+        <location filename="../admin/adminmainwindow.ui" line="122"/>
         <source>Invoice list</source>
         <translation>Ordainagirien zerrenda</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="124"/>
+        <location filename="../admin/adminmainwindow.ui" line="127"/>
         <source>Export</source>
         <translation>Exportatu</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="129"/>
+        <location filename="../admin/adminmainwindow.ui" line="132"/>
         <source>Print</source>
         <translation>Inprimatu</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="134"/>
+        <location filename="../admin/adminmainwindow.ui" line="137"/>
         <source>Reset Account</source>
         <translation>Saldoa berrabiarazi</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="139"/>
+        <location filename="../admin/adminmainwindow.ui" line="142"/>
         <source>New provider invoice</source>
         <translation>Emate-agiri berria</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="144"/>
+        <location filename="../admin/adminmainwindow.ui" line="147"/>
         <source>Product Consumption</source>
         <translation>Produktu kontsumoa</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="149"/>
+        <location filename="../admin/adminmainwindow.ui" line="152"/>
         <source>Manage Families/Goods</source>
         <translation>Familiak/produktuak kudeatu</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="154"/>
+        <location filename="../admin/adminmainwindow.ui" line="157"/>
         <source>Manage Providers</source>
         <translation>Hornitzaileak kudeatu</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="159"/>
+        <location filename="../admin/adminmainwindow.ui" line="162"/>
         <source>Stock List</source>
         <translation>Stock-aren zerrenda</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="164"/>
+        <location filename="../admin/adminmainwindow.ui" line="167"/>
         <source>Deposit Check</source>
         <translation>Diru sarrerak baieztatu</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="169"/>
+        <location filename="../admin/adminmainwindow.ui" line="172"/>
         <source>Account Balance</source>
         <translation>Kontuaren balantzea</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="174"/>
+        <location filename="../admin/adminmainwindow.ui" line="177"/>
         <source>Exit</source>
         <translation>Irten</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="179"/>
+        <location filename="../admin/adminmainwindow.ui" line="182"/>
         <source>Slow payers</source>
         <translation>Bazkide berankorrak</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="184"/>
+        <location filename="../admin/adminmainwindow.ui" line="187"/>
         <source>Provider Invoice List</source>
         <translation>Hornitzaileen agiri zerrenda</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="189"/>
+        <location filename="../admin/adminmainwindow.ui" line="192"/>
         <source>Manage reservations</source>
         <translation>Erreserba kudeaketa</translation>
     </message>
@@ -838,66 +838,6 @@
         <source>TextLabel</source>
         <translation></translation>
     </message>
-    <message>
-        <location filename="../commons/numitemdialog.ui" line="136"/>
-        <source>8</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../commons/numitemdialog.ui" line="152"/>
-        <source>1</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../commons/numitemdialog.ui" line="168"/>
-        <source>2</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../commons/numitemdialog.ui" line="184"/>
-        <source>3</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../commons/numitemdialog.ui" line="200"/>
-        <source>4</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../commons/numitemdialog.ui" line="216"/>
-        <source>5</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../commons/numitemdialog.ui" line="232"/>
-        <source>6</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../commons/numitemdialog.ui" line="248"/>
-        <source>9</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../commons/numitemdialog.ui" line="264"/>
-        <source>7</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../commons/numitemdialog.ui" line="280"/>
-        <source>C</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../commons/numitemdialog.ui" line="296"/>
-        <source>Ok</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../commons/numitemdialog.ui" line="312"/>
-        <source>0</source>
-        <translation></translation>
-    </message>
 </context>
 <context>
     <name>PassChangeDialog</name>
@@ -1048,61 +988,61 @@
 <context>
     <name>PenyaManager::AdminInvoiceListView</name>
     <message>
-        <location filename="../admin/admininvoicelistview.cpp" line="77"/>
-        <location filename="../admin/admininvoicelistview.cpp" line="82"/>
-        <location filename="../admin/admininvoicelistview.cpp" line="94"/>
-        <location filename="../admin/admininvoicelistview.cpp" line="105"/>
-        <location filename="../admin/admininvoicelistview.cpp" line="110"/>
+        <location filename="../admin/admininvoicelistview.cpp" line="106"/>
+        <location filename="../admin/admininvoicelistview.cpp" line="111"/>
+        <location filename="../admin/admininvoicelistview.cpp" line="123"/>
+        <location filename="../admin/admininvoicelistview.cpp" line="134"/>
+        <location filename="../admin/admininvoicelistview.cpp" line="139"/>
         <source>Database error</source>
         <translation>Datu base akatsa</translation>
     </message>
     <message>
-        <location filename="../admin/admininvoicelistview.cpp" line="77"/>
-        <location filename="../admin/admininvoicelistview.cpp" line="82"/>
-        <location filename="../admin/admininvoicelistview.cpp" line="94"/>
-        <location filename="../admin/admininvoicelistview.cpp" line="105"/>
-        <location filename="../admin/admininvoicelistview.cpp" line="110"/>
+        <location filename="../admin/admininvoicelistview.cpp" line="106"/>
+        <location filename="../admin/admininvoicelistview.cpp" line="111"/>
+        <location filename="../admin/admininvoicelistview.cpp" line="123"/>
+        <location filename="../admin/admininvoicelistview.cpp" line="134"/>
+        <location filename="../admin/admininvoicelistview.cpp" line="139"/>
         <source>Contact administrator</source>
         <translation>Administratzailearekin harremanetan jarri</translation>
     </message>
     <message>
-        <location filename="../admin/admininvoicelistview.cpp" line="89"/>
-        <location filename="../admin/admininvoicelistview.cpp" line="100"/>
+        <location filename="../admin/admininvoicelistview.cpp" line="118"/>
+        <location filename="../admin/admininvoicelistview.cpp" line="129"/>
         <source>Invalid data</source>
         <translation>Datu okerra</translation>
     </message>
     <message>
-        <location filename="../admin/admininvoicelistview.cpp" line="89"/>
+        <location filename="../admin/admininvoicelistview.cpp" line="118"/>
         <source>Username not valid</source>
         <translation>Erabiltzaile okerra</translation>
     </message>
     <message>
-        <location filename="../admin/admininvoicelistview.cpp" line="100"/>
+        <location filename="../admin/admininvoicelistview.cpp" line="129"/>
         <source>Username found</source>
         <translation>Erabiltzaile aurkitua</translation>
     </message>
     <message>
-        <location filename="../admin/admininvoicelistview.cpp" line="121"/>
+        <location filename="../admin/admininvoicelistview.cpp" line="150"/>
         <source>page %1 out of %2</source>
         <translation>%2 tik, %1. orrialdea</translation>
     </message>
     <message>
-        <location filename="../admin/admininvoicelistview.cpp" line="149"/>
+        <location filename="../admin/admininvoicelistview.cpp" line="55"/>
         <source>Ref#</source>
         <translation>erref:</translation>
     </message>
     <message>
-        <location filename="../admin/admininvoicelistview.cpp" line="150"/>
+        <location filename="../admin/admininvoicelistview.cpp" line="56"/>
         <source>Date</source>
         <translation>Data</translation>
     </message>
     <message>
-        <location filename="../admin/admininvoicelistview.cpp" line="151"/>
+        <location filename="../admin/admininvoicelistview.cpp" line="57"/>
         <source>Total</source>
         <translation>Guztira</translation>
     </message>
     <message>
-        <location filename="../admin/admininvoicelistview.cpp" line="152"/>
+        <location filename="../admin/admininvoicelistview.cpp" line="58"/>
         <source>Username</source>
         <translation>Bazkide zkia</translation>
     </message>
@@ -2014,50 +1954,50 @@
 <context>
     <name>PenyaManager::ProviderInvoiceListView</name>
     <message>
-        <location filename="../admin/providerinvoicelistview.cpp" line="40"/>
+        <location filename="../admin/providerinvoicelistview.cpp" line="42"/>
         <source>invoice ID</source>
         <translation>Ordainagiri Id-a</translation>
     </message>
     <message>
-        <location filename="../admin/providerinvoicelistview.cpp" line="41"/>
+        <location filename="../admin/providerinvoicelistview.cpp" line="43"/>
         <source>Total</source>
         <translation>Guztira</translation>
     </message>
     <message>
-        <location filename="../admin/providerinvoicelistview.cpp" line="42"/>
+        <location filename="../admin/providerinvoicelistview.cpp" line="44"/>
         <source>Date</source>
         <translation>Data</translation>
     </message>
     <message>
-        <location filename="../admin/providerinvoicelistview.cpp" line="43"/>
+        <location filename="../admin/providerinvoicelistview.cpp" line="45"/>
         <source>Provider</source>
         <translation>Hornitzailea</translation>
     </message>
     <message>
-        <location filename="../admin/providerinvoicelistview.cpp" line="101"/>
-        <location filename="../admin/providerinvoicelistview.cpp" line="132"/>
+        <location filename="../admin/providerinvoicelistview.cpp" line="106"/>
         <location filename="../admin/providerinvoicelistview.cpp" line="137"/>
-        <location filename="../admin/providerinvoicelistview.cpp" line="143"/>
+        <location filename="../admin/providerinvoicelistview.cpp" line="142"/>
         <location filename="../admin/providerinvoicelistview.cpp" line="148"/>
+        <location filename="../admin/providerinvoicelistview.cpp" line="153"/>
         <source>Database error</source>
         <translation>Datu base akatsa</translation>
     </message>
     <message>
-        <location filename="../admin/providerinvoicelistview.cpp" line="101"/>
-        <location filename="../admin/providerinvoicelistview.cpp" line="132"/>
+        <location filename="../admin/providerinvoicelistview.cpp" line="106"/>
         <location filename="../admin/providerinvoicelistview.cpp" line="137"/>
-        <location filename="../admin/providerinvoicelistview.cpp" line="143"/>
+        <location filename="../admin/providerinvoicelistview.cpp" line="142"/>
         <location filename="../admin/providerinvoicelistview.cpp" line="148"/>
+        <location filename="../admin/providerinvoicelistview.cpp" line="153"/>
         <source>Contact administrator</source>
         <translation>Administratzailearekin harremanetan jarri</translation>
     </message>
     <message>
-        <location filename="../admin/providerinvoicelistview.cpp" line="107"/>
+        <location filename="../admin/providerinvoicelistview.cpp" line="112"/>
         <source>All providers</source>
         <translation>Guztiak</translation>
     </message>
     <message>
-        <location filename="../admin/providerinvoicelistview.cpp" line="158"/>
+        <location filename="../admin/providerinvoicelistview.cpp" line="163"/>
         <source>page %1 out of %2</source>
         <translation>%2 tik, %1. orrialdea</translation>
     </message>
@@ -2544,12 +2484,22 @@
         <translation>Sarrera zuz.</translation>
     </message>
     <message>
-        <location filename="../commons/guiutils.cpp" line="208"/>
+        <location filename="../commons/guiutils.cpp" line="162"/>
+        <source>Yes</source>
+        <translation>Bai</translation>
+    </message>
+    <message>
+        <location filename="../commons/guiutils.cpp" line="163"/>
+        <source>No</source>
+        <translation>Ez</translation>
+    </message>
+    <message>
+        <location filename="../commons/guiutils.cpp" line="211"/>
         <source>invoice ref: %1</source>
         <translation>%1 -ren ordainagiri erref.</translation>
     </message>
     <message>
-        <location filename="../commons/guiutils.cpp" line="216"/>
+        <location filename="../commons/guiutils.cpp" line="219"/>
         <source>deposit ref: %1</source>
         <translation>%1 -ren diru sarrera erref. :</translation>
     </message>

@@ -18,6 +18,8 @@ namespace PenyaManager {
     {
         ui->setupUi(this);
         initializeTable();
+        this->ui->fromCalendarWidget->setLocale(Singletons::m_pTranslationManager->getLocale());
+        this->ui->toCalendarWidget->setLocale(Singletons::m_pTranslationManager->getLocale());
     }
     //
     ProviderInvoiceListView::~ProviderInvoiceListView()
@@ -48,6 +50,8 @@ namespace PenyaManager {
     {
         this->ui->retranslateUi(this);
         translateTable();
+        this->ui->fromCalendarWidget->setLocale(Singletons::m_pTranslationManager->getLocale());
+        this->ui->toCalendarWidget->setLocale(Singletons::m_pTranslationManager->getLocale());
     }
     //
     void ProviderInvoiceListView::initializeTable()
@@ -55,10 +59,11 @@ namespace PenyaManager {
         // table
         this->ui->invoicesTableWidget->setColumnCount(4);
         translateTable();
-        this->ui->invoicesTableWidget->setColumnWidth(0, 200);
-        this->ui->invoicesTableWidget->setColumnWidth(1, 100);
-        this->ui->invoicesTableWidget->setColumnWidth(2, 150);
-        this->ui->invoicesTableWidget->setColumnWidth(3, 150);
+        Uint32 column = 0;
+        this->ui->invoicesTableWidget->setColumnWidth(column++, 200);
+        this->ui->invoicesTableWidget->setColumnWidth(column++, 100);
+        this->ui->invoicesTableWidget->setColumnWidth(column++, 150);
+        this->ui->invoicesTableWidget->setColumnWidth(column++, 150);
     }
     //
     void ProviderInvoiceListView::on_searchPushButton_clicked()
