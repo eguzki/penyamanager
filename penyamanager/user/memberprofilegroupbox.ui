@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>GroupBox</string>
+   <string notr="true">GroupBox</string>
   </property>
   <property name="styleSheet">
    <string notr="true">QLabel#memberUsernameValueLabel{
@@ -152,21 +152,21 @@ font: 18pt &quot;Calibri&quot;;
          <item>
           <widget class="QLabel" name="membernameLabel">
            <property name="text">
-            <string>TextLabel</string>
+            <string notr="true">TextLabel</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QLabel" name="surname1Label">
            <property name="text">
-            <string>TextLabel</string>
+            <string notr="true">TextLabel</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QLabel" name="surname2Label">
            <property name="text">
-            <string>TextLabel</string>
+            <string notr="true">TextLabel</string>
            </property>
           </widget>
          </item>

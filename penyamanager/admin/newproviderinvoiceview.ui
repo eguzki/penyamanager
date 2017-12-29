@@ -103,6 +103,12 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
         <layout class="QHBoxLayout" name="horizontalLayout_5">
          <item>
           <widget class="QLabel" name="invoiceabel">
+           <property name="minimumSize">
+            <size>
+             <width>70</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="text">
             <string>InvoiceID:</string>
            </property>
@@ -132,6 +138,12 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
         <layout class="QHBoxLayout" name="horizontalLayout_7">
          <item>
           <widget class="QLabel" name="totalLabel">
+           <property name="minimumSize">
+            <size>
+             <width>70</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="text">
             <string>Total</string>
            </property>
@@ -167,7 +179,14 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_8">
          <item>
-          <widget class="QComboBox" name="providerComboBox"/>
+          <widget class="QComboBox" name="providerComboBox">
+           <property name="minimumSize">
+            <size>
+             <width>120</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
          </item>
          <item>
           <spacer name="horizontalSpacer_7">

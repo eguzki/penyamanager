@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1280</width>
-    <height>1024</height>
+    <width>1263</width>
+    <height>1037</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -223,7 +223,7 @@ qproperty-iconSize: 140px 140px;
             </font>
            </property>
            <property name="text">
-            <string>SDRC</string>
+            <string notr="true">SDRC</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignHCenter|Qt::AlignTop</set>
@@ -361,7 +361,7 @@ qproperty-iconSize: 140px 140px;
             </font>
            </property>
            <property name="text">
-            <string>KKAE</string>
+            <string notr="true">KKAE</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignBottom|Qt::AlignHCenter</set>
