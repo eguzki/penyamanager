@@ -3,6 +3,7 @@
 
 #include <QListWidgetItem>
 #include <QListWidget>
+#include <QMessageBox>
 
 #include <commons/IPartner.h>
 #include <objs/Member.h>
@@ -47,6 +48,16 @@ namespace PenyaManager {
             void initializeTable();
             //
             void on_productRemoveButton_clicked(int productId, QString productName, Float totalPrice);
+            //
+            void on_productRemove_result(int productId, QMessageBox::StandardButton);
+            //
+            void onInvoiceReset(QMessageBox::StandardButton);
+            //
+            void checkCreditLimit();
+            //
+            void onNumItemSelectedFromInvoice(Int32 productId, QString resultStr);
+            //
+            void onNumItemSelectedFromProductList(Int32 productId, QString resultStr);
 
         private:
             //

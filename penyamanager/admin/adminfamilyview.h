@@ -31,6 +31,8 @@ namespace PenyaManager {
             void fillFamilyInfo(Int32 familyId);
             //
             void initialize();
+            //
+            void onFamilyImageSelected(const QString &fn);
 
         private slots:
             //

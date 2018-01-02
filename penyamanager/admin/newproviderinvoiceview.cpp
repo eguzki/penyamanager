@@ -1,9 +1,7 @@
 //
-
 #include <QDebug>
 #include <QSpinBox>
 #include <QSpacerItem>
-#include <QMessageBox>
 
 #include <commons/guiutils.h>
 #include <commons/singletons.h>
@@ -32,31 +30,40 @@ namespace PenyaManager {
         // validate invoice id
         QString invoiceId = this->ui->invoiceLineEdit->text();
         if (invoiceId.isEmpty()){
-            QMessageBox::warning(this, tr("Data missing"), tr("Invoice ID cannot be empty"));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Invoice ID cannot be empty"), [](){});
+            return;
+        }
+        // validate providerID
+        if (m_currentProviderIndex == -1)
+        {
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Select Provider"), [](){});
             return;
         }
         // validate total
         Float total = this->ui->totalDoubleSpinBox->value();
         if ( total == 0.0 )
         {
-            QMessageBox msgBox;
-            msgBox.setText(tr("Invoice has 0.0 as total value"));
-            msgBox.setInformativeText(tr("Are you sure to continue?"));
-            msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
-            msgBox.setDefaultButton(QMessageBox::Cancel);
-            int ret = msgBox.exec();
-            if (ret == QMessageBox::Cancel)
-            {
-                return;
-            }
-        }
-        // validate providerID
-        if (m_currentProviderIndex == -1)
-        {
-            QMessageBox::warning(this, tr("Data missing"), tr("Select Provider"));
+            Singletons::m_pDialogManager->questionMessageBox(this, tr("0€ invoice. Are you sure to continue?"),
+                    std::bind(&NewProviderInvoiceView::onZeroInvoiceAccepted, this, _1)
+                    );
             return;
         }
-
+        createProviderInvoice();
+    }
+    //
+    void NewProviderInvoiceView::onZeroInvoiceAccepted(QMessageBox::StandardButton answerButton)
+    {
+        if (answerButton != QMessageBox::Yes)
+        {
+            return;
+        }
+        createProviderInvoice();
+    }
+    //
+    void NewProviderInvoiceView::createProviderInvoice()
+    {
+        QString invoiceId = this->ui->invoiceLineEdit->text();
+        Float total = this->ui->totalDoubleSpinBox->value();
         // create invoice
         ProviderInvoicePtr pProviderInvoicePtr(new ProviderInvoice);
         pProviderInvoicePtr->m_id = invoiceId;
@@ -65,7 +72,7 @@ namespace PenyaManager {
         pProviderInvoicePtr->m_providerid = this->ui->providerComboBox->currentData().toInt();
         bool ok = Singletons::m_pDAO->createProviderInvoice(pProviderInvoicePtr);
         if (!ok) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
 
@@ -81,7 +88,7 @@ namespace PenyaManager {
             if (pCountSpinBox == 0) {
                 Singletons::m_pLogger->Warn(Constants::kSystemUserId, PenyaManager::LogAction::kProvider,
                         QString("NewProviderInvoiceView failed taking SpinBox"));
-                QMessageBox::warning(this, tr("Unexpected state"), tr("Operation not performed. Contact administrator"));
+                Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
 
@@ -91,20 +98,27 @@ namespace PenyaManager {
                 // create provider invoice product item
                 bool ok = Singletons::m_pDAO->createProviderInvoiceProduct(pProviderInvoicePtr->m_id, productId, pCountSpinBox->value());
                 if (!ok) {
-                    QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+                    Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
                     return;
                 }
                 // update stock
                 ok = Singletons::m_pDAO->updateStock(productId, pCountSpinBox->value());
                 if (!ok) {
-                    QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+                    Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
                     return;
                 }
             }
         }
         Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kProvider,
                 QString("new invoice id: %1, provider id %2").arg(pProviderInvoicePtr->m_id).arg(pProviderInvoicePtr->m_providerid));
-        QMessageBox::information(this, tr("New provider invoice"), tr("Saved Successfully"));
+        Singletons::m_pDialogManager->infoMessageBox(this, tr("Saved Successfully"),
+                std::bind(&NewProviderInvoiceView::onProviderInvoiceDone, this)
+                );
+        // nothing should be added here
+    }
+    //
+    void NewProviderInvoiceView::onProviderInvoiceDone()
+    {
         // call provider invoice list
         m_switchCentralWidgetCallback(WindowKey::kProviderInvoiceListViewKey);
     }
@@ -119,7 +133,7 @@ namespace PenyaManager {
 
         ProviderListResultPtr pProviderListResultPtr = Singletons::m_pDAO->getProviderList();
         if (pProviderListResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
 
@@ -160,7 +174,7 @@ namespace PenyaManager {
             //this should never happen
             Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kProvider,
                     QString("providerId not found and should be in the map"));
-            QMessageBox::warning(this, tr("Error"), tr("Unexpected error"));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Unexpected error"), [](){});
             return;
         }
 
@@ -171,7 +185,7 @@ namespace PenyaManager {
 
         ProductItemListResultPtr pfListPtr = Singletons::m_pDAO->getProductsFromProvider(providerId);
         if (pfListPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
 

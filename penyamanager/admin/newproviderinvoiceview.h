@@ -2,6 +2,7 @@
 #define NEWPROVIDERINVOICEVIEW_H
 
 #include <QWidget>
+#include <QMessageBox>
 
 #include <commons/DataTypes.h>
 #include <objs/ProductItem.h>
@@ -33,6 +34,12 @@ namespace PenyaManager {
             void initialize();
             //
             void createProductItemRow(const ProductItemPtr &pfPtr);
+            //
+            void onZeroInvoiceAccepted(QMessageBox::StandardButton answerButton);
+            //
+            void createProviderInvoice();
+            //
+            void onProviderInvoiceDone();
 
         private slots:
             //

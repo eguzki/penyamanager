@@ -143,28 +143,6 @@ namespace PenyaManager {
         GuiUtils::printText(html);
     }
     //
-    void GuiUtils::infoMessageBox(QWidget *parent, const QString &message)
-    {
-        QMessageBox qAboutMessageBox(QMessageBox::Information, QString(), message, QMessageBox::Ok, parent, Qt::FramelessWindowHint);
-        qAboutMessageBox.exec();
-    }
-    //
-    void GuiUtils::criticalMessageBox(QWidget *parent, const QString &message)
-    {
-        QMessageBox qcriticalMessageBox(QMessageBox::Critical, QString(), message, QMessageBox::Ok, parent, Qt::FramelessWindowHint);
-        qcriticalMessageBox.exec();
-    }
-    //
-    QMessageBox::StandardButton GuiUtils::questionMessageBox(QWidget *parent, const QString &message)
-    {
-        QMessageBox qQuestionMessageBox(QMessageBox::Question, QString(), message, QMessageBox::Yes|QMessageBox::No, parent, Qt::FramelessWindowHint);
-        // The right way is not to manually translate those strings. Qt already includes translations.
-        qQuestionMessageBox.setButtonText(QMessageBox::Yes, QWidget::tr("Yes"));
-        qQuestionMessageBox.setButtonText(QMessageBox::No, QWidget::tr("No"));
-        int res = qQuestionMessageBox.exec();
-        return static_cast<QMessageBox::StandardButton>(res);
-    }
-    //
     // Build account invoice description json
     QString GuiUtils::invoiceAccountDescription(const Int32 invoiceId)
     {

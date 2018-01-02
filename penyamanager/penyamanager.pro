@@ -61,7 +61,9 @@ SOURCES += main.cpp\
         commons/familyitemwidget.cpp \
         commons/productitemwidget.cpp \
         commons/logging.cpp \
-        commons/inactivityeventfilter.cpp
+        commons/inactivityeventfilter.cpp \
+        commons/dialogmanager.cpp \
+        commons/passchangedialog.cpp
 
 HEADERS  += user/memberdashboardwindow.h\
         commons/singletons.h\
@@ -73,6 +75,7 @@ HEADERS  += user/memberdashboardwindow.h\
         commons/partnerfinder.h\
         commons/familyitemwidget.h\
         commons/productitemwidget.h\
+        commons/passchangedialog.h \
         objs/Transaction.h\
         objs/Invoice.h\
         objs/Deposit.h\
@@ -99,11 +102,13 @@ HEADERS  += user/memberdashboardwindow.h\
         commons/DataTypes.h \
         user/mainwindow.h \
         commons/logging.h \
-        commons/inactivityeventfilter.h
+        commons/inactivityeventfilter.h \
+        commons/dialogmanager.h
 
 FORMS    += user/memberdashboardwindow.ui\
         user/loginwindow.ui \
         commons/numitemdialog.ui \
+        commons/passchangedialog.ui \
         user/invoicewindow.ui \
         user/depositwindow.ui \
         user/accountview.ui \

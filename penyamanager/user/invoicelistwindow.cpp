@@ -60,7 +60,7 @@ namespace PenyaManager {
         //
         MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberById(Singletons::m_pCurrMember->m_id);
         if (pMemberResultPtr->m_error) {
-            GuiUtils::criticalMessageBox(this, tr("Database error. Contact administrator"));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         if (!pMemberResultPtr->m_member) {
@@ -139,12 +139,12 @@ namespace PenyaManager {
         QDate toDate = this->ui->toCalendarWidget->selectedDate().addDays(1);
         pInvoiceListResult = Singletons::m_pDAO->getInvoiceListByMemberId(pCurrMemberPtr->m_id, fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
         if (pInvoiceListResult->m_error) {
-            GuiUtils::criticalMessageBox(this, tr("Database error. Contact administrator"));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         pInvoiceListStatsResult = Singletons::m_pDAO->getInvoiceListByMemberIdStats(pCurrMemberPtr->m_id, fromDate, toDate);
         if (pInvoiceListStatsResult->m_error) {
-            GuiUtils::criticalMessageBox(this, tr("Database error. Contact administrator"));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         // enable-disable pagination buttons
@@ -250,7 +250,7 @@ namespace PenyaManager {
         QDate toDate = this->ui->toCalendarWidget->selectedDate();
         if (fromDate > toDate)
         {
-            GuiUtils::infoMessageBox(this, tr("'From' date must be before 'To' date"));
+            Singletons::m_pDialogManager->infoMessageBox(this, tr("'From' date must be before 'To' date"), [](){});
             return;
         }
 

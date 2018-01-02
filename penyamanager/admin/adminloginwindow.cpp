@@ -43,6 +43,7 @@ namespace PenyaManager {
         initializeLang();
         this->ui->passInput->clear();
         this->ui->loginInput->clear();
+        Singletons::m_pCurrMember = GetInvalidMember();
     }
     //
     void AdminLoginWindow::retranslate()

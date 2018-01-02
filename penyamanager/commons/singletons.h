@@ -9,6 +9,7 @@
 #include "partnerfinder.h"
 #include "dao.h"
 #include "logging.h"
+#include "dialogmanager.h"
 
 namespace PenyaManager {
     //
@@ -48,6 +49,8 @@ namespace PenyaManager {
             static QString                  m_currentProviderInvoiceId;
             //
             static TranslationManager       *m_pTranslationManager;
+            //
+            static DialogManager            *m_pDialogManager;
     };
 }
 

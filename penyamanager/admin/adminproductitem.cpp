@@ -1,6 +1,5 @@
 //
 
-#include <QMessageBox>
 #include <QFileDialog>
 #include <QDateTime>
 
@@ -50,26 +49,26 @@ namespace PenyaManager {
         // validate name is not empty
         QString productName = this->ui->nameLineEdit->text();
         if (productName.isEmpty()){
-            QMessageBox::warning(this, tr("Data missing"), tr("Name cannot be empty"));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Name cannot be empty"), [](){});
             return;
         }
 
         // validate price field
         Float price = this->ui->priceDoubleSpinBox->value();
         if (!price) {
-            QMessageBox::warning(this, tr("Data not valid"), tr("price cannot be 0.00€"));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("price cannot be 0.00€"), [](){});
             return;
         }
         // validate providers
         if (!this->ui->providerComboBox->count())
         {
-            QMessageBox::warning(this, tr("Data missing"), tr("Providers list is empty. Add some providers first"));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Providers list is empty. Add some providers first"), [](){});
             return;
         }
         // validate families
         if (!this->ui->familyComboBox->count())
         {
-            QMessageBox::warning(this, tr("Data missing"), tr("Family list is empty. Add some families first"));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Family list is empty. Add some families first"), [](){});
             return;
         }
 
@@ -78,13 +77,13 @@ namespace PenyaManager {
             // edit previous item
             ProductItemResultPtr pProductResultPtr = Singletons::m_pDAO->getProductItem(Singletons::m_currentProductId);
             if (pProductResultPtr->m_error) {
-                QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+                Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
             if (!pProductResultPtr->m_item) {
                 Singletons::m_pLogger->Warn(Constants::kSystemUserId, PenyaManager::LogAction::kProduct,
                         QString("item not found %1").arg(Singletons::m_currentProductId));
-                QMessageBox::warning(this, tr("Unexpected state"), tr("Operation not performed. Contact administrator"));
+                Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
             // save old image in case we need to delete it
@@ -117,7 +116,7 @@ namespace PenyaManager {
             // update in ddbb
             bool ok = Singletons::m_pDAO->updateProductItem(pProductResultPtr->m_item);
             if (!ok) {
-                QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+                Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
 
@@ -166,7 +165,7 @@ namespace PenyaManager {
             // create in ddbb
             Int32 itemId = Singletons::m_pDAO->createProductItem(pProductItemPtr);
             if (itemId < 0) {
-                QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+                Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
             Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kProduct,
@@ -183,13 +182,13 @@ namespace PenyaManager {
     {
         ProductItemResultPtr pProductItemResultPtr = Singletons::m_pDAO->getProductItem(productId);
         if (pProductItemResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         if (!pProductItemResultPtr->m_item) {
             Singletons::m_pLogger->Warn(Constants::kSystemUserId, PenyaManager::LogAction::kProduct,
                     QString("item not found %1").arg(productId));
-            QMessageBox::warning(this, tr("Unexpected state"), tr("Operation not performed. Contact administrator"));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         // name
@@ -210,7 +209,7 @@ namespace PenyaManager {
         this->ui->providerComboBox->clear();
         ProviderListResultPtr pProviderListResultPtr = Singletons::m_pDAO->getProviderList();
         if (pProviderListResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         Int32 currentIndex = 0;
@@ -232,7 +231,7 @@ namespace PenyaManager {
         this->ui->familyComboBox->clear();
         ProductFamilyListResultPtr pfListPtr = Singletons::m_pDAO->getProductFamilies(false);
         if (pfListPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         currentIndex = 0;
@@ -271,7 +270,7 @@ namespace PenyaManager {
         this->ui->providerComboBox->clear();
         ProviderListResultPtr pProviderListResultPtr = Singletons::m_pDAO->getProviderList();
         if (pProviderListResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         Int32 currentIndex = 0;
@@ -286,7 +285,7 @@ namespace PenyaManager {
         this->ui->familyComboBox->clear();
         ProductFamilyListResultPtr pfListPtr = Singletons::m_pDAO->getProductFamilies(false);
         if (pfListPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         currentIndex = 0;
@@ -307,19 +306,25 @@ namespace PenyaManager {
         if (!imagePath.isDir() || !imagePath.isWritable()) {
             Singletons::m_pLogger->Warn(Constants::kSystemUserId, PenyaManager::LogAction::kProduct,
                     QString("Unable to write to %1").arg(imagePath.absoluteFilePath()));
-            QMessageBox::warning(this, tr("Unable to upload image"),
-                    QString("Unable to write to %1").arg(imagePath.absoluteFilePath()));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Unable to write to %1").arg(imagePath.absoluteFilePath()), [](){});
             return;
         }
         // open file dialog
         // start in home dir
-        // fn has absolute path
-        QString fn = QFileDialog::getOpenFileName(this, tr("Open File..."),
-                QDir::homePath(), tr("Image Files (*.gif *.jpeg *.jpg *.png)"));
+        Singletons::m_pDialogManager->getOpenFileName(this, tr("Open File..."), QDir::homePath(),
+                tr("Image Files (*.gif *.jpeg *.jpg *.png)"), QFileDialog::ExistingFile,
+                std::bind(&AdminProductItem::onProductImageSelected, this, _1)
+                );
+        // nothing should be added here
+    }
+    //
+    void AdminProductItem::onProductImageSelected(const QString &fn)
+    {
         if (fn.isEmpty()) {
-            QMessageBox::information(this, tr("Information"), tr("No file selected"));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("No file selected"), [](){});
             return;
         }
+        // fn has absolute path
         this->m_productImageFilename = fn;
         // show image
         QPixmap providerPixmap = GuiUtils::getImage(fn);
@@ -329,4 +334,3 @@ namespace PenyaManager {
         this->ui->imageLabel->setScaledContents(true);
     }
 }
-

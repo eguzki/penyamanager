@@ -49,6 +49,14 @@ namespace PenyaManager {
                                        const ReservationItemListStatsPtr &pReservationItemListStatsPtr);
             //
             void prepareTableReservationMap(ReservationMap &, const ReservationListPtr &, const MemberPtr &, bool &);
+            //
+            void onReserved(ReservationItemType reservationItemType, QDate reservationDate, ReservationType reservationType);
+            //
+            void onCancel(ReservationItemType reservationItemType, QDate reservationDate, ReservationType reservationType);
+            //
+            void onTableItemGiven(int itemId, QString resultStr);
+            //
+            void reserveItems(int itemId, Uint32 guestNum);
 
         private slots:
             //

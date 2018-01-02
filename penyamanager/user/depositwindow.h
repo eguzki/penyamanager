@@ -2,6 +2,7 @@
 #define DEPOSITWINDOW_H
 
 #include <QWidget>
+#include <QMessageBox>
 
 #include <commons/IPartner.h>
 #include <objs/Member.h>
@@ -35,6 +36,10 @@ namespace PenyaManager {
             void printDeposit(const MemberPtr &pMemberPtr, const DepositPtr &pDepositPtr);
             //
             QString renderDepositTemplate(const QString &depositTemplate, const MemberPtr &pMemberPtr, const DepositPtr &pDepositPtr);
+            //
+            void onDepositConfirmed(QMessageBox::StandardButton answerButton);
+            //
+            void onDepositCreated();
 
         private slots:
             //
