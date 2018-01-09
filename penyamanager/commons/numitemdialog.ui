@@ -69,6 +69,10 @@ min-height: 95px;
 max-height: 95px;
 }
 
+QToolButton:disabled {
+color: rgb(117,117,117);
+}
+
 QToolButton:pressed {
 background-color: rgb(56,142,60);
 }
@@ -291,12 +295,12 @@ background-color: rgb(56,142,60);
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>297</x>
-     <y>482</y>
+     <x>295</x>
+     <y>514</y>
     </hint>
     <hint type="destinationlabel">
      <x>182</x>
-     <y>270</y>
+     <y>291</y>
     </hint>
    </hints>
   </connection>
