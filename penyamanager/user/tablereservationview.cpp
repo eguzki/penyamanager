@@ -208,7 +208,7 @@ namespace PenyaManager {
         // fill data
         for (ReservationItemList::iterator iter = pReservationItemListPtr->begin(); iter != pReservationItemListPtr->end(); ++iter) {
             ReservationItemPtr pReservationItemPtr = *iter;
-            this->ui->tableReservationTableWidget->setItem(rowCount, 0, new QTableWidgetItem(pReservationItemPtr->m_itemName));
+            this->ui->tableReservationTableWidget->setItem(rowCount, 0, new QTableWidgetItem(QString("%1 %2").arg(GetStringFromReservationItemTypeEnum(pReservationItemPtr->m_itemType, true)).arg(pReservationItemPtr->m_itemName)));
             this->ui->tableReservationTableWidget->setItem(rowCount, 1, new QTableWidgetItem(QString::number(pReservationItemPtr->m_guestNum)));
             auto tableReservationMapItem = tableReservationMap.find(pReservationItemPtr->m_idItem);
             // not showing action buttons when: a)has reservation for unreserved tables and b)reservation of other members
