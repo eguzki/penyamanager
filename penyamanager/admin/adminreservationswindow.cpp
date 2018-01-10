@@ -155,7 +155,7 @@ namespace PenyaManager {
                     this->ui->tableReservationTableWidget->setItem(rowCount, 3, new QTableWidgetItem(QString(tr("BLOCKED"))));
                     // show cancel button action
                     QPushButton *pCancelButton = new QPushButton(tr("Cancel"), this->ui->tableReservationTableWidget);
-                    this->connect(pCancelButton, &QPushButton::clicked, std::bind(&AdminReservationsWindow::onCancelButton_clicked, this, pReservationPtr->m_reservationId, pReservationItemPtr->m_itemType));
+                    this->connect(pCancelButton, &QPushButton::clicked, std::bind(&AdminReservationsWindow::onCancelButton_clicked, this, pReservationPtr->m_reservationId));
                     this->ui->tableReservationTableWidget->setCellWidget(rowCount, 5, pCancelButton);
                 } else {
                     QString guestName = QString("%1 %2 %3").arg(pReservationPtr->m_memberName).arg(pReservationPtr->m_memberSurname1).arg(pReservationPtr->m_memberSurname2);
@@ -252,32 +252,18 @@ namespace PenyaManager {
         fillReservations(date, reservationType);
     }
     //
-    void AdminReservationsWindow::onCancelButton_clicked(int reservationId, ReservationItemType itemType)
+    void AdminReservationsWindow::onCancelButton_clicked(int reservationId)
     {
         QDate date = this->ui->calendarWidget->selectedDate();
         ReservationType reservationType = static_cast<ReservationType>(this->ui->reservationTypeButtonGroup->checkedId());
-        bool ok = false;
-        switch (itemType)
-        {
-            case ReservationItemType::LunchTableType:
-                ok = Singletons::m_pDAO->cancelTableReservation(reservationId);
-                break;
-            case ReservationItemType::OvenType:
-                ok = Singletons::m_pDAO->cancelOvenReservation(reservationId);
-                break;
-            case ReservationItemType::FireplaceType:
-                ok = Singletons::m_pDAO->cancelFireplaceReservation(reservationId);
-                break;
-            default:
-                break;
-        }
+        bool ok = Singletons::m_pDAO->cancelTableReservation(reservationId);
         if (!ok) {
             Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         QLocale enLocale = QLocale("en");
         Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kReservation,
-                QString("canceled %1, reservationid %2, %3 %4").arg(GetStringFromReservationItemTypeEnum(itemType)).arg(reservationId).arg(GetStringFromReservationTypeEnum(reservationType)).arg(enLocale.toString(date)));
+                QString("canceled %1, reservationid %2, %3 %4").arg(GetStringFromReservationItemTypeEnum(ReservationItemType::LunchTableType)).arg(reservationId).arg(GetStringFromReservationTypeEnum(reservationType)).arg(enLocale.toString(date)));
         Singletons::m_pDialogManager->infoMessageBox(this,
                 tr("Cancelled %1 at %2").arg(GetStringFromReservationItemTypeEnum(ReservationItemType::LunchTableType, true)).arg(GetStringFromReservationTypeEnum(reservationType, true)),
                 std::bind(&AdminReservationsWindow::onTableReservationCancelled, this)
