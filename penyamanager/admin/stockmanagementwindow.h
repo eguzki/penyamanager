@@ -36,6 +36,8 @@ namespace PenyaManager {
             void fillProductList(const StockProductItemListPtr &pStockProductItemListPtr);
             //
             void initializeTable();
+            //
+            void onStockCsvSelected(const QString &fn);
 
         private slots:
             //

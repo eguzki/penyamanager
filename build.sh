@@ -72,6 +72,11 @@ do
     shift
 done
 
+if [ "$DEBUG" = "yes" ] ; then
+    QMAKE_FLAGS="$QMAKE_FLAGS CONFIG+=debug"
+else
+    QMAKE_FLAGS="$QMAKE_FLAGS CONFIG+=release"
+fi
 
 if [ "$CLEAN" = "yes" ] ; then
     echo "cleaning dist, buid-*"
@@ -81,7 +86,7 @@ else
     [ -d $TARGETPATH ] || mkdir -p $TARGETPATH
     [ -d $TRANSLATIONSPATH ] || mkdir -p $TRANSLATIONSPATH
 
-    echo "** BUILD:: running \"$QMAKE\" and \"$MAKE $TARGET\" in $TARGETPATH [DEBUG build]"
+    echo "** BUILD:: running \"$QMAKE\" and \"$MAKE $TARGET\" in $TARGETPATH [DEBUG build $DEBUG]"
     cd $TARGETPATH
     echo "** BUILD:: building \"$USER_APP\""
     $QMAKE $QMAKE_FLAGS $USER_APP

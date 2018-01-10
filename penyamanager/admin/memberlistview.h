@@ -34,6 +34,8 @@ namespace PenyaManager {
             void fillMemberList(const MemberListPtr &pMemberListPtr);
             //
             void initializeTable();
+            //
+            void onMemberListCsvSelected(const QString &fn);
 
         private slots:
             //

@@ -36,6 +36,12 @@ SOURCES += adminmain.cpp\
         commons/numitemdialog.cpp \
         commons/guiutils.cpp \
         commons/translationmanager.cpp \
+        commons/familyitemwidget.cpp \
+        commons/productitemwidget.cpp \
+        commons/logging.cpp \
+        commons/passchangedialog.cpp \
+        commons/inactivityeventfilter.cpp \
+        commons/dialogmanager.cpp \
         objs/Transaction.cpp\
         objs/Invoice.cpp\
         objs/Deposit.cpp\
@@ -65,14 +71,9 @@ SOURCES += adminmain.cpp\
         admin/accountbalanceview.cpp \
         admin/memberlistview.cpp \
         admin/memberview.cpp \
-        admin/passchangedialog.cpp \
         admin/adminreservationswindow.cpp \
         admin/providerinvoiceview.cpp \
-        admin/invoicedetailsview.cpp \
-        commons/familyitemwidget.cpp \
-        commons/productitemwidget.cpp \
-        commons/logging.cpp \
-        commons/inactivityeventfilter.cpp
+        admin/invoicedetailsview.cpp
 
 HEADERS += commons/singletons.h\
         commons/dao.h\
@@ -87,6 +88,10 @@ HEADERS += commons/singletons.h\
         commons/translationmanager.h \
         commons/familyitemwidget.h\
         commons/productitemwidget.h\
+        commons/logging.h \
+        commons/passchangedialog.h \
+        commons/inactivityeventfilter.h \
+        commons/dialogmanager.h \
         objs/Transaction.h\
         objs/Invoice.h\
         objs/Deposit.h\
@@ -116,18 +121,18 @@ HEADERS += commons/singletons.h\
         admin/accountbalanceview.h \
         admin/memberlistview.h \
         admin/memberview.h \
-        admin/passchangedialog.h \
         admin/adminreservationswindow.h \
         admin/providerinvoiceview.h \
-        admin/invoicedetailsview.h \
-        commons/logging.h \
-        commons/inactivityeventfilter.h
+        admin/invoicedetailsview.h
 
-FORMS   += admin/adminloginwindow.ui\
+FORMS   += commons/passchangedialog.ui \
+        commons/familyitemwidget.ui \
+        commons/productitemwidget.ui \
+        commons/numitemdialog.ui \
+        admin/adminloginwindow.ui\
         admin/adminmainwindow.ui \
         admin/slowpayersview.ui \
         admin/admininvoicelistview.ui \
-        commons/numitemdialog.ui \
         admin/providermanagerview.ui \
         admin/adminnewprovider.ui \
         admin/stockmanagementwindow.ui \
@@ -141,12 +146,9 @@ FORMS   += admin/adminloginwindow.ui\
         admin/accountbalanceview.ui \
         admin/memberlistview.ui \
         admin/memberview.ui \
-        admin/passchangedialog.ui \
         admin/adminreservationswindow.ui \
         admin/providerinvoiceview.ui \
-        admin/invoicedetailsview.ui \
-        commons/familyitemwidget.ui \
-        commons/productitemwidget.ui
+        admin/invoicedetailsview.ui
 
 TRANSLATIONS += \
         translations/penyamanageradmin_es.ts \

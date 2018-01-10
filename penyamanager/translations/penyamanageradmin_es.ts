@@ -252,122 +252,122 @@
         <translation>Penyamanager Admin</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="51"/>
+        <location filename="../admin/adminmainwindow.ui" line="54"/>
         <source>Members</source>
         <translation>Socios</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="59"/>
+        <location filename="../admin/adminmainwindow.ui" line="62"/>
         <source>Invoices</source>
         <translation>Recibos</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="65"/>
+        <location filename="../admin/adminmainwindow.ui" line="68"/>
         <source>Items</source>
         <translation>Productos</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="73"/>
+        <location filename="../admin/adminmainwindow.ui" line="76"/>
         <source>Account</source>
         <translation>Cuenta</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="80"/>
+        <location filename="../admin/adminmainwindow.ui" line="83"/>
         <source>Main</source>
         <translation>Archivo</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="86"/>
+        <location filename="../admin/adminmainwindow.ui" line="89"/>
         <source>Providers</source>
         <translation>Proveedores</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="94"/>
+        <location filename="../admin/adminmainwindow.ui" line="97"/>
         <source>Reservations</source>
         <translation>Reservas</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="109"/>
+        <location filename="../admin/adminmainwindow.ui" line="112"/>
         <source>Member management</source>
         <translation>Administración socios</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="114"/>
+        <location filename="../admin/adminmainwindow.ui" line="117"/>
         <source>New member</source>
         <translation>Nuevo socio</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="119"/>
+        <location filename="../admin/adminmainwindow.ui" line="122"/>
         <source>Invoice list</source>
         <translation>Listado de recibos</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="124"/>
+        <location filename="../admin/adminmainwindow.ui" line="127"/>
         <source>Export</source>
         <translation>Exportar</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="129"/>
+        <location filename="../admin/adminmainwindow.ui" line="132"/>
         <source>Print</source>
         <translation>Imprimir</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="134"/>
+        <location filename="../admin/adminmainwindow.ui" line="137"/>
         <source>Reset Account</source>
         <translation>Resetear saldo</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="139"/>
+        <location filename="../admin/adminmainwindow.ui" line="142"/>
         <source>New provider invoice</source>
         <translation>Nuevo albarán</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="144"/>
+        <location filename="../admin/adminmainwindow.ui" line="147"/>
         <source>Product Consumption</source>
         <translation>Consumo productos</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="149"/>
+        <location filename="../admin/adminmainwindow.ui" line="152"/>
         <source>Manage Families/Goods</source>
         <translation>Administrar Familias/Productos</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="154"/>
+        <location filename="../admin/adminmainwindow.ui" line="157"/>
         <source>Manage Providers</source>
         <translation>Administrar proveedores</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="159"/>
+        <location filename="../admin/adminmainwindow.ui" line="162"/>
         <source>Stock List</source>
         <translation>Listado stock</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="164"/>
+        <location filename="../admin/adminmainwindow.ui" line="167"/>
         <source>Deposit Check</source>
         <translation>Verificar ingresos</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="169"/>
+        <location filename="../admin/adminmainwindow.ui" line="172"/>
         <source>Account Balance</source>
         <translation>Balance cuenta</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="174"/>
+        <location filename="../admin/adminmainwindow.ui" line="177"/>
         <source>Exit</source>
         <translation>Salir</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="179"/>
+        <location filename="../admin/adminmainwindow.ui" line="182"/>
         <source>Slow payers</source>
         <translation>Socios morosos</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="184"/>
+        <location filename="../admin/adminmainwindow.ui" line="187"/>
         <source>Provider Invoice List</source>
         <translation>Lista albaranes proveedores</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="189"/>
+        <location filename="../admin/adminmainwindow.ui" line="192"/>
         <source>Manage reservations</source>
         <translation>Administrar reservas</translation>
     </message>
@@ -838,66 +838,6 @@
         <source>TextLabel</source>
         <translation></translation>
     </message>
-    <message>
-        <location filename="../commons/numitemdialog.ui" line="136"/>
-        <source>8</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../commons/numitemdialog.ui" line="152"/>
-        <source>1</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../commons/numitemdialog.ui" line="168"/>
-        <source>2</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../commons/numitemdialog.ui" line="184"/>
-        <source>3</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../commons/numitemdialog.ui" line="200"/>
-        <source>4</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../commons/numitemdialog.ui" line="216"/>
-        <source>5</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../commons/numitemdialog.ui" line="232"/>
-        <source>6</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../commons/numitemdialog.ui" line="248"/>
-        <source>9</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../commons/numitemdialog.ui" line="264"/>
-        <source>7</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../commons/numitemdialog.ui" line="280"/>
-        <source>C</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../commons/numitemdialog.ui" line="296"/>
-        <source>Ok</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../commons/numitemdialog.ui" line="312"/>
-        <source>0</source>
-        <translation></translation>
-    </message>
 </context>
 <context>
     <name>PassChangeDialog</name>
@@ -1049,61 +989,61 @@
 <context>
     <name>PenyaManager::AdminInvoiceListView</name>
     <message>
-        <location filename="../admin/admininvoicelistview.cpp" line="77"/>
-        <location filename="../admin/admininvoicelistview.cpp" line="82"/>
-        <location filename="../admin/admininvoicelistview.cpp" line="94"/>
-        <location filename="../admin/admininvoicelistview.cpp" line="105"/>
-        <location filename="../admin/admininvoicelistview.cpp" line="110"/>
+        <location filename="../admin/admininvoicelistview.cpp" line="106"/>
+        <location filename="../admin/admininvoicelistview.cpp" line="111"/>
+        <location filename="../admin/admininvoicelistview.cpp" line="123"/>
+        <location filename="../admin/admininvoicelistview.cpp" line="134"/>
+        <location filename="../admin/admininvoicelistview.cpp" line="139"/>
         <source>Database error</source>
         <translation>Error de base de datos</translation>
     </message>
     <message>
-        <location filename="../admin/admininvoicelistview.cpp" line="77"/>
-        <location filename="../admin/admininvoicelistview.cpp" line="82"/>
-        <location filename="../admin/admininvoicelistview.cpp" line="94"/>
-        <location filename="../admin/admininvoicelistview.cpp" line="105"/>
-        <location filename="../admin/admininvoicelistview.cpp" line="110"/>
+        <location filename="../admin/admininvoicelistview.cpp" line="106"/>
+        <location filename="../admin/admininvoicelistview.cpp" line="111"/>
+        <location filename="../admin/admininvoicelistview.cpp" line="123"/>
+        <location filename="../admin/admininvoicelistview.cpp" line="134"/>
+        <location filename="../admin/admininvoicelistview.cpp" line="139"/>
         <source>Contact administrator</source>
         <translation>Contacta con el administrador</translation>
     </message>
     <message>
-        <location filename="../admin/admininvoicelistview.cpp" line="89"/>
-        <location filename="../admin/admininvoicelistview.cpp" line="100"/>
+        <location filename="../admin/admininvoicelistview.cpp" line="118"/>
+        <location filename="../admin/admininvoicelistview.cpp" line="129"/>
         <source>Invalid data</source>
         <translation>Dato no váildo</translation>
     </message>
     <message>
-        <location filename="../admin/admininvoicelistview.cpp" line="89"/>
+        <location filename="../admin/admininvoicelistview.cpp" line="118"/>
         <source>Username not valid</source>
         <translation>Usuario no válido</translation>
     </message>
     <message>
-        <location filename="../admin/admininvoicelistview.cpp" line="100"/>
+        <location filename="../admin/admininvoicelistview.cpp" line="129"/>
         <source>Username found</source>
         <translation>Usuario encontrado</translation>
     </message>
     <message>
-        <location filename="../admin/admininvoicelistview.cpp" line="121"/>
+        <location filename="../admin/admininvoicelistview.cpp" line="150"/>
         <source>page %1 out of %2</source>
         <translation>página %1 de %2</translation>
     </message>
     <message>
-        <location filename="../admin/admininvoicelistview.cpp" line="149"/>
+        <location filename="../admin/admininvoicelistview.cpp" line="55"/>
         <source>Ref#</source>
         <translation>ref:</translation>
     </message>
     <message>
-        <location filename="../admin/admininvoicelistview.cpp" line="150"/>
+        <location filename="../admin/admininvoicelistview.cpp" line="56"/>
         <source>Date</source>
         <translation>Fecha</translation>
     </message>
     <message>
-        <location filename="../admin/admininvoicelistview.cpp" line="151"/>
+        <location filename="../admin/admininvoicelistview.cpp" line="57"/>
         <source>Total</source>
         <translation>Total</translation>
     </message>
     <message>
-        <location filename="../admin/admininvoicelistview.cpp" line="152"/>
+        <location filename="../admin/admininvoicelistview.cpp" line="58"/>
         <source>Username</source>
         <translation>nº Socio</translation>
     </message>
@@ -2015,50 +1955,50 @@
 <context>
     <name>PenyaManager::ProviderInvoiceListView</name>
     <message>
-        <location filename="../admin/providerinvoicelistview.cpp" line="40"/>
+        <location filename="../admin/providerinvoicelistview.cpp" line="42"/>
         <source>invoice ID</source>
         <translation>Id Recibo</translation>
     </message>
     <message>
-        <location filename="../admin/providerinvoicelistview.cpp" line="41"/>
+        <location filename="../admin/providerinvoicelistview.cpp" line="43"/>
         <source>Total</source>
         <translation>Total</translation>
     </message>
     <message>
-        <location filename="../admin/providerinvoicelistview.cpp" line="42"/>
+        <location filename="../admin/providerinvoicelistview.cpp" line="44"/>
         <source>Date</source>
         <translation>Fecha</translation>
     </message>
     <message>
-        <location filename="../admin/providerinvoicelistview.cpp" line="43"/>
+        <location filename="../admin/providerinvoicelistview.cpp" line="45"/>
         <source>Provider</source>
         <translation>Proveedor</translation>
     </message>
     <message>
-        <location filename="../admin/providerinvoicelistview.cpp" line="101"/>
-        <location filename="../admin/providerinvoicelistview.cpp" line="132"/>
+        <location filename="../admin/providerinvoicelistview.cpp" line="106"/>
         <location filename="../admin/providerinvoicelistview.cpp" line="137"/>
-        <location filename="../admin/providerinvoicelistview.cpp" line="143"/>
+        <location filename="../admin/providerinvoicelistview.cpp" line="142"/>
         <location filename="../admin/providerinvoicelistview.cpp" line="148"/>
+        <location filename="../admin/providerinvoicelistview.cpp" line="153"/>
         <source>Database error</source>
         <translation>Error de base de datos</translation>
     </message>
     <message>
-        <location filename="../admin/providerinvoicelistview.cpp" line="101"/>
-        <location filename="../admin/providerinvoicelistview.cpp" line="132"/>
+        <location filename="../admin/providerinvoicelistview.cpp" line="106"/>
         <location filename="../admin/providerinvoicelistview.cpp" line="137"/>
-        <location filename="../admin/providerinvoicelistview.cpp" line="143"/>
+        <location filename="../admin/providerinvoicelistview.cpp" line="142"/>
         <location filename="../admin/providerinvoicelistview.cpp" line="148"/>
+        <location filename="../admin/providerinvoicelistview.cpp" line="153"/>
         <source>Contact administrator</source>
         <translation>Contacta con el administrador</translation>
     </message>
     <message>
-        <location filename="../admin/providerinvoicelistview.cpp" line="107"/>
+        <location filename="../admin/providerinvoicelistview.cpp" line="112"/>
         <source>All providers</source>
         <translation>Todos</translation>
     </message>
     <message>
-        <location filename="../admin/providerinvoicelistview.cpp" line="158"/>
+        <location filename="../admin/providerinvoicelistview.cpp" line="163"/>
         <source>page %1 out of %2</source>
         <translation>página %1 de %2</translation>
     </message>
@@ -2545,12 +2485,22 @@
         <translation>Correc. Ingr.</translation>
     </message>
     <message>
-        <location filename="../commons/guiutils.cpp" line="208"/>
+        <location filename="../commons/guiutils.cpp" line="162"/>
+        <source>Yes</source>
+        <translation>Si</translation>
+    </message>
+    <message>
+        <location filename="../commons/guiutils.cpp" line="163"/>
+        <source>No</source>
+        <translation>No</translation>
+    </message>
+    <message>
+        <location filename="../commons/guiutils.cpp" line="211"/>
         <source>invoice ref: %1</source>
         <translation>ref de sobre %1</translation>
     </message>
     <message>
-        <location filename="../commons/guiutils.cpp" line="216"/>
+        <location filename="../commons/guiutils.cpp" line="219"/>
         <source>deposit ref: %1</source>
         <translation>Ref. deposito %1 :</translation>
     </message>

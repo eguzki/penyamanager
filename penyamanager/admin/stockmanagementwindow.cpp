@@ -2,8 +2,8 @@
 
 #include <QFileDialog>
 #include <QTextStream>
-#include <QMessageBox>
 
+#include <commons/utils.h>
 #include <commons/guiutils.h>
 #include <commons/singletons.h>
 #include "stockmanagementwindow.h"
@@ -74,22 +74,33 @@ namespace PenyaManager {
     void StockManagementWindow::on_csvPushButton_clicked()
     {
         // Assume product list is not empty (buttons should be disabled)
-        QString filename = QFileDialog::getSaveFileName(this, tr("Export CSV"));
-
-        if (filename.isNull()){
+        // open file dialog
+        // start in home dir
+        Singletons::m_pDialogManager->getOpenFileName(this, tr("Open File..."), QDir::homePath(),
+                tr("CSV Files (*.csv)"), QFileDialog::AnyFile,
+                std::bind(&StockManagementWindow::onStockCsvSelected, this, _1)
+                );
+        // nothing should be added here
+    }
+    //
+    void StockManagementWindow::onStockCsvSelected(const QString &fn)
+    {
+        if (fn.isNull()){
             return;
         }
+        
+        QString filename = Utils::addSuffix(fn, "csv");
 
         // fetch data
         StockProductItemListResultPtr pStockProductItemListResultPtr = Singletons::m_pDAO->getAllStockProductsList();
         if (pStockProductItemListResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
 
         QFile f(filename);
         if (!f.open( QIODevice::WriteOnly )) {
-            QMessageBox::warning(this, "Unable to save file", "Error opening " + filename);
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Error opening %1").arg(filename), [](){});
             return;
         }
 
@@ -104,7 +115,8 @@ namespace PenyaManager {
             out << pStockProductItemPtr->m_name << ", " << QString::number(pStockProductItemPtr->m_stock) << endl;
         }
         f.close();
-        QMessageBox::information(this, tr("Export CSV"), tr("Successfully exported. Filename: %1").arg(filename));
+        Singletons::m_pDialogManager->infoMessageBox(this, tr("Successfully exported. Filename: %1").arg(filename), [](){});
+        // nothing should be added here
     }
     //
     void StockManagementWindow::on_prevPagePushButton_clicked()
@@ -123,12 +135,12 @@ namespace PenyaManager {
     {
         StockProductItemListResultPtr pStockProductItemListResultPtr = Singletons::m_pDAO->getStockProductsList(m_currentPage, Constants::kAdminProductListPageCount);
         if (pStockProductItemListResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         ProductListStatsResultPtr pProductListStatsResultPtr = Singletons::m_pDAO->getProductsListStats();
         if (pProductListStatsResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         // enable-disable pagination buttons

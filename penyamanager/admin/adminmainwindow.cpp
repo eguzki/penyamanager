@@ -1,7 +1,5 @@
 //
 
-#include <QMessageBox>
-
 #include <commons/singletons.h>
 #include "slowpayersview.h"
 #include "admininvoicelistview.h"
@@ -127,6 +125,7 @@ namespace PenyaManager {
     //
     void AdminMainWindow::on_actionExit_triggered()
     {
+        Singletons::m_pDialogManager->onInactivityTimeout();
         // stop timer
         this->m_pInactivityTimer->stop();
         // call admin login window

@@ -48,6 +48,12 @@ namespace PenyaManager {
                     Uint32 &rowCount,
                     const NewReservationCallback newReservationCallback,
                     const UpdateReservationCallback updateRervationCallback);
+            //
+            void onTableReservationDone();
+            //
+            void onTableReservationUpdateDone();
+            //
+            void onTableReservationCancelled();
 
         private slots:
             //
@@ -57,7 +63,7 @@ namespace PenyaManager {
             //
             void onUpdate_table_reservation_button_clicked(int itemId);
             //
-            void onCancelButton_clicked(int reservationId, ReservationItemType itemType);
+            void onCancelButton_clicked(int reservationId);
             //
             void on_lunchButton_clicked(bool checked);
             //

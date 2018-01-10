@@ -1,7 +1,5 @@
 //
 
-#include <QMessageBox>
-
 #include <commons/guiutils.h>
 #include <commons/singletons.h>
 #include "providerinvoicelistview.h"
@@ -18,6 +16,8 @@ namespace PenyaManager {
     {
         ui->setupUi(this);
         initializeTable();
+        this->ui->fromCalendarWidget->setLocale(Singletons::m_pTranslationManager->getLocale());
+        this->ui->toCalendarWidget->setLocale(Singletons::m_pTranslationManager->getLocale());
     }
     //
     ProviderInvoiceListView::~ProviderInvoiceListView()
@@ -48,6 +48,8 @@ namespace PenyaManager {
     {
         this->ui->retranslateUi(this);
         translateTable();
+        this->ui->fromCalendarWidget->setLocale(Singletons::m_pTranslationManager->getLocale());
+        this->ui->toCalendarWidget->setLocale(Singletons::m_pTranslationManager->getLocale());
     }
     //
     void ProviderInvoiceListView::initializeTable()
@@ -55,10 +57,11 @@ namespace PenyaManager {
         // table
         this->ui->invoicesTableWidget->setColumnCount(4);
         translateTable();
-        this->ui->invoicesTableWidget->setColumnWidth(0, 200);
-        this->ui->invoicesTableWidget->setColumnWidth(1, 100);
-        this->ui->invoicesTableWidget->setColumnWidth(2, 150);
-        this->ui->invoicesTableWidget->setColumnWidth(3, 150);
+        Uint32 column = 0;
+        this->ui->invoicesTableWidget->setColumnWidth(column++, 200);
+        this->ui->invoicesTableWidget->setColumnWidth(column++, 100);
+        this->ui->invoicesTableWidget->setColumnWidth(column++, 150);
+        this->ui->invoicesTableWidget->setColumnWidth(column++, 150);
     }
     //
     void ProviderInvoiceListView::on_searchPushButton_clicked()
@@ -98,7 +101,7 @@ namespace PenyaManager {
 
         ProviderListResultPtr pProviderListResultPtr = Singletons::m_pDAO->getProviderList();
         if (pProviderListResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
 
@@ -129,23 +132,23 @@ namespace PenyaManager {
         if (providerId >= 0) {
             pProviderInvoiceListResult = Singletons::m_pDAO->getProviderInvoiceListByProviderId(providerId, fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
             if (pProviderInvoiceListResult->m_error) {
-                QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+                Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
             pProviderInvoiceListStatsResult = Singletons::m_pDAO->getProviderInvoiceListByProviderIdStats(providerId, fromDate, toDate);
             if (pProviderInvoiceListStatsResult->m_error) {
-                QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+                Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
         } else {
             pProviderInvoiceListResult = Singletons::m_pDAO->getProviderInvoiceList(fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
             if (pProviderInvoiceListResult->m_error) {
-                QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+                Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
             pProviderInvoiceListStatsResult = Singletons::m_pDAO->getProviderInvoiceListStats(fromDate, toDate);
             if (pProviderInvoiceListStatsResult->m_error) {
-                QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+                Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
         }

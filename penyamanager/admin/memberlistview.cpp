@@ -1,8 +1,6 @@
 //
 
-#include <QFileDialog>
-#include <QMessageBox>
-
+#include <commons/utils.h>
 #include <commons/guiutils.h>
 #include <commons/singletons.h>
 #include "memberlistview.h"
@@ -79,12 +77,12 @@ namespace PenyaManager {
         bool filterPostalSend = this->ui->filterPostalUsersCheckBox->checkState() == Qt::CheckState::Checked;
         pMemberListResultPtr = Singletons::m_pDAO->getMemberList(filterPostalSend, currentPage-1, Constants::kInvoiceListPageCount);
         if (pMemberListResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         pMemberListStatsResultPtr = Singletons::m_pDAO->getMemberListStats(filterPostalSend);
         if (pMemberListStatsResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         // enable-disable pagination buttons
@@ -173,24 +171,35 @@ namespace PenyaManager {
     void MemberListView::on_csvPushButton_clicked()
     {
         // Assume member list is not empty (buttons should be disabled)
-        QString filename = QFileDialog::getSaveFileName(this, tr("Export CSV"));
-
-        if (filename.isNull()){
+        // open file dialog
+        // start in home dir
+        Singletons::m_pDialogManager->getOpenFileName(this, tr("Open File..."), QDir::homePath(),
+                tr("CSV Files (*.csv)"), QFileDialog::AnyFile,
+                std::bind(&MemberListView::onMemberListCsvSelected, this, _1)
+                );
+        // nothing should be added here
+    }
+    //
+    void MemberListView::onMemberListCsvSelected(const QString &fn)
+    {
+        if (fn.isNull()){
             return;
         }
+
+        QString filename = Utils::addSuffix(fn, "csv");
 
         // fetch data
         bool filterPostalSend = this->ui->filterPostalUsersCheckBox->checkState() == Qt::CheckState::Checked;
         // max 1M users
         MemberListResultPtr pMemberListResultPtr = Singletons::m_pDAO->getMemberList(filterPostalSend, 0, 1000000);
         if (pMemberListResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
 
         QFile f(filename);
         if (!f.open( QIODevice::WriteOnly )) {
-            QMessageBox::warning(this, tr("Unable to save file"), tr("Error opening %1").arg(filename));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Error opening %1").arg(filename), [](){});
             return;
         }
         QTextStream out(&f);
@@ -255,7 +264,8 @@ namespace PenyaManager {
                 << endl;
         }
         f.close();
-        QMessageBox::information(this, tr("Export CSV"), tr("Successfully exported. Filename: %1").arg(filename));
+        Singletons::m_pDialogManager->infoMessageBox(this, tr("Successfully exported. Filename: %1").arg(filename), [](){});
+        // nothing should be added here
     }
     //
     void MemberListView::on_filterPostalUsersCheckBox_clicked()
@@ -268,16 +278,17 @@ namespace PenyaManager {
         // get post activated members
         MemberListResultPtr pMemberListResultPtr = Singletons::m_pDAO->getMemberList(true, 0, 1000000);
         if (pMemberListResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         if (pMemberListResultPtr->m_list->size() == 0) {
-            QMessageBox::information(this, tr("Unable to print"), tr("There are no users with postsend activated"));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("There are no users with postsend activated"), [](){});
             return;
         }
         // print post activated member list
         GuiUtils::printPostalMembers(pMemberListResultPtr->m_list);
-        QMessageBox::information(this, tr("Print postal members"), tr("successfull"));
+        Singletons::m_pDialogManager->infoMessageBox(this, tr("successfull"), [](){});
+        // nothing should be added here
     }
     //
     void MemberListView::on_prevPagePushButton_clicked()

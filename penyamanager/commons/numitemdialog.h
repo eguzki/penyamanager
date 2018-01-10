@@ -3,7 +3,7 @@
 
 #include <QDialog>
 
-#include <commons/DataTypes.h>
+#include "DataTypes.h"
 
 namespace Ui {
     class NumItemDialog;
@@ -12,19 +12,21 @@ namespace Ui {
 namespace PenyaManager {
 
     //
+    typedef std::function<void(QString resultStr)> InternalNumItemDialogCallback;
+    //
     class NumItemDialog : public QDialog
     {
         Q_OBJECT
 
         public:
             //
-            explicit NumItemDialog(QWidget *parent, QString title = "", bool passMode = false, Uint32 maxDigits = 5);
+            explicit NumItemDialog(QWidget *parent, QString title, bool passMode = false, Uint32 maxDigits = 5);
             //
-            ~NumItemDialog();
+            virtual ~NumItemDialog();
             //
             QString getKeyStr();
             //
-            Uint32 getKey();
+            void open(QObject *receiver, const char *member);
 
         private slots:
             //

@@ -32,12 +32,19 @@ namespace PenyaManager {
         this->connect(this->ui->toolButton_9, &QToolButton::clicked, std::bind(&NumItemDialog::onButtonClick, this, 9));
 
         this->ui->numDisplayLabel->setText("");
+        this->ui->toolButton_Done->setEnabled(false);
     }
 
     //
     NumItemDialog::~NumItemDialog()
     {
         delete ui;
+    }
+    //
+    void NumItemDialog::open(QObject *receiver, const char *member)
+    {
+        this->connect(this, SIGNAL(finished(int)), receiver, member);
+        QDialog::open();
     }
 
     //
@@ -48,6 +55,10 @@ namespace PenyaManager {
         {
             // do not allow "big" numbers
             return;
+        }
+
+        if (!this->ui->toolButton_Done->isEnabled()) {
+            this->ui->toolButton_Done->setEnabled(true);
         }
 
         this->m_keyStr.append(QString::number(num));
@@ -67,15 +78,11 @@ namespace PenyaManager {
     {
         this->ui->numDisplayLabel->setText("");
         this->m_keyStr = QString("");
+        this->ui->toolButton_Done->setEnabled(false);
     }
     //
     QString NumItemDialog::getKeyStr()
     {
         return this->m_keyStr;
-    }
-    //
-    Uint32 NumItemDialog::getKey()
-    {
-        return this->m_keyStr.toUInt();
     }
 }

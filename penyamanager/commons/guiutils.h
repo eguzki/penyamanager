@@ -2,7 +2,6 @@
 #define GUIUTILS_H
 
 #include <QPixmap>
-#include <QMessageBox>
 
 #include <objs/Transaction.h>
 #include <objs/Member.h>
@@ -21,12 +20,6 @@ namespace PenyaManager {
             static void printText(const QString& html);
             //
             static void printPostalMembers(const MemberListPtr pMemberListPtr);
-            //
-            static void infoMessageBox(QWidget *parent, const QString &message);
-            //
-            static void criticalMessageBox(QWidget *parent, const QString &message);
-            //
-            static QMessageBox::StandardButton questionMessageBox(QWidget *parent, const QString &message);
             //
             static QString invoiceAccountDescription(const Int32 invoiceId);
             //

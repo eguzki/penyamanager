@@ -37,6 +37,8 @@ namespace PenyaManager {
             void initializeTable();
             //
             void translateTable();
+            //
+            void onProductExpensesCsvSelected(const QString &fn);
 
         private slots:
             //

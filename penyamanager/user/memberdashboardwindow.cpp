@@ -1,11 +1,8 @@
 //
 
-#include <QMessageBox>
-
 #include <commons/constants.h>
 #include <commons/guiutils.h>
 #include <commons/singletons.h>
-#include <commons/numitemdialog.h>
 #include <commons/familyitemwidget.h>
 #include <commons/productitemwidget.h>
 #include "memberdashboardwindow.h"
@@ -47,6 +44,13 @@ namespace PenyaManager {
         this->ui->invoiceTableWidget->setColumnWidth(column++, 56);
     }
     //
+    void MemberDashboardWindow::retranslate()
+    {
+        this->ui->retranslateUi(this);
+        this->m_pMemberProfileGroupBox->retranslate();
+        translateTable();
+    }
+    //
     void MemberDashboardWindow::translateTable()
     {
         // table Header
@@ -66,7 +70,7 @@ namespace PenyaManager {
         //
         MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberById(Singletons::m_pCurrMember->m_id);
         if (pMemberResultPtr->m_error) {
-            GuiUtils::criticalMessageBox(this, tr("Database error. Contact administrator"));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         if (!pMemberResultPtr->m_member) {
@@ -80,13 +84,12 @@ namespace PenyaManager {
         Singletons::m_pCurrMember = pCurrMemberPtr;
         this->m_pMemberProfileGroupBox->init(pCurrMemberPtr);
 
-
         //
         // Loading families
         //
         ProductFamilyListResultPtr pfListPtr = Singletons::m_pDAO->getProductFamilies(true);
         if (pfListPtr->m_error) {
-            GuiUtils::criticalMessageBox(this, tr("Database error. Contact administrator"));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
 
@@ -99,32 +102,43 @@ namespace PenyaManager {
         //
         InvoiceResultPtr pInvoiceResultPtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMemberPtr->m_id);
         if (pInvoiceResultPtr->m_error) {
-            GuiUtils::criticalMessageBox(this, tr("Database error. Contact administrator"));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         // pInvoicePtr could be null
         m_currentPage = 0;
         fillInvoiceData(pInvoiceResultPtr->m_pInvoice);
 
+        // check negative balance
+        if (pMemberResultPtr->m_member->m_balance < 0)
+        {
+            // User is slow payer
+            Singletons::m_pDialogManager->criticalMessageBox(this,
+                    tr("Your current balance is negative: %1 €").arg(pMemberResultPtr->m_member->m_balance, 0, 'f', 2),
+                    std::bind(&MemberDashboardWindow::checkCreditLimit, this)
+                    );
+            return;
+        }
+        checkCreditLimit();
+    }
+    //
+    void MemberDashboardWindow::checkCreditLimit()
+    {
+        MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
         //
-        // check credir limit
+        // check credit limit
         //
-        if (pCurrMemberPtr->m_balance < -Constants::kCreditLimit)
+        if (pCurrMemberPtr->m_balance < Constants::kCreditLimit)
         {
             // User has gone over credit limit. Do not allow creating invoice
-            GuiUtils::criticalMessageBox(this, tr("Your current balance is over limit (%1 €): %2 €").arg(Constants::kCreditLimit, 0, 'f', 2).arg(pCurrMemberPtr->m_balance, 0, 'f', 2));
             this->ui->familyListWidget->setDisabled(true);
             this->ui->invoiceCloseButton->setDisabled(true);
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Your current balance is over limit (%1 €): %2 €").arg(Constants::kCreditLimit, 0, 'f', 2).arg(pCurrMemberPtr->m_balance, 0, 'f', 2), [](){});
+            return;
         } else {
             this->ui->familyListWidget->setDisabled(false);
             this->ui->invoiceCloseButton->setDisabled(false);
         }
-    }
-    //
-    void MemberDashboardWindow::retranslate()
-    {
-        this->ui->retranslateUi(this);
-        translateTable();
     }
     //
     void MemberDashboardWindow::createProductItemWidget(const ProductItemPtr &pfPtr, QListWidget *pList)
@@ -170,8 +184,6 @@ namespace PenyaManager {
         {
             createFamilyWidget(*iter, this->ui->familyListWidget);
         }
-
-
     }
 
     //
@@ -181,7 +193,7 @@ namespace PenyaManager {
 
         ProductItemListResultPtr pfListPtr = Singletons::m_pDAO->getProductsFromFamily(familyId, true);
         if (pfListPtr->m_error) {
-            GuiUtils::criticalMessageBox(this, tr("Database error. Contact administrator"));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
 
@@ -214,12 +226,12 @@ namespace PenyaManager {
         // get invoice products
         InvoiceProductItemListResultPtr pInvoiceProductItemListResultPtr = Singletons::m_pDAO->getInvoiceProductItems(pInvoicePtr->m_id, m_currentPage, Constants::kDashboardProductListPageCount);
         if (pInvoiceProductItemListResultPtr->m_error) {
-            GuiUtils::criticalMessageBox(this, tr("Database error. Contact administrator"));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         InvoiceProductItemStatsResultPtr invoiceProductItemStatsResultPtr = Singletons::m_pDAO->getInvoiceProductItemsStats(pInvoicePtr->m_id);
         if (invoiceProductItemStatsResultPtr->m_error) {
-            GuiUtils::criticalMessageBox(this, tr("Database error. Contact administrator"));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         // enable-disable pagination buttons
@@ -281,7 +293,7 @@ namespace PenyaManager {
     {
         // check invoice is not empty
         if (!this->ui->invoiceTableWidget->rowCount()) {
-            GuiUtils::infoMessageBox(this, tr("Current invoice is empty"));
+            Singletons::m_pDialogManager->infoMessageBox(this, tr("Current invoice is empty"), [](){});
             return;
         }
         m_switchCentralWidgetCallback(WindowKey::kInvoiceWindowKey);
@@ -290,7 +302,14 @@ namespace PenyaManager {
     void MemberDashboardWindow::on_invoiceResetButton_clicked()
     {
         // ask for confirmation
-        QMessageBox::StandardButton answerButton = GuiUtils::questionMessageBox(this, tr("Are you sure to reset invoice?"));
+        Singletons::m_pDialogManager->questionMessageBox(this,
+                tr("Are you sure to reset invoice?"),
+                std::bind(&MemberDashboardWindow::onInvoiceReset, this, _1)
+                );
+    }
+    //
+    void MemberDashboardWindow::onInvoiceReset(QMessageBox::StandardButton answerButton)
+    {
         if (answerButton != QMessageBox::Yes) {
             return;
         }
@@ -299,7 +318,7 @@ namespace PenyaManager {
         // always fresh invoice
         InvoiceResultPtr pInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
         if (pInvoicePtr->m_error) {
-            GuiUtils::criticalMessageBox(this, tr("Database error. Contact administrator"));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         if (pInvoicePtr->m_pInvoice) {
@@ -334,11 +353,19 @@ namespace PenyaManager {
             return;
         }
         Int32 productId = rowMap->second;
+
+        Singletons::m_pDialogManager->numItemDialog(this, tr("Number of items?"),
+                std::bind(&MemberDashboardWindow::onNumItemSelectedFromInvoice, this, productId, _1)
+                );
+    }
+    //
+    void MemberDashboardWindow::onNumItemSelectedFromInvoice(Int32 productId, QString resultStr)
+    {
         MemberPtr pCurrMember = Singletons::m_pCurrMember;
         // always fresh invoice
         InvoiceResultPtr pInvoiceResultPtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
         if (pInvoiceResultPtr->m_error) {
-            GuiUtils::criticalMessageBox(this, tr("Database error. Contact administrator"));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         if (!pInvoiceResultPtr->m_pInvoice) {
@@ -347,34 +374,22 @@ namespace PenyaManager {
             return;
         }
 
-        NumItemDialog numItemDialog(this, tr("Number of items?"));
-        numItemDialog.exec();
-        Uint32 count = numItemDialog.getKey();
+        Uint32 count = resultStr.toUInt();
         if (!count) {
-            // count was 0 -> remove item from invoice
-            bool ok = Singletons::m_pServices->removeInvoiceProductId(pInvoiceResultPtr->m_pInvoice->m_id, productId);
-            if (!ok) {
-                Singletons::m_pLogger->Error(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kDashboard,
-                        QString("Could not remove invoice product. Invoice id %1 Product id %2").arg(pInvoiceResultPtr->m_pInvoice->m_id).arg(productId));
-                GuiUtils::criticalMessageBox(this, tr("Database error. Contact administrator"));
-                return;
-            }
-            // Check invoice was removed
-            InvoiceResultPtr pNewInvoicePtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
-            m_currentPage = 0;
-            fillInvoiceData(pNewInvoicePtr->m_pInvoice);
-        } else {
-            // count was not 0 -> update item from invoice
-            BoolResult boolResult = Singletons::m_pServices->increaseProductInvoice(pInvoiceResultPtr->m_pInvoice->m_id, productId, count);
-            if (boolResult.error) {
-                Singletons::m_pLogger->Error(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kDashboard,
-                        QString("Could not increase invoice product. Invoice id %1, product id %2, count %3").arg(pInvoiceResultPtr->m_pInvoice->m_id).arg(productId).arg(count));
-                GuiUtils::criticalMessageBox(this, tr("Database error. Contact administrator"));
-                return;
-            }
-            // no need to reset m_currentPage
-            fillInvoiceData(pInvoiceResultPtr->m_pInvoice);
+            // nothing to add or create
+            return;
         }
+
+        // count was not 0 -> update item from invoice
+        BoolResult boolResult = Singletons::m_pServices->increaseProductInvoice(pInvoiceResultPtr->m_pInvoice->m_id, productId, count);
+        if (boolResult.error) {
+            Singletons::m_pLogger->Error(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kDashboard,
+                    QString("Could not increase invoice product. Invoice id %1, product id %2, count %3").arg(pInvoiceResultPtr->m_pInvoice->m_id).arg(productId).arg(count));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+            return;
+        }
+        // no need to reset m_currentPage
+        fillInvoiceData(pInvoiceResultPtr->m_pInvoice);
     }
     //
     void MemberDashboardWindow::on_accountButton_clicked()
@@ -398,9 +413,14 @@ namespace PenyaManager {
     void MemberDashboardWindow::on_productListWidget_itemClicked(QListWidgetItem *item)
     {
         Int32 productId = item->data(Constants::kIdRole).toInt();
-        NumItemDialog numItemDialog(this, tr("Number of items?"));
-        numItemDialog.exec();
-        Uint32 count = numItemDialog.getKey();
+        Singletons::m_pDialogManager->numItemDialog(this, tr("Number of items?"),
+                std::bind(&MemberDashboardWindow::onNumItemSelectedFromProductList, this, productId, _1)
+                );
+    }
+    //
+    void MemberDashboardWindow::onNumItemSelectedFromProductList(Int32 productId, QString resultStr)
+    {
+        Uint32 count = resultStr.toUInt();
         if (!count) {
             // nothing to add or create
             return;
@@ -408,14 +428,14 @@ namespace PenyaManager {
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
         InvoiceResultPtr pInvoiceResultPtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMemberPtr->m_id);
         if (pInvoiceResultPtr->m_error) {
-            GuiUtils::criticalMessageBox(this, tr("Database error. Contact administrator"));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         if (!pInvoiceResultPtr->m_pInvoice) {
             // there is no active invoice, create it!
             pInvoiceResultPtr = Singletons::m_pDAO->createInvoice(pCurrMemberPtr->m_id);
             if (pInvoiceResultPtr->m_error) {
-                GuiUtils::criticalMessageBox(this, tr("Database error. Contact administrator"));
+                Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
         }
@@ -424,7 +444,7 @@ namespace PenyaManager {
         if (boolResult.error) {
             Singletons::m_pLogger->Error(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kDashboard,
                     QString("Could not increase invoice product. Invoice id %1, product id %2, count %3").arg(pInvoiceResultPtr->m_pInvoice->m_id).arg(productId).arg(count));
-            GuiUtils::criticalMessageBox(this, tr("Database error. Contact administrator"));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         // when no rowsAffected (new invoice), reset m_currentPage
@@ -437,40 +457,12 @@ namespace PenyaManager {
     //
     void MemberDashboardWindow::on_productRemoveButton_clicked(int productId, QString productName, Float totalPrice)
     {
-        MemberPtr pCurrMember = Singletons::m_pCurrMember;
-        // always fresh invoice
-        InvoiceResultPtr pInvoiceResultPtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
-        if (pInvoiceResultPtr->m_error) {
-            GuiUtils::criticalMessageBox(this, tr("Database error. Contact administrator"));
-            return;
-        }
-        if (!pInvoiceResultPtr->m_pInvoice)
-        {
-            Singletons::m_pLogger->Warn(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kDashboard,
-                    QString("Unable to find current active invoice, userid %1").arg(pCurrMember->m_id));
-            GuiUtils::criticalMessageBox(this, tr("Database error. Contact administrator"));
-            return;
-        }
         // ask for confirmation
-        QMessageBox::StandardButton answerButton = GuiUtils::questionMessageBox(this, tr("Delete %1 for %2 €?").arg(productName).arg(QString::number(totalPrice, 'f', 2)));
-        if (answerButton != QMessageBox::Yes) {
-            return;
-        }
-        bool ok = Singletons::m_pServices->removeInvoiceProductId(pInvoiceResultPtr->m_pInvoice->m_id, productId);
-        if (!ok) {
-            Singletons::m_pLogger->Error(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kDashboard,
-                    QString("removeInvoiceProductId. invoiceid %1, productid %2").arg(pInvoiceResultPtr->m_pInvoice->m_id).arg(productId));
-            GuiUtils::criticalMessageBox(this, tr("Database error. Contact administrator"));
-            return;
-        }
-        // Check invoice was removed
-        InvoiceResultPtr pNewInvoiceResultPtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
-        if (pNewInvoiceResultPtr->m_error) {
-            GuiUtils::criticalMessageBox(this, tr("Database error. Contact administrator"));
-            return;
-        }
-        m_currentPage = 0;
-        fillInvoiceData(pNewInvoiceResultPtr->m_pInvoice);
+        Singletons::m_pDialogManager->questionMessageBox(this,
+                tr("Delete %1 for %2 €?").arg(productName).arg(QString::number(totalPrice, 'f', 2)),
+                std::bind(&MemberDashboardWindow::on_productRemove_result, this, productId, _1)
+                );
+        // no code should be added here
     }
     //
     void MemberDashboardWindow::on_prevPagePushButton_clicked()
@@ -478,7 +470,7 @@ namespace PenyaManager {
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
         InvoiceResultPtr pInvoiceResultPtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMemberPtr->m_id);
         if (pInvoiceResultPtr->m_error) {
-            GuiUtils::criticalMessageBox(this, tr("Database error. Contact administrator"));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         m_currentPage--;
@@ -490,11 +482,49 @@ namespace PenyaManager {
         MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
         InvoiceResultPtr pInvoiceResultPtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMemberPtr->m_id);
         if (pInvoiceResultPtr->m_error) {
-            GuiUtils::criticalMessageBox(this, tr("Database error. Contact administrator"));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         m_currentPage++;
         fillInvoiceData(pInvoiceResultPtr->m_pInvoice);
+    }
+    //
+    void MemberDashboardWindow::on_productRemove_result(int productId, QMessageBox::StandardButton answerButton)
+    {
+        if (answerButton != QMessageBox::Yes) {
+            return;
+        }
+
+        MemberPtr pCurrMember = Singletons::m_pCurrMember;
+        // always fresh invoice
+        InvoiceResultPtr pInvoiceResultPtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
+        if (pInvoiceResultPtr->m_error) {
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+            return;
+        }
+        if (!pInvoiceResultPtr->m_pInvoice)
+        {
+            Singletons::m_pLogger->Warn(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kDashboard,
+                    QString("Unable to find current active invoice, userid %1").arg(pCurrMember->m_id));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+            return;
+        }
+
+        bool ok = Singletons::m_pServices->removeInvoiceProductId(pInvoiceResultPtr->m_pInvoice->m_id, productId);
+        if (!ok) {
+            Singletons::m_pLogger->Error(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kDashboard,
+                    QString("removeInvoiceProductId. invoiceid %1, productid %2").arg(pInvoiceResultPtr->m_pInvoice->m_id).arg(productId));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+            return;
+        }
+        // Check invoice was removed
+        InvoiceResultPtr pNewInvoiceResultPtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMember->m_id);
+        if (pNewInvoiceResultPtr->m_error) {
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+            return;
+        }
+        m_currentPage = 0;
+        fillInvoiceData(pNewInvoiceResultPtr->m_pInvoice);
     }
 }
 

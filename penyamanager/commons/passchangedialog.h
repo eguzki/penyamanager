@@ -18,9 +18,11 @@ namespace PenyaManager {
             //
             explicit PassChangeDialog(QWidget *parent = 0);
             //
-            ~PassChangeDialog();
+            virtual ~PassChangeDialog();
             //
             QString getPassword();
+            //
+            void open(QObject *receiver, const char *member);
 
         private slots:
             //

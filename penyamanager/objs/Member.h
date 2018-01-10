@@ -85,6 +85,8 @@ namespace PenyaManager
 
     //
     typedef QSharedPointer<Member> MemberPtr;
+    //
+    MemberPtr GetInvalidMember();
 
     //
     class MemberResult
@@ -101,7 +103,7 @@ namespace PenyaManager
             //
             MemberPtr          m_member;
     };
-
+    //
     typedef QSharedPointer<MemberResult> MemberResultPtr;
 
     //

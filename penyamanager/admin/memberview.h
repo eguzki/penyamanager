@@ -31,6 +31,12 @@ namespace PenyaManager {
             void fillMemberInfo(Int32 memberId);
             //
             void initialize();
+            //
+            void onPassGiven(int res, QString passwd);
+            //
+            void onMemberUpdated();
+            //
+            void onMemberImageSelected(const QString &fn);
 
         private slots:
             //

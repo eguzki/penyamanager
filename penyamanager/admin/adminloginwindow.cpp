@@ -25,7 +25,7 @@ namespace PenyaManager {
         this->ui->passInput->setValidator(pPassIntValidator);
 
         // load code build
-        QFile versionFile(":VERSION");
+        QFile versionFile(":VERSION_ADMIN");
         versionFile.open(QIODevice::ReadOnly | QIODevice::Text);
         QTextStream versionStream(&versionFile);
         versionStream.setCodec("UTF-8");
@@ -43,6 +43,7 @@ namespace PenyaManager {
         initializeLang();
         this->ui->passInput->clear();
         this->ui->loginInput->clear();
+        Singletons::m_pCurrMember = GetInvalidMember();
     }
     //
     void AdminLoginWindow::retranslate()

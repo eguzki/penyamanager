@@ -34,14 +34,16 @@ namespace PenyaManager {
             void on_imagePushButton_clicked();
             //
             void on_savePushButton_clicked();
-            //
-            void on_backPushButton_clicked();
 
         private:
             //
             void initialize();
             //
             void fillProviderInfo(Int32 providerId);
+            //
+            void onProviderUpdated();
+            //
+            void onProviderImageSelected(const QString &fn);
 
         private:
             //

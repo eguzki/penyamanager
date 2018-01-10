@@ -1,6 +1,5 @@
 //
 
-#include <QMessageBox>
 #include <commons/singletons.h>
 #include "admininvoicelistview.h"
 #include "ui_admininvoicelistview.h"
@@ -23,14 +22,40 @@ namespace PenyaManager {
 
         this->ui->fromCalendarWidget->setSelectedDate(fromIntialDate);
         this->ui->toCalendarWidget->setSelectedDate(toInitialDate);
+        this->ui->fromCalendarWidget->setLocale(Singletons::m_pTranslationManager->getLocale());
+        this->ui->toCalendarWidget->setLocale(Singletons::m_pTranslationManager->getLocale());
 
         this->ui->fromDateResultValueLabel->clear();
         this->ui->toDateResultValueLabel->clear();
+        initializeTable();
     }
     //
     AdminInvoiceListView::~AdminInvoiceListView()
     {
         delete ui;
+    }
+    //
+    void AdminInvoiceListView::initializeTable()
+    {
+        // table Header
+        // table
+        this->ui->invoicesTableWidget->setColumnCount(4);
+        translateTable();
+        Uint32 column = 0;
+        this->ui->invoicesTableWidget->setColumnWidth(column++, 100);
+        this->ui->invoicesTableWidget->setColumnWidth(column++, 300);
+        this->ui->invoicesTableWidget->setColumnWidth(column++, 200);
+        this->ui->invoicesTableWidget->setColumnWidth(column++, 100);
+    }
+    //
+    void AdminInvoiceListView::translateTable()
+    {
+        QStringList headers;
+        headers.append(tr("Ref#"));
+        headers.append(tr("Date"));
+        headers.append(tr("Total"));
+        headers.append(tr("Username"));
+        this->ui->invoicesTableWidget->setHorizontalHeaderLabels(headers);
     }
     //
     void AdminInvoiceListView::init()
@@ -43,6 +68,9 @@ namespace PenyaManager {
     void AdminInvoiceListView::retranslate()
     {
         this->ui->retranslateUi(this);
+        translateTable();
+        this->ui->fromCalendarWidget->setLocale(Singletons::m_pTranslationManager->getLocale());
+        this->ui->toCalendarWidget->setLocale(Singletons::m_pTranslationManager->getLocale());
     }
     //
     void AdminInvoiceListView::on_clearPushButton_clicked()
@@ -74,40 +102,40 @@ namespace PenyaManager {
             this->ui->memberIdLineEdit->clear();
             pInvoiceListResult = Singletons::m_pDAO->getInvoiceList(fromDate, toDate, m_currentPage, Constants::kAdminInvoiceListPageCount);
             if (pInvoiceListResult->m_error) {
-                QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+                Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
             pInvoiceListStatsResult = Singletons::m_pDAO->getInvoiceListStats(fromDate, toDate);
             if (pInvoiceListStatsResult->m_error) {
-                QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+                Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
         } else {
             bool ok;
             Int32 memberUsername = memberUsernameStr.toInt(&ok);
             if (!ok) {
-                QMessageBox::about(this, tr("Invalid data"), tr("Username not valid"));
+                Singletons::m_pDialogManager->infoMessageBox(this, tr("Username not valid"), [](){});
                 return;
             } else {
                 MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberByUsername(memberUsername);
                 if (pMemberResultPtr->m_error) {
-                    QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+                    Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
                     return;
                 }
                 if (!pMemberResultPtr->m_member)
                 {
                     // User could not be found
-                    QMessageBox::about(this, tr("Invalid data"), tr("Username found"));
+                    Singletons::m_pDialogManager->infoMessageBox(this, tr("Username not found"), [](){});
                     return;
                 }
                 pInvoiceListResult = Singletons::m_pDAO->getInvoiceListByMemberId(pMemberResultPtr->m_member->m_id, fromDate, toDate, m_currentPage, Constants::kAdminInvoiceListPageCount);
                 if (pInvoiceListResult->m_error) {
-                    QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+                    Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
                     return;
                 }
                 pInvoiceListStatsResult = Singletons::m_pDAO->getInvoiceListByMemberIdStats(pMemberResultPtr->m_member->m_id, fromDate, toDate);
                 if (pInvoiceListStatsResult->m_error) {
-                    QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+                    Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
                     return;
                 }
             }
@@ -141,20 +169,6 @@ namespace PenyaManager {
     //
     void AdminInvoiceListView::fillInvoiceList(InvoiceListPtr pInvoiceListPtr)
     {
-        // table
-        this->ui->invoicesTableWidget->setColumnCount(4);
-
-        // invoice table Header
-        QStringList headers;
-        headers.append(tr("Ref#"));
-        headers.append(tr("Date"));
-        headers.append(tr("Total"));
-        headers.append(tr("Username"));
-        this->ui->invoicesTableWidget->setHorizontalHeaderLabels(headers);
-        this->ui->invoicesTableWidget->setColumnWidth(0, 100);
-        this->ui->invoicesTableWidget->setColumnWidth(1, 300);
-        this->ui->invoicesTableWidget->setColumnWidth(2, 200);
-        this->ui->invoicesTableWidget->setColumnWidth(3, 100);
         // invoice table reset
         this->ui->invoicesTableWidget->clearContents();
         // internal data structure reset

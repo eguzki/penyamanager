@@ -51,4 +51,16 @@ namespace PenyaManager {
         SimpleCrypt crypto(Constants::kCryptKey);
         return crypto.decryptToString(plainText);
     }
+
+    //
+    // Add, if it does not exist already, given suffix to filename
+    QString Utils::addSuffix(const QString& fn, const QString &suffix)
+    {
+        QFileInfo fileInfo(fn);
+        QString result(fn);
+        if (fileInfo.suffix().toLower() != suffix.toLower()){
+            result = QString("%1.%2").arg(fn).arg(suffix);
+        }
+        return result;
+    }
 }

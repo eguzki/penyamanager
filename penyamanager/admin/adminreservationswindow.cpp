@@ -1,8 +1,5 @@
 //
 
-#include <QMessageBox>
-
-#include <commons/numitemdialog.h>
 #include <commons/singletons.h>
 #include "adminreservationswindow.h"
 #include "ui_adminreservationswindow.h"
@@ -96,13 +93,13 @@ namespace PenyaManager {
         // fetch table reservation data
         ReservationListResultPtr pTableReservationListResultPtr = Singletons::m_pDAO->getTableReservation(reservationType, date);
         if (pTableReservationListResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         // fetch tables data
         ReservationItemListResultPtr pTableListResultPtr = Singletons::m_pDAO->getAllLunchTableList();
         if (pTableListResultPtr->m_error) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
 
@@ -158,7 +155,7 @@ namespace PenyaManager {
                     this->ui->tableReservationTableWidget->setItem(rowCount, 3, new QTableWidgetItem(QString(tr("BLOCKED"))));
                     // show cancel button action
                     QPushButton *pCancelButton = new QPushButton(tr("Cancel"), this->ui->tableReservationTableWidget);
-                    this->connect(pCancelButton, &QPushButton::clicked, std::bind(&AdminReservationsWindow::onCancelButton_clicked, this, pReservationPtr->m_reservationId, pReservationItemPtr->m_itemType));
+                    this->connect(pCancelButton, &QPushButton::clicked, std::bind(&AdminReservationsWindow::onCancelButton_clicked, this, pReservationPtr->m_reservationId));
                     this->ui->tableReservationTableWidget->setCellWidget(rowCount, 5, pCancelButton);
                 } else {
                     QString guestName = QString("%1 %2 %3").arg(pReservationPtr->m_memberName).arg(pReservationPtr->m_memberSurname1).arg(pReservationPtr->m_memberSurname2);
@@ -207,13 +204,23 @@ namespace PenyaManager {
         bool isAdmin = true;
         bool ok = Singletons::m_pDAO->makeTableReservation(date, reservationType, guestNum, pCurrMemberPtr->m_id, itemId, isAdmin);
         if (!ok) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         QLocale enLocale = QLocale("en");
         Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kReservation,
                 QString("reserved table, itemid %1, %2 %3").arg(itemId).arg(GetStringFromReservationTypeEnum(reservationType)).arg(enLocale.toString(date)));
-        QMessageBox::information(this, tr("Reservation done"), tr("Reserved %1 at %2").arg(GetStringFromReservationItemTypeEnum(ReservationItemType::LunchTableType, true)).arg(GetStringFromReservationTypeEnum(reservationType, true)));
+        Singletons::m_pDialogManager->infoMessageBox(this,
+                tr("Reserved %1 at %2").arg(GetStringFromReservationItemTypeEnum(ReservationItemType::LunchTableType, true)).arg(GetStringFromReservationTypeEnum(reservationType, true)),
+                std::bind(&AdminReservationsWindow::onTableReservationDone, this)
+                );
+        // nothing should be added here
+    }
+    //
+    void AdminReservationsWindow::onTableReservationDone()
+    {
+        ReservationType reservationType = static_cast<ReservationType>(this->ui->reservationTypeButtonGroup->checkedId());
+        QDate date = this->ui->calendarWidget->selectedDate();
         fillReservations(date, reservationType);
     }
     //
@@ -225,43 +232,48 @@ namespace PenyaManager {
         bool isAdmin = true;
         bool ok = Singletons::m_pDAO->updateTableReservation(reservationId, isAdmin);
         if (!ok) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         QLocale enLocale = QLocale("en");
         Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kReservation,
                 QString("blocked table, reservationid %1 %2 on %3").arg(reservationId).arg(GetStringFromReservationTypeEnum(reservationType)).arg(enLocale.toString(date)));
-        QMessageBox::information(this, tr("Reservation done"), tr("reservation table %1 at %2").arg(GetStringFromReservationItemTypeEnum(ReservationItemType::LunchTableType, true)).arg(GetStringFromReservationTypeEnum(reservationType, true)));
+        Singletons::m_pDialogManager->infoMessageBox(this,
+                tr("Reserved %1 at %2").arg(GetStringFromReservationItemTypeEnum(ReservationItemType::LunchTableType, true)).arg(GetStringFromReservationTypeEnum(reservationType, true)),
+                std::bind(&AdminReservationsWindow::onTableReservationUpdateDone, this)
+                );
+        // nothing should be added here
+    }
+    //
+    void AdminReservationsWindow::onTableReservationUpdateDone()
+    {
+        ReservationType reservationType = static_cast<ReservationType>(this->ui->reservationTypeButtonGroup->checkedId());
+        QDate date = this->ui->calendarWidget->selectedDate();
         fillReservations(date, reservationType);
     }
     //
-    void AdminReservationsWindow::onCancelButton_clicked(int reservationId, ReservationItemType itemType)
+    void AdminReservationsWindow::onCancelButton_clicked(int reservationId)
     {
         QDate date = this->ui->calendarWidget->selectedDate();
         ReservationType reservationType = static_cast<ReservationType>(this->ui->reservationTypeButtonGroup->checkedId());
-        bool ok = false;
-        switch (itemType)
-        {
-            case ReservationItemType::LunchTableType:
-                ok = Singletons::m_pDAO->cancelTableReservation(reservationId);
-                break;
-            case ReservationItemType::OvenType:
-                ok = Singletons::m_pDAO->cancelOvenReservation(reservationId);
-                break;
-            case ReservationItemType::FireplaceType:
-                ok = Singletons::m_pDAO->cancelFireplaceReservation(reservationId);
-                break;
-            default:
-                break;
-        }
+        bool ok = Singletons::m_pDAO->cancelTableReservation(reservationId);
         if (!ok) {
-            QMessageBox::critical(this, tr("Database error"), tr("Contact administrator"));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         QLocale enLocale = QLocale("en");
         Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kReservation,
-                QString("canceled %1, reservationid %2, %3 %4").arg(GetStringFromReservationItemTypeEnum(itemType)).arg(reservationId).arg(GetStringFromReservationTypeEnum(reservationType)).arg(enLocale.toString(date)));
-        QMessageBox::information(this, tr("Reservation cancelled"), tr("Cancelled %1 at %2").arg(GetStringFromReservationItemTypeEnum(itemType, true)).arg(GetStringFromReservationTypeEnum(reservationType, true)));
+                QString("canceled %1, reservationid %2, %3 %4").arg(GetStringFromReservationItemTypeEnum(ReservationItemType::LunchTableType)).arg(reservationId).arg(GetStringFromReservationTypeEnum(reservationType)).arg(enLocale.toString(date)));
+        Singletons::m_pDialogManager->infoMessageBox(this,
+                tr("Cancelled %1 at %2").arg(GetStringFromReservationItemTypeEnum(ReservationItemType::LunchTableType, true)).arg(GetStringFromReservationTypeEnum(reservationType, true)),
+                std::bind(&AdminReservationsWindow::onTableReservationCancelled, this)
+                );
+    }
+    //
+    void AdminReservationsWindow::onTableReservationCancelled()
+    {
+        ReservationType reservationType = static_cast<ReservationType>(this->ui->reservationTypeButtonGroup->checkedId());
+        QDate date = this->ui->calendarWidget->selectedDate();
         fillReservations(date, reservationType);
     }
 }

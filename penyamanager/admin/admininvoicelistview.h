@@ -32,6 +32,10 @@ namespace PenyaManager {
             void fillInvoiceList(InvoiceListPtr pInvoiceListPtr);
             //
             void updateResults();
+            //
+            void initializeTable();
+            //
+            void translateTable();
 
         private slots:
             //

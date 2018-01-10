@@ -49,4 +49,12 @@ namespace PenyaManager
         }
         return "-";
     }
+    //
+    MemberPtr GetInvalidMember()
+    {
+        MemberPtr pMemberPtr(new Member);
+        // negative ids are not allowed
+        pMemberPtr->m_id = -1;
+        return pMemberPtr;
+    }
 }

@@ -20,3 +20,7 @@ $ cd /lib/x86_64-linux-gnu
 $ sudo ln -s libssl.so.1.0.0 libssl.so.10
 $ sudo ln -s libcrypto.so.1.0.0 libcrypto.so.10
 ```
+
+* Inactivity timeout
+  * In login pages is disabled, blocking dialogs can be used
+  * When logged in, non-blocking dialogs must be used, otherwise on inactivity timeouts, unexpected dialogs can be shown on login page, or even be switched to some view without being logged in
