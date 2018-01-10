@@ -25,7 +25,7 @@ namespace PenyaManager {
         this->ui->passInput->setValidator(pPassIntValidator);
 
         // load code build
-        QFile versionFile(":VERSION");
+        QFile versionFile(":VERSION_ADMIN");
         versionFile.open(QIODevice::ReadOnly | QIODevice::Text);
         QTextStream versionStream(&versionFile);
         versionStream.setCodec("UTF-8");
