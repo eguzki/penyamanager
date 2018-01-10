@@ -1,5 +1,6 @@
 //
 
+#include <commons/utils.h>
 #include <commons/guiutils.h>
 #include <commons/singletons.h>
 #include "memberlistview.h"
@@ -179,11 +180,13 @@ namespace PenyaManager {
         // nothing should be added here
     }
     //
-    void MemberListView::onMemberListCsvSelected(const QString &filename)
+    void MemberListView::onMemberListCsvSelected(const QString &fn)
     {
-        if (filename.isNull()){
+        if (fn.isNull()){
             return;
         }
+
+        QString filename = Utils::addSuffix(fn, "csv");
 
         // fetch data
         bool filterPostalSend = this->ui->filterPostalUsersCheckBox->checkState() == Qt::CheckState::Checked;

@@ -3,6 +3,7 @@
 #include <QFileDialog>
 #include <QTextStream>
 
+#include <commons/utils.h>
 #include <commons/guiutils.h>
 #include <commons/constants.h>
 #include <commons/singletons.h>
@@ -215,12 +216,13 @@ namespace PenyaManager {
         // nothing should be added here
     }
     //
-    void ProductExpensesView::onProductExpensesCsvSelected(const QString &filename)
+    void ProductExpensesView::onProductExpensesCsvSelected(const QString &fn)
     {
-        if (filename.isNull()){
+        if (fn.isNull()){
             return;
         }
 
+        QString filename = Utils::addSuffix(fn, "csv");
         QFile f(filename);
         if (!f.open( QIODevice::WriteOnly )) {
             Singletons::m_pDialogManager->criticalMessageBox(this, tr("Error opening %1").arg(filename), [](){});

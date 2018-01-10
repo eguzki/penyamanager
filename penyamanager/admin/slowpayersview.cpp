@@ -3,6 +3,7 @@
 #include <QTextStream>
 
 #include <objs/Member.h>
+#include <commons/utils.h>
 #include <commons/singletons.h>
 #include "slowpayersview.h"
 #include "ui_slowpayersview.h"
@@ -101,11 +102,13 @@ namespace PenyaManager {
         // nothing should be added here
     }
     //
-    void SlowPayersView::onCsvFileSelected(const QString &filename)
+    void SlowPayersView::onCsvFileSelected(const QString &fn)
     {
-        if (filename.isNull()){
+        if (fn.isNull()){
             return;
         }
+
+        QString filename = Utils::addSuffix(fn, "csv");
 
         // fetch data
         MemberListResultPtr pMemberListResultPtr = Singletons::m_pDAO->getSlowPayersList();

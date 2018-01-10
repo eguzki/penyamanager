@@ -3,6 +3,7 @@
 #include <QFileDialog>
 #include <QTextStream>
 
+#include <commons/utils.h>
 #include <commons/guiutils.h>
 #include <commons/singletons.h>
 #include "stockmanagementwindow.h"
@@ -82,11 +83,13 @@ namespace PenyaManager {
         // nothing should be added here
     }
     //
-    void StockManagementWindow::onStockCsvSelected(const QString &filename)
+    void StockManagementWindow::onStockCsvSelected(const QString &fn)
     {
-        if (filename.isNull()){
+        if (fn.isNull()){
             return;
         }
+        
+        QString filename = Utils::addSuffix(fn, "csv");
 
         // fetch data
         StockProductItemListResultPtr pStockProductItemListResultPtr = Singletons::m_pDAO->getAllStockProductsList();

@@ -16,6 +16,8 @@ namespace PenyaManager {
             static QString encryptToString(const QString& plainText);
             //
             static QString decryptToString(const QString& plainText);
+            //
+            static QString addSuffix(const QString& fn, const QString &suffix);
 
         private:
             //
