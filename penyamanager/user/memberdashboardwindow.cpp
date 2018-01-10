@@ -128,7 +128,7 @@ namespace PenyaManager {
         //
         // check credit limit
         //
-        if (pCurrMemberPtr->m_balance < -Constants::kCreditLimit)
+        if (pCurrMemberPtr->m_balance < Constants::kCreditLimit)
         {
             // User has gone over credit limit. Do not allow creating invoice
             this->ui->familyListWidget->setDisabled(true);
