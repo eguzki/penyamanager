@@ -47,9 +47,15 @@ namespace PenyaManager {
     void AdminProductItem::on_savePushButton_clicked()
     {
         // validate name is not empty
-        QString productName = this->ui->nameLineEdit->text();
-        if (productName.isEmpty()){
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Name cannot be empty"), [](){});
+        QString productNameEus = this->ui->nameEusLineEdit->text();
+        if (productNameEus.isEmpty()){
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Basque name cannot be empty"), [](){});
+            return;
+        }
+        // validate nameEs is not empty
+        QString productNameEs = this->ui->nameEsLineEdit->text();
+        if (productNameEs.isEmpty()){
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Spanish name cannot be empty"), [](){});
             return;
         }
 
@@ -95,7 +101,8 @@ namespace PenyaManager {
 
             // id -> no change
             // name
-            pProductResultPtr->m_item->m_name = this->ui->nameLineEdit->text();
+            pProductResultPtr->m_item->m_nameEus = this->ui->nameEusLineEdit->text();
+            pProductResultPtr->m_item->m_nameEs = this->ui->nameEsLineEdit->text();
             // imagePath
             if (!this->m_productImageFilename.isEmpty()) {
                 // new image was selected
@@ -139,7 +146,8 @@ namespace PenyaManager {
 
             // id -> no needed
             // name
-            pProductItemPtr->m_name = this->ui->nameLineEdit->text();
+            pProductItemPtr->m_nameEus = this->ui->nameEusLineEdit->text();
+            pProductItemPtr->m_nameEs = this->ui->nameEsLineEdit->text();
             // imagePath
             QString destFileName;
             // can be null, allowed by ddbb schema
@@ -192,7 +200,8 @@ namespace PenyaManager {
             return;
         }
         // name
-        this->ui->nameLineEdit->setText(pProductItemResultPtr->m_item->m_name);
+        this->ui->nameEusLineEdit->setText(pProductItemResultPtr->m_item->m_nameEus);
+        this->ui->nameEsLineEdit->setText(pProductItemResultPtr->m_item->m_nameEs);
         // show image
         QString imagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pProductItemResultPtr->m_item->m_imagePath);
         QPixmap productPixmap = GuiUtils::getImage(imagePath);
@@ -241,7 +250,9 @@ namespace PenyaManager {
             ProductFamilyPtr pFamilyPtr = *iter;
             QString providerImagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pFamilyPtr->m_imagePath);
             QPixmap productPixmap = GuiUtils::getImage(providerImagePath);
-            this->ui->familyComboBox->insertItem(currentIndex, QIcon(productPixmap), pFamilyPtr->m_name, pFamilyPtr->m_id);
+            this->ui->familyComboBox->insertItem(currentIndex, QIcon(productPixmap),
+                    Singletons::m_pTranslationManager->getStringTranslation(pFamilyPtr->m_nameEus, pFamilyPtr->m_nameEs),
+                    pFamilyPtr->m_id);
             if (pFamilyPtr->m_id == pProductItemResultPtr->m_item->m_familyId) {
                 productFamilyIndex = currentIndex;
             }
@@ -254,7 +265,8 @@ namespace PenyaManager {
     void AdminProductItem::initialize()
     {
         // name
-        this->ui->nameLineEdit->clear();
+        this->ui->nameEusLineEdit->clear();
+        this->ui->nameEsLineEdit->clear();
         // show image
         QPixmap memberPixmap = GuiUtils::getImage("");
         this->ui->imageLabel->setPixmap(memberPixmap);
@@ -294,7 +306,10 @@ namespace PenyaManager {
             ProductFamilyPtr pFamilyPtr = *iter;
             QString providerImagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pFamilyPtr->m_imagePath);
             QPixmap productPixmap = GuiUtils::getImage(providerImagePath);
-            this->ui->familyComboBox->insertItem(currentIndex, QIcon(productPixmap), pFamilyPtr->m_name, pFamilyPtr->m_id);
+            this->ui->familyComboBox->insertItem(currentIndex,
+                    QIcon(productPixmap),
+                    Singletons::m_pTranslationManager->getStringTranslation(pFamilyPtr->m_nameEus, pFamilyPtr->m_nameEs),
+                    pFamilyPtr->m_id);
             currentIndex++;
         }
     }

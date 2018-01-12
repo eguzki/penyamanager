@@ -16,15 +16,15 @@ namespace PenyaManager
             //
             ProductItem();
             //
-            ProductItem(const QString &name, const QString &imagePath, bool active, const QDateTime &regDate, Int32 familyId, Float price, Int32 providerId, Int32 stock);
-            //
             virtual ~ProductItem(){}
 
         public:
             //
             Int32               m_id;
             //
-            QString             m_name;
+            QString             m_nameEus;
+            //
+            QString             m_nameEs;
             //
             QString             m_imagePath;
             //

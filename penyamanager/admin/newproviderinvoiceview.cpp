@@ -213,7 +213,7 @@ namespace PenyaManager {
         pImageLabel->setScaledContents(true);
 
         // name
-        QLabel *pTextLabel = new QLabel(pIPtr->m_name);
+        QLabel *pTextLabel = new QLabel(Singletons::m_pTranslationManager->getStringTranslation(pIPtr->m_nameEus, pIPtr->m_nameEs));
         pTextLabel->setFixedWidth(250);
 
         // count widget

@@ -28,6 +28,8 @@ namespace PenyaManager {
             QLocale getLocale();
             //
             QString getLanguageLabel();
+            //
+            QString getStringTranslation(const QString &basqueStr, const QString &espStr);
 
         private:
             //

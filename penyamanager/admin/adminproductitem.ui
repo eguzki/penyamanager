@@ -96,13 +96,13 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="nameFormWidget" native="true">
+    <widget class="QWidget" name="nameEusFormWidget" native="true">
      <layout class="QHBoxLayout" name="horizontalLayout_3">
       <item>
-       <widget class="QLabel" name="nameLabel">
+       <widget class="QLabel" name="nameEusLabel">
         <property name="minimumSize">
          <size>
-          <width>50</width>
+          <width>0</width>
           <height>0</height>
          </size>
         </property>
@@ -112,7 +112,14 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="nameLineEdit"/>
+       <widget class="QLineEdit" name="nameEusLineEdit"/>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string notr="true">Euskeraz</string>
+        </property>
+       </widget>
       </item>
       <item>
        <spacer name="horizontalSpacer_2">
@@ -122,6 +129,42 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
         <property name="sizeHint" stdset="0">
          <size>
           <width>332</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="nameEsFormWidget" native="true">
+     <layout class="QHBoxLayout" name="horizontalLayout_8">
+      <item>
+       <widget class="QLabel" name="nameEsLabel">
+        <property name="text">
+         <string>Name:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="nameEsLineEdit"/>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string notr="true">Castellanoz</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_8">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>315</width>
           <height>20</height>
          </size>
         </property>
@@ -320,12 +363,13 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
   </layout>
   <zorder>verticalSpacer</zorder>
   <zorder>topWidget</zorder>
-  <zorder>nameFormWidget</zorder>
+  <zorder>nameEusFormWidget</zorder>
   <zorder>imageFormGroupBox</zorder>
   <zorder>activeWidget</zorder>
   <zorder>priceWidget</zorder>
   <zorder>providerGroupBox</zorder>
   <zorder>familyGroupBox</zorder>
+  <zorder>nameEsFormWidget</zorder>
  </widget>
  <resources/>
  <connections/>

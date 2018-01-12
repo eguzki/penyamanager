@@ -63,4 +63,12 @@ namespace PenyaManager {
         }
         return langLabel;
     }
+    //
+    QString TranslationManager::getStringTranslation(const QString &basqueStr, const QString &espStr)
+    {
+        if (m_pLanguagesPrefixArray[m_currentLangIndex] == "es") {
+            return QString(espStr);
+        }
+        return QString(basqueStr);
+    }
 }

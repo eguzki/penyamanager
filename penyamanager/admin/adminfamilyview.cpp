@@ -45,9 +45,14 @@ namespace PenyaManager {
     void AdminFamilyView::on_savePushButton_clicked()
     {
         // validate name is not empty
-        QString familyName = this->ui->nameLineEdit->text();
-        if (familyName.isEmpty()){
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Name cannot be empty"), [](){});
+        QString familyEusName = this->ui->nameEusLineEdit->text();
+        if (familyEusName.isEmpty()){
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Basque name cannot be empty"), [](){});
+            return;
+        }
+        QString familyEsName = this->ui->nameEsLineEdit->text();
+        if (familyEsName.isEmpty()){
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Spanish name cannot be empty"), [](){});
             return;
         }
 
@@ -74,7 +79,8 @@ namespace PenyaManager {
 
             // id -> no change
             // name
-            pFamilyResultPtr->m_family->m_name = this->ui->nameLineEdit->text();
+            pFamilyResultPtr->m_family->m_nameEus = this->ui->nameEusLineEdit->text();
+            pFamilyResultPtr->m_family->m_nameEs = this->ui->nameEsLineEdit->text();
             // imagePath
             if (!this->m_familyImageFilename.isEmpty()) {
                 // new image was selected
@@ -111,7 +117,8 @@ namespace PenyaManager {
 
             // id -> no needed
             // name
-            pFamilyPtr->m_name = this->ui->nameLineEdit->text();
+            pFamilyPtr->m_nameEus = this->ui->nameEusLineEdit->text();
+            pFamilyPtr->m_nameEs = this->ui->nameEsLineEdit->text();
             // imagePath
             QString destFileName;
             // can be null, allowed by ddbb schema
@@ -193,7 +200,8 @@ namespace PenyaManager {
             return;
         }
         // name
-        this->ui->nameLineEdit->setText(pProductFamilyResultPtr->m_family->m_name);
+        this->ui->nameEusLineEdit->setText(pProductFamilyResultPtr->m_family->m_nameEus);
+        this->ui->nameEsLineEdit->setText(pProductFamilyResultPtr->m_family->m_nameEs);
         // show image
         QString imagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pProductFamilyResultPtr->m_family->m_imagePath);
         QPixmap familyPixmap = GuiUtils::getImage(imagePath);
@@ -208,7 +216,8 @@ namespace PenyaManager {
     void AdminFamilyView::initialize()
     {
         // name
-        this->ui->nameLineEdit->clear();
+        this->ui->nameEusLineEdit->clear();
+        this->ui->nameEsLineEdit->clear();
         // show image
         QPixmap familyPixmap = GuiUtils::getImage("");
         this->ui->imageLabel->setPixmap(familyPixmap);
