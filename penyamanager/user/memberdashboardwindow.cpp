@@ -150,7 +150,7 @@ namespace PenyaManager {
         // main product widget
         QString imagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pfPtr->m_imagePath);
         QPixmap productItemPixmap = GuiUtils::getImage(imagePath);
-        QWidget *pProduceItemWidget = new ProductItemWidget(pList, productItemPixmap, pfPtr->m_name, pfPtr->m_price);
+        QWidget *pProduceItemWidget = new ProductItemWidget(pList, productItemPixmap, Singletons::m_pTranslationManager->getStringTranslation(pfPtr->m_nameEus, pfPtr->m_nameEs), pfPtr->m_price);
 
         // load product image
         pProductItem->setSizeHint(pProduceItemWidget->minimumSize());
@@ -168,7 +168,7 @@ namespace PenyaManager {
         // main family widget
         QString imagePath = QDir(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString()).filePath(pfPtr->m_imagePath);
         QPixmap familyPixmap = GuiUtils::getImage(imagePath);
-        QWidget *pFamilyWidget = new FamilyItemWidget(pList, familyPixmap, pfPtr->m_name);
+        QWidget *pFamilyWidget = new FamilyItemWidget(pList, familyPixmap, Singletons::m_pTranslationManager->getStringTranslation(pfPtr->m_nameEus, pfPtr->m_nameEs));
 
         // load family image
         pFamilyItem->setSizeHint(pFamilyWidget->minimumSize());

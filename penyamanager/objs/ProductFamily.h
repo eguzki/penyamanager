@@ -16,15 +16,15 @@ namespace PenyaManager
             //
             ProductFamily();
             //
-            ProductFamily(const QString &name, const QString &imagePath, bool active, const QDateTime &regDate);
-            //
             virtual ~ProductFamily(){}
 
         public:
             //
             Int32               m_id;
             //
-            QString             m_name;
+            QString             m_nameEus;
+            //
+            QString             m_nameEs;
             //
             QString             m_imagePath;
             //

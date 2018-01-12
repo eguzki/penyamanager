@@ -110,7 +110,7 @@ namespace PenyaManager {
             QueryPtr queryPtr(new QSqlQuery);
             // ProductFamilies
             // for filtering only active, fetch all and filter with code
-            queryPtr->prepare("SELECT idproduct_family, name, image, active FROM product_family");
+            queryPtr->prepare("SELECT idproduct_family, name, name_es, image, active FROM product_family");
             return queryPtr;
         };
 
@@ -126,9 +126,10 @@ namespace PenyaManager {
             while (queryResponse.query->next()) {
                 ProductFamilyPtr pfPtr(new ProductFamily);
                 pfPtr->m_id = queryResponse.query->value(0).toUInt();
-                pfPtr->m_name = queryResponse.query->value(1).toString();
-                pfPtr->m_imagePath = queryResponse.query->value(2).toString();
-                pfPtr->m_active = queryResponse.query->value(3).toInt() == 1;
+                pfPtr->m_nameEus = queryResponse.query->value(1).toString();
+                pfPtr->m_nameEs = queryResponse.query->value(2).toString();
+                pfPtr->m_imagePath = queryResponse.query->value(3).toString();
+                pfPtr->m_active = queryResponse.query->value(4).toInt() == 1;
                 // discard when onlyActive filter is on and family is not active
                 if (!onlyActive || pfPtr->m_active) {
                     pfListPrt->m_list->push_back(pfPtr);
@@ -147,7 +148,7 @@ namespace PenyaManager {
             QueryPtr queryPtr(new QSqlQuery);
             // ProductItems by family
             // for filterinf only active, fetch all and filter with code
-            queryPtr->prepare("SELECT idproduct_item, name, image, active, reg_date, price, idprovider FROM product_item WHERE idproduct_family = :familyId");
+            queryPtr->prepare("SELECT idproduct_item, name, name_es, image, active, reg_date, price, idprovider FROM product_item WHERE idproduct_family = :familyId");
             // bind value
             queryPtr->bindValue(":familyId", familyId);
             return queryPtr;
@@ -164,12 +165,13 @@ namespace PenyaManager {
             while (queryResponse.query->next()) {
                 ProductItemPtr pfPtr(new ProductItem);
                 pfPtr->m_id = queryResponse.query->value(0).toUInt();
-                pfPtr->m_name = queryResponse.query->value(1).toString();
-                pfPtr->m_imagePath = queryResponse.query->value(2).toString();
-                pfPtr->m_active = queryResponse.query->value(3).toInt() == 1;
-                pfPtr->m_regDate = queryResponse.query->value(4).toDateTime();
-                pfPtr->m_price = queryResponse.query->value(5).toFloat();
-                pfPtr->m_providerId = queryResponse.query->value(6).toInt();
+                pfPtr->m_nameEus = queryResponse.query->value(1).toString();
+                pfPtr->m_nameEs = queryResponse.query->value(2).toString();
+                pfPtr->m_imagePath = queryResponse.query->value(3).toString();
+                pfPtr->m_active = queryResponse.query->value(4).toInt() == 1;
+                pfPtr->m_regDate = queryResponse.query->value(5).toDateTime();
+                pfPtr->m_price = queryResponse.query->value(6).toFloat();
+                pfPtr->m_providerId = queryResponse.query->value(7).toInt();
                 // discard when onlyActive filter is on and product is not active
                 if (!onlyActive || pfPtr->m_active) {
                     pIListResultPtr->m_list->push_back(pfPtr);
@@ -2168,7 +2170,7 @@ namespace PenyaManager {
         auto createQuery = [=](){
             QueryPtr queryPtr(new QSqlQuery);
             // ProductItems by provider
-            queryPtr->prepare("SELECT idproduct_item, name, image, reg_date, idproduct_family, price FROM product_item WHERE active=1 AND idprovider=:providerId");
+            queryPtr->prepare("SELECT idproduct_item, name, name_es, image, reg_date, idproduct_family, price FROM product_item WHERE active=1 AND idprovider=:providerId");
             // bind value
             queryPtr->bindValue(":providerId", providerId);
             return queryPtr;
@@ -2185,12 +2187,13 @@ namespace PenyaManager {
             while (queryResponse.query->next()) {
                 ProductItemPtr pfPtr(new ProductItem);
                 pfPtr->m_id = queryResponse.query->value(0).toUInt();
-                pfPtr->m_name = queryResponse.query->value(1).toString();
-                pfPtr->m_imagePath = queryResponse.query->value(2).toString();
+                pfPtr->m_nameEus = queryResponse.query->value(1).toString();
+                pfPtr->m_nameEs = queryResponse.query->value(2).toString();
+                pfPtr->m_imagePath = queryResponse.query->value(3).toString();
                 pfPtr->m_active = true;
-                pfPtr->m_regDate = queryResponse.query->value(3).toDateTime();
-                pfPtr->m_familyId = queryResponse.query->value(4).toInt();
-                pfPtr->m_price = queryResponse.query->value(5).toFloat();
+                pfPtr->m_regDate = queryResponse.query->value(4).toDateTime();
+                pfPtr->m_familyId = queryResponse.query->value(5).toInt();
+                pfPtr->m_price = queryResponse.query->value(6).toFloat();
                 pIListResultPtr->m_list->push_back(pfPtr);
             }
         }
@@ -2397,7 +2400,7 @@ namespace PenyaManager {
             QueryPtr queryPtr(new QSqlQuery);
             // product item
             queryPtr->prepare(
-                    "SELECT name, active, image, reg_date, price, idproduct_family, idprovider, stock FROM product_item "
+                    "SELECT name, name_es, active, image, reg_date, price, idproduct_family, idprovider, stock FROM product_item "
                     "WHERE idproduct_item = :productid"
                     );
             queryPtr->bindValue(":productid", productItemId);
@@ -2413,14 +2416,15 @@ namespace PenyaManager {
         } else if (queryResponse.query->next()) {
             ProductItemPtr pProductItemPtr(new ProductItem);
             pProductItemPtr->m_id = productItemId;
-            pProductItemPtr->m_name = queryResponse.query->value(0).toString();
-            pProductItemPtr->m_active =  queryResponse.query->value(1).toInt() == 1;
-            pProductItemPtr->m_imagePath = queryResponse.query->value(2).toString();
-            pProductItemPtr->m_regDate = queryResponse.query->value(3).toDateTime();
-            pProductItemPtr->m_price = queryResponse.query->value(4).toFloat();
-            pProductItemPtr->m_familyId = queryResponse.query->value(5).toInt();
-            pProductItemPtr->m_providerId = queryResponse.query->value(6).toInt();
-            pProductItemPtr->m_stock = queryResponse.query->value(7).toInt();
+            pProductItemPtr->m_nameEus = queryResponse.query->value(0).toString();
+            pProductItemPtr->m_nameEs = queryResponse.query->value(1).toString();
+            pProductItemPtr->m_active =  queryResponse.query->value(2).toInt() == 1;
+            pProductItemPtr->m_imagePath = queryResponse.query->value(3).toString();
+            pProductItemPtr->m_regDate = queryResponse.query->value(4).toDateTime();
+            pProductItemPtr->m_price = queryResponse.query->value(5).toFloat();
+            pProductItemPtr->m_familyId = queryResponse.query->value(6).toInt();
+            pProductItemPtr->m_providerId = queryResponse.query->value(7).toInt();
+            pProductItemPtr->m_stock = queryResponse.query->value(8).toInt();
             pProductItemResultPtr->m_item = pProductItemPtr;
         }
         return pProductItemResultPtr;
@@ -2433,11 +2437,12 @@ namespace PenyaManager {
             // update product item
             queryPtr->prepare(
                     "UPDATE product_item "
-                    "SET name=:name, image=:image, active=:active, idproduct_family=:familyid, price=:price, "
+                    "SET name=:name, name_es=:name_es, image=:image, active=:active, idproduct_family=:familyid, price=:price, "
                     "idprovider=:providerid, stock=:stock "
                     "WHERE idproduct_item = :productid"
                     );
-            queryPtr->bindValue(":name", pProductPtr->m_name);
+            queryPtr->bindValue(":name", pProductPtr->m_nameEus);
+            queryPtr->bindValue(":name_es", pProductPtr->m_nameEs);
             queryPtr->bindValue(":image", pProductPtr->m_imagePath);
             queryPtr->bindValue(":active", (pProductPtr->m_active)?(1):(0));
             queryPtr->bindValue(":familyid", pProductPtr->m_familyId);
@@ -2465,10 +2470,11 @@ namespace PenyaManager {
             // create product item
             queryPtr->prepare(
                     "INSERT INTO product_item "
-                    "(name, image, active, reg_date, idproduct_family, price, idprovider, stock) "
-                    "VALUES (:name, :image, :active, :reg_date, :familyid, :price, :providerid, :stock)"
+                    "(name, name_es, image, active, reg_date, idproduct_family, price, idprovider, stock) "
+                    "VALUES (:name, :name_es, :image, :active, :reg_date, :familyid, :price, :providerid, :stock)"
                     );
-            queryPtr->bindValue(":name", pProductPtr->m_name);
+            queryPtr->bindValue(":name", pProductPtr->m_nameEus);
+            queryPtr->bindValue(":name_es", pProductPtr->m_nameEs);
             queryPtr->bindValue(":image", pProductPtr->m_imagePath);
             queryPtr->bindValue(":active", (pProductPtr->m_active)?(1):(0));
             queryPtr->bindValue(":reg_date", pProductPtr->m_regDate);
@@ -2483,7 +2489,7 @@ namespace PenyaManager {
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
             Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
-                    QString("createProductItem productItemName %1").arg(pProductPtr->m_name));
+                    QString("createProductItem productItemName %1").arg(pProductPtr->m_nameEus));
             return -1;
         } else {
             auto lastQuery = [](){
@@ -2511,7 +2517,7 @@ namespace PenyaManager {
             QueryPtr queryPtr(new QSqlQuery);
             // product family item
             queryPtr->prepare(
-                    "SELECT name, active, image, reg_date FROM product_family "
+                    "SELECT name, name_es, active, image, reg_date FROM product_family "
                     "WHERE idproduct_family = :familyid"
                     );
             queryPtr->bindValue(":familyid", familyId);
@@ -2527,10 +2533,11 @@ namespace PenyaManager {
         } else if (queryResponse.query->next()) {
             ProductFamilyPtr pProductFamilyPtr(new ProductFamily);
             pProductFamilyPtr->m_id = familyId;
-            pProductFamilyPtr->m_name = queryResponse.query->value(0).toString();
-            pProductFamilyPtr->m_active =  queryResponse.query->value(1).toInt() == 1;
-            pProductFamilyPtr->m_imagePath = queryResponse.query->value(2).toString();
-            pProductFamilyPtr->m_regDate = queryResponse.query->value(3).toDateTime();
+            pProductFamilyPtr->m_nameEus = queryResponse.query->value(0).toString();
+            pProductFamilyPtr->m_nameEs = queryResponse.query->value(1).toString();
+            pProductFamilyPtr->m_active =  queryResponse.query->value(2).toInt() == 1;
+            pProductFamilyPtr->m_imagePath = queryResponse.query->value(3).toString();
+            pProductFamilyPtr->m_regDate = queryResponse.query->value(4).toDateTime();
             pProductFamilyResultPtr->m_family = pProductFamilyPtr;
         }
         return pProductFamilyResultPtr;
@@ -2543,10 +2550,11 @@ namespace PenyaManager {
             // update product family item
             queryPtr->prepare(
                     "UPDATE product_family "
-                    "SET name=:name, image=:image, active=:active "
+                    "SET name=:name, name_es:name_es, image=:image, active=:active "
                     "WHERE idproduct_family = :familyid"
                     );
-            queryPtr->bindValue(":name", pFamilyPtr->m_name);
+            queryPtr->bindValue(":name", pFamilyPtr->m_nameEus);
+            queryPtr->bindValue(":name_es", pFamilyPtr->m_nameEs);
             queryPtr->bindValue(":image", pFamilyPtr->m_imagePath);
             queryPtr->bindValue(":active", (pFamilyPtr->m_active)?(1):(0));
             queryPtr->bindValue(":familyid", pFamilyPtr->m_id);
@@ -2571,10 +2579,11 @@ namespace PenyaManager {
             // create product family item
             queryPtr->prepare(
                     "INSERT INTO product_family "
-                    "(name, image, active, reg_date) "
-                    "VALUES (:name, :image, :active, :reg_date)"
+                    "(name, name_es, image, active, reg_date) "
+                    "VALUES (:name, :name_es, :image, :active, :reg_date)"
                     );
-            queryPtr->bindValue(":name", pFamilyPtr->m_name);
+            queryPtr->bindValue(":name", pFamilyPtr->m_nameEus);
+            queryPtr->bindValue(":name_es", pFamilyPtr->m_nameEs);
             queryPtr->bindValue(":image", pFamilyPtr->m_imagePath);
             queryPtr->bindValue(":active", (pFamilyPtr->m_active)?(1):(0));
             queryPtr->bindValue(":reg_date", pFamilyPtr->m_regDate);
@@ -2585,7 +2594,7 @@ namespace PenyaManager {
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
             Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
-                    QString("createProductFamilyItem familyName %1").arg(pFamilyPtr->m_name));
+                    QString("createProductFamilyItem familyName %1").arg(pFamilyPtr->m_nameEus));
         } else {
             auto lastQuery = [](){
                 return QueryPtr(new QSqlQuery(kLastQueryId));
