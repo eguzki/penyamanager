@@ -485,7 +485,7 @@ qproperty-iconSize: 120px 120px;
        <widget class="QWidget" name="resultsWidget" native="true">
         <property name="minimumSize">
          <size>
-          <width>458</width>
+          <width>620</width>
           <height>0</height>
          </size>
         </property>
@@ -607,7 +607,7 @@ qproperty-iconSize: 120px 120px;
  <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="reservationTypeButtonGroup"/>
   <buttongroup name="reservationItemButtonGroup"/>
+  <buttongroup name="reservationTypeButtonGroup"/>
  </buttongroups>
 </ui>

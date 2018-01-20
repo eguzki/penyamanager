@@ -261,10 +261,10 @@ namespace PenyaManager {
             item->setData(Qt::TextAlignmentRole, Qt::AlignLeft);
             this->ui->invoiceTableWidget->setItem(rowCount, 0, item);
             item = new QTableWidgetItem(QString("%1 €").arg(pInvoiceProductItemPtr->m_priceperunit, 0, 'f', 2));
-            item->setData(Qt::TextAlignmentRole, Qt::AlignRight);
+            item->setData(Qt::TextAlignmentRole, Qt::AlignCenter);
             this->ui->invoiceTableWidget->setItem(rowCount, 1, item);
             item = new QTableWidgetItem(QString("%1").arg(pInvoiceProductItemPtr->m_count));
-            item->setData(Qt::TextAlignmentRole, Qt::AlignRight);
+            item->setData(Qt::TextAlignmentRole, Qt::AlignCenter);
             this->ui->invoiceTableWidget->setItem(rowCount, 2, item);
             Float totalPrice = pInvoiceProductItemPtr->m_priceperunit * pInvoiceProductItemPtr->m_count;
             item = new QTableWidgetItem(QString("%1 €").arg(totalPrice, 0, 'f', 2));

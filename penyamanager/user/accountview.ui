@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1559</width>
-    <height>768</height>
+    <width>1280</width>
+    <height>1024</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -305,7 +305,7 @@ qproperty-iconSize: 50px 50px;
        <widget class="QWidget" name="resultsWidget" native="true">
         <property name="minimumSize">
          <size>
-          <width>458</width>
+          <width>620</width>
           <height>0</height>
          </size>
         </property>

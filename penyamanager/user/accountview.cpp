@@ -51,10 +51,11 @@ namespace PenyaManager {
         header->setSectionResizeMode(QHeaderView::Fixed);
         translateTable();
         Uint32 column = 0;
-        this->ui->accountTableWidget->setColumnWidth(column++, 188);
-        this->ui->accountTableWidget->setColumnWidth(column++, 90);
-        this->ui->accountTableWidget->setColumnWidth(column++, 90);
-        this->ui->accountTableWidget->setColumnWidth(column++, 90);
+        this->ui->accountTableWidget->setColumnWidth(column++, 228);
+        this->ui->accountTableWidget->setColumnWidth(column++, 120);
+        this->ui->accountTableWidget->setColumnWidth(column++, 120);
+        this->ui->accountTableWidget->setColumnWidth(column++, 152);
+           //188 90 90 90 <- 162 -> 40 30 30 62
     }
     //
     void AccountView::init()
@@ -139,10 +140,18 @@ namespace PenyaManager {
             Uint32 column = 0;
             TransactionPtr pTransactionPtr = *iter;
             QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pTransactionPtr->m_date, QLocale::NarrowFormat);
-            this->ui->accountTableWidget->setItem(rowCount, column++, new QTableWidgetItem(dateLocalized));
-            this->ui->accountTableWidget->setItem(rowCount, column++, new QTableWidgetItem(QString("%1 €").arg(pTransactionPtr->m_amount, 0, 'f', 2)));
-            this->ui->accountTableWidget->setItem(rowCount, column++, new QTableWidgetItem(QString("%1 €").arg(pTransactionPtr->m_balance, 0, 'f', 2)));
-            this->ui->accountTableWidget->setItem(rowCount, column++, new QTableWidgetItem(getStringFromTransactionTypeEnum(pTransactionPtr->m_type)));
+            QTableWidgetItem *item = new QTableWidgetItem(dateLocalized);
+            item->setData(Qt::TextAlignmentRole, Qt::AlignCenter);
+            this->ui->accountTableWidget->setItem(rowCount, column++, item);
+            item = new QTableWidgetItem(QString("%1 €").arg(pTransactionPtr->m_amount, 0, 'f', 2));
+            item->setData(Qt::TextAlignmentRole, Qt::AlignCenter);
+            this->ui->accountTableWidget->setItem(rowCount, column++, item);
+            item = new QTableWidgetItem(QString("%1 €").arg(pTransactionPtr->m_balance, 0, 'f', 2));
+            item->setData(Qt::TextAlignmentRole, Qt::AlignCenter);
+            this->ui->accountTableWidget->setItem(rowCount, column++, item);
+            item = new QTableWidgetItem(getStringFromTransactionTypeEnum(pTransactionPtr->m_type));
+            item->setData(Qt::TextAlignmentRole, Qt::AlignCenter);
+            this->ui->accountTableWidget->setItem(rowCount, column++, item);
             rowCount++;
         }
     }
