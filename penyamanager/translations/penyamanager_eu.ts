@@ -193,9 +193,22 @@
 <context>
     <name>NumItemDialog</name>
     <message>
-        <location filename="../commons/numitemdialog.ui" line="89"/>
+        <location filename="../commons/numitemdialog.ui" line="93"/>
         <source>TextLabel</source>
         <translation></translation>
+    </message>
+</context>
+<context>
+    <name>PassChangeDialog</name>
+    <message>
+        <location filename="../commons/passchangedialog.ui" line="40"/>
+        <source>Password</source>
+        <translation>Pasahitza</translation>
+    </message>
+    <message>
+        <location filename="../commons/passchangedialog.ui" line="60"/>
+        <source>Repeat Password</source>
+        <translation>Pasahitza errepikatu</translation>
     </message>
 </context>
 <context>
@@ -237,9 +250,9 @@
     <name>PenyaManager::DepositWindow</name>
     <message>
         <location filename="../user/depositwindow.cpp" line="48"/>
-        <location filename="../user/depositwindow.cpp" line="93"/>
-        <location filename="../user/depositwindow.cpp" line="99"/>
-        <location filename="../user/depositwindow.cpp" line="109"/>
+        <location filename="../user/depositwindow.cpp" line="100"/>
+        <location filename="../user/depositwindow.cpp" line="107"/>
+        <location filename="../user/depositwindow.cpp" line="117"/>
         <source>Database error. Contact administrator</source>
         <translation>Datu base akatsa. Administratzailearekin harremanetan jarri.</translation>
     </message>
@@ -249,37 +262,37 @@
         <translation>Zenbateko okerra</translation>
     </message>
     <message>
-        <location filename="../user/depositwindow.cpp" line="82"/>
+        <location filename="../user/depositwindow.cpp" line="83"/>
         <source>Create deposit for %1 €?</source>
         <translation>%1 € -ko diru sarrera sortu?</translation>
     </message>
     <message>
-        <location filename="../user/depositwindow.cpp" line="116"/>
+        <location filename="../user/depositwindow.cpp" line="125"/>
         <source>Deposit for %1 € created sucessfully</source>
         <translation>%1 -ko diru sarrera ongi sortuta</translation>
     </message>
     <message>
-        <location filename="../user/depositwindow.cpp" line="208"/>
+        <location filename="../user/depositwindow.cpp" line="223"/>
         <source>Deposit Id</source>
         <translation>Diru sarrera Id-a</translation>
     </message>
     <message>
-        <location filename="../user/depositwindow.cpp" line="209"/>
+        <location filename="../user/depositwindow.cpp" line="224"/>
         <source>Member Id</source>
         <translation>Bazkide Id-a</translation>
     </message>
     <message>
-        <location filename="../user/depositwindow.cpp" line="210"/>
+        <location filename="../user/depositwindow.cpp" line="225"/>
         <source>Member Name</source>
         <translation>Bazkide izena</translation>
     </message>
     <message>
-        <location filename="../user/depositwindow.cpp" line="211"/>
+        <location filename="../user/depositwindow.cpp" line="226"/>
         <source>Date</source>
         <translation>Data</translation>
     </message>
     <message>
-        <location filename="../user/depositwindow.cpp" line="212"/>
+        <location filename="../user/depositwindow.cpp" line="227"/>
         <source>Deposit Total</source>
         <translation>Diru sarreraren guztira</translation>
     </message>
@@ -386,11 +399,11 @@
         <location filename="../user/invoicewindow.cpp" line="106"/>
         <location filename="../user/invoicewindow.cpp" line="112"/>
         <location filename="../user/invoicewindow.cpp" line="121"/>
-        <location filename="../user/invoicewindow.cpp" line="140"/>
-        <location filename="../user/invoicewindow.cpp" line="145"/>
-        <location filename="../user/invoicewindow.cpp" line="199"/>
-        <location filename="../user/invoicewindow.cpp" line="252"/>
-        <location filename="../user/invoicewindow.cpp" line="272"/>
+        <location filename="../user/invoicewindow.cpp" line="139"/>
+        <location filename="../user/invoicewindow.cpp" line="144"/>
+        <location filename="../user/invoicewindow.cpp" line="198"/>
+        <location filename="../user/invoicewindow.cpp" line="250"/>
+        <location filename="../user/invoicewindow.cpp" line="269"/>
         <source>Database error. Contact administrator</source>
         <translation>Datu base akatsa. Administratzailearekin harremanetan jarri.</translation>
     </message>
@@ -415,43 +428,38 @@
         <translation>guztira</translation>
     </message>
     <message>
-        <location filename="../user/invoicewindow.cpp" line="205"/>
+        <location filename="../user/invoicewindow.cpp" line="204"/>
         <source>Invoice</source>
         <translation>Ordainagiria</translation>
     </message>
     <message>
-        <location filename="../user/invoicewindow.cpp" line="206"/>
+        <location filename="../user/invoicewindow.cpp" line="205"/>
         <source>Member Id</source>
         <translation>Bazkide Id-a</translation>
     </message>
     <message>
-        <location filename="../user/invoicewindow.cpp" line="207"/>
+        <location filename="../user/invoicewindow.cpp" line="206"/>
         <source>Product</source>
         <translation>Produktua</translation>
     </message>
     <message>
-        <location filename="../user/invoicewindow.cpp" line="208"/>
+        <location filename="../user/invoicewindow.cpp" line="207"/>
         <source>Count</source>
         <translation>Kop.</translation>
     </message>
     <message>
-        <location filename="../user/invoicewindow.cpp" line="209"/>
+        <location filename="../user/invoicewindow.cpp" line="208"/>
         <source>Total</source>
         <translation>Guztira</translation>
     </message>
     <message>
-        <location filename="../user/invoicewindow.cpp" line="210"/>
+        <location filename="../user/invoicewindow.cpp" line="209"/>
         <source>Invoice Total</source>
         <translation>Ordainagiri totala</translation>
     </message>
     <message>
-        <location filename="../user/invoicewindow.cpp" line="241"/>
-        <source>Invoice sent to printer</source>
-        <translation>Ordainagiri inprimatua</translation>
-    </message>
-    <message>
-        <location filename="../user/invoicewindow.cpp" line="256"/>
-        <location filename="../user/invoicewindow.cpp" line="276"/>
+        <location filename="../user/invoicewindow.cpp" line="254"/>
+        <location filename="../user/invoicewindow.cpp" line="273"/>
         <source>Unexpected error. Contact administrator</source>
         <translation>Espero ez zen akatsa. Administratzailearekin harremanetan jarri.</translation>
     </message>
@@ -459,40 +467,40 @@
 <context>
     <name>PenyaManager::LoginWindow</name>
     <message>
-        <location filename="../user/loginwindow.cpp" line="132"/>
+        <location filename="../user/loginwindow.cpp" line="134"/>
         <source>article</source>
         <translation>artikulu</translation>
     </message>
     <message>
-        <location filename="../user/loginwindow.cpp" line="133"/>
+        <location filename="../user/loginwindow.cpp" line="135"/>
         <source>price/u</source>
         <translation>prezioa</translation>
     </message>
     <message>
-        <location filename="../user/loginwindow.cpp" line="134"/>
+        <location filename="../user/loginwindow.cpp" line="136"/>
         <source>count</source>
         <translation>kop.</translation>
     </message>
     <message>
-        <location filename="../user/loginwindow.cpp" line="135"/>
+        <location filename="../user/loginwindow.cpp" line="137"/>
         <source>total</source>
         <translation>guztira</translation>
     </message>
     <message>
-        <location filename="../user/loginwindow.cpp" line="57"/>
-        <location filename="../user/loginwindow.cpp" line="73"/>
-        <location filename="../user/loginwindow.cpp" line="168"/>
+        <location filename="../user/loginwindow.cpp" line="59"/>
+        <location filename="../user/loginwindow.cpp" line="75"/>
+        <location filename="../user/loginwindow.cpp" line="170"/>
         <location filename="../user/loginwindow.cpp" line="213"/>
-        <location filename="../user/loginwindow.cpp" line="223"/>
-        <location filename="../user/loginwindow.cpp" line="266"/>
-        <location filename="../user/loginwindow.cpp" line="271"/>
-        <location filename="../user/loginwindow.cpp" line="330"/>
-        <location filename="../user/loginwindow.cpp" line="351"/>
+        <location filename="../user/loginwindow.cpp" line="220"/>
+        <location filename="../user/loginwindow.cpp" line="263"/>
+        <location filename="../user/loginwindow.cpp" line="268"/>
+        <location filename="../user/loginwindow.cpp" line="327"/>
+        <location filename="../user/loginwindow.cpp" line="348"/>
         <source>Database error. Contact administrator</source>
         <translation>Datu base akatsa. Administratzailearekin harremanetan jarri.</translation>
     </message>
     <message>
-        <location filename="../user/loginwindow.cpp" line="142"/>
+        <location filename="../user/loginwindow.cpp" line="144"/>
         <source>Insert username</source>
         <translation>Bazkide zkia sartu</translation>
     </message>
@@ -502,37 +510,32 @@
         <translation>Erabiltzailea beharrezkoa da</translation>
     </message>
     <message>
-        <location filename="../user/loginwindow.cpp" line="153"/>
+        <location filename="../user/loginwindow.cpp" line="155"/>
         <source>Insert password</source>
         <translation>Pasahitza sartu</translation>
     </message>
     <message>
-        <location filename="../user/loginwindow.cpp" line="159"/>
+        <location filename="../user/loginwindow.cpp" line="161"/>
         <source>Password not set</source>
         <translation>Pasahitz okerra</translation>
     </message>
     <message>
-        <location filename="../user/loginwindow.cpp" line="176"/>
+        <location filename="../user/loginwindow.cpp" line="179"/>
         <source>User not registered in the system: %1</source>
         <translation>%1 erabiltzaile okerra</translation>
     </message>
     <message>
-        <location filename="../user/loginwindow.cpp" line="186"/>
+        <location filename="../user/loginwindow.cpp" line="189"/>
         <source>Password incorrect</source>
         <translation>Pasahitz okerra</translation>
     </message>
     <message>
-        <location filename="../user/loginwindow.cpp" line="195"/>
+        <location filename="../user/loginwindow.cpp" line="198"/>
         <source>User not active in the system: %1</source>
         <translation>%1 erabiltzaile okerra</translation>
     </message>
     <message>
-        <location filename="../user/loginwindow.cpp" line="202"/>
-        <source>Your current balance is negative: %1 €</source>
-        <translation>Zure balantzea zeroazpitik dago: %1</translation>
-    </message>
-    <message>
-        <location filename="../user/loginwindow.cpp" line="317"/>
+        <location filename="../user/loginwindow.cpp" line="314"/>
         <source>Created on: %1   Modified on: %2</source>
         <translation>%1-n sortua %2-n aldatua</translation>
     </message>
@@ -540,140 +543,157 @@
 <context>
     <name>PenyaManager::MemberDashboardWindow</name>
     <message>
-        <location filename="../user/memberdashboardwindow.cpp" line="54"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="58"/>
         <source>article</source>
         <translation>artikulua</translation>
     </message>
     <message>
-        <location filename="../user/memberdashboardwindow.cpp" line="55"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="59"/>
         <source>price/u</source>
         <translation>prez.</translation>
     </message>
     <message>
-        <location filename="../user/memberdashboardwindow.cpp" line="56"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="60"/>
         <source>Count</source>
         <translation>kop.</translation>
     </message>
     <message>
-        <location filename="../user/memberdashboardwindow.cpp" line="57"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="61"/>
         <source>total</source>
         <translation>guztira</translation>
     </message>
     <message>
-        <location filename="../user/memberdashboardwindow.cpp" line="58"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="62"/>
         <source>Remove</source>
         <translation>ezab.</translation>
     </message>
     <message>
-        <location filename="../user/memberdashboardwindow.cpp" line="69"/>
-        <location filename="../user/memberdashboardwindow.cpp" line="89"/>
-        <location filename="../user/memberdashboardwindow.cpp" line="102"/>
-        <location filename="../user/memberdashboardwindow.cpp" line="185"/>
-        <location filename="../user/memberdashboardwindow.cpp" line="218"/>
-        <location filename="../user/memberdashboardwindow.cpp" line="223"/>
-        <location filename="../user/memberdashboardwindow.cpp" line="303"/>
-        <location filename="../user/memberdashboardwindow.cpp" line="342"/>
-        <location filename="../user/memberdashboardwindow.cpp" line="360"/>
-        <location filename="../user/memberdashboardwindow.cpp" line="373"/>
-        <location filename="../user/memberdashboardwindow.cpp" line="412"/>
-        <location filename="../user/memberdashboardwindow.cpp" line="419"/>
-        <location filename="../user/memberdashboardwindow.cpp" line="428"/>
-        <location filename="../user/memberdashboardwindow.cpp" line="445"/>
-        <location filename="../user/memberdashboardwindow.cpp" line="452"/>
-        <location filename="../user/memberdashboardwindow.cpp" line="464"/>
-        <location filename="../user/memberdashboardwindow.cpp" line="470"/>
-        <location filename="../user/memberdashboardwindow.cpp" line="482"/>
-        <location filename="../user/memberdashboardwindow.cpp" line="494"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="73"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="92"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="105"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="196"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="229"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="234"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="321"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="368"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="388"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="431"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="438"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="447"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="473"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="485"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="502"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="509"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="517"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="523"/>
         <source>Database error. Contact administrator</source>
         <translation>Datu base akatsa. Administratzailearekin harremanetan jarri.</translation>
     </message>
     <message>
-        <location filename="../user/memberdashboardwindow.cpp" line="115"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="117"/>
+        <source>Your current balance is negative: %1 €</source>
+        <translation>Zure balantzea zeroazpitik dago: %1</translation>
+    </message>
+    <message>
+        <location filename="../user/memberdashboardwindow.cpp" line="136"/>
         <source>Your current balance is over limit (%1 €): %2 €</source>
         <translation>Zeroazpiko balantzea gainditua (%1). Zure eguneko balantzea %2 -koa da.</translation>
     </message>
     <message>
-        <location filename="../user/memberdashboardwindow.cpp" line="294"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="306"/>
         <source>Are you sure to reset invoice?</source>
         <translation>Ziur zaude eguneko ordainagiria ezabatu nahi duzula?</translation>
     </message>
     <message>
-        <location filename="../user/memberdashboardwindow.cpp" line="351"/>
-        <location filename="../user/memberdashboardwindow.cpp" line="402"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="357"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="416"/>
         <source>Number of items?</source>
         <translation>Kopurua?</translation>
     </message>
     <message>
-        <location filename="../user/memberdashboardwindow.cpp" line="456"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="462"/>
         <source>Delete %1 for %2 €?</source>
         <translation>%1 ezabatu (%2 €)?</translation>
     </message>
     <message>
-        <location filename="../user/memberdashboardwindow.cpp" line="285"/>
+        <location filename="../user/memberdashboardwindow.cpp" line="296"/>
         <source>Current invoice is empty</source>
         <translation>Eguneroko ordainagiria hutsik dago</translation>
     </message>
 </context>
 <context>
+    <name>PenyaManager::PassChangeDialog</name>
+    <message>
+        <location filename="../commons/passchangedialog.cpp" line="44"/>
+        <source>password fields cannot be empty</source>
+        <translation>Pasahitz okerra</translation>
+    </message>
+    <message>
+        <location filename="../commons/passchangedialog.cpp" line="49"/>
+        <source>password fields do not match</source>
+        <translation>Pasahitz okerra</translation>
+    </message>
+</context>
+<context>
     <name>PenyaManager::TableReservationView</name>
     <message>
-        <location filename="../user/tablereservationview.cpp" line="67"/>
+        <location filename="../user/tablereservationview.cpp" line="66"/>
         <source>Name</source>
         <translation>izena</translation>
     </message>
     <message>
-        <location filename="../user/tablereservationview.cpp" line="68"/>
+        <location filename="../user/tablereservationview.cpp" line="67"/>
         <source>Size</source>
         <translation>Tam.</translation>
     </message>
     <message>
-        <location filename="../user/tablereservationview.cpp" line="69"/>
+        <location filename="../user/tablereservationview.cpp" line="68"/>
         <source>Reserved By Guest</source>
         <translation>bazkide</translation>
     </message>
     <message>
-        <location filename="../user/tablereservationview.cpp" line="70"/>
+        <location filename="../user/tablereservationview.cpp" line="69"/>
         <source># reserved</source>
         <translation>kop.</translation>
     </message>
     <message>
-        <location filename="../user/tablereservationview.cpp" line="98"/>
-        <location filename="../user/tablereservationview.cpp" line="256"/>
-        <location filename="../user/tablereservationview.cpp" line="262"/>
-        <location filename="../user/tablereservationview.cpp" line="268"/>
-        <location filename="../user/tablereservationview.cpp" line="281"/>
-        <location filename="../user/tablereservationview.cpp" line="287"/>
-        <location filename="../user/tablereservationview.cpp" line="293"/>
-        <location filename="../user/tablereservationview.cpp" line="306"/>
-        <location filename="../user/tablereservationview.cpp" line="312"/>
-        <location filename="../user/tablereservationview.cpp" line="318"/>
-        <location filename="../user/tablereservationview.cpp" line="412"/>
-        <location filename="../user/tablereservationview.cpp" line="459"/>
+        <location filename="../user/tablereservationview.cpp" line="97"/>
+        <location filename="../user/tablereservationview.cpp" line="255"/>
+        <location filename="../user/tablereservationview.cpp" line="261"/>
+        <location filename="../user/tablereservationview.cpp" line="267"/>
+        <location filename="../user/tablereservationview.cpp" line="280"/>
+        <location filename="../user/tablereservationview.cpp" line="286"/>
+        <location filename="../user/tablereservationview.cpp" line="292"/>
+        <location filename="../user/tablereservationview.cpp" line="305"/>
+        <location filename="../user/tablereservationview.cpp" line="311"/>
+        <location filename="../user/tablereservationview.cpp" line="317"/>
+        <location filename="../user/tablereservationview.cpp" line="422"/>
+        <location filename="../user/tablereservationview.cpp" line="476"/>
         <source>Database error. Contact administrator</source>
         <translation>Datu base akatsa. Administratzailearekin harremanetan jarri.</translation>
     </message>
     <message>
-        <location filename="../user/tablereservationview.cpp" line="221"/>
+        <location filename="../user/tablereservationview.cpp" line="220"/>
         <source>Reserve</source>
         <translation>Erreserb.</translation>
     </message>
     <message>
-        <location filename="../user/tablereservationview.cpp" line="385"/>
+        <location filename="../user/tablereservationview.cpp" line="380"/>
         <source>Number of guests?</source>
         <translation>Kide kop.?</translation>
     </message>
     <message>
-        <location filename="../user/tablereservationview.cpp" line="418"/>
+        <location filename="../user/tablereservationview.cpp" line="429"/>
         <source>Reserved %1 at %2</source>
         <translation>%1 erreserbatua %2rako</translation>
     </message>
     <message>
-        <location filename="../user/tablereservationview.cpp" line="465"/>
+        <location filename="../user/tablereservationview.cpp" line="483"/>
         <source>Cancelled %1 at %2</source>
         <translation>%1 deuseztua %2rako</translation>
     </message>
     <message>
-        <location filename="../user/tablereservationview.cpp" line="238"/>
+        <location filename="../user/tablereservationview.cpp" line="237"/>
         <source>Cancel</source>
         <translation>Deuseztu</translation>
     </message>
@@ -686,7 +706,7 @@
         <translation>Ez da konfigurazioaren fitxategia aurkitu. Administratzailearekin harremanetan jarri faborez</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="39"/>
+        <location filename="../main.cpp" line="40"/>
         <source>Database connection failed. Call the stupid administrator and complain for incompetence</source>
         <translation>Datu base akatsa. Administratzailearekin harremanetan jarri faborez</translation>
     </message>
@@ -734,22 +754,23 @@
 <context>
     <name>QWidget</name>
     <message>
-        <location filename="../commons/guiutils.cpp" line="162"/>
+        <location filename="../commons/dialogmanager.cpp" line="27"/>
+        <location filename="../commons/dialogmanager.cpp" line="40"/>
         <source>Yes</source>
         <translation>Bai</translation>
     </message>
     <message>
-        <location filename="../commons/guiutils.cpp" line="163"/>
+        <location filename="../commons/dialogmanager.cpp" line="28"/>
         <source>No</source>
         <translation>Ez</translation>
     </message>
     <message>
-        <location filename="../commons/guiutils.cpp" line="211"/>
+        <location filename="../commons/guiutils.cpp" line="189"/>
         <source>invoice ref: %1</source>
         <translation>%1 -ren ordainagiri erref.</translation>
     </message>
     <message>
-        <location filename="../commons/guiutils.cpp" line="219"/>
+        <location filename="../commons/guiutils.cpp" line="197"/>
         <source>deposit ref: %1</source>
         <translation>%1 -ren diru sarrera erref. :</translation>
     </message>
