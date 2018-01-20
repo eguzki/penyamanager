@@ -118,26 +118,27 @@
     </message>
     <message>
         <location filename="../admin/adminfamilyview.ui" line="104"/>
+        <location filename="../admin/adminfamilyview.ui" line="140"/>
         <source>Name:</source>
         <translation>Izena:</translation>
     </message>
     <message>
-        <location filename="../admin/adminfamilyview.ui" line="130"/>
+        <location filename="../admin/adminfamilyview.ui" line="173"/>
         <source>Image</source>
         <translation>Irudia</translation>
     </message>
     <message>
-        <location filename="../admin/adminfamilyview.ui" line="136"/>
+        <location filename="../admin/adminfamilyview.ui" line="179"/>
         <source>Open</source>
         <translation>Ireki</translation>
     </message>
     <message>
-        <location filename="../admin/adminfamilyview.ui" line="156"/>
+        <location filename="../admin/adminfamilyview.ui" line="199"/>
         <source>TextLabel</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../admin/adminfamilyview.ui" line="169"/>
+        <location filename="../admin/adminfamilyview.ui" line="212"/>
         <source>Active</source>
         <translation>Aktiboa</translation>
     </message>
@@ -252,122 +253,122 @@
         <translation>Penyamanager Admin</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="54"/>
+        <location filename="../admin/adminmainwindow.ui" line="51"/>
         <source>Members</source>
         <translation>Bazkideak</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="62"/>
+        <location filename="../admin/adminmainwindow.ui" line="59"/>
         <source>Invoices</source>
         <translation>Ordainagiriak</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="68"/>
+        <location filename="../admin/adminmainwindow.ui" line="65"/>
         <source>Items</source>
         <translation>Produktuak</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="76"/>
+        <location filename="../admin/adminmainwindow.ui" line="73"/>
         <source>Account</source>
         <translation>Kontua</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="83"/>
+        <location filename="../admin/adminmainwindow.ui" line="80"/>
         <source>Main</source>
         <translation>Fitxategia</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="89"/>
+        <location filename="../admin/adminmainwindow.ui" line="86"/>
         <source>Providers</source>
         <translation>Hornitzaileak</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="97"/>
+        <location filename="../admin/adminmainwindow.ui" line="94"/>
         <source>Reservations</source>
         <translation>Erreserbak</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="112"/>
+        <location filename="../admin/adminmainwindow.ui" line="109"/>
         <source>Member management</source>
         <translation>Bazkideen kudeaketa</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="117"/>
+        <location filename="../admin/adminmainwindow.ui" line="114"/>
         <source>New member</source>
         <translation>Bazkide berria</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="122"/>
+        <location filename="../admin/adminmainwindow.ui" line="119"/>
         <source>Invoice list</source>
         <translation>Ordainagirien zerrenda</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="127"/>
+        <location filename="../admin/adminmainwindow.ui" line="124"/>
         <source>Export</source>
         <translation>Exportatu</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="132"/>
+        <location filename="../admin/adminmainwindow.ui" line="129"/>
         <source>Print</source>
         <translation>Inprimatu</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="137"/>
+        <location filename="../admin/adminmainwindow.ui" line="134"/>
         <source>Reset Account</source>
         <translation>Saldoa berrabiarazi</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="142"/>
+        <location filename="../admin/adminmainwindow.ui" line="139"/>
         <source>New provider invoice</source>
         <translation>Emate-agiri berria</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="147"/>
+        <location filename="../admin/adminmainwindow.ui" line="144"/>
         <source>Product Consumption</source>
         <translation>Produktu kontsumoa</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="152"/>
+        <location filename="../admin/adminmainwindow.ui" line="149"/>
         <source>Manage Families/Goods</source>
         <translation>Familiak/produktuak kudeatu</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="157"/>
+        <location filename="../admin/adminmainwindow.ui" line="154"/>
         <source>Manage Providers</source>
         <translation>Hornitzaileak kudeatu</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="162"/>
+        <location filename="../admin/adminmainwindow.ui" line="159"/>
         <source>Stock List</source>
         <translation>Stock-aren zerrenda</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="167"/>
+        <location filename="../admin/adminmainwindow.ui" line="164"/>
         <source>Deposit Check</source>
         <translation>Diru sarrerak baieztatu</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="172"/>
+        <location filename="../admin/adminmainwindow.ui" line="169"/>
         <source>Account Balance</source>
         <translation>Kontuaren balantzea</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="177"/>
+        <location filename="../admin/adminmainwindow.ui" line="174"/>
         <source>Exit</source>
         <translation>Irten</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="182"/>
+        <location filename="../admin/adminmainwindow.ui" line="179"/>
         <source>Slow payers</source>
         <translation>Bazkide berankorrak</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="187"/>
+        <location filename="../admin/adminmainwindow.ui" line="184"/>
         <source>Provider Invoice List</source>
         <translation>Hornitzaileen agiri zerrenda</translation>
     </message>
     <message>
-        <location filename="../admin/adminmainwindow.ui" line="192"/>
+        <location filename="../admin/adminmainwindow.ui" line="189"/>
         <source>Manage reservations</source>
         <translation>Erreserba kudeaketa</translation>
     </message>
@@ -386,53 +387,48 @@
     </message>
     <message>
         <location filename="../admin/adminnewprovider.ui" line="91"/>
-        <source>Back</source>
-        <translation>Atzera</translation>
-    </message>
-    <message>
-        <location filename="../admin/adminnewprovider.ui" line="98"/>
         <source>Save</source>
         <translation>Gorde</translation>
     </message>
     <message>
-        <location filename="../admin/adminnewprovider.ui" line="117"/>
+        <location filename="../admin/adminnewprovider.ui" line="110"/>
         <source>Id:</source>
         <translation>Id:</translation>
     </message>
     <message>
-        <location filename="../admin/adminnewprovider.ui" line="131"/>
+        <location filename="../admin/adminnewprovider.ui" line="124"/>
         <source>Created on:</source>
         <translation>Sortua:</translation>
     </message>
     <message>
-        <location filename="../admin/adminnewprovider.ui" line="157"/>
+        <location filename="../admin/adminnewprovider.ui" line="150"/>
         <source>Name:</source>
         <translation>Izena:</translation>
     </message>
     <message>
-        <location filename="../admin/adminnewprovider.ui" line="192"/>
+        <location filename="../admin/adminnewprovider.ui" line="185"/>
         <source>Phone:</source>
         <translation>Telefonoa:</translation>
     </message>
     <message>
-        <location filename="../admin/adminnewprovider.ui" line="218"/>
+        <location filename="../admin/adminnewprovider.ui" line="211"/>
         <source>Image</source>
         <translation>Irudia</translation>
     </message>
     <message>
-        <location filename="../admin/adminnewprovider.ui" line="247"/>
+        <location filename="../admin/adminnewprovider.ui" line="240"/>
         <source>Open</source>
         <translation>Ireki</translation>
     </message>
     <message>
-        <location filename="../admin/adminnewprovider.ui" line="282"/>
+        <location filename="../admin/adminnewprovider.ui" line="275"/>
         <source>Notes</source>
         <translation>Oharrak:</translation>
     </message>
     <message>
-        <location filename="../admin/adminnewprovider.ui" line="124"/>
-        <location filename="../admin/adminnewprovider.ui" line="138"/>
-        <location filename="../admin/adminnewprovider.ui" line="224"/>
+        <location filename="../admin/adminnewprovider.ui" line="117"/>
+        <location filename="../admin/adminnewprovider.ui" line="131"/>
+        <location filename="../admin/adminnewprovider.ui" line="217"/>
         <source>TextLabel</source>
         <translation></translation>
     </message>
@@ -456,41 +452,42 @@
     </message>
     <message>
         <location filename="../admin/adminproductitem.ui" line="110"/>
+        <location filename="../admin/adminproductitem.ui" line="146"/>
         <source>Name:</source>
         <translation>Izena:</translation>
     </message>
     <message>
-        <location filename="../admin/adminproductitem.ui" line="136"/>
+        <location filename="../admin/adminproductitem.ui" line="179"/>
         <source>Image</source>
         <translation>Irudia</translation>
     </message>
     <message>
-        <location filename="../admin/adminproductitem.ui" line="142"/>
+        <location filename="../admin/adminproductitem.ui" line="185"/>
         <source>Open</source>
         <translation>Ireki</translation>
     </message>
     <message>
-        <location filename="../admin/adminproductitem.ui" line="162"/>
+        <location filename="../admin/adminproductitem.ui" line="205"/>
         <source>TextLabel</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../admin/adminproductitem.ui" line="175"/>
+        <location filename="../admin/adminproductitem.ui" line="218"/>
         <source>Active</source>
         <translation>Aktiboa</translation>
     </message>
     <message>
-        <location filename="../admin/adminproductitem.ui" line="207"/>
+        <location filename="../admin/adminproductitem.ui" line="250"/>
         <source>Price:</source>
         <translation>Prezioa:</translation>
     </message>
     <message>
-        <location filename="../admin/adminproductitem.ui" line="246"/>
+        <location filename="../admin/adminproductitem.ui" line="289"/>
         <source>Provider</source>
         <translation>Hornitzailea</translation>
     </message>
     <message>
-        <location filename="../admin/adminproductitem.ui" line="278"/>
+        <location filename="../admin/adminproductitem.ui" line="321"/>
         <source>Family</source>
         <translation>Familia</translation>
     </message>
@@ -834,7 +831,7 @@
 <context>
     <name>NumItemDialog</name>
     <message>
-        <location filename="../commons/numitemdialog.ui" line="89"/>
+        <location filename="../commons/numitemdialog.ui" line="93"/>
         <source>TextLabel</source>
         <translation></translation>
     </message>
@@ -842,17 +839,12 @@
 <context>
     <name>PassChangeDialog</name>
     <message>
-        <location filename="../admin/passchangedialog.ui" line="14"/>
-        <source>Dialog</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../admin/passchangedialog.ui" line="20"/>
+        <location filename="../commons/passchangedialog.ui" line="40"/>
         <source>Password</source>
         <translation>Pasahitza</translation>
     </message>
     <message>
-        <location filename="../admin/passchangedialog.ui" line="40"/>
+        <location filename="../commons/passchangedialog.ui" line="60"/>
         <source>Repeat Password</source>
         <translation>Pasahitza errepikatu</translation>
     </message>
@@ -860,71 +852,56 @@
 <context>
     <name>PenyaManager::AccountBalanceView</name>
     <message>
-        <location filename="../admin/accountbalanceview.cpp" line="34"/>
+        <location filename="../admin/accountbalanceview.cpp" line="31"/>
         <source>ALL</source>
         <translation>GUZTIAK</translation>
     </message>
     <message>
-        <location filename="../admin/accountbalanceview.cpp" line="56"/>
+        <location filename="../admin/accountbalanceview.cpp" line="53"/>
         <source>date</source>
         <translation>Data</translation>
     </message>
     <message>
-        <location filename="../admin/accountbalanceview.cpp" line="57"/>
+        <location filename="../admin/accountbalanceview.cpp" line="54"/>
         <source>username</source>
         <translation>Bazkide zkia</translation>
     </message>
     <message>
-        <location filename="../admin/accountbalanceview.cpp" line="58"/>
+        <location filename="../admin/accountbalanceview.cpp" line="55"/>
         <source>description</source>
         <translation>Deskripzioa</translation>
     </message>
     <message>
-        <location filename="../admin/accountbalanceview.cpp" line="59"/>
+        <location filename="../admin/accountbalanceview.cpp" line="56"/>
         <source>amount</source>
         <translation>Zenbatekoa</translation>
     </message>
     <message>
-        <location filename="../admin/accountbalanceview.cpp" line="60"/>
+        <location filename="../admin/accountbalanceview.cpp" line="57"/>
         <source>type</source>
         <translation>Mota</translation>
     </message>
     <message>
-        <location filename="../admin/accountbalanceview.cpp" line="146"/>
-        <location filename="../admin/accountbalanceview.cpp" line="151"/>
-        <location filename="../admin/accountbalanceview.cpp" line="164"/>
-        <location filename="../admin/accountbalanceview.cpp" line="175"/>
-        <location filename="../admin/accountbalanceview.cpp" line="180"/>
-        <source>Database error</source>
-        <translation>Datu base akatsa</translation>
+        <location filename="../admin/accountbalanceview.cpp" line="143"/>
+        <location filename="../admin/accountbalanceview.cpp" line="148"/>
+        <location filename="../admin/accountbalanceview.cpp" line="161"/>
+        <location filename="../admin/accountbalanceview.cpp" line="172"/>
+        <location filename="../admin/accountbalanceview.cpp" line="177"/>
+        <source>Database error. Contact administrator</source>
+        <translation>Datu base akatsa. Administratzailearekin harremanetan jarri</translation>
     </message>
     <message>
-        <location filename="../admin/accountbalanceview.cpp" line="146"/>
-        <location filename="../admin/accountbalanceview.cpp" line="151"/>
-        <location filename="../admin/accountbalanceview.cpp" line="164"/>
-        <location filename="../admin/accountbalanceview.cpp" line="175"/>
-        <location filename="../admin/accountbalanceview.cpp" line="180"/>
-        <source>Contact administrator</source>
-        <translation>Administratzailearekin harremanetan jarri</translation>
+        <location filename="../admin/accountbalanceview.cpp" line="167"/>
+        <source>Username not found</source>
+        <translation>Erabiltzaile okerra</translation>
     </message>
     <message>
-        <location filename="../admin/accountbalanceview.cpp" line="159"/>
-        <location filename="../admin/accountbalanceview.cpp" line="170"/>
-        <source>Invalid data</source>
-        <translation>Datu okerra</translation>
-    </message>
-    <message>
-        <location filename="../admin/accountbalanceview.cpp" line="159"/>
+        <location filename="../admin/accountbalanceview.cpp" line="156"/>
         <source>Username not valid</source>
         <translation>Erabiltzaile okerra</translation>
     </message>
     <message>
-        <location filename="../admin/accountbalanceview.cpp" line="170"/>
-        <source>Username found</source>
-        <translation>Erabiltzaile aurkitua</translation>
-    </message>
-    <message>
-        <location filename="../admin/accountbalanceview.cpp" line="192"/>
+        <location filename="../admin/accountbalanceview.cpp" line="189"/>
         <source>page %1 out of %2</source>
         <translation>%2 tik, %1. orrialdea</translation>
     </message>
@@ -932,55 +909,42 @@
 <context>
     <name>PenyaManager::AdminFamilyView</name>
     <message>
-        <location filename="../admin/adminfamilyview.cpp" line="62"/>
-        <location filename="../admin/adminfamilyview.cpp" line="95"/>
-        <location filename="../admin/adminfamilyview.cpp" line="135"/>
-        <location filename="../admin/adminfamilyview.cpp" line="182"/>
-        <source>Database error</source>
-        <translation>Datu okerra</translation>
+        <location filename="../admin/adminfamilyview.cpp" line="50"/>
+        <source>Basque name cannot be empty</source>
+        <translation>Izena ezin da hutsik egon</translation>
     </message>
     <message>
-        <location filename="../admin/adminfamilyview.cpp" line="62"/>
-        <location filename="../admin/adminfamilyview.cpp" line="95"/>
-        <location filename="../admin/adminfamilyview.cpp" line="135"/>
-        <location filename="../admin/adminfamilyview.cpp" line="182"/>
-        <source>Contact administrator</source>
-        <translation>Administratzailearekin harremanetan jarri</translation>
+        <location filename="../admin/adminfamilyview.cpp" line="55"/>
+        <source>Spanish name cannot be empty</source>
+        <translation>Izena ezin da hutsik egon</translation>
     </message>
     <message>
-        <location filename="../admin/adminfamilyview.cpp" line="68"/>
-        <location filename="../admin/adminfamilyview.cpp" line="188"/>
-        <source>Unexpected state</source>
-        <translation>Espero ez zen akatsa</translation>
+        <location filename="../admin/adminfamilyview.cpp" line="64"/>
+        <location filename="../admin/adminfamilyview.cpp" line="70"/>
+        <location filename="../admin/adminfamilyview.cpp" line="98"/>
+        <location filename="../admin/adminfamilyview.cpp" line="139"/>
+        <location filename="../admin/adminfamilyview.cpp" line="193"/>
+        <location filename="../admin/adminfamilyview.cpp" line="199"/>
+        <source>Database error. Contact administrator</source>
+        <translation>Datu base akatsa. Administratzailearekin harremanetan jarri</translation>
     </message>
     <message>
-        <location filename="../admin/adminfamilyview.cpp" line="68"/>
-        <location filename="../admin/adminfamilyview.cpp" line="188"/>
-        <source>Operation not performed. Contact administrator</source>
-        <translation>Lana ez da egin. Administratzailearekin harremanetan jarri</translation>
+        <location filename="../admin/adminfamilyview.cpp" line="159"/>
+        <source>Unable to write to %1</source>
+        <translation>Ezin izan da diskan gordetu: %1</translation>
     </message>
     <message>
-        <location filename="../admin/adminfamilyview.cpp" line="155"/>
-        <source>Unable to upload image</source>
-        <translation>Irudia ezin izan da kargatu</translation>
-    </message>
-    <message>
-        <location filename="../admin/adminfamilyview.cpp" line="162"/>
+        <location filename="../admin/adminfamilyview.cpp" line="165"/>
         <source>Open File...</source>
         <translation>Fitxategia ireki...</translation>
     </message>
     <message>
-        <location filename="../admin/adminfamilyview.cpp" line="163"/>
+        <location filename="../admin/adminfamilyview.cpp" line="166"/>
         <source>Image Files (*.gif *.jpeg *.jpg *.png)</source>
         <translation>Irudi fitxategiak (*.gif *.jpeg *.jpg *.png)</translation>
     </message>
     <message>
-        <location filename="../admin/adminfamilyview.cpp" line="165"/>
-        <source>Information</source>
-        <translation>Informazioa</translation>
-    </message>
-    <message>
-        <location filename="../admin/adminfamilyview.cpp" line="165"/>
+        <location filename="../admin/adminfamilyview.cpp" line="175"/>
         <source>No file selected</source>
         <translation>Ez da fitxategirik aukeratu</translation>
     </message>
@@ -988,102 +952,87 @@
 <context>
     <name>PenyaManager::AdminInvoiceListView</name>
     <message>
-        <location filename="../admin/admininvoicelistview.cpp" line="106"/>
-        <location filename="../admin/admininvoicelistview.cpp" line="111"/>
-        <location filename="../admin/admininvoicelistview.cpp" line="123"/>
-        <location filename="../admin/admininvoicelistview.cpp" line="134"/>
-        <location filename="../admin/admininvoicelistview.cpp" line="139"/>
-        <source>Database error</source>
-        <translation>Datu base akatsa</translation>
-    </message>
-    <message>
-        <location filename="../admin/admininvoicelistview.cpp" line="106"/>
-        <location filename="../admin/admininvoicelistview.cpp" line="111"/>
-        <location filename="../admin/admininvoicelistview.cpp" line="123"/>
-        <location filename="../admin/admininvoicelistview.cpp" line="134"/>
-        <location filename="../admin/admininvoicelistview.cpp" line="139"/>
-        <source>Contact administrator</source>
-        <translation>Administratzailearekin harremanetan jarri</translation>
-    </message>
-    <message>
-        <location filename="../admin/admininvoicelistview.cpp" line="118"/>
-        <location filename="../admin/admininvoicelistview.cpp" line="129"/>
-        <source>Invalid data</source>
-        <translation>Datu okerra</translation>
-    </message>
-    <message>
-        <location filename="../admin/admininvoicelistview.cpp" line="118"/>
+        <location filename="../admin/admininvoicelistview.cpp" line="117"/>
         <source>Username not valid</source>
         <translation>Erabiltzaile okerra</translation>
     </message>
     <message>
-        <location filename="../admin/admininvoicelistview.cpp" line="129"/>
-        <source>Username found</source>
-        <translation>Erabiltzaile aurkitua</translation>
-    </message>
-    <message>
-        <location filename="../admin/admininvoicelistview.cpp" line="150"/>
+        <location filename="../admin/admininvoicelistview.cpp" line="149"/>
         <source>page %1 out of %2</source>
         <translation>%2 tik, %1. orrialdea</translation>
     </message>
     <message>
-        <location filename="../admin/admininvoicelistview.cpp" line="55"/>
+        <location filename="../admin/admininvoicelistview.cpp" line="54"/>
         <source>Ref#</source>
         <translation>erref:</translation>
     </message>
     <message>
-        <location filename="../admin/admininvoicelistview.cpp" line="56"/>
+        <location filename="../admin/admininvoicelistview.cpp" line="55"/>
         <source>Date</source>
         <translation>Data</translation>
     </message>
     <message>
-        <location filename="../admin/admininvoicelistview.cpp" line="57"/>
+        <location filename="../admin/admininvoicelistview.cpp" line="56"/>
         <source>Total</source>
         <translation>Guztira</translation>
     </message>
     <message>
-        <location filename="../admin/admininvoicelistview.cpp" line="58"/>
+        <location filename="../admin/admininvoicelistview.cpp" line="57"/>
         <source>Username</source>
         <translation>Bazkide zkia</translation>
+    </message>
+    <message>
+        <location filename="../admin/admininvoicelistview.cpp" line="105"/>
+        <location filename="../admin/admininvoicelistview.cpp" line="110"/>
+        <location filename="../admin/admininvoicelistview.cpp" line="122"/>
+        <location filename="../admin/admininvoicelistview.cpp" line="133"/>
+        <location filename="../admin/admininvoicelistview.cpp" line="138"/>
+        <source>Database error. Contact administrator</source>
+        <translation>Datu base akatsa. Administratzailearekin harremanetan jarri</translation>
+    </message>
+    <message>
+        <location filename="../admin/admininvoicelistview.cpp" line="128"/>
+        <source>Username not found</source>
+        <translation>Erabiltzaile okerra</translation>
     </message>
 </context>
 <context>
     <name>PenyaManager::AdminLoginWindow</name>
     <message>
-        <location filename="../admin/adminloginwindow.cpp" line="75"/>
+        <location filename="../admin/adminloginwindow.cpp" line="76"/>
         <source>Database error</source>
         <translation>Datu base akatsa</translation>
     </message>
     <message>
-        <location filename="../admin/adminloginwindow.cpp" line="75"/>
+        <location filename="../admin/adminloginwindow.cpp" line="76"/>
         <source>Contact administrator</source>
         <translation>Administratzailearekin harremanetan jarri</translation>
     </message>
     <message>
-        <location filename="../admin/adminloginwindow.cpp" line="85"/>
-        <location filename="../admin/adminloginwindow.cpp" line="97"/>
-        <location filename="../admin/adminloginwindow.cpp" line="106"/>
-        <location filename="../admin/adminloginwindow.cpp" line="115"/>
+        <location filename="../admin/adminloginwindow.cpp" line="86"/>
+        <location filename="../admin/adminloginwindow.cpp" line="98"/>
+        <location filename="../admin/adminloginwindow.cpp" line="107"/>
+        <location filename="../admin/adminloginwindow.cpp" line="116"/>
         <source>Login failed</source>
         <translation>Autentikazio akatsa</translation>
     </message>
     <message>
-        <location filename="../admin/adminloginwindow.cpp" line="86"/>
+        <location filename="../admin/adminloginwindow.cpp" line="87"/>
         <source>User not registered in the system: %1</source>
         <translation>Sisteman erregistratua ez dagoen erabiltzailea %1</translation>
     </message>
     <message>
-        <location filename="../admin/adminloginwindow.cpp" line="97"/>
+        <location filename="../admin/adminloginwindow.cpp" line="98"/>
         <source>Password incorrect</source>
         <translation>Pasahitz okerra</translation>
     </message>
     <message>
-        <location filename="../admin/adminloginwindow.cpp" line="106"/>
+        <location filename="../admin/adminloginwindow.cpp" line="107"/>
         <source>User not active in the system: %1</source>
         <translation>Sisteman aktbo ez dagoen erabiltzailea %1</translation>
     </message>
     <message>
-        <location filename="../admin/adminloginwindow.cpp" line="115"/>
+        <location filename="../admin/adminloginwindow.cpp" line="116"/>
         <source>User does not have permissions to login</source>
         <translation>Erabiltzaileak ez dauka sartzeko baimenik</translation>
     </message>
@@ -1091,155 +1040,102 @@
 <context>
     <name>PenyaManager::AdminNewProvider</name>
     <message>
-        <location filename="../admin/adminnewprovider.cpp" line="67"/>
-        <location filename="../admin/adminnewprovider.cpp" line="149"/>
-        <location filename="../admin/adminnewprovider.cpp" line="179"/>
-        <location filename="../admin/adminnewprovider.cpp" line="209"/>
-        <source>Database error</source>
-        <translation>Datu base akatsa</translation>
+        <location filename="../admin/adminnewprovider.cpp" line="66"/>
+        <location filename="../admin/adminnewprovider.cpp" line="155"/>
+        <location filename="../admin/adminnewprovider.cpp" line="185"/>
+        <location filename="../admin/adminnewprovider.cpp" line="214"/>
+        <source>Database error. Contact administrator</source>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../admin/adminnewprovider.cpp" line="67"/>
-        <location filename="../admin/adminnewprovider.cpp" line="149"/>
-        <location filename="../admin/adminnewprovider.cpp" line="179"/>
-        <location filename="../admin/adminnewprovider.cpp" line="209"/>
-        <source>Contact administrator</source>
-        <translation>Administratzailearekin harremanetan jarri</translation>
+        <location filename="../admin/adminnewprovider.cpp" line="102"/>
+        <source>Unable to write to %1</source>
+        <translation>Ezin izan da diskan gordetu: %1</translation>
     </message>
     <message>
-        <location filename="../admin/adminnewprovider.cpp" line="103"/>
-        <source>Unable to upload image</source>
-        <translation>Irudia ezin izan da kargatu</translation>
-    </message>
-    <message>
-        <location filename="../admin/adminnewprovider.cpp" line="110"/>
+        <location filename="../admin/adminnewprovider.cpp" line="108"/>
         <source>Open File...</source>
         <translation>Fitxategia ireki...</translation>
     </message>
     <message>
-        <location filename="../admin/adminnewprovider.cpp" line="111"/>
+        <location filename="../admin/adminnewprovider.cpp" line="109"/>
         <source>Image Files (*.gif *.jpeg *.jpg *.png)</source>
         <translation>Irudi fitxategiak (*.gif *.jpeg *.jpg *.png)</translation>
     </message>
     <message>
-        <location filename="../admin/adminnewprovider.cpp" line="113"/>
-        <source>Information</source>
-        <translation>Informazioa</translation>
+        <location filename="../admin/adminnewprovider.cpp" line="138"/>
+        <source>Name cannot be empty</source>
+        <translation>Izena ezin da hutsik egon</translation>
     </message>
     <message>
-        <location filename="../admin/adminnewprovider.cpp" line="113"/>
+        <location filename="../admin/adminnewprovider.cpp" line="119"/>
         <source>No file selected</source>
         <translation>Ez da fitxategirik aukeratu</translation>
     </message>
     <message>
-        <location filename="../admin/adminnewprovider.cpp" line="192"/>
-        <source>Update provider</source>
-        <translation>Hornitzailea eguneratu</translation>
-    </message>
-    <message>
-        <location filename="../admin/adminnewprovider.cpp" line="192"/>
-        <location filename="../admin/adminnewprovider.cpp" line="214"/>
+        <location filename="../admin/adminnewprovider.cpp" line="222"/>
         <source>Done successfully</source>
         <translation>Egina</translation>
-    </message>
-    <message>
-        <location filename="../admin/adminnewprovider.cpp" line="214"/>
-        <source>Create new provider</source>
-        <translation>Hornitzaile berria sortu</translation>
     </message>
 </context>
 <context>
     <name>PenyaManager::AdminProductItem</name>
     <message>
-        <location filename="../admin/adminproductitem.cpp" line="53"/>
-        <location filename="../admin/adminproductitem.cpp" line="66"/>
-        <location filename="../admin/adminproductitem.cpp" line="72"/>
-        <source>Data missing</source>
-        <translation>Ez dira datuak aurkitu</translation>
-    </message>
-    <message>
-        <location filename="../admin/adminproductitem.cpp" line="53"/>
-        <source>Name cannot be empty</source>
+        <location filename="../admin/adminproductitem.cpp" line="52"/>
+        <source>Basque name cannot be empty</source>
         <translation>Izena ezin da hutsik egon</translation>
     </message>
     <message>
-        <location filename="../admin/adminproductitem.cpp" line="60"/>
-        <source>Data not valid</source>
-        <translation>Datu okerra</translation>
+        <location filename="../admin/adminproductitem.cpp" line="58"/>
+        <source>Spanish name cannot be empty</source>
+        <translation>Izena ezin da hutsik egon</translation>
     </message>
     <message>
-        <location filename="../admin/adminproductitem.cpp" line="60"/>
+        <location filename="../admin/adminproductitem.cpp" line="65"/>
         <source>price cannot be 0.00€</source>
         <translation>Prezioa ezin da 0.00€-koa izan</translation>
     </message>
     <message>
-        <location filename="../admin/adminproductitem.cpp" line="66"/>
+        <location filename="../admin/adminproductitem.cpp" line="71"/>
         <source>Providers list is empty. Add some providers first</source>
         <translation>Hornitzaileen zerrenda hutsik dago. Hornitzaile baten bat sortu lehenengo</translation>
     </message>
     <message>
-        <location filename="../admin/adminproductitem.cpp" line="72"/>
+        <location filename="../admin/adminproductitem.cpp" line="77"/>
         <source>Family list is empty. Add some families first</source>
         <translation>Familien zerrenda hutsik dago. Famili baten bat sortu lehengo</translation>
     </message>
     <message>
-        <location filename="../admin/adminproductitem.cpp" line="81"/>
-        <location filename="../admin/adminproductitem.cpp" line="120"/>
-        <location filename="../admin/adminproductitem.cpp" line="169"/>
-        <location filename="../admin/adminproductitem.cpp" line="186"/>
-        <location filename="../admin/adminproductitem.cpp" line="213"/>
-        <location filename="../admin/adminproductitem.cpp" line="235"/>
-        <location filename="../admin/adminproductitem.cpp" line="274"/>
-        <location filename="../admin/adminproductitem.cpp" line="289"/>
-        <source>Database error</source>
-        <translation>Datu base akatsa</translation>
+        <location filename="../admin/adminproductitem.cpp" line="86"/>
+        <location filename="../admin/adminproductitem.cpp" line="92"/>
+        <location filename="../admin/adminproductitem.cpp" line="126"/>
+        <location filename="../admin/adminproductitem.cpp" line="176"/>
+        <location filename="../admin/adminproductitem.cpp" line="193"/>
+        <location filename="../admin/adminproductitem.cpp" line="199"/>
+        <location filename="../admin/adminproductitem.cpp" line="221"/>
+        <location filename="../admin/adminproductitem.cpp" line="243"/>
+        <location filename="../admin/adminproductitem.cpp" line="285"/>
+        <location filename="../admin/adminproductitem.cpp" line="300"/>
+        <source>Database error. Contact administrator</source>
+        <translation>Datu base akatsa. Administratzailearekin harremanetan jarri</translation>
     </message>
     <message>
-        <location filename="../admin/adminproductitem.cpp" line="81"/>
-        <location filename="../admin/adminproductitem.cpp" line="120"/>
-        <location filename="../admin/adminproductitem.cpp" line="169"/>
-        <location filename="../admin/adminproductitem.cpp" line="186"/>
-        <location filename="../admin/adminproductitem.cpp" line="213"/>
-        <location filename="../admin/adminproductitem.cpp" line="235"/>
-        <location filename="../admin/adminproductitem.cpp" line="274"/>
-        <location filename="../admin/adminproductitem.cpp" line="289"/>
-        <source>Contact administrator</source>
-        <translation>Administratzailearekin harremanetan jarri</translation>
+        <location filename="../admin/adminproductitem.cpp" line="324"/>
+        <source>Unable to write to %1</source>
+        <translation>Ezin izan da diskan gordetu: %1</translation>
     </message>
     <message>
-        <location filename="../admin/adminproductitem.cpp" line="87"/>
-        <location filename="../admin/adminproductitem.cpp" line="192"/>
-        <source>Unexpected state</source>
-        <translation>Espero ez zen akatsa</translation>
-    </message>
-    <message>
-        <location filename="../admin/adminproductitem.cpp" line="87"/>
-        <location filename="../admin/adminproductitem.cpp" line="192"/>
-        <source>Operation not performed. Contact administrator</source>
-        <translation>Lana ez da egin. Administratzailearekin harremanetan jarri</translation>
-    </message>
-    <message>
-        <location filename="../admin/adminproductitem.cpp" line="310"/>
-        <source>Unable to upload image</source>
-        <translation>Irudia ezin izan da kargatu</translation>
-    </message>
-    <message>
-        <location filename="../admin/adminproductitem.cpp" line="317"/>
+        <location filename="../admin/adminproductitem.cpp" line="329"/>
         <source>Open File...</source>
         <translation>Fitxategia ireki...</translation>
     </message>
     <message>
-        <location filename="../admin/adminproductitem.cpp" line="318"/>
+        <location filename="../admin/adminproductitem.cpp" line="330"/>
         <source>Image Files (*.gif *.jpeg *.jpg *.png)</source>
         <translation>Irudi fitxategiak (*.gif *.jpeg *.jpg *.png)</translation>
     </message>
     <message>
-        <location filename="../admin/adminproductitem.cpp" line="320"/>
-        <source>Information</source>
-        <translation>Informazioa</translation>
-    </message>
-    <message>
-        <location filename="../admin/adminproductitem.cpp" line="320"/>
+        <location filename="../admin/adminproductitem.cpp" line="339"/>
         <source>No file selected</source>
         <translation>Ez da fitxategirik aukeratu</translation>
     </message>
@@ -1247,92 +1143,68 @@
 <context>
     <name>PenyaManager::AdminReservationsWindow</name>
     <message>
-        <location filename="../admin/adminreservationswindow.cpp" line="39"/>
+        <location filename="../admin/adminreservationswindow.cpp" line="36"/>
         <source>Type</source>
         <translation>Mota</translation>
     </message>
     <message>
-        <location filename="../admin/adminreservationswindow.cpp" line="40"/>
+        <location filename="../admin/adminreservationswindow.cpp" line="37"/>
         <source>Name</source>
         <translation>Izena</translation>
     </message>
     <message>
-        <location filename="../admin/adminreservationswindow.cpp" line="41"/>
+        <location filename="../admin/adminreservationswindow.cpp" line="38"/>
         <source>Size</source>
         <translation>Edukiera</translation>
     </message>
     <message>
-        <location filename="../admin/adminreservationswindow.cpp" line="42"/>
+        <location filename="../admin/adminreservationswindow.cpp" line="39"/>
         <source>Reserved By Guest</source>
         <translation>Norengatik erreserbatua</translation>
     </message>
     <message>
-        <location filename="../admin/adminreservationswindow.cpp" line="43"/>
+        <location filename="../admin/adminreservationswindow.cpp" line="40"/>
         <source># reserved</source>
         <translation># Erreserbatua</translation>
     </message>
     <message>
-        <location filename="../admin/adminreservationswindow.cpp" line="44"/>
+        <location filename="../admin/adminreservationswindow.cpp" line="41"/>
         <source>Action</source>
         <translation>Akzioa</translation>
     </message>
     <message>
-        <location filename="../admin/adminreservationswindow.cpp" line="99"/>
-        <location filename="../admin/adminreservationswindow.cpp" line="105"/>
-        <location filename="../admin/adminreservationswindow.cpp" line="210"/>
-        <location filename="../admin/adminreservationswindow.cpp" line="228"/>
-        <location filename="../admin/adminreservationswindow.cpp" line="258"/>
-        <source>Database error</source>
-        <translation>Datu base akatsa</translation>
+        <location filename="../admin/adminreservationswindow.cpp" line="96"/>
+        <location filename="../admin/adminreservationswindow.cpp" line="102"/>
+        <location filename="../admin/adminreservationswindow.cpp" line="207"/>
+        <location filename="../admin/adminreservationswindow.cpp" line="235"/>
+        <location filename="../admin/adminreservationswindow.cpp" line="261"/>
+        <source>Database error. Contact administrator</source>
+        <translation>Datu base akatsa. Administratzailearekin harremanetan jarri</translation>
     </message>
     <message>
-        <location filename="../admin/adminreservationswindow.cpp" line="99"/>
-        <location filename="../admin/adminreservationswindow.cpp" line="105"/>
-        <location filename="../admin/adminreservationswindow.cpp" line="210"/>
-        <location filename="../admin/adminreservationswindow.cpp" line="228"/>
-        <location filename="../admin/adminreservationswindow.cpp" line="258"/>
-        <source>Contact administrator</source>
-        <translation>Administratzailearekin harremanetan jarri</translation>
-    </message>
-    <message>
-        <location filename="../admin/adminreservationswindow.cpp" line="149"/>
-        <location filename="../admin/adminreservationswindow.cpp" line="166"/>
+        <location filename="../admin/adminreservationswindow.cpp" line="146"/>
+        <location filename="../admin/adminreservationswindow.cpp" line="163"/>
         <source>Reserve</source>
         <translation>Erreseba</translation>
     </message>
     <message>
-        <location filename="../admin/adminreservationswindow.cpp" line="158"/>
+        <location filename="../admin/adminreservationswindow.cpp" line="155"/>
         <source>BLOCKED</source>
         <translation>BLOKEATUTA</translation>
     </message>
     <message>
-        <location filename="../admin/adminreservationswindow.cpp" line="160"/>
+        <location filename="../admin/adminreservationswindow.cpp" line="157"/>
         <source>Cancel</source>
         <translation>Ezeztatu</translation>
     </message>
     <message>
-        <location filename="../admin/adminreservationswindow.cpp" line="216"/>
-        <location filename="../admin/adminreservationswindow.cpp" line="234"/>
-        <source>Reservation done</source>
-        <translation>Erreserba egina</translation>
-    </message>
-    <message>
-        <location filename="../admin/adminreservationswindow.cpp" line="216"/>
+        <location filename="../admin/adminreservationswindow.cpp" line="214"/>
+        <location filename="../admin/adminreservationswindow.cpp" line="242"/>
         <source>Reserved %1 at %2</source>
         <translation>%2 -tik %1 erreserbatua</translation>
     </message>
     <message>
-        <location filename="../admin/adminreservationswindow.cpp" line="234"/>
-        <source>reservation table %1 at %2</source>
-        <translation>%2 -tik %1 -eko mahai erreserba</translation>
-    </message>
-    <message>
-        <location filename="../admin/adminreservationswindow.cpp" line="264"/>
-        <source>Reservation cancelled</source>
-        <translation>Erreserba ezeztatua</translation>
-    </message>
-    <message>
-        <location filename="../admin/adminreservationswindow.cpp" line="264"/>
+        <location filename="../admin/adminreservationswindow.cpp" line="268"/>
         <source>Cancelled %1 at %2</source>
         <translation>%2 -tik %1  ezeztatua</translation>
     </message>
@@ -1340,302 +1212,254 @@
 <context>
     <name>PenyaManager::DepositListView</name>
     <message>
-        <location filename="../admin/depositlistview.cpp" line="56"/>
+        <location filename="../admin/depositlistview.cpp" line="55"/>
         <source>ID</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../admin/depositlistview.cpp" line="57"/>
+        <location filename="../admin/depositlistview.cpp" line="56"/>
         <source>date</source>
         <translation>Data</translation>
     </message>
     <message>
-        <location filename="../admin/depositlistview.cpp" line="58"/>
+        <location filename="../admin/depositlistview.cpp" line="57"/>
         <source>Username</source>
         <translation>Bazkide zkia</translation>
     </message>
     <message>
-        <location filename="../admin/depositlistview.cpp" line="59"/>
+        <location filename="../admin/depositlistview.cpp" line="58"/>
         <source>Total</source>
         <translation>Guztira</translation>
     </message>
     <message>
-        <location filename="../admin/depositlistview.cpp" line="60"/>
+        <location filename="../admin/depositlistview.cpp" line="59"/>
         <source>Cash</source>
         <translation>Esku-dirua</translation>
     </message>
     <message>
-        <location filename="../admin/depositlistview.cpp" line="61"/>
+        <location filename="../admin/depositlistview.cpp" line="60"/>
         <source>Action</source>
         <translation>Baieztatu</translation>
     </message>
     <message>
-        <location filename="../admin/depositlistview.cpp" line="69"/>
-        <location filename="../admin/depositlistview.cpp" line="126"/>
-        <location filename="../admin/depositlistview.cpp" line="133"/>
-        <source>Database error</source>
-        <translation>Datu base akatsa</translation>
+        <location filename="../admin/depositlistview.cpp" line="68"/>
+        <location filename="../admin/depositlistview.cpp" line="110"/>
+        <location filename="../admin/depositlistview.cpp" line="125"/>
+        <location filename="../admin/depositlistview.cpp" line="132"/>
+        <source>Database error. Contact administrator</source>
+        <translation>Datu base akatsa. Administratzailearekin harremanetan jarri</translation>
     </message>
     <message>
-        <location filename="../admin/depositlistview.cpp" line="69"/>
-        <location filename="../admin/depositlistview.cpp" line="111"/>
-        <location filename="../admin/depositlistview.cpp" line="126"/>
-        <location filename="../admin/depositlistview.cpp" line="133"/>
-        <source>Contact administrator</source>
-        <translation>Administratzailearekin harremanetan jarri</translation>
+        <location filename="../admin/depositlistview.cpp" line="138"/>
+        <source>Deposit checked. Difference: %1 €</source>
+        <translation>Diru sarrerak baieztatutak. Aldea: %1 € </translation>
     </message>
     <message>
-        <location filename="../admin/depositlistview.cpp" line="98"/>
+        <location filename="../admin/depositlistview.cpp" line="97"/>
         <source>OK</source>
         <translation>OK</translation>
-    </message>
-    <message>
-        <location filename="../admin/depositlistview.cpp" line="111"/>
-        <source>Unexpected error</source>
-        <translation>Espero ez zen akatsa</translation>
-    </message>
-    <message>
-        <location filename="../admin/depositlistview.cpp" line="138"/>
-        <source>Deposit checked</source>
-        <translation>Diru sarrera egiaztatua</translation>
-    </message>
-    <message>
-        <location filename="../admin/depositlistview.cpp" line="138"/>
-        <source>Difference: %1 €</source>
-        <translation>%1 € -ko aldea</translation>
     </message>
 </context>
 <context>
     <name>PenyaManager::FamilyItemManagementWindow</name>
     <message>
-        <location filename="../admin/familyitemmanagementwindow.cpp" line="38"/>
-        <location filename="../admin/familyitemmanagementwindow.cpp" line="117"/>
-        <source>Database error</source>
-        <translation>Datu base akatsa</translation>
-    </message>
-    <message>
-        <location filename="../admin/familyitemmanagementwindow.cpp" line="38"/>
-        <location filename="../admin/familyitemmanagementwindow.cpp" line="117"/>
-        <source>Contact administrator</source>
-        <translation>Administratzailearekin harremanetan jarri</translation>
+        <location filename="../admin/familyitemmanagementwindow.cpp" line="37"/>
+        <location filename="../admin/familyitemmanagementwindow.cpp" line="116"/>
+        <source>Database error. Contact administrator</source>
+        <translation>Datu base akatsa. Administratzailearekin harremanetan jarri</translation>
     </message>
 </context>
 <context>
     <name>PenyaManager::InvoiceDetailsView</name>
     <message>
-        <location filename="../admin/invoicedetailsview.cpp" line="45"/>
+        <location filename="../admin/invoicedetailsview.cpp" line="43"/>
         <source>icon</source>
         <translation>irudia</translation>
     </message>
     <message>
-        <location filename="../admin/invoicedetailsview.cpp" line="46"/>
+        <location filename="../admin/invoicedetailsview.cpp" line="44"/>
         <source>article</source>
         <translation>artikulua</translation>
     </message>
     <message>
-        <location filename="../admin/invoicedetailsview.cpp" line="47"/>
+        <location filename="../admin/invoicedetailsview.cpp" line="45"/>
         <source>price/u</source>
         <translation>u.-ko balioa</translation>
     </message>
     <message>
-        <location filename="../admin/invoicedetailsview.cpp" line="49"/>
+        <location filename="../admin/invoicedetailsview.cpp" line="47"/>
         <source>total</source>
         <translation>guztira</translation>
     </message>
     <message>
-        <location filename="../admin/invoicedetailsview.cpp" line="63"/>
-        <location filename="../admin/invoicedetailsview.cpp" line="89"/>
-        <source>Database error</source>
-        <translation>Datu base akatsa</translation>
-    </message>
-    <message>
-        <location filename="../admin/invoicedetailsview.cpp" line="63"/>
-        <location filename="../admin/invoicedetailsview.cpp" line="89"/>
-        <source>Contact administrator</source>
-        <translation>Administratzailearekin harremanetan jarri</translation>
+        <location filename="../admin/invoicedetailsview.cpp" line="61"/>
+        <location filename="../admin/invoicedetailsview.cpp" line="87"/>
+        <source>Database error. Contact administrator</source>
+        <translation>Datu base akatsa. Administratzailearekin harremanetan jarri</translation>
     </message>
 </context>
 <context>
     <name>PenyaManager::MemberListView</name>
     <message>
-        <location filename="../admin/memberlistview.cpp" line="46"/>
+        <location filename="../admin/memberlistview.cpp" line="44"/>
         <source>Image</source>
         <translation>Irudia</translation>
     </message>
     <message>
-        <location filename="../admin/memberlistview.cpp" line="47"/>
+        <location filename="../admin/memberlistview.cpp" line="45"/>
         <source>Surnames</source>
         <translation>Abizenak</translation>
     </message>
     <message>
-        <location filename="../admin/memberlistview.cpp" line="48"/>
-        <location filename="../admin/memberlistview.cpp" line="202"/>
+        <location filename="../admin/memberlistview.cpp" line="46"/>
+        <location filename="../admin/memberlistview.cpp" line="211"/>
         <source>Name</source>
         <translation>Izena</translation>
     </message>
     <message>
-        <location filename="../admin/memberlistview.cpp" line="49"/>
-        <location filename="../admin/memberlistview.cpp" line="201"/>
+        <location filename="../admin/memberlistview.cpp" line="47"/>
+        <location filename="../admin/memberlistview.cpp" line="210"/>
         <source>Username</source>
         <translation>Bazkide zkia</translation>
     </message>
     <message>
-        <location filename="../admin/memberlistview.cpp" line="50"/>
-        <location filename="../admin/memberlistview.cpp" line="222"/>
+        <location filename="../admin/memberlistview.cpp" line="48"/>
+        <location filename="../admin/memberlistview.cpp" line="231"/>
         <source>Balance</source>
         <translation>Balantzea</translation>
     </message>
     <message>
-        <location filename="../admin/memberlistview.cpp" line="51"/>
-        <location filename="../admin/memberlistview.cpp" line="218"/>
+        <location filename="../admin/memberlistview.cpp" line="49"/>
+        <location filename="../admin/memberlistview.cpp" line="227"/>
         <source>Email</source>
         <translation>ePosta</translation>
     </message>
     <message>
-        <location filename="../admin/memberlistview.cpp" line="52"/>
-        <location filename="../admin/memberlistview.cpp" line="209"/>
+        <location filename="../admin/memberlistview.cpp" line="50"/>
+        <location filename="../admin/memberlistview.cpp" line="218"/>
         <source>Active</source>
         <translation>Aktiboa</translation>
     </message>
     <message>
-        <location filename="../admin/memberlistview.cpp" line="82"/>
-        <location filename="../admin/memberlistview.cpp" line="87"/>
-        <location filename="../admin/memberlistview.cpp" line="187"/>
-        <location filename="../admin/memberlistview.cpp" line="271"/>
-        <source>Database error</source>
-        <translation>Datu base akatsa</translation>
+        <location filename="../admin/memberlistview.cpp" line="80"/>
+        <location filename="../admin/memberlistview.cpp" line="85"/>
+        <location filename="../admin/memberlistview.cpp" line="196"/>
+        <location filename="../admin/memberlistview.cpp" line="281"/>
+        <source>Database error. Contact administrator</source>
+        <translation>Datu base akatsa. Administratzailearekin harremanetan jarri</translation>
     </message>
     <message>
-        <location filename="../admin/memberlistview.cpp" line="82"/>
-        <location filename="../admin/memberlistview.cpp" line="87"/>
-        <location filename="../admin/memberlistview.cpp" line="187"/>
-        <location filename="../admin/memberlistview.cpp" line="271"/>
-        <source>Contact administrator</source>
-        <translation>Administratzailearekin harremanetan jarri</translation>
+        <location filename="../admin/memberlistview.cpp" line="176"/>
+        <source>Open File...</source>
+        <translation>Fitxategia ireki...</translation>
     </message>
     <message>
-        <location filename="../admin/memberlistview.cpp" line="203"/>
+        <location filename="../admin/memberlistview.cpp" line="177"/>
+        <source>CSV Files (*.csv)</source>
+        <translation>CSV fitxategiak (*.csv)</translation>
+    </message>
+    <message>
+        <location filename="../admin/memberlistview.cpp" line="212"/>
         <source>Surname 1</source>
         <translation>2. abizena: {1?}</translation>
     </message>
     <message>
-        <location filename="../admin/memberlistview.cpp" line="204"/>
+        <location filename="../admin/memberlistview.cpp" line="213"/>
         <source>Surname 2</source>
         <translation>2. abizena: {2?}</translation>
     </message>
     <message>
-        <location filename="../admin/memberlistview.cpp" line="205"/>
+        <location filename="../admin/memberlistview.cpp" line="214"/>
         <source>Card ID</source>
         <translation>NAN:</translation>
     </message>
     <message>
-        <location filename="../admin/memberlistview.cpp" line="206"/>
+        <location filename="../admin/memberlistview.cpp" line="215"/>
         <source>Card Number</source>
         <translation>Txartel zkia:</translation>
     </message>
     <message>
-        <location filename="../admin/memberlistview.cpp" line="207"/>
+        <location filename="../admin/memberlistview.cpp" line="216"/>
         <source>Member Type</source>
         <translation>Bazkide mota</translation>
     </message>
     <message>
-        <location filename="../admin/memberlistview.cpp" line="208"/>
+        <location filename="../admin/memberlistview.cpp" line="217"/>
         <source>Registration Date</source>
         <translation>Erregistro data</translation>
     </message>
     <message>
-        <location filename="../admin/memberlistview.cpp" line="210"/>
+        <location filename="../admin/memberlistview.cpp" line="219"/>
         <source>Is Admin</source>
         <translation>Administratzaile</translation>
     </message>
     <message>
-        <location filename="../admin/memberlistview.cpp" line="211"/>
+        <location filename="../admin/memberlistview.cpp" line="220"/>
         <source>Birthdate</source>
         <translation>Jaiotze data:</translation>
     </message>
     <message>
-        <location filename="../admin/memberlistview.cpp" line="212"/>
+        <location filename="../admin/memberlistview.cpp" line="221"/>
         <source>Address</source>
         <translation>Helbidea:</translation>
     </message>
     <message>
-        <location filename="../admin/memberlistview.cpp" line="213"/>
+        <location filename="../admin/memberlistview.cpp" line="222"/>
         <source>Zipcode</source>
         <translation>P.K:</translation>
     </message>
     <message>
-        <location filename="../admin/memberlistview.cpp" line="214"/>
+        <location filename="../admin/memberlistview.cpp" line="223"/>
         <source>Town</source>
         <translation>Hiria:</translation>
     </message>
     <message>
-        <location filename="../admin/memberlistview.cpp" line="215"/>
+        <location filename="../admin/memberlistview.cpp" line="224"/>
         <source>State</source>
         <translation>Probintzia:</translation>
     </message>
     <message>
-        <location filename="../admin/memberlistview.cpp" line="216"/>
+        <location filename="../admin/memberlistview.cpp" line="225"/>
         <source>Phone</source>
         <translation>Telefonoa:</translation>
     </message>
     <message>
-        <location filename="../admin/memberlistview.cpp" line="217"/>
+        <location filename="../admin/memberlistview.cpp" line="226"/>
         <source>Phone 2</source>
         <translation>Telefono finkoa:</translation>
     </message>
     <message>
-        <location filename="../admin/memberlistview.cpp" line="219"/>
+        <location filename="../admin/memberlistview.cpp" line="228"/>
         <source>Banc Account</source>
         <translation>Erabilgarria:</translation>
     </message>
     <message>
-        <location filename="../admin/memberlistview.cpp" line="220"/>
+        <location filename="../admin/memberlistview.cpp" line="229"/>
         <source>Postal Send</source>
         <translation>Posta bidaltzea</translation>
     </message>
     <message>
-        <location filename="../admin/memberlistview.cpp" line="221"/>
+        <location filename="../admin/memberlistview.cpp" line="230"/>
         <source>Notes</source>
         <translation>Oharrak:</translation>
     </message>
     <message>
-        <location filename="../admin/memberlistview.cpp" line="176"/>
-        <location filename="../admin/memberlistview.cpp" line="258"/>
-        <source>Export CSV</source>
-        <translation>CSV-a esportatu</translation>
-    </message>
-    <message>
-        <location filename="../admin/memberlistview.cpp" line="193"/>
-        <source>Unable to save file</source>
-        <translation>Fitxategia ezin izan da gorde</translation>
-    </message>
-    <message>
-        <location filename="../admin/memberlistview.cpp" line="193"/>
+        <location filename="../admin/memberlistview.cpp" line="202"/>
         <source>Error opening %1</source>
         <translation>Akatsa %1 -a irekitzean</translation>
     </message>
     <message>
-        <location filename="../admin/memberlistview.cpp" line="258"/>
+        <location filename="../admin/memberlistview.cpp" line="267"/>
         <source>Successfully exported. Filename: %1</source>
         <translation>Esportazioa egina. Fitxateriaren izena: %1</translation>
     </message>
     <message>
-        <location filename="../admin/memberlistview.cpp" line="275"/>
-        <source>Unable to print</source>
-        <translation>Ezin izan da inprimatu</translation>
-    </message>
-    <message>
-        <location filename="../admin/memberlistview.cpp" line="275"/>
+        <location filename="../admin/memberlistview.cpp" line="285"/>
         <source>There are no users with postsend activated</source>
         <translation>Ez dago posta bidaltze-a aktibatua daukan bazkiderik</translation>
     </message>
     <message>
-        <location filename="../admin/memberlistview.cpp" line="280"/>
-        <source>Print postal members</source>
-        <translation>Etiketak inprimatu</translation>
-    </message>
-    <message>
-        <location filename="../admin/memberlistview.cpp" line="280"/>
+        <location filename="../admin/memberlistview.cpp" line="290"/>
         <source>successfull</source>
         <translation>Egina</translation>
     </message>
@@ -1643,131 +1467,75 @@
 <context>
     <name>PenyaManager::MemberView</name>
     <message>
-        <location filename="../admin/memberview.cpp" line="127"/>
-        <location filename="../admin/memberview.cpp" line="133"/>
-        <location filename="../admin/memberview.cpp" line="139"/>
-        <location filename="../admin/memberview.cpp" line="145"/>
-        <location filename="../admin/memberview.cpp" line="152"/>
-        <source>Data missing</source>
-        <translation>Ez dira datuak aurkitu</translation>
+        <location filename="../admin/memberview.cpp" line="32"/>
+        <location filename="../admin/memberview.cpp" line="156"/>
+        <location filename="../admin/memberview.cpp" line="162"/>
+        <location filename="../admin/memberview.cpp" line="229"/>
+        <location filename="../admin/memberview.cpp" line="255"/>
+        <location filename="../admin/memberview.cpp" line="319"/>
+        <location filename="../admin/memberview.cpp" line="325"/>
+        <location filename="../admin/memberview.cpp" line="350"/>
+        <location filename="../admin/memberview.cpp" line="479"/>
+        <source>Database error. Contact administrator</source>
+        <translation>Datu base akatsa. Administratzailearekin harremanetan jarri</translation>
     </message>
     <message>
-        <location filename="../admin/memberview.cpp" line="127"/>
+        <location filename="../admin/memberview.cpp" line="122"/>
         <source>Username must be correct number</source>
         <translation>Bazkide zkia, zenbaki bat behar du izan</translation>
     </message>
     <message>
-        <location filename="../admin/memberview.cpp" line="133"/>
+        <location filename="../admin/memberview.cpp" line="128"/>
         <source>Name cannot be empty</source>
         <translation>Izena ezin da hutsik egon</translation>
     </message>
     <message>
-        <location filename="../admin/memberview.cpp" line="139"/>
+        <location filename="../admin/memberview.cpp" line="134"/>
         <source>First surname cannot be empty</source>
         <translation>Lehenengo abizena ezin da hutsik egon</translation>
     </message>
     <message>
-        <location filename="../admin/memberview.cpp" line="145"/>
+        <location filename="../admin/memberview.cpp" line="140"/>
         <source>Second surname cannot be empty</source>
         <translation>Bigarren abizena ezin da hutsik egon</translation>
     </message>
     <message>
-        <location filename="../admin/memberview.cpp" line="152"/>
+        <location filename="../admin/memberview.cpp" line="147"/>
         <source>Bank Account cannot be empty</source>
         <translation>Kontu zenbakia ezin da hutsik egon</translation>
     </message>
     <message>
-        <location filename="../admin/memberview.cpp" line="35"/>
-        <location filename="../admin/memberview.cpp" line="161"/>
-        <location filename="../admin/memberview.cpp" line="234"/>
-        <location filename="../admin/memberview.cpp" line="261"/>
-        <location filename="../admin/memberview.cpp" line="325"/>
-        <location filename="../admin/memberview.cpp" line="331"/>
-        <location filename="../admin/memberview.cpp" line="349"/>
-        <location filename="../admin/memberview.cpp" line="467"/>
-        <source>Database error</source>
-        <translation>Datu base akatsa</translation>
+        <location filename="../admin/memberview.cpp" line="426"/>
+        <source>Unable to write to %1</source>
+        <translation>Ezin izan da diskan gordetu: %1</translation>
     </message>
     <message>
-        <location filename="../admin/memberview.cpp" line="35"/>
-        <location filename="../admin/memberview.cpp" line="161"/>
-        <location filename="../admin/memberview.cpp" line="234"/>
-        <location filename="../admin/memberview.cpp" line="261"/>
-        <location filename="../admin/memberview.cpp" line="325"/>
-        <location filename="../admin/memberview.cpp" line="331"/>
-        <location filename="../admin/memberview.cpp" line="349"/>
-        <location filename="../admin/memberview.cpp" line="467"/>
-        <source>Contact administrator</source>
-        <translation>Administratzailearekin harremanetan jarri</translation>
-    </message>
-    <message>
-        <location filename="../admin/memberview.cpp" line="167"/>
-        <source>Unexpected state</source>
-        <translation>Espero ez zen akatsa</translation>
-    </message>
-    <message>
-        <location filename="../admin/memberview.cpp" line="167"/>
-        <source>Operation not performed. Contact administrator</source>
-        <translation>Lana ez da egin. Administratzailearekin harremanetan jarri</translation>
-    </message>
-    <message>
-        <location filename="../admin/memberview.cpp" line="247"/>
-        <source>Update Member</source>
-        <translation>Bazkidea eguneratu</translation>
-    </message>
-    <message>
-        <location filename="../admin/memberview.cpp" line="247"/>
-        <location filename="../admin/memberview.cpp" line="336"/>
+        <location filename="../admin/memberview.cpp" line="334"/>
         <source>Done successfully</source>
         <translation>Egina</translation>
     </message>
     <message>
-        <location filename="../admin/memberview.cpp" line="265"/>
-        <source>Wrong username</source>
-        <translation>Bazkide okerra</translation>
-    </message>
-    <message>
-        <location filename="../admin/memberview.cpp" line="265"/>
+        <location filename="../admin/memberview.cpp" line="259"/>
         <source>username already in use</source>
         <translation>Bazkide zkia erabilia dagoeneko</translation>
     </message>
     <message>
-        <location filename="../admin/memberview.cpp" line="336"/>
-        <source>Create new member</source>
-        <translation>Bazkide berria sortu</translation>
-    </message>
-    <message>
-        <location filename="../admin/memberview.cpp" line="425"/>
-        <source>Unable to upload image</source>
-        <translation>Irudia ezin izan da kargatu</translation>
-    </message>
-    <message>
-        <location filename="../admin/memberview.cpp" line="432"/>
+        <location filename="../admin/memberview.cpp" line="431"/>
         <source>Open File...</source>
         <translation>Fitxategia ireki...</translation>
     </message>
     <message>
-        <location filename="../admin/memberview.cpp" line="433"/>
+        <location filename="../admin/memberview.cpp" line="432"/>
         <source>Image Files (*.gif *.jpeg *.jpg *.png)</source>
         <translation>Irudi fitxategiak (*.gif *.jpeg *.jpg *.png)</translation>
     </message>
     <message>
-        <location filename="../admin/memberview.cpp" line="435"/>
-        <source>Information</source>
-        <translation>Informazioa</translation>
-    </message>
-    <message>
-        <location filename="../admin/memberview.cpp" line="435"/>
+        <location filename="../admin/memberview.cpp" line="442"/>
         <source>No file selected</source>
         <translation>Ez da fitxategirik aukeratu</translation>
     </message>
     <message>
-        <location filename="../admin/memberview.cpp" line="473"/>
-        <source>Change password</source>
-        <translation>Pasahitza aldatu</translation>
-    </message>
-    <message>
-        <location filename="../admin/memberview.cpp" line="473"/>
+        <location filename="../admin/memberview.cpp" line="485"/>
         <source>Password changed successfully</source>
         <translation>Pasahitza aldatua</translation>
     </message>
@@ -1775,78 +1543,52 @@
 <context>
     <name>PenyaManager::NewProviderInvoiceView</name>
     <message>
-        <location filename="../admin/newproviderinvoiceview.cpp" line="35"/>
-        <location filename="../admin/newproviderinvoiceview.cpp" line="56"/>
-        <source>Data missing</source>
-        <translation>Ez dira datuak aurkitu</translation>
-    </message>
-    <message>
-        <location filename="../admin/newproviderinvoiceview.cpp" line="35"/>
+        <location filename="../admin/newproviderinvoiceview.cpp" line="33"/>
         <source>Invoice ID cannot be empty</source>
         <translation>Ordainagiriaren ID-a ezin da hutsik egon</translation>
     </message>
     <message>
-        <location filename="../admin/newproviderinvoiceview.cpp" line="43"/>
-        <source>Invoice has 0.0 as total value</source>
-        <translation>Ordainagiriak 0 balioa dauka</translation>
+        <location filename="../admin/newproviderinvoiceview.cpp" line="46"/>
+        <source>0€ invoice. Are you sure to continue?</source>
+        <translation>0€-ko faktura. Jarraitu?</translation>
     </message>
     <message>
-        <location filename="../admin/newproviderinvoiceview.cpp" line="44"/>
-        <source>Are you sure to continue?</source>
-        <translation>Jarraitu nahi al duzu?</translation>
+        <location filename="../admin/newproviderinvoiceview.cpp" line="75"/>
+        <location filename="../admin/newproviderinvoiceview.cpp" line="91"/>
+        <location filename="../admin/newproviderinvoiceview.cpp" line="101"/>
+        <location filename="../admin/newproviderinvoiceview.cpp" line="107"/>
+        <location filename="../admin/newproviderinvoiceview.cpp" line="136"/>
+        <location filename="../admin/newproviderinvoiceview.cpp" line="188"/>
+        <source>Database error. Contact administrator</source>
+        <translation>Datu base akatsa. Administratzailearekin harremanetan jarri</translation>
     </message>
     <message>
-        <location filename="../admin/newproviderinvoiceview.cpp" line="56"/>
+        <location filename="../admin/newproviderinvoiceview.cpp" line="39"/>
         <source>Select Provider</source>
         <translation>Hornitzailea aukeratu</translation>
     </message>
     <message>
-        <location filename="../admin/newproviderinvoiceview.cpp" line="68"/>
-        <location filename="../admin/newproviderinvoiceview.cpp" line="94"/>
-        <location filename="../admin/newproviderinvoiceview.cpp" line="100"/>
-        <location filename="../admin/newproviderinvoiceview.cpp" line="122"/>
-        <location filename="../admin/newproviderinvoiceview.cpp" line="174"/>
-        <source>Database error</source>
-        <translation>Datu base akatsa</translation>
-    </message>
-    <message>
-        <location filename="../admin/newproviderinvoiceview.cpp" line="68"/>
-        <location filename="../admin/newproviderinvoiceview.cpp" line="94"/>
-        <location filename="../admin/newproviderinvoiceview.cpp" line="100"/>
-        <location filename="../admin/newproviderinvoiceview.cpp" line="122"/>
-        <location filename="../admin/newproviderinvoiceview.cpp" line="174"/>
-        <source>Contact administrator</source>
-        <translation>Administratzailearekin harremanetan jarri</translation>
-    </message>
-    <message>
-        <location filename="../admin/newproviderinvoiceview.cpp" line="84"/>
-        <source>Unexpected state</source>
-        <translation>Espero ez zen akatsa</translation>
-    </message>
-    <message>
-        <location filename="../admin/newproviderinvoiceview.cpp" line="84"/>
-        <source>Operation not performed. Contact administrator</source>
-        <translation>Lana ez da egin. Administratzailearekin harremanetan jarri</translation>
-    </message>
-    <message>
-        <location filename="../admin/newproviderinvoiceview.cpp" line="107"/>
-        <source>New provider invoice</source>
-        <translation>Emate-agiri berria</translation>
-    </message>
-    <message>
-        <location filename="../admin/newproviderinvoiceview.cpp" line="107"/>
+        <location filename="../admin/newproviderinvoiceview.cpp" line="114"/>
         <source>Saved Successfully</source>
         <translation>Ongi gordeta</translation>
     </message>
     <message>
-        <location filename="../admin/newproviderinvoiceview.cpp" line="163"/>
-        <source>Error</source>
-        <translation>Akatsa</translation>
-    </message>
-    <message>
-        <location filename="../admin/newproviderinvoiceview.cpp" line="163"/>
+        <location filename="../admin/newproviderinvoiceview.cpp" line="177"/>
         <source>Unexpected error</source>
         <translation>Espero ez zen akatsa</translation>
+    </message>
+</context>
+<context>
+    <name>PenyaManager::PassChangeDialog</name>
+    <message>
+        <location filename="../commons/passchangedialog.cpp" line="44"/>
+        <source>password fields cannot be empty</source>
+        <translation>Pasahitza ezin da hutsik utzi</translation>
+    </message>
+    <message>
+        <location filename="../commons/passchangedialog.cpp" line="49"/>
+        <source>password fields do not match</source>
+        <translation>Pasahitzek ez dute bat egiten</translation>
     </message>
 </context>
 <context>
@@ -1877,54 +1619,56 @@
         <location filename="../admin/productexpensesview.cpp" line="170"/>
         <location filename="../admin/productexpensesview.cpp" line="180"/>
         <location filename="../admin/productexpensesview.cpp" line="185"/>
-        <location filename="../admin/productexpensesview.cpp" line="234"/>
-        <location filename="../admin/productexpensesview.cpp" line="247"/>
-        <location filename="../admin/productexpensesview.cpp" line="258"/>
-        <source>Database error</source>
-        <translation>Datu base akatsa</translation>
+        <location filename="../admin/productexpensesview.cpp" line="243"/>
+        <location filename="../admin/productexpensesview.cpp" line="256"/>
+        <location filename="../admin/productexpensesview.cpp" line="267"/>
+        <source>Database error. Contact administrator</source>
+        <translation>Datu base akatsa. Administratzailearekin harremanetan jarri</translation>
     </message>
     <message>
-        <location filename="../admin/productexpensesview.cpp" line="165"/>
         <location filename="../admin/productexpensesview.cpp" line="175"/>
-        <location filename="../admin/productexpensesview.cpp" line="242"/>
-        <location filename="../admin/productexpensesview.cpp" line="253"/>
-        <source>Invalid data</source>
-        <translation>Datu okerra</translation>
+        <location filename="../admin/productexpensesview.cpp" line="262"/>
+        <source>Username not found</source>
+        <translation>Erabiltzaile okerra</translation>
+    </message>
+    <message>
+        <location filename="../admin/productexpensesview.cpp" line="212"/>
+        <source>Open File...</source>
+        <translation>Fitxategia ireki...</translation>
+    </message>
+    <message>
+        <location filename="../admin/productexpensesview.cpp" line="213"/>
+        <source>CSV Files (*.csv)</source>
+        <translation>CSV fitxategiak (*.csv)</translation>
+    </message>
+    <message>
+        <location filename="../admin/productexpensesview.cpp" line="228"/>
+        <source>Error opening %1</source>
+        <translation>Akatsa %1 -a irekitzean</translation>
     </message>
     <message>
         <location filename="../admin/productexpensesview.cpp" line="165"/>
-        <location filename="../admin/productexpensesview.cpp" line="242"/>
+        <location filename="../admin/productexpensesview.cpp" line="251"/>
         <source>Username not valid</source>
         <translation>Erabiltzaile okerra</translation>
     </message>
     <message>
-        <location filename="../admin/productexpensesview.cpp" line="175"/>
-        <location filename="../admin/productexpensesview.cpp" line="253"/>
-        <source>Username found</source>
-        <translation>Erabiltzaile aurkitua</translation>
-    </message>
-    <message>
-        <location filename="../admin/productexpensesview.cpp" line="269"/>
+        <location filename="../admin/productexpensesview.cpp" line="278"/>
         <source>product ID</source>
         <translation>Produktu ID-a</translation>
     </message>
     <message>
-        <location filename="../admin/productexpensesview.cpp" line="269"/>
+        <location filename="../admin/productexpensesview.cpp" line="278"/>
         <source>name</source>
         <translation>Izena</translation>
     </message>
     <message>
-        <location filename="../admin/productexpensesview.cpp" line="269"/>
+        <location filename="../admin/productexpensesview.cpp" line="278"/>
         <source>count</source>
         <translation>Kopurua</translation>
     </message>
     <message>
-        <location filename="../admin/productexpensesview.cpp" line="277"/>
-        <source>CSV export</source>
-        <translation>CSV-a esportatu</translation>
-    </message>
-    <message>
-        <location filename="../admin/productexpensesview.cpp" line="277"/>
+        <location filename="../admin/productexpensesview.cpp" line="286"/>
         <source>Successfully exported. Filename: %1</source>
         <translation>Esportazioa egina. Fitxateriaren izena: %1</translation>
     </message>
@@ -1933,71 +1677,45 @@
         <source>page %1 out of %2</source>
         <translation>%2 tik, %1. orrialdea</translation>
     </message>
-    <message>
-        <location filename="../admin/productexpensesview.cpp" line="152"/>
-        <location filename="../admin/productexpensesview.cpp" line="157"/>
-        <location filename="../admin/productexpensesview.cpp" line="170"/>
-        <location filename="../admin/productexpensesview.cpp" line="180"/>
-        <location filename="../admin/productexpensesview.cpp" line="185"/>
-        <location filename="../admin/productexpensesview.cpp" line="234"/>
-        <location filename="../admin/productexpensesview.cpp" line="247"/>
-        <location filename="../admin/productexpensesview.cpp" line="258"/>
-        <source>Contact administrator</source>
-        <translation>Administratzailearekin harremanetan jarri</translation>
-    </message>
-    <message>
-        <location filename="../admin/productexpensesview.cpp" line="211"/>
-        <source>Export CSV</source>
-        <translation>CSV-a esportatu</translation>
-    </message>
 </context>
 <context>
     <name>PenyaManager::ProviderInvoiceListView</name>
     <message>
-        <location filename="../admin/providerinvoicelistview.cpp" line="42"/>
+        <location filename="../admin/providerinvoicelistview.cpp" line="40"/>
         <source>invoice ID</source>
         <translation>Ordainagiri Id-a</translation>
     </message>
     <message>
-        <location filename="../admin/providerinvoicelistview.cpp" line="43"/>
+        <location filename="../admin/providerinvoicelistview.cpp" line="41"/>
         <source>Total</source>
         <translation>Guztira</translation>
     </message>
     <message>
-        <location filename="../admin/providerinvoicelistview.cpp" line="44"/>
+        <location filename="../admin/providerinvoicelistview.cpp" line="42"/>
         <source>Date</source>
         <translation>Data</translation>
     </message>
     <message>
-        <location filename="../admin/providerinvoicelistview.cpp" line="45"/>
+        <location filename="../admin/providerinvoicelistview.cpp" line="43"/>
         <source>Provider</source>
         <translation>Hornitzailea</translation>
     </message>
     <message>
-        <location filename="../admin/providerinvoicelistview.cpp" line="106"/>
-        <location filename="../admin/providerinvoicelistview.cpp" line="137"/>
-        <location filename="../admin/providerinvoicelistview.cpp" line="142"/>
-        <location filename="../admin/providerinvoicelistview.cpp" line="148"/>
-        <location filename="../admin/providerinvoicelistview.cpp" line="153"/>
-        <source>Database error</source>
-        <translation>Datu base akatsa</translation>
+        <location filename="../admin/providerinvoicelistview.cpp" line="104"/>
+        <location filename="../admin/providerinvoicelistview.cpp" line="135"/>
+        <location filename="../admin/providerinvoicelistview.cpp" line="140"/>
+        <location filename="../admin/providerinvoicelistview.cpp" line="146"/>
+        <location filename="../admin/providerinvoicelistview.cpp" line="151"/>
+        <source>Database error. Contact administrator</source>
+        <translation>Datu base akatsa. Administratzailearekin harremanetan jarri</translation>
     </message>
     <message>
-        <location filename="../admin/providerinvoicelistview.cpp" line="106"/>
-        <location filename="../admin/providerinvoicelistview.cpp" line="137"/>
-        <location filename="../admin/providerinvoicelistview.cpp" line="142"/>
-        <location filename="../admin/providerinvoicelistview.cpp" line="148"/>
-        <location filename="../admin/providerinvoicelistview.cpp" line="153"/>
-        <source>Contact administrator</source>
-        <translation>Administratzailearekin harremanetan jarri</translation>
-    </message>
-    <message>
-        <location filename="../admin/providerinvoicelistview.cpp" line="112"/>
+        <location filename="../admin/providerinvoicelistview.cpp" line="110"/>
         <source>All providers</source>
         <translation>Guztiak</translation>
     </message>
     <message>
-        <location filename="../admin/providerinvoicelistview.cpp" line="163"/>
+        <location filename="../admin/providerinvoicelistview.cpp" line="161"/>
         <source>page %1 out of %2</source>
         <translation>%2 tik, %1. orrialdea</translation>
     </message>
@@ -2005,137 +1723,96 @@
 <context>
     <name>PenyaManager::ProviderInvoiceView</name>
     <message>
-        <location filename="../admin/providerinvoiceview.cpp" line="40"/>
+        <location filename="../admin/providerinvoiceview.cpp" line="38"/>
         <source>Icon</source>
         <translation>Ikonoa</translation>
     </message>
     <message>
-        <location filename="../admin/providerinvoiceview.cpp" line="41"/>
+        <location filename="../admin/providerinvoiceview.cpp" line="39"/>
         <source>Product</source>
         <translation>Produktua</translation>
     </message>
     <message>
-        <location filename="../admin/providerinvoiceview.cpp" line="42"/>
+        <location filename="../admin/providerinvoiceview.cpp" line="40"/>
         <source>Count</source>
         <translation>Kopurua</translation>
     </message>
     <message>
-        <location filename="../admin/providerinvoiceview.cpp" line="51"/>
-        <location filename="../admin/providerinvoiceview.cpp" line="90"/>
-        <source>Database error</source>
-        <translation>Datu base akatsa</translation>
+        <location filename="../admin/providerinvoiceview.cpp" line="49"/>
+        <location filename="../admin/providerinvoiceview.cpp" line="88"/>
+        <source>Database error. Contact administrator</source>
+        <translation>Datu base akatsa. Administratzailearekin harremanetan jarri</translation>
     </message>
     <message>
-        <location filename="../admin/providerinvoiceview.cpp" line="51"/>
-        <location filename="../admin/providerinvoiceview.cpp" line="90"/>
-        <source>Contact administrator</source>
-        <translation>Administratzailearekin harremanetan jarri</translation>
-    </message>
-    <message>
-        <location filename="../admin/providerinvoiceview.cpp" line="57"/>
-        <source>Unexpected state</source>
-        <translation>Espero ez zen akatsa</translation>
-    </message>
-    <message>
-        <location filename="../admin/providerinvoiceview.cpp" line="57"/>
+        <location filename="../admin/providerinvoiceview.cpp" line="55"/>
         <source>Operation not performed. Contact administrator</source>
-        <translation>Lana ez da egin. Administratzailearekin harremanetan jarri</translation>
+        <translation>Datu base akatsa. Administratzailearekin harremanetan jarri</translation>
     </message>
 </context>
 <context>
     <name>PenyaManager::ProviderManagerView</name>
     <message>
-        <location filename="../admin/providermanagerview.cpp" line="55"/>
-        <location filename="../admin/providermanagerview.cpp" line="99"/>
-        <source>Database error</source>
-        <translation>Datu base akatsa</translation>
-    </message>
-    <message>
-        <location filename="../admin/providermanagerview.cpp" line="55"/>
-        <location filename="../admin/providermanagerview.cpp" line="99"/>
-        <source>Contact administrator</source>
-        <translation>Administratzailearekin harremanetan jarri</translation>
+        <location filename="../admin/providermanagerview.cpp" line="54"/>
+        <location filename="../admin/providermanagerview.cpp" line="98"/>
+        <source>Database error. Contact administrator</source>
+        <translation>Datu base akatsa. Administratzailearekin harremanetan jarri</translation>
     </message>
 </context>
 <context>
     <name>PenyaManager::SlowPayersView</name>
     <message>
-        <location filename="../admin/slowpayersview.cpp" line="46"/>
+        <location filename="../admin/slowpayersview.cpp" line="45"/>
         <source>Username</source>
         <translation>Bazkide zkia</translation>
     </message>
     <message>
-        <location filename="../admin/slowpayersview.cpp" line="47"/>
-        <location filename="../admin/slowpayersview.cpp" line="118"/>
+        <location filename="../admin/slowpayersview.cpp" line="46"/>
+        <location filename="../admin/slowpayersview.cpp" line="128"/>
         <source>Name</source>
         <translation>Izena</translation>
     </message>
     <message>
-        <location filename="../admin/slowpayersview.cpp" line="48"/>
-        <location filename="../admin/slowpayersview.cpp" line="118"/>
+        <location filename="../admin/slowpayersview.cpp" line="47"/>
+        <location filename="../admin/slowpayersview.cpp" line="128"/>
         <source>Balance</source>
         <translation>Balantzea</translation>
     </message>
     <message>
-        <location filename="../admin/slowpayersview.cpp" line="64"/>
-        <location filename="../admin/slowpayersview.cpp" line="106"/>
-        <location filename="../admin/slowpayersview.cpp" line="139"/>
-        <source>Database error</source>
-        <translation>Datu base akatsa</translation>
+        <location filename="../admin/slowpayersview.cpp" line="63"/>
+        <location filename="../admin/slowpayersview.cpp" line="116"/>
+        <location filename="../admin/slowpayersview.cpp" line="156"/>
+        <source>Database error. Contact administrator</source>
+        <translation>Datu base akatsa. Administratzailearekin harremanetan jarri</translation>
     </message>
     <message>
-        <location filename="../admin/slowpayersview.cpp" line="64"/>
-        <location filename="../admin/slowpayersview.cpp" line="106"/>
-        <location filename="../admin/slowpayersview.cpp" line="139"/>
-        <source>Contact administrator</source>
-        <translation>Administratzailearekin harremanetan jarri</translation>
+        <location filename="../admin/slowpayersview.cpp" line="98"/>
+        <source>Open File...</source>
+        <translation>Fitxategia ireki...</translation>
     </message>
     <message>
-        <location filename="../admin/slowpayersview.cpp" line="112"/>
-        <source>Unable to save file</source>
-        <translation>Fitxategia ezin izan da gorde</translation>
+        <location filename="../admin/slowpayersview.cpp" line="99"/>
+        <source>CSV Files (*.csv)</source>
+        <translation>CSV fitxategiak (*.csv)</translation>
     </message>
     <message>
-        <location filename="../admin/slowpayersview.cpp" line="112"/>
+        <location filename="../admin/slowpayersview.cpp" line="143"/>
+        <source>Reset accounts. Are you sure?</source>
+        <translation>Kontuak berrabiarazten. Ziur zaude?</translation>
+    </message>
+    <message>
+        <location filename="../admin/slowpayersview.cpp" line="122"/>
         <source>Error opening %1</source>
         <translation>Akatsa %1 -a irekitzean</translation>
     </message>
     <message>
-        <location filename="../admin/slowpayersview.cpp" line="126"/>
-        <source>CSV export</source>
-        <translation>CSV-a esportatu</translation>
-    </message>
-    <message>
-        <location filename="../admin/slowpayersview.cpp" line="126"/>
+        <location filename="../admin/slowpayersview.cpp" line="136"/>
         <source>Successfully exported. Filename: %1</source>
         <translation>Esportazioa egina. Fitxateriaren izena: %1</translation>
     </message>
     <message>
-        <location filename="../admin/slowpayersview.cpp" line="132"/>
-        <location filename="../admin/slowpayersview.cpp" line="137"/>
-        <location filename="../admin/slowpayersview.cpp" line="142"/>
-        <source>reset accounts</source>
-        <translation>Kontuak berrabiarazi</translation>
-    </message>
-    <message>
-        <location filename="../admin/slowpayersview.cpp" line="132"/>
-        <source>Are you sure?</source>
-        <translation>Jarraitu ?</translation>
-    </message>
-    <message>
-        <location filename="../admin/slowpayersview.cpp" line="137"/>
+        <location filename="../admin/slowpayersview.cpp" line="160"/>
         <source>Operation done</source>
         <translation>Eragiketa eginda</translation>
-    </message>
-    <message>
-        <location filename="../admin/slowpayersview.cpp" line="142"/>
-        <source>Operation cancelled</source>
-        <translation>Eragiketa deuzestua</translation>
-    </message>
-    <message>
-        <location filename="../admin/slowpayersview.cpp" line="97"/>
-        <source>Export CSV</source>
-        <translation>CSV-a esportatu</translation>
     </message>
 </context>
 <context>
@@ -2147,7 +1824,7 @@
     </message>
     <message>
         <location filename="../admin/stockmanagementwindow.cpp" line="33"/>
-        <location filename="../admin/stockmanagementwindow.cpp" line="99"/>
+        <location filename="../admin/stockmanagementwindow.cpp" line="110"/>
         <source>name</source>
         <translation>Izena</translation>
     </message>
@@ -2182,32 +1859,34 @@
         <translation>Unitateak</translation>
     </message>
     <message>
-        <location filename="../admin/stockmanagementwindow.cpp" line="77"/>
-        <location filename="../admin/stockmanagementwindow.cpp" line="107"/>
-        <source>Export CSV</source>
-        <translation>CSV-a esportatu</translation>
+        <location filename="../admin/stockmanagementwindow.cpp" line="79"/>
+        <source>Open File...</source>
+        <translation>Fitxategia ireki...</translation>
     </message>
     <message>
-        <location filename="../admin/stockmanagementwindow.cpp" line="86"/>
-        <location filename="../admin/stockmanagementwindow.cpp" line="126"/>
-        <location filename="../admin/stockmanagementwindow.cpp" line="131"/>
-        <source>Database error</source>
-        <translation>Datu base akatsa</translation>
+        <location filename="../admin/stockmanagementwindow.cpp" line="80"/>
+        <source>CSV Files (*.csv)</source>
+        <translation>CSV fitxategiak (*.csv)</translation>
     </message>
     <message>
-        <location filename="../admin/stockmanagementwindow.cpp" line="86"/>
-        <location filename="../admin/stockmanagementwindow.cpp" line="126"/>
-        <location filename="../admin/stockmanagementwindow.cpp" line="131"/>
-        <source>Contact administrator</source>
-        <translation>Administratzailearekin harremanetan jarri</translation>
+        <location filename="../admin/stockmanagementwindow.cpp" line="97"/>
+        <location filename="../admin/stockmanagementwindow.cpp" line="138"/>
+        <location filename="../admin/stockmanagementwindow.cpp" line="143"/>
+        <source>Database error. Contact administrator</source>
+        <translation>Datu base akatsa. Administratzailearekin harremanetan jarri</translation>
     </message>
     <message>
-        <location filename="../admin/stockmanagementwindow.cpp" line="99"/>
+        <location filename="../admin/stockmanagementwindow.cpp" line="103"/>
+        <source>Error opening %1</source>
+        <translation>Akatsa %1 -a irekitzean</translation>
+    </message>
+    <message>
+        <location filename="../admin/stockmanagementwindow.cpp" line="110"/>
         <source>stock</source>
         <translation>stock-a</translation>
     </message>
     <message>
-        <location filename="../admin/stockmanagementwindow.cpp" line="107"/>
+        <location filename="../admin/stockmanagementwindow.cpp" line="118"/>
         <source>Successfully exported. Filename: %1</source>
         <translation>Esportazioa egina. Fitxateriaren izena: %1</translation>
     </message>
@@ -2484,22 +2163,23 @@
         <translation>Sarrera zuz.</translation>
     </message>
     <message>
-        <location filename="../commons/guiutils.cpp" line="162"/>
+        <location filename="../commons/dialogmanager.cpp" line="27"/>
+        <location filename="../commons/dialogmanager.cpp" line="40"/>
         <source>Yes</source>
         <translation>Bai</translation>
     </message>
     <message>
-        <location filename="../commons/guiutils.cpp" line="163"/>
+        <location filename="../commons/dialogmanager.cpp" line="28"/>
         <source>No</source>
         <translation>Ez</translation>
     </message>
     <message>
-        <location filename="../commons/guiutils.cpp" line="211"/>
+        <location filename="../commons/guiutils.cpp" line="189"/>
         <source>invoice ref: %1</source>
         <translation>%1 -ren ordainagiri erref.</translation>
     </message>
     <message>
-        <location filename="../commons/guiutils.cpp" line="219"/>
+        <location filename="../commons/guiutils.cpp" line="197"/>
         <source>deposit ref: %1</source>
         <translation>%1 -ren diru sarrera erref. :</translation>
     </message>
