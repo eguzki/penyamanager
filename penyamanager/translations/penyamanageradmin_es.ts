@@ -1253,7 +1253,7 @@
     <message>
         <location filename="../admin/depositlistview.cpp" line="138"/>
         <source>Deposit checked. Difference: %1 €</source>
-        <translation>Ingresos verificados. Diferencia %1 €</translation>
+        <translation>Ingreso verificado. Diferencia %1 €</translation>
     </message>
     <message>
         <location filename="../admin/depositlistview.cpp" line="97"/>
@@ -2133,7 +2133,7 @@
     <message>
         <location filename="../objs/Member.cpp" line="48"/>
         <source>Honorary</source>
-        <translation>Honorario</translation>
+        <translation>Honorífico</translation>
     </message>
 </context>
 <context>

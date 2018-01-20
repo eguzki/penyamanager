@@ -40,6 +40,8 @@ namespace PenyaManager {
             void fillLastInvoiceOwnerInfo(const MemberPtr &pLastInvoiceOwnerPtr);
             //
             void fillLastInvoiceInfo(const InvoicePtr &pLastInvoicePtr);
+            //
+            void updateLastInvoiceInformation(const InvoicePtr &pLastInvoicePtr);
 
         private slots:
             //

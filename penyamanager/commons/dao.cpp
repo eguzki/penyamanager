@@ -2550,7 +2550,7 @@ namespace PenyaManager {
             // update product family item
             queryPtr->prepare(
                     "UPDATE product_family "
-                    "SET name=:name, name_es:name_es, image=:image, active=:active "
+                    "SET name=:name, name_es=:name_es, image=:image, active=:active "
                     "WHERE idproduct_family = :familyid"
                     );
             queryPtr->bindValue(":name", pFamilyPtr->m_nameEus);
