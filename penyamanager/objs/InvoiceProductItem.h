@@ -15,15 +15,15 @@ namespace PenyaManager
             //
             InvoiceProductItem();
             //
-            InvoiceProductItem(Int32 productId, QString productName, QString imagePath, Float priceperunit, Uint32 count);
-            //
             virtual ~InvoiceProductItem(){}
 
         public:
             //
             Int32               m_productId;
             //
-            QString             m_productname;
+            QString             m_productnameEus;
+            //
+            QString             m_productnameEs;
             //
             QString             m_imagePath;
             //

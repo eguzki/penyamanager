@@ -22,7 +22,9 @@ namespace PenyaManager
             //
             Int32               m_count;
             //
-            QString             m_productName;
+            QString             m_productNameEus;
+            //
+            QString             m_productNameEs;
             //
             QString             m_productImagePath;
             //

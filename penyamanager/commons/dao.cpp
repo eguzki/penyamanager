@@ -577,7 +577,7 @@ namespace PenyaManager {
             QueryPtr queryPtr(new QSqlQuery);
             // invoice product items by invoiceId
             queryPtr->prepare(
-                    "SELECT product_item.idproduct_item, product_item.name, product_item.image, product_item.price, inv_prod.count "
+                    "SELECT product_item.idproduct_item, product_item.name, product_item.name_es, product_item.image, product_item.price, inv_prod.count "
                     "FROM inv_prod INNER JOIN product_item ON inv_prod.idproduct_item=product_item.idproduct_item "
                     "WHERE idinvoice=:invoiceid "
                     "ORDER BY inv_prod.date DESC "
@@ -601,10 +601,11 @@ namespace PenyaManager {
             while (queryResponse.query->next()) {
                 InvoiceProductItemPtr pInvoiceProductItemPtr(new InvoiceProductItem);
                 pInvoiceProductItemPtr->m_productId = queryResponse.query->value(0).toInt();
-                pInvoiceProductItemPtr->m_productname = queryResponse.query->value(1).toString();
-                pInvoiceProductItemPtr->m_imagePath = queryResponse.query->value(2).toString();
-                pInvoiceProductItemPtr->m_priceperunit = queryResponse.query->value(3).toFloat();
-                pInvoiceProductItemPtr->m_count = queryResponse.query->value(4).toUInt();
+                pInvoiceProductItemPtr->m_productnameEus = queryResponse.query->value(1).toString();
+                pInvoiceProductItemPtr->m_productnameEs = queryResponse.query->value(2).toString();
+                pInvoiceProductItemPtr->m_imagePath = queryResponse.query->value(3).toString();
+                pInvoiceProductItemPtr->m_priceperunit = queryResponse.query->value(4).toFloat();
+                pInvoiceProductItemPtr->m_count = queryResponse.query->value(5).toUInt();
                 pInvoicePILResult->m_list->push_back(pInvoiceProductItemPtr);
             }
         }
@@ -620,7 +621,7 @@ namespace PenyaManager {
             QueryPtr queryPtr(new QSqlQuery);
             // invoice product items by invoiceId
             queryPtr->prepare(
-                    "SELECT product_item.idproduct_item, product_item.name, product_item.image, product_item.price, inv_prod.count "
+                    "SELECT product_item.idproduct_item, product_item.name, product_item.name_es, product_item.image, product_item.price, inv_prod.count "
                     "FROM inv_prod INNER JOIN product_item ON inv_prod.idproduct_item=product_item.idproduct_item "
                     "WHERE idinvoice=:invoiceid"
                     );
@@ -640,10 +641,11 @@ namespace PenyaManager {
             while (queryResponse.query->next()) {
                 InvoiceProductItemPtr pInvoiceProductItemPtr(new InvoiceProductItem);
                 pInvoiceProductItemPtr->m_productId = queryResponse.query->value(0).toInt();
-                pInvoiceProductItemPtr->m_productname = queryResponse.query->value(1).toString();
-                pInvoiceProductItemPtr->m_imagePath = queryResponse.query->value(2).toString();
-                pInvoiceProductItemPtr->m_priceperunit = queryResponse.query->value(3).toFloat();
-                pInvoiceProductItemPtr->m_count = queryResponse.query->value(4).toUInt();
+                pInvoiceProductItemPtr->m_productnameEus = queryResponse.query->value(1).toString();
+                pInvoiceProductItemPtr->m_productnameEs = queryResponse.query->value(2).toString();
+                pInvoiceProductItemPtr->m_imagePath = queryResponse.query->value(3).toString();
+                pInvoiceProductItemPtr->m_priceperunit = queryResponse.query->value(4).toFloat();
+                pInvoiceProductItemPtr->m_count = queryResponse.query->value(5).toUInt();
                 pInvoicePILResult->m_list->push_back(pInvoiceProductItemPtr);
             }
         }
@@ -2263,7 +2265,7 @@ namespace PenyaManager {
             QueryPtr queryPtr(new QSqlQuery);
             // product items query
             queryPtr->prepare(
-                    "SELECT product_item.idproduct_item, product_item.name, product_item.active, product_item.image, product_item.reg_date, product_item.price, product_family.name, provider.name, product_item.stock "
+                    "SELECT product_item.idproduct_item, product_item.name, product_item.name_es, product_item.active, product_item.image, product_item.reg_date, product_item.price, product_family.name, product_family.name_es, provider.name, product_item.stock "
                     "FROM product_item "
                     "INNER JOIN product_family ON product_family.idproduct_family=product_item.idproduct_family "
                     "INNER JOIN provider ON provider.idprovider=product_item.idprovider "
@@ -2282,14 +2284,16 @@ namespace PenyaManager {
             while (queryResponse.query->next()) {
                 StockProductItemPtr pStockProductItemPtr(new StockProductItem);
                 pStockProductItemPtr->m_id = queryResponse.query->value(0).toInt();
-                pStockProductItemPtr->m_name = queryResponse.query->value(1).toString();
-                pStockProductItemPtr->m_active = queryResponse.query->value(2).toInt() == 1;
-                pStockProductItemPtr->m_imagePath = queryResponse.query->value(3).toString();
-                pStockProductItemPtr->m_regDate = queryResponse.query->value(4).toDateTime();
-                pStockProductItemPtr->m_price = queryResponse.query->value(5).toFloat();
-                pStockProductItemPtr->m_familyName = queryResponse.query->value(6).toString();
-                pStockProductItemPtr->m_providerName = queryResponse.query->value(7).toString();
-                pStockProductItemPtr->m_stock = queryResponse.query->value(8).toInt();
+                pStockProductItemPtr->m_nameEus = queryResponse.query->value(1).toString();
+                pStockProductItemPtr->m_nameEs = queryResponse.query->value(2).toString();
+                pStockProductItemPtr->m_active = queryResponse.query->value(3).toInt() == 1;
+                pStockProductItemPtr->m_imagePath = queryResponse.query->value(4).toString();
+                pStockProductItemPtr->m_regDate = queryResponse.query->value(5).toDateTime();
+                pStockProductItemPtr->m_price = queryResponse.query->value(6).toFloat();
+                pStockProductItemPtr->m_familyNameEus = queryResponse.query->value(7).toString();
+                pStockProductItemPtr->m_familyNameEs = queryResponse.query->value(8).toString();
+                pStockProductItemPtr->m_providerName = queryResponse.query->value(9).toString();
+                pStockProductItemPtr->m_stock = queryResponse.query->value(10).toInt();
                 pStockProductItemListResultPtr->m_list->push_back(pStockProductItemPtr);
             }
         }
@@ -2304,7 +2308,7 @@ namespace PenyaManager {
             QueryPtr queryPtr(new QSqlQuery);
             // product items query
             queryPtr->prepare(
-                    "SELECT product_item.idproduct_item, product_item.name, product_item.active, product_item.image, product_item.reg_date, product_item.price, product_family.name, provider.name, product_item.stock "
+                    "SELECT product_item.idproduct_item, product_item.name, product_item.name_es, product_item.active, product_item.image, product_item.reg_date, product_item.price, product_family.name, product_family.name_es, provider.name, product_item.stock "
                     "FROM product_item "
                     "INNER JOIN product_family ON product_family.idproduct_family=product_item.idproduct_family "
                     "INNER JOIN provider ON provider.idprovider=product_item.idprovider "
@@ -2327,14 +2331,16 @@ namespace PenyaManager {
             while (queryResponse.query->next()) {
                 StockProductItemPtr pStockProductItemPtr(new StockProductItem);
                 pStockProductItemPtr->m_id = queryResponse.query->value(0).toInt();
-                pStockProductItemPtr->m_name = queryResponse.query->value(1).toString();
-                pStockProductItemPtr->m_active = queryResponse.query->value(2).toInt() == 1;
-                pStockProductItemPtr->m_imagePath = queryResponse.query->value(3).toString();
-                pStockProductItemPtr->m_regDate = queryResponse.query->value(4).toDateTime();
-                pStockProductItemPtr->m_price = queryResponse.query->value(5).toFloat();
-                pStockProductItemPtr->m_familyName = queryResponse.query->value(6).toString();
-                pStockProductItemPtr->m_providerName = queryResponse.query->value(7).toString();
-                pStockProductItemPtr->m_stock = queryResponse.query->value(8).toInt();
+                pStockProductItemPtr->m_nameEus = queryResponse.query->value(1).toString();
+                pStockProductItemPtr->m_nameEs = queryResponse.query->value(2).toString();
+                pStockProductItemPtr->m_active = queryResponse.query->value(3).toInt() == 1;
+                pStockProductItemPtr->m_imagePath = queryResponse.query->value(4).toString();
+                pStockProductItemPtr->m_regDate = queryResponse.query->value(5).toDateTime();
+                pStockProductItemPtr->m_price = queryResponse.query->value(6).toFloat();
+                pStockProductItemPtr->m_familyNameEus = queryResponse.query->value(7).toString();
+                pStockProductItemPtr->m_familyNameEs = queryResponse.query->value(8).toString();
+                pStockProductItemPtr->m_providerName = queryResponse.query->value(9).toString();
+                pStockProductItemPtr->m_stock = queryResponse.query->value(10).toInt();
                 pStockProductItemListResultPtr->m_list->push_back(pStockProductItemPtr);
             }
         }
@@ -2550,7 +2556,7 @@ namespace PenyaManager {
             // update product family item
             queryPtr->prepare(
                     "UPDATE product_family "
-                    "SET name=:name, name_es:name_es, image=:image, active=:active "
+                    "SET name=:name, name_es=:name_es, image=:image, active=:active "
                     "WHERE idproduct_family = :familyid"
                     );
             queryPtr->bindValue(":name", pFamilyPtr->m_nameEus);
@@ -2621,7 +2627,7 @@ namespace PenyaManager {
             // product expenses list
             // only closed
             queryPtr->prepare(
-                    "SELECT product_item.idproduct_item, product_item.name, product_item.image, product_item.price, SUM(inv_prod.count) "
+                    "SELECT product_item.idproduct_item, product_item.name, product_item.name_es, product_item.image, product_item.price, SUM(inv_prod.count) "
                     "FROM invoice "
                     "INNER JOIN inv_prod ON inv_prod.idinvoice=invoice.idinvoice "
                     "INNER JOIN product_item ON product_item.idproduct_item=inv_prod.idproduct_item "
@@ -2651,10 +2657,11 @@ namespace PenyaManager {
             while (queryResponse.query->next()) {
                 InvoiceProductItemPtr pInvoiceProductItemPtr(new InvoiceProductItem);
                 pInvoiceProductItemPtr->m_productId =  queryResponse.query->value(0).toInt();
-                pInvoiceProductItemPtr->m_productname =  queryResponse.query->value(1).toString();
-                pInvoiceProductItemPtr->m_imagePath =  queryResponse.query->value(2).toString();
-                pInvoiceProductItemPtr->m_priceperunit =  queryResponse.query->value(3).toFloat();
-                pInvoiceProductItemPtr->m_count =  queryResponse.query->value(4).toUInt();
+                pInvoiceProductItemPtr->m_productnameEus =  queryResponse.query->value(1).toString();
+                pInvoiceProductItemPtr->m_productnameEs =  queryResponse.query->value(2).toString();
+                pInvoiceProductItemPtr->m_imagePath =  queryResponse.query->value(3).toString();
+                pInvoiceProductItemPtr->m_priceperunit =  queryResponse.query->value(4).toFloat();
+                pInvoiceProductItemPtr->m_count =  queryResponse.query->value(5).toUInt();
                 pInvoiceProductItemListResultPtr->m_list->push_back(pInvoiceProductItemPtr);
             }
         }
@@ -2706,7 +2713,7 @@ namespace PenyaManager {
             QueryPtr queryPtr(new QSqlQuery);
             // product expenses list by memberId
             queryPtr->prepare(
-                    "SELECT product_item.idproduct_item, product_item.name, product_item.image, product_item.price, SUM(inv_prod.count) "
+                    "SELECT product_item.idproduct_item, product_item.name, product_item.name_es, product_item.image, product_item.price, SUM(inv_prod.count) "
                     "FROM invoice "
                     "INNER JOIN inv_prod ON inv_prod.idinvoice=invoice.idinvoice "
                     "INNER JOIN product_item ON product_item.idproduct_item=inv_prod.idproduct_item "
@@ -2736,10 +2743,11 @@ namespace PenyaManager {
             while (queryResponse.query->next()) {
                 InvoiceProductItemPtr pInvoiceProductItemPtr(new InvoiceProductItem);
                 pInvoiceProductItemPtr->m_productId =  queryResponse.query->value(0).toInt();
-                pInvoiceProductItemPtr->m_productname =  queryResponse.query->value(1).toString();
-                pInvoiceProductItemPtr->m_imagePath =  queryResponse.query->value(2).toString();
-                pInvoiceProductItemPtr->m_priceperunit =  queryResponse.query->value(3).toFloat();
-                pInvoiceProductItemPtr->m_count =  queryResponse.query->value(4).toUInt();
+                pInvoiceProductItemPtr->m_productnameEus =  queryResponse.query->value(1).toString();
+                pInvoiceProductItemPtr->m_productnameEs =  queryResponse.query->value(2).toString();
+                pInvoiceProductItemPtr->m_imagePath =  queryResponse.query->value(3).toString();
+                pInvoiceProductItemPtr->m_priceperunit =  queryResponse.query->value(4).toFloat();
+                pInvoiceProductItemPtr->m_count =  queryResponse.query->value(5).toUInt();
                 pIPILResult->m_list->push_back(pInvoiceProductItemPtr);
             }
         }
@@ -3637,7 +3645,7 @@ namespace PenyaManager {
             QueryPtr queryPtr(new QSqlQuery);
             // get provider invoice product by invoice id
             queryPtr->prepare(
-                    "SELECT provider_invoices_product.product_item_idproduct_item, provider_invoices_product.count, product_item.name, product_item.image, product_item.price "
+                    "SELECT provider_invoices_product.product_item_idproduct_item, provider_invoices_product.count, product_item.name, product_item.name_es, product_item.image, product_item.price "
                     "FROM provider_invoices_product "
                     "INNER JOIN product_item ON product_item.idproduct_item = provider_invoices_product.product_item_idproduct_item "
                     "WHERE provider_invoices_product.provider_invoices_idprovider_invoices = :providerinvoicesid"
@@ -3660,7 +3668,8 @@ namespace PenyaManager {
                 Uint32 column = 0;
                 pProductPtr->m_productId = queryResponse.query->value(column++).toInt();
                 pProductPtr->m_count = queryResponse.query->value(column++).toInt();
-                pProductPtr->m_productName = queryResponse.query->value(column++).toString();
+                pProductPtr->m_productNameEus = queryResponse.query->value(column++).toString();
+                pProductPtr->m_productNameEs = queryResponse.query->value(column++).toString();
                 pProductPtr->m_productImagePath = queryResponse.query->value(column++).toString();
                 pProductPtr->m_productPrice = queryResponse.query->value(column++).toFloat();
                 pListResultPtr->m_list->push_back(pProductPtr);

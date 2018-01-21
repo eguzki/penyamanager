@@ -288,7 +288,7 @@ namespace PenyaManager {
         for (InvoiceProductItemList::iterator iter = pInvoiceProductItemListResultPtr->m_list->begin(); iter != pInvoiceProductItemListResultPtr->m_list->end(); ++iter)
         {
             InvoiceProductItemPtr pInvoiceProductItemPtr = *iter;
-            QTableWidgetItem *item = new QTableWidgetItem(pInvoiceProductItemPtr->m_productname);
+            QTableWidgetItem *item = new QTableWidgetItem(Singletons::m_pTranslationManager->getStringTranslation(pInvoiceProductItemPtr->m_productnameEus, pInvoiceProductItemPtr->m_productnameEs));
             item->setData(Qt::TextAlignmentRole, Qt::AlignLeft);
             this->ui->lastInvoiceTableWidget->setItem(rowCount, 0, item);
             item = new QTableWidgetItem(QString("%1 €").arg(pInvoiceProductItemPtr->m_priceperunit, 0, 'f', 2));
