@@ -88,7 +88,7 @@ namespace PenyaManager {
         if (fn.isNull()){
             return;
         }
-        
+
         QString filename = Utils::addSuffix(fn, "csv");
 
         // fetch data
@@ -112,7 +112,7 @@ namespace PenyaManager {
         for (StockProductItemList::iterator iter = pStockProductItemListResultPtr->m_list->begin(); iter != pStockProductItemListResultPtr->m_list->end(); ++iter)
         {
             StockProductItemPtr pStockProductItemPtr = *iter;
-            out << pStockProductItemPtr->m_name << ", " << QString::number(pStockProductItemPtr->m_stock) << endl;
+            out << Singletons::m_pTranslationManager->getStringTranslation(pStockProductItemPtr->m_nameEus, pStockProductItemPtr->m_nameEs) << ", " << QString::number(pStockProductItemPtr->m_stock) << endl;
         }
         f.close();
         Singletons::m_pDialogManager->infoMessageBox(this, tr("Successfully exported. Filename: %1").arg(filename), [](){});
@@ -182,7 +182,7 @@ namespace PenyaManager {
             this->ui->productsTableWidget->setRowHeight(rowCount, Constants::kFamilyImageHeigth);
             this->ui->productsTableWidget->setItem(rowCount, column++, productImage);
             //  product name
-            this->ui->productsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(pStockProductItemPtr->m_name));
+            this->ui->productsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(Singletons::m_pTranslationManager->getStringTranslation(pStockProductItemPtr->m_nameEus, pStockProductItemPtr->m_nameEs)));
             //  product active status
             this->ui->productsTableWidget->setItem(rowCount, column++, new QTableWidgetItem((pStockProductItemPtr->m_active)?(QString::number(1)):(QString::number(0))));
             //  product reg date
@@ -191,7 +191,7 @@ namespace PenyaManager {
             //  product price
             this->ui->productsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(QString::number(pStockProductItemPtr->m_price)));
             //  product familyid
-            this->ui->productsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(pStockProductItemPtr->m_familyName));
+            this->ui->productsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(Singletons::m_pTranslationManager->getStringTranslation(pStockProductItemPtr->m_familyNameEus, pStockProductItemPtr->m_familyNameEs)));
             //  product productid
             this->ui->productsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(pStockProductItemPtr->m_providerName));
             //  product stock
