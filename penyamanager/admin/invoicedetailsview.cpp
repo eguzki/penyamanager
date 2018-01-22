@@ -58,7 +58,7 @@ namespace PenyaManager {
         Int32 invoiceId = Singletons::m_currentInvoiceId;
         InvoiceResultPtr pInvoicePtr = Singletons::m_pDAO->getInvoice(invoiceId);
         if (pInvoicePtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         if (!pInvoicePtr->m_pInvoice) {
@@ -84,7 +84,7 @@ namespace PenyaManager {
         //
         InvoiceProductItemListResultPtr pInvoiceProductItemListResultPtr = Singletons::m_pDAO->getAllInvoiceProductItems(pInvoicePtr->m_id);
         if (pInvoiceProductItemListResultPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         this->ui->productTableWidget->setRowCount(pInvoiceProductItemListResultPtr->m_list->size());

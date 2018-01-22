@@ -46,13 +46,13 @@ namespace PenyaManager {
         QString providerInvoiceId(Singletons::m_currentProviderInvoiceId);
         ProviderInvoiceResultPtr providerInvoiceResultPtr = Singletons::m_pDAO->getProviderInvoiceById(providerInvoiceId);
         if (providerInvoiceResultPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         if (!providerInvoiceResultPtr->m_pProviderInvoice) {
             Singletons::m_pLogger->Warn(Constants::kSystemUserId, PenyaManager::LogAction::kDashboard,
                     QString("provider invoice id %1 not found in ddbb").arg(providerInvoiceId));
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Operation not performed. Contact administrator"), [](){});
+            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Operation not performed. Contact administrator"), [](){});
             return;
         }
         this->ui->invoiceIdValueLabel->setText(providerInvoiceId);
@@ -85,7 +85,7 @@ namespace PenyaManager {
     {
         ProviderInvoiceProductItemListResultPtr pListResultPtr = Singletons::m_pDAO->getProviderInvoiceProductsByInvoiceId(providerInvoiceId);
         if (pListResultPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         // num rows

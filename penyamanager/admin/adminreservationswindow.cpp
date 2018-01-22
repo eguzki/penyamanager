@@ -93,13 +93,13 @@ namespace PenyaManager {
         // fetch table reservation data
         ReservationListResultPtr pTableReservationListResultPtr = Singletons::m_pDAO->getTableReservation(reservationType, date);
         if (pTableReservationListResultPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         // fetch tables data
         ReservationItemListResultPtr pTableListResultPtr = Singletons::m_pDAO->getAllLunchTableList();
         if (pTableListResultPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
 
@@ -204,13 +204,13 @@ namespace PenyaManager {
         bool isAdmin = true;
         bool ok = Singletons::m_pDAO->makeTableReservation(date, reservationType, guestNum, pCurrMemberPtr->m_id, itemId, isAdmin);
         if (!ok) {
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         QLocale enLocale = QLocale("en");
         Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kReservation,
                 QString("reserved table, itemid %1, %2 %3").arg(itemId).arg(GetStringFromReservationTypeEnum(reservationType)).arg(enLocale.toString(date)));
-        Singletons::m_pDialogManager->infoMessageBox(this,
+        Singletons::m_pDialogManager->infoMessageBoxTitled(this,
                 tr("Reserved %1 at %2").arg(GetStringFromReservationItemTypeEnum(ReservationItemType::LunchTableType, true)).arg(GetStringFromReservationTypeEnum(reservationType, true)),
                 std::bind(&AdminReservationsWindow::onTableReservationDone, this)
                 );
@@ -232,13 +232,13 @@ namespace PenyaManager {
         bool isAdmin = true;
         bool ok = Singletons::m_pDAO->updateTableReservation(reservationId, isAdmin);
         if (!ok) {
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         QLocale enLocale = QLocale("en");
         Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kReservation,
                 QString("blocked table, reservationid %1 %2 on %3").arg(reservationId).arg(GetStringFromReservationTypeEnum(reservationType)).arg(enLocale.toString(date)));
-        Singletons::m_pDialogManager->infoMessageBox(this,
+        Singletons::m_pDialogManager->infoMessageBoxTitled(this,
                 tr("Reserved %1 at %2").arg(GetStringFromReservationItemTypeEnum(ReservationItemType::LunchTableType, true)).arg(GetStringFromReservationTypeEnum(reservationType, true)),
                 std::bind(&AdminReservationsWindow::onTableReservationUpdateDone, this)
                 );
@@ -258,13 +258,13 @@ namespace PenyaManager {
         ReservationType reservationType = static_cast<ReservationType>(this->ui->reservationTypeButtonGroup->checkedId());
         bool ok = Singletons::m_pDAO->cancelTableReservation(reservationId);
         if (!ok) {
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         QLocale enLocale = QLocale("en");
         Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kReservation,
                 QString("canceled %1, reservationid %2, %3 %4").arg(GetStringFromReservationItemTypeEnum(ReservationItemType::LunchTableType)).arg(reservationId).arg(GetStringFromReservationTypeEnum(reservationType)).arg(enLocale.toString(date)));
-        Singletons::m_pDialogManager->infoMessageBox(this,
+        Singletons::m_pDialogManager->infoMessageBoxTitled(this,
                 tr("Cancelled %1 at %2").arg(GetStringFromReservationItemTypeEnum(ReservationItemType::LunchTableType, true)).arg(GetStringFromReservationTypeEnum(reservationType, true)),
                 std::bind(&AdminReservationsWindow::onTableReservationCancelled, this)
                 );

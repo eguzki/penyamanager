@@ -49,32 +49,32 @@ namespace PenyaManager {
         // validate name is not empty
         QString productNameEus = this->ui->nameEusLineEdit->text();
         if (productNameEus.isEmpty()){
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Basque name cannot be empty"), [](){});
+            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Basque name cannot be empty"), [](){});
             return;
         }
         // validate nameEs is not empty
         QString productNameEs = this->ui->nameEsLineEdit->text();
         if (productNameEs.isEmpty()){
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Spanish name cannot be empty"), [](){});
+            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Spanish name cannot be empty"), [](){});
             return;
         }
 
         // validate price field
         Float price = this->ui->priceDoubleSpinBox->value();
         if (!price) {
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("price cannot be 0.00€"), [](){});
+            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("price cannot be 0.00€"), [](){});
             return;
         }
         // validate providers
         if (!this->ui->providerComboBox->count())
         {
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Providers list is empty. Add some providers first"), [](){});
+            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Providers list is empty. Add some providers first"), [](){});
             return;
         }
         // validate families
         if (!this->ui->familyComboBox->count())
         {
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Family list is empty. Add some families first"), [](){});
+            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Family list is empty. Add some families first"), [](){});
             return;
         }
 
@@ -83,13 +83,13 @@ namespace PenyaManager {
             // edit previous item
             ProductItemResultPtr pProductResultPtr = Singletons::m_pDAO->getProductItem(Singletons::m_currentProductId);
             if (pProductResultPtr->m_error) {
-                Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+                Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
             if (!pProductResultPtr->m_item) {
                 Singletons::m_pLogger->Warn(Constants::kSystemUserId, PenyaManager::LogAction::kProduct,
                         QString("item not found %1").arg(Singletons::m_currentProductId));
-                Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+                Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
             // save old image in case we need to delete it
@@ -123,7 +123,7 @@ namespace PenyaManager {
             // update in ddbb
             bool ok = Singletons::m_pDAO->updateProductItem(pProductResultPtr->m_item);
             if (!ok) {
-                Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+                Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
 
@@ -173,7 +173,7 @@ namespace PenyaManager {
             // create in ddbb
             Int32 itemId = Singletons::m_pDAO->createProductItem(pProductItemPtr);
             if (itemId < 0) {
-                Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+                Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
             Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kProduct,
@@ -190,13 +190,13 @@ namespace PenyaManager {
     {
         ProductItemResultPtr pProductItemResultPtr = Singletons::m_pDAO->getProductItem(productId);
         if (pProductItemResultPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         if (!pProductItemResultPtr->m_item) {
             Singletons::m_pLogger->Warn(Constants::kSystemUserId, PenyaManager::LogAction::kProduct,
                     QString("item not found %1").arg(productId));
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         // name
@@ -218,7 +218,7 @@ namespace PenyaManager {
         this->ui->providerComboBox->clear();
         ProviderListResultPtr pProviderListResultPtr = Singletons::m_pDAO->getProviderList();
         if (pProviderListResultPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         Int32 currentIndex = 0;
@@ -240,7 +240,7 @@ namespace PenyaManager {
         this->ui->familyComboBox->clear();
         ProductFamilyListResultPtr pfListPtr = Singletons::m_pDAO->getProductFamilies(false);
         if (pfListPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         currentIndex = 0;
@@ -282,7 +282,7 @@ namespace PenyaManager {
         this->ui->providerComboBox->clear();
         ProviderListResultPtr pProviderListResultPtr = Singletons::m_pDAO->getProviderList();
         if (pProviderListResultPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         Int32 currentIndex = 0;
@@ -297,7 +297,7 @@ namespace PenyaManager {
         this->ui->familyComboBox->clear();
         ProductFamilyListResultPtr pfListPtr = Singletons::m_pDAO->getProductFamilies(false);
         if (pfListPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         currentIndex = 0;
@@ -321,7 +321,7 @@ namespace PenyaManager {
         if (!imagePath.isDir() || !imagePath.isWritable()) {
             Singletons::m_pLogger->Warn(Constants::kSystemUserId, PenyaManager::LogAction::kProduct,
                     QString("Unable to write to %1").arg(imagePath.absoluteFilePath()));
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Unable to write to %1").arg(imagePath.absoluteFilePath()), [](){});
+            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Unable to write to %1").arg(imagePath.absoluteFilePath()), [](){});
             return;
         }
         // open file dialog
@@ -336,7 +336,7 @@ namespace PenyaManager {
     void AdminProductItem::onProductImageSelected(const QString &fn)
     {
         if (fn.isEmpty()) {
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("No file selected"), [](){});
+            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("No file selected"), [](){});
             return;
         }
         // fn has absolute path
