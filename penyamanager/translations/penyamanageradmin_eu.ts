@@ -235,7 +235,7 @@
         <translation>Bazkide zkia</translation>
     </message>
     <message>
-        <location filename="../admin/adminloginwindow.ui" line="236"/>
+        <location filename="../admin/adminloginwindow.ui" line="239"/>
         <source>Login</source>
         <translation>Sartu</translation>
     </message>
@@ -844,7 +844,7 @@
         <translation>Pasahitza</translation>
     </message>
     <message>
-        <location filename="../commons/passchangedialog.ui" line="60"/>
+        <location filename="../commons/passchangedialog.ui" line="63"/>
         <source>Repeat Password</source>
         <translation>Pasahitza errepikatu</translation>
     </message>
@@ -923,28 +923,33 @@
         <location filename="../admin/adminfamilyview.cpp" line="70"/>
         <location filename="../admin/adminfamilyview.cpp" line="98"/>
         <location filename="../admin/adminfamilyview.cpp" line="139"/>
-        <location filename="../admin/adminfamilyview.cpp" line="193"/>
-        <location filename="../admin/adminfamilyview.cpp" line="199"/>
+        <location filename="../admin/adminfamilyview.cpp" line="201"/>
+        <location filename="../admin/adminfamilyview.cpp" line="207"/>
         <source>Database error. Contact administrator</source>
         <translation>Datu base akatsa. Administratzailearekin harremanetan jarri</translation>
     </message>
     <message>
-        <location filename="../admin/adminfamilyview.cpp" line="159"/>
+        <location filename="../admin/adminfamilyview.cpp" line="148"/>
+        <source>Done successfully</source>
+        <translation type="unfinished">Egina</translation>
+    </message>
+    <message>
+        <location filename="../admin/adminfamilyview.cpp" line="167"/>
         <source>Unable to write to %1</source>
         <translation>Ezin izan da diskan gordetu: %1</translation>
     </message>
     <message>
-        <location filename="../admin/adminfamilyview.cpp" line="165"/>
+        <location filename="../admin/adminfamilyview.cpp" line="173"/>
         <source>Open File...</source>
         <translation>Fitxategia ireki...</translation>
     </message>
     <message>
-        <location filename="../admin/adminfamilyview.cpp" line="166"/>
+        <location filename="../admin/adminfamilyview.cpp" line="174"/>
         <source>Image Files (*.gif *.jpeg *.jpg *.png)</source>
         <translation>Irudi fitxategiak (*.gif *.jpeg *.jpg *.png)</translation>
     </message>
     <message>
-        <location filename="../admin/adminfamilyview.cpp" line="175"/>
+        <location filename="../admin/adminfamilyview.cpp" line="183"/>
         <source>No file selected</source>
         <translation>Ez da fitxategirik aukeratu</translation>
     </message>
@@ -1110,32 +1115,37 @@
         <location filename="../admin/adminproductitem.cpp" line="92"/>
         <location filename="../admin/adminproductitem.cpp" line="126"/>
         <location filename="../admin/adminproductitem.cpp" line="176"/>
-        <location filename="../admin/adminproductitem.cpp" line="193"/>
-        <location filename="../admin/adminproductitem.cpp" line="199"/>
-        <location filename="../admin/adminproductitem.cpp" line="221"/>
-        <location filename="../admin/adminproductitem.cpp" line="243"/>
-        <location filename="../admin/adminproductitem.cpp" line="285"/>
-        <location filename="../admin/adminproductitem.cpp" line="300"/>
+        <location filename="../admin/adminproductitem.cpp" line="201"/>
+        <location filename="../admin/adminproductitem.cpp" line="207"/>
+        <location filename="../admin/adminproductitem.cpp" line="229"/>
+        <location filename="../admin/adminproductitem.cpp" line="251"/>
+        <location filename="../admin/adminproductitem.cpp" line="293"/>
+        <location filename="../admin/adminproductitem.cpp" line="308"/>
         <source>Database error. Contact administrator</source>
         <translation>Datu base akatsa. Administratzailearekin harremanetan jarri</translation>
     </message>
     <message>
-        <location filename="../admin/adminproductitem.cpp" line="324"/>
+        <location filename="../admin/adminproductitem.cpp" line="185"/>
+        <source>Done successfully</source>
+        <translation type="unfinished">Egina</translation>
+    </message>
+    <message>
+        <location filename="../admin/adminproductitem.cpp" line="332"/>
         <source>Unable to write to %1</source>
         <translation>Ezin izan da diskan gordetu: %1</translation>
     </message>
     <message>
-        <location filename="../admin/adminproductitem.cpp" line="329"/>
+        <location filename="../admin/adminproductitem.cpp" line="337"/>
         <source>Open File...</source>
         <translation>Fitxategia ireki...</translation>
     </message>
     <message>
-        <location filename="../admin/adminproductitem.cpp" line="330"/>
+        <location filename="../admin/adminproductitem.cpp" line="338"/>
         <source>Image Files (*.gif *.jpeg *.jpg *.png)</source>
         <translation>Irudi fitxategiak (*.gif *.jpeg *.jpg *.png)</translation>
     </message>
     <message>
-        <location filename="../admin/adminproductitem.cpp" line="339"/>
+        <location filename="../admin/adminproductitem.cpp" line="347"/>
         <source>No file selected</source>
         <translation>Ez da fitxategirik aukeratu</translation>
     </message>
@@ -1581,12 +1591,12 @@
 <context>
     <name>PenyaManager::PassChangeDialog</name>
     <message>
-        <location filename="../commons/passchangedialog.cpp" line="44"/>
+        <location filename="../commons/passchangedialog.cpp" line="40"/>
         <source>password fields cannot be empty</source>
         <translation>Pasahitza ezin da hutsik utzi</translation>
     </message>
     <message>
-        <location filename="../commons/passchangedialog.cpp" line="49"/>
+        <location filename="../commons/passchangedialog.cpp" line="45"/>
         <source>password fields do not match</source>
         <translation>Pasahitzek ez dute bat egiten</translation>
     </message>
@@ -2165,11 +2175,13 @@
     <message>
         <location filename="../commons/dialogmanager.cpp" line="27"/>
         <location filename="../commons/dialogmanager.cpp" line="40"/>
+        <location filename="../commons/dialogmanager.cpp" line="53"/>
         <source>Yes</source>
         <translation>Bai</translation>
     </message>
     <message>
         <location filename="../commons/dialogmanager.cpp" line="28"/>
+        <location filename="../commons/dialogmanager.cpp" line="41"/>
         <source>No</source>
         <translation>Ez</translation>
     </message>
