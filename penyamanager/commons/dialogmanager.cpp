@@ -17,6 +17,19 @@ namespace PenyaManager {
     }
     // Non blocking version of messagebox
     // required when inactivity timeout triggers when messagebox is displayed and not answered yet
+    void DialogManager::questionMessageBoxTitled(QWidget *parent, const QString &message, const QuestionMessageBoxCallback &callback)
+    {
+        m_questionCallback = callback;
+        m_pMsgBox = new QMessageBox(QMessageBox::Question, QString("Penyamanager"), message, QMessageBox::Yes|QMessageBox::No, parent);
+        //makes sure the msgbox is deleted automatically when closed
+        m_pMsgBox->setAttribute(Qt::WA_DeleteOnClose);
+        // The right way is not to manually translate those strings. Qt already includes translations.
+        m_pMsgBox->setButtonText(QMessageBox::Yes, QWidget::tr("Yes"));
+        m_pMsgBox->setButtonText(QMessageBox::No, QWidget::tr("No"));
+        m_pMsgBox->open(this, SLOT(questionMsgBoxClosed(QAbstractButton*)));
+    }
+    // Non blocking version of messagebox
+    // required when inactivity timeout triggers when messagebox is displayed and not answered yet
     void DialogManager::questionMessageBox(QWidget *parent, const QString &message, const QuestionMessageBoxCallback &callback)
     {
         m_questionCallback = callback;
@@ -46,10 +59,32 @@ namespace PenyaManager {
     // Non blocking version of messagebox
     // required when inactivity timeout triggers when messagebox is displayed and not answered yet
     //
+    void DialogManager::criticalMessageBoxTitled(QWidget *parent, const QString &message, const InfoMessageBoxCallback &callback)
+    {
+        m_infoCallback = callback;
+        m_pMsgBox = new QMessageBox(QMessageBox::Critical, QString("Penyamanager"), message, QMessageBox::Ok, parent);
+        //makes sure the msgbox is deleted automatically when closed
+        m_pMsgBox->setAttribute(Qt::WA_DeleteOnClose);
+        m_pMsgBox->open(this, SLOT(infoMsgBoxClosed()));
+    }
+    // Non blocking version of messagebox
+    // required when inactivity timeout triggers when messagebox is displayed and not answered yet
+    //
     void DialogManager::criticalMessageBox(QWidget *parent, const QString &message, const InfoMessageBoxCallback &callback)
     {
         m_infoCallback = callback;
         m_pMsgBox = new QMessageBox(QMessageBox::Critical, QString(), message, QMessageBox::Ok, parent, Qt::FramelessWindowHint);
+        //makes sure the msgbox is deleted automatically when closed
+        m_pMsgBox->setAttribute(Qt::WA_DeleteOnClose);
+        m_pMsgBox->open(this, SLOT(infoMsgBoxClosed()));
+    }
+    // Non blocking version of messagebox
+    // required when inactivity timeout triggers when messagebox is displayed and not answered yet
+    //
+    void DialogManager::infoMessageBoxTitled(QWidget *parent, const QString &message, const InfoMessageBoxCallback &callback)
+    {
+        m_infoCallback = callback;
+        m_pMsgBox = new QMessageBox(QMessageBox::Information, QString("Penyamanager"), message, QMessageBox::Ok, parent);
         //makes sure the msgbox is deleted automatically when closed
         m_pMsgBox->setAttribute(Qt::WA_DeleteOnClose);
         m_pMsgBox->open(this, SLOT(infoMsgBoxClosed()));

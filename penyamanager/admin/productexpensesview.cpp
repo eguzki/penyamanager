@@ -149,12 +149,12 @@ namespace PenyaManager {
             this->ui->memberIdLineEdit->clear();
             pInvoiceProductItemListResultPtr = Singletons::m_pDAO->getProductExpensesList(fromDate, toDate, m_currentPage, Constants::kAdminInvoiceListPageCount);
             if (pInvoiceProductItemListResultPtr->m_error) {
-                Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+                Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
             pInvoiceProductItemCounterStatsResultPtr = Singletons::m_pDAO->getProductExpensesListStats(fromDate, toDate);
             if (pInvoiceProductItemCounterStatsResultPtr->m_error) {
-                Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+                Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
         } else {
@@ -162,27 +162,27 @@ namespace PenyaManager {
             Int32 memberUsername = usernameStr.toInt(&ok);
             if (!ok) {
                 this->ui->memberIdLineEdit->clear();
-                Singletons::m_pDialogManager->criticalMessageBox(this, tr("Username not valid"), [](){});
+                Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Username not valid"), [](){});
                 return;
             } else {
                 MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberByUsername(memberUsername);
                 if (pMemberResultPtr->m_error) {
-                    Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+                    Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                     return;
                 }
                 if (!pMemberResultPtr->m_member) {
                     // User could not be found
-                    Singletons::m_pDialogManager->criticalMessageBox(this, tr("Username not found"), [](){});
+                    Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Username not found"), [](){});
                     return;
                 }
                 pInvoiceProductItemListResultPtr = Singletons::m_pDAO->getProductExpensesListByMemberId(pMemberResultPtr->m_member->m_id, fromDate, toDate, m_currentPage, Constants::kAdminInvoiceListPageCount);
                 if (pInvoiceProductItemListResultPtr->m_error) {
-                    Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+                    Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                     return;
                 }
                 pInvoiceProductItemCounterStatsResultPtr = Singletons::m_pDAO->getProductExpensesListByMemberIdStats(pMemberResultPtr->m_member->m_id, fromDate, toDate);
                 if (pInvoiceProductItemCounterStatsResultPtr->m_error) {
-                    Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+                    Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                     return;
                 }
             }
@@ -225,7 +225,7 @@ namespace PenyaManager {
         QString filename = Utils::addSuffix(fn, "csv");
         QFile f(filename);
         if (!f.open( QIODevice::WriteOnly )) {
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Error opening %1").arg(filename), [](){});
+            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Error opening %1").arg(filename), [](){});
             return;
         }
 
@@ -240,7 +240,7 @@ namespace PenyaManager {
             this->ui->memberIdLineEdit->clear();
             pInvoiceProductItemListResultPtr = Singletons::m_pDAO->getProductExpensesList(fromDate, toDate, m_currentPage, Constants::kAdminInvoiceListPageCount);
             if (pInvoiceProductItemListResultPtr->m_error) {
-                Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+                Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
         } else {
@@ -248,23 +248,23 @@ namespace PenyaManager {
             Int32 memberUsername = usernameStr.toInt(&ok);
             if (!ok) {
                 this->ui->memberIdLineEdit->clear();
-                Singletons::m_pDialogManager->criticalMessageBox(this, tr("Username not valid"), [](){});
+                Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Username not valid"), [](){});
                 return;
             } else {
                 MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberByUsername(memberUsername);
                 if (pMemberResultPtr->m_error) {
-                    Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+                    Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                     return;
                 }
                 if (!pMemberResultPtr->m_member)
                 {
                     // User could not be found
-                    Singletons::m_pDialogManager->criticalMessageBox(this, tr("Username not found"), [](){});
+                    Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Username not found"), [](){});
                     return;
                 }
                 pInvoiceProductItemListResultPtr = Singletons::m_pDAO->getProductExpensesListByMemberId(pMemberResultPtr->m_member->m_id, fromDate, toDate, m_currentPage, Constants::kAdminInvoiceListPageCount);
                 if (pInvoiceProductItemListResultPtr->m_error) {
-                    Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+                    Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                     return;
                 }
             }
@@ -283,7 +283,7 @@ namespace PenyaManager {
             out << pInvoiceProductItem->m_productId << ", " << Singletons::m_pTranslationManager->getStringTranslation(pInvoiceProductItem->m_productnameEus, pInvoiceProductItem->m_productnameEs) << ", " << pInvoiceProductItem->m_count << endl;
         }
         f.close();
-        Singletons::m_pDialogManager->infoMessageBox(this, tr("Successfully exported. Filename: %1").arg(filename), [](){});
+        Singletons::m_pDialogManager->infoMessageBoxTitled(this, tr("Successfully exported. Filename: %1").arg(filename), [](){});
         // nothing should be added here
     }
 }

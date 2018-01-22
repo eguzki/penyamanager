@@ -30,9 +30,15 @@ namespace PenyaManager {
             //
             explicit DialogManager(QObject *parent = 0);
             //
+            void questionMessageBoxTitled(QWidget *parent, const QString &message, const QuestionMessageBoxCallback &callback);
+            //
             void questionMessageBox(QWidget *parent, const QString &message, const QuestionMessageBoxCallback &callback);
             //
+            void criticalMessageBoxTitled(QWidget *parent, const QString &message, const InfoMessageBoxCallback &callback);
+            //
             void criticalMessageBox(QWidget *parent, const QString &message, const InfoMessageBoxCallback &callback);
+            //
+            void infoMessageBoxTitled(QWidget *parent, const QString &message, const InfoMessageBoxCallback &callback);
             //
             void infoMessageBox(QWidget *parent, const QString &message, const InfoMessageBoxCallback &callback);
             //

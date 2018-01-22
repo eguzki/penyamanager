@@ -34,7 +34,7 @@ namespace PenyaManager {
 
         ProductFamilyListResultPtr pfListPtr = Singletons::m_pDAO->getProductFamilies(false);
         if (pfListPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
 
@@ -113,7 +113,7 @@ namespace PenyaManager {
 
         ProductItemListResultPtr pfListPtr = Singletons::m_pDAO->getProductsFromFamily(familyId, false);
         if (pfListPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
 

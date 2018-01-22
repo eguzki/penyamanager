@@ -63,7 +63,7 @@ namespace PenyaManager {
     {
         ProviderResultPtr pProviderResultPtr = Singletons::m_pDAO->getProviderById(providerId);
         if (pProviderResultPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         if (!pProviderResultPtr->m_provider){
@@ -99,7 +99,7 @@ namespace PenyaManager {
         if (!imagePath.isDir() || !imagePath.isWritable()) {
             Singletons::m_pLogger->Warn(Constants::kSystemUserId, PenyaManager::LogAction::kProvider,
                     QString("Unable to write to %1").arg(imagePath.absoluteFilePath()));
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Unable to write to %1").arg(imagePath.absoluteFilePath()), [](){});
+            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Unable to write to %1").arg(imagePath.absoluteFilePath()), [](){});
             return;
         }
 
@@ -116,7 +116,7 @@ namespace PenyaManager {
     {
         // fn has absolute path
         if (fn.isEmpty()) {
-            Singletons::m_pDialogManager->infoMessageBox(this, tr("No file selected"), [](){});
+            Singletons::m_pDialogManager->infoMessageBoxTitled(this, tr("No file selected"), [](){});
             return;
         }
         // this object member is being assigned only on image push.
@@ -135,7 +135,7 @@ namespace PenyaManager {
         // validate name is not empty
         QString providerName = this->ui->nameLineEdit->text().trimmed();
         if (providerName.isEmpty()){
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Name cannot be empty"), [](){});
+            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Name cannot be empty"), [](){});
             return;
         }
 
@@ -152,7 +152,7 @@ namespace PenyaManager {
         if (Singletons::m_currentProviderId >= 0) {
             ProviderResultPtr pProviderResultPtr = Singletons::m_pDAO->getProviderById(Singletons::m_currentProviderId);
             if (pProviderResultPtr->m_error) {
-                Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+                Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
             if (!pProviderResultPtr->m_provider){
@@ -182,7 +182,7 @@ namespace PenyaManager {
             // update in ddbb
             bool ok = Singletons::m_pDAO->updateProvider(pProviderPtr);
             if (!ok) {
-                Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+                Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
             // if there is previously one image, and it has been changed -> delete it
@@ -211,7 +211,7 @@ namespace PenyaManager {
             pProviderPtr->m_notes = this->ui->notesTextEdit->toPlainText();
             Int32 providerId = Singletons::m_pDAO->createProvider(pProviderPtr);
             if (providerId < 0) {
-                Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+                Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
             Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kProvider,
@@ -219,7 +219,7 @@ namespace PenyaManager {
         }
         // reset var
         this->m_providerImageFilename.clear();
-        Singletons::m_pDialogManager->infoMessageBox(this, tr("Done successfully"),
+        Singletons::m_pDialogManager->infoMessageBoxTitled(this, tr("Done successfully"),
                 std::bind(&AdminNewProvider::onProviderUpdated, this)
                 );
     }
