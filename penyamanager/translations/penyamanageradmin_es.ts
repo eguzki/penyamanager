@@ -841,7 +841,7 @@
     <message>
         <location filename="../commons/passchangedialog.ui" line="40"/>
         <source>Password</source>
-        <translation>Contraseña</translation>
+        <translation>Contraseña (4 números)</translation>
     </message>
     <message>
         <location filename="../commons/passchangedialog.ui" line="60"/>

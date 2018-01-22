@@ -841,7 +841,7 @@
     <message>
         <location filename="../commons/passchangedialog.ui" line="40"/>
         <source>Password</source>
-        <translation>Pasahitza</translation>
+        <translation>Pasahitza (4 zenbaki)</translation>
     </message>
     <message>
         <location filename="../commons/passchangedialog.ui" line="60"/>
