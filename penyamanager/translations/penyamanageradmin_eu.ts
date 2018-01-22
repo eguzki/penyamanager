@@ -1252,7 +1252,7 @@
     <message>
         <location filename="../admin/depositlistview.cpp" line="138"/>
         <source>Deposit checked. Difference: %1 €</source>
-        <translation>Diru sarrerak baieztatutak. Aldea: %1 € </translation>
+        <translation>Diru sarrera baieztatua. Aldea: %1 € </translation>
     </message>
     <message>
         <location filename="../admin/depositlistview.cpp" line="97"/>

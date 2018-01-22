@@ -302,22 +302,22 @@
     <message>
         <location filename="../user/invoicedetailswindow.cpp" line="45"/>
         <source>article</source>
-        <translation>artikulua</translation>
+        <translation>Artikulua</translation>
     </message>
     <message>
         <location filename="../user/invoicedetailswindow.cpp" line="46"/>
         <source>price/u</source>
-        <translation>prez.</translation>
+        <translation>Prezioa</translation>
     </message>
     <message>
         <location filename="../user/invoicedetailswindow.cpp" line="47"/>
         <source>count</source>
-        <translation>kop.</translation>
+        <translation>Kop.</translation>
     </message>
     <message>
         <location filename="../user/invoicedetailswindow.cpp" line="48"/>
         <source>total</source>
-        <translation>guztira</translation>
+        <translation>Guztira</translation>
     </message>
     <message>
         <location filename="../user/invoicedetailswindow.cpp" line="59"/>
@@ -377,12 +377,12 @@
     <message>
         <location filename="../user/invoicelistwindow.cpp" line="115"/>
         <source>Date</source>
-        <translation>data</translation>
+        <translation>Data</translation>
     </message>
     <message>
         <location filename="../user/invoicelistwindow.cpp" line="116"/>
         <source>Total</source>
-        <translation>guztira</translation>
+        <translation>Guztira</translation>
     </message>
     <message>
         <location filename="../user/invoicelistwindow.cpp" line="253"/>
@@ -410,22 +410,22 @@
     <message>
         <location filename="../user/invoicewindow.cpp" line="90"/>
         <source>article</source>
-        <translation>artikulua</translation>
+        <translation>Artikulua</translation>
     </message>
     <message>
         <location filename="../user/invoicewindow.cpp" line="91"/>
         <source>price/u</source>
-        <translation>prezioa</translation>
+        <translation>Prezioa</translation>
     </message>
     <message>
         <location filename="../user/invoicewindow.cpp" line="92"/>
         <source>count</source>
-        <translation>kop.</translation>
+        <translation>Kop.</translation>
     </message>
     <message>
         <location filename="../user/invoicewindow.cpp" line="93"/>
         <source>total</source>
-        <translation>guztira</translation>
+        <translation>Guztira</translation>
     </message>
     <message>
         <location filename="../user/invoicewindow.cpp" line="204"/>
@@ -469,22 +469,22 @@
     <message>
         <location filename="../user/loginwindow.cpp" line="134"/>
         <source>article</source>
-        <translation>artikulu</translation>
+        <translation>Artikulu</translation>
     </message>
     <message>
         <location filename="../user/loginwindow.cpp" line="135"/>
         <source>price/u</source>
-        <translation>prezioa</translation>
+        <translation>Prezioa</translation>
     </message>
     <message>
         <location filename="../user/loginwindow.cpp" line="136"/>
         <source>count</source>
-        <translation>kop.</translation>
+        <translation>Kop.</translation>
     </message>
     <message>
         <location filename="../user/loginwindow.cpp" line="137"/>
         <source>total</source>
-        <translation>guztira</translation>
+        <translation>Guztira</translation>
     </message>
     <message>
         <location filename="../user/loginwindow.cpp" line="59"/>
@@ -545,27 +545,27 @@
     <message>
         <location filename="../user/memberdashboardwindow.cpp" line="58"/>
         <source>article</source>
-        <translation>artikulua</translation>
+        <translation>Artikulua</translation>
     </message>
     <message>
         <location filename="../user/memberdashboardwindow.cpp" line="59"/>
         <source>price/u</source>
-        <translation>prez.</translation>
+        <translation>Prezioa</translation>
     </message>
     <message>
         <location filename="../user/memberdashboardwindow.cpp" line="60"/>
         <source>Count</source>
-        <translation>kop.</translation>
+        <translation>Kop.</translation>
     </message>
     <message>
         <location filename="../user/memberdashboardwindow.cpp" line="61"/>
         <source>total</source>
-        <translation>guztira</translation>
+        <translation>Guztira</translation>
     </message>
     <message>
         <location filename="../user/memberdashboardwindow.cpp" line="62"/>
         <source>Remove</source>
-        <translation>ezab.</translation>
+        <translation>Ezab.</translation>
     </message>
     <message>
         <location filename="../user/memberdashboardwindow.cpp" line="73"/>
@@ -639,7 +639,7 @@
     <message>
         <location filename="../user/tablereservationview.cpp" line="66"/>
         <source>Name</source>
-        <translation>izena</translation>
+        <translation>Izena</translation>
     </message>
     <message>
         <location filename="../user/tablereservationview.cpp" line="67"/>
@@ -649,12 +649,12 @@
     <message>
         <location filename="../user/tablereservationview.cpp" line="68"/>
         <source>Reserved By Guest</source>
-        <translation>bazkide</translation>
+        <translation>Bazkide</translation>
     </message>
     <message>
         <location filename="../user/tablereservationview.cpp" line="69"/>
         <source># reserved</source>
-        <translation>kop.</translation>
+        <translation>Kop.</translation>
     </message>
     <message>
         <location filename="../user/tablereservationview.cpp" line="97"/>
@@ -675,7 +675,7 @@
     <message>
         <location filename="../user/tablereservationview.cpp" line="220"/>
         <source>Reserve</source>
-        <translation>Erreserb.</translation>
+        <translation>Gorde</translation>
     </message>
     <message>
         <location filename="../user/tablereservationview.cpp" line="380"/>
@@ -685,7 +685,7 @@
     <message>
         <location filename="../user/tablereservationview.cpp" line="429"/>
         <source>Reserved %1 at %2</source>
-        <translation>%1 erreserbatua %2rako</translation>
+        <translation>%1  gordeta %2rako</translation>
     </message>
     <message>
         <location filename="../user/tablereservationview.cpp" line="483"/>
@@ -695,7 +695,7 @@
     <message>
         <location filename="../user/tablereservationview.cpp" line="237"/>
         <source>Cancel</source>
-        <translation>Deuseztu</translation>
+        <translation>Utzi</translation>
     </message>
 </context>
 <context>
@@ -782,7 +782,7 @@
     <message>
         <location filename="../objs/Transaction.cpp" line="13"/>
         <source>Invoice</source>
-        <translation>Ordain.</translation>
+        <translation>Ordainagiria</translation>
     </message>
     <message>
         <location filename="../objs/Transaction.cpp" line="14"/>
@@ -797,7 +797,7 @@
     <message>
         <location filename="../objs/Transaction.cpp" line="16"/>
         <source>Deposit Fix</source>
-        <translation>Zuzen.</translation>
+        <translation>Zuzenketa</translation>
     </message>
 </context>
 <context>

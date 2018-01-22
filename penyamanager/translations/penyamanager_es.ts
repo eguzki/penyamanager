@@ -302,22 +302,22 @@
     <message>
         <location filename="../user/invoicedetailswindow.cpp" line="45"/>
         <source>article</source>
-        <translation>artículo</translation>
+        <translation>Artículo</translation>
     </message>
     <message>
         <location filename="../user/invoicedetailswindow.cpp" line="46"/>
         <source>price/u</source>
-        <translation>precio</translation>
+        <translation>Precio</translation>
     </message>
     <message>
         <location filename="../user/invoicedetailswindow.cpp" line="47"/>
         <source>count</source>
-        <translation>cant.</translation>
+        <translation>Cant.</translation>
     </message>
     <message>
         <location filename="../user/invoicedetailswindow.cpp" line="48"/>
         <source>total</source>
-        <translation>total</translation>
+        <translation>Total</translation>
     </message>
     <message>
         <location filename="../user/invoicedetailswindow.cpp" line="59"/>
@@ -377,12 +377,12 @@
     <message>
         <location filename="../user/invoicelistwindow.cpp" line="115"/>
         <source>Date</source>
-        <translation>fecha</translation>
+        <translation>Fecha</translation>
     </message>
     <message>
         <location filename="../user/invoicelistwindow.cpp" line="116"/>
         <source>Total</source>
-        <translation>total</translation>
+        <translation>Total</translation>
     </message>
     <message>
         <location filename="../user/invoicelistwindow.cpp" line="253"/>
@@ -410,22 +410,22 @@
     <message>
         <location filename="../user/invoicewindow.cpp" line="90"/>
         <source>article</source>
-        <translation>artículo</translation>
+        <translation>Artículo</translation>
     </message>
     <message>
         <location filename="../user/invoicewindow.cpp" line="91"/>
         <source>price/u</source>
-        <translation>precio</translation>
+        <translation>Precio</translation>
     </message>
     <message>
         <location filename="../user/invoicewindow.cpp" line="92"/>
         <source>count</source>
-        <translation>cant.</translation>
+        <translation>Cant.</translation>
     </message>
     <message>
         <location filename="../user/invoicewindow.cpp" line="93"/>
         <source>total</source>
-        <translation>total</translation>
+        <translation>Total</translation>
     </message>
     <message>
         <location filename="../user/invoicewindow.cpp" line="204"/>
@@ -469,22 +469,22 @@
     <message>
         <location filename="../user/loginwindow.cpp" line="134"/>
         <source>article</source>
-        <translation>artículo</translation>
+        <translation>Artículo</translation>
     </message>
     <message>
         <location filename="../user/loginwindow.cpp" line="135"/>
         <source>price/u</source>
-        <translation>precio</translation>
+        <translation>Precio</translation>
     </message>
     <message>
         <location filename="../user/loginwindow.cpp" line="136"/>
         <source>count</source>
-        <translation>cant.</translation>
+        <translation>Cant.</translation>
     </message>
     <message>
         <location filename="../user/loginwindow.cpp" line="137"/>
         <source>total</source>
-        <translation>total</translation>
+        <translation>Total</translation>
     </message>
     <message>
         <location filename="../user/loginwindow.cpp" line="59"/>
@@ -545,27 +545,27 @@
     <message>
         <location filename="../user/memberdashboardwindow.cpp" line="58"/>
         <source>article</source>
-        <translation>artículo</translation>
+        <translation>Artículo</translation>
     </message>
     <message>
         <location filename="../user/memberdashboardwindow.cpp" line="59"/>
         <source>price/u</source>
-        <translation>precio</translation>
+        <translation>Precio</translation>
     </message>
     <message>
         <location filename="../user/memberdashboardwindow.cpp" line="60"/>
         <source>Count</source>
-        <translation>cant.</translation>
+        <translation>Cant.</translation>
     </message>
     <message>
         <location filename="../user/memberdashboardwindow.cpp" line="61"/>
         <source>total</source>
-        <translation>total</translation>
+        <translation>Total</translation>
     </message>
     <message>
         <location filename="../user/memberdashboardwindow.cpp" line="62"/>
         <source>Remove</source>
-        <translation>elim.</translation>
+        <translation>Elim.</translation>
     </message>
     <message>
         <location filename="../user/memberdashboardwindow.cpp" line="73"/>
@@ -639,7 +639,7 @@
     <message>
         <location filename="../user/tablereservationview.cpp" line="66"/>
         <source>Name</source>
-        <translation>nombre</translation>
+        <translation>Nombre</translation>
     </message>
     <message>
         <location filename="../user/tablereservationview.cpp" line="67"/>
@@ -649,12 +649,12 @@
     <message>
         <location filename="../user/tablereservationview.cpp" line="68"/>
         <source>Reserved By Guest</source>
-        <translation>socio</translation>
+        <translation>Socio</translation>
     </message>
     <message>
         <location filename="../user/tablereservationview.cpp" line="69"/>
         <source># reserved</source>
-        <translation>cant.</translation>
+        <translation>Cant.</translation>
     </message>
     <message>
         <location filename="../user/tablereservationview.cpp" line="97"/>
@@ -748,7 +748,7 @@
     <message>
         <location filename="../objs/Member.cpp" line="48"/>
         <source>Honorary</source>
-        <translation>Honorario</translation>
+        <translation>Honorífico</translation>
     </message>
 </context>
 <context>
@@ -797,7 +797,7 @@
     <message>
         <location filename="../objs/Transaction.cpp" line="16"/>
         <source>Deposit Fix</source>
-        <translation>Correc.</translation>
+        <translation>Corrección</translation>
     </message>
 </context>
 <context>

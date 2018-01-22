@@ -55,7 +55,6 @@ namespace PenyaManager {
         this->ui->accountTableWidget->setColumnWidth(column++, 120);
         this->ui->accountTableWidget->setColumnWidth(column++, 120);
         this->ui->accountTableWidget->setColumnWidth(column++, 152);
-           //188 90 90 90 <- 162 -> 40 30 30 62
     }
     //
     void AccountView::init()
