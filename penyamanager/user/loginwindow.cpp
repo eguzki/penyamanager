@@ -301,19 +301,15 @@ namespace PenyaManager {
         for (InvoiceProductItemList::iterator iter = pInvoiceProductItemListResultPtr->m_list->begin(); iter != pInvoiceProductItemListResultPtr->m_list->end(); ++iter)
         {
             InvoiceProductItemPtr pInvoiceProductItemPtr = *iter;
-            QTableWidgetItem *item = new QTableWidgetItem(Singletons::m_pTranslationManager->getStringTranslation(pInvoiceProductItemPtr->m_productnameEus, pInvoiceProductItemPtr->m_productnameEs));
-            item->setData(Qt::TextAlignmentRole, Qt::AlignLeft);
-            this->ui->lastInvoiceTableWidget->setItem(rowCount, 0, item);
-            item = new QTableWidgetItem(QString("%1 €").arg(pInvoiceProductItemPtr->m_priceperunit, 0, 'f', 2));
-            item->setData(Qt::TextAlignmentRole, Qt::AlignRight);
-            this->ui->lastInvoiceTableWidget->setItem(rowCount, 1, item);
-            item = new QTableWidgetItem(QString("%1").arg(pInvoiceProductItemPtr->m_count));
-            item->setData(Qt::TextAlignmentRole, Qt::AlignRight);
-            this->ui->lastInvoiceTableWidget->setItem(rowCount, 2, item);
+            this->ui->lastInvoiceTableWidget->setItem(rowCount, 0, new QTableWidgetItem(Singletons::m_pTranslationManager->getStringTranslation(pInvoiceProductItemPtr->m_productnameEus, pInvoiceProductItemPtr->m_productnameEs)));
+            this->ui->lastInvoiceTableWidget->item(rowCount, 0)->setTextAlignment(Qt::AlignLeft|Qt::AlignVCenter);
+            this->ui->lastInvoiceTableWidget->setItem(rowCount, 1, new QTableWidgetItem(QString("%1 €").arg(pInvoiceProductItemPtr->m_priceperunit, 0, 'f', 2)));
+            this->ui->lastInvoiceTableWidget->item(rowCount, 1)->setTextAlignment(Qt::AlignRight|Qt::AlignVCenter);
+            this->ui->lastInvoiceTableWidget->setItem(rowCount, 2, new QTableWidgetItem(QString("%1").arg(pInvoiceProductItemPtr->m_count)));
+            this->ui->lastInvoiceTableWidget->item(rowCount, 2)->setTextAlignment(Qt::AlignRight|Qt::AlignVCenter);
             Float totalPrice = pInvoiceProductItemPtr->m_priceperunit * pInvoiceProductItemPtr->m_count;
-            item = new QTableWidgetItem(QString("%1 €").arg(totalPrice, 0, 'f', 2));
-            item->setData(Qt::TextAlignmentRole, Qt::AlignRight);
-            this->ui->lastInvoiceTableWidget->setItem(rowCount, 3, item);
+            this->ui->lastInvoiceTableWidget->setItem(rowCount, 3, new QTableWidgetItem(QString("%1 €").arg(totalPrice, 0, 'f', 2)));
+            this->ui->lastInvoiceTableWidget->item(rowCount, 3)->setTextAlignment(Qt::AlignRight|Qt::AlignVCenter);
             this->ui->lastInvoiceTableWidget->setRowHeight(rowCount, 35);
             rowCount++;
         }

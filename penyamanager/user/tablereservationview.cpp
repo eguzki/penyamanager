@@ -207,12 +207,10 @@ namespace PenyaManager {
         // fill data
         for (ReservationItemList::iterator iter = pReservationItemListPtr->begin(); iter != pReservationItemListPtr->end(); ++iter) {
             ReservationItemPtr pReservationItemPtr = *iter;
-            QTableWidgetItem *item = new QTableWidgetItem(QString("%1 %2").arg(GetStringFromReservationItemTypeEnum(pReservationItemPtr->m_itemType, true)).arg(pReservationItemPtr->m_itemName));
-            item->setData(Qt::TextAlignmentRole, Qt::AlignLeft);
-            this->ui->tableReservationTableWidget->setItem(rowCount, 0, item);
-            item = new QTableWidgetItem(QString::number(pReservationItemPtr->m_guestNum));
-            item->setData(Qt::TextAlignmentRole, Qt::AlignCenter);
-            this->ui->tableReservationTableWidget->setItem(rowCount, 1, item);
+            this->ui->tableReservationTableWidget->setItem(rowCount, 0, new QTableWidgetItem(QString("%1 %2").arg(GetStringFromReservationItemTypeEnum(pReservationItemPtr->m_itemType, true)).arg(pReservationItemPtr->m_itemName)));
+            this->ui->tableReservationTableWidget->item(rowCount, 0)->setTextAlignment(Qt::AlignLeft|Qt::AlignVCenter);
+            this->ui->tableReservationTableWidget->setItem(rowCount, 1, new QTableWidgetItem(QString::number(pReservationItemPtr->m_guestNum)));
+            this->ui->tableReservationTableWidget->item(rowCount, 1)->setTextAlignment(Qt::AlignCenter);
             auto tableReservationMapItem = tableReservationMap.find(pReservationItemPtr->m_idItem);
             // not showing action buttons when: a)has reservation for unreserved tables and b)reservation of other members
             if (tableReservationMapItem == tableReservationMap.end()) {
@@ -227,20 +225,17 @@ namespace PenyaManager {
             } else {
                 // this table is reserved
                 ReservationPtr pReservationPtr = tableReservationMapItem->second;
-                item = new QTableWidgetItem(QString::number(pReservationPtr->m_guestNum));
-                item->setData(Qt::TextAlignmentRole, Qt::AlignCenter);
-                this->ui->tableReservationTableWidget->setItem(rowCount, 3, item);
+                this->ui->tableReservationTableWidget->setItem(rowCount, 3, new QTableWidgetItem(QString::number(pReservationPtr->m_guestNum)));
+                this->ui->tableReservationTableWidget->item(rowCount, 3)->setTextAlignment(Qt::AlignCenter);
                 // do not show cancel when reservation is from Admin
                 if (pReservationPtr->m_isAdmin)
                 {
                     // mark row as reserved by admin
-                    item = new QTableWidgetItem("-");
-                    item->setData(Qt::TextAlignmentRole, Qt::AlignCenter);
-                    this->ui->tableReservationTableWidget->setItem(rowCount, 2, item);
+                    this->ui->tableReservationTableWidget->setItem(rowCount, 2, new QTableWidgetItem("-"));
+                    this->ui->tableReservationTableWidget->item(rowCount, 2)->setTextAlignment(Qt::AlignCenter);
                 } else {
-                    item = new QTableWidgetItem(QString::number(pReservationPtr->m_memberUsername));
-                    item->setData(Qt::TextAlignmentRole, Qt::AlignCenter);
-                    this->ui->tableReservationTableWidget->setItem(rowCount, 2, item);
+                    this->ui->tableReservationTableWidget->setItem(rowCount, 2, new QTableWidgetItem(QString::number(pReservationPtr->m_memberUsername)));
+                    this->ui->tableReservationTableWidget->item(rowCount, 2)->setTextAlignment(Qt::AlignCenter);
                     if (pReservationPtr->m_idMember == pMemberPtr->m_id) {
                         // show cancel button action
                         QPushButton *pCancelButton = new QPushButton(tr("Cancel"), this->ui->tableReservationTableWidget);

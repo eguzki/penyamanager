@@ -136,21 +136,16 @@ namespace PenyaManager {
         Uint32 rowCount = 0;
         for (TransactionList::iterator iter = pTransactionListResultPtr->m_list->begin(); iter != pTransactionListResultPtr->m_list->end(); ++iter)
         {
-            Uint32 column = 0;
             TransactionPtr pTransactionPtr = *iter;
             QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pTransactionPtr->m_date, QLocale::NarrowFormat);
-            QTableWidgetItem *item = new QTableWidgetItem(dateLocalized);
-            item->setData(Qt::TextAlignmentRole, Qt::AlignCenter);
-            this->ui->accountTableWidget->setItem(rowCount, column++, item);
-            item = new QTableWidgetItem(QString("%1 €").arg(pTransactionPtr->m_amount, 0, 'f', 2));
-            item->setData(Qt::TextAlignmentRole, Qt::AlignCenter);
-            this->ui->accountTableWidget->setItem(rowCount, column++, item);
-            item = new QTableWidgetItem(QString("%1 €").arg(pTransactionPtr->m_balance, 0, 'f', 2));
-            item->setData(Qt::TextAlignmentRole, Qt::AlignCenter);
-            this->ui->accountTableWidget->setItem(rowCount, column++, item);
-            item = new QTableWidgetItem(getStringFromTransactionTypeEnum(pTransactionPtr->m_type));
-            item->setData(Qt::TextAlignmentRole, Qt::AlignCenter);
-            this->ui->accountTableWidget->setItem(rowCount, column++, item);
+            this->ui->accountTableWidget->setItem(rowCount, 0, new QTableWidgetItem(dateLocalized));
+            this->ui->accountTableWidget->item(rowCount, 0)->setTextAlignment(Qt::AlignCenter);
+            this->ui->accountTableWidget->setItem(rowCount, 1, new QTableWidgetItem(QString("%1 €").arg(pTransactionPtr->m_amount, 0, 'f', 2)));
+            this->ui->accountTableWidget->item(rowCount, 1)->setTextAlignment(Qt::AlignCenter);
+            this->ui->accountTableWidget->setItem(rowCount, 2, new QTableWidgetItem(QString("%1 €").arg(pTransactionPtr->m_balance, 0, 'f', 2)));
+            this->ui->accountTableWidget->item(rowCount, 2)->setTextAlignment(Qt::AlignCenter);
+            this->ui->accountTableWidget->setItem(rowCount, 3, new QTableWidgetItem(getStringFromTransactionTypeEnum(pTransactionPtr->m_type)));
+            this->ui->accountTableWidget->item(rowCount, 3)->setTextAlignment(Qt::AlignCenter);
             rowCount++;
         }
     }
