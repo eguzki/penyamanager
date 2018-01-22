@@ -49,6 +49,9 @@ qproperty-alignment: AlignCenter;
        <height>0</height>
       </size>
      </property>
+     <property name="maxLength">
+      <number>4</number>
+     </property>
      <property name="echoMode">
       <enum>QLineEdit::Password</enum>
      </property>
@@ -68,6 +71,9 @@ qproperty-alignment: AlignCenter;
        <width>300</width>
        <height>0</height>
       </size>
+     </property>
+     <property name="maxLength">
+      <number>4</number>
      </property>
      <property name="echoMode">
       <enum>QLineEdit::Password</enum>

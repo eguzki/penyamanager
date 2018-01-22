@@ -182,6 +182,14 @@ namespace PenyaManager {
 
         // reset var
         this->m_productImageFilename.clear();
+        Singletons::m_pDialogManager->infoMessageBoxTitled(this, tr("Done successfully"),
+                std::bind(&AdminProductItem::onProductItemUpdated, this)
+                );
+        // nothing should be added here
+    }
+    //
+    void AdminProductItem::onProductItemUpdated()
+    {
         // call family product management window throw adminmainwindow
         m_switchCentralWidgetCallback(WindowKey::kFamilyItemManagementWindowKey);
     }
