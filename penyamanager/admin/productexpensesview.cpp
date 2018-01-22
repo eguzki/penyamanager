@@ -129,7 +129,7 @@ namespace PenyaManager {
             productImage->setData(Qt::DecorationRole, productItemPixmap);
             this->ui->productTableWidget->setRowHeight(rowCount, Constants::kFamilyImageHeigth);
             this->ui->productTableWidget->setItem(rowCount, 0, productImage);
-            this->ui->productTableWidget->setItem(rowCount, 1, new QTableWidgetItem(pInvoiceProductItem->m_productname));
+            this->ui->productTableWidget->setItem(rowCount, 1, new QTableWidgetItem(Singletons::m_pTranslationManager->getStringTranslation(pInvoiceProductItem->m_productnameEus, pInvoiceProductItem->m_productnameEs)));
             this->ui->productTableWidget->setItem(rowCount, 2, new QTableWidgetItem(QString::number(pInvoiceProductItem->m_count)));
             this->ui->productTableWidget->setItem(rowCount, 3, new QTableWidgetItem(QString("%1 €").arg(pInvoiceProductItem->m_count * pInvoiceProductItem->m_priceperunit, 0, 'f', 2)));
             rowCount++;
@@ -280,7 +280,7 @@ namespace PenyaManager {
         for (InvoiceProductItemList::iterator iter = pInvoiceProductItemListResultPtr->m_list->begin(); iter != pInvoiceProductItemListResultPtr->m_list->end(); ++iter)
         {
             InvoiceProductItemPtr pInvoiceProductItem = *iter;
-            out << pInvoiceProductItem->m_productId << ", " << pInvoiceProductItem->m_productname << ", " << pInvoiceProductItem->m_count << endl;
+            out << pInvoiceProductItem->m_productId << ", " << Singletons::m_pTranslationManager->getStringTranslation(pInvoiceProductItem->m_productnameEus, pInvoiceProductItem->m_productnameEs) << ", " << pInvoiceProductItem->m_count << endl;
         }
         f.close();
         Singletons::m_pDialogManager->infoMessageBox(this, tr("Successfully exported. Filename: %1").arg(filename), [](){});

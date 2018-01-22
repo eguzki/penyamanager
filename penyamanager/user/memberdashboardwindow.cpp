@@ -257,7 +257,7 @@ namespace PenyaManager {
         for (InvoiceProductItemList::iterator iter = pInvoiceProductItemListResultPtr->m_list->begin(); iter != pInvoiceProductItemListResultPtr->m_list->end(); ++iter)
         {
             InvoiceProductItemPtr pInvoiceProductItemPtr = *iter;
-            QTableWidgetItem *item = new QTableWidgetItem(Singletons::m_pTranslationManager->getStringTranslation(pInvoiceProductItemPtr->m_productname, pfPtr->m_nameEs));
+            QTableWidgetItem *item = new QTableWidgetItem(Singletons::m_pTranslationManager->getStringTranslation(pInvoiceProductItemPtr->m_productnameEus, pInvoiceProductItemPtr->m_productnameEs));
             item->setData(Qt::TextAlignmentRole, Qt::AlignLeft);
             this->ui->invoiceTableWidget->setItem(rowCount, 0, item);
             item = new QTableWidgetItem(QString("%1 €").arg(pInvoiceProductItemPtr->m_priceperunit, 0, 'f', 2));
@@ -278,7 +278,8 @@ namespace PenyaManager {
             pRemoveButton->setIcon(buttonIcon);
             this->connect(pRemoveButton, &QPushButton::clicked, std::bind(&MemberDashboardWindow::on_productRemoveButton_clicked, this,
                   pInvoiceProductItemPtr->m_productId,
-                  pInvoiceProductItemPtr->m_productname,
+                  pInvoiceProductItemPtr->m_productnameEus,
+                  pInvoiceProductItemPtr->m_productnameEs,
                   totalPrice));
             this->ui->invoiceTableWidget->setCellWidget(rowCount, 4, pRemoveButton);
 
@@ -455,11 +456,11 @@ namespace PenyaManager {
         fillInvoiceData(pInvoiceResultPtr->m_pInvoice);
     }
     //
-    void MemberDashboardWindow::on_productRemoveButton_clicked(int productId, QString productName, Float totalPrice)
+    void MemberDashboardWindow::on_productRemoveButton_clicked(int productId, QString productNameEus, QString productNameEs, Float totalPrice)
     {
         // ask for confirmation
         Singletons::m_pDialogManager->questionMessageBox(this,
-                tr("Delete %1 for %2 €?").arg(productName).arg(QString::number(totalPrice, 'f', 2)),
+                tr("Delete %1 for %2 €?").arg(Singletons::m_pTranslationManager->getStringTranslation(productNameEus, productNameEs)).arg(QString::number(totalPrice, 'f', 2)),
                 std::bind(&MemberDashboardWindow::on_productRemove_result, this, productId, _1)
                 );
         // no code should be added here

@@ -131,7 +131,9 @@ namespace PenyaManager
             //
             Int32               m_id;
             //
-            QString             m_name;
+            QString             m_nameEus;
+            //
+            QString             m_nameEs;
             //
             QString             m_imagePath;
             //
@@ -139,7 +141,9 @@ namespace PenyaManager
             //
             QDateTime           m_regDate;
             //
-            QString             m_familyName;
+            QString             m_familyNameEus;
+            //
+            QString             m_familyNameEs;
             //
             Float               m_price;
             //

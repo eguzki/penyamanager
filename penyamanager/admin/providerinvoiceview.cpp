@@ -106,7 +106,7 @@ namespace PenyaManager {
             this->ui->providerInvoiceTableWidget->setRowHeight(rowCount, Constants::kFamilyImageHeigth);
             this->ui->providerInvoiceTableWidget->setItem(rowCount, column++, productImageWidget);
             // product name
-            this->ui->providerInvoiceTableWidget->setItem(rowCount, column++, new QTableWidgetItem(pProductPtr->m_productName));
+            this->ui->providerInvoiceTableWidget->setItem(rowCount, column++, new QTableWidgetItem(Singletons::m_pTranslationManager->getStringTranslation(pProductPtr->m_productNameEus, pProductPtr->m_productNameEs)));
             // count
             this->ui->providerInvoiceTableWidget->setItem(rowCount, column++, new QTableWidgetItem(QString::number(pProductPtr->m_count)));
             rowCount++;

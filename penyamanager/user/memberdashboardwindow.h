@@ -47,7 +47,7 @@ namespace PenyaManager {
             //
             void initializeTable();
             //
-            void on_productRemoveButton_clicked(int productId, QString productName, Float totalPrice);
+            void on_productRemoveButton_clicked(int productId, QString productNameEus, QString productNameEs, Float totalPrice);
             //
             void on_productRemove_result(int productId, QMessageBox::StandardButton);
             //

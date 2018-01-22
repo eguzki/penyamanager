@@ -144,7 +144,7 @@ namespace PenyaManager {
         {
             InvoiceProductItemPtr pInvoiceProductItemPtr = *iter;
 
-            this->ui->productTableWidget->setItem(rowCount, 0, new QTableWidgetItem(pInvoiceProductItemPtr->m_productname));
+            this->ui->productTableWidget->setItem(rowCount, 0, new QTableWidgetItem(Singletons::m_pTranslationManager->getStringTranslation(pInvoiceProductItemPtr->m_productnameEus, pInvoiceProductItemPtr->m_productnameEs)));
             this->ui->productTableWidget->setItem(rowCount, 1, new QTableWidgetItem(QString("%1 €").arg(pInvoiceProductItemPtr->m_priceperunit, 0, 'f', 2)));
             this->ui->productTableWidget->setItem(rowCount, 2, new QTableWidgetItem(QString("%1").arg(pInvoiceProductItemPtr->m_count)));
             Float totalPrice = pInvoiceProductItemPtr->m_priceperunit * pInvoiceProductItemPtr->m_count;
@@ -208,7 +208,7 @@ namespace PenyaManager {
         {
             InvoiceProductItemPtr pInvoiceProductItemPtr = *iter;
             QVariantHash productData;
-            productData["productName"] = pInvoiceProductItemPtr->m_productname;
+            productData["productName"] = Singletons::m_pTranslationManager->getStringTranslation(pInvoiceProductItemPtr->m_productnameEus, pInvoiceProductItemPtr->m_productnameEs);
             productData["productCount"] = pInvoiceProductItemPtr->m_count;
             Float totalPrice = pInvoiceProductItemPtr->m_priceperunit * pInvoiceProductItemPtr->m_count;
             productData["productTotal"] = QString("%1 €").arg(totalPrice, 0, 'f', 2);
