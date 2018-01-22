@@ -148,7 +148,7 @@ namespace PenyaManager {
             Singletons::m_pLogger->Warn(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kLogin, QString("Last invoice not found"));
             return;
         }
-        updateLastInvoiceInformation(pLastInvoiceResultPtr->m_pInvoice);
+        fillLastInvoiceInfo(pLastInvoiceResultPtr->m_pInvoice);
     }
     //
     void LoginWindow::on_loginPushButton_clicked()
@@ -318,13 +318,6 @@ namespace PenyaManager {
             rowCount++;
         }
 
-        updateLastInvoiceInformation(pLastInvoicePtr);
-        // Total
-        this->ui->lastInvoiceTotalLabel->setText(QString("%1 €").arg(invoiceProductItemStatsResultPtr->m_stats->m_totalAmount, 0, 'f', 2));
-    }
-    //
-    void LoginWindow::updateLastInvoiceInformation(const InvoicePtr &pLastInvoicePtr)
-    {
         //
         // Invoice Information
         //
@@ -332,6 +325,8 @@ namespace PenyaManager {
         QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pLastInvoicePtr->m_date, QLocale::NarrowFormat);
         QString lastModifDateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pLastInvoicePtr->m_lastModified, QLocale::NarrowFormat);
         this->ui->lastInvoiceDateLabel->setText(tr("Created on: %1   Modified on: %2").arg(dateLocalized).arg(lastModifDateLocalized));
+        // Total
+        this->ui->lastInvoiceTotalLabel->setText(QString("%1 €").arg(invoiceProductItemStatsResultPtr->m_stats->m_totalAmount, 0, 'f', 2));
     }
     //
     void LoginWindow::on_prevPagePushButton_clicked()
