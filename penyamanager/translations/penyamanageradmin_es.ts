@@ -109,7 +109,7 @@
     <message>
         <location filename="../admin/adminfamilyview.ui" line="71"/>
         <source>Create New Product Family</source>
-        <translation>Crear nueva familia</translation>
+        <translation>Administración de familia</translation>
     </message>
     <message>
         <location filename="../admin/adminfamilyview.ui" line="91"/>
@@ -383,7 +383,7 @@
     <message>
         <location filename="../admin/adminnewprovider.ui" line="71"/>
         <source>Create New Provider</source>
-        <translation>Crear nuevo proveedor</translation>
+        <translation>Administrar proveedor</translation>
     </message>
     <message>
         <location filename="../admin/adminnewprovider.ui" line="91"/>
@@ -443,7 +443,7 @@
     <message>
         <location filename="../admin/adminproductitem.ui" line="71"/>
         <source>Create New Product</source>
-        <translation>Crear nuevo producto</translation>
+        <translation>Administración de producto</translation>
     </message>
     <message>
         <location filename="../admin/adminproductitem.ui" line="91"/>
@@ -932,7 +932,7 @@
     <message>
         <location filename="../admin/adminfamilyview.cpp" line="148"/>
         <source>Done successfully</source>
-        <translation type="unfinished">Realizado</translation>
+        <translation>Realizado</translation>
     </message>
     <message>
         <location filename="../admin/adminfamilyview.cpp" line="167"/>
@@ -1128,7 +1128,7 @@
     <message>
         <location filename="../admin/adminproductitem.cpp" line="185"/>
         <source>Done successfully</source>
-        <translation type="unfinished">Realizado</translation>
+        <translation>Realizado</translation>
     </message>
     <message>
         <location filename="../admin/adminproductitem.cpp" line="332"/>

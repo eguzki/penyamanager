@@ -469,7 +469,7 @@
     <message>
         <location filename="../user/loginwindow.cpp" line="134"/>
         <source>article</source>
-        <translation>Artikulu</translation>
+        <translation>Artikulua</translation>
     </message>
     <message>
         <location filename="../user/loginwindow.cpp" line="135"/>

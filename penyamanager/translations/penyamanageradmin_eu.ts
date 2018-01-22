@@ -109,7 +109,7 @@
     <message>
         <location filename="../admin/adminfamilyview.ui" line="71"/>
         <source>Create New Product Family</source>
-        <translation>Familia berria sortu</translation>
+        <translation>Familia kudeaketa</translation>
     </message>
     <message>
         <location filename="../admin/adminfamilyview.ui" line="91"/>
@@ -383,7 +383,7 @@
     <message>
         <location filename="../admin/adminnewprovider.ui" line="71"/>
         <source>Create New Provider</source>
-        <translation>Hornitzaile berria sortu</translation>
+        <translation>Hornitzailea kudeatu</translation>
     </message>
     <message>
         <location filename="../admin/adminnewprovider.ui" line="91"/>
@@ -443,7 +443,7 @@
     <message>
         <location filename="../admin/adminproductitem.ui" line="71"/>
         <source>Create New Product</source>
-        <translation>Produktu berria sortu</translation>
+        <translation>Produktu kudeaketa</translation>
     </message>
     <message>
         <location filename="../admin/adminproductitem.ui" line="91"/>
@@ -931,7 +931,7 @@
     <message>
         <location filename="../admin/adminfamilyview.cpp" line="148"/>
         <source>Done successfully</source>
-        <translation type="unfinished">Egina</translation>
+        <translation>Egina</translation>
     </message>
     <message>
         <location filename="../admin/adminfamilyview.cpp" line="167"/>
@@ -1127,7 +1127,7 @@
     <message>
         <location filename="../admin/adminproductitem.cpp" line="185"/>
         <source>Done successfully</source>
-        <translation type="unfinished">Egina</translation>
+        <translation>Egina</translation>
     </message>
     <message>
         <location filename="../admin/adminproductitem.cpp" line="332"/>
