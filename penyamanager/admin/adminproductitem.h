@@ -30,6 +30,8 @@ namespace PenyaManager {
             void initialize();
             //
             void onProductImageSelected(const QString &fn);
+            //
+            void onProductItemUpdated();
 
         private slots:
             //

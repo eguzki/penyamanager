@@ -165,7 +165,7 @@ namespace PenyaManager {
         this->m_username = userNameStr.toUInt();
 
         // Ask for password
-        NumItemDialog passNumItemDialog(this, tr("Insert password"), true);
+        NumItemDialog passNumItemDialog(this, tr("Insert password"), true, 4);
         passNumItemDialog.exec();
         this->m_password = passNumItemDialog.getKeyStr();
         // check password input

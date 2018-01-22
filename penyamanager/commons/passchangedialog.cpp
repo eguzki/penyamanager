@@ -1,7 +1,5 @@
 //
 
-#include <QDebug>
-
 #include "passchangedialog.h"
 #include "ui_passchangedialog.h"
 
@@ -34,8 +32,6 @@ namespace PenyaManager {
     //
     void PassChangeDialog::on_buttonBox_accepted()
     {
-        qDebug() << "on_buttonBox_accepted";
-
         // Validate not empty fields
         QString plainPwd = this->ui->pwdLineEdit->text();
         QString repeatedPlainPwd = this->ui->repeatedPwdLineEdit->text();
