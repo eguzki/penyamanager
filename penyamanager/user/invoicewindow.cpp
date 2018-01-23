@@ -124,7 +124,13 @@ namespace PenyaManager {
         Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kInvoice,
                 QString("invoiceId %1").arg(pInvoiceResultPtr->m_pInvoice->m_id));
 
-        printInvoice(pCurrMemberPtr, pInvoiceResultPtr->m_pInvoice);
+        ok = printInvoice(pCurrMemberPtr, pInvoiceResultPtr->m_pInvoice);
+        if (!ok) {
+            Singletons::m_pLogger->Error(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kInvoice,
+                    QString("error printing invoice. invoiceId %1").arg(pInvoiceResultPtr->m_pInvoice->m_id));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+            return;
+        }
         // call dashboard window
         m_switchCentralWidgetCallback(WindowKey::kMemberDashboardWindowKey);
     }
@@ -189,14 +195,13 @@ namespace PenyaManager {
         this->ui->newBalanceInfoLabel->setText(QString("%1 €").arg(newBalance, 0, 'f', 2));
     }
     //
-    void InvoiceWindow::printInvoice(const MemberPtr &pMemberPtr, const InvoicePtr &pInvoicePtr)
+    bool InvoiceWindow::printInvoice(const MemberPtr &pMemberPtr, const InvoicePtr &pInvoicePtr)
     {
         // Loading Current Invoice
         // Loading Current Invoice products
         InvoiceProductItemListResultPtr pInvoiceProductItemListResultPtr = Singletons::m_pDAO->getAllInvoiceProductItems(pInvoicePtr->m_id);
         if (pInvoiceProductItemListResultPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
-            return;
+            return false;
         }
 
         QVariantHash invoiceData;
@@ -237,6 +242,7 @@ namespace PenyaManager {
         invoiceData["invoiceTotal"] = QString("%1 €").arg(totalInvoice, 0, 'f', 2);
         // print invoice
         GuiUtils::printInvoice(invoiceData, pMemberPtr->m_id, pInvoicePtr->m_id);
+        return true;
     }
     //
     void InvoiceWindow::on_prevPagePushButton_clicked()
