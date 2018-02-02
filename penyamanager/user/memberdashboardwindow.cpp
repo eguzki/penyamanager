@@ -254,16 +254,17 @@ namespace PenyaManager {
         this->m_rowProductIdMap.clear();
 
         Uint32 rowCount = 0;
+        Float totalInvoice = 0.0;
         for (InvoiceProductItemList::iterator iter = pInvoiceProductItemListResultPtr->m_list->begin(); iter != pInvoiceProductItemListResultPtr->m_list->end(); ++iter)
         {
             InvoiceProductItemPtr pInvoiceProductItemPtr = *iter;
             this->ui->invoiceTableWidget->setItem(rowCount, 0, new QTableWidgetItem(Singletons::m_pTranslationManager->getStringTranslation(pInvoiceProductItemPtr->m_productnameEus, pInvoiceProductItemPtr->m_productnameEs)));
             this->ui->invoiceTableWidget->item(rowCount, 0)->setTextAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-            this->ui->invoiceTableWidget->setItem(rowCount, 1, new QTableWidgetItem(QString("%1 €").arg(pInvoiceProductItemPtr->m_priceperunit, 0, 'f', 2)));
+            this->ui->invoiceTableWidget->setItem(rowCount, 1, new QTableWidgetItem(QString("%1 €").arg(pInvoiceProductItemPtr->m_currentPricePerUnit, 0, 'f', 2)));
             this->ui->invoiceTableWidget->item(rowCount, 1)->setTextAlignment(Qt::AlignCenter);
             this->ui->invoiceTableWidget->setItem(rowCount, 2, new QTableWidgetItem(QString("%1").arg(pInvoiceProductItemPtr->m_count)));
             this->ui->invoiceTableWidget->item(rowCount, 2)->setTextAlignment(Qt::AlignCenter);
-            Float totalPrice = pInvoiceProductItemPtr->m_priceperunit * pInvoiceProductItemPtr->m_count;
+            Float totalPrice = pInvoiceProductItemPtr->m_currentPricePerUnit * pInvoiceProductItemPtr->m_count;
             this->ui->invoiceTableWidget->setItem(rowCount, 3, new QTableWidgetItem(QString("%1 €").arg(totalPrice, 0, 'f', 2)));
             this->ui->invoiceTableWidget->item(rowCount, 3)->setTextAlignment(Qt::AlignRight|Qt::AlignVCenter);
             this->m_rowProductIdMap[rowCount] = pInvoiceProductItemPtr->m_productId;
@@ -281,9 +282,10 @@ namespace PenyaManager {
 
             // ROW HEIGHT
             this->ui->invoiceTableWidget->setRowHeight(rowCount, 35);
+            totalInvoice += totalPrice;
             rowCount++;
         }
-        this->ui->totalDisplayLabel->setText(QString("%1 €").arg(invoiceProductItemStatsResultPtr->m_stats->m_totalAmount, 0, 'f', 2));
+        this->ui->totalDisplayLabel->setText(QString("%1 €").arg(totalInvoice, 0, 'f', 2));
     }
     //
     void MemberDashboardWindow::on_invoiceCloseButton_clicked()

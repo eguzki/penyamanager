@@ -68,7 +68,7 @@ namespace PenyaManager {
             //
             bool removeProductInvoice(Int32 invoiceId, Int32 productId);
             //
-            bool updateProductInvoice(Int32 invoiceId, Int32 productId, Uint32 count);
+            bool updateProductInvoice(Int32 invoiceId, Int32 productId, Uint32 count, Float price);
             //
             Int32 increaseProductInvoice(Int32 invoiceId, Int32 productId, Uint32 count);
             //
@@ -237,6 +237,10 @@ namespace PenyaManager {
             ProviderInvoiceProductItemListResultPtr getProviderInvoiceProductsByInvoiceId(const QString &providerInvoiceId);
             //
             Int32 getLastUsername();
+
+        private:
+            //
+            QString getLastExecutedQuery(const QueryPtr& queryPtr);
 
         private:
             //

@@ -9,22 +9,11 @@ namespace PenyaManager
     InvoiceProductItem::InvoiceProductItem()
     {
     }
-
     //
     InvoiceProductItemStats::InvoiceProductItemStats()
         :
-            m_totalProducts(0),
-            m_totalAmount(0.0)
-    {
-    }
-
-    //
-    InvoiceProductItemStats::InvoiceProductItemStats(Uint32 totalProducts, Float totalAmount)
-        :
-            m_totalProducts(totalProducts),
-            m_totalAmount(totalAmount)
-    {
-    }
+            m_totalProducts(0)
+    {}
     //
     InvoiceProductItemListResult::InvoiceProductItemListResult()
         :
@@ -39,11 +28,6 @@ namespace PenyaManager
     InvoiceProductItemCounterStats::InvoiceProductItemCounterStats()
         :
             m_totalProducts(0)
-    {}
-    //
-    InvoiceProductItemCounterStats::InvoiceProductItemCounterStats(Uint32 totalProducts)
-        :
-            m_totalProducts(totalProducts)
     {}
     //
     InvoiceProductItemCounterStatsResult::InvoiceProductItemCounterStatsResult()

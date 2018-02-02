@@ -102,6 +102,11 @@ namespace PenyaManager {
         QLOG_INFO() << m_messageTemplate.arg(QString::number(userId)).arg(LogActionToString(logAction)).arg(message);
     }
     //
+    void FileLogger::Debug(Uint32 userId, LogAction logAction, const QString &message)
+    {
+        QLOG_DEBUG() << m_messageTemplate.arg(QString::number(userId)).arg(LogActionToString(logAction)).arg(message);
+    }
+    //
     SysLogLogger::SysLogLogger(QSettings *pSettings, QString program) :
         PenyaManagerLogger(),
         m_messageTemplate("[user %1] [action %2] %3"),
@@ -169,6 +174,14 @@ namespace PenyaManager {
     void SysLogLogger::Info(Uint32 userId, LogAction logAction, const QString &message)
     {
         Uint16 severity = 6; // Informational
+        QByteArray datagram;
+        datagram.append(computeDatagram(severity, userId, logAction, message));
+        m_pUdpSocket->writeDatagram(datagram.data(), datagram.size(), m_qHostAddress, 514);
+    }
+    //
+    void SysLogLogger::Debug(Uint32 userId, LogAction logAction, const QString &message)
+    {
+        Uint16 severity = 7; // Debug
         QByteArray datagram;
         datagram.append(computeDatagram(severity, userId, logAction, message));
         m_pUdpSocket->writeDatagram(datagram.data(), datagram.size(), m_qHostAddress, 514);

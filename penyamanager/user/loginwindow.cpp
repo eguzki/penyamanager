@@ -298,19 +298,23 @@ namespace PenyaManager {
 
         //fill data
         Uint32 rowCount = 0;
+        Float totalInvoice = 0.0;
         for (InvoiceProductItemList::iterator iter = pInvoiceProductItemListResultPtr->m_list->begin(); iter != pInvoiceProductItemListResultPtr->m_list->end(); ++iter)
         {
             InvoiceProductItemPtr pInvoiceProductItemPtr = *iter;
+            // price per unit depending on invoice is closed
+            Float pricePerUnit = (pLastInvoicePtr->m_state == InvoiceState::Closed)?(pInvoiceProductItemPtr->m_pricePerUnit):(pInvoiceProductItemPtr->m_currentPricePerUnit);
             this->ui->lastInvoiceTableWidget->setItem(rowCount, 0, new QTableWidgetItem(Singletons::m_pTranslationManager->getStringTranslation(pInvoiceProductItemPtr->m_productnameEus, pInvoiceProductItemPtr->m_productnameEs)));
             this->ui->lastInvoiceTableWidget->item(rowCount, 0)->setTextAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-            this->ui->lastInvoiceTableWidget->setItem(rowCount, 1, new QTableWidgetItem(QString("%1 €").arg(pInvoiceProductItemPtr->m_priceperunit, 0, 'f', 2)));
+            this->ui->lastInvoiceTableWidget->setItem(rowCount, 1, new QTableWidgetItem(QString("%1 €").arg(pricePerUnit, 0, 'f', 2)));
             this->ui->lastInvoiceTableWidget->item(rowCount, 1)->setTextAlignment(Qt::AlignCenter);
             this->ui->lastInvoiceTableWidget->setItem(rowCount, 2, new QTableWidgetItem(QString("%1").arg(pInvoiceProductItemPtr->m_count)));
             this->ui->lastInvoiceTableWidget->item(rowCount, 2)->setTextAlignment(Qt::AlignCenter);
-            Float totalPrice = pInvoiceProductItemPtr->m_priceperunit * pInvoiceProductItemPtr->m_count;
+            Float totalPrice = pricePerUnit * pInvoiceProductItemPtr->m_count;
             this->ui->lastInvoiceTableWidget->setItem(rowCount, 3, new QTableWidgetItem(QString("%1 €").arg(totalPrice, 0, 'f', 2)));
             this->ui->lastInvoiceTableWidget->item(rowCount, 3)->setTextAlignment(Qt::AlignRight|Qt::AlignVCenter);
             this->ui->lastInvoiceTableWidget->setRowHeight(rowCount, 35);
+            totalInvoice += totalPrice;
             rowCount++;
         }
 
@@ -322,7 +326,7 @@ namespace PenyaManager {
         QString lastModifDateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pLastInvoicePtr->m_lastModified, QLocale::NarrowFormat);
         this->ui->lastInvoiceDateLabel->setText(tr("Created on: %1   Modified on: %2").arg(dateLocalized).arg(lastModifDateLocalized));
         // Total
-        this->ui->lastInvoiceTotalLabel->setText(QString("%1 €").arg(invoiceProductItemStatsResultPtr->m_stats->m_totalAmount, 0, 'f', 2));
+        this->ui->lastInvoiceTotalLabel->setText(QString("%1 €").arg(totalInvoice, 0, 'f', 2));
     }
     //
     void LoginWindow::on_prevPagePushButton_clicked()
