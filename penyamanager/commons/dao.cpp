@@ -71,6 +71,11 @@ namespace PenyaManager {
             }
         }
         queryResponse.query = queryFactory();
+        // log query only when debug. Generating query string may be expensive.
+        if (Singletons::m_pSettings->value(Constants::kDebugConfig).toString() == "1")
+        {
+            Singletons::m_pLogger->Debug(Constants::kSystemUserId, PenyaManager::LogAction::kDb, getLastExecutedQuery(queryResponse.query));
+        }
         queryResponse.error = !queryResponse.query->exec();
         if (queryResponse.error) {
             int err = queryResponse.query->lastError().number();
@@ -426,21 +431,22 @@ namespace PenyaManager {
         return !queryResponse.error;
     }
     //
-    bool DAO::updateProductInvoice(Int32 invoiceId, Int32 productId, Uint32 count)
+    bool DAO::updateProductInvoice(Int32 invoiceId, Int32 productId, Uint32 count, Float price)
     {
         auto createQuery = [=](){
             QueryPtr queryPtr(new QSqlQuery);
             // update product invoice by ID
             queryPtr->prepare(
                     "INSERT INTO inv_prod "
-                    "(idinvoice, idproduct_item, count) "
-                    "VALUES (:invoiceid, :productid, :count) "
+                    "(idinvoice, idproduct_item, count, price) "
+                    "VALUES (:invoiceid, :productid, :count, :price) "
                     "ON DUPLICATE KEY UPDATE "
-                    "count = :count"
+                    "count = :count, price = :price"
                     );
             queryPtr->bindValue(":invoiceid", invoiceId);
             queryPtr->bindValue(":productid", productId);
             queryPtr->bindValue(":count", count);
+            queryPtr->bindValue(":price", price);
             return queryPtr;
         };
 
@@ -448,7 +454,7 @@ namespace PenyaManager {
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
             Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
-                    QString("updateProductInvoice invoice %1 product %2 count %3").arg(invoiceId).arg(productId).arg(count));
+                    QString("updateProductInvoice invoice %1 product %2 count %3 price %4").arg(invoiceId).arg(productId).arg(count).arg(price));
         }
         return !queryResponse.error;
     }
@@ -544,7 +550,7 @@ namespace PenyaManager {
             QueryPtr queryPtr(new QSqlQuery);
             // invoice product items by invoiceId
             queryPtr->prepare(
-                    "SELECT COUNT(*), SUM(inv_prod.count * product_item.price)  "
+                    "SELECT COUNT(*) "
                     "FROM inv_prod "
                     "INNER JOIN product_item on inv_prod.idproduct_item=product_item.idproduct_item "
                     "WHERE idinvoice=:invoiceid"
@@ -562,9 +568,8 @@ namespace PenyaManager {
         } else if (queryResponse.query->next()) {
             invoiceProductItemStatsResultPtr->m_stats = InvoiceProductItemStatsPtr(new InvoiceProductItemStats);
             invoiceProductItemStatsResultPtr->m_stats->m_totalProducts = queryResponse.query->value(0).toUInt();
-            invoiceProductItemStatsResultPtr->m_stats->m_totalAmount = queryResponse.query->value(1).toFloat();
         } else {
-            invoiceProductItemStatsResultPtr->m_stats = InvoiceProductItemStatsPtr(new InvoiceProductItemStats(0, 0.0));
+            invoiceProductItemStatsResultPtr->m_stats = InvoiceProductItemStatsPtr(new InvoiceProductItemStats);
         }
         return invoiceProductItemStatsResultPtr;
     }
@@ -577,7 +582,7 @@ namespace PenyaManager {
             QueryPtr queryPtr(new QSqlQuery);
             // invoice product items by invoiceId
             queryPtr->prepare(
-                    "SELECT product_item.idproduct_item, product_item.name, product_item.name_es, product_item.image, product_item.price, inv_prod.count "
+                    "SELECT product_item.idproduct_item, product_item.name, product_item.name_es, product_item.image, product_item.price, inv_prod.count, inv_prod.price "
                     "FROM inv_prod INNER JOIN product_item ON inv_prod.idproduct_item=product_item.idproduct_item "
                     "WHERE idinvoice=:invoiceid "
                     "ORDER BY inv_prod.date DESC "
@@ -604,8 +609,9 @@ namespace PenyaManager {
                 pInvoiceProductItemPtr->m_productnameEus = queryResponse.query->value(1).toString();
                 pInvoiceProductItemPtr->m_productnameEs = queryResponse.query->value(2).toString();
                 pInvoiceProductItemPtr->m_imagePath = queryResponse.query->value(3).toString();
-                pInvoiceProductItemPtr->m_priceperunit = queryResponse.query->value(4).toFloat();
+                pInvoiceProductItemPtr->m_currentPricePerUnit = queryResponse.query->value(4).toFloat();
                 pInvoiceProductItemPtr->m_count = queryResponse.query->value(5).toUInt();
+                pInvoiceProductItemPtr->m_pricePerUnit = queryResponse.query->value(6).toFloat();
                 pInvoicePILResult->m_list->push_back(pInvoiceProductItemPtr);
             }
         }
@@ -621,7 +627,7 @@ namespace PenyaManager {
             QueryPtr queryPtr(new QSqlQuery);
             // invoice product items by invoiceId
             queryPtr->prepare(
-                    "SELECT product_item.idproduct_item, product_item.name, product_item.name_es, product_item.image, product_item.price, inv_prod.count "
+                    "SELECT product_item.idproduct_item, product_item.name, product_item.name_es, product_item.image, product_item.price, inv_prod.count, inv_prod.price "
                     "FROM inv_prod INNER JOIN product_item ON inv_prod.idproduct_item=product_item.idproduct_item "
                     "WHERE idinvoice=:invoiceid"
                     );
@@ -644,8 +650,9 @@ namespace PenyaManager {
                 pInvoiceProductItemPtr->m_productnameEus = queryResponse.query->value(1).toString();
                 pInvoiceProductItemPtr->m_productnameEs = queryResponse.query->value(2).toString();
                 pInvoiceProductItemPtr->m_imagePath = queryResponse.query->value(3).toString();
-                pInvoiceProductItemPtr->m_priceperunit = queryResponse.query->value(4).toFloat();
+                pInvoiceProductItemPtr->m_currentPricePerUnit = queryResponse.query->value(4).toFloat();
                 pInvoiceProductItemPtr->m_count = queryResponse.query->value(5).toUInt();
+                pInvoiceProductItemPtr->m_pricePerUnit = queryResponse.query->value(6).toFloat();
                 pInvoicePILResult->m_list->push_back(pInvoiceProductItemPtr);
             }
         }
@@ -2627,7 +2634,7 @@ namespace PenyaManager {
             // product expenses list
             // only closed
             queryPtr->prepare(
-                    "SELECT product_item.idproduct_item, product_item.name, product_item.name_es, product_item.image, product_item.price, SUM(inv_prod.count) "
+                    "SELECT product_item.idproduct_item, product_item.name, product_item.name_es, product_item.image, SUM(inv_prod.price * inv_prod.count), SUM(inv_prod.count) "
                     "FROM invoice "
                     "INNER JOIN inv_prod ON inv_prod.idinvoice=invoice.idinvoice "
                     "INNER JOIN product_item ON product_item.idproduct_item=inv_prod.idproduct_item "
@@ -2660,7 +2667,7 @@ namespace PenyaManager {
                 pInvoiceProductItemPtr->m_productnameEus =  queryResponse.query->value(1).toString();
                 pInvoiceProductItemPtr->m_productnameEs =  queryResponse.query->value(2).toString();
                 pInvoiceProductItemPtr->m_imagePath =  queryResponse.query->value(3).toString();
-                pInvoiceProductItemPtr->m_priceperunit =  queryResponse.query->value(4).toFloat();
+                pInvoiceProductItemPtr->m_pricePerUnit =  queryResponse.query->value(4).toFloat();
                 pInvoiceProductItemPtr->m_count =  queryResponse.query->value(5).toUInt();
                 pInvoiceProductItemListResultPtr->m_list->push_back(pInvoiceProductItemPtr);
             }
@@ -2700,7 +2707,7 @@ namespace PenyaManager {
             pIPISResultPtr->m_stats = InvoiceProductItemCounterStatsPtr(new InvoiceProductItemCounterStats);
             pIPISResultPtr->m_stats->m_totalProducts = queryResponse.query->value(0).toUInt();
         } else {
-            pIPISResultPtr->m_stats = InvoiceProductItemCounterStatsPtr(new InvoiceProductItemCounterStats(0));
+            pIPISResultPtr->m_stats = InvoiceProductItemCounterStatsPtr(new InvoiceProductItemCounterStats);
         }
         return pIPISResultPtr;
     }
@@ -2713,7 +2720,7 @@ namespace PenyaManager {
             QueryPtr queryPtr(new QSqlQuery);
             // product expenses list by memberId
             queryPtr->prepare(
-                    "SELECT product_item.idproduct_item, product_item.name, product_item.name_es, product_item.image, product_item.price, SUM(inv_prod.count) "
+                    "SELECT product_item.idproduct_item, product_item.name, product_item.name_es, product_item.image, SUM(inv_prod.price * inv_prod.count), SUM(inv_prod.count) "
                     "FROM invoice "
                     "INNER JOIN inv_prod ON inv_prod.idinvoice=invoice.idinvoice "
                     "INNER JOIN product_item ON product_item.idproduct_item=inv_prod.idproduct_item "
@@ -2746,7 +2753,7 @@ namespace PenyaManager {
                 pInvoiceProductItemPtr->m_productnameEus =  queryResponse.query->value(1).toString();
                 pInvoiceProductItemPtr->m_productnameEs =  queryResponse.query->value(2).toString();
                 pInvoiceProductItemPtr->m_imagePath =  queryResponse.query->value(3).toString();
-                pInvoiceProductItemPtr->m_priceperunit =  queryResponse.query->value(4).toFloat();
+                pInvoiceProductItemPtr->m_pricePerUnit =  queryResponse.query->value(4).toFloat();
                 pInvoiceProductItemPtr->m_count =  queryResponse.query->value(5).toUInt();
                 pIPILResult->m_list->push_back(pInvoiceProductItemPtr);
             }
@@ -2786,7 +2793,7 @@ namespace PenyaManager {
             pIPISResult->m_stats = InvoiceProductItemCounterStatsPtr(new InvoiceProductItemCounterStats);
             pIPISResult->m_stats->m_totalProducts = queryResponse.query->value(0).toUInt();
         } else {
-            pIPISResult->m_stats = InvoiceProductItemCounterStatsPtr(new InvoiceProductItemCounterStats(0));
+            pIPISResult->m_stats = InvoiceProductItemCounterStatsPtr(new InvoiceProductItemCounterStats);
         }
         return pIPISResult;
     }
@@ -3702,6 +3709,18 @@ namespace PenyaManager {
             lastUsername = queryResponse.query->value(0).toInt();;
         }
         return lastUsername;
+    }
+    //
+    QString DAO::getLastExecutedQuery(const QueryPtr& queryPtr)
+    {
+        QString str = queryPtr->lastQuery();
+        QMapIterator<QString, QVariant> it(queryPtr->boundValues());
+        while (it.hasNext())
+        {
+            it.next();
+            str.replace(it.key(),it.value().toString());
+        }
+        return str;
     }
 }
 

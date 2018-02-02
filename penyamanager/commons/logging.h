@@ -29,6 +29,8 @@ namespace PenyaManager {
             virtual void Warn(Uint32 userId, LogAction logAction, const QString &message) = 0;
             //
             virtual void Info(Uint32 userId, LogAction logAction, const QString &message) = 0;
+            //
+            virtual void Debug(Uint32 userId, LogAction logAction, const QString &message) = 0;
     };
     //
     typedef QSharedPointer<PenyaManagerLogger> PenyaManagerLoggerPtr;
@@ -49,6 +51,9 @@ namespace PenyaManager {
             void Warn(Uint32 userId, LogAction logAction, const QString &message);
             //
             void Info(Uint32 userId, LogAction logAction, const QString &message);
+            //
+            void Debug(Uint32 userId, LogAction logAction, const QString &message);
+
         private:
             //
             QString         m_messageTemplate;
@@ -71,6 +76,9 @@ namespace PenyaManager {
             //
             // message param should not contain colon (:)
             void Info(Uint32 userId, LogAction logAction, const QString &message);
+            //
+            // message param should not contain colon (:)
+            void Debug(Uint32 userId, LogAction logAction, const QString &message);
 
         private:
             //

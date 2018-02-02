@@ -131,7 +131,8 @@ namespace PenyaManager {
             this->ui->productTableWidget->setItem(rowCount, 0, productImage);
             this->ui->productTableWidget->setItem(rowCount, 1, new QTableWidgetItem(Singletons::m_pTranslationManager->getStringTranslation(pInvoiceProductItem->m_productnameEus, pInvoiceProductItem->m_productnameEs)));
             this->ui->productTableWidget->setItem(rowCount, 2, new QTableWidgetItem(QString::number(pInvoiceProductItem->m_count)));
-            this->ui->productTableWidget->setItem(rowCount, 3, new QTableWidgetItem(QString("%1 €").arg(pInvoiceProductItem->m_count * pInvoiceProductItem->m_priceperunit, 0, 'f', 2)));
+            // pricePerUnit is already sum of all invoices grouped by product item. Different invoices may have same product with different prices.
+            this->ui->productTableWidget->setItem(rowCount, 3, new QTableWidgetItem(QString("%1 €").arg(pInvoiceProductItem->m_pricePerUnit, 0, 'f', 2)));
             rowCount++;
         }
     }

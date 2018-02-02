@@ -51,20 +51,24 @@ namespace PenyaManager {
             return false;
         }
         // total invoice could be calculated using ddbb query with
-        // DAO::getInvoiceProductItemsStats
-        // However, it is safer to calculate from raw data and use stats query for user interface information
         Float totalInvoice = 0.0;
         for (InvoiceProductItemList::iterator iter = pInvoiceProductItemListResultPtr->m_list->begin(); iter != pInvoiceProductItemListResultPtr->m_list->end(); ++iter)
         {
             InvoiceProductItemPtr pInvoiceProductItemPtr = *iter;
-            Float totalPrice = pInvoiceProductItemPtr->m_priceperunit * pInvoiceProductItemPtr->m_count;
+            // use current product price
+            Float totalPrice = pInvoiceProductItemPtr->m_currentPricePerUnit * pInvoiceProductItemPtr->m_count;
             totalInvoice += totalPrice;
+            // close invoice product price
+            bool ok = Singletons::m_pDAO->updateProductInvoice(invoiceId, pInvoiceProductItemPtr->m_productId, pInvoiceProductItemPtr->m_count, pInvoiceProductItemPtr->m_currentPricePerUnit);
+            if (!ok) {
+                return false;
+            }
         }
         pInvoicePtr->m_total = totalInvoice;
         // invoice lastModified date: now
         pInvoicePtr->m_lastModified = QDateTime::currentDateTimeUtc();
 
-        // update invoice data
+        // close invoice reg in db
         bool ok = Singletons::m_pDAO->updateInvoice(pInvoicePtr);
         if (!ok) {
             return false;
@@ -209,7 +213,8 @@ namespace PenyaManager {
     bool Services::updateInvoiceInfo(Int32 invoiceId, Int32 productId, Uint32 count)
     {
         // update product invoice and invoice's last modification date
-        bool ok = Singletons::m_pDAO->updateProductInvoice(invoiceId, productId, count);
+        // invoice is open, price will be 0
+        bool ok = Singletons::m_pDAO->updateProductInvoice(invoiceId, productId, count, 0.0);
         if (!ok) {
             return false;
         }
@@ -236,6 +241,7 @@ namespace PenyaManager {
         return ok;
     }
     // Returns boolean with database operation error and numRowsAffected
+    // it is assumed invoice is open
     BoolResult Services::increaseProductInvoice(Int32 invoiceId, Int32 productId, Int32 count)
     {
         BoolResult boolResult({0, false});
@@ -245,7 +251,8 @@ namespace PenyaManager {
             return boolResult;
         } else if (numRowsAffected == 0) {
             // product item does not exit, create it on invoice
-            boolResult.error = !Singletons::m_pDAO->updateProductInvoice(invoiceId, productId, count);
+            // invoice is open, price will be 0
+            boolResult.error = !Singletons::m_pDAO->updateProductInvoice(invoiceId, productId, count, 0.0);
             if (boolResult.error) {
                 return boolResult;
             }

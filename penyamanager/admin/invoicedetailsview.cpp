@@ -104,9 +104,9 @@ namespace PenyaManager {
             this->ui->productTableWidget->setRowHeight(rowCount, Constants::kFamilyImageHeigth);
             this->ui->productTableWidget->setItem(rowCount, 0, productImage);
             this->ui->productTableWidget->setItem(rowCount, 1, new QTableWidgetItem(Singletons::m_pTranslationManager->getStringTranslation(pInvoiceProductItemPtr->m_productnameEus, pInvoiceProductItemPtr->m_productnameEs)));
-            this->ui->productTableWidget->setItem(rowCount, 2, new QTableWidgetItem(QString("%1 €").arg(pInvoiceProductItemPtr->m_priceperunit, 0, 'f', 2)));
+            this->ui->productTableWidget->setItem(rowCount, 2, new QTableWidgetItem(QString("%1 €").arg(pInvoiceProductItemPtr->m_pricePerUnit, 0, 'f', 2)));
             this->ui->productTableWidget->setItem(rowCount, 3, new QTableWidgetItem(QString("%1").arg(pInvoiceProductItemPtr->m_count)));
-            Float totalPrice = pInvoiceProductItemPtr->m_priceperunit * pInvoiceProductItemPtr->m_count;
+            Float totalPrice = pInvoiceProductItemPtr->m_pricePerUnit * pInvoiceProductItemPtr->m_count;
             this->ui->productTableWidget->setItem(rowCount, 4, new QTableWidgetItem(QString("%1 €").arg(totalPrice, 0, 'f', 2)));
             totalInvoice += totalPrice;
             rowCount++;

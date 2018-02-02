@@ -26,8 +26,10 @@ namespace PenyaManager
             QString             m_productnameEs;
             //
             QString             m_imagePath;
-            //
-            Float               m_priceperunit;
+            // price per unit on closing invoice
+            Float               m_pricePerUnit;
+            // current price per unit
+            Float               m_currentPricePerUnit;
             //
             Uint32              m_count;
     };
@@ -70,8 +72,6 @@ namespace PenyaManager
         public:
             //
             Uint32              m_totalProducts;
-            //
-            Float               m_totalAmount;
     };
 
     //
@@ -100,8 +100,6 @@ namespace PenyaManager
         public:
             //
             InvoiceProductItemCounterStats();
-            //
-            InvoiceProductItemCounterStats(Uint32 totalProducts);
             //
             virtual ~InvoiceProductItemCounterStats(){}
 

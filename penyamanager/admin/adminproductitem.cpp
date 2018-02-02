@@ -115,7 +115,8 @@ namespace PenyaManager {
             // regDate -> no change
             // family
             pProductResultPtr->m_item->m_familyId = this->ui->familyComboBox->currentData().toInt();
-            // price -> no change
+            // price (already validated)
+            pProductResultPtr->m_item->m_price = price;
             // providerId
             pProductResultPtr->m_item->m_providerId = this->ui->providerComboBox->currentData().toInt();
             // stock -> no change
@@ -219,9 +220,8 @@ namespace PenyaManager {
         this->ui->imageLabel->setScaledContents(true);
         // active
         this->ui->activeCheckBox->setChecked(pProductItemResultPtr->m_item->m_active);
-        // price, disable edit
+        // price
         this->ui->priceDoubleSpinBox->setValue(pProductItemResultPtr->m_item->m_price);
-        this->ui->priceDoubleSpinBox->setReadOnly(true);
         // provider
         this->ui->providerComboBox->clear();
         ProviderListResultPtr pProviderListResultPtr = Singletons::m_pDAO->getProviderList();
@@ -285,7 +285,6 @@ namespace PenyaManager {
         this->ui->activeCheckBox->setChecked(true);
         // price, disable edit
         this->ui->priceDoubleSpinBox->setValue(0.0);
-        this->ui->priceDoubleSpinBox->setReadOnly(false);
         // provider
         this->ui->providerComboBox->clear();
         ProviderListResultPtr pProviderListResultPtr = Singletons::m_pDAO->getProviderList();

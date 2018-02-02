@@ -124,7 +124,13 @@ namespace PenyaManager {
         Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kInvoice,
                 QString("invoiceId %1").arg(pInvoiceResultPtr->m_pInvoice->m_id));
 
-        printInvoice(pCurrMemberPtr, pInvoiceResultPtr->m_pInvoice);
+        ok = printInvoice(pCurrMemberPtr, pInvoiceResultPtr->m_pInvoice);
+        if (!ok) {
+            Singletons::m_pLogger->Error(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kInvoice,
+                    QString("error printing invoice. invoiceId %1").arg(pInvoiceResultPtr->m_pInvoice->m_id));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+            return;
+        }
         // call dashboard window
         m_switchCentralWidgetCallback(WindowKey::kMemberDashboardWindowKey);
     }
@@ -162,15 +168,17 @@ namespace PenyaManager {
 
         //fill data
         Uint32 rowCount = 0;
+        Float totalInvoice = 0.0;
         for (InvoiceProductItemList::iterator iter = pInvoiceProductItemListResultPtr->m_list->begin(); iter != pInvoiceProductItemListResultPtr->m_list->end(); ++iter)
         {
             InvoiceProductItemPtr pInvoiceProductItemPtr = *iter;
             this->ui->invoiceProductTableWidget->setItem(rowCount, 0, new QTableWidgetItem(Singletons::m_pTranslationManager->getStringTranslation(pInvoiceProductItemPtr->m_productnameEus, pInvoiceProductItemPtr->m_productnameEs)));
-            this->ui->invoiceProductTableWidget->setItem(rowCount, 1, new QTableWidgetItem(QString("%1 €").arg(pInvoiceProductItemPtr->m_priceperunit, 0, 'f', 2)));
+            this->ui->invoiceProductTableWidget->setItem(rowCount, 1, new QTableWidgetItem(QString("%1 €").arg(pInvoiceProductItemPtr->m_currentPricePerUnit, 0, 'f', 2)));
             this->ui->invoiceProductTableWidget->setItem(rowCount, 2, new QTableWidgetItem(QString("%1").arg(pInvoiceProductItemPtr->m_count)));
-            Float totalPrice = pInvoiceProductItemPtr->m_priceperunit * pInvoiceProductItemPtr->m_count;
+            Float totalPrice = pInvoiceProductItemPtr->m_currentPricePerUnit * pInvoiceProductItemPtr->m_count;
             this->ui->invoiceProductTableWidget->setItem(rowCount, 3, new QTableWidgetItem(QString("%1 €").arg(totalPrice, 0, 'f', 2)));
             this->ui->invoiceProductTableWidget->setRowHeight(rowCount, 35);
+            totalInvoice += totalPrice;
             rowCount++;
         }
 
@@ -181,7 +189,6 @@ namespace PenyaManager {
         QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pInvoicePtr->m_date, QLocale::NarrowFormat);
         this->ui->invoiceDateInfoLabel->setText(dateLocalized);
         // Total
-        Float totalInvoice = invoiceProductItemStatsResultPtr->m_stats->m_totalAmount;
         this->ui->invoiceTotalInfoLabel->setText(QString("%1 €").arg(totalInvoice, 0, 'f', 2));
         // new balance
         Float newBalance = pMemberPtr->m_balance;
@@ -189,14 +196,13 @@ namespace PenyaManager {
         this->ui->newBalanceInfoLabel->setText(QString("%1 €").arg(newBalance, 0, 'f', 2));
     }
     //
-    void InvoiceWindow::printInvoice(const MemberPtr &pMemberPtr, const InvoicePtr &pInvoicePtr)
+    bool InvoiceWindow::printInvoice(const MemberPtr &pMemberPtr, const InvoicePtr &pInvoicePtr)
     {
         // Loading Current Invoice
         // Loading Current Invoice products
         InvoiceProductItemListResultPtr pInvoiceProductItemListResultPtr = Singletons::m_pDAO->getAllInvoiceProductItems(pInvoicePtr->m_id);
         if (pInvoiceProductItemListResultPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
-            return;
+            return false;
         }
 
         QVariantHash invoiceData;
@@ -227,7 +233,8 @@ namespace PenyaManager {
             QVariantHash productData;
             productData["productName"] = Singletons::m_pTranslationManager->getStringTranslation(pInvoiceProductItemPtr->m_productnameEus, pInvoiceProductItemPtr->m_productnameEs);
             productData["productCount"] = pInvoiceProductItemPtr->m_count;
-            Float totalPrice = pInvoiceProductItemPtr->m_priceperunit * pInvoiceProductItemPtr->m_count;
+            // invoice has been closed
+            Float totalPrice = pInvoiceProductItemPtr->m_pricePerUnit * pInvoiceProductItemPtr->m_count;
             totalInvoice += totalPrice;
             productData["productTotal"] = QString("%1 €").arg(totalPrice, 0, 'f', 2);
             productList.push_back(productData);
@@ -237,6 +244,7 @@ namespace PenyaManager {
         invoiceData["invoiceTotal"] = QString("%1 €").arg(totalInvoice, 0, 'f', 2);
         // print invoice
         GuiUtils::printInvoice(invoiceData, pMemberPtr->m_id, pInvoicePtr->m_id);
+        return true;
     }
     //
     void InvoiceWindow::on_prevPagePushButton_clicked()
