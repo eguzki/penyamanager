@@ -228,8 +228,9 @@ namespace PenyaManager {
         // deposit info
         depositData["depositId"] = pDepositPtr->m_id;
         depositData["memberid"] = pMemberPtr->m_username;
-        depositData["memberName"] = QString("%1 %2 %3").arg(pMemberPtr->m_name).arg(pMemberPtr->m_surname1).arg(pMemberPtr->m_surname2); 
-        depositData["dateValue"] = Singletons::m_pTranslationManager->getLocale().toString(pDepositPtr->m_date, QLocale::LongFormat);
+        depositData["memberName"] = QString("%1 %2 %3").arg(pMemberPtr->m_name).arg(pMemberPtr->m_surname1).arg(pMemberPtr->m_surname2);
+        QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pDepositPtr->m_date.toLocalTime(), QLocale::NarrowFormat);
+        depositData["dateValue"] = dateLocalized;
         depositData["depositTotal"] = QString("%1 €").arg(QString::number(pDepositPtr->m_total, 'f', 2));
         QString depositHtml = Mustache::renderTemplate(depositTemplate, depositData);
         return depositHtml;

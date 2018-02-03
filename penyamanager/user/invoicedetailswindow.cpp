@@ -122,10 +122,10 @@ namespace PenyaManager {
         // Invoice Information
         //
         // Date
-        QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pInvoiceResultPtr->m_pInvoice->m_date, QLocale::NarrowFormat);
+        QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pInvoiceResultPtr->m_pInvoice->m_date.toLocalTime(), QLocale::NarrowFormat);
         this->ui->invoiceDateValueLabel->setText(dateLocalized);
         // LastModified
-        dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pInvoiceResultPtr->m_pInvoice->m_lastModified, QLocale::NarrowFormat);
+        dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pInvoiceResultPtr->m_pInvoice->m_lastModified.toLocalTime(), QLocale::NarrowFormat);
         this->ui->invoiceLastModifValueLabel->setText(dateLocalized);
         // fill items
         fillInvoiceData(pInvoiceProductItemListResultPtr);
@@ -205,7 +205,8 @@ namespace PenyaManager {
         invoiceData["invoiceId"] = invoiceId;
         invoiceData["memberid"] = pCurrMemberPtr->m_username;
         invoiceData["memberName"] = QString("%1 %2 %3").arg(pCurrMemberPtr->m_name).arg(pCurrMemberPtr->m_surname1).arg(pCurrMemberPtr->m_surname2);
-        invoiceData["dateValue"] = pInvoiceResultPtr->m_pInvoice->m_date;
+        QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pInvoiceResultPtr->m_pInvoice->m_date, QLocale::NarrowFormat);
+        invoiceData["dateValue"] = dateLocalized;
         invoiceData["invoiceTotal"] = QString("%1 €").arg(pInvoiceResultPtr->m_pInvoice->m_total, 0, 'f', 2);
 
         // invoice products info

@@ -118,7 +118,7 @@ namespace PenyaManager {
         // ID
         this->ui->invoiceIdValueLabel->setText(QString("%1").arg(pInvoicePtr->m_id));
         // Date
-        QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pInvoicePtr->m_date, QLocale::NarrowFormat);
+        QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pInvoicePtr->m_date.toLocalTime(), QLocale::NarrowFormat);
         this->ui->invoiceDateValueLabel->setText(dateLocalized);
         // LastModified
         dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pInvoicePtr->m_lastModified, QLocale::NarrowFormat);

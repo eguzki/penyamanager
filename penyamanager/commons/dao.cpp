@@ -175,6 +175,7 @@ namespace PenyaManager {
                 pfPtr->m_imagePath = queryResponse.query->value(3).toString();
                 pfPtr->m_active = queryResponse.query->value(4).toInt() == 1;
                 pfPtr->m_regDate = queryResponse.query->value(5).toDateTime();
+                pfPtr->m_regDate.setTimeSpec(Qt::UTC);
                 pfPtr->m_price = queryResponse.query->value(6).toFloat();
                 pfPtr->m_providerId = queryResponse.query->value(7).toInt();
                 // discard when onlyActive filter is on and product is not active
@@ -222,7 +223,9 @@ namespace PenyaManager {
             pMemberPtr->m_surname2 = queryResponse.query->value(column++).toString();
             pMemberPtr->m_imagePath = queryResponse.query->value(column++).toString();
             pMemberPtr->m_lastModified = queryResponse.query->value(column++).toDateTime();
+            pMemberPtr->m_lastModified.setTimeSpec(Qt::UTC);
             pMemberPtr->m_regDate = queryResponse.query->value(column++).toDateTime();
+            pMemberPtr->m_regDate.setTimeSpec(Qt::UTC);
             pMemberPtr->m_active = queryResponse.query->value(column++).toInt() == 1;
             pMemberPtr->m_isAdmin = queryResponse.query->value(column++).toInt() == 1;
             pMemberPtr->m_birthdate = queryResponse.query->value(column++).toDate();
@@ -238,6 +241,7 @@ namespace PenyaManager {
             pMemberPtr->m_notes = queryResponse.query->value(column++).toString();
             pMemberPtr->m_pwd = queryResponse.query->value(column++).toString();
             pMemberPtr->m_lastLogin = queryResponse.query->value(column++).toDateTime();
+            pMemberPtr->m_lastLogin.setTimeSpec(Qt::UTC);
             pMemberPtr->m_idCard = queryResponse.query->value(column++).toString();
             pMemberPtr->m_cardNumber = queryResponse.query->value(column++).toString();
             pMemberPtr->m_memberType = queryResponse.query->value(column++).toUInt();
@@ -280,7 +284,9 @@ namespace PenyaManager {
             pMemberPtr->m_surname2 = queryResponse.query->value(column++).toString();
             pMemberPtr->m_imagePath = queryResponse.query->value(column++).toString();
             pMemberPtr->m_lastModified = queryResponse.query->value(column++).toDateTime();
+            pMemberPtr->m_lastModified.setTimeSpec(Qt::UTC);
             pMemberPtr->m_regDate = queryResponse.query->value(column++).toDateTime();
+            pMemberPtr->m_regDate.setTimeSpec(Qt::UTC);
             pMemberPtr->m_active = queryResponse.query->value(column++).toInt() == 1;
             pMemberPtr->m_isAdmin = queryResponse.query->value(column++).toInt() == 1;
             pMemberPtr->m_birthdate = queryResponse.query->value(column++).toDate();
@@ -296,6 +302,7 @@ namespace PenyaManager {
             pMemberPtr->m_notes = queryResponse.query->value(column++).toString();
             pMemberPtr->m_pwd = queryResponse.query->value(column++).toString();
             pMemberPtr->m_lastLogin = queryResponse.query->value(column++).toDateTime();
+            pMemberPtr->m_lastLogin.setTimeSpec(Qt::UTC);
             pMemberPtr->m_idCard = queryResponse.query->value(column++).toString();
             pMemberPtr->m_cardNumber = queryResponse.query->value(column++).toString();
             pMemberPtr->m_memberType = queryResponse.query->value(column++).toUInt();
@@ -363,9 +370,11 @@ namespace PenyaManager {
             pInvoicePtr->m_id = invoiceId;
             pInvoicePtr->m_state = static_cast<InvoiceState>(queryResponse.query->value(0).toUInt());
             pInvoicePtr->m_date = queryResponse.query->value(1).toDateTime();
+            pInvoicePtr->m_date.setTimeSpec(Qt::UTC);
             pInvoicePtr->m_total = queryResponse.query->value(2).toFloat();
             pInvoicePtr->m_memberId = queryResponse.query->value(3).toInt();
             pInvoicePtr->m_lastModified = queryResponse.query->value(4).toDateTime();
+            pInvoicePtr->m_lastModified.setTimeSpec(Qt::UTC);
             pInvoiceResultPtr->m_pInvoice = pInvoicePtr;
         }
 
@@ -401,8 +410,10 @@ namespace PenyaManager {
             pInvoicePtr->m_id = queryResponse.query->value(0).toUInt();
             pInvoicePtr->m_state = static_cast<InvoiceState>(queryResponse.query->value(1).toUInt());
             pInvoicePtr->m_date = queryResponse.query->value(2).toDateTime();
+            pInvoicePtr->m_date.setTimeSpec(Qt::UTC);
             pInvoicePtr->m_total = queryResponse.query->value(3).toFloat();
             pInvoicePtr->m_lastModified = queryResponse.query->value(4).toDateTime();
+            pInvoicePtr->m_lastModified.setTimeSpec(Qt::UTC);
             pInvoiceResultPtr->m_pInvoice = pInvoicePtr;
         }
         return pInvoiceResultPtr;
@@ -721,6 +732,7 @@ namespace PenyaManager {
             pLastAccountInfoPtr->m_memberUsername = queryResponse.query->value(column++).toInt();
             pLastAccountInfoPtr->m_amount = queryResponse.query->value(column++).toFloat();
             pLastAccountInfoPtr->m_date = queryResponse.query->value(column++).toDateTime();
+            pLastAccountInfoPtr->m_date.setTimeSpec(Qt::UTC);
             pLastAccountInfoPtr->m_balance = queryResponse.query->value(column++).toFloat();
             pLastAccountInfoPtr->m_descr = queryResponse.query->value(column++).toString();
             pLastAccountInfoPtr->m_type = static_cast<TransactionType>(queryResponse.query->value(column++).toUInt());
@@ -843,6 +855,7 @@ namespace PenyaManager {
                 pTransactionPtr->m_memberUsername = queryResponse.query->value(value++).toInt();
                 pTransactionPtr->m_amount = queryResponse.query->value(value++).toFloat();
                 pTransactionPtr->m_date = queryResponse.query->value(value++).toDateTime();
+                pTransactionPtr->m_date.setTimeSpec(Qt::UTC);
                 pTransactionPtr->m_descr = queryResponse.query->value(value++).toString();
                 pTransactionPtr->m_balance = queryResponse.query->value(value++).toFloat();
                 pTransactionPtr->m_type = static_cast<TransactionType>(queryResponse.query->value(value++).toUInt());
@@ -1152,6 +1165,7 @@ namespace PenyaManager {
                 pTransactionPtr->m_memberUsername = queryResponse.query->value(value++).toInt();
                 pTransactionPtr->m_amount = queryResponse.query->value(value++).toFloat();
                 pTransactionPtr->m_date = queryResponse.query->value(value++).toDateTime();
+                pTransactionPtr->m_date.setTimeSpec(Qt::UTC);
                 pTransactionPtr->m_descr = queryResponse.query->value(value++).toString();
                 pTransactionPtr->m_balance = queryResponse.query->value(value++).toFloat();
                 pTransactionPtr->m_type = static_cast<TransactionType>(queryResponse.query->value(value++).toUInt());
@@ -1868,7 +1882,9 @@ namespace PenyaManager {
                 pMemberPtr->m_imagePath =  queryResponse.query->value(column++).toString();
                 pMemberPtr->m_balance =  queryResponse.query->value(column++).toFloat();
                 pMemberPtr->m_lastModified =  queryResponse.query->value(column++).toDateTime();
+                pMemberPtr->m_lastModified.setTimeSpec(Qt::UTC);
                 pMemberPtr->m_regDate =  queryResponse.query->value(column++).toDateTime();
+                pMemberPtr->m_regDate.setTimeSpec(Qt::UTC);
                 pMemberListResultPtr->m_list->push_back(pMemberPtr);
             }
         }
@@ -1920,8 +1936,10 @@ namespace PenyaManager {
                 pInvoicePtr->m_memberId =  memberId;
                 pInvoicePtr->m_state =  InvoiceState::Closed;
                 pInvoicePtr->m_date =  queryResponse.query->value(column++).toDateTime();
+                pInvoicePtr->m_date.setTimeSpec(Qt::UTC);
                 pInvoicePtr->m_total =  queryResponse.query->value(column++).toFloat();
                 pInvoicePtr->m_lastModified =  queryResponse.query->value(column++).toDateTime();
+                pInvoicePtr->m_lastModified.setTimeSpec(Qt::UTC);
                 pInvoiceListResultPtr->m_list->push_back(pInvoicePtr);
             }
         }
@@ -2011,8 +2029,10 @@ namespace PenyaManager {
                 pInvoicePtr->m_memberId = queryResponse.query->value(column++).toInt();
                 pInvoicePtr->m_state = InvoiceState::Closed;
                 pInvoicePtr->m_date = queryResponse.query->value(column++).toDateTime();
+                pInvoicePtr->m_date.setTimeSpec(Qt::UTC);
                 pInvoicePtr->m_total = queryResponse.query->value(column++).toFloat();
                 pInvoicePtr->m_lastModified = queryResponse.query->value(column++).toDateTime();
+                pInvoicePtr->m_lastModified.setTimeSpec(Qt::UTC);
                 pInvoiceListResultPtr->m_list->push_back(pInvoicePtr);
             }
         }
@@ -2201,6 +2221,7 @@ namespace PenyaManager {
                 pfPtr->m_imagePath = queryResponse.query->value(3).toString();
                 pfPtr->m_active = true;
                 pfPtr->m_regDate = queryResponse.query->value(4).toDateTime();
+                pfPtr->m_regDate.setTimeSpec(Qt::UTC);
                 pfPtr->m_familyId = queryResponse.query->value(5).toInt();
                 pfPtr->m_price = queryResponse.query->value(6).toFloat();
                 pIListResultPtr->m_list->push_back(pfPtr);
@@ -2296,6 +2317,7 @@ namespace PenyaManager {
                 pStockProductItemPtr->m_active = queryResponse.query->value(3).toInt() == 1;
                 pStockProductItemPtr->m_imagePath = queryResponse.query->value(4).toString();
                 pStockProductItemPtr->m_regDate = queryResponse.query->value(5).toDateTime();
+                pStockProductItemPtr->m_regDate.setTimeSpec(Qt::UTC);
                 pStockProductItemPtr->m_price = queryResponse.query->value(6).toFloat();
                 pStockProductItemPtr->m_familyNameEus = queryResponse.query->value(7).toString();
                 pStockProductItemPtr->m_familyNameEs = queryResponse.query->value(8).toString();
@@ -2343,6 +2365,7 @@ namespace PenyaManager {
                 pStockProductItemPtr->m_active = queryResponse.query->value(3).toInt() == 1;
                 pStockProductItemPtr->m_imagePath = queryResponse.query->value(4).toString();
                 pStockProductItemPtr->m_regDate = queryResponse.query->value(5).toDateTime();
+                pStockProductItemPtr->m_regDate.setTimeSpec(Qt::UTC);
                 pStockProductItemPtr->m_price = queryResponse.query->value(6).toFloat();
                 pStockProductItemPtr->m_familyNameEus = queryResponse.query->value(7).toString();
                 pStockProductItemPtr->m_familyNameEs = queryResponse.query->value(8).toString();
@@ -2434,6 +2457,7 @@ namespace PenyaManager {
             pProductItemPtr->m_active =  queryResponse.query->value(2).toInt() == 1;
             pProductItemPtr->m_imagePath = queryResponse.query->value(3).toString();
             pProductItemPtr->m_regDate = queryResponse.query->value(4).toDateTime();
+            pProductItemPtr->m_regDate.setTimeSpec(Qt::UTC);
             pProductItemPtr->m_price = queryResponse.query->value(5).toFloat();
             pProductItemPtr->m_familyId = queryResponse.query->value(6).toInt();
             pProductItemPtr->m_providerId = queryResponse.query->value(7).toInt();
@@ -2551,6 +2575,7 @@ namespace PenyaManager {
             pProductFamilyPtr->m_active =  queryResponse.query->value(2).toInt() == 1;
             pProductFamilyPtr->m_imagePath = queryResponse.query->value(3).toString();
             pProductFamilyPtr->m_regDate = queryResponse.query->value(4).toDateTime();
+            pProductFamilyPtr->m_regDate.setTimeSpec(Qt::UTC);
             pProductFamilyResultPtr->m_family = pProductFamilyPtr;
         }
         return pProductFamilyResultPtr;
@@ -3044,6 +3069,7 @@ namespace PenyaManager {
                 pDepositPtr->m_memberUsername = queryResponse.query->value(column++).toInt();
                 pDepositPtr->m_id = queryResponse.query->value(column++).toInt();
                 pDepositPtr->m_date = queryResponse.query->value(column++).toDateTime();
+                pDepositPtr->m_date.setTimeSpec(Qt::UTC);
                 pDepositPtr->m_total = queryResponse.query->value(column++).toFloat();
                 pDepositPtr->m_memberId = queryResponse.query->value(column++).toInt();
                 pDepositListResultPtr->m_list->push_back(pDepositPtr);
@@ -3133,7 +3159,9 @@ namespace PenyaManager {
                 pMemberPtr->m_surname2 = queryResponse.query->value(column++).toString();
                 pMemberPtr->m_imagePath = queryResponse.query->value(column++).toString();
                 pMemberPtr->m_lastModified = queryResponse.query->value(column++).toDateTime();
+                pMemberPtr->m_lastModified.setTimeSpec(Qt::UTC);
                 pMemberPtr->m_regDate = queryResponse.query->value(column++).toDateTime();
+                pMemberPtr->m_regDate.setTimeSpec(Qt::UTC);
                 pMemberPtr->m_active = queryResponse.query->value(column++).toInt() == 1;
                 pMemberPtr->m_isAdmin = queryResponse.query->value(column++).toInt() == 1;
                 pMemberPtr->m_birthdate = queryResponse.query->value(column++).toDate();
@@ -3480,9 +3508,11 @@ namespace PenyaManager {
             pInvoicePtr->m_id = queryResponse.query->value(0).toInt();;
             pInvoicePtr->m_state = static_cast<InvoiceState>(queryResponse.query->value(1).toUInt());
             pInvoicePtr->m_date = queryResponse.query->value(2).toDateTime();
+            pInvoicePtr->m_date.setTimeSpec(Qt::UTC);
             pInvoicePtr->m_total = queryResponse.query->value(3).toFloat();
             pInvoicePtr->m_memberId = queryResponse.query->value(4).toInt();
             pInvoicePtr->m_lastModified = queryResponse.query->value(5).toDateTime();
+            pInvoicePtr->m_lastModified.setTimeSpec(Qt::UTC);
             pInvoiceResultPtr->m_pInvoice = pInvoicePtr;
         }
 
@@ -3566,9 +3596,11 @@ namespace PenyaManager {
                 pInvoicePtr->m_id = queryResponse.query->value(0).toInt();
                 pInvoicePtr->m_state = static_cast<InvoiceState>(queryResponse.query->value(1).toUInt());
                 pInvoicePtr->m_date = queryResponse.query->value(2).toDateTime();
+                pInvoicePtr->m_date.setTimeSpec(Qt::UTC);
                 pInvoicePtr->m_total = queryResponse.query->value(3).toFloat();
                 pInvoicePtr->m_memberId = queryResponse.query->value(4).toInt();
                 pInvoicePtr->m_lastModified = queryResponse.query->value(5).toDateTime();
+                pInvoicePtr->m_lastModified.setTimeSpec(Qt::UTC);
                 pInvoiceListResultPtr->m_list->push_back(pInvoicePtr);
             }
         }
