@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AdminMainWindow</class>
+ <widget class="QMainWindow" name="AdminMainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1024</width>
+    <height>768</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1024</width>
+    <height>768</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1024</width>
+    <height>768</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Penyamanager Application Manager</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QLabel#titleLabel{
+font: 20pt &quot;Calibri&quot;;
+}</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QStackedWidget" name="stackedWidget"/>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1024</width>
+     <height>19</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuMembers">
+    <property name="title">
+     <string>Members</string>
+    </property>
+    <addaction name="actionMember_management"/>
+    <addaction name="separator"/>
+    <addaction name="actionSlow_payers"/>
+   </widget>
+   <widget class="QMenu" name="menuInvoices">
+    <property name="title">
+     <string>Invoices</string>
+    </property>
+    <addaction name="actionInvoice_list"/>
+   </widget>
+   <widget class="QMenu" name="menuStock">
+    <property name="title">
+     <string>Items</string>
+    </property>
+    <addaction name="actionProduct_consumption"/>
+    <addaction name="actionManage_family_items"/>
+    <addaction name="actionManage_Stock"/>
+   </widget>
+   <widget class="QMenu" name="menuAccount">
+    <property name="title">
+     <string>Account</string>
+    </property>
+    <addaction name="actionDeposit_Check"/>
+    <addaction name="actionAccount_Balance"/>
+   </widget>
+   <widget class="QMenu" name="menuMain">
+    <property name="title">
+     <string>Main</string>
+    </property>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menuProviders">
+    <property name="title">
+     <string>Providers</string>
+    </property>
+    <addaction name="actionManage_providers"/>
+    <addaction name="actionProvider_invoice"/>
+    <addaction name="actionProvider_invoice_list"/>
+   </widget>
+   <widget class="QMenu" name="menuReservations">
+    <property name="title">
+     <string>Reservations</string>
+    </property>
+    <addaction name="actionManager_reservations"/>
+   </widget>
+   <addaction name="menuMain"/>
+   <addaction name="menuMembers"/>
+   <addaction name="menuInvoices"/>
+   <addaction name="menuStock"/>
+   <addaction name="menuAccount"/>
+   <addaction name="menuProviders"/>
+   <addaction name="menuReservations"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionMember_management">
+   <property name="text">
+    <string>Member management</string>
+   </property>
+  </action>
+  <action name="actionNew_member">
+   <property name="text">
+    <string>New member</string>
+   </property>
+  </action>
+  <action name="actionInvoice_list">
+   <property name="text">
+    <string>Invoice list</string>
+   </property>
+  </action>
+  <action name="actionSlowPayersExport">
+   <property name="text">
+    <string>Export</string>
+   </property>
+  </action>
+  <action name="actionSlowPayersPrint">
+   <property name="text">
+    <string>Print</string>
+   </property>
+  </action>
+  <action name="actionSlowPayersResetAccount">
+   <property name="text">
+    <string>Reset Account</string>
+   </property>
+  </action>
+  <action name="actionProvider_invoice">
+   <property name="text">
+    <string>New provider invoice</string>
+   </property>
+  </action>
+  <action name="actionProduct_consumption">
+   <property name="text">
+    <string>Product Consumption</string>
+   </property>
+  </action>
+  <action name="actionManage_family_items">
+   <property name="text">
+    <string>Manage Families/Goods</string>
+   </property>
+  </action>
+  <action name="actionManage_providers">
+   <property name="text">
+    <string>Manage Providers</string>
+   </property>
+  </action>
+  <action name="actionManage_Stock">
+   <property name="text">
+    <string>Stock List</string>
+   </property>
+  </action>
+  <action name="actionDeposit_Check">
+   <property name="text">
+    <string>Deposit Check</string>
+   </property>
+  </action>
+  <action name="actionAccount_Balance">
+   <property name="text">
+    <string>Account Balance</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionSlow_payers">
+   <property name="text">
+    <string>Slow payers</string>
+   </property>
+  </action>
+  <action name="actionProvider_invoice_list">
+   <property name="text">
+    <string>Provider Invoice List</string>
+   </property>
+  </action>
+  <action name="actionManager_reservations">
+   <property name="text">
+    <string>Manage reservations</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

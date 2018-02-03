@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# error when empty vars
+set -eu
+# on piped commands, return error if one of them returns error
+set -o pipefail
+
+LOGGER=/usr/syno/bin/synologset1
+ROOTDIR=/volume1/backup/sqlbackup
+DAILYDIR=$ROOTDIR/backup.daily
+DB_USER=backup
+DB_PASSWORD=123456
+DB_DATABASE=alegria
+EXTRA_MYSQLDUMP_OPTIONS='--opt'
+TMP_DIR=/tmp
+
+backup_filename="`date +"%d-%m-%Y"`.sql.gz"
+
+#Remove previous tmp dir
+rm -rf $TMP_DIR/backup.incoming
+mkdir -p $TMP_DIR/backup.incoming
+
+# create backup dir if it does not exist
+mkdir -p ${DAILYDIR}
+
+# keep for last 30 days
+find ${DAILYDIR} -maxdepth 1 -mtime +30 -type f -exec rm -rv {} \;
+
+# Dump MySQL tables
+/usr/local/mariadb10/bin/mysqldump -u $DB_USER -p$DB_PASSWORD $DB_DATABASE $EXTRA_MYSQLDUMP_OPTIONS | gzip > $TMP_DIR/backup.incoming/mysql_dump.sql.gz
+
+mv $TMP_DIR/backup.incoming/mysql_dump.sql.gz ${DAILYDIR}/$backup_filename
+
+$LOGGER sys info 0x11100000 "[BACKUP] created $backup_filename"

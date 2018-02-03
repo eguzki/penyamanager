@@ -7,13 +7,12 @@
 QT       += core gui
 QT       += printsupport
 QT       += sql
-
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+QT       += widgets
+QT       += network
 
 QTPLUGIN += qsqlmysql
 
-#QMAKE_CXXFLAGS += -std=gnu++0x
-QMAKE_CXXFLAGS += -std=c++11
+CONFIG += c++11
 
 TARGET = penyamanageradmin
 TEMPLATE = app
@@ -27,13 +26,22 @@ RESOURCES = penyamanager.qrc
 RC_ICONS = images/alegrialogo.ico
 
 SOURCES += adminmain.cpp\
-        singletons.cpp\
-        dao.cpp\
-        utils.cpp\
-        constants.cpp\
-        services.cpp\
-        IPartner.cpp\
-        partnerfinder.cpp\
+        commons/singletons.cpp\
+        commons/dao.cpp\
+        commons/utils.cpp\
+        commons/constants.cpp\
+        commons/services.cpp\
+        commons/IPartner.cpp\
+        commons/partnerfinder.cpp\
+        commons/numitemdialog.cpp \
+        commons/guiutils.cpp \
+        commons/translationmanager.cpp \
+        commons/familyitemwidget.cpp \
+        commons/productitemwidget.cpp \
+        commons/logging.cpp \
+        commons/passchangedialog.cpp \
+        commons/inactivityeventfilter.cpp \
+        commons/dialogmanager.cpp \
         objs/Transaction.cpp\
         objs/Invoice.cpp\
         objs/Deposit.cpp\
@@ -45,35 +53,45 @@ SOURCES += adminmain.cpp\
         objs/ReservationItem.cpp\
         objs/Provider.cpp\
         objs/ProviderInvoice.cpp\
-        adminloginwindow.cpp\
-        adminmainwindow.cpp \
-        slowpayersview.cpp \
-        admininvoicelistview.cpp \
-        invoicedetailswidget.cpp \
-        providermanagerview.cpp \
-        adminnewprovider.cpp \
-    stockmanagementwindow.cpp \
-    familyitemmanagementwindow.cpp \
-    adminproductitem.cpp \
-    adminfamilyview.cpp \
-    productexpensesview.cpp \
-    providerinvoiceview.cpp \
-    providerinvoicelistview.cpp \
-    depositlistview.cpp \
-    accountbalanceview.cpp \
-    memberlistview.cpp \
-    memberview.cpp \
-    passchangedialog.cpp \
-    guiutils.cpp \
-    translationmanager.cpp
+        objs/ProviderInvoiceProductItem.cpp\
+        admin/adminloginwindow.cpp\
+        admin/adminmainwindow.cpp \
+        admin/slowpayersview.cpp \
+        admin/admininvoicelistview.cpp \
+        admin/providermanagerview.cpp \
+        admin/adminnewprovider.cpp \
+        admin/stockmanagementwindow.cpp \
+        admin/familyitemmanagementwindow.cpp \
+        admin/adminproductitem.cpp \
+        admin/adminfamilyview.cpp \
+        admin/productexpensesview.cpp \
+        admin/newproviderinvoiceview.cpp \
+        admin/providerinvoicelistview.cpp \
+        admin/depositlistview.cpp \
+        admin/accountbalanceview.cpp \
+        admin/memberlistview.cpp \
+        admin/memberview.cpp \
+        admin/adminreservationswindow.cpp \
+        admin/providerinvoiceview.cpp \
+        admin/invoicedetailsview.cpp
 
-HEADERS  += singletons.h\
-        dao.h\
-        utils.h\
-        constants.h\
-        services.h\
-        IPartner.h\
-        partnerfinder.h\
+HEADERS += commons/singletons.h\
+        commons/dao.h\
+        commons/utils.h\
+        commons/constants.h\
+        commons/services.h\
+        commons/IPartner.h\
+        commons/partnerfinder.h\
+        commons/numitemdialog.h \
+        commons/DataTypes.h \
+        commons/guiutils.h \
+        commons/translationmanager.h \
+        commons/familyitemwidget.h\
+        commons/productitemwidget.h\
+        commons/logging.h \
+        commons/passchangedialog.h \
+        commons/inactivityeventfilter.h \
+        commons/dialogmanager.h \
         objs/Transaction.h\
         objs/Invoice.h\
         objs/Deposit.h\
@@ -85,48 +103,53 @@ HEADERS  += singletons.h\
         objs/ReservationItem.h\
         objs/Provider.h\
         objs/ProviderInvoice.h\
-        adminloginwindow.h\
-        adminmainwindow.h \
-        slowpayersview.h \
-        admininvoicelistview.h \
-        invoicedetailswidget.h \
-        providermanagerview.h \
-        adminnewprovider.h \
-    stockmanagementwindow.h \
-    familyitemmanagementwindow.h \
-    adminproductitem.h \
-    adminfamilyview.h \
-    productexpensesview.h \
-    providerinvoiceview.h \
-    providerinvoicelistview.h \
-    depositlistview.h \
-    accountbalanceview.h \
-    memberlistview.h \
-    memberview.h \
-    passchangedialog.h \
-    guiutils.h \
-    translationmanager.h
+        objs/ProviderInvoiceProductItem.h\
+        admin/adminloginwindow.h\
+        admin/adminmainwindow.h \
+        admin/slowpayersview.h \
+        admin/admininvoicelistview.h \
+        admin/providermanagerview.h \
+        admin/adminnewprovider.h \
+        admin/stockmanagementwindow.h \
+        admin/familyitemmanagementwindow.h \
+        admin/adminproductitem.h \
+        admin/adminfamilyview.h \
+        admin/productexpensesview.h \
+        admin/newproviderinvoiceview.h \
+        admin/providerinvoicelistview.h \
+        admin/depositlistview.h \
+        admin/accountbalanceview.h \
+        admin/memberlistview.h \
+        admin/memberview.h \
+        admin/adminreservationswindow.h \
+        admin/providerinvoiceview.h \
+        admin/invoicedetailsview.h
 
-FORMS    += adminloginwindow.ui\
-        adminmainwindow.ui \
-        slowpayersview.ui \
-        admininvoicelistview.ui \
-        invoicedetailswidget.ui \
-        providermanagerview.ui \
-    adminnewprovider.ui \
-    stockmanagementwindow.ui \
-    familyitemmanagementwindow.ui \
-    adminproductitem.ui \
-    adminfamilyview.ui \
-    productexpensesview.ui \
-    providerinvoiceview.ui \
-    providerinvoicelistview.ui \
-    depositlistview.ui \
-    accountbalanceview.ui \
-    memberlistview.ui \
-    memberview.ui \
-    passchangedialog.ui
+FORMS   += commons/passchangedialog.ui \
+        commons/familyitemwidget.ui \
+        commons/productitemwidget.ui \
+        commons/numitemdialog.ui \
+        admin/adminloginwindow.ui\
+        admin/adminmainwindow.ui \
+        admin/slowpayersview.ui \
+        admin/admininvoicelistview.ui \
+        admin/providermanagerview.ui \
+        admin/adminnewprovider.ui \
+        admin/stockmanagementwindow.ui \
+        admin/familyitemmanagementwindow.ui \
+        admin/adminproductitem.ui \
+        admin/adminfamilyview.ui \
+        admin/productexpensesview.ui \
+        admin/providerinvoicelistview.ui \
+        admin/depositlistview.ui \
+        admin/newproviderinvoiceview.ui \
+        admin/accountbalanceview.ui \
+        admin/memberlistview.ui \
+        admin/memberview.ui \
+        admin/adminreservationswindow.ui \
+        admin/providerinvoiceview.ui \
+        admin/invoicedetailsview.ui
 
 TRANSLATIONS += \
-    translations/penyamanageradmin_es.ts \
-    translations/penyamanageradmin_eu.ts
+        translations/penyamanageradmin_es.ts \
+        translations/penyamanageradmin_eu.ts

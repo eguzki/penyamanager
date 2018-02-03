@@ -4,59 +4,74 @@
 <style>
 #header {
     padding:1px;
-    font-size: 3pt;
+    font-family: "Calibri";
+    font-size: 4pt;
 }
 .invoice {
-    font-size: 4px;
+    font-family: "Calibri";
+    font-size: 4pt;
 }
 .headers {
-    font-size: 3px;
+    font-family: "Calibri";
+    font-size: 4pt;
+}
+.invoicedata{
+    font-family: "Calibri";
+    font-size: 4pt;
+}
+.date{
+    font-family: "Calibri";
+    font-size: 3pt;
+}
+.total {
+    font-family: "Calibri";
+    font-size: 5pt;
 }
 </style>
 </head>
 <body>
 <div width="90%" id="header" align="center">
-    <img src=":images/alegrialogo.jpg" width="35" height="35">
-    <p>SDRC Alegrí­a de Iruñea KKAE</p>
-    <table class="invoice" width="90%" cellpadding="0" cellspacing="1" border="0">
+    <img src=":images/alegrialogo.png" width="40" height="40">
+    <p><b>SDRC Alegrí­a de Iruña KKAE</b></p>
+    <table class="invoice" width="110%" cellpadding="0" cellspacing="1" border="0">
         <tr>
-            <td class="headers" align="center" >
+            <td class="date" align="center" >
                 {{invoiceLabel}}
             </td>
-            <td align="center" >
+            <td class="date" align="center" >
                 {{invoiceId}}
             </td>
         </tr>
         <tr>
-            <td class="headers" align="center" >
+            <td class="date" class="headers" align="center" >
                 {{memberidLabel}}
             </td>
-            <td align="center">
+            <td class="date" align="center">
                 {{memberid}}
             </td>
         </tr>
         <tr>
             <td align="center" colspan="2">
-                {{memberName}}
+                <b>{{memberName}}</b>
             </td>
         </tr>
         <tr>
-            <td align="center" colspan="2">
+            <td class="date" align="center" colspan="2">
                 {{dateValue}}
             </td>
         </tr>
         <tr>
             <td align="center" colspan="2">
-                <table class="products" width="90%" cellpadding="0" cellspacing="0" border="0">
+                <table class="products" width="110%" cellpadding="0" cellspacing="0" border="0">
                     <tr>
                         <td align="center">
-                            {{productLabel}}
+                            <b>{{productLabel}}</b>
                         </td>
                         <td align="center">
-                            {{countLabel}}
+                            <b>{{countLabel}}</b>
                         </td>
                         <td align="center">
-                            {{productTotalLabel}}
+                            <b>{{productTotalLabel}}</b>
                         </td>
                     </tr>
                     {{#products}}
@@ -77,11 +92,11 @@
         </tr>
         <tr>
             <td class="headers" align="center" colspan="2">
-                {{invoiceTotalLabel}}
+                <b>{{invoiceTotalLabel}}</b>
             </td>
         </tr>
         <tr>
-            <td align="center" colspan="2">
+            <td class="total" align="center" colspan="2">
                 <b>{{invoiceTotal}}</b>
             </td>
         </tr>

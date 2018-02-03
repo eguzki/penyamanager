@@ -1,9 +1,10 @@
 #ifndef PROVIDER_H
 #define PROVIDER_H
 
+#include <QSharedPointer>
 #include <QString>
 #include <QDateTime>
-#include <DataTypes.h>
+#include <commons/DataTypes.h>
 
 namespace PenyaManager
 {
@@ -14,7 +15,7 @@ namespace PenyaManager
             //
             Provider();
             //
-            Provider(Int32 id, const QString &name, const QString &image, const QDateTime &regDate, const QString &phone);
+            Provider(Int32 id, const QString &name, const QString &image, const QDate &regDate, const QString &phone);
             //
             virtual ~Provider(){}
 
@@ -26,17 +27,53 @@ namespace PenyaManager
             //
             QString             m_image;
             //
-            QDateTime           m_regDate;
+            QDate               m_regDate;
             //
             QString             m_phone;
+            //
+            QString             m_notes;
     };
 
     //
-    typedef std::shared_ptr<Provider> ProviderPtr;
+    typedef QSharedPointer<Provider> ProviderPtr;
+    //
+    class ProviderResult
+    {
+        public:
+            //
+            ProviderResult();
+            //
+            virtual ~ProviderResult(){}
+
+        public:
+            //
+            Int32                   m_error;
+            //
+            ProviderPtr             m_provider;
+    };
+    //
+    typedef QSharedPointer<ProviderResult> ProviderResultPtr;
     //
     typedef std::vector<ProviderPtr> ProviderList;
     //
-    typedef std::shared_ptr<ProviderList> ProviderListPtr;
+    typedef QSharedPointer<ProviderList> ProviderListPtr;
+    //
+    class ProviderListResult
+    {
+        public:
+            //
+            ProviderListResult();
+            //
+            virtual ~ProviderListResult(){}
+
+        public:
+            //
+            Int32                   m_error;
+            //
+            ProviderListPtr         m_list;
+    };
+    //
+    typedef QSharedPointer<ProviderListResult> ProviderListResultPtr;
 }
 
 #endif // PROVIDER_H

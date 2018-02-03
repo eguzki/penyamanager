@@ -8,16 +8,6 @@ namespace PenyaManager
     ProviderInvoice::ProviderInvoice()
     {
     }
-
-    //
-    ProviderInvoice::ProviderInvoice(QString id, Float total, const QDate &regDate, Int32 providerid)
-        :
-            m_id(id),
-            m_total(total),
-            m_regDate(regDate),
-            m_providerid(providerid)
-    {
-    }
     //
     ProviderInvoiceListStats::ProviderInvoiceListStats()
     {
@@ -29,4 +19,19 @@ namespace PenyaManager
             m_totalAmount(totalAmount)
     {
     }
+    //
+    ProviderInvoiceListResult::ProviderInvoiceListResult()
+        :
+            m_error(0)
+    {}
+    //
+    ProviderInvoiceListStatsResult::ProviderInvoiceListStatsResult()
+        :
+            m_error(0)
+    {}
+    //
+    ProviderInvoiceResult::ProviderInvoiceResult()
+        :
+            m_error(0)
+    {}
 }

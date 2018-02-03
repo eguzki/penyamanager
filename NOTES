@@ -16,4 +16,11 @@ QT_DEBUG_PLUGINS=1 ./dist/penyamanager 2>&1 | grep -i mysql
 $ wget http://files.directadmin.com/services/debian_5.0_64/libmysqlclient.so.16
 $ sudo cp libmysqlclient.so.16 /usr/lib/x86_64-linux-gnu/
 $ sudo ln -s /usr/lib/x86_64-linux-gnu/libmysqlclient.so.16 /usr/lib/x86_64-linux-gnu/libmysqlclient_r.so.16
+$ cd /lib/x86_64-linux-gnu
+$ sudo ln -s libssl.so.1.0.0 libssl.so.10
+$ sudo ln -s libcrypto.so.1.0.0 libcrypto.so.10
 ```
+
+* Inactivity timeout
+  * In login pages is disabled, blocking dialogs can be used
+  * When logged in, non-blocking dialogs must be used, otherwise on inactivity timeouts, unexpected dialogs can be shown on login page, or even be switched to some view without being logged in

@@ -1,0 +1,13 @@
+INSERT INTO `member` (idmember, username, name, surname1, surname2, image, lastmodified, reg_date, active, isAdmin, bank_account, postal_send, pwd, lastlogin, type) VALUES (1,1,'Eguzki','Astiz Etxea','Lezaun','mypicture.png','2014-12-01 00:00:00','2014-12-01 00:00:00',1, 1, "123456789",1, "9af15b336e6a9619928537df30b2e6a2376569fcf9d7e773eccede65606529a0", '2014-12-01 00:00:00',0),(2,2,'Urko','Usunariz','Fernandez','mypicture2.png','2014-12-01 00:00:00','2014-12-01 00:00:00',1, 1, "123456789",1, "9af15b336e6a9619928537df30b2e6a2376569fcf9d7e773eccede65606529a0", '2014-12-01 00:00:00',0);
+INSERT INTO `provider` VALUES (1,'provider1','image1','2014-12-01 00:00:00',"12345678","some notes"),(2,'provider2','image1','2014-12-01 00:00:00',"12345678","some notes");
+INSERT INTO `account` VALUES (1,1,76.54,'2014-12-01 00:00:00',76.54,'',0),(2,2,76.54,'2014-12-01 00:00:00',76.54,'',0);
+INSERT INTO `product_family` VALUES (1,'freskagarriak','refrescos','refresh.jpg',1,'2014-12-14 13:31:19'),(2,'likoreak','licores','liquors.jpg',1,'2014-12-14 13:34:23'),(3,'garagardoak','cervezas','beers.jpg',1,'2014-12-14 13:34:23'),(4,'ardoak','vinos','wines.jpg',1,'2014-12-14 13:34:23'),(5,'patxaranak','patxaranes','patxaranak.jpg',2,'2014-12-14 13:34:23');
+INSERT INTO `product_item` VALUES (1,'ura','agua','water.jpg',1,'2014-12-14 13:38:57',1,1.00,1,100),(2,'koka-kola','coca-cola','coke.jpg',1,'2014-12-14 13:38:57',1,2.00,1,100),(3,'likor43','licor43','licor43.jpg',1,'2014-12-14 13:38:57',2,3.00,2,100),(4,'orujo','orujo','orujo.jpg',1,'2014-12-14 13:38:57',2,2.50,1,100),(5,'franziskaner','franziskaner','franziskaner.jpg',1,'2014-12-14 13:38:57',3,3.50,1,100),(6,'naparbier','naparbier','naparbier.jpg',1,'2014-12-14 13:38:57',3,1.00,2,100);
+INSERT INTO `lunchtables` (idtable, name, guestnum) VALUES ('1', '1', '8');
+INSERT INTO `lunchtables` (idtable, name, guestnum) VALUES ('2', '2', '8');
+INSERT INTO `ovens` (idoven, name) VALUES ('1', '1');
+INSERT INTO `ovens` (idoven, name) VALUES ('2', '2');
+INSERT INTO `fireplaces` (idfireplace, name) VALUES ('1', '1');
+INSERT INTO `fireplaces` (idfireplace, name) VALUES ('2', '2');
+INSERT INTO `provider_invoices` (idprovider_invoices, date, total, idprovider) VALUES ('100001', '2014-12-23', 700.45, 1),('100002', '2015-12-23', 1389.45, 1),('200001', '2015-12-23', 489.45, 2);
+INSERT INTO `provider_invoices_product` (provider_invoices_idprovider_invoices, product_item_idproduct_item, count ) VALUES ('100001',1,100),('100001',2,200),('100002',1,200),('100002',2,76),('200001',5,100);

@@ -9,26 +9,29 @@ namespace PenyaManager
     InvoiceProductItem::InvoiceProductItem()
     {
     }
-
-    //
-    InvoiceProductItem::InvoiceProductItem(Int32 productId, QString productName, QString imagePath, Float priceperunit, Uint32 count)
-        :
-            m_productId(productId),
-            m_productname(productName),
-            m_imagePath(imagePath),
-            m_priceperunit(priceperunit),
-            m_count(count)
-    {
-    }
     //
     InvoiceProductItemStats::InvoiceProductItemStats()
-    {
-    }
-
-    //
-    InvoiceProductItemStats::InvoiceProductItemStats(Uint32 totalProducts)
         :
-            m_totalProducts(totalProducts)
-    {
-    }
+            m_totalProducts(0)
+    {}
+    //
+    InvoiceProductItemListResult::InvoiceProductItemListResult()
+        :
+            m_error(0)
+    {}
+    //
+    InvoiceProductItemStatsResult::InvoiceProductItemStatsResult()
+        :
+            m_error(0)
+    {}
+    //
+    InvoiceProductItemCounterStats::InvoiceProductItemCounterStats()
+        :
+            m_totalProducts(0)
+    {}
+    //
+    InvoiceProductItemCounterStatsResult::InvoiceProductItemCounterStatsResult()
+        :
+            m_error(0)
+    {}
 }

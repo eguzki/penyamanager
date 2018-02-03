@@ -1,9 +1,10 @@
 #ifndef INVOICE_H
 #define INVOICE_H
 
+#include <QSharedPointer>
 #include <QString>
 #include <QDateTime>
-#include <DataTypes.h>
+#include <commons/DataTypes.h>
 
 namespace PenyaManager
 {
@@ -20,8 +21,6 @@ namespace PenyaManager
             //
             Invoice();
             //
-            Invoice(Int32 id, Int32 memberId, InvoiceState state, const QDateTime &date, Float total);
-            //
             virtual ~Invoice(){}
 
         public:
@@ -30,20 +29,58 @@ namespace PenyaManager
             //
             Int32               m_memberId;
             //
+            Int32               m_memberUsername;
+            //
             InvoiceState        m_state;
             //
             QDateTime           m_date;
             //
             Float               m_total;
+            //
+            QDateTime           m_lastModified;
     };
 
     //
-    typedef std::shared_ptr<Invoice> InvoicePtr;
+    typedef QSharedPointer<Invoice> InvoicePtr;
+
+    //
+    class InvoiceResult
+    {
+        public:
+            //
+            InvoiceResult();
+            //
+            virtual ~InvoiceResult(){}
+
+        public:
+            //
+            Int32                   m_error;
+            //
+            InvoicePtr              m_pInvoice;
+    };
+    //
+    typedef QSharedPointer<InvoiceResult> InvoiceResultPtr;
     //
     typedef std::vector<InvoicePtr> InvoiceList;
     //
-    typedef std::shared_ptr<InvoiceList> InvoiceListPtr;
+    typedef QSharedPointer<InvoiceList> InvoiceListPtr;
+    //
+    class InvoiceListResult
+    {
+        public:
+            //
+            InvoiceListResult();
+            //
+            virtual ~InvoiceListResult(){}
 
+        public:
+            //
+            Int32                   m_error;
+            //
+            InvoiceListPtr          m_list;
+    };
+    //
+    typedef QSharedPointer<InvoiceListResult> InvoiceListResultPtr;
     //
     class InvoiceListStats
     {
@@ -61,9 +98,25 @@ namespace PenyaManager
             //
             Float               m_totalAmount;
     };
-
     //
-    typedef std::shared_ptr<InvoiceListStats> InvoiceListStatsPtr;
+    typedef QSharedPointer<InvoiceListStats> InvoiceListStatsPtr;
+    //
+    class InvoiceListStatsResult
+    {
+        public:
+            //
+            InvoiceListStatsResult();
+            //
+            virtual ~InvoiceListStatsResult(){}
+
+        public:
+            //
+            Int32                   m_error;
+            //
+            InvoiceListStatsPtr     m_stats;
+    };
+    //
+    typedef QSharedPointer<InvoiceListStatsResult> InvoiceListStatsResultPtr;
 }
 
 #endif // INVOICE_H

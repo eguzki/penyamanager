@@ -2,23 +2,13 @@
 
 #include <QApplication>
 #include <QTranslator>
-#include <QMessageBox>
-#include <QLocale>
 
-#include <QsLogDest.h>
-#include <QsLog.h>
-
-#include "constants.h"
-#include "mainwindow.h"
-#include "loginwindow.h"
-#include "invoicewindow.h"
-#include "depositwindow.h"
-#include "accountview.h"
-#include "tablereservationview.h"
-#include "invoicelistwindow.h"
-#include "invoicedetailswindow.h"
-#include "IPartner.h"
-#include "singletons.h"
+#include <commons/constants.h>
+#include <commons/logging.h>
+#include <commons/singletons.h>
+#include <commons/guiutils.h>
+#include <commons/inactivityeventfilter.h>
+#include <user/mainwindow.h>
 
 int main(int argc, char *argv[])
 {
@@ -28,59 +18,49 @@ int main(int argc, char *argv[])
 
     // Settings
     QSettings settings(PenyaManager::Constants::kOrganizationName, PenyaManager::Constants::kApplicationName);
+
+    PenyaManager::PenyaManagerLoggerPtr pLogger = PenyaManager::NewLoggerInstance(&settings,"penyamanager");
+
     if (!settings.contains(PenyaManager::Constants::kResourcePathKey))
     {
-        QMessageBox::critical(NULL, "Error", "Settings file not found. Call the stupid administrator and complain for incompetence");
+        pLogger->Error(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kMain, "Settings file not found. Call the stupid administrator and complain for incompetence");
+        QMessageBox qMsgBox(QMessageBox::Critical, QString(), QObject::tr("Settings file not found. Call the stupid administrator and complain for incompetence"), QMessageBox::Ok, NULL, Qt::FramelessWindowHint);
+        qMsgBox.exec();
         return 1;
     }
 
-    // LOGGING
-    // init the logging mechanism
-    QsLogging::Logger& logger = QsLogging::Logger::instance();
-    // set minimum log level and file name
-    logger.setLoggingLevel(QsLogging::InfoLevel);
-    const QString sLogPath(QDir(app.applicationDirPath()).filePath("penyamanager.log"));
-
-    // Create log destinations
-    QsLogging::DestinationPtr fileDestination( QsLogging::DestinationFactory::MakeFileDestination(
-                sLogPath,
-                QsLogging::LogRotationOption::EnableLogRotation,
-                QsLogging::MaxSizeBytes(PenyaManager::Constants::kLogMaxSizeBytes)
-                ));
-    // set log destinations on the logger
-    logger.addDestination(fileDestination);
-
-    QLOG_INFO() << "Program started";
+    pLogger->Info(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kMain, "Init");
 
     // Singletons initialization
     // Includes ddbb connection
-    PenyaManager::Singletons::Create(&settings);
+    PenyaManager::Singletons::Create(&settings, pLogger);
 
     if (!PenyaManager::Singletons::m_pDAO->isOpen()) {
-        QLOG_ERROR() << QString("[FATAL] Database connection failed");
-        QMessageBox::critical(NULL, "Error", "Database connection failed. Call the stupid administrator and complain for incompetence");
+        PenyaManager::Singletons::m_pLogger->Error(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kMain, "Database connection failed");
+        QMessageBox qMsgBox(QMessageBox::Critical, QString(), QObject::tr("Database connection failed. Call the stupid administrator and complain for incompetence"), QMessageBox::Ok, NULL, Qt::FramelessWindowHint);
+        qMsgBox.exec();
         return 1;
     }
 
     // Translators
     QTranslator penyamanagerTranslator;
     // Initial dictionary
-    penyamanagerTranslator.load(PenyaManager::Singletons::m_translationManager.getTranslationFile());
+    penyamanagerTranslator.load(PenyaManager::Singletons::m_pTranslationManager->getTranslationFile());
     app.installTranslator(&penyamanagerTranslator);
 
-    // Fill views
-    PenyaManager::LoginWindow *pLoginWindow = new PenyaManager::LoginWindow(NULL, &penyamanagerTranslator);
-    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kLoginWindowKey, pLoginWindow);
-    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kMainWindowKey, new PenyaManager::MainWindow);
-    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kInvoiceWindowKey, new PenyaManager::InvoiceWindow);
-    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kDepositsWindowKey, new PenyaManager::DepositWindow);
-    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kAccountViewWindowKey, new PenyaManager::AccountView);
-    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kTableReservationViewWindowKey, new PenyaManager::TableReservationView);
-    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kInvoiceListWindoKey, new PenyaManager::InvoiceListWindow);
-    PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kInvoiceDetailsWindowKey, new PenyaManager::InvoiceDetailsWindow);
-    // entry point -> login window
-    PenyaManager::IPartner* pLoginPartner = PenyaManager::Singletons::m_pParnetFinder->getPartner(PenyaManager::WindowKey::kLoginWindowKey);
-    pLoginPartner->init();
+    QTimer inactivityTimer(NULL);
+    inactivityTimer.setInterval(PenyaManager::Constants::kInactivityTimeoutSec * 1000);
+
+    PenyaManager::InactivityEventFilter inactivityEventFilter(&inactivityTimer);
+    app.installEventFilter(&inactivityEventFilter);
+
+    PenyaManager::MainWindow mainWindow(NULL, &penyamanagerTranslator, &inactivityTimer);
+
+    mainWindow.init();
+    // To disable Full Screen, comment the line below. Que no la above.
+    //showFullScreen();
+    // To disable windowed mode, comment the line below. Que sí, que la de abajo.
+    mainWindow.show();
 
     // run qt event loop
     int returnValue = app.exec();
@@ -88,6 +68,6 @@ int main(int argc, char *argv[])
     // destroy singletons
     PenyaManager::Singletons::Destroy();
 
-    QLOG_INFO() << "Program exited";
+    pLogger->Info(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kMain, "Exit");
     return returnValue;
 }

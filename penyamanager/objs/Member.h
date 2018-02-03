@@ -2,16 +2,25 @@
 #define MEMBER_H
 
 #include <QString>
+#include <QSharedPointer>
 #include <QDateTime>
 #include <QDate>
-#include <DataTypes.h>
+#include <commons/DataTypes.h>
 
 namespace PenyaManager
 {
     //
+    QString GetStringFromMemberType(Uint32 memberType);
+    //
     class Member
     {
         public:
+            //
+            static const Uint32 NORMAL;
+            //
+            static const Uint32 RETIRED;
+            //
+            static const Uint32 HONORARY;
             //
             Member();
             //
@@ -21,9 +30,13 @@ namespace PenyaManager
             //
             Int32               m_id;
             //
+            Int32               m_username;
+            //
             QString             m_name;
             //
-            QString             m_surname;
+            QString             m_surname1;
+            //
+            QString             m_surname2;
             //
             QString             m_imagePath;
             //
@@ -62,14 +75,58 @@ namespace PenyaManager
             QDateTime           m_lastLogin;
             //
             Float               m_balance;
+            //
+            QString             m_idCard;
+            //
+            QString             m_cardNumber;
+            //
+            Uint32              m_memberType;
     };
 
     //
-    typedef std::shared_ptr<Member> MemberPtr;
+    typedef QSharedPointer<Member> MemberPtr;
+    //
+    MemberPtr GetInvalidMember();
+
+    //
+    class MemberResult
+    {
+        public:
+            //
+            MemberResult();
+            //
+            virtual ~MemberResult(){}
+
+        public:
+            //
+            Int32              m_error;
+            //
+            MemberPtr          m_member;
+    };
+    //
+    typedef QSharedPointer<MemberResult> MemberResultPtr;
+
     //
     typedef std::vector<MemberPtr> MemberList;
     //
-    typedef std::shared_ptr<MemberList> MemberListPtr;
+    typedef QSharedPointer<MemberList> MemberListPtr;
+    //
+    class MemberListResult
+    {
+        public:
+            //
+            MemberListResult();
+            //
+            virtual ~MemberListResult(){}
+
+        public:
+            //
+            Int32              m_error;
+            //
+            MemberListPtr      m_list;
+    };
+    //
+    typedef QSharedPointer<MemberListResult> MemberListResultPtr;
 
     //
     class MemberListStats
@@ -77,6 +134,8 @@ namespace PenyaManager
         public:
             //
             MemberListStats();
+            //
+            MemberListStats(Uint32 totalMembers);
             //
             virtual ~MemberListStats(){}
 
@@ -86,7 +145,24 @@ namespace PenyaManager
     };
 
     //
-    typedef std::shared_ptr<MemberListStats> MemberListStatsPtr;
+    typedef QSharedPointer<MemberListStats> MemberListStatsPtr;
+    //
+    class MemberListStatsResult
+    {
+        public:
+            //
+            MemberListStatsResult();
+            //
+            virtual ~MemberListStatsResult(){}
+
+        public:
+            //
+            Int32              m_error;
+            //
+            MemberListStatsPtr m_stats;
+    };
+    //
+    typedef QSharedPointer<MemberListStatsResult> MemberListStatsResultPtr;
 }
 
 #endif // MEMBER_H

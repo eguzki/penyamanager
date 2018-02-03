@@ -1,9 +1,10 @@
 #ifndef RESERVATIONITEMS_H
 #define RESERVATIONITEMS_H
 
+#include <QSharedPointer>
 #include <QString>
 #include <QDateTime>
-#include <DataTypes.h>
+#include <commons/DataTypes.h>
 
 namespace PenyaManager
 {
@@ -14,8 +15,8 @@ namespace PenyaManager
         OvenType,
         FireplaceType
     };
-
-    QString getStringFromReservationTypeEnum(ReservationItemType e);
+    //
+    QString GetStringFromReservationItemTypeEnum(ReservationItemType e, bool tr = false);
 
     //
     class ReservationItem
@@ -38,11 +39,62 @@ namespace PenyaManager
     };
 
     //
-    typedef std::shared_ptr<ReservationItem> ReservationItemPtr;
+    typedef QSharedPointer<ReservationItem> ReservationItemPtr;
     //
     typedef std::vector<ReservationItemPtr> ReservationItemList;
     //
-    typedef std::shared_ptr<ReservationItemList> ReservationItemListPtr;
+    typedef QSharedPointer<ReservationItemList> ReservationItemListPtr;
+    //
+    class ReservationItemListResult
+    {
+        public:
+            //
+            ReservationItemListResult();
+            //
+            virtual ~ReservationItemListResult(){}
+
+        public:
+            //
+            Int32                   m_error;
+            //
+            ReservationItemListPtr  m_list;
+    };
+    //
+    typedef QSharedPointer<ReservationItemListResult> ReservationItemListResultPtr;
+    //
+    class ReservationListStats
+    {
+        public:
+            //
+            ReservationListStats();
+            //
+            ReservationListStats(Int32 totalNum);
+            //
+            virtual ~ReservationListStats(){}
+
+        public:
+            //
+            Int32                   m_totalNum;
+    };
+    //
+    typedef QSharedPointer<ReservationListStats> ReservationListStatsPtr;
+    //
+    class ReservationItemListStats
+    {
+        public:
+            //
+            ReservationItemListStats();
+            //
+            virtual ~ReservationItemListStats(){}
+
+        public:
+            //
+            Int32                   m_error;
+            //
+            ReservationListStatsPtr  m_listStats;
+    };
+    //
+    typedef QSharedPointer<ReservationItemListStats> ReservationItemListStatsPtr;
 }
 
 #endif // RESERVATIONITEMS_H

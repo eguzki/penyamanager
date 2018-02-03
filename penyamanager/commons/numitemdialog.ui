@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>NumItemDialog</class>
+ <widget class="QDialog" name="NumItemDialog">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>366</width>
+    <height>584</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>366</width>
+    <height>436</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>366</width>
+    <height>16777215</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string notr="true"/>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>:/images/alegrialogo.jpg</normaloff>:/images/alegrialogo.jpg</iconset>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">#displayLabel{
+font: 22pt &quot;Calibri&quot;;
+qproperty-alignment: AlignCenter;
+}
+
+#NumItemDialog {
+background:rgb(117,117,117);
+}
+
+#numDisplayWidget  *{
+border: 3px solid gray;
+border-radius: 0px;
+background: white;
+font: 75 40pt &quot;Calibri&quot;;
+color: black;
+font-weight: bold;
+}
+
+QToolButton {
+color: white;
+background-color:  rgb(27,94,32);
+border-width: 1px;
+border-color: rgb(27,94,32);
+border-style: solid;
+border-radius: 0;
+padding: 3px;
+font: 40pt &quot;Calibri&quot;;
+font-weight: bold;
+padding-left: 5px;
+padding-right: 5px;
+min-width: 95px;
+max-width: 95px;
+min-height: 95px;
+max-height: 95px;
+}
+
+QToolButton:disabled {
+color: rgb(117,117,117);
+}
+
+QToolButton:pressed {
+background-color: rgb(56,142,60);
+}
+
+
+
+
+
+</string>
+  </property>
+  <property name="modal">
+   <bool>true</bool>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="displayLabel">
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="numDisplayWidget" native="true">
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QLabel" name="numDisplayLabel">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="text">
+         <string notr="true">TextLabel</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="keypadWidget" native="true">
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="4" column="3">
+       <widget class="QToolButton" name="toolButton_8">
+        <property name="minimumSize">
+         <size>
+          <width>107</width>
+          <height>103</height>
+         </size>
+        </property>
+        <property name="text">
+         <string notr="true">8</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QToolButton" name="toolButton_1">
+        <property name="minimumSize">
+         <size>
+          <width>107</width>
+          <height>103</height>
+         </size>
+        </property>
+        <property name="text">
+         <string notr="true">1</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="QToolButton" name="toolButton_2">
+        <property name="minimumSize">
+         <size>
+          <width>107</width>
+          <height>103</height>
+         </size>
+        </property>
+        <property name="text">
+         <string notr="true">2</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="5">
+       <widget class="QToolButton" name="toolButton_3">
+        <property name="minimumSize">
+         <size>
+          <width>107</width>
+          <height>103</height>
+         </size>
+        </property>
+        <property name="text">
+         <string notr="true">3</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QToolButton" name="toolButton_4">
+        <property name="minimumSize">
+         <size>
+          <width>107</width>
+          <height>103</height>
+         </size>
+        </property>
+        <property name="text">
+         <string notr="true">4</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="3">
+       <widget class="QToolButton" name="toolButton_5">
+        <property name="minimumSize">
+         <size>
+          <width>107</width>
+          <height>103</height>
+         </size>
+        </property>
+        <property name="text">
+         <string notr="true">5</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="5">
+       <widget class="QToolButton" name="toolButton_6">
+        <property name="minimumSize">
+         <size>
+          <width>107</width>
+          <height>103</height>
+         </size>
+        </property>
+        <property name="text">
+         <string notr="true">6</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="5">
+       <widget class="QToolButton" name="toolButton_9">
+        <property name="minimumSize">
+         <size>
+          <width>107</width>
+          <height>103</height>
+         </size>
+        </property>
+        <property name="text">
+         <string notr="true">9</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QToolButton" name="toolButton_7">
+        <property name="minimumSize">
+         <size>
+          <width>107</width>
+          <height>103</height>
+         </size>
+        </property>
+        <property name="text">
+         <string notr="true">7</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QToolButton" name="toolButton_C">
+        <property name="minimumSize">
+         <size>
+          <width>107</width>
+          <height>103</height>
+         </size>
+        </property>
+        <property name="text">
+         <string notr="true">C</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="5">
+       <widget class="QToolButton" name="toolButton_Done">
+        <property name="minimumSize">
+         <size>
+          <width>107</width>
+          <height>103</height>
+         </size>
+        </property>
+        <property name="text">
+         <string notr="true">Ok</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="3">
+       <widget class="QToolButton" name="toolButton_0">
+        <property name="minimumSize">
+         <size>
+          <width>107</width>
+          <height>103</height>
+         </size>
+        </property>
+        <property name="text">
+         <string notr="true">0</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>toolButton_Done</sender>
+   <signal>clicked()</signal>
+   <receiver>NumItemDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>295</x>
+     <y>514</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>182</x>
+     <y>291</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

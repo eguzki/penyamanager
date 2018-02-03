@@ -19,13 +19,16 @@ Options:
   -r, --path <resourcepath>  Resource path
   --host <host>              Database host. IP or hostname
   -n, --name <name>          Database name
-  -u, --user <host>          Database username
+  -u, --user <user>          Database username
   -p, --password <password>  Database password
+  --syslog <syslog>          Syslog Server host. IP or hostname. Default
+                             database host.
+  --debug                    Debug mode
 ```
 
 # example
 
 ```
-$ penyamanagerconf -r 'C:\' --host 192.168.100.2 -n alegria -u someusername -p somepassword
+$ penyamanagerconf -r "C:\\somepath\\somepath" --host 192.168.100.2 -n alegria -u someusername -p somepassword --syslog 192.168.1.2 --debug
 Successful
 ```

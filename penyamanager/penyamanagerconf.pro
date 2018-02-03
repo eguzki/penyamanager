@@ -11,17 +11,19 @@ QT       -= gui
 TARGET = penyamanagerconf
 CONFIG   += console
 CONFIG   -= app_bundle
-QMAKE_CXXFLAGS += -std=c++11
+
+CONFIG += c++11
 
 TEMPLATE = app
 
 RC_ICONS = images/alegrialogo.ico
 
 include(libs/simplecrypt/simplecrypt.pro)
+include(libs/QsLog2/QsLog.pri)
 
 SOURCES +=  confmain.cpp \
-            utils.cpp \
-            constants.cpp
+            commons/utils.cpp \
+            commons/constants.cpp
 
-HEADERS  += constants.h \
-            utils.h
+HEADERS  += commons/constants.h \
+            commons/utils.h

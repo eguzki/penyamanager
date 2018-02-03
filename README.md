@@ -40,15 +40,11 @@ penyamanager
   * invoices are always applied to account. No need to verify.
   * items count substracted from stock
   * optionally can be printed
-* Member table reservation window
+* Reservations
+  * three types: tables, ovens and fireplaces
+  * members can only reserve one reservation type in a given date (date, lunch/dinner)
   * members can cancel
-  * members can only reserve one table in a given date (date, lunch/dinner)
-* Member oven reservation window
-  * members can cancel
-  * members can only reserve one oven in a given date (date, lunch/dinner)
-* Member fireplace reservation window
-  * members can cancel
-  * members can only reserve one fireplace in a given date (date, lunch/dinner)
+  * admin can block/unblock reservations. Make its own reservation.
 * Member deposit window
   * Deposits are applied to balance on creation. Admin has to verify.
   * Deposit ticket is printed
@@ -87,6 +83,7 @@ penyamanager
     * filter by memberId
 * Members
   * Member List paginated
+    * Filter to show only those to be mailed
   * member Info (can be edited)
   * Member create
 * Configuration Application
@@ -96,6 +93,18 @@ penyamanager
   * Basque
   * Spanish
 * Activity logger
+  * FileLogger
+  * Remote sysloger
+* App designed for screen resolution 1280x1024
+* Outdated (last_modif) invoices (12 Hours) are closed on every login
+* Print invoices when closed
+* Credit limit. When over limit, do not allow creating invoices
+* Member username can be updated
+* Print post activated members
+* Provider Invoice View from provider invoice list
+* Notes in member information
+* Database backup scripts
+  * [HOWTO backup database](db/backup/README.md)
 
 # Development
 
@@ -111,21 +120,25 @@ penyamanager
 
 ## Developed using:
 * Vim 7.4 [customized](https://github.com/eguzki/eguzki-vim-environment)
-* QT Creator 3.4.2
-* QT 5.5.0
+* QT Creator 4.0.3
+* QT 5.7.0
 * GCC 4.8.4, 64 bit
+
+## Enable DEBUG mode:
+* QSettings key **debug** in General section
+* Valid values: 1
 
 ## Package deployment for windows 7
 
 ### Windows 7 32/64 bits
-* Compile using mingw 4.9.2 32bits compiler (currently QT 5.5 only supports mingw 4.9.2 32 bits but not 64 bits)
+* Compile using mingw 4.9.2 32bits compiler (currently QT 5.7 only supports mingw 4.9.2 32 bits but not 64 bits)
 * Necessary elements:
   * Application main exe (penyamanager.exe)
   * Translation files (e.g. penyamanager_eu.qm). Check doc to know how to generate them out of source code.
   * QT and system shared libreries (dll's)
-    * QT dll's path: QT_PATH/5.5/mingw492_32/bin
-    * QT plugins dll's path: QT_PATH/5.5/mingw492_32/plugins
-    * Qt plugins: imageformats, platforms, sqldrivers
+    * QT dll's path: QT_PATH/5.7/mingw492_32/bin
+    * QT plugins dll's path: QT_PATH/5.7/mingw492_32/plugins
+    * Qt plugins: imageformats, platforms, sqldrivers, printsupport
 
 ```Shell
 $ ls -R -l
@@ -142,6 +155,7 @@ drwxrwxrwx 2 1026 users    4096 nov 16 21:28 imageformats
 -rwxrwxrwx 1 1026 users  599552 nov 16 20:53 penyamanager.exe
 -rwxrwxrwx 1 1026 users      95 nov 16 21:28 penyamanager.log
 drwxrwxrwx 2 1026 users    4096 nov 15 21:14 platforms
+drwxrwxrwx 2 1026 users    4096 nov 16 20:22 printsupport
 -rwxrwxrwx 1 1026 users 5391360 nov 15 20:40 Qt5Core.dll
 -rwxrwxrwx 1 1026 users 5334528 oct 12 21:31 Qt5Gui.dll
 -rwxrwxrwx 1 1026 users  357888 oct 12 21:42 Qt5PrintSupport.dll
@@ -167,6 +181,11 @@ total 2156
 ./platforms:
 total 1384
 -rwxrwxrwx 1 1026 users 1413632 oct 12 21:46 qwindows.dll
+
+./printsupport:
+total 1384
+-rwxrwxrwx 1 1026 users 1413632 oct 11 14:23 windowsprintersupport.dll
+
 
 ./sqldrivers:
 total 72

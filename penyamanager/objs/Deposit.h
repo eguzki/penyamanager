@@ -1,9 +1,10 @@
 #ifndef DEPOSIT_H
 #define DEPOSIT_H
 
+#include <QSharedPointer>
 #include <QString>
 #include <QDateTime>
-#include <DataTypes.h>
+#include <commons/DataTypes.h>
 
 namespace PenyaManager
 {
@@ -20,8 +21,6 @@ namespace PenyaManager
             //
             Deposit();
             //
-            Deposit(Int32 id, Int32 memberId, DepositState state, const QDateTime &date, Float total, const QString &descr);
-            //
             virtual ~Deposit(){}
 
         public:
@@ -30,21 +29,55 @@ namespace PenyaManager
             //
             Int32               m_memberId;
             //
+            Int32               m_memberUsername;
+            //
             DepositState        m_state;
             //
             QDateTime           m_date;
             //
             Float               m_total;
-            //
-            QString             m_descr;
     };
 
     //
-    typedef std::shared_ptr<Deposit> DepositPtr;
+    typedef QSharedPointer<Deposit> DepositPtr;
+    //
+    class DepositResult
+    {
+        public:
+            //
+            DepositResult();
+            //
+            virtual ~DepositResult(){}
+
+        public:
+            //
+            Int32                   m_error;
+            //
+            DepositPtr              m_deposit;
+    };
+    //
+    typedef QSharedPointer<DepositResult> DepositResultPtr;
     //
     typedef std::vector<DepositPtr> DepositList;
     //
-    typedef std::shared_ptr<DepositList> DepositListPtr;
+    typedef QSharedPointer<DepositList> DepositListPtr;
+    //
+    class DepositListResult
+    {
+        public:
+            //
+            DepositListResult();
+            //
+            virtual ~DepositListResult(){}
+
+        public:
+            //
+            Int32                   m_error;
+            //
+            DepositListPtr          m_list;
+    };
+    //
+    typedef QSharedPointer<DepositListResult> DepositListResultPtr;
 }
 
 #endif // DEPOSIT_H
