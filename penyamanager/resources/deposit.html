@@ -9,7 +9,7 @@
 }
 .deposit {
     font-family: "Calibri";
-    font-size: 5pt;
+    font-size: 4pt;
 }
 .headers {
     font-family: "Calibri";
@@ -17,7 +17,11 @@
 }
 .date {
     font-family: "Calibri";
-    font-size: 4pt;
+    font-size: 3pt;
+}
+.total {
+    font-family: "Calibri";
+    font-size: 5pt;
 }
 </style>
 </head>
@@ -25,60 +29,45 @@
 <div width="90%" id="header" align="center">
     <img src=":images/alegrialogo.png" width="40" height="40">
     <p><b>SDRC Alegrí­a de Iruña KKAE</b></p>
-    <table class="deposit" width="90%" cellpadding="0" cellspacing="1" border="0">
+    <table class="deposit" width="110%" cellpadding="0" cellspacing="1" border="0">
         <tr>
-            <td class="headers" align="center" >
+            <td class="date" align="center" >
                 {{depositLabel}}
             </td>
-        </tr>
-        <tr>
-            <td align="center" >
+            <td class="date" align="center" >
                 {{depositId}}
             </td>
         </tr>
         <tr>
-            <td class="headers" align="center" >
+            <td class="date" align="center" >
                 {{memberidLabel}}
             </td>
-        </tr>
-        <tr>
-
-            <td align="center">
+            <td class="date" align="center">
                 {{memberid}}
             </td>
         </tr>
         <tr>
-            <td class="headers" align="center">
-                {{memberNameLabel}}
+            <td align="center" colspan="2">
+                <b>{{memberName}}</b>
             </td>
         </tr>
         <tr>
-            <td align="center">
-                {{memberName}}
-            </td>
-        </tr>
-        <tr>
-            <td class="date" align="center">
-                {{dateLabel}}
-            </td>
-        </tr>
-        <tr>
-            <td class="date" align="center">
+            <td class="date" align="center" colspan="2">
                 {{dateValue}}
             </td>
         </tr>
         <tr>
-            <td class="headers" align="center">
-                {{depositTotalLabel}}
+            <td class="headers" align="center" colspan="2">
+                <b>{{depositTotalLabel}}</b>
             </td>
         </tr>
         <tr>
-            <td align="center">
+            <td class="total" align="center" colspan="2">
                 <b>{{depositTotal}}</b>
             </td>
         </tr>
         <tr>
-            <td align="center">
+            <td align="center" colspan="2">
                 ---------------
             </td>
         </tr>

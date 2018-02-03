@@ -54,7 +54,7 @@
     <message>
         <location filename="../admin/accountbalanceview.ui" line="332"/>
         <source>Rows:</source>
-        <translation>Erregistro kopurua:</translation>
+        <translation>Erreg. kopurua:</translation>
     </message>
     <message>
         <location filename="../admin/accountbalanceview.ui" line="371"/>
@@ -96,7 +96,7 @@
     <message>
         <location filename="../admin/accountbalanceview.ui" line="520"/>
         <source>Banc Account:</source>
-        <translation>Erabilgarria:</translation>
+        <translation>Kontu karguak:</translation>
     </message>
 </context>
 <context>
@@ -853,6 +853,7 @@
     <name>PenyaManager::AccountBalanceView</name>
     <message>
         <location filename="../admin/accountbalanceview.cpp" line="31"/>
+        <location filename="../admin/accountbalanceview.cpp" line="140"/>
         <source>ALL</source>
         <translation>GUZTIAK</translation>
     </message>
@@ -1113,39 +1114,39 @@
     <message>
         <location filename="../admin/adminproductitem.cpp" line="86"/>
         <location filename="../admin/adminproductitem.cpp" line="92"/>
-        <location filename="../admin/adminproductitem.cpp" line="126"/>
-        <location filename="../admin/adminproductitem.cpp" line="176"/>
-        <location filename="../admin/adminproductitem.cpp" line="201"/>
-        <location filename="../admin/adminproductitem.cpp" line="207"/>
+        <location filename="../admin/adminproductitem.cpp" line="127"/>
+        <location filename="../admin/adminproductitem.cpp" line="177"/>
+        <location filename="../admin/adminproductitem.cpp" line="202"/>
+        <location filename="../admin/adminproductitem.cpp" line="208"/>
         <location filename="../admin/adminproductitem.cpp" line="229"/>
         <location filename="../admin/adminproductitem.cpp" line="251"/>
-        <location filename="../admin/adminproductitem.cpp" line="293"/>
-        <location filename="../admin/adminproductitem.cpp" line="308"/>
+        <location filename="../admin/adminproductitem.cpp" line="292"/>
+        <location filename="../admin/adminproductitem.cpp" line="307"/>
         <source>Database error. Contact administrator</source>
         <translation>Datu base akatsa. Administratzailearekin harremanetan jarri</translation>
     </message>
     <message>
-        <location filename="../admin/adminproductitem.cpp" line="185"/>
+        <location filename="../admin/adminproductitem.cpp" line="186"/>
         <source>Done successfully</source>
         <translation>Egina</translation>
     </message>
     <message>
-        <location filename="../admin/adminproductitem.cpp" line="332"/>
+        <location filename="../admin/adminproductitem.cpp" line="331"/>
         <source>Unable to write to %1</source>
         <translation>Ezin izan da diskan gordetu: %1</translation>
     </message>
     <message>
-        <location filename="../admin/adminproductitem.cpp" line="337"/>
+        <location filename="../admin/adminproductitem.cpp" line="336"/>
         <source>Open File...</source>
         <translation>Fitxategia ireki...</translation>
     </message>
     <message>
-        <location filename="../admin/adminproductitem.cpp" line="338"/>
+        <location filename="../admin/adminproductitem.cpp" line="337"/>
         <source>Image Files (*.gif *.jpeg *.jpg *.png)</source>
         <translation>Irudi fitxategiak (*.gif *.jpeg *.jpg *.png)</translation>
     </message>
     <message>
-        <location filename="../admin/adminproductitem.cpp" line="347"/>
+        <location filename="../admin/adminproductitem.cpp" line="346"/>
         <source>No file selected</source>
         <translation>Ez da fitxategirik aukeratu</translation>
     </message>
@@ -1624,66 +1625,66 @@
         <translation>Guztira</translation>
     </message>
     <message>
-        <location filename="../admin/productexpensesview.cpp" line="152"/>
-        <location filename="../admin/productexpensesview.cpp" line="157"/>
-        <location filename="../admin/productexpensesview.cpp" line="170"/>
-        <location filename="../admin/productexpensesview.cpp" line="180"/>
-        <location filename="../admin/productexpensesview.cpp" line="185"/>
-        <location filename="../admin/productexpensesview.cpp" line="243"/>
-        <location filename="../admin/productexpensesview.cpp" line="256"/>
-        <location filename="../admin/productexpensesview.cpp" line="267"/>
+        <location filename="../admin/productexpensesview.cpp" line="153"/>
+        <location filename="../admin/productexpensesview.cpp" line="158"/>
+        <location filename="../admin/productexpensesview.cpp" line="171"/>
+        <location filename="../admin/productexpensesview.cpp" line="181"/>
+        <location filename="../admin/productexpensesview.cpp" line="186"/>
+        <location filename="../admin/productexpensesview.cpp" line="244"/>
+        <location filename="../admin/productexpensesview.cpp" line="257"/>
+        <location filename="../admin/productexpensesview.cpp" line="268"/>
         <source>Database error. Contact administrator</source>
         <translation>Datu base akatsa. Administratzailearekin harremanetan jarri</translation>
     </message>
     <message>
-        <location filename="../admin/productexpensesview.cpp" line="175"/>
-        <location filename="../admin/productexpensesview.cpp" line="262"/>
+        <location filename="../admin/productexpensesview.cpp" line="176"/>
+        <location filename="../admin/productexpensesview.cpp" line="263"/>
         <source>Username not found</source>
         <translation>Erabiltzaile okerra</translation>
     </message>
     <message>
-        <location filename="../admin/productexpensesview.cpp" line="212"/>
+        <location filename="../admin/productexpensesview.cpp" line="213"/>
         <source>Open File...</source>
         <translation>Fitxategia ireki...</translation>
     </message>
     <message>
-        <location filename="../admin/productexpensesview.cpp" line="213"/>
+        <location filename="../admin/productexpensesview.cpp" line="214"/>
         <source>CSV Files (*.csv)</source>
         <translation>CSV fitxategiak (*.csv)</translation>
     </message>
     <message>
-        <location filename="../admin/productexpensesview.cpp" line="228"/>
+        <location filename="../admin/productexpensesview.cpp" line="229"/>
         <source>Error opening %1</source>
         <translation>Akatsa %1 -a irekitzean</translation>
     </message>
     <message>
-        <location filename="../admin/productexpensesview.cpp" line="165"/>
-        <location filename="../admin/productexpensesview.cpp" line="251"/>
+        <location filename="../admin/productexpensesview.cpp" line="166"/>
+        <location filename="../admin/productexpensesview.cpp" line="252"/>
         <source>Username not valid</source>
         <translation>Erabiltzaile okerra</translation>
     </message>
     <message>
-        <location filename="../admin/productexpensesview.cpp" line="278"/>
+        <location filename="../admin/productexpensesview.cpp" line="279"/>
         <source>product ID</source>
         <translation>Produktu ID-a</translation>
     </message>
     <message>
-        <location filename="../admin/productexpensesview.cpp" line="278"/>
+        <location filename="../admin/productexpensesview.cpp" line="279"/>
         <source>name</source>
         <translation>Izena</translation>
     </message>
     <message>
-        <location filename="../admin/productexpensesview.cpp" line="278"/>
+        <location filename="../admin/productexpensesview.cpp" line="279"/>
         <source>count</source>
         <translation>Kopurua</translation>
     </message>
     <message>
-        <location filename="../admin/productexpensesview.cpp" line="286"/>
+        <location filename="../admin/productexpensesview.cpp" line="287"/>
         <source>Successfully exported. Filename: %1</source>
         <translation>Esportazioa egina. Fitxateriaren izena: %1</translation>
     </message>
     <message>
-        <location filename="../admin/productexpensesview.cpp" line="196"/>
+        <location filename="../admin/productexpensesview.cpp" line="197"/>
         <source>page %1 out of %2</source>
         <translation>%2 tik, %1. orrialdea</translation>
     </message>

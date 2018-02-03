@@ -137,7 +137,7 @@ namespace PenyaManager {
         QString usernameStr = this->ui->memberIdLineEdit->text().trimmed();
         if (usernameStr.isEmpty()) {
             this->ui->memberIdLineEdit->clear();
-            this->ui->memberIdResValueLabel->setText(QString("ALL"));
+            this->ui->memberIdResValueLabel->setText(tr("ALL"));
             pTransactionListResultPtr = Singletons::m_pDAO->getAccountList(fromDate, toDate, m_currentPage, Constants::kAdminAccountListPageCount);
             if (pTransactionListResultPtr->m_error) {
                 Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
