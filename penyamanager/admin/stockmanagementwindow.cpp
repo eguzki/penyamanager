@@ -186,7 +186,7 @@ namespace PenyaManager {
             //  product active status
             this->ui->productsTableWidget->setItem(rowCount, column++, new QTableWidgetItem((pStockProductItemPtr->m_active)?(QString::number(1)):(QString::number(0))));
             //  product reg date
-            QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pStockProductItemPtr->m_regDate, QLocale::NarrowFormat);
+            QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pStockProductItemPtr->m_regDate.toLocalTime(), QLocale::NarrowFormat);
             this->ui->productsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(dateLocalized));
             //  product price
             this->ui->productsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(QString::number(pStockProductItemPtr->m_price)));

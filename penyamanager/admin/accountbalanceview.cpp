@@ -117,7 +117,7 @@ namespace PenyaManager {
         {
             Uint32 column = 0;
             TransactionPtr pTransactionPtr = *iter;
-            QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pTransactionPtr->m_date, QLocale::NarrowFormat);
+            QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pTransactionPtr->m_date.toLocalTime(), QLocale::NarrowFormat);
             this->ui->transactionsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(dateLocalized));
             this->ui->transactionsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(QString::number(pTransactionPtr->m_memberUsername)));
             this->ui->transactionsTableWidget->setItem(rowCount, column++, new QTableWidgetItem(GuiUtils::getTransactionDescr(pTransactionPtr->m_descr, pTransactionPtr->m_type)));

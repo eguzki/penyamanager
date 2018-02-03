@@ -322,8 +322,8 @@ namespace PenyaManager {
         // Invoice Information
         //
         // Date
-        QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pLastInvoicePtr->m_date, QLocale::NarrowFormat);
-        QString lastModifDateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pLastInvoicePtr->m_lastModified, QLocale::NarrowFormat);
+        QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pLastInvoicePtr->m_date.toLocalTime(), QLocale::NarrowFormat);
+        QString lastModifDateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pLastInvoicePtr->m_lastModified.toLocalTime(), QLocale::NarrowFormat);
         this->ui->lastInvoiceDateLabel->setText(tr("Created on: %1   Modified on: %2").arg(dateLocalized).arg(lastModifDateLocalized));
         // Total
         this->ui->lastInvoiceTotalLabel->setText(QString("%1 €").arg(totalInvoice, 0, 'f', 2));

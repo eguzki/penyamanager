@@ -186,7 +186,7 @@ namespace PenyaManager {
         // Invoice Information
         //
         // Date
-        QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pInvoicePtr->m_date, QLocale::NarrowFormat);
+        QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pInvoicePtr->m_date.toLocalTime(), QLocale::NarrowFormat);
         this->ui->invoiceDateInfoLabel->setText(dateLocalized);
         // Total
         this->ui->invoiceTotalInfoLabel->setText(QString("%1 €").arg(totalInvoice, 0, 'f', 2));
@@ -221,9 +221,9 @@ namespace PenyaManager {
         // invoice date is invoice creation date
         // Can be old (e.g. an unclosed invoice created some days ago)
         // print current date
-        // this date should be localized
-        invoiceData["dateValue"] = QDateTime::currentDateTime();
-
+        QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(QDateTime::currentDateTime(), QLocale::NarrowFormat);
+        invoiceData["dateValue"] = dateLocalized;
+        Singletons::m_pLogger->Warn(Constants::kSystemUserId, PenyaManager::LogAction::kDashboard, dateLocalized);
         // invoice products info
         QVariantList productList;
         Float totalInvoice = 0.0;
@@ -285,7 +285,7 @@ namespace PenyaManager {
         m_currentPage++;
         fillInvoiceData(pCurrMemberPtr, pInvoiceResultPtr->m_pInvoice);
     }
-
+    //
     void InvoiceWindow::on_newinvoiceButton_clicked()
     {
         m_switchCentralWidgetCallback(WindowKey::kMemberDashboardWindowKey);
@@ -315,6 +315,5 @@ namespace PenyaManager {
     {
         m_switchCentralWidgetCallback(WindowKey::kLoginWindowKey);
     }
-
 }
 

@@ -82,7 +82,7 @@ namespace PenyaManager {
             QTableWidgetItem *pTableItem = new QTableWidgetItem(QString::number(pDepositPtr->m_id));
             pTableItem->setData(Qt::UserRole, pDepositPtr->m_id);
             this->ui->depositTableWidget->setItem(rowCount, column++, pTableItem);
-            QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pDepositPtr->m_date, QLocale::NarrowFormat);
+            QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pDepositPtr->m_date.toLocalTime(), QLocale::NarrowFormat);
             this->ui->depositTableWidget->setItem(rowCount, column++, new QTableWidgetItem(dateLocalized));
             pTableItem = new QTableWidgetItem(QString::number(pDepositPtr->m_memberUsername));
             pTableItem->setData(Qt::UserRole, pDepositPtr->m_memberId);

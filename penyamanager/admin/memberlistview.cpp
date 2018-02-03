@@ -234,7 +234,7 @@ namespace PenyaManager {
         for (MemberList::iterator iter = pMemberListResultPtr->m_list->begin(); iter != pMemberListResultPtr->m_list->end(); ++iter)
         {
             MemberPtr pMemberPtr = *iter;
-            QString regDateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pMemberPtr->m_regDate, QLocale::NarrowFormat);
+            QString regDateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pMemberPtr->m_regDate.toLocalTime(), QLocale::NarrowFormat);
             QString birthDateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pMemberPtr->m_birthdate, QLocale::NarrowFormat);
             QString cleanAddress = QString("\"%1\"").arg(pMemberPtr->m_address.replace('"', '\''));
             QString cleanNotes = QString("\"%1\"").arg(pMemberPtr->m_notes.replace('"', '\'').simplified());

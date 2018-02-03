@@ -137,7 +137,7 @@ namespace PenyaManager {
         for (TransactionList::iterator iter = pTransactionListResultPtr->m_list->begin(); iter != pTransactionListResultPtr->m_list->end(); ++iter)
         {
             TransactionPtr pTransactionPtr = *iter;
-            QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pTransactionPtr->m_date, QLocale::NarrowFormat);
+            QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pTransactionPtr->m_date.toLocalTime(), QLocale::NarrowFormat);
             this->ui->accountTableWidget->setItem(rowCount, 0, new QTableWidgetItem(dateLocalized));
             this->ui->accountTableWidget->item(rowCount, 0)->setTextAlignment(Qt::AlignCenter);
             this->ui->accountTableWidget->setItem(rowCount, 1, new QTableWidgetItem(QString("%1 €").arg(pTransactionPtr->m_amount, 0, 'f', 2)));
@@ -249,6 +249,3 @@ namespace PenyaManager {
         selectionChanged();
     }
 }
-
-
-

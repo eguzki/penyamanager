@@ -182,7 +182,7 @@ namespace PenyaManager {
         {
             InvoicePtr pInvoicePtr = *iter;
             this->ui->invoicesTableWidget->setItem(rowCount, 0, new QTableWidgetItem(QString::number(pInvoicePtr->m_id)));
-            QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pInvoicePtr->m_date, QLocale::NarrowFormat);
+            QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pInvoicePtr->m_date.toLocalTime(), QLocale::NarrowFormat);
             this->ui->invoicesTableWidget->setItem(rowCount, 1, new QTableWidgetItem(dateLocalized));
             this->ui->invoicesTableWidget->setItem(rowCount, 2, new QTableWidgetItem(QString("%1 €").arg(pInvoicePtr->m_total, 0, 'f', 2)));
             this->ui->invoicesTableWidget->setItem(rowCount, 3, new QTableWidgetItem(QString::number(pInvoicePtr->m_memberUsername)));
