@@ -905,7 +905,7 @@ namespace PenyaManager {
             queryPtr->prepare(
                     "SELECT SUM(amount) FROM account "
                     "WHERE date BETWEEN :fromDate AND :toDate "
-                    "AND type=0"
+                    "AND type=1"
                     );
             queryPtr->bindValue(":fromDate", fromDate);
             queryPtr->bindValue(":toDate", toDate);
@@ -936,7 +936,7 @@ namespace PenyaManager {
             queryPtr->prepare(
                     "SELECT SUM(amount) FROM account "
                     "WHERE date BETWEEN :fromDate AND :toDate "
-                    "AND type IN (1, 3)"
+                    "AND type IN (2, 4)"
                     );
             queryPtr->bindValue(":fromDate", fromDate);
             queryPtr->bindValue(":toDate", toDate);
@@ -968,7 +968,7 @@ namespace PenyaManager {
             queryPtr->prepare(
                     "SELECT SUM(amount) FROM account "
                     "WHERE date BETWEEN :fromDate AND :toDate "
-                    "AND type=2"
+                    "AND type=3"
                     );
             queryPtr->bindValue(":fromDate", fromDate);
             queryPtr->bindValue(":toDate", toDate);
@@ -1032,7 +1032,7 @@ namespace PenyaManager {
                     "SELECT SUM(amount) FROM account "
                     "WHERE idmember=:memberid "
                     "AND date BETWEEN :fromDate AND :toDate "
-                    "AND type=0"
+                    "AND type=1"
                     );
             queryPtr->bindValue(":memberid", memberId);
             queryPtr->bindValue(":fromDate", fromDate);
@@ -1066,7 +1066,7 @@ namespace PenyaManager {
                     "SELECT SUM(amount) FROM account "
                     "WHERE idmember=:memberid "
                     "AND date BETWEEN :fromDate AND :toDate "
-                    "AND type IN (1, 3)"
+                    "AND type IN (2, 4)"
                     );
             queryPtr->bindValue(":memberid", memberId);
             queryPtr->bindValue(":fromDate", fromDate);
@@ -1099,7 +1099,7 @@ namespace PenyaManager {
                     "SELECT SUM(amount) FROM account "
                     "WHERE idmember=:memberid "
                     "AND date BETWEEN :fromDate AND :toDate "
-                    "AND type=2"
+                    "AND type=3"
                     );
             queryPtr->bindValue(":memberid", memberId);
             queryPtr->bindValue(":fromDate", fromDate);

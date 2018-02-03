@@ -274,12 +274,12 @@
     <message>
         <location filename="../user/depositwindow.cpp" line="223"/>
         <source>Deposit Id</source>
-        <translation>Id ingreso</translation>
+        <translation>Ingreso nº</translation>
     </message>
     <message>
         <location filename="../user/depositwindow.cpp" line="224"/>
         <source>Member Id</source>
-        <translation>Id socio</translation>
+        <translation>Nº socio</translation>
     </message>
     <message>
         <location filename="../user/depositwindow.cpp" line="225"/>
@@ -430,12 +430,12 @@
     <message>
         <location filename="../user/invoicewindow.cpp" line="204"/>
         <source>Invoice</source>
-        <translation>Recibo</translation>
+        <translation type="unfinished">Recibo nº</translation>
     </message>
     <message>
         <location filename="../user/invoicewindow.cpp" line="205"/>
         <source>Member Id</source>
-        <translation>Id socio</translation>
+        <translation>Nº socio</translation>
     </message>
     <message>
         <location filename="../user/invoicewindow.cpp" line="206"/>

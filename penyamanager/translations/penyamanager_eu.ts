@@ -274,12 +274,12 @@
     <message>
         <location filename="../user/depositwindow.cpp" line="223"/>
         <source>Deposit Id</source>
-        <translation>Diru sarrera Id-a</translation>
+        <translation>Diru sarrera zkia.</translation>
     </message>
     <message>
         <location filename="../user/depositwindow.cpp" line="224"/>
         <source>Member Id</source>
-        <translation>Bazkide Id-a</translation>
+        <translation>Bazkide zkia.</translation>
     </message>
     <message>
         <location filename="../user/depositwindow.cpp" line="225"/>
@@ -435,7 +435,7 @@
     <message>
         <location filename="../user/invoicewindow.cpp" line="205"/>
         <source>Member Id</source>
-        <translation>Bazkide Id-a</translation>
+        <translation>Bazkide zkia.</translation>
     </message>
     <message>
         <location filename="../user/invoicewindow.cpp" line="206"/>
