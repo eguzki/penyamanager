@@ -56,7 +56,7 @@ namespace PenyaManager {
     //
     const Uint32    Constants::kOpenInvoiceTimeoutH             = 12;
     //
-    const Float     Constants::kCreditLimit                     = -100;
+    const Float     Constants::kCreditLimit                     = -60;
     //
     const Uint32    Constants::kDashboardProductListPageCount   = 17;
     //
