@@ -57,10 +57,10 @@ int main(int argc, char *argv[])
     PenyaManager::MainWindow mainWindow(NULL, &penyamanagerTranslator, &inactivityTimer);
 
     mainWindow.init();
-    // To disable Full Screen, comment the line below. Que no la above.
-    //showFullScreen();
-    // To disable windowed mode, comment the line below. Que sí, que la de abajo.
-    mainWindow.show();
+    // To disable Full Screen, comment the line below.
+    mainWindow.showFullScreen();
+    // To disable windowed mode, comment the line below.
+    //mainWindow.show();
 
     // run qt event loop
     int returnValue = app.exec();
