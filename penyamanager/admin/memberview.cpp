@@ -1,4 +1,5 @@
 //
+#include <QCalendarWidget>
 
 #include <commons/guiutils.h>
 #include <commons/utils.h>
@@ -17,6 +18,9 @@ namespace PenyaManager {
         m_switchCentralWidgetCallback(callback)
     {
         ui->setupUi(this);
+
+        this->ui->regDateDateEdit->calendarWidget()->setLocale(Singletons::m_pTranslationManager->getLocale());
+        this->ui->birthdateDateEdit->calendarWidget()->setLocale(Singletons::m_pTranslationManager->getLocale());
     }
     //
     MemberView::~MemberView()
@@ -34,7 +38,7 @@ namespace PenyaManager {
         }
         // RegDate
         this->ui->regDateDateEdit->setDate(QDate::currentDate());
-        // proposed username 
+        // proposed username
         this->ui->usernameLineEdit->setText(QString::number(proposedUsername + 1));
         // last login date
         this->ui->lastLoginValueLabel->setText("-");
@@ -107,6 +111,8 @@ namespace PenyaManager {
     void MemberView::retranslate()
     {
         this->ui->retranslateUi(this);
+        this->ui->regDateDateEdit->calendarWidget()->setLocale(Singletons::m_pTranslationManager->getLocale());
+        this->ui->birthdateDateEdit->calendarWidget()->setLocale(Singletons::m_pTranslationManager->getLocale());
     }
     //
     void MemberView::on_savePushButton_clicked()
