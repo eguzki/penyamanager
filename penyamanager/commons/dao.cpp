@@ -3230,7 +3230,7 @@ namespace PenyaManager {
                     "UPDATE member "
                     "SET username=:username, name=:name, surname1=:surname1, surname2=:surname2, image=:image, lastmodified=:lastmodified, active=:active, isAdmin=:isadmin, birth=:birth, "
                     "address=:address, zip_code=:zip_code, town=:town, state=:state, tel=:tel, tel2=:tel2, email=:email, bank_account=:bank_account, postal_send=:postal_send, "
-                    "notes=:notes, id_card=:id_card, card=:card, type=:type "
+                    "notes=:notes, id_card=:id_card, card=:card, type=:type, reg_date=:reg_date "
                     "WHERE idmember = :memberid"
                     );
             // obligatory
@@ -3245,6 +3245,7 @@ namespace PenyaManager {
             queryPtr->bindValue(":bank_account", pMemberPtr->m_bank_account);
             queryPtr->bindValue(":postal_send", pMemberPtr->m_postalSend?1:0);
             queryPtr->bindValue(":type", pMemberPtr->m_memberType);
+            queryPtr->bindValue(":reg_date", pMemberPtr->m_regDate);
             // optional
             if (pMemberPtr->m_imagePath.isEmpty()) {
                 queryPtr->bindValue(":image", QVariant());
