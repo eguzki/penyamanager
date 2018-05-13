@@ -1,4 +1,5 @@
 //
+#include <QCalendarWidget>
 
 #include <commons/guiutils.h>
 #include <commons/utils.h>
@@ -17,6 +18,9 @@ namespace PenyaManager {
         m_switchCentralWidgetCallback(callback)
     {
         ui->setupUi(this);
+
+        this->ui->regDateDateEdit->calendarWidget()->setLocale(Singletons::m_pTranslationManager->getLocale());
+        this->ui->birthdateDateEdit->calendarWidget()->setLocale(Singletons::m_pTranslationManager->getLocale());
     }
     //
     MemberView::~MemberView()
@@ -32,11 +36,11 @@ namespace PenyaManager {
             Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
+        // RegDate
+        this->ui->regDateDateEdit->setDate(QDate::currentDate());
+        // proposed username
         this->ui->usernameLineEdit->setText(QString::number(proposedUsername + 1));
-        // reg date
-        QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(QDate::currentDate(), QLocale::NarrowFormat);
-        this->ui->regDateValueLabel->setText(dateLocalized);
-        // reg date
+        // last login date
         this->ui->lastLoginValueLabel->setText("-");
         // name
         this->ui->nameLineEdit->clear();
@@ -107,6 +111,8 @@ namespace PenyaManager {
     void MemberView::retranslate()
     {
         this->ui->retranslateUi(this);
+        this->ui->regDateDateEdit->calendarWidget()->setLocale(Singletons::m_pTranslationManager->getLocale());
+        this->ui->birthdateDateEdit->calendarWidget()->setLocale(Singletons::m_pTranslationManager->getLocale());
     }
     //
     void MemberView::on_savePushButton_clicked()
@@ -213,7 +219,9 @@ namespace PenyaManager {
             pMemberResultPtr->m_member->m_phone2 = this->ui->phone2LineEdit->text();
             // notes (optional)
             pMemberResultPtr->m_member->m_notes = this->ui->notesTextEdit->toPlainText();
-            // regDate -> no change
+            // regDate
+            pMemberResultPtr->m_member->m_regDate = QDateTime(this->ui->regDateDateEdit->date());
+            pMemberResultPtr->m_member->m_regDate.setTimeSpec(Qt::UTC);
             // lastmodfies
             pMemberResultPtr->m_member->m_lastModified = QDateTime::currentDateTimeUtc();
             // card id
@@ -300,7 +308,8 @@ namespace PenyaManager {
             // notes (optional)
             pMemberPtr->m_notes = this->ui->notesTextEdit->toPlainText();
             // regDate
-            pMemberPtr->m_regDate = QDateTime::currentDateTimeUtc();
+            pMemberPtr->m_regDate = QDateTime(this->ui->regDateDateEdit->date());
+            pMemberPtr->m_regDate.setTimeSpec(Qt::UTC);
             // lastmodfies
             pMemberPtr->m_lastModified = QDateTime::currentDateTimeUtc();
             // last Login
@@ -354,10 +363,9 @@ namespace PenyaManager {
             return;
         }
         // reg date
-        QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pMemberResultPtr->m_member->m_regDate, QLocale::NarrowFormat);
-        this->ui->regDateValueLabel->setText(dateLocalized);
+        this->ui->regDateDateEdit->setDate(pMemberResultPtr->m_member->m_regDate.date());
         // last login date
-        dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pMemberResultPtr->m_member->m_lastLogin, QLocale::NarrowFormat);
+        QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(pMemberResultPtr->m_member->m_lastLogin, QLocale::NarrowFormat);
         this->ui->lastLoginValueLabel->setText(dateLocalized);
         // username
         this->ui->usernameLineEdit->setText(QString::number(pMemberResultPtr->m_member->m_username));

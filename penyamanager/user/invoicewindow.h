@@ -33,8 +33,6 @@ namespace PenyaManager {
             void initializeTable();
             //
             void translateTable();
-            //
-            bool printInvoice(const MemberPtr &pMemberPtr, const InvoicePtr &pInvoicePtr);
 
         private slots:
             //
