@@ -124,13 +124,6 @@ namespace PenyaManager {
         Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kInvoice,
                 QString("invoiceId %1").arg(pInvoiceResultPtr->m_pInvoice->m_id));
 
-        ok = printInvoice(pCurrMemberPtr, pInvoiceResultPtr->m_pInvoice);
-        if (!ok) {
-            Singletons::m_pLogger->Error(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kInvoice,
-                    QString("error printing invoice. invoiceId %1").arg(pInvoiceResultPtr->m_pInvoice->m_id));
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
-            return;
-        }
         // call dashboard window
         m_switchCentralWidgetCallback(WindowKey::kMemberDashboardWindowKey);
     }
@@ -194,57 +187,6 @@ namespace PenyaManager {
         Float newBalance = pMemberPtr->m_balance;
         newBalance -= totalInvoice;
         this->ui->newBalanceInfoLabel->setText(QString("%1 €").arg(newBalance, 0, 'f', 2));
-    }
-    //
-    bool InvoiceWindow::printInvoice(const MemberPtr &pMemberPtr, const InvoicePtr &pInvoicePtr)
-    {
-        // Loading Current Invoice
-        // Loading Current Invoice products
-        InvoiceProductItemListResultPtr pInvoiceProductItemListResultPtr = Singletons::m_pDAO->getAllInvoiceProductItems(pInvoicePtr->m_id);
-        if (pInvoiceProductItemListResultPtr->m_error) {
-            return false;
-        }
-
-        QVariantHash invoiceData;
-        // Label
-        invoiceData["invoiceLabel"] = tr("Invoice");
-        invoiceData["memberidLabel"] = tr("Member Id");
-        invoiceData["productLabel"] = tr("Product");
-        invoiceData["countLabel"] = tr("Count");
-        invoiceData["productTotalLabel"] = tr("Total");
-        invoiceData["invoiceTotalLabel"] = tr("Invoice Total");
-
-        // invoice general info
-        invoiceData["invoiceId"] = pInvoicePtr->m_id;
-        invoiceData["memberid"] = pMemberPtr->m_username;
-        invoiceData["memberName"] = QString("%1 %2 %3").arg(pMemberPtr->m_name).arg(pMemberPtr->m_surname1).arg(pMemberPtr->m_surname2);
-        // invoice date is invoice creation date
-        // Can be old (e.g. an unclosed invoice created some days ago)
-        // print current date
-        QString dateLocalized = Singletons::m_pTranslationManager->getLocale().toString(QDateTime::currentDateTime(), QLocale::NarrowFormat);
-        invoiceData["dateValue"] = dateLocalized;
-        Singletons::m_pLogger->Warn(Constants::kSystemUserId, PenyaManager::LogAction::kDashboard, dateLocalized);
-        // invoice products info
-        QVariantList productList;
-        Float totalInvoice = 0.0;
-        for (InvoiceProductItemList::iterator iter = pInvoiceProductItemListResultPtr->m_list->begin(); iter != pInvoiceProductItemListResultPtr->m_list->end(); ++iter)
-        {
-            InvoiceProductItemPtr pInvoiceProductItemPtr = *iter;
-            QVariantHash productData;
-            productData["productName"] = Singletons::m_pTranslationManager->getStringTranslation(pInvoiceProductItemPtr->m_productnameEus, pInvoiceProductItemPtr->m_productnameEs);
-            productData["productCount"] = pInvoiceProductItemPtr->m_count;
-            // invoice has been closed
-            Float totalPrice = pInvoiceProductItemPtr->m_pricePerUnit * pInvoiceProductItemPtr->m_count;
-            totalInvoice += totalPrice;
-            productData["productTotal"] = QString("%1 €").arg(totalPrice, 0, 'f', 2);
-            productList.push_back(productData);
-        }
-        invoiceData["products"] = productList;
-        // computed invoice total value
-        invoiceData["invoiceTotal"] = QString("%1 €").arg(totalInvoice, 0, 'f', 2);
-        // print invoice
-        GuiUtils::printInvoice(invoiceData, pMemberPtr->m_id, pInvoicePtr->m_id);
-        return true;
     }
     //
     void InvoiceWindow::on_prevPagePushButton_clicked()
