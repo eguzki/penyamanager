@@ -105,7 +105,7 @@ namespace PenyaManager {
             Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
-        // pInvoicePtr could be null
+
         m_currentPage = 0;
         fillInvoiceData(pInvoiceResultPtr->m_pInvoice);
 

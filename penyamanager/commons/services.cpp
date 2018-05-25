@@ -41,8 +41,6 @@ namespace PenyaManager {
         pInvoicePtr->m_id = invoiceId;
         // memberId
         pInvoicePtr->m_memberId = memberId;
-        // invoice date: now
-        pInvoicePtr->m_date = QDateTime::currentDateTimeUtc();
         // state: closed
         pInvoicePtr->m_state = InvoiceState::Closed;
         // total
