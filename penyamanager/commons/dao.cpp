@@ -350,7 +350,9 @@ namespace PenyaManager {
             QueryPtr queryPtr(new QSqlQuery);
             // Invoice by invoice ID
             queryPtr->prepare(
-                    "SELECT state, date, total, idmember, last_modif FROM invoice "
+                    "SELECT invoice.state, invoice.date, invoice.total, invoice.idmember, invoice.last_modif, member.username "
+                    "FROM invoice "
+                    "JOIN member on member.idmember = invoice.idmember "
                     "WHERE idinvoice = :invoiceid "
                     );
             queryPtr->bindValue(":invoiceid", invoiceId);
@@ -374,6 +376,7 @@ namespace PenyaManager {
             pInvoicePtr->m_total = queryResponse.query->value(2).toFloat();
             pInvoicePtr->m_memberId = queryResponse.query->value(3).toInt();
             pInvoicePtr->m_lastModified = queryResponse.query->value(4).toDateTime();
+            pInvoicePtr->m_memberUsername = queryResponse.query->value(5).toInt();
             pInvoicePtr->m_lastModified.setTimeSpec(Qt::UTC);
             pInvoiceResultPtr->m_pInvoice = pInvoicePtr;
         }
