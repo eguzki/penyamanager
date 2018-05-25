@@ -922,7 +922,7 @@ namespace PenyaManager {
                     QString("getAccountListInvoicesSum fromDate %1 toDate %2").arg(fromDateLocalized).arg(toDateLocalized));
             floatResult.error = 1;
         } else if (queryResponse.query->next()) {
-            floatResult.result = queryResponse.query->value(0).toInt();
+            floatResult.result = queryResponse.query->value(0).toFloat();
         }
         return floatResult;
     }
