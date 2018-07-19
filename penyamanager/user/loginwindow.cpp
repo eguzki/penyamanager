@@ -208,7 +208,7 @@ namespace PenyaManager {
             // User not active
             Singletons::m_pLogger->Info(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kLogin,
                     QString("User id %1 not active").arg(pMemberResultPtr->m_member->m_id));
-            Singletons::m_pDialogManager->infoMessageBox(this, tr("User not active in the system: %1").arg(pMemberResultPtr->m_member->m_id), [](){});
+            Singletons::m_pDialogManager->infoMessageBox(this, tr("User not active in the system: %1").arg(pMemberResultPtr->m_member->m_username), [](){});
             return;
         }
 
