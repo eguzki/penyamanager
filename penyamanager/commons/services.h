@@ -19,7 +19,7 @@ namespace PenyaManager {
             //
             bool cleanOutdatedInvoices();
             //
-            bool closeInvoice(Int32 memberId, Int32 invoiceId);
+            bool closeInvoice(const InvoicePtr &pInvoicePtr);
             //
             bool createAccountTransaction(Int32 memberId, Float amount, const QString &description, TransactionType type);
             //
