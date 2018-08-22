@@ -34,13 +34,15 @@ namespace PenyaManager {
     // Update invoice data
     // Create transaction
     // Update stock
-    bool Services::closeInvoice(Int32 memberId, Int32 invoiceId)
+    bool Services::closeInvoice(const InvoicePtr &pOpenInvoicePtr)
     {
         InvoicePtr pInvoicePtr(new Invoice());
         // id
-        pInvoicePtr->m_id = invoiceId;
+        pInvoicePtr->m_id = pOpenInvoicePtr->m_id;
+        // date
+        pInvoicePtr->m_date = pOpenInvoicePtr->m_date;
         // memberId
-        pInvoicePtr->m_memberId = memberId;
+        pInvoicePtr->m_memberId = pOpenInvoicePtr->m_memberId;
         // state: closed
         pInvoicePtr->m_state = InvoiceState::Closed;
         // total
@@ -57,7 +59,7 @@ namespace PenyaManager {
             Float totalPrice = pInvoiceProductItemPtr->m_currentPricePerUnit * pInvoiceProductItemPtr->m_count;
             totalInvoice += totalPrice;
             // close invoice product price
-            bool ok = Singletons::m_pDAO->updateProductInvoice(invoiceId, pInvoiceProductItemPtr->m_productId, pInvoiceProductItemPtr->m_count, pInvoiceProductItemPtr->m_currentPricePerUnit);
+            bool ok = Singletons::m_pDAO->updateProductInvoice(pInvoicePtr->m_id, pInvoiceProductItemPtr->m_productId, pInvoiceProductItemPtr->m_count, pInvoiceProductItemPtr->m_currentPricePerUnit);
             if (!ok) {
                 return false;
             }
@@ -73,9 +75,9 @@ namespace PenyaManager {
         }
 
         // create account register info
-        QString description = GuiUtils::invoiceAccountDescription(invoiceId);
+        QString description = GuiUtils::invoiceAccountDescription(pInvoicePtr->m_id);
         // account transaction has totalInvoice as negative amount
-        ok = this->createAccountTransaction(memberId, -totalInvoice, description, TransactionType::Invoice);
+        ok = this->createAccountTransaction(pInvoicePtr->m_memberId, -totalInvoice, description, TransactionType::Invoice);
         if (!ok) {
             return false;
         }
@@ -273,7 +275,7 @@ namespace PenyaManager {
             if (pInvoicePtr->m_lastModified.secsTo(now) > 60*60 * Constants::kOpenInvoiceTimeoutH) {
                 // invoice timed out
                 // close it
-                bool ok = closeInvoice(pInvoicePtr->m_memberId, pInvoicePtr->m_id);
+                bool ok = closeInvoice(pInvoicePtr);
                 if (!ok) {
                     return false;
                 }

@@ -410,6 +410,7 @@ namespace PenyaManager {
         } else if (queryResponse.query->next())
         {
             InvoicePtr pInvoicePtr(new Invoice());
+            pInvoicePtr->m_memberId = memberId;
             pInvoicePtr->m_id = queryResponse.query->value(0).toUInt();
             pInvoicePtr->m_state = static_cast<InvoiceState>(queryResponse.query->value(1).toUInt());
             pInvoicePtr->m_date = queryResponse.query->value(2).toDateTime();

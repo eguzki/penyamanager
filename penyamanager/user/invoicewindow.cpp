@@ -114,7 +114,7 @@ namespace PenyaManager {
         }
 
         // Update member balance
-        bool ok = Singletons::m_pServices->closeInvoice(pCurrMemberPtr->m_id, pInvoiceResultPtr->m_pInvoice->m_id);
+        bool ok = Singletons::m_pServices->closeInvoice(pInvoiceResultPtr->m_pInvoice);
         if (!ok) {
             Singletons::m_pLogger->Error(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kInvoice,
                     QString("error closing invoice. invoiceId %1").arg(pInvoiceResultPtr->m_pInvoice->m_id));
