@@ -5,9 +5,9 @@
 #-------------------------------------------------
 
 QT       += core
-
+QT       += sql
 QT       -= gui
-
+QTPLUGIN += qsqlmysql
 TARGET = penyamanagerconf
 CONFIG   += console
 CONFIG   -= app_bundle

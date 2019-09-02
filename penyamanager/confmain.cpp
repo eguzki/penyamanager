@@ -3,10 +3,31 @@
 #include <QCoreApplication>
 #include <QCommandLineParser>
 #include <QSettings>
+#include <QtSql>
 #include <stdio.h>
 
 #include <commons/utils.h>
 #include <commons/constants.h>
+
+bool testDB(const QString& hostname, const QString& databaseName,
+            const QString& username, const QString& pass)
+{
+    QSqlDatabase db(QSqlDatabase::addDatabase("QMYSQL"));
+    // configure db connection
+    db.setHostName(hostname);
+    db.setDatabaseName(databaseName);
+    db.setUserName(username);
+    db.setPassword(pass);
+
+    // open ddbb connection
+    bool success(db.open());
+
+    if (!success) {
+        fprintf(stderr, "Error: %s\n", db.lastError().text().toStdString().c_str());
+    }
+
+    return success;
+}
 
 int main(int argc, char *argv[])
 {
@@ -68,6 +89,12 @@ int main(int argc, char *argv[])
             "Debug mode");
     parser.addOption(debugOption);
 
+    // An option value (--force). Optional.
+    const QCommandLineOption forceOption(
+            "force",
+            "Disable parameter checks");
+    parser.addOption(forceOption);
+
     if (!parser.parse(QCoreApplication::arguments())) {
         fputs(qPrintable(parser.errorText()), stderr);
         fputs("\n\n", stderr);
@@ -99,6 +126,14 @@ int main(int argc, char *argv[])
             dbPass.isEmpty()
             ) {
         fputs(qPrintable(parser.helpText()), stderr);
+        return 1;
+    }
+
+    if (!parser.isSet(forceOption) && !testDB(dbHost, dbName, dbUser, dbPass)) {
+        fprintf(stderr, "DB address: %s\n", dbHost.toStdString().c_str());
+        fprintf(stderr, "DB name: %s\n", dbName.toStdString().c_str());
+        fprintf(stderr, "DB username: %s\n", dbUser.toStdString().c_str());
+        fputs("Check connection params, you fool user!\n", stderr);
         return 1;
     }
 
