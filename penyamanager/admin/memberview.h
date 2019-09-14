@@ -37,6 +37,14 @@ namespace PenyaManager {
             void onMemberUpdated();
             //
             void onMemberImageSelected(const QString &fn);
+            //
+            void hideNewAccountEntryForm();
+            //
+            void showNewAccountEntryForm();
+            //
+            bool newAccountEntryFormEnabled();
+            //
+            void newAccountEntrySaved();
 
         private slots:
             //
@@ -45,8 +53,12 @@ namespace PenyaManager {
             void on_imagePushButton_clicked();
             //
             void on_changePasswordPushButton_clicked();
+            //
+            void on_depositButton_clicked();
+            //
+            void on_newAccountSavePushButton_clicked();
 
-        private:
+    private:
             //
             Ui::MemberView *ui;
             //

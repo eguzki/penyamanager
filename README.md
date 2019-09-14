@@ -86,6 +86,7 @@ penyamanager
     * Filter to show only those to be mailed
   * member Info (can be edited)
   * Member create
+  * Account fix
 * Configuration Application
   * Resource path and ddbb access via configuration system platform independent. QSettings.
   * Database credentials encrypted using SimpleCrypt library
