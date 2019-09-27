@@ -33,7 +33,7 @@ namespace PenyaManager {
         QPrinter printer( defaultPrinter);
 
         /*
-        * PDF
+         * PDF
         QPrinter printer(QPrinter::HighResolution);
         printer.setOutputFormat(QPrinter::PdfFormat);
         printer.setOutputFileName("/home/eguzki/printer.pdf");

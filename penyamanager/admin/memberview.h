@@ -58,7 +58,7 @@ namespace PenyaManager {
             //
             void on_newAccountSavePushButton_clicked();
 
-    private:
+        private:
             //
             Ui::MemberView *ui;
             //
