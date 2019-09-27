@@ -65,7 +65,7 @@ namespace PenyaManager {
                 return;
             }
             if (!pFamilyResultPtr->m_family) {
-                Singletons::m_pLogger->Warn(Constants::kSystemUserId, PenyaManager::LogAction::kFamily,
+                Singletons::m_pLogger->Warn(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kFamily,
                         QString("item not found %1").arg(Singletons::m_currentFamilyId));
                 Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                 return;
@@ -106,7 +106,7 @@ namespace PenyaManager {
                 QFile oldFile(oldImagePath);
                 oldFile.remove();
             }
-            Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kFamily,
+            Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kFamily,
                     QString("edititem %1").arg(pFamilyResultPtr->m_family->m_id));
         } else {
             // new item
@@ -139,7 +139,7 @@ namespace PenyaManager {
                 Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
-            Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kFamily,
+            Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kFamily,
                     QString("newitem %1").arg(familyId));
         }
 
@@ -162,7 +162,7 @@ namespace PenyaManager {
         // Check write permissions
         QFileInfo imagePath(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString());
         if (!imagePath.isDir() || !imagePath.isWritable()) {
-            Singletons::m_pLogger->Warn(Constants::kSystemUserId, PenyaManager::LogAction::kFamily,
+            Singletons::m_pLogger->Warn(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kFamily,
                     QString("Unable to write to %1").arg(imagePath.absoluteFilePath()));
             Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Unable to write to %1").arg(imagePath.absoluteFilePath()), [](){});
             return;
@@ -202,7 +202,7 @@ namespace PenyaManager {
             return;
         }
         if (!pProductFamilyResultPtr->m_family) {
-            Singletons::m_pLogger->Warn(Constants::kSystemUserId, PenyaManager::LogAction::kFamily,
+            Singletons::m_pLogger->Warn(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kFamily,
                     QString("item not found %1").arg(familyId));
             Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;

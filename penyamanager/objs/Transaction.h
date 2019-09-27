@@ -17,7 +17,8 @@ namespace PenyaManager
         Invoice,
         Deposit,
         AccountPayment,
-        DepositFix
+        DepositFix,
+        AccountFix
     };
 
     QString getStringFromTransactionTypeEnum(TransactionType e);

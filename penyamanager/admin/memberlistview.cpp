@@ -156,7 +156,7 @@ namespace PenyaManager {
         auto rowMap = m_rowProductIdMap.find(row);
         if (rowMap == m_rowProductIdMap.end()) {
             //this should never happen
-            Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kMember,
+            Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kMember,
                     QString("memberlistview. MemberID not found and should be in the map"));
             return;
         }

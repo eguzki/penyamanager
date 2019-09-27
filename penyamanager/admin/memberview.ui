@@ -65,7 +65,13 @@ background: qradialgradient(cx: 0.4, cy: -0.1,
 fx: 0.4, fy: -0.1,
 radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
 }
-*/</string>
+*/
+
+#errorLabel {
+font: 14pt &quot;Calibri&quot;;
+color: red;
+qproperty-alignment: AlignCenter;
+}</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="leftMargin">
@@ -82,6 +88,18 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
    </property>
    <item>
     <widget class="QWidget" name="memberIdWidget" native="true">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>82</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>82</height>
+      </size>
+     </property>
      <layout class="QHBoxLayout" name="horizontalLayout_4">
       <property name="leftMargin">
        <number>1</number>
@@ -96,29 +114,107 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
        <number>1</number>
       </property>
       <item>
-       <widget class="QLabel" name="lastLoginLabel">
-        <property name="text">
-         <string>Last Login Date:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="lastLoginValueLabel">
-        <property name="minimumSize">
-         <size>
-          <width>200</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>200</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>01-05-2015</string>
-        </property>
+       <widget class="QWidget" name="userLabelWidget" native="true">
+        <layout class="QVBoxLayout" name="verticalLayout_6">
+         <property name="spacing">
+          <number>1</number>
+         </property>
+         <property name="leftMargin">
+          <number>1</number>
+         </property>
+         <property name="topMargin">
+          <number>1</number>
+         </property>
+         <property name="rightMargin">
+          <number>1</number>
+         </property>
+         <property name="bottomMargin">
+          <number>1</number>
+         </property>
+         <item>
+          <widget class="QWidget" name="lastLoginWidget" native="true">
+           <layout class="QHBoxLayout" name="horizontalLayout_26">
+            <property name="leftMargin">
+             <number>1</number>
+            </property>
+            <property name="topMargin">
+             <number>1</number>
+            </property>
+            <property name="rightMargin">
+             <number>1</number>
+            </property>
+            <property name="bottomMargin">
+             <number>1</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="lastLoginLabel">
+              <property name="text">
+               <string>Last Login Date:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="lastLoginValueLabel">
+              <property name="minimumSize">
+               <size>
+                <width>200</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>200</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>01-05-2015</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QWidget" name="accountBalanceWidget" native="true">
+           <layout class="QHBoxLayout" name="horizontalLayout">
+            <property name="leftMargin">
+             <number>1</number>
+            </property>
+            <property name="topMargin">
+             <number>1</number>
+            </property>
+            <property name="rightMargin">
+             <number>1</number>
+            </property>
+            <property name="bottomMargin">
+             <number>1</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="accountBalanceLabel">
+              <property name="text">
+               <string>Account Balance:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="accountBalanceValueLabel">
+              <property name="text">
+               <string notr="true">0.0 €</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="depositButton">
+              <property name="text">
+               <string>New account entry</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
       <item>
@@ -170,7 +266,19 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="widget" native="true">
+    <widget class="QWidget" name="userWidget" native="true">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>470</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>470</height>
+      </size>
+     </property>
      <layout class="QHBoxLayout" name="horizontalLayout_20">
       <property name="leftMargin">
        <number>1</number>
@@ -185,7 +293,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
        <number>1</number>
       </property>
       <item>
-       <widget class="QWidget" name="widget_2" native="true">
+       <widget class="QWidget" name="userInfoWidget" native="true">
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <property name="leftMargin">
           <number>1</number>
@@ -218,7 +326,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
              <widget class="QLabel" name="usernameLabel">
               <property name="minimumSize">
                <size>
-                <width>70</width>
+                <width>100</width>
                 <height>0</height>
                </size>
               </property>
@@ -265,7 +373,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
              <widget class="QLabel" name="nameLabel">
               <property name="minimumSize">
                <size>
-                <width>70</width>
+                <width>100</width>
                 <height>0</height>
                </size>
               </property>
@@ -325,7 +433,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
              <widget class="QLabel" name="memberSurnameLabel">
               <property name="minimumSize">
                <size>
-                <width>70</width>
+                <width>100</width>
                 <height>0</height>
                </size>
               </property>
@@ -402,7 +510,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
              <widget class="QLabel" name="idCardLabel">
               <property name="minimumSize">
                <size>
-                <width>70</width>
+                <width>100</width>
                 <height>0</height>
                </size>
               </property>
@@ -449,7 +557,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
              <widget class="QLabel" name="birthdateLabel">
               <property name="minimumSize">
                <size>
-                <width>70</width>
+                <width>100</width>
                 <height>0</height>
                </size>
               </property>
@@ -529,7 +637,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
              <widget class="QLabel" name="bankAccountLabel">
               <property name="minimumSize">
                <size>
-                <width>70</width>
+                <width>100</width>
                 <height>0</height>
                </size>
               </property>
@@ -589,7 +697,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
              <widget class="QLabel" name="addressLabel">
               <property name="minimumSize">
                <size>
-                <width>70</width>
+                <width>100</width>
                 <height>0</height>
                </size>
               </property>
@@ -649,7 +757,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
              <widget class="QLabel" name="zipCodeLabel">
               <property name="minimumSize">
                <size>
-                <width>70</width>
+                <width>100</width>
                 <height>0</height>
                </size>
               </property>
@@ -696,7 +804,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
              <widget class="QLabel" name="townLabel">
               <property name="minimumSize">
                <size>
-                <width>70</width>
+                <width>100</width>
                 <height>0</height>
                </size>
               </property>
@@ -756,7 +864,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
              <widget class="QLabel" name="stateLabel">
               <property name="minimumSize">
                <size>
-                <width>70</width>
+                <width>100</width>
                 <height>0</height>
                </size>
               </property>
@@ -803,7 +911,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
              <widget class="QLabel" name="phoneLabel">
               <property name="minimumSize">
                <size>
-                <width>70</width>
+                <width>100</width>
                 <height>0</height>
                </size>
               </property>
@@ -850,7 +958,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
              <widget class="QLabel" name="phone2Label">
               <property name="minimumSize">
                <size>
-                <width>70</width>
+                <width>100</width>
                 <height>0</height>
                </size>
               </property>
@@ -897,7 +1005,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
              <widget class="QLabel" name="emailLabel">
               <property name="minimumSize">
                <size>
-                <width>70</width>
+                <width>100</width>
                 <height>0</height>
                </size>
               </property>
@@ -957,7 +1065,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
              <widget class="QLabel" name="cardLabel">
               <property name="minimumSize">
                <size>
-                <width>70</width>
+                <width>100</width>
                 <height>0</height>
                </size>
               </property>
@@ -1004,7 +1112,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
              <widget class="QLabel" name="memberTypeLabel">
               <property name="minimumSize">
                <size>
-                <width>70</width>
+                <width>100</width>
                 <height>0</height>
                </size>
               </property>
@@ -1057,18 +1165,6 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
          </size>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_3">
-         <property name="leftMargin">
-          <number>1</number>
-         </property>
-         <property name="topMargin">
-          <number>1</number>
-         </property>
-         <property name="rightMargin">
-          <number>1</number>
-         </property>
-         <property name="bottomMargin">
-          <number>1</number>
-         </property>
          <item>
           <widget class="QWidget" name="isAdminWidget" native="true">
            <layout class="QHBoxLayout" name="horizontalLayout_7">
@@ -1087,6 +1183,58 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
               <property name="sizeHint" stdset="0">
                <size>
                 <width>681</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QWidget" name="activeWidget" native="true">
+           <layout class="QHBoxLayout" name="horizontalLayout_23">
+            <item>
+             <widget class="QCheckBox" name="activeCheckBox">
+              <property name="text">
+               <string>Active</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_3">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>682</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QWidget" name="postalSendWidget" native="true">
+           <layout class="QHBoxLayout" name="horizontalLayout_17">
+            <item>
+             <widget class="QCheckBox" name="postalSendCheckBox">
+              <property name="text">
+               <string>Postal Send</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_17">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>645</width>
                 <height>20</height>
                </size>
               </property>
@@ -1134,73 +1282,21 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
               </property>
              </widget>
             </item>
-            <item>
-             <widget class="QWidget" name="activeWidget" native="true">
-              <layout class="QHBoxLayout" name="horizontalLayout_2">
-               <item>
-                <widget class="QCheckBox" name="activeCheckBox">
-                 <property name="text">
-                  <string>Active</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <spacer name="horizontalSpacer_3">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>682</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-              </layout>
-             </widget>
-            </item>
-            <item>
-             <widget class="QWidget" name="postalSendWidget" native="true">
-              <layout class="QHBoxLayout" name="horizontalLayout_17">
-               <item>
-                <widget class="QCheckBox" name="postalSendCheckBox">
-                 <property name="text">
-                  <string>Postal Send</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <spacer name="horizontalSpacer_17">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>645</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-              </layout>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="changePasswordPushButton">
-              <property name="text">
-               <string>change password</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="savePushButton">
-              <property name="text">
-               <string>Save</string>
-              </property>
-             </widget>
-            </item>
            </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="changePasswordPushButton">
+           <property name="text">
+            <string>change password</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="savePushButton">
+           <property name="text">
+            <string>Save</string>
+           </property>
           </widget>
          </item>
         </layout>
@@ -1214,13 +1310,205 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
      <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Expanding</enum>
+     </property>
      <property name="sizeHint" stdset="0">
       <size>
-       <width>0</width>
-       <height>0</height>
+       <width>20</width>
+       <height>20</height>
       </size>
      </property>
     </spacer>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="newAccountEntryGroupBox">
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="title">
+      <string>New Account Entry</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_5">
+      <property name="leftMargin">
+       <number>1</number>
+      </property>
+      <property name="topMargin">
+       <number>1</number>
+      </property>
+      <property name="rightMargin">
+       <number>1</number>
+      </property>
+      <property name="bottomMargin">
+       <number>1</number>
+      </property>
+      <item>
+       <widget class="QWidget" name="widget" native="true">
+        <layout class="QHBoxLayout" name="horizontalLayout_28">
+         <property name="leftMargin">
+          <number>1</number>
+         </property>
+         <property name="topMargin">
+          <number>1</number>
+         </property>
+         <property name="rightMargin">
+          <number>1</number>
+         </property>
+         <property name="bottomMargin">
+          <number>1</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="errorLabel">
+           <property name="text">
+            <string notr="true">TextLabel</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_4">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="newAccountSavePushButton">
+           <property name="minimumSize">
+            <size>
+             <width>200</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>200</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Add new account entry</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QWidget" name="descriptionWidget" native="true">
+        <layout class="QHBoxLayout" name="horizontalLayout_27">
+         <property name="leftMargin">
+          <number>1</number>
+         </property>
+         <property name="topMargin">
+          <number>1</number>
+         </property>
+         <property name="rightMargin">
+          <number>1</number>
+         </property>
+         <property name="bottomMargin">
+          <number>1</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="label_4">
+           <property name="text">
+            <string>Entry Description</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="descriptionLineEdit">
+           <property name="text">
+            <string notr="true"/>
+           </property>
+           <property name="maxLength">
+            <number>195</number>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QWidget" name="widget_5" native="true">
+        <layout class="QHBoxLayout" name="horizontalLayout_24">
+         <property name="leftMargin">
+          <number>1</number>
+         </property>
+         <property name="topMargin">
+          <number>1</number>
+         </property>
+         <property name="rightMargin">
+          <number>1</number>
+         </property>
+         <property name="bottomMargin">
+          <number>1</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>Entry Value</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QDoubleSpinBox" name="entryDoubleSpinBox">
+           <property name="minimum">
+            <double>-10000.000000000000000</double>
+           </property>
+           <property name="maximum">
+            <double>10000.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QWidget" name="widget_4" native="true">
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <property name="leftMargin">
+          <number>1</number>
+         </property>
+         <property name="topMargin">
+          <number>1</number>
+         </property>
+         <property name="rightMargin">
+          <number>1</number>
+         </property>
+         <property name="bottomMargin">
+          <number>1</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>Entry Value (type again)</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QDoubleSpinBox" name="entryDoubleRepeatedSpinBox">
+           <property name="minimum">
+            <double>-10000.000000000000000</double>
+           </property>
+           <property name="maximum">
+            <double>10000.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </item>
   </layout>
  </widget>

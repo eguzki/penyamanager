@@ -133,7 +133,7 @@ namespace PenyaManager {
             if (!ok) {
                 return false;
             }
-            Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kService,
+            Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kService,
                     QString("ResetSlowPayer member ID %1 amount %2€").arg(pMemberPtr->m_id).arg(-pMemberPtr->m_balance, 0, 'f', 2));
         }
         return true;
@@ -279,7 +279,7 @@ namespace PenyaManager {
                 if (!ok) {
                     return false;
                 }
-                Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kService,
+                Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kService,
                         QString("[Invoice][OUTDATED] User %1 Invoice ID %2").arg(pInvoicePtr->m_memberId).arg(pInvoicePtr->m_id));
                 // leave returnInvoicePtr empty
             }

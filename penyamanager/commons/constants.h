@@ -85,7 +85,7 @@ namespace PenyaManager {
             // Reservation item list
             static const Uint32     kReservationListPageCount;
             //
-            static const Uint32     kSystemUserId;
+            static const Uint32     kNoUserId;
             //
             static const Uint32     kInactivityTimeoutSec;
             //

@@ -61,7 +61,7 @@ namespace PenyaManager {
         }
         if (!pLastInvoiceResultPtr->m_pInvoice) {
             // Last invoice not found
-            Singletons::m_pLogger->Warn(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kLogin, QString("Last invoice not found"));
+            Singletons::m_pLogger->Warn(PenyaManager::Constants::kNoUserId, PenyaManager::LogAction::kLogin, QString("Last invoice not found"));
             return;
         }
 
@@ -70,14 +70,14 @@ namespace PenyaManager {
         //
         MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberById(pLastInvoiceResultPtr->m_pInvoice->m_memberId);
         if (pMemberResultPtr->m_error) {
-            Singletons::m_pLogger->Error(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kLogin,
+            Singletons::m_pLogger->Error(PenyaManager::Constants::kNoUserId, PenyaManager::LogAction::kLogin,
                     QString("getMemberById %1").arg(pLastInvoiceResultPtr->m_pInvoice->m_memberId));
             Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         if (!pMemberResultPtr->m_member) {
             // member not found, should not happen
-            Singletons::m_pLogger->Warn(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kLogin,
+            Singletons::m_pLogger->Warn(PenyaManager::Constants::kNoUserId, PenyaManager::LogAction::kLogin,
                     QString("Unable to find last invoice's owner by id %1").arg(pLastInvoiceResultPtr->m_pInvoice->m_memberId));
             return;
         }
@@ -145,7 +145,7 @@ namespace PenyaManager {
         }
         if (!pLastInvoiceResultPtr->m_pInvoice) {
             // Last invoice not found
-            Singletons::m_pLogger->Warn(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kLogin, QString("Last invoice not found"));
+            Singletons::m_pLogger->Warn(PenyaManager::Constants::kNoUserId, PenyaManager::LogAction::kLogin, QString("Last invoice not found"));
             return;
         }
         fillLastInvoiceInfo(pLastInvoiceResultPtr->m_pInvoice);
@@ -178,7 +178,7 @@ namespace PenyaManager {
         // Loading user Profile
         MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberByUsername(this->m_username);
         if (pMemberResultPtr->m_error) {
-            Singletons::m_pLogger->Error(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kLogin,
+            Singletons::m_pLogger->Error(PenyaManager::Constants::kNoUserId, PenyaManager::LogAction::kLogin,
                     QString("getMemberByUsername %1").arg(this->m_username));
             Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
@@ -186,7 +186,7 @@ namespace PenyaManager {
 
         if (!pMemberResultPtr->m_member)
         {
-            Singletons::m_pLogger->Info(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kLogin,
+            Singletons::m_pLogger->Info(PenyaManager::Constants::kNoUserId, PenyaManager::LogAction::kLogin,
                     QString("username %1 does not exist").arg(this->m_username));
             // User could not be found
             Singletons::m_pDialogManager->infoMessageBox(this, tr("User not registered in the system: %1").arg(this->m_username), [](){});
@@ -197,7 +197,7 @@ namespace PenyaManager {
         if (pMemberResultPtr->m_member->m_pwd != hashedPwd)
         {
             // User not active
-            Singletons::m_pLogger->Info(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kLogin,
+            Singletons::m_pLogger->Info(PenyaManager::Constants::kNoUserId, PenyaManager::LogAction::kLogin,
                     QString("id %1 username %2 pass check failed").arg(pMemberResultPtr->m_member->m_id).arg(this->m_username));
             Singletons::m_pDialogManager->infoMessageBox(this, tr("Password incorrect"), [](){});
             return;
@@ -206,7 +206,7 @@ namespace PenyaManager {
         if (!pMemberResultPtr->m_member->m_active)
         {
             // User not active
-            Singletons::m_pLogger->Info(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kLogin,
+            Singletons::m_pLogger->Info(PenyaManager::Constants::kNoUserId, PenyaManager::LogAction::kLogin,
                     QString("User id %1 not active").arg(pMemberResultPtr->m_member->m_id));
             Singletons::m_pDialogManager->infoMessageBox(this, tr("User not active in the system: %1").arg(pMemberResultPtr->m_member->m_username), [](){});
             return;
@@ -222,7 +222,7 @@ namespace PenyaManager {
         // It is supossed that only few invoices would be open
         bool ok = Singletons::m_pServices->cleanOutdatedInvoices();
         if (!ok) {
-            Singletons::m_pLogger->Error(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kLogin, QString("cleanOutdatedInvoices"));
+            Singletons::m_pLogger->Error(PenyaManager::Constants::kNoUserId, PenyaManager::LogAction::kLogin, QString("cleanOutdatedInvoices"));
             Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
@@ -342,7 +342,7 @@ namespace PenyaManager {
         }
         if (!pLastInvoiceResultPtr->m_pInvoice) {
             // Last invoice not found
-            Singletons::m_pLogger->Warn(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kLogin, QString("previous page, last invoice not found"));
+            Singletons::m_pLogger->Warn(PenyaManager::Constants::kNoUserId, PenyaManager::LogAction::kLogin, QString("previous page, last invoice not found"));
             return;
         }
 
@@ -363,7 +363,7 @@ namespace PenyaManager {
         }
         if (!pLastInvoiceResultPtr->m_pInvoice) {
             // Last invoice not found
-            Singletons::m_pLogger->Warn(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kLogin, QString("next page, last invoice not found"));
+            Singletons::m_pLogger->Warn(PenyaManager::Constants::kNoUserId, PenyaManager::LogAction::kLogin, QString("next page, last invoice not found"));
             return;
         }
         m_currentPage++;
