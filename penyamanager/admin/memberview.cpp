@@ -169,7 +169,7 @@ namespace PenyaManager {
                 return;
             }
             if (!pMemberResultPtr->m_member) {
-                Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kMember,
+                Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kMember,
                         QString("Editing itemid %1 not found in ddbb").arg(Singletons::m_currentMemberId));
                 Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                 return;
@@ -251,7 +251,7 @@ namespace PenyaManager {
                 QFile oldFile(oldImagePath);
                 oldFile.remove();
             }
-            Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kMember,
+            Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kMember,
                     QString("editmember %1").arg(pMemberResultPtr->m_member->m_id));
         } else {
             // new item
@@ -340,7 +340,7 @@ namespace PenyaManager {
                 Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
-            Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kMember,
+            Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kMember,
                     QString("newmember %1").arg(memberId));
         }
 
@@ -439,7 +439,7 @@ namespace PenyaManager {
         // Check write permissions
         QFileInfo imagePath(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString());
         if (!imagePath.isDir() || !imagePath.isWritable()) {
-            Singletons::m_pLogger->Warn(Constants::kSystemUserId, PenyaManager::LogAction::kMember,
+            Singletons::m_pLogger->Warn(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kMember,
                     QString("Unable to write to %1").arg(imagePath.absoluteFilePath()));
             Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Unable to write to %1").arg(imagePath.absoluteFilePath()), [](){});
             return;
@@ -498,7 +498,7 @@ namespace PenyaManager {
             return;
         }
 
-        Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kMember,
+        Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kMember,
                 QString("passchange memberid %1").arg(Singletons::m_currentMemberId));
         Singletons::m_pDialogManager->infoMessageBoxTitled(this, tr("Password changed successfully"), [](){});
         // nothing should be added here
@@ -555,7 +555,7 @@ namespace PenyaManager {
             return;
         }
 
-        Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kMember,
+        Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kMember,
                 QString("new account fix entry: %1 €; memberId %2 ").arg(this->ui->entryDoubleSpinBox->value(), 0, 'f', 2).arg(Singletons::m_currentMemberId));
         Singletons::m_pDialogManager->infoMessageBoxTitled(this, tr("New account entry created successfully"),
                 std::bind(&MemberView::newAccountEntrySaved, this));

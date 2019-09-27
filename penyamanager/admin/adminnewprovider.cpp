@@ -67,7 +67,7 @@ namespace PenyaManager {
             return;
         }
         if (!pProviderResultPtr->m_provider){
-            Singletons::m_pLogger->Warn(Constants::kSystemUserId, PenyaManager::LogAction::kProvider,
+            Singletons::m_pLogger->Warn(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kProvider,
                     QString("Unable to find providerId by id %1").arg(QString::number(providerId)));
             return;
         }
@@ -97,7 +97,7 @@ namespace PenyaManager {
         // Check write permissions
         QFileInfo imagePath(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString());
         if (!imagePath.isDir() || !imagePath.isWritable()) {
-            Singletons::m_pLogger->Warn(Constants::kSystemUserId, PenyaManager::LogAction::kProvider,
+            Singletons::m_pLogger->Warn(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kProvider,
                     QString("Unable to write to %1").arg(imagePath.absoluteFilePath()));
             Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Unable to write to %1").arg(imagePath.absoluteFilePath()), [](){});
             return;
@@ -156,7 +156,7 @@ namespace PenyaManager {
                 return;
             }
             if (!pProviderResultPtr->m_provider){
-                Singletons::m_pLogger->Warn(Constants::kSystemUserId, PenyaManager::LogAction::kProvider,
+                Singletons::m_pLogger->Warn(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kProvider,
                         QString("Unable to find providerId by id %1").arg(Singletons::m_currentProviderId));
                 return;
             }
@@ -193,7 +193,7 @@ namespace PenyaManager {
                 QFile oldFile(oldImagePath);
                 oldFile.remove();
             }
-            Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kProvider,
+            Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kProvider,
                     QString("editprovider %1").arg(Singletons::m_currentProviderId));
         } else {
             // new provider
@@ -214,7 +214,7 @@ namespace PenyaManager {
                 Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
-            Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kProvider,
+            Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kProvider,
                     QString("newprovider %1").arg(providerId));
         }
         // reset var

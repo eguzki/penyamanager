@@ -197,7 +197,8 @@ namespace PenyaManager {
         auto rowMap = m_rowProductIdMap.find(row);
         if (rowMap == m_rowProductIdMap.end()) {
             //this should never happen
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kInvoice,
+            Singletons::m_pLogger->Error(Singletons::m_pCurrMember->m_id,
+                    PenyaManager::LogAction::kInvoice,
                     QString("On invoice table list clicked, invoice id not found."));
             return;
         }

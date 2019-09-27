@@ -87,7 +87,7 @@ namespace PenyaManager {
                 return;
             }
             if (!pProductResultPtr->m_item) {
-                Singletons::m_pLogger->Warn(Constants::kSystemUserId, PenyaManager::LogAction::kProduct,
+                Singletons::m_pLogger->Warn(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kProduct,
                         QString("item not found %1").arg(Singletons::m_currentProductId));
                 Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                 return;
@@ -136,7 +136,7 @@ namespace PenyaManager {
                 QFile oldFile(oldImagePath);
                 oldFile.remove();
             }
-            Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kProduct,
+            Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kProduct,
                     QString("edititem %1").arg(pProductResultPtr->m_item->m_id));
         } else {
             // new item
@@ -177,7 +177,7 @@ namespace PenyaManager {
                 Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
-            Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kProduct,
+            Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kProduct,
                     QString("new item %1").arg(itemId));
         }
 
@@ -203,7 +203,7 @@ namespace PenyaManager {
             return;
         }
         if (!pProductItemResultPtr->m_item) {
-            Singletons::m_pLogger->Warn(Constants::kSystemUserId, PenyaManager::LogAction::kProduct,
+            Singletons::m_pLogger->Warn(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kProduct,
                     QString("item not found %1").arg(productId));
             Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
@@ -326,7 +326,7 @@ namespace PenyaManager {
         // Check write permissions
         QFileInfo imagePath(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString());
         if (!imagePath.isDir() || !imagePath.isWritable()) {
-            Singletons::m_pLogger->Warn(Constants::kSystemUserId, PenyaManager::LogAction::kProduct,
+            Singletons::m_pLogger->Warn(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kProduct,
                     QString("Unable to write to %1").arg(imagePath.absoluteFilePath()));
             Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Unable to write to %1").arg(imagePath.absoluteFilePath()), [](){});
             return;
