@@ -24,6 +24,16 @@ namespace PenyaManager {
     //
     void GuiUtils::printText(const QString& html)
     {
+        QPrinterInfo defaultPrinter = QPrinterInfo::defaultPrinter();
+        if (defaultPrinter.isNull()) {
+            Singletons::m_pLogger->Error(Constants::kSystemUserId, LogAction::kPrint,
+                    QString("default printer is null"));
+            return;
+        }
+        QPrinter printer( defaultPrinter);
+
+        /*
+        * PDF
         QPrinter printer(QPrinter::HighResolution);
         printer.setOutputFormat(QPrinter::PdfFormat);
         printer.setOutputFileName("/home/eguzki/printer.pdf");
@@ -33,6 +43,8 @@ namespace PenyaManager {
                     QString("[PrintFailed] pdf printer not valid"));
             return;
         }
+        */
+
         // nedeed to keep printer from printing page number
         QSizeF pageSize;
         pageSize.setWidth(printer.pageRect(QPrinter::Millimeter).width());
