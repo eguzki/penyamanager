@@ -50,7 +50,7 @@ namespace PenyaManager {
         }
         if (!pMemberResultPtr->m_member) {
             // member not found, should not happen
-            Singletons::m_pLogger->Warn(Constants::kSystemUserId, PenyaManager::LogAction::kDashboard,
+            Singletons::m_pLogger->Warn(Constants::kNoUserId, PenyaManager::LogAction::kDashboard,
                     QString("Unable to find owner by id %1").arg(Singletons::m_pCurrMember->m_id));
             return;
         }

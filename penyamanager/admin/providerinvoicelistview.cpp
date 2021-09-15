@@ -199,7 +199,7 @@ namespace PenyaManager {
         auto rowMap = m_rowProviderInvoiceIdMap.find(row);
         if (rowMap == m_rowProviderInvoiceIdMap.end()) {
             //this should never happen
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kProvider,
+            Singletons::m_pLogger->Error(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kProvider,
                     QString("providerinvoicelistview provider invoice Id not found and should be in the map"));
             return;
         }

@@ -6,11 +6,16 @@ Configure client application
 * Database access
 * Resource path
 
+By default, database connection parameters will be checked opening connection.
+If database connection cannot be stablished, configuration will fail and exit. 
+
+Parameter checking can be disabled with `--force` option.
+
 # Usage
 
 ```
 $ penyamanagerconf -h
-Usage: ./dist/penyamanagerconf [options]
+Usage: dist/penyamanagerconf [options]
 penyamanager configuration application
 
 Options:
@@ -24,6 +29,7 @@ Options:
   --syslog <syslog>          Syslog Server host. IP or hostname. Default
                              database host.
   --debug                    Debug mode
+  --force                    Disable parameter checks
 ```
 
 # example

@@ -208,7 +208,7 @@ namespace PenyaManager {
             return;
         }
         QLocale enLocale = QLocale("en");
-        Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kReservation,
+        Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kReservation,
                 QString("reserved table, itemid %1, %2 %3").arg(itemId).arg(GetStringFromReservationTypeEnum(reservationType)).arg(enLocale.toString(date)));
         Singletons::m_pDialogManager->infoMessageBoxTitled(this,
                 tr("Reserved %1 at %2").arg(GetStringFromReservationItemTypeEnum(ReservationItemType::LunchTableType, true)).arg(GetStringFromReservationTypeEnum(reservationType, true)),
@@ -236,7 +236,7 @@ namespace PenyaManager {
             return;
         }
         QLocale enLocale = QLocale("en");
-        Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kReservation,
+        Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kReservation,
                 QString("blocked table, reservationid %1 %2 on %3").arg(reservationId).arg(GetStringFromReservationTypeEnum(reservationType)).arg(enLocale.toString(date)));
         Singletons::m_pDialogManager->infoMessageBoxTitled(this,
                 tr("Reserved %1 at %2").arg(GetStringFromReservationItemTypeEnum(ReservationItemType::LunchTableType, true)).arg(GetStringFromReservationTypeEnum(reservationType, true)),
@@ -262,7 +262,7 @@ namespace PenyaManager {
             return;
         }
         QLocale enLocale = QLocale("en");
-        Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kReservation,
+        Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kReservation,
                 QString("canceled %1, reservationid %2, %3 %4").arg(GetStringFromReservationItemTypeEnum(ReservationItemType::LunchTableType)).arg(reservationId).arg(GetStringFromReservationTypeEnum(reservationType)).arg(enLocale.toString(date)));
         Singletons::m_pDialogManager->infoMessageBoxTitled(this,
                 tr("Cancelled %1 at %2").arg(GetStringFromReservationItemTypeEnum(ReservationItemType::LunchTableType, true)).arg(GetStringFromReservationTypeEnum(reservationType, true)),

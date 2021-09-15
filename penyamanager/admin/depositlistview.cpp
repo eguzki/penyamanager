@@ -132,7 +132,7 @@ namespace PenyaManager {
             Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
-        Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kDeposit,
+        Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kDeposit,
                 QString("deposit ID %1 member ID %2 total %3€ diff %4€").arg(depositId).arg(memberId).arg(total, 0, 'f', 2).arg(amount, 0, 'f', 2));
         showUncheckedDeposits();
         Singletons::m_pDialogManager->infoMessageBoxTitled(this, tr("Deposit checked. Difference: %1 €").arg(amount, 0, 'f', 2), [](){});

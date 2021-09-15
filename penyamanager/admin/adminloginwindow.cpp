@@ -79,7 +79,7 @@ namespace PenyaManager {
 
         if (!pMemberResultPtr->m_member)
         {
-            Singletons::m_pLogger->Info(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kLogin,
+            Singletons::m_pLogger->Info(PenyaManager::Constants::kNoUserId, PenyaManager::LogAction::kLogin,
                     QString("username %1 does not exist").arg(loginName));
 
             // User could not be found
@@ -92,7 +92,7 @@ namespace PenyaManager {
         QString hashedPwd = Utils::hashSHA256asHex(plainPwd);
         if (pMemberResultPtr->m_member->m_pwd != hashedPwd)
         {
-            Singletons::m_pLogger->Info(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kLogin,
+            Singletons::m_pLogger->Info(PenyaManager::Constants::kNoUserId, PenyaManager::LogAction::kLogin,
                     QString("id %1 username %2 pass check failed").arg(pMemberResultPtr->m_member->m_id).arg(loginName));
             // User not active
             QMessageBox::about(this, tr("Login failed"), tr("Password incorrect"));
@@ -101,7 +101,7 @@ namespace PenyaManager {
 
         if (!pMemberResultPtr->m_member->m_active)
         {
-            Singletons::m_pLogger->Info(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kLogin,
+            Singletons::m_pLogger->Info(PenyaManager::Constants::kNoUserId, PenyaManager::LogAction::kLogin,
                     QString("User id %1 not active").arg(pMemberResultPtr->m_member->m_id));
             // User not active
             QMessageBox::about(this, tr("Login failed"), tr("User not active in the system: %1").arg(this->ui->loginInput->text()));
@@ -110,7 +110,7 @@ namespace PenyaManager {
 
         if (!pMemberResultPtr->m_member->m_isAdmin)
         {
-            Singletons::m_pLogger->Info(PenyaManager::Constants::kSystemUserId, PenyaManager::LogAction::kLogin,
+            Singletons::m_pLogger->Info(PenyaManager::Constants::kNoUserId, PenyaManager::LogAction::kLogin,
                     QString("User id %1 not admin").arg(pMemberResultPtr->m_member->m_id));
             // User not admin
             QMessageBox::about(this, tr("Login failed"), tr("User does not have permissions to login"));

@@ -66,7 +66,7 @@ namespace PenyaManager {
             bool ok = m_db.open();
             if (!ok) {
                 // database open error
-                Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb, m_db.lastError().text());
+                Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb, m_db.lastError().text());
                 return queryResponse;
             }
         }
@@ -74,12 +74,12 @@ namespace PenyaManager {
         // log query only when debug. Generating query string may be expensive.
         if (Singletons::m_pSettings->value(Constants::kDebugConfig).toString() == "1")
         {
-            Singletons::m_pLogger->Debug(Constants::kSystemUserId, PenyaManager::LogAction::kDb, getLastExecutedQuery(queryResponse.query));
+            Singletons::m_pLogger->Debug(Constants::kNoUserId, PenyaManager::LogAction::kDb, getLastExecutedQuery(queryResponse.query));
         }
         queryResponse.error = !queryResponse.query->exec();
         if (queryResponse.error) {
             int err = queryResponse.query->lastError().number();
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb, queryResponse.query->lastError().text());
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb, queryResponse.query->lastError().text());
             // in case error can not be recovered, return null
             queryResponse.query.reset();
             // try to handle server timeout connection closes by inactivity
@@ -93,13 +93,13 @@ namespace PenyaManager {
                     queryResponse.error = !queryResponse.query->exec();
                     if (queryResponse.error) {
                         qDebug() << queryResponse.query->lastError();
-                        Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb, queryResponse.query->lastError().text());
+                        Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb, queryResponse.query->lastError().text());
                         // in case error can not be recovered, return null
                         queryResponse.query.reset();
                     }
                 } else {
                     // database open error
-                    Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb, m_db.lastError().text());
+                    Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb, m_db.lastError().text());
                 }
             }
         }
@@ -123,7 +123,7 @@ namespace PenyaManager {
         QueryResponse queryResponse = exec(createQuery);
 
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getProductFamilies onlyActive %1").arg(onlyActive));
             pfListPrt->m_error = 1;
         } else {
@@ -162,7 +162,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getProductsFromFamily family %1 onlyActive %2").arg(familyId).arg(onlyActive));
             pIListResultPtr->m_error = 1;
         } else {
@@ -209,7 +209,7 @@ namespace PenyaManager {
         QueryResponse queryResponse = exec(createQuery);
 
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("fetchMemberById memberId %1").arg(memberId));
             pMemberResultPtr->m_error = 1;
         } else if (queryResponse.query->next())
@@ -271,7 +271,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("fetchMemberByUsername member %1").arg(username));
             pMemberResultPtr->m_error = 1;
         } else if (queryResponse.query->next()) {
@@ -331,7 +331,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getAccountBalance member %1").arg(memberId));
             pResult->m_error = 1;
         } else if (queryResponse.query->next())
@@ -363,7 +363,7 @@ namespace PenyaManager {
         QueryResponse queryResponse = exec(createQuery);
 
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getInvoice invoice %1").arg(invoiceId));
             pInvoiceResultPtr->m_error = 1;
         } else if (queryResponse.query->next())
@@ -404,7 +404,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getMemberActiveInvoice member %1").arg(memberId));
             pInvoiceResultPtr->m_error = 1;
         } else if (queryResponse.query->next())
@@ -440,7 +440,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("removeProductInvoice invoice %1 product %2").arg(invoiceId).arg(productId));
         }
         return !queryResponse.error;
@@ -468,7 +468,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("updateProductInvoice invoice %1 product %2 count %3 price %4").arg(invoiceId).arg(productId).arg(count).arg(price));
         }
         return !queryResponse.error;
@@ -496,7 +496,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("increaseProductInvoice invoice %1 product %2 count %3").arg(invoiceId).arg(productId).arg(count));
         } else {
             numRowsAffected = queryResponse.query->numRowsAffected();
@@ -536,7 +536,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("createInvoice member %1").arg(memberId));
             pInvoiceResultPtr->m_error = 1;
             return pInvoiceResultPtr;
@@ -549,7 +549,7 @@ namespace PenyaManager {
         // For LAST_INSERT_ID(), the most recently generated ID is maintained in the server on a per-connection basis
         QueryResponse lastQueryResponse = exec(lastQuery);
         if (lastQueryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("createInvoice could not get last ID created in db"));
             pInvoiceResultPtr->m_error = 1;
         } else if (lastQueryResponse.query->next()) {
@@ -577,7 +577,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getInvoiceProductItemsStats invoiceId %1").arg(invoiceId));
             invoiceProductItemStatsResultPtr->m_error = 1;
         } else if (queryResponse.query->next()) {
@@ -613,7 +613,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getInvoiceProductItems invoiceId %1").arg(invoiceId));
             pInvoicePILResult->m_error = 1;
         } else {
@@ -654,7 +654,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getAllInvoiceProductItems invoiceId %1").arg(invoiceId));
             pInvoicePILResult->m_error = 1;
         } else {
@@ -698,7 +698,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("updateInvoice invoiceId %1").arg(pInvoicePtr->m_id));
         }
         return !queryResponse.error;
@@ -726,7 +726,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getLastAccountInfo memberId %1").arg(memberId));
             pLastAccountInfoResultPtr->m_error = 1;
         } else if (queryResponse.query->next()) {
@@ -767,7 +767,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("insertTransaction memberId %1").arg(pTransactionPtr->m_memberId));
         }
         return !queryResponse.error;
@@ -795,7 +795,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("createDeposit memberId %1").arg(pDepositPtr->m_memberId));
             pNewDepositResultPtr->m_error = 1;
             return pNewDepositResultPtr;
@@ -808,7 +808,7 @@ namespace PenyaManager {
         // For LAST_INSERT_ID(), the most recently generated ID is maintained in the server on a per-connection basis
         QueryResponse lastQueryResponse = exec(lastQuery);
         if (lastQueryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("createDeposit could not get last ID created in db"));
             pNewDepositResultPtr->m_error = 1;
         } else if (lastQueryResponse.query->next()) {
@@ -847,7 +847,7 @@ namespace PenyaManager {
             QLocale locale;
             QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
             QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getAccountList fromDate %1 toDate %2 page %3 count %4").arg(fromDateLocalized).arg(toDateLocalized).arg(page).arg(count));
             pTransactionListResultPtr->m_error = 1;
         } else {
@@ -891,7 +891,7 @@ namespace PenyaManager {
             QLocale locale;
             QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
             QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getAccountListCount fromDate %1 toDate %2").arg(fromDateLocalized).arg(toDateLocalized));
             count = -1;
         } else if (queryResponse.query->next()) {
@@ -922,7 +922,7 @@ namespace PenyaManager {
             QLocale locale;
             QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
             QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getAccountListInvoicesSum fromDate %1 toDate %2").arg(fromDateLocalized).arg(toDateLocalized));
             floatResult.error = 1;
         } else if (queryResponse.query->next()) {
@@ -953,7 +953,7 @@ namespace PenyaManager {
             QLocale locale;
             QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
             QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getAccountListDepositsSum fromDate %1 toDate %2").arg(fromDateLocalized).arg(toDateLocalized));
             floatResult.error = 1;
         } else if (queryResponse.query->next()) {
@@ -985,7 +985,7 @@ namespace PenyaManager {
             QLocale locale;
             QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
             QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getAccountListBankChargesSum fromDate %1 toDate %2").arg(fromDateLocalized).arg(toDateLocalized));
             floatResult.error = 1;
         } else if (queryResponse.query->next()) {
@@ -1017,7 +1017,7 @@ namespace PenyaManager {
             QLocale locale;
             QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
             QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getAccountListByMemberIdCount memberId %1 fromDate %2 toDate %3").arg(memberId).arg(fromDateLocalized).arg(toDateLocalized));
             count = -1;
         } else if (queryResponse.query->next()) {
@@ -1050,7 +1050,7 @@ namespace PenyaManager {
             QLocale locale;
             QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
             QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getAccountListByMemberIdInvoicesSum memberId %1 fromDate %2 toDate %3").arg(memberId).arg(fromDateLocalized).arg(toDateLocalized));
             floatResult.error = 1;
         } else if (queryResponse.query->next()) {
@@ -1084,7 +1084,7 @@ namespace PenyaManager {
             QLocale locale;
             QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
             QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getAccountListByMemberIdDepositsSum memberId %1 fromDate %2 toDate %3").arg(memberId).arg(fromDateLocalized).arg(toDateLocalized));
             floatResult.error = 1;
         } else if (queryResponse.query->next()) {
@@ -1117,7 +1117,7 @@ namespace PenyaManager {
             QLocale locale;
             QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
             QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getAccountListByMemberIdBankChargesSum memberId %1 fromDate %2 toDate %3").arg(memberId).arg(fromDateLocalized).arg(toDateLocalized));
             floatResult.error = 1;
         } else if (queryResponse.query->next()) {
@@ -1157,7 +1157,7 @@ namespace PenyaManager {
             QLocale locale;
             QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
             QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getAccountListByMemberId memberId %1 fromDate %2 toDate %3").arg(memberId).arg(fromDateLocalized).arg(toDateLocalized));
             pTransactionListResultPtr->m_error = 1;
         } else {
@@ -1204,7 +1204,7 @@ namespace PenyaManager {
         if (queryResponse.error) {
             QLocale locale;
             QString nowDateLocalized = locale.toString(now, QLocale::NarrowFormat);
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getTableReservation reservationType %1 now %2").arg(static_cast<Uint16>(reservationType)).arg(nowDateLocalized));
             pReservationListResultPtr->m_error = -1;
         } else {
@@ -1253,7 +1253,7 @@ namespace PenyaManager {
         if (queryResponse.error) {
             QLocale locale;
             QString nowDateLocalized = locale.toString(now, QLocale::NarrowFormat);
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getOvenReservation reservationType %1 now %2").arg(static_cast<Uint16>(reservationType)).arg(nowDateLocalized));
             pReservationListResultPtr->m_error = -1;
         } else {
@@ -1302,7 +1302,7 @@ namespace PenyaManager {
         if (queryResponse.error) {
             QLocale locale;
             QString nowDateLocalized = locale.toString(now, QLocale::NarrowFormat);
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getFireplaceReservation reservationType %1 now %2").arg(static_cast<Uint16>(reservationType)).arg(nowDateLocalized));
             pReservationListResultPtr->m_error = -1;
         } else {
@@ -1345,7 +1345,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getLunchTableList"));
             pReservationItemListResultPtr->m_error = 1;
         } else {
@@ -1379,7 +1379,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getAllLunchTableList"));
             pReservationItemListResultPtr->m_error = 1;
         } else {
@@ -1411,7 +1411,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getLunchTableListStats"));
             pReservationItemListStatsPtr->m_error = 1;
         } else if (queryResponse.query->next()) {
@@ -1443,7 +1443,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getOvenList"));
             pReservationItemListResultPtr->m_error = 1;
         } else {
@@ -1477,7 +1477,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getAllOvenList"));
             pReservationItemListResultPtr->m_error = 1;
         } else {
@@ -1509,7 +1509,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getOvenListStats"));
             pReservationItemListStatsPtr->m_error = 1;
         } else if (queryResponse.query->next()) {
@@ -1541,7 +1541,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getFireplaceList"));
             pReservationItemListResultPtr->m_error = 1;
         } else {
@@ -1575,7 +1575,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getAllFireplaceList"));
             pReservationItemListResultPtr->m_error = 1;
         } else {
@@ -1607,7 +1607,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getFireplaceListStats"));
             pReservationItemListStatsPtr->m_error = 1;
         } else if (queryResponse.query->next()) {
@@ -1643,7 +1643,7 @@ namespace PenyaManager {
         if (queryResponse.error) {
             QLocale locale;
             QString dateLocalized = locale.toString(date, QLocale::NarrowFormat);
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("makeTableReservation reservationType %1 date %2 memberId %3").arg(static_cast<Uint16>(reservationType)).arg(dateLocalized).arg(memberId));
         }
         return !queryResponse.error;
@@ -1667,7 +1667,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("updateTableReservation reservationId %1").arg(reservationId));
         }
         return !queryResponse.error;
@@ -1689,7 +1689,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("cancelTableReservation reservationId %1").arg(reservationId));
         }
         return !queryResponse.error;
@@ -1718,7 +1718,7 @@ namespace PenyaManager {
         if (queryResponse.error) {
             QLocale locale;
             QString dateLocalized = locale.toString(date, QLocale::NarrowFormat);
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("makeOvenReservation reservationType %1 date %2 memberId %3").arg(static_cast<Uint16>(reservationType)).arg(dateLocalized).arg(memberId));
         }
         return !queryResponse.error;
@@ -1742,7 +1742,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("updateOvenReservation reservationId %1").arg(reservationId));
         }
         return !queryResponse.error;
@@ -1764,7 +1764,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("cancelOvenReservation reservationId %1").arg(reservationId));
         }
         return !queryResponse.error;
@@ -1788,7 +1788,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("updateFireplaceReservation reservationId %1").arg(reservationId));
         }
         return !queryResponse.error;
@@ -1817,7 +1817,7 @@ namespace PenyaManager {
         if (queryResponse.error) {
             QLocale locale;
             QString dateLocalized = locale.toString(date, QLocale::NarrowFormat);
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("makeFireplaceReservation reservationType %1 date %2 memberId %3").arg(static_cast<Uint16>(reservationType)).arg(dateLocalized).arg(memberId));
         }
         return !queryResponse.error;
@@ -1839,7 +1839,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("cancelFireplaceReservation reservationId %1").arg(reservationId));
         }
         return !queryResponse.error;
@@ -1870,7 +1870,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getSlowPayersList"));
             pMemberListResultPtr->m_error = 1;
         } else {
@@ -1927,7 +1927,7 @@ namespace PenyaManager {
             QLocale locale;
             QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
             QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getInvoiceListByMemberId memberId %1 fromDate %2 toDate %3").arg(memberId).arg(fromDateLocalized).arg(toDateLocalized));
             pInvoiceListResultPtr->m_error = 1;
         } else {
@@ -1976,7 +1976,7 @@ namespace PenyaManager {
             QLocale locale;
             QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
             QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getInvoiceListByMemberIdStats memberId %1 fromDate %2 toDate %3").arg(memberId).arg(fromDateLocalized).arg(toDateLocalized));
             pInvoiceListStatsResultPtr->m_error = 1;
         } else if (queryResponse.query->next()) {
@@ -2020,7 +2020,7 @@ namespace PenyaManager {
             QLocale locale;
             QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
             QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getInvoiceList fromDate %2 toDate %3").arg(fromDateLocalized).arg(toDateLocalized));
             pInvoiceListResultPtr->m_error = 1;
         } else {
@@ -2069,7 +2069,7 @@ namespace PenyaManager {
             QLocale locale;
             QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
             QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getInvoiceListStats fromDate %1 toDate %2").arg(fromDateLocalized).arg(toDateLocalized));
             pInvoiceListStatsResultPtr->m_error = 1;
         } else if (queryResponse.query->next()) {
@@ -2098,7 +2098,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getProviderList"));
             pProviderListResultPtr->m_error = 1;
         } else {
@@ -2136,7 +2136,7 @@ namespace PenyaManager {
         QueryResponse queryResponse = exec(createQuery);
 
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getProviderById providerId %1").arg(providerId));
             pProviderResulPtr->m_error = 1;
         } else if (queryResponse.query->next())
@@ -2190,7 +2190,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("updateProvider providerId %1").arg(pProviderPtr->m_id));
         }
         return !queryResponse.error;
@@ -2212,7 +2212,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getProductsFromProvider providerId %1").arg(providerId));
             pIListResultPtr->m_error = 1;
         } else {
@@ -2270,7 +2270,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("createProvider name %1 image %2 phone %3").arg(pProviderPtr->m_name).arg(pProviderPtr->m_image).arg(pProviderPtr->m_phone));
         } else {
             auto lastQuery = [](){
@@ -2280,7 +2280,7 @@ namespace PenyaManager {
             // For LAST_INSERT_ID(), the most recently generated ID is maintained in the server on a per-connection basis
             QueryResponse lastQueryResponse = exec(lastQuery);
             if (lastQueryResponse.error) {
-                Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+                Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                         QString("createProvider could not get last ID created in DB"));
             } else if (lastQueryResponse.query->next()) {
                 providerId = lastQueryResponse.query->value(0).toUInt();
@@ -2309,7 +2309,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb, QString("getAllStockProductsList"));
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb, QString("getAllStockProductsList"));
             pStockProductItemListResultPtr->m_error = 1;
         } else {
             pStockProductItemListResultPtr->m_list = StockProductItemListPtr(new StockProductItemList);
@@ -2356,7 +2356,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getStockProductsList page %1 count %2").arg(page).arg(count));
             pStockProductItemListResultPtr->m_error = 1;
         } else {
@@ -2397,7 +2397,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getProductsListStats"));
             pProductListStatsResultPtr->m_error = 1;
         } else if (queryResponse.query->next()) {
@@ -2426,7 +2426,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("updateStock productItemId %1 count %2").arg(productItemId).arg(count));
         }
         return !queryResponse.error;
@@ -2450,7 +2450,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getProductItem productItemId %1").arg(productItemId));
             pProductItemResultPtr->m_error = 1;
         } else if (queryResponse.query->next()) {
@@ -2497,7 +2497,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("updateProductItem productId %1").arg(pProductPtr->m_id));
         }
         return !queryResponse.error;
@@ -2529,7 +2529,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("createProductItem productItemName %1").arg(pProductPtr->m_nameEus));
             return -1;
         } else {
@@ -2540,7 +2540,7 @@ namespace PenyaManager {
             // For LAST_INSERT_ID(), the most recently generated ID is maintained in the server on a per-connection basis
             QueryResponse lastQueryResponse = exec(lastQuery);
             if (lastQueryResponse.error) {
-                Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+                Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("createProductItem could not get last ID created in DB"));
             } else if (lastQueryResponse.query->next()) {
                 itemId = lastQueryResponse.query->value(0).toUInt();
@@ -2568,7 +2568,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getProductFamily familyId %1").arg(familyId));
             pProductFamilyResultPtr->m_error = 1;
         } else if (queryResponse.query->next()) {
@@ -2606,7 +2606,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("updateProductFamilyItem familyId %1").arg(pFamilyPtr->m_id));
         }
         return !queryResponse.error;
@@ -2635,7 +2635,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("createProductFamilyItem familyName %1").arg(pFamilyPtr->m_nameEus));
         } else {
             auto lastQuery = [](){
@@ -2644,7 +2644,7 @@ namespace PenyaManager {
             // For LAST_INSERT_ID(), the most recently generated ID is maintained in the server on a per-connection basis
             QueryResponse lastQueryResponse = exec(lastQuery);
             if (lastQueryResponse.error) {
-                Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+                Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                         QString("createProductFamilyItem could not get last ID created in DB"));
             } else if (lastQueryResponse.query->next()) {
                 familyId = lastQueryResponse.query->value(0).toUInt();
@@ -2685,7 +2685,7 @@ namespace PenyaManager {
             QLocale locale;
             QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
             QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getProductExpensesList fromDate %1 toDate %2 page %3 count %4").arg(fromDateLocalized).arg(toDateLocalized).arg(page).arg(count));
             pInvoiceProductItemListResultPtr->m_error = 1;
         } else {
@@ -2729,7 +2729,7 @@ namespace PenyaManager {
             QLocale locale;
             QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
             QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getProductExpensesListStats fromDate %1 toDate %2").arg(fromDateLocalized).arg(toDateLocalized));
             pIPISResultPtr->m_error = 1;
         } else if (queryResponse.query->next()) {
@@ -2771,7 +2771,7 @@ namespace PenyaManager {
             QLocale locale;
             QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
             QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getProductExpensesListByMemberId memberId %1 fromDate %2 toDate %3 page %4 count %5").arg(memberId).arg(fromDateLocalized).arg(toDateLocalized).arg(page).arg(count));
             pIPILResult->m_error = 1;
         } else {
@@ -2815,7 +2815,7 @@ namespace PenyaManager {
             QLocale locale;
             QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
             QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getProductExpensesListByMemberIdStats memberId %1 fromDate %2 toDate %3").arg(memberId).arg(fromDateLocalized).arg(toDateLocalized));
             pIPISResult->m_error = 1;
         } else if (queryResponse.query->next()) {
@@ -2847,7 +2847,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("createProviderInvoice providerId %1").arg(pProviderInvoicePtr->m_id));
         }
         return !queryResponse.error;
@@ -2872,7 +2872,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("createProviderInvoiceProduct providerInvoiceId %1 productId %2 count %3").arg(invoiceId).arg(productId).arg(count));
         }
         return !queryResponse.error;
@@ -2906,7 +2906,7 @@ namespace PenyaManager {
             QLocale locale;
             QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
             QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getProviderInvoiceList fromDate %1 toDate %2 page %3 count %4").arg(fromDateLocalized).arg(toDateLocalized).arg(page).arg(count));
             pInvoiceListResultPtr->m_error = 1;
         } else {
@@ -2947,7 +2947,7 @@ namespace PenyaManager {
             QLocale locale;
             QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
             QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getProviderInvoiceListStats fromDate %1 toDate %2").arg(fromDateLocalized).arg(toDateLocalized));
             pInvoiceListStatsResultPtr->m_error = 1;
         } else if (queryResponse.query->next()) {
@@ -2988,7 +2988,7 @@ namespace PenyaManager {
             QLocale locale;
             QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
             QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getProviderInvoiceListByProviderId providerId %1 fromDate %2 toDate %3 page %4 count %5").arg(providerId).arg(fromDateLocalized).arg(toDateLocalized).arg(page).arg(count));
             pInvoiceListResultPtr->m_error = 1;
         } else {
@@ -3030,7 +3030,7 @@ namespace PenyaManager {
             QLocale locale;
             QString fromDateLocalized = locale.toString(fromDate, QLocale::NarrowFormat);
             QString toDateLocalized = locale.toString(toDate, QLocale::NarrowFormat);
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getProviderInvoiceListByProviderIdStats providerId %1 fromDate %2 toDate %3").arg(providerId).arg(fromDateLocalized).arg(toDateLocalized));
             pInvoiceListStatsResultPtr->m_error = 1;
         } else if (queryResponse.query->next()) {
@@ -3062,7 +3062,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getUncheckedDeposits"));
             pDepositListResultPtr->m_error = 1;
         } else {
@@ -3100,7 +3100,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("closeDeposit depositId %1").arg(depositId));
         }
         return !queryResponse.error;
@@ -3148,7 +3148,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getMemberList postalSend %1 page %2 count %3").arg(onlyPostalSend).arg(page).arg(count));
             pMemberListResultPtr->m_error = 1;
         } else {
@@ -3213,7 +3213,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getMemberListStats postalSend %1").arg(onlyPostalSend));
             pMemberListStatsResultPtr->m_error = 1;
         } else if (queryResponse.query->next()) {
@@ -3317,7 +3317,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("updateMember memberId %1").arg(pMemberPtr->m_id));
         }
         return !queryResponse.error;
@@ -3419,7 +3419,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("createMember memberUsername %1").arg(pMemberPtr->m_username));
         } else {
             auto lastQuery = [](){
@@ -3429,7 +3429,7 @@ namespace PenyaManager {
             // For LAST_INSERT_ID(), the most recently generated ID is maintained in the server on a per-connection basis
             QueryResponse lastQueryResponse = exec(lastQuery);
             if (lastQueryResponse.error) {
-                Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+                Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                         QString("createMember could not get last ID created in DB"));
             } else if (lastQueryResponse.query->next()) {
                 memberId = lastQueryResponse.query->value(0).toUInt();
@@ -3457,7 +3457,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("changeMemberPassword memberId %1").arg(memberId));
         }
         return !queryResponse.error;
@@ -3481,7 +3481,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("changeMemberLastLogin memberId %1").arg(memberId));
         }
         return !queryResponse.error;
@@ -3505,7 +3505,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb, QString("getLastInvoiceInfo"));
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb, QString("getLastInvoiceInfo"));
             pInvoiceResultPtr->m_error = 1;
         } else if (queryResponse.query->next())
         {
@@ -3543,7 +3543,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("updateInvoiceLastModDate invoiceId %1").arg(invoiceId));
         }
         return !queryResponse.error;
@@ -3566,7 +3566,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("deleteInvoice invoiceId %1").arg(invoiceId));
         }
         return !queryResponse.error;
@@ -3592,7 +3592,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb, QString("getActiveInvoiceList"));
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb, QString("getActiveInvoiceList"));
             pInvoiceListResultPtr->m_error = 1;
         } else {
             pInvoiceListResultPtr->m_list = InvoiceListPtr(new InvoiceList);
@@ -3632,13 +3632,13 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("checkUsername username %1").arg(username));
             boolResult.error = 1;
         } else if (queryResponse.query->next()) {
             boolResult.result = queryResponse.query->value(0).toInt() != 0;
         } else {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("checkUsername username %1. Query does not return any result and should.").arg(username));
         }
         return boolResult;
@@ -3664,7 +3664,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getProviderInvoiceById providerInvoiceId %1").arg(providerInvoiceId));
             pProviderInvoiceResultPtr->m_error = 1;
         } else if (queryResponse.query->next())
@@ -3702,7 +3702,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
                     QString("getProviderInvoiceProductsByInvoiceId providerInvoiceId %1").arg(providerInvoiceId));
             pListResultPtr->m_error = 1;
         } else {
@@ -3740,7 +3740,7 @@ namespace PenyaManager {
         // run query
         QueryResponse queryResponse = exec(createQuery);
         if (queryResponse.error) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kDb, QString("getLastUsername"));
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb, QString("getLastUsername"));
         } else if (queryResponse.query->next())
         {
             lastUsername = queryResponse.query->value(0).toInt();;

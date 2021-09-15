@@ -26,7 +26,7 @@ namespace PenyaManager {
     {
         QPrinterInfo defaultPrinter = QPrinterInfo::defaultPrinter();
         if (defaultPrinter.isNull()) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, LogAction::kPrint,
+            Singletons::m_pLogger->Error(Constants::kNoUserId, LogAction::kPrint,
                     QString("default printer is null"));
             return;
         }
@@ -39,7 +39,8 @@ namespace PenyaManager {
         printer.setOutputFileName("/home/eguzki/printer.pdf");
 
         if (!printer.isValid()) {
-            QLOG_ERROR() << QString("[PrintFailed] pdf printer not valid");
+            Singletons::m_pLogger->Error(Constants::kSystemUserId, LogAction::kPrint,
+                    QString("[PrintFailed] pdf printer not valid"));
             return;
         }
         */
@@ -77,7 +78,7 @@ namespace PenyaManager {
     {
         QFile membersTemplateFile(":resources/members.html");
         if (!membersTemplateFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, LogAction::kPrint,
+            Singletons::m_pLogger->Error(Singletons::m_pCurrMember->m_id, LogAction::kPrint,
                     QString("members.html not found"));
             return;
         }
@@ -87,7 +88,7 @@ namespace PenyaManager {
 
         QFile singleMembersTemplateFile(":resources/singlemember.html");
         if (!singleMembersTemplateFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, LogAction::kPrint,
+            Singletons::m_pLogger->Error(Singletons::m_pCurrMember->m_id, LogAction::kPrint,
                     QString("singlemember.html not found"));
             return;
         }
@@ -97,7 +98,7 @@ namespace PenyaManager {
 
         QFile doubleMembersTemplateFile(":resources/doublemember.html");
         if (!doubleMembersTemplateFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, LogAction::kPrint,
+            Singletons::m_pLogger->Error(Singletons::m_pCurrMember->m_id, LogAction::kPrint,
                     QString("doublemember.html not found"));
             return;
         }
@@ -139,7 +140,7 @@ namespace PenyaManager {
         QVariantHash htmlVariant;
         htmlVariant["members"] = membersHtml;
         QString html = Mustache::renderTemplate(memberTemplate, htmlVariant);
-        Singletons::m_pLogger->Info(Constants::kSystemUserId, LogAction::kPrint, QString("printed member list"));
+        Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, LogAction::kPrint, QString("printed member list"));
         GuiUtils::printText(html);
     }
     //
@@ -177,6 +178,7 @@ namespace PenyaManager {
             case TransactionType::Deposit: return getStringFromTransactionTypeEnum(type);
             case TransactionType::AccountPayment: return getStringFromTransactionTypeEnum(type);
             case TransactionType::DepositFix: return getDepositFixDescr(descr);
+            case TransactionType::AccountFix: return descr;
             default: return "-";
         }
     }

@@ -50,7 +50,7 @@ namespace PenyaManager {
             return;
         }
         if (!providerInvoiceResultPtr->m_pProviderInvoice) {
-            Singletons::m_pLogger->Warn(Constants::kSystemUserId, PenyaManager::LogAction::kDashboard,
+            Singletons::m_pLogger->Warn(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kDashboard,
                     QString("provider invoice id %1 not found in ddbb").arg(providerInvoiceId));
             Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Operation not performed. Contact administrator"), [](){});
             return;

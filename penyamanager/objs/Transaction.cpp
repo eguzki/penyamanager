@@ -14,6 +14,7 @@ namespace PenyaManager {
             case TransactionType::Deposit: return QWidget::tr("Deposit");
             case TransactionType::AccountPayment: return QWidget::tr("Account Payment");
             case TransactionType::DepositFix: return QWidget::tr("Deposit Fix");
+            case TransactionType::AccountFix: return QWidget::tr("Account Fix");
             default: return "-";
         }
     }

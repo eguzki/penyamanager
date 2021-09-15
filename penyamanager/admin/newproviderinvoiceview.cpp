@@ -86,7 +86,7 @@ namespace PenyaManager {
             QWidget *pCountWidget = pLayout->itemAt(3)->widget();
             QSpinBox *pCountSpinBox = qobject_cast<QSpinBox *>(pCountWidget);
             if (pCountSpinBox == 0) {
-                Singletons::m_pLogger->Warn(Constants::kSystemUserId, PenyaManager::LogAction::kProvider,
+                Singletons::m_pLogger->Warn(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kProvider,
                         QString("NewProviderInvoiceView failed taking SpinBox"));
                 Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                 return;
@@ -109,7 +109,7 @@ namespace PenyaManager {
                 }
             }
         }
-        Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kProvider,
+        Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kProvider,
                 QString("new invoice id: %1, provider id %2").arg(pProviderInvoicePtr->m_id).arg(pProviderInvoicePtr->m_providerid));
         Singletons::m_pDialogManager->infoMessageBoxTitled(this, tr("Saved Successfully"),
                 std::bind(&NewProviderInvoiceView::onProviderInvoiceDone, this)
@@ -172,7 +172,7 @@ namespace PenyaManager {
         auto rowMap = m_rowProviderIdMap.find(m_currentProviderIndex);
         if (rowMap == m_rowProviderIdMap.end()) {
             //this should never happen
-            Singletons::m_pLogger->Error(Constants::kSystemUserId, PenyaManager::LogAction::kProvider,
+            Singletons::m_pLogger->Error(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kProvider,
                     QString("providerId not found and should be in the map"));
             Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Unexpected error"), [](){});
             return;

@@ -91,6 +91,10 @@ namespace PenyaManager {
         this->ui->memberTypeComboBox->insertItem(Member::RETIRED, GetStringFromMemberType(Member::RETIRED), Member::RETIRED);
         this->ui->memberTypeComboBox->insertItem(Member::HONORARY, GetStringFromMemberType(Member::HONORARY), Member::HONORARY);
         this->ui->memberTypeComboBox->setCurrentIndex(Member::NORMAL);
+        // Account balance
+        this->ui->accountBalanceValueLabel->setText(QString("%1 €").arg(0.0, 0, 'f', 2));
+        // New Account Entry button
+        this->ui->depositButton->setEnabled(false);
     }
     //
     void MemberView::init()
@@ -106,6 +110,8 @@ namespace PenyaManager {
         } else {
             initialize();
         }
+        //
+        hideNewAccountEntryForm();
     }
     //
     void MemberView::retranslate()
@@ -163,7 +169,7 @@ namespace PenyaManager {
                 return;
             }
             if (!pMemberResultPtr->m_member) {
-                Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kMember,
+                Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kMember,
                         QString("Editing itemid %1 not found in ddbb").arg(Singletons::m_currentMemberId));
                 Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                 return;
@@ -245,7 +251,7 @@ namespace PenyaManager {
                 QFile oldFile(oldImagePath);
                 oldFile.remove();
             }
-            Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kMember,
+            Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kMember,
                     QString("editmember %1").arg(pMemberResultPtr->m_member->m_id));
         } else {
             // new item
@@ -334,7 +340,7 @@ namespace PenyaManager {
                 Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
-            Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kMember,
+            Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kMember,
                     QString("newmember %1").arg(memberId));
         }
 
@@ -422,6 +428,10 @@ namespace PenyaManager {
         this->ui->memberTypeComboBox->insertItem(Member::RETIRED, GetStringFromMemberType(Member::RETIRED), Member::RETIRED);
         this->ui->memberTypeComboBox->insertItem(Member::HONORARY, GetStringFromMemberType(Member::HONORARY), Member::HONORARY);
         this->ui->memberTypeComboBox->setCurrentIndex(pMemberResultPtr->m_member->m_memberType);
+        // Account balance
+        this->ui->accountBalanceValueLabel->setText(QString("%1 €").arg(pMemberResultPtr->m_member->m_balance, 0, 'f', 2));
+        // New Account Entry button
+        this->ui->depositButton->setEnabled(true);
     }
     //
     void MemberView::on_imagePushButton_clicked()
@@ -429,7 +439,7 @@ namespace PenyaManager {
         // Check write permissions
         QFileInfo imagePath(Singletons::m_pSettings->value(Constants::kResourcePathKey).toString());
         if (!imagePath.isDir() || !imagePath.isWritable()) {
-            Singletons::m_pLogger->Warn(Constants::kSystemUserId, PenyaManager::LogAction::kMember,
+            Singletons::m_pLogger->Warn(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kMember,
                     QString("Unable to write to %1").arg(imagePath.absoluteFilePath()));
             Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Unable to write to %1").arg(imagePath.absoluteFilePath()), [](){});
             return;
@@ -488,10 +498,74 @@ namespace PenyaManager {
             return;
         }
 
-        Singletons::m_pLogger->Info(Constants::kSystemUserId, PenyaManager::LogAction::kMember,
+        Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kMember,
                 QString("passchange memberid %1").arg(Singletons::m_currentMemberId));
         Singletons::m_pDialogManager->infoMessageBoxTitled(this, tr("Password changed successfully"), [](){});
         // nothing should be added here
     }
+    //
+    void MemberView::hideNewAccountEntryForm() {
+        this->ui->newAccountEntryGroupBox->setMaximumHeight(0);
+    }
+    //
+    void MemberView::showNewAccountEntryForm() {
+        this->ui->errorLabel->setHidden(true);
+        this->ui->descriptionLineEdit->clear();
+        this->ui->entryDoubleSpinBox->setValue(0.0);
+        this->ui->entryDoubleRepeatedSpinBox->setValue(0.0);
+        // Show animation
+        QPropertyAnimation *animation = new QPropertyAnimation(ui->newAccountEntryGroupBox, "maximumHeight");
+        animation->setDuration(2000);
+        animation->setStartValue(this->ui->newAccountEntryGroupBox->maximumHeight());
+        animation->setEndValue(1550);
+        animation->start();
+    }
+    //
+    bool MemberView::newAccountEntryFormEnabled() {
+        return this->ui->newAccountEntryGroupBox->maximumHeight() == 0;
+    }
+    //
+    void MemberView::on_depositButton_clicked()
+    {
+        if (newAccountEntryFormEnabled()) {
+            showNewAccountEntryForm();
+        }
+    }
+    //
+    void MemberView::on_newAccountSavePushButton_clicked()
+    {
+        // Check entry values match
+        if (this->ui->entryDoubleSpinBox->value() != this->ui->entryDoubleRepeatedSpinBox->value()) {
+            this->ui->errorLabel->setHidden(false);
+            this->ui->errorLabel->setText(tr("Entry values do not match"));
+            return;
+        }
+        // Check description not empty
+        if (this->ui->descriptionLineEdit->text().isEmpty()) {
+            this->ui->errorLabel->setHidden(false);
+            this->ui->errorLabel->setText(tr("Description value cannot be empty"));
+            return;
+        }
+
+        // create account register info
+        bool ok = Singletons::m_pServices->createAccountTransaction(Singletons::m_currentMemberId,
+                this->ui->entryDoubleSpinBox->value(), this->ui->descriptionLineEdit->text(), TransactionType::AccountFix);
+        if (!ok) {
+            Singletons::m_pDialogManager->infoMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            return;
+        }
+
+        Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kMember,
+                QString("new account fix entry: %1 €; memberId %2 ").arg(this->ui->entryDoubleSpinBox->value(), 0, 'f', 2).arg(Singletons::m_currentMemberId));
+        Singletons::m_pDialogManager->infoMessageBoxTitled(this, tr("New account entry created successfully"),
+                std::bind(&MemberView::newAccountEntrySaved, this));
+    }
+    //
+    void MemberView::newAccountEntrySaved()
+    {
+        fillMemberInfo(Singletons::m_currentMemberId);
+        hideNewAccountEntryForm();
+    }
 }
+
 
