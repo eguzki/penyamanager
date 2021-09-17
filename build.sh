@@ -33,13 +33,11 @@ set -e # Returns error if any command returns error
 # ... you can store you local modifications on a 'build.local' file
 
 checkBinary "which"
-#checkBinary "qmake"
 checkBinary "make"
-#QMAKE=$(which qmake)
-QMAKE="/opt/Qt5.7/5.7/gcc_64/bin/qmake"
+QT_BIN=${HOME}/Qt/5.15.2/gcc_64/bin
+QMAKE=${QT_BIN}/qmake
 MAKE=$(which make)
-#LRELEASE=$(which lrelease)
-LRELEASE="/opt/Qt5.7/5.7/gcc_64/bin/lrelease"
+LRELEASE=${QT_BIN}/lrelease
 
 PROJECT_NAME="penyamanager"
 CURRENT_PATH="$( cd "$( dirname "$0" )" && pwd )"

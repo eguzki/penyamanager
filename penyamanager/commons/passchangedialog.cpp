@@ -1,5 +1,7 @@
 //
 
+#include <QIntValidator>
+
 #include "passchangedialog.h"
 #include "ui_passchangedialog.h"
 
