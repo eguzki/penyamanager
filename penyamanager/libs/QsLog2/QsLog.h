@@ -49,12 +49,18 @@ public:
 
     //! Adds a log message destination. Don't add null destinations.
     void addDestination(DestinationPtr destination);
-    //! Removes a previously added destination. Does nothing if destination was not previously added.
-    void removeDestination(const DestinationPtr& destination);
     //! Logging at a level < 'newLevel' will be ignored
     void setLoggingLevel(Level newLevel);
     //! The default level is INFO
     Level loggingLevel() const;
+    //! Set to false to disable timestamp inclusion in log messages
+    void setIncludeTimestamp(bool e);
+    //! Default value is true.
+    bool includeTimestamp() const;
+    //! Set to false to disable log level inclusion in log messages
+    void setIncludeLogLevel(bool l);
+    //! Default value is true.
+    bool includeLogLevel() const;
 
     //! The helper forwards the streaming to QDebug and builds the final
     //! log message.
@@ -63,7 +69,8 @@ public:
     public:
         explicit Helper(Level logLevel) :
             level(logLevel),
-            qtDebug(&buffer) {}
+            qtDebug(&buffer)
+        {}
         ~Helper();
         QDebug& stream(){ return qtDebug; }
 
@@ -73,7 +80,7 @@ public:
         Level level;
         QString buffer;
         QDebug qtDebug;
-    };
+	};
 
 private:
     Logger();

@@ -11,7 +11,7 @@ TEMPLATE = lib
 
 DESTDIR = $$PWD/build-QsLogShared
 OBJECTS_DIR = $$DESTDIR/obj
-MOC_DIR = $$DESTDIR/moc
+OC_DIR = $$DESTDIR/moc
 
 win32 {
     DEFINES += QSLOG_IS_SHARED_LIBRARY
