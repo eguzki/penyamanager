@@ -295,7 +295,37 @@ namespace PenyaManager {
             Singletons::m_pDialogManager->infoMessageBox(this, tr("Current invoice is empty"), [](){});
             return;
         }
-        m_switchCentralWidgetCallback(WindowKey::kInvoiceWindowKey);
+
+        // Close invoice
+        //
+        // Loading Current Invoice
+        //
+        MemberPtr pCurrMemberPtr = Singletons::m_pCurrMember;
+        InvoiceResultPtr pInvoiceResultPtr = Singletons::m_pDAO->getMemberActiveInvoice(pCurrMemberPtr->m_id);
+        if (pInvoiceResultPtr->m_error) {
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+            return;
+        }
+        if (!pInvoiceResultPtr->m_pInvoice) {
+            Singletons::m_pLogger->Error(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kInvoice,
+                    QString("no active invoice found. userid %1").arg(pCurrMemberPtr->m_id));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+            return;
+        }
+
+        // Update member balance
+        bool ok = Singletons::m_pServices->closeInvoice(pInvoiceResultPtr->m_pInvoice);
+        if (!ok) {
+            Singletons::m_pLogger->Error(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kInvoice,
+                    QString("error closing invoice. invoiceId %1").arg(pInvoiceResultPtr->m_pInvoice->m_id));
+            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+            return;
+        }
+        Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kInvoice,
+                QString("invoiceId %1").arg(pInvoiceResultPtr->m_pInvoice->m_id));
+
+        // reset member dashboard
+        m_switchCentralWidgetCallback(WindowKey::kMemberDashboardWindowKey);
     }
     //
     void MemberDashboardWindow::on_invoiceResetButton_clicked()
@@ -325,9 +355,9 @@ namespace PenyaManager {
                     QString("reset invoice. Invoice id %1").arg(pInvoicePtr->m_pInvoice->m_id));
             Singletons::m_pDAO->deleteInvoice(pInvoicePtr->m_pInvoice->m_id);
         }
-        // nothing to fill
-        m_currentPage = 0;
-        fillInvoiceData(InvoicePtr());
+
+        // reset member dashboard
+        m_switchCentralWidgetCallback(WindowKey::kMemberDashboardWindowKey);
     }
     //
     void MemberDashboardWindow::on_exitButton_clicked()

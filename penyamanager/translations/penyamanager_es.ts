@@ -145,36 +145,6 @@
     </message>
 </context>
 <context>
-    <name>InvoiceWindow</name>
-    <message>
-        <location filename="../user/invoicewindow.ui" line="14"/>
-        <source>Invoice Window</source>
-        <translation>Recibo</translation>
-    </message>
-    <message>
-        <location filename="../user/invoicewindow.ui" line="358"/>
-        <location filename="../user/invoicewindow.ui" line="500"/>
-        <location filename="../user/invoicewindow.ui" line="532"/>
-        <source>TextLabel</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../user/invoicewindow.ui" line="345"/>
-        <source>Date:</source>
-        <translation>Fecha:</translation>
-    </message>
-    <message>
-        <location filename="../user/invoicewindow.ui" line="493"/>
-        <source>Total invoice:</source>
-        <translation>Total recibo:</translation>
-    </message>
-    <message>
-        <location filename="../user/invoicewindow.ui" line="525"/>
-        <source>New Balance:</source>
-        <translation>Nuevo saldo:</translation>
-    </message>
-</context>
-<context>
     <name>MemberDashboardWindow</name>
     <message>
         <location filename="../user/memberdashboardwindow.ui" line="598"/>

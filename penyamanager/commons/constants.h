@@ -7,7 +7,7 @@
 namespace PenyaManager {
     //
     enum class WindowKey {
-            kLoginWindowKey, kMemberDashboardWindowKey, kInvoiceWindowKey, kInvoiceListWindoKey, kDepositsWindowKey,
+            kLoginWindowKey, kMemberDashboardWindowKey, kInvoiceListWindoKey, kDepositsWindowKey,
             kAccountViewWindowKey, kTableReservationViewWindowKey, kAdminLoginWindowKey,
             kMemberListViewWindowKey, kAdminSlowPayersWindowKey, kAdminInvoiceListWindowKey,
             kInvoiceDetailsWindowKey, kAdminProviderWindowKey, kAdminNewProviderKey, kStockManagementWindowKey,
@@ -78,8 +78,6 @@ namespace PenyaManager {
             static const Uint32     kDashboardProductListPageCount;
             // LoginWindow product item list
             static const Uint32     kLoginWindowProductListPageCount;
-            // InvoiceWindow product item list
-            static const Uint32     kInvoiceWindowProductListPageCount;
             // InvoiceDetailsWindow product item list
             static const Uint32     kInvoiceDetailsWindowProductListPageCount;
             // Reservation item list
