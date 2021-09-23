@@ -107,12 +107,12 @@ namespace PenyaManager {
         QTextStream out(&f);
         out.setCodec("UTF-8");
         // print header
-        out << tr("name") << "," << tr("stock") << endl;
+        out << tr("name") << "," << tr("stock") << Qt::endl;
 
         for (StockProductItemList::iterator iter = pStockProductItemListResultPtr->m_list->begin(); iter != pStockProductItemListResultPtr->m_list->end(); ++iter)
         {
             StockProductItemPtr pStockProductItemPtr = *iter;
-            out << Singletons::m_pTranslationManager->getStringTranslation(pStockProductItemPtr->m_nameEus, pStockProductItemPtr->m_nameEs) << ", " << QString::number(pStockProductItemPtr->m_stock) << endl;
+            out << Singletons::m_pTranslationManager->getStringTranslation(pStockProductItemPtr->m_nameEus, pStockProductItemPtr->m_nameEs) << ", " << QString::number(pStockProductItemPtr->m_stock) << Qt::endl;
         }
         f.close();
         Singletons::m_pDialogManager->infoMessageBoxTitled(this, tr("Successfully exported. Filename: %1").arg(filename), [](){});

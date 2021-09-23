@@ -11,16 +11,19 @@
 QT_DEBUG_PLUGINS=1 ./dist/penyamanager 2>&1 | grep -i mysql
 ```
 
-* QT 5.5 dependes on libmysqlclient 16 and ubuntu 14.04 ships with 18.
+* Building MYSQL drive (Ubuntu 20.04)
+https://doc.qt.io/qt-5.15/sql-driver.html
+
 ```
-$ wget http://files.directadmin.com/services/debian_5.0_64/libmysqlclient.so.16
-$ sudo cp libmysqlclient.so.16 /usr/lib/x86_64-linux-gnu/
-$ sudo ln -s /usr/lib/x86_64-linux-gnu/libmysqlclient.so.16 /usr/lib/x86_64-linux-gnu/libmysqlclient_r.so.16
-$ cd /lib/x86_64-linux-gnu
-$ sudo ln -s libssl.so.1.0.0 libssl.so.10
-$ sudo ln -s libcrypto.so.1.0.0 libcrypto.so.10
+sudo apt install libmysqlclient-dev
+cd /home/eguzki/Qt/5.15.2/Src/qtbase/src/plugins/sqldrivers
+~/Qt/5.15.2/gcc_64/bin/qmake -- MYSQL_INCDIR=/usr/include/mysql MYSQL_LIBDIR=/usr/lib/x86_64-linux-gnu
+make
+make install
 ```
 
 * Inactivity timeout
   * In login pages is disabled, blocking dialogs can be used
   * When logged in, non-blocking dialogs must be used, otherwise on inactivity timeouts, unexpected dialogs can be shown on login page, or even be switched to some view without being logged in
+
+

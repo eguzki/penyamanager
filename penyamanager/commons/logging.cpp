@@ -158,32 +158,28 @@ namespace PenyaManager {
     void SysLogLogger::Error(Uint32 userId, LogAction logAction, const QString &message)
     {
         Uint16 severity = 3; // Error
-        QByteArray datagram;
-        datagram.append(computeDatagram(severity, userId, logAction, message));
+        QByteArray datagram(computeDatagram(severity, userId, logAction, message).toUtf8());
         m_pUdpSocket->writeDatagram(datagram.data(), datagram.size(), m_qHostAddress, 514);
     }
     //
     void SysLogLogger::Warn(Uint32 userId, LogAction logAction, const QString &message)
     {
         Uint16 severity = 4; // Warning
-        QByteArray datagram;
-        datagram.append(computeDatagram(severity, userId, logAction, message));
+        QByteArray datagram(computeDatagram(severity, userId, logAction, message).toUtf8());
         m_pUdpSocket->writeDatagram(datagram.data(), datagram.size(), m_qHostAddress, 514);
     }
     //
     void SysLogLogger::Info(Uint32 userId, LogAction logAction, const QString &message)
     {
         Uint16 severity = 6; // Informational
-        QByteArray datagram;
-        datagram.append(computeDatagram(severity, userId, logAction, message));
+        QByteArray datagram(computeDatagram(severity, userId, logAction, message).toUtf8());
         m_pUdpSocket->writeDatagram(datagram.data(), datagram.size(), m_qHostAddress, 514);
     }
     //
     void SysLogLogger::Debug(Uint32 userId, LogAction logAction, const QString &message)
     {
         Uint16 severity = 7; // Debug
-        QByteArray datagram;
-        datagram.append(computeDatagram(severity, userId, logAction, message));
+        QByteArray datagram(computeDatagram(severity, userId, logAction, message).toUtf8());
         m_pUdpSocket->writeDatagram(datagram.data(), datagram.size(), m_qHostAddress, 514);
     }
 }

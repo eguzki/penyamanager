@@ -78,29 +78,26 @@ namespace PenyaManager {
         }
         queryResponse.error = !queryResponse.query->exec();
         if (queryResponse.error) {
-            int err = queryResponse.query->lastError().number();
             Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb, queryResponse.query->lastError().text());
             // in case error can not be recovered, return null
             queryResponse.query.reset();
             // try to handle server timeout connection closes by inactivity
             // QSqlError(2006, "QMYSQL: Unable to execute query", "MySQL server has gone away")
-            if (err == 2006) {
-                m_db.close();
-                queryResponse.error = !m_db.open();
-                if (!queryResponse.error) {
-                    // when database connection is opened, query has to be re-initialized
-                    queryResponse.query = queryFactory();
-                    queryResponse.error = !queryResponse.query->exec();
-                    if (queryResponse.error) {
-                        qDebug() << queryResponse.query->lastError();
-                        Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb, queryResponse.query->lastError().text());
-                        // in case error can not be recovered, return null
-                        queryResponse.query.reset();
-                    }
-                } else {
-                    // database open error
-                    Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb, m_db.lastError().text());
+            m_db.close();
+            queryResponse.error = !m_db.open();
+            if (!queryResponse.error) {
+                // when database connection is opened, query has to be re-initialized
+                queryResponse.query = queryFactory();
+                queryResponse.error = !queryResponse.query->exec();
+                if (queryResponse.error) {
+                    qDebug() << queryResponse.query->lastError();
+                    Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb, queryResponse.query->lastError().text());
+                    // in case error can not be recovered, return null
+                    queryResponse.query.reset();
                 }
+            } else {
+                // database open error
+                Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb, m_db.lastError().text());
             }
         }
         return queryResponse;

@@ -7,7 +7,6 @@
 #include "ui_mainwindow.h"
 #include "memberdashboardwindow.h"
 #include "loginwindow.h"
-#include "invoicewindow.h"
 #include "depositwindow.h"
 #include "accountview.h"
 #include "tablereservationview.h"
@@ -32,9 +31,6 @@ namespace PenyaManager {
         MemberDashboardWindow *pMemberDashboardWindow = new MemberDashboardWindow(this, mainWindowSwitchCallback);
         Singletons::m_pParnetFinder->addPartner(WindowKey::kMemberDashboardWindowKey, pMemberDashboardWindow);
         this->ui->stackedWidget->addWidget(pMemberDashboardWindow);
-        InvoiceWindow *pInvoiceWindow = new InvoiceWindow(this, mainWindowSwitchCallback);
-        Singletons::m_pParnetFinder->addPartner(WindowKey::kInvoiceWindowKey, pInvoiceWindow);
-        this->ui->stackedWidget->addWidget(pInvoiceWindow);
         DepositWindow *pDepositWindow = new DepositWindow(this, mainWindowSwitchCallback);
         Singletons::m_pParnetFinder->addPartner(WindowKey::kDepositsWindowKey, pDepositWindow);
         this->ui->stackedWidget->addWidget(pDepositWindow);

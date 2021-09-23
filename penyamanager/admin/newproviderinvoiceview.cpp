@@ -232,7 +232,7 @@ namespace PenyaManager {
         pLayout->addWidget(pCountWidget);
         pProduceItemWidget->setLayout(pLayout);
         pProductItem->setSizeHint(pLayout->minimumSize());
-        pProductItem->setBackgroundColor(this->ui->productsListWidget->count() % 2 == 0 ? (Qt::lightGray) : (Qt::darkGray));
+        pProductItem->setBackground(this->ui->productsListWidget->count() % 2 == 0 ? (Qt::lightGray) : (Qt::darkGray));
         this->ui->productsListWidget->setItemWidget(pProductItem, pProduceItemWidget);
     }
 }

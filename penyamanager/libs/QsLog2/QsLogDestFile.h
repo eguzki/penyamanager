@@ -65,7 +65,6 @@ public:
     static const int MaxBackupCount;
 
     virtual void setInitialInfo(const QFile &file);
-    void setInitialInfo(const QString& filePath, int fileSize);
     virtual void includeMessageInCalculation(const QString &message);
     virtual bool shouldRotate();
     virtual void rotate();
@@ -73,12 +72,6 @@ public:
 
     void setMaximumSizeInBytes(qint64 size);
     void setBackupCount(int backups);
-
-protected:
-    // can be overridden for testing
-    virtual bool removeFileAtPath(const QString& path);
-    virtual bool fileExistsAtPath(const QString& path);
-    virtual bool renameFileFromTo(const QString& from, const QString& to);
 
 private:
     QString mFileName;

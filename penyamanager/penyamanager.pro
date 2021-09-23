@@ -48,7 +48,6 @@ SOURCES += main.cpp\
         objs/ProviderInvoiceProductItem.cpp\
         user/loginwindow.cpp \
         commons/numitemdialog.cpp \
-        user/invoicewindow.cpp \
         user/depositwindow.cpp \
         user/accountview.cpp \
         user/tablereservationview.cpp \
@@ -90,7 +89,6 @@ HEADERS  += user/memberdashboardwindow.h\
         objs/ProviderInvoiceProductItem.h\
         user/loginwindow.h \
         commons/numitemdialog.h \
-        user/invoicewindow.h \
         user/depositwindow.h \
         user/accountview.h \
         user/tablereservationview.h \
@@ -109,7 +107,6 @@ FORMS    += user/memberdashboardwindow.ui\
         user/loginwindow.ui \
         commons/numitemdialog.ui \
         commons/passchangedialog.ui \
-        user/invoicewindow.ui \
         user/depositwindow.ui \
         user/accountview.ui \
         user/tablereservationview.ui \
