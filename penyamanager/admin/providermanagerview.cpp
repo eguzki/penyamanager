@@ -85,7 +85,7 @@ namespace PenyaManager {
         pProviderWidget->setLayout(pLayout);
         pProviderItem->setSizeHint(pLayout->minimumSize());
         pProviderItem->setFlags(Qt::ItemIsSelectable);
-        pProviderItem->setBackgroundColor(this->ui->providersListWidget->count() % 2 == 0 ? (Qt::lightGray) : (Qt::darkGray));
+        pProviderItem->setBackground(this->ui->providersListWidget->count() % 2 == 0 ? (Qt::lightGray) : (Qt::darkGray));
         this->ui->providersListWidget->setItemWidget(pProviderItem, pProviderWidget);
     }
     //
@@ -138,7 +138,7 @@ namespace PenyaManager {
         pProduceItemWidget->setLayout(pLayout);
         pProductItem->setSizeHint(pLayout->minimumSize());
         pProductItem->setFlags(Qt::ItemIsSelectable);
-        pProductItem->setBackgroundColor(pList->count() % 2 == 0 ? (Qt::lightGray) : (Qt::darkGray));
+        pProductItem->setBackground(pList->count() % 2 == 0 ? (Qt::lightGray) : (Qt::darkGray));
         pList->setItemWidget(pProductItem, pProduceItemWidget);
     }
     //

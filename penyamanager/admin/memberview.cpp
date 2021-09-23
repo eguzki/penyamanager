@@ -226,7 +226,7 @@ namespace PenyaManager {
             // notes (optional)
             pMemberResultPtr->m_member->m_notes = this->ui->notesTextEdit->toPlainText();
             // regDate
-            pMemberResultPtr->m_member->m_regDate = QDateTime(this->ui->regDateDateEdit->date());
+            pMemberResultPtr->m_member->m_regDate = this->ui->regDateDateEdit->date().startOfDay();
             pMemberResultPtr->m_member->m_regDate.setTimeSpec(Qt::UTC);
             // lastmodfies
             pMemberResultPtr->m_member->m_lastModified = QDateTime::currentDateTimeUtc();
@@ -314,7 +314,7 @@ namespace PenyaManager {
             // notes (optional)
             pMemberPtr->m_notes = this->ui->notesTextEdit->toPlainText();
             // regDate
-            pMemberPtr->m_regDate = QDateTime(this->ui->regDateDateEdit->date());
+            pMemberPtr->m_regDate = this->ui->regDateDateEdit->date().startOfDay();
             pMemberPtr->m_regDate.setTimeSpec(Qt::UTC);
             // lastmodfies
             pMemberPtr->m_lastModified = QDateTime::currentDateTimeUtc();

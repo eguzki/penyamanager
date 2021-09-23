@@ -229,7 +229,7 @@ namespace PenyaManager {
             << tr("Postal Send") << ","
             << tr("Notes") << ","
             << tr("Balance") << ","
-            << endl;
+            << Qt::endl;
 
         for (MemberList::iterator iter = pMemberListResultPtr->m_list->begin(); iter != pMemberListResultPtr->m_list->end(); ++iter)
         {
@@ -261,7 +261,7 @@ namespace PenyaManager {
                 << pMemberPtr->m_postalSend << ", "
                 << cleanNotes << ", "
                 << QString("%1").arg(pMemberPtr->m_balance, 0, 'f', 2)
-                << endl;
+                << Qt::endl;
         }
         f.close();
         Singletons::m_pDialogManager->infoMessageBoxTitled(this, tr("Successfully exported. Filename: %1").arg(filename), [](){});

@@ -276,12 +276,12 @@ namespace PenyaManager {
         out.setCodec("UTF-8");
 
         // header
-        out << tr("product ID") << ", " << tr("name") << ", " << tr("count") << endl;
+        out << tr("product ID") << ", " << tr("name") << ", " << tr("count") << Qt::endl;
         // iterate over results
         for (InvoiceProductItemList::iterator iter = pInvoiceProductItemListResultPtr->m_list->begin(); iter != pInvoiceProductItemListResultPtr->m_list->end(); ++iter)
         {
             InvoiceProductItemPtr pInvoiceProductItem = *iter;
-            out << pInvoiceProductItem->m_productId << ", " << Singletons::m_pTranslationManager->getStringTranslation(pInvoiceProductItem->m_productnameEus, pInvoiceProductItem->m_productnameEs) << ", " << pInvoiceProductItem->m_count << endl;
+            out << pInvoiceProductItem->m_productId << ", " << Singletons::m_pTranslationManager->getStringTranslation(pInvoiceProductItem->m_productnameEus, pInvoiceProductItem->m_productnameEs) << ", " << pInvoiceProductItem->m_count << Qt::endl;
         }
         f.close();
         Singletons::m_pDialogManager->infoMessageBoxTitled(this, tr("Successfully exported. Filename: %1").arg(filename), [](){});
