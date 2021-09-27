@@ -56,12 +56,12 @@ namespace PenyaManager {
             void on_actionMember_management_triggered();
             //
             void on_actionManager_reservations_triggered();
+            //
+            void on_actionAlerts_triggered();
 
         private:
             //
             Ui::AdminMainWindow     *ui;
-            //
-            QWidget                 *m_pEmptyWidget;
             //
             QTimer                  *m_pInactivityTimer;
     };

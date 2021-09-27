@@ -73,7 +73,8 @@ SOURCES += adminmain.cpp\
         admin/memberview.cpp \
         admin/adminreservationswindow.cpp \
         admin/providerinvoiceview.cpp \
-        admin/invoicedetailsview.cpp
+        admin/invoicedetailsview.cpp \
+        admin/alertsview.cpp
 
 HEADERS += commons/singletons.h\
         commons/dao.h\
@@ -123,7 +124,8 @@ HEADERS += commons/singletons.h\
         admin/memberview.h \
         admin/adminreservationswindow.h \
         admin/providerinvoiceview.h \
-        admin/invoicedetailsview.h
+        admin/invoicedetailsview.h \
+        admin/alertsview.h
 
 FORMS   += commons/passchangedialog.ui \
         commons/familyitemwidget.ui \
@@ -148,7 +150,8 @@ FORMS   += commons/passchangedialog.ui \
         admin/memberview.ui \
         admin/adminreservationswindow.ui \
         admin/providerinvoiceview.ui \
-        admin/invoicedetailsview.ui
+        admin/invoicedetailsview.ui \
+        admin/alertsview.ui
 
 TRANSLATIONS += \
         translations/penyamanageradmin_es.ts \

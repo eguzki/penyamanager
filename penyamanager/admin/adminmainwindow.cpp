@@ -19,6 +19,7 @@
 #include "memberlistview.h"
 #include "memberview.h"
 #include "adminreservationswindow.h"
+#include "alertsview.h"
 
 #include "adminmainwindow.h"
 #include "ui_adminmainwindow.h"
@@ -28,12 +29,10 @@ namespace PenyaManager {
     AdminMainWindow::AdminMainWindow(QWidget *parent, QTimer *pInactivityTimer) :
         QMainWindow(parent),
         ui(new Ui::AdminMainWindow),
-        m_pEmptyWidget(new QWidget(this)),
         m_pInactivityTimer(pInactivityTimer)
     {
         ui->setupUi(this);
 
-        this->ui->stackedWidget->addWidget(m_pEmptyWidget);
         // central widgets need adminmainwindow callback to call each other
         CentralWidgetCallback adminMainWindowSwitchCallback = std::bind(&AdminMainWindow::switchCentralWidget, this, _1);
 
@@ -92,6 +91,9 @@ namespace PenyaManager {
         AdminReservationsWindow *pAdminReservationsWindow = new AdminReservationsWindow(this);
         PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kAdminReservationViewKey, pAdminReservationsWindow);
         this->ui->stackedWidget->addWidget(pAdminReservationsWindow);
+        AlertsView *pAlertsView = new AlertsView(this);
+        Singletons::m_pParnetFinder->addPartner(WindowKey::kAdminAlertsViewKey, pAlertsView);
+        this->ui->stackedWidget->addWidget(pAlertsView);
         // connect QTimer timeout
         this->connect(m_pInactivityTimer, &QTimer::timeout, std::bind(&AdminMainWindow::on_actionExit_triggered, this));
     }
@@ -103,7 +105,9 @@ namespace PenyaManager {
     //
     void AdminMainWindow::init()
     {
-        this->ui->stackedWidget->setCurrentWidget(this->m_pEmptyWidget);
+        IPartner* pPartner = Singletons::m_pParnetFinder->getPartner(WindowKey::kAdminAlertsViewKey);
+        pPartner->init();
+        this->ui->stackedWidget->setCurrentWidget(pPartner);
         // start timer
         this->m_pInactivityTimer->start();
     }
@@ -206,6 +210,11 @@ namespace PenyaManager {
     {
         // call reservation window
         switchCentralWidget(WindowKey::kAdminReservationViewKey);
+    }
+    void AdminMainWindow::on_actionAlerts_triggered()
+    {
+        // call slow payers window
+        switchCentralWidget(WindowKey::kAdminAlertsViewKey);
     }
     //
     void AdminMainWindow::switchCentralWidget(WindowKey key)
