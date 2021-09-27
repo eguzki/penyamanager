@@ -48,6 +48,7 @@ CONF_APP=$PROJECT_PATH/penyamanagerconf.pro
 USER_APP=$PROJECT_PATH/penyamanager.pro
 ADMIN_APP=$PROJECT_PATH/penyamanageradmin.pro
 QMAKE_FLAGS="-Wall"
+MAKE_FLAGS="-j$(nproc)"
 DEBUG=yes
 CLEAN=no
 
@@ -89,7 +90,7 @@ else
     echo "** BUILD:: building \"$USER_APP\""
     $QMAKE $QMAKE_FLAGS $USER_APP
     echo "** BUILD:: making with: $MAKE**"
-    $MAKE
+    $MAKE $MAKE_FLAGS
     echo "** TRANSLATION:: making with: $LRELEASE**"
     $LRELEASE $USER_APP
     echo "** DEPLOY:: qm files**"
@@ -97,7 +98,7 @@ else
     echo "** BUILD:: building \"$ADMIN_APP\""
     $QMAKE $QMAKE_FLAGS $ADMIN_APP
     echo "** BUILD:: making with: $MAKE**"
-    $MAKE
+    $MAKE $MAKE_FLAGS
     echo "** TRANSLATION:: making with: $LRELEASE**"
     $LRELEASE $ADMIN_APP
     echo "** DEPLOY:: qm files**"
@@ -105,6 +106,6 @@ else
     echo "** BUILD:: building \"$CONF_APP\""
     $QMAKE $QMAKE_FLAGS $CONF_APP
     echo "** BUILD:: making with: $MAKE**"
-    $MAKE
+    $MAKE $MAKE_FLAGS
 fi
 
