@@ -21,6 +21,11 @@ namespace PenyaManager {
 
         this->ui->regDateDateEdit->calendarWidget()->setLocale(Singletons::m_pTranslationManager->getLocale());
         this->ui->birthdateDateEdit->calendarWidget()->setLocale(Singletons::m_pTranslationManager->getLocale());
+        this->ui->inactivityStartDateEdit->calendarWidget()->setLocale(Singletons::m_pTranslationManager->getLocale());
+        // initialize calendar inital values
+        QDate toInitialDate = QDate::currentDate();
+        // set maximum selectable date
+        this->ui->inactivityStartDateEdit->setMaximumDate(toInitialDate);
     }
     //
     MemberView::~MemberView()
@@ -54,8 +59,6 @@ namespace PenyaManager {
         this->ui->imageLabel->setFixedWidth(Constants::kMemberImageWidth);
         this->ui->imageLabel->setFixedHeight(Constants::kMemberImageHeigth);
         this->ui->imageLabel->setScaledContents(true);
-        // active
-        this->ui->activeCheckBox->setChecked(true);
         // isAdmin
         this->ui->isAdminCheckBox->setChecked(false);
         // bank account
@@ -102,6 +105,8 @@ namespace PenyaManager {
         this->m_memberImageFilename.clear();
         // change password button
         this->ui->changePasswordPushButton->setEnabled(Singletons::m_currentMemberId >= 0);
+        // status
+        this->ui->statusWidget->setVisible(Singletons::m_currentMemberId >= 0);
         //
         // Member info
         //
@@ -119,6 +124,7 @@ namespace PenyaManager {
         this->ui->retranslateUi(this);
         this->ui->regDateDateEdit->calendarWidget()->setLocale(Singletons::m_pTranslationManager->getLocale());
         this->ui->birthdateDateEdit->calendarWidget()->setLocale(Singletons::m_pTranslationManager->getLocale());
+        this->ui->inactivityStartDateEdit->calendarWidget()->setLocale(Singletons::m_pTranslationManager->getLocale());
     }
     //
     void MemberView::on_savePushButton_clicked()
@@ -198,8 +204,6 @@ namespace PenyaManager {
                 // new image was selected
                 pMemberResultPtr->m_member->m_imagePath = destFileName;
             }
-            // active
-            pMemberResultPtr->m_member->m_active = this->ui->activeCheckBox->isChecked();
             // isAdmin
             pMemberResultPtr->m_member->m_isAdmin = this->ui->isAdminCheckBox->isChecked();
             // bank account
@@ -287,7 +291,8 @@ namespace PenyaManager {
                 pMemberPtr->m_imagePath = destFileName;
             }
             // active
-            pMemberPtr->m_active = this->ui->activeCheckBox->isChecked();
+            // By default will be activated
+            pMemberPtr->m_active = true;
             // isAdmin
             pMemberPtr->m_isAdmin = this->ui->isAdminCheckBox->isChecked();
             // bank account
@@ -388,8 +393,6 @@ namespace PenyaManager {
         this->ui->imageLabel->setFixedWidth(Constants::kMemberImageWidth);
         this->ui->imageLabel->setFixedHeight(Constants::kMemberImageHeigth);
         this->ui->imageLabel->setScaledContents(true);
-        // active
-        this->ui->activeCheckBox->setChecked(pMemberResultPtr->m_member->m_active);
         // isAdmin
         this->ui->isAdminCheckBox->setChecked(pMemberResultPtr->m_member->m_isAdmin);
         // bank account
@@ -432,6 +435,42 @@ namespace PenyaManager {
         this->ui->accountBalanceValueLabel->setText(QString("%1 €").arg(pMemberResultPtr->m_member->m_balance, 0, 'f', 2));
         // New Account Entry button
         this->ui->depositButton->setEnabled(true);
+
+        // Status
+        this->ui->activatePushButton->setVisible(!pMemberResultPtr->m_member->m_active);
+        this->ui->deactivatePushButton->setVisible(pMemberResultPtr->m_member->m_active);
+        this->ui->label_5->setVisible(pMemberResultPtr->m_member->m_active);
+        this->ui->inactivityStartDateEdit->setDate(QDate::currentDate());
+        this->ui->inactivityStartDateEdit->setVisible(pMemberResultPtr->m_member->m_active);
+        this->ui->renewalWidget->setVisible(!pMemberResultPtr->m_member->m_active);
+        this->ui->renewPushButton->setEnabled(
+                !pMemberResultPtr->m_member->m_active &&
+                pMemberResultPtr->m_member->m_inactiveStartDate.isValid() &&
+                pMemberResultPtr->m_member->m_inactiveModificationDate.isValid() &&
+                pMemberResultPtr->m_member->m_inactiveModificationDate != QDate::currentDate()
+                );
+        QPixmap statusPixmap = GuiUtils::getImage(pMemberResultPtr->m_member->m_active ? (":images/icon-active.png"):(":images/icon-inactive.png"));
+        this->ui->memberStatus->setPixmap(statusPixmap);
+        this->ui->memberStatus->setFixedWidth(25);
+        this->ui->memberStatus->setFixedHeight(25);
+        this->ui->memberStatus->setScaledContents(true);
+
+        if (!pMemberResultPtr->m_member->m_active) {
+            // inactive_start
+            if (pMemberResultPtr->m_member->m_inactiveStartDate.isValid()) {
+                QString tmp = Singletons::m_pTranslationManager->getLocale().toString(pMemberResultPtr->m_member->m_inactiveStartDate, QLocale::NarrowFormat);
+                this->ui->inactiveStartDateLabel->setText(tmp);
+            } else {
+                this->ui->inactiveStartDateLabel->setText("-");
+            }
+            // inactive_modification_date
+            if (pMemberResultPtr->m_member->m_inactiveModificationDate.isValid()) {
+                QString tmp = Singletons::m_pTranslationManager->getLocale().toString(pMemberResultPtr->m_member->m_inactiveModificationDate, QLocale::NarrowFormat);
+                this->ui->lastRenewalDateLabel->setText(tmp);
+            } else {
+                this->ui->lastRenewalDateLabel->setText("-");
+            }
+        }
     }
     //
     void MemberView::on_imagePushButton_clicked()
@@ -563,9 +602,80 @@ namespace PenyaManager {
     //
     void MemberView::newAccountEntrySaved()
     {
-        fillMemberInfo(Singletons::m_currentMemberId);
-        hideNewAccountEntryForm();
+        init();
+    }
+    //
+    void MemberView::on_activatePushButton_clicked()
+    {
+        MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberById(Singletons::m_currentMemberId);
+        if (pMemberResultPtr->m_error) {
+            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            return;
+        }
+        if (!pMemberResultPtr->m_member){
+            return;
+        }
+
+        pMemberResultPtr->m_member->m_active = true;
+        pMemberResultPtr->m_member->m_inactiveStartDate = QDate();
+        pMemberResultPtr->m_member->m_inactiveModificationDate = QDate();
+
+        // update in ddbb
+        bool ok = Singletons::m_pDAO->updateMember(pMemberResultPtr->m_member);
+        if (!ok) {
+            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            return;
+        }
+
+        Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kMember, QString("activated"));
+        init();
+    }
+    //
+    void MemberView::on_deactivatePushButton_clicked()
+    {
+        MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberById(Singletons::m_currentMemberId);
+        if (pMemberResultPtr->m_error) {
+            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            return;
+        }
+        if (!pMemberResultPtr->m_member){
+            return;
+        }
+
+        pMemberResultPtr->m_member->m_active = false;
+        pMemberResultPtr->m_member->m_inactiveStartDate = this->ui->inactivityStartDateEdit->date();
+        pMemberResultPtr->m_member->m_inactiveModificationDate = this->ui->inactivityStartDateEdit->date();
+
+        // update in ddbb
+        bool ok = Singletons::m_pDAO->updateMember(pMemberResultPtr->m_member);
+        if (!ok) {
+            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            return;
+        }
+
+        Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kMember, QString("deactivated"));
+        init();
+    }
+    //
+    void MemberView::on_renewPushButton_clicked()
+    {
+        MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberById(Singletons::m_currentMemberId);
+        if (pMemberResultPtr->m_error) {
+            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            return;
+        }
+        if (!pMemberResultPtr->m_member){
+            return;
+        }
+
+        if (!pMemberResultPtr->m_member->m_active) {
+            bool ok = Singletons::m_pDAO->renewInactiveMember(Singletons::m_currentMemberId, QDate::currentDate());
+            if (!ok) {
+                Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+                return;
+            }
+            Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kMember, QString("inactivity renewed"));
+        }
+        init();
     }
 }
-
-

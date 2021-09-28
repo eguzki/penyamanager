@@ -81,6 +81,10 @@ namespace PenyaManager
             QString             m_cardNumber;
             //
             Uint32              m_memberType;
+            //
+            QDate               m_inactiveStartDate;
+            //
+            QDate               m_inactiveModificationDate;
     };
 
     //

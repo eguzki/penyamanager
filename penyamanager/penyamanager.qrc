@@ -30,5 +30,7 @@
         <file>images/fire.png</file>
         <file>images/table.png</file>
         <file>images/login.png</file>
+        <file>images/icon-active.png</file>
+        <file>images/icon-inactive.png</file>
     </qresource>
 </RCC>

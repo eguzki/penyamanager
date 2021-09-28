@@ -144,7 +144,10 @@ namespace PenyaManager {
             this->ui->memberTableWidget->setItem(rowCount, column++, new QTableWidgetItem(QString::number(pMemberPtr->m_username)));
             this->ui->memberTableWidget->setItem(rowCount, column++, new QTableWidgetItem(QString::number(pMemberPtr->m_balance, 'f', 2)));
             this->ui->memberTableWidget->setItem(rowCount, column++, new QTableWidgetItem(pMemberPtr->m_email));
-            this->ui->memberTableWidget->setItem(rowCount, column++, new QTableWidgetItem((pMemberPtr->m_active)?(QString::number(1)):(QString::number(0))));
+            QTableWidgetItem *statusIconItem = new QTableWidgetItem;
+            QPixmap statusPixmap = GuiUtils::getImage(pMemberPtr->m_active ? (":images/icon-active.png"):(":images/icon-inactive.png")).scaled(35, 35);
+            statusIconItem->setData(Qt::DecorationRole, statusPixmap);
+            this->ui->memberTableWidget->setItem(rowCount, column++, statusIconItem);
             this->m_rowProductIdMap[rowCount] = pMemberPtr->m_id;
             rowCount++;
         }

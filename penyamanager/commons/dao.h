@@ -237,6 +237,8 @@ namespace PenyaManager {
             ProviderInvoiceProductItemListResultPtr getProviderInvoiceProductsByInvoiceId(const QString &providerInvoiceId);
             //
             Int32 getLastUsername();
+            //
+            bool renewInactiveMember(Int32 memberId, const QDate &modificationDate);
 
         private:
             //
