@@ -3,7 +3,9 @@
 
 #include <QWidget>
 #include <QMessageBox>
+#include <QListWidgetItem>
 
+#include <objs/Member.h>
 #include <commons/IPartner.h>
 
 namespace Ui {
@@ -19,7 +21,7 @@ namespace PenyaManager {
 
         public:
             //
-            explicit AlertsView(QWidget *parent = 0);
+            explicit AlertsView(QWidget *parent, const CentralWidgetCallback &callback);
             //
             ~AlertsView();
             //
@@ -27,9 +29,14 @@ namespace PenyaManager {
             //
             void retranslate();
 
+        private slots:
+            void on_alertListWidget_itemClicked(QListWidgetItem *item);
+
         private:
             //
             Ui::AlertsView *ui;
+            //
+            CentralWidgetCallback m_switchCentralWidgetCallback;
     };
 }
 

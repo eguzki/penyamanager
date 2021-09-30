@@ -91,7 +91,7 @@ namespace PenyaManager {
         AdminReservationsWindow *pAdminReservationsWindow = new AdminReservationsWindow(this);
         PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kAdminReservationViewKey, pAdminReservationsWindow);
         this->ui->stackedWidget->addWidget(pAdminReservationsWindow);
-        AlertsView *pAlertsView = new AlertsView(this);
+        AlertsView *pAlertsView = new AlertsView(this, adminMainWindowSwitchCallback);
         Singletons::m_pParnetFinder->addPartner(WindowKey::kAdminAlertsViewKey, pAlertsView);
         this->ui->stackedWidget->addWidget(pAlertsView);
         // connect QTimer timeout

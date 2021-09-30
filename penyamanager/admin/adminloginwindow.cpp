@@ -30,7 +30,7 @@ namespace PenyaManager {
         QTextStream versionStream(&versionFile);
         versionStream.setCodec("UTF-8");
         QString versionStr = versionStream.readAll();
-        this->ui->versionLabel->setText(QString("code build %1").arg(versionStr));
+        this->ui->versionLabel->setText(QString("release %1").arg(versionStr));
     }
     //
     AdminLoginWindow::~AdminLoginWindow()
