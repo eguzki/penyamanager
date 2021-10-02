@@ -20,6 +20,7 @@ penyamanager
 * Admin manage Items
 * Admin manage Account
 * Admin manage Members
+* Admin manage Inactive Members
 * Configuration Application
 
 # Howto install. Windows deployment
@@ -87,6 +88,7 @@ penyamanager
   * member Info (can be edited)
   * Member create
   * Account fix
+  * Inactive members management.
 * Configuration Application
   * Resource path and ddbb access via configuration system platform independent. QSettings.
   * Database credentials encrypted using SimpleCrypt library
@@ -106,6 +108,8 @@ penyamanager
 * Notes in member information
 * Database backup scripts
   * [HOWTO backup database](db/backup/README.md)
+* Admin app alerts view.
+  * Long inactive member alert (2 years)
 
 # Development
 
@@ -120,25 +124,24 @@ penyamanager
 * Run: CTRL + R
 
 ## Developed using:
-* Vim 7.4 [customized](https://github.com/eguzki/eguzki-vim-environment)
-* QT Creator 4.0.3
-* QT 5.7.0
-* GCC 4.8.4, 64 bit
+* QT Creator 5.0.1
+* QT 5.15.2
+* GCC 9.3.0, 64 bit
 
 ## Enable DEBUG mode:
 * QSettings key **debug** in General section
 * Valid values: 1
 
-## Package deployment for windows 7
+## Package deployment for windows 10
 
-### Windows 7 32/64 bits
-* Compile using mingw 4.9.2 32bits compiler (currently QT 5.7 only supports mingw 4.9.2 32 bits but not 64 bits)
+### Windows 10 32/64 bits
+* Compile using mingw 4.9.2 32bits compiler
 * Necessary elements:
   * Application main exe (penyamanager.exe)
-  * Translation files (e.g. penyamanager_eu.qm). Check doc to know how to generate them out of source code.
+  * Translation files (e.g. `penyamanager_eu.qm`). Check doc to know how to generate them out of source code.
   * QT and system shared libreries (dll's)
-    * QT dll's path: QT_PATH/5.7/mingw492_32/bin
-    * QT plugins dll's path: QT_PATH/5.7/mingw492_32/plugins
+    * QT dll's path: `QT_PATH/5.15.2/mingw492_32/bin`
+    * QT plugins dll's path: `QT_PATH/5.15.2/mingw492_32/plugins`
     * Qt plugins: imageformats, platforms, sqldrivers, printsupport
 
 ```Shell
