@@ -27,3 +27,17 @@ make install
   * When logged in, non-blocking dialogs must be used, otherwise on inactivity timeouts, unexpected dialogs can be shown on login page, or even be switched to some view without being logged in
 
 
+ * Compute SQL Delta
+    Open MySQL Workbench
+    Click File -> New Model
+    Click Database -> Synchronize With Any Source
+    Click Next
+    Select a SQL Dump File as Source (this is the new structure)
+    Select a SQL Dump File as Destination (this is the old structure)
+    At Send Updates To select a Folder and Filename where the ALTER Script will be placed.
+    Click Next
+    Click Next
+    Make sure default_schema is checked and Click Next
+    Click Next
+    Preview your SQL Code and Click Next
+

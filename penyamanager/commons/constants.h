@@ -13,7 +13,7 @@ namespace PenyaManager {
             kInvoiceDetailsWindowKey, kAdminProviderWindowKey, kAdminNewProviderKey, kStockManagementWindowKey,
             kFamilyItemManagementWindowKey, kAdminProductItemKey, kAdminFamilyViewKey, kProductExpensesViewKey,
             kProviderInvoiceViewKey, kProviderInvoiceListViewKey, kAdminDepositListViewKey, kAdminAccountBalanceViewKey,
-            kMemberViewKey, kAdminReservationViewKey, kNewProviderInvoiceViewKey
+            kMemberViewKey, kAdminReservationViewKey, kNewProviderInvoiceViewKey, kAdminAlertsViewKey
     };
     //
     typedef std::function<void(WindowKey)>  CentralWidgetCallback;
@@ -88,6 +88,8 @@ namespace PenyaManager {
             static const Uint32     kInactivityTimeoutSec;
             //
             static const Uint32     kAdminInactivityTimeoutSec;
+            //
+            static const Uint32     kAdminInactivityPeriodMonths;
 
         private:
             Constants() {}

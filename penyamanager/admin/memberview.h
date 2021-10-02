@@ -57,8 +57,14 @@ namespace PenyaManager {
             void on_depositButton_clicked();
             //
             void on_newAccountSavePushButton_clicked();
+            //
+            void on_activatePushButton_clicked();
+            //
+            void on_deactivatePushButton_clicked();
+            //
+            void on_renewPushButton_clicked();
 
-        private:
+    private:
             //
             Ui::MemberView *ui;
             //

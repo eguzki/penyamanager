@@ -25,6 +25,10 @@
   <property name="windowTitle">
    <string>Penyamanager Application Manager</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../penyamanager.qrc">
+    <normaloff>:/images/alegrialogo.png</normaloff>:/images/alegrialogo.png</iconset>
+  </property>
   <property name="styleSheet">
    <string notr="true">QLabel#titleLabel{
 font: 20pt &quot;Calibri&quot;;
@@ -43,7 +47,7 @@ font: 20pt &quot;Calibri&quot;;
      <x>0</x>
      <y>0</y>
      <width>1024</width>
-     <height>19</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuMembers">
@@ -79,6 +83,7 @@ font: 20pt &quot;Calibri&quot;;
     <property name="title">
      <string>Main</string>
     </property>
+    <addaction name="actionAlerts"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuProviders">
@@ -189,7 +194,14 @@ font: 20pt &quot;Calibri&quot;;
     <string>Manage reservations</string>
    </property>
   </action>
+  <action name="actionAlerts">
+   <property name="text">
+    <string>Alerts</string>
+   </property>
+  </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="../penyamanager.qrc"/>
+ </resources>
  <connections/>
 </ui>

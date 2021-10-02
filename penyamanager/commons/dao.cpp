@@ -193,7 +193,7 @@ namespace PenyaManager {
             queryPtr->prepare(
                     "SELECT member.name, member.username, member.surname1, member.surname2, member.image, member.lastmodified, member.reg_date, member.active, member.isAdmin, member.birth, "
                     "member.address, member.zip_code, member.town, member.state, member.tel, member.tel2, member.email, member.bank_account, member.postal_send, "
-                    "member.notes, member.pwd, member.lastlogin, member.id_card, member.card, member.type "
+                    "member.notes, member.pwd, member.lastlogin, member.id_card, member.card, member.type, member.inactive_start_date, member.inactive_modification_date "
                     "FROM member "
                     "WHERE member.idmember=:memberid"
                     );
@@ -242,6 +242,8 @@ namespace PenyaManager {
             pMemberPtr->m_idCard = queryResponse.query->value(column++).toString();
             pMemberPtr->m_cardNumber = queryResponse.query->value(column++).toString();
             pMemberPtr->m_memberType = queryResponse.query->value(column++).toUInt();
+            pMemberPtr->m_inactiveStartDate = queryResponse.query->value(column++).toDate();
+            pMemberPtr->m_inactiveModificationDate = queryResponse.query->value(column++).toDate();
             pMemberResultPtr->m_member = pMemberPtr;
         }
         return pMemberResultPtr;
@@ -256,7 +258,7 @@ namespace PenyaManager {
             queryPtr->prepare(
                     "SELECT member.idmember, member.name, member.surname1, member.surname2, member.image, member.lastmodified, member.reg_date, member.active, member.isAdmin, member.birth, "
                     "member.address, member.zip_code, member.town, member.state, member.tel, member.tel2, member.email, member.bank_account, member.postal_send, "
-                    "member.notes, member.pwd, member.lastlogin, member.id_card, member.card, member.type "
+                    "member.notes, member.pwd, member.lastlogin, member.id_card, member.card, member.type, member.inactive_start_date, member.inactive_modification_date "
                     "FROM member "
                     "WHERE member.username=:username"
                     );
@@ -303,6 +305,8 @@ namespace PenyaManager {
             pMemberPtr->m_idCard = queryResponse.query->value(column++).toString();
             pMemberPtr->m_cardNumber = queryResponse.query->value(column++).toString();
             pMemberPtr->m_memberType = queryResponse.query->value(column++).toUInt();
+            pMemberPtr->m_inactiveStartDate = queryResponse.query->value(column++).toDate();
+            pMemberPtr->m_inactiveModificationDate = queryResponse.query->value(column++).toDate();
             pMemberResultPtr->m_member = pMemberPtr;
         }
         return pMemberResultPtr;
@@ -3114,7 +3118,7 @@ namespace PenyaManager {
                 queryPtr->prepare(
                         "SELECT member.idmember, member.username, member.name, member.surname1, member.surname2, member.image, member.lastmodified, member.reg_date, member.active, member.isAdmin, member.birth, "
                         "member.address, member.zip_code, member.town, member.state, member.tel, member.tel2, member.email, member.bank_account, member.postal_send, member.id_card, member.card, member.type, "
-                        "member.notes, ac.balance "
+                        "member.notes, member.inactive_start_date, member.inactive_modification_date, ac.balance "
                         "FROM account ac "
                         "INNER JOIN (SELECT account.idmember, MAX(account.date) AS MaxDate FROM account GROUP BY account.idmember) groupedAccount "
                         "ON ac.idmember = groupedAccount.idmember AND ac.date=groupedAccount.MaxDate "
@@ -3128,7 +3132,7 @@ namespace PenyaManager {
                 queryPtr->prepare(
                         "SELECT member.idmember, member.username, member.name, member.surname1, member.surname2, member.image, member.lastmodified, member.reg_date, member.active, member.isAdmin, member.birth, "
                         "member.address, member.zip_code, member.town, member.state, member.tel, member.tel2, member.email, member.bank_account, member.postal_send, member.id_card, member.card, member.type, "
-                        "member.notes, ac.balance "
+                        "member.notes, member.inactive_start_date, member.inactive_modification_date, ac.balance "
                         "FROM account ac "
                         "INNER JOIN (SELECT account.idmember, MAX(account.date) AS MaxDate FROM account GROUP BY account.idmember) groupedAccount "
                         "ON ac.idmember = groupedAccount.idmember AND ac.date=groupedAccount.MaxDate "
@@ -3179,6 +3183,8 @@ namespace PenyaManager {
                 pMemberPtr->m_cardNumber = queryResponse.query->value(column++).toString();
                 pMemberPtr->m_memberType = queryResponse.query->value(column++).toUInt();
                 pMemberPtr->m_notes = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_inactiveStartDate = queryResponse.query->value(column++).toDate();
+                pMemberPtr->m_inactiveModificationDate = queryResponse.query->value(column++).toDate();
                 pMemberPtr->m_balance = queryResponse.query->value(column++).toFloat();
                 pMemberListResultPtr->m_list->push_back(pMemberPtr);
             }
@@ -3231,7 +3237,8 @@ namespace PenyaManager {
                     "UPDATE member "
                     "SET username=:username, name=:name, surname1=:surname1, surname2=:surname2, image=:image, lastmodified=:lastmodified, active=:active, isAdmin=:isadmin, birth=:birth, "
                     "address=:address, zip_code=:zip_code, town=:town, state=:state, tel=:tel, tel2=:tel2, email=:email, bank_account=:bank_account, postal_send=:postal_send, "
-                    "notes=:notes, id_card=:id_card, card=:card, type=:type, reg_date=:reg_date "
+                    "notes=:notes, id_card=:id_card, card=:card, type=:type, reg_date=:reg_date, "
+                    "inactive_start_date=:inactive_start_date, inactive_modification_date=:inactive_modification_date "
                     "WHERE idmember = :memberid"
                     );
             // obligatory
@@ -3307,6 +3314,16 @@ namespace PenyaManager {
                 queryPtr->bindValue(":card", QVariant());
             } else {
                 queryPtr->bindValue(":card", pMemberPtr->m_cardNumber);
+            }
+            if (pMemberPtr->m_inactiveStartDate.isValid()) {
+                queryPtr->bindValue(":inactive_start_date", pMemberPtr->m_inactiveStartDate);
+            } else {
+                queryPtr->bindValue(":inactive_start_date", QVariant());
+            }
+            if (pMemberPtr->m_inactiveModificationDate.isValid()) {
+                queryPtr->bindValue(":inactive_modification_date", pMemberPtr->m_inactiveModificationDate);
+            } else {
+                queryPtr->bindValue(":inactive_modification_date", QVariant());
             }
             return queryPtr;
         };
@@ -3755,6 +3772,101 @@ namespace PenyaManager {
             str.replace(it.key(),it.value().toString());
         }
         return str;
+    }
+    //
+    bool DAO::renewInactiveMember(Int32 memberId, const QDate &modificationDate)
+    {
+        auto query = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // Member by id
+            queryPtr->prepare(
+                    "UPDATE member "
+                    "SET inactive_modification_date=:inactive_modification_date "
+                    "WHERE idmember = :memberid"
+                    );
+            // bind value
+            queryPtr->bindValue(":memberid", memberId);
+            queryPtr->bindValue(":inactive_modification_date", modificationDate);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(query);
+
+        if (queryResponse.error) {
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
+                    QString("renewInactiveMember memberId %1").arg(memberId));
+        }
+
+        return !queryResponse.error;
+    }
+    //
+    MemberListResultPtr DAO::getOldInactiveMembers(Uint32 intervalInMonths)
+    {
+        MemberListResultPtr pMemberListResultPtr(new MemberListResult);
+
+        auto query = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // old inactive members
+            queryPtr->prepare(
+                    "SELECT idmember, name, username, surname1, surname2, image, lastmodified, reg_date, active, "
+                    "isAdmin, birth, address, zip_code, town, state, tel, tel2, email, "
+                    "bank_account, postal_send, notes, pwd, lastlogin, id_card, card, type, "
+                    "inactive_start_date, inactive_modification_date "
+                    "FROM member "
+                    "WHERE active=0 AND DATE_ADD(inactive_modification_date, INTERVAL :intervalInMonths MONTH) < now()"
+                    );
+            //
+            queryPtr->bindValue(":intervalInMonths", intervalInMonths);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(query);
+        if (queryResponse.error) {
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
+                    QString("getOldInactiveMembers"));
+            pMemberListResultPtr->m_error = 1;
+        } else {
+            pMemberListResultPtr->m_list = MemberListPtr(new MemberList);
+            while (queryResponse.query->next()) {
+                MemberPtr pMemberPtr(new Member);
+                Uint32 column = 0;
+                pMemberPtr->m_id =  queryResponse.query->value(column++).toInt();
+                pMemberPtr->m_name = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_username = queryResponse.query->value(column++).toInt();
+                pMemberPtr->m_surname1 = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_surname2 = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_imagePath = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_lastModified = queryResponse.query->value(column++).toDateTime();
+                pMemberPtr->m_lastModified.setTimeSpec(Qt::UTC);
+                pMemberPtr->m_regDate = queryResponse.query->value(column++).toDateTime();
+                pMemberPtr->m_regDate.setTimeSpec(Qt::UTC);
+                pMemberPtr->m_active = queryResponse.query->value(column++).toInt() == 1;
+                pMemberPtr->m_isAdmin = queryResponse.query->value(column++).toInt() == 1;
+                pMemberPtr->m_birthdate = queryResponse.query->value(column++).toDate();
+                pMemberPtr->m_address = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_zipCode = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_town = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_state = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_phone = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_phone2 = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_email = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_bank_account = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_postalSend = queryResponse.query->value(column++).toInt() == 1;
+                pMemberPtr->m_notes = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_pwd = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_lastLogin = queryResponse.query->value(column++).toDateTime();
+                pMemberPtr->m_lastLogin.setTimeSpec(Qt::UTC);
+                pMemberPtr->m_idCard = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_cardNumber = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_memberType = queryResponse.query->value(column++).toUInt();
+                pMemberPtr->m_inactiveStartDate = queryResponse.query->value(column++).toDate();
+                pMemberPtr->m_inactiveModificationDate = queryResponse.query->value(column++).toDate();
+                pMemberListResultPtr->m_list->push_back(pMemberPtr);
+            }
+        }
+        return pMemberListResultPtr;
     }
 }
 

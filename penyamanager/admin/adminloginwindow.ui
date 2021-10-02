@@ -19,6 +19,10 @@
   <property name="windowTitle">
    <string>Penyamanager Application Manager</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../penyamanager.qrc">
+    <normaloff>:/images/alegrialogo.png</normaloff>:/images/alegrialogo.png</iconset>
+  </property>
   <property name="locale">
    <locale language="Spanish" country="Spain"/>
   </property>
@@ -81,7 +85,7 @@
          </size>
         </property>
         <property name="styleSheet">
-         <string notr="true">background-image: url(&quot;:/images/alegrialogo.jpg&quot;)</string>
+         <string notr="true">background-image: url(&quot;:/images/alegrialogo.png&quot;)</string>
         </property>
        </widget>
       </item>
@@ -300,6 +304,8 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="../penyamanager.qrc"/>
+ </resources>
  <connections/>
 </ui>
