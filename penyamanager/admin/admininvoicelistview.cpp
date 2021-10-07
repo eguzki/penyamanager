@@ -1,6 +1,7 @@
 //
 
 #include <commons/singletons.h>
+#include <commons/timedmessagebox.h>
 #include "admininvoicelistview.h"
 #include "ui_admininvoicelistview.h"
 
@@ -102,40 +103,40 @@ namespace PenyaManager {
             this->ui->memberIdLineEdit->clear();
             pInvoiceListResult = Singletons::m_pDAO->getInvoiceList(fromDate, toDate, m_currentPage, Constants::kAdminInvoiceListPageCount);
             if (pInvoiceListResult->m_error) {
-                Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+                TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
             pInvoiceListStatsResult = Singletons::m_pDAO->getInvoiceListStats(fromDate, toDate);
             if (pInvoiceListStatsResult->m_error) {
-                Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+                TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
         } else {
             bool ok;
             Int32 memberUsername = memberUsernameStr.toInt(&ok);
             if (!ok) {
-                Singletons::m_pDialogManager->infoMessageBoxTitled(this, tr("Username not valid"), [](){});
+                TimedMessageBox::infoMessageBoxTitled(this, tr("Username not valid"), [](){});
                 return;
             } else {
                 MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberByUsername(memberUsername);
                 if (pMemberResultPtr->m_error) {
-                    Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+                    TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                     return;
                 }
                 if (!pMemberResultPtr->m_member)
                 {
                     // User could not be found
-                    Singletons::m_pDialogManager->infoMessageBoxTitled(this, tr("Username not found"), [](){});
+                    TimedMessageBox::infoMessageBoxTitled(this, tr("Username not found"), [](){});
                     return;
                 }
                 pInvoiceListResult = Singletons::m_pDAO->getInvoiceListByMemberId(pMemberResultPtr->m_member->m_id, fromDate, toDate, m_currentPage, Constants::kAdminInvoiceListPageCount);
                 if (pInvoiceListResult->m_error) {
-                    Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+                    TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                     return;
                 }
                 pInvoiceListStatsResult = Singletons::m_pDAO->getInvoiceListByMemberIdStats(pMemberResultPtr->m_member->m_id, fromDate, toDate);
                 if (pInvoiceListStatsResult->m_error) {
-                    Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+                    TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                     return;
                 }
             }

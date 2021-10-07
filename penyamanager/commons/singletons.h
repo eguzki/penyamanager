@@ -2,6 +2,7 @@
 #define SINGLETONS_H
 
 #include <QSettings>
+#include <QTimer>
 
 #include "translationmanager.h"
 #include "objs/Member.h"
@@ -51,6 +52,8 @@ namespace PenyaManager {
             static TranslationManager       *m_pTranslationManager;
             //
             static DialogManager            *m_pDialogManager;
+            //
+            static QTimer                   *m_pInactivityTimer;
     };
 }
 

@@ -3,6 +3,7 @@
 #include <commons/utils.h>
 #include <commons/guiutils.h>
 #include <commons/singletons.h>
+#include <commons/timedmessagebox.h>
 #include "memberlistview.h"
 #include "ui_memberlistview.h"
 
@@ -77,12 +78,12 @@ namespace PenyaManager {
         bool filterPostalSend = this->ui->filterPostalUsersCheckBox->checkState() == Qt::CheckState::Checked;
         pMemberListResultPtr = Singletons::m_pDAO->getMemberList(filterPostalSend, currentPage-1, Constants::kInvoiceListPageCount);
         if (pMemberListResultPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         pMemberListStatsResultPtr = Singletons::m_pDAO->getMemberListStats(filterPostalSend);
         if (pMemberListStatsResultPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         // enable-disable pagination buttons
@@ -196,13 +197,13 @@ namespace PenyaManager {
         // max 1M users
         MemberListResultPtr pMemberListResultPtr = Singletons::m_pDAO->getMemberList(filterPostalSend, 0, 1000000);
         if (pMemberListResultPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
 
         QFile f(filename);
         if (!f.open( QIODevice::WriteOnly )) {
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Error opening %1").arg(filename), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Error opening %1").arg(filename), [](){});
             return;
         }
         QTextStream out(&f);
@@ -267,7 +268,7 @@ namespace PenyaManager {
                 << Qt::endl;
         }
         f.close();
-        Singletons::m_pDialogManager->infoMessageBoxTitled(this, tr("Successfully exported. Filename: %1").arg(filename), [](){});
+        TimedMessageBox::infoMessageBoxTitled(this, tr("Successfully exported. Filename: %1").arg(filename), [](){});
         // nothing should be added here
     }
     //
@@ -281,16 +282,16 @@ namespace PenyaManager {
         // get post activated members
         MemberListResultPtr pMemberListResultPtr = Singletons::m_pDAO->getMemberList(true, 0, 1000000);
         if (pMemberListResultPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         if (pMemberListResultPtr->m_list->size() == 0) {
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("There are no users with postsend activated"), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("There are no users with postsend activated"), [](){});
             return;
         }
         // print post activated member list
         GuiUtils::printPostalMembers(pMemberListResultPtr->m_list);
-        Singletons::m_pDialogManager->infoMessageBoxTitled(this, tr("successfull"), [](){});
+        TimedMessageBox::infoMessageBoxTitled(this, tr("successfull"), [](){});
         // nothing should be added here
     }
     //

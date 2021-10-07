@@ -3,7 +3,7 @@
 
 #include <QDialog>
 
-#include "DataTypes.h"
+#include <commons/DataTypes.h>
 
 namespace Ui {
     class NumItemDialog;

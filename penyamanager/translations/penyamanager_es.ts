@@ -163,22 +163,9 @@
 <context>
     <name>NumItemDialog</name>
     <message>
-        <location filename="../commons/numitemdialog.ui" line="93"/>
+        <location filename="../user/numitemdialog.ui" line="93"/>
         <source>TextLabel</source>
         <translation></translation>
-    </message>
-</context>
-<context>
-    <name>PassChangeDialog</name>
-    <message>
-        <location filename="../commons/passchangedialog.ui" line="40"/>
-        <source>Password</source>
-        <translation>Contraseña</translation>
-    </message>
-    <message>
-        <location filename="../commons/passchangedialog.ui" line="63"/>
-        <source>Repeat Password</source>
-        <translation>Repetir contraseña</translation>
     </message>
 </context>
 <context>
@@ -590,19 +577,6 @@
         <location filename="../user/memberdashboardwindow.cpp" line="295"/>
         <source>Current invoice is empty</source>
         <translation>El recibo actual está vacío</translation>
-    </message>
-</context>
-<context>
-    <name>PenyaManager::PassChangeDialog</name>
-    <message>
-        <location filename="../commons/passchangedialog.cpp" line="40"/>
-        <source>password fields cannot be empty</source>
-        <translation>Contraseña no válida</translation>
-    </message>
-    <message>
-        <location filename="../commons/passchangedialog.cpp" line="45"/>
-        <source>password fields do not match</source>
-        <translation>Contraseña no válida</translation>
     </message>
 </context>
 <context>

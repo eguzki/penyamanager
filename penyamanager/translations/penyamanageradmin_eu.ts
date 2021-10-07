@@ -829,22 +829,14 @@
     </message>
 </context>
 <context>
-    <name>NumItemDialog</name>
-    <message>
-        <location filename="../commons/numitemdialog.ui" line="93"/>
-        <source>TextLabel</source>
-        <translation></translation>
-    </message>
-</context>
-<context>
     <name>PassChangeDialog</name>
     <message>
-        <location filename="../commons/passchangedialog.ui" line="40"/>
+        <location filename="../admin/passchangedialog.ui" line="40"/>
         <source>Password</source>
         <translation>Pasahitza (4 zenbaki)</translation>
     </message>
     <message>
-        <location filename="../commons/passchangedialog.ui" line="63"/>
+        <location filename="../admin/passchangedialog.ui" line="63"/>
         <source>Repeat Password</source>
         <translation>Pasahitza errepikatu</translation>
     </message>
@@ -1592,12 +1584,12 @@
 <context>
     <name>PenyaManager::PassChangeDialog</name>
     <message>
-        <location filename="../commons/passchangedialog.cpp" line="40"/>
+        <location filename="../admin/passchangedialog.cpp" line="40"/>
         <source>password fields cannot be empty</source>
         <translation>Pasahitza ezin da hutsik utzi</translation>
     </message>
     <message>
-        <location filename="../commons/passchangedialog.cpp" line="45"/>
+        <location filename="../admin/passchangedialog.cpp" line="45"/>
         <source>password fields do not match</source>
         <translation>Pasahitzek ez dute bat egiten</translation>
     </message>

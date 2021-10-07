@@ -2,6 +2,7 @@
 
 #include <commons/singletons.h>
 #include <commons/guiutils.h>
+#include <commons/timedmessagebox.h>
 #include "invoicedetailswindow.h"
 #include "ui_invoicedetailswindow.h"
 
@@ -56,7 +57,7 @@ namespace PenyaManager {
         //
         MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberById(Singletons::m_pCurrMember->m_id);
         if (pMemberResultPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         if (!pMemberResultPtr->m_member) {
@@ -83,7 +84,7 @@ namespace PenyaManager {
         Int32 invoiceId = Singletons::m_currentInvoiceId;
         InvoiceResultPtr pInvoiceResultPtr = Singletons::m_pDAO->getInvoice(invoiceId);
         if (pInvoiceResultPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         if (!pInvoiceResultPtr->m_pInvoice) {
@@ -98,12 +99,12 @@ namespace PenyaManager {
         //
         InvoiceProductItemListResultPtr pInvoiceProductItemListResultPtr = Singletons::m_pDAO->getInvoiceProductItems(pInvoiceResultPtr->m_pInvoice->m_id, m_currentPage, Constants::kInvoiceDetailsWindowProductListPageCount);
         if (pInvoiceProductItemListResultPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         InvoiceProductItemStatsResultPtr invoiceProductItemStatsResultPtr = Singletons::m_pDAO->getInvoiceProductItemsStats(pInvoiceResultPtr->m_pInvoice->m_id);
         if (invoiceProductItemStatsResultPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
 
@@ -176,7 +177,7 @@ namespace PenyaManager {
         // Loading Current Invoice
         InvoiceResultPtr pInvoiceResultPtr = Singletons::m_pDAO->getInvoice(invoiceId);
         if (pInvoiceResultPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         if (!pInvoiceResultPtr->m_pInvoice) {
@@ -188,7 +189,7 @@ namespace PenyaManager {
         // Loading Current Invoice products
         InvoiceProductItemListResultPtr pInvoiceProductItemListResultPtr = Singletons::m_pDAO->getAllInvoiceProductItems(pInvoiceResultPtr->m_pInvoice->m_id);
         if (pInvoiceProductItemListResultPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
 
@@ -225,7 +226,7 @@ namespace PenyaManager {
         invoiceData["products"] = productList;
         // print invoice
         GuiUtils::printInvoice(invoiceData, pCurrMemberPtr->m_id, invoiceId);
-        Singletons::m_pDialogManager->infoMessageBox(this, tr("Invoice sent to printer"), [](){});
+        TimedMessageBox::infoMessageBox(this, tr("Invoice sent to printer"), [](){});
         // no code should be added after infoMessageBox
     }
     //

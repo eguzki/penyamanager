@@ -48,13 +48,10 @@ int main(int argc, char *argv[])
     penyamanagerTranslator.load(PenyaManager::Singletons::m_pTranslationManager->getTranslationFile());
     app.installTranslator(&penyamanagerTranslator);
 
-    QTimer inactivityTimer(NULL);
-    inactivityTimer.setInterval(PenyaManager::Constants::kInactivityTimeoutSec * 1000);
-
-    PenyaManager::InactivityEventFilter inactivityEventFilter(&inactivityTimer);
+    PenyaManager::InactivityEventFilter inactivityEventFilter(PenyaManager::Singletons::m_pInactivityTimer);
     app.installEventFilter(&inactivityEventFilter);
 
-    PenyaManager::MainWindow mainWindow(NULL, &penyamanagerTranslator, &inactivityTimer);
+    PenyaManager::MainWindow mainWindow(NULL, &penyamanagerTranslator, PenyaManager::Singletons::m_pInactivityTimer);
 
     mainWindow.init();
     // To disable Full Screen, comment the line below.

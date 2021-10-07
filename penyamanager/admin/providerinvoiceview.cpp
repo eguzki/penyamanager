@@ -2,6 +2,7 @@
 
 #include <commons/guiutils.h>
 #include <commons/singletons.h>
+#include <commons/timedmessagebox.h>
 #include "providerinvoiceview.h"
 #include "ui_providerinvoiceview.h"
 
@@ -46,13 +47,13 @@ namespace PenyaManager {
         QString providerInvoiceId(Singletons::m_currentProviderInvoiceId);
         ProviderInvoiceResultPtr providerInvoiceResultPtr = Singletons::m_pDAO->getProviderInvoiceById(providerInvoiceId);
         if (providerInvoiceResultPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         if (!providerInvoiceResultPtr->m_pProviderInvoice) {
             Singletons::m_pLogger->Warn(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kDashboard,
                     QString("provider invoice id %1 not found in ddbb").arg(providerInvoiceId));
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Operation not performed. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Operation not performed. Contact administrator"), [](){});
             return;
         }
         this->ui->invoiceIdValueLabel->setText(providerInvoiceId);
@@ -85,7 +86,7 @@ namespace PenyaManager {
     {
         ProviderInvoiceProductItemListResultPtr pListResultPtr = Singletons::m_pDAO->getProviderInvoiceProductsByInvoiceId(providerInvoiceId);
         if (pListResultPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         // num rows

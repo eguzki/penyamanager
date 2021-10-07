@@ -4,6 +4,7 @@
 #include <commons/singletons.h>
 #include <commons/utils.h>
 #include <commons/guiutils.h>
+#include <commons/timedmessagebox.h>
 #include "adminfamilyview.h"
 #include "ui_adminfamilyview.h"
 
@@ -47,12 +48,12 @@ namespace PenyaManager {
         // validate name is not empty
         QString familyEusName = this->ui->nameEusLineEdit->text();
         if (familyEusName.isEmpty()){
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Basque name cannot be empty"), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Basque name cannot be empty"), [](){});
             return;
         }
         QString familyEsName = this->ui->nameEsLineEdit->text();
         if (familyEsName.isEmpty()){
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Spanish name cannot be empty"), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Spanish name cannot be empty"), [](){});
             return;
         }
 
@@ -61,13 +62,13 @@ namespace PenyaManager {
             // edit previous item
             ProductFamilyResultPtr pFamilyResultPtr = Singletons::m_pDAO->getProductFamily(Singletons::m_currentFamilyId);
             if (pFamilyResultPtr->m_error) {
-                Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+                TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
             if (!pFamilyResultPtr->m_family) {
                 Singletons::m_pLogger->Warn(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kFamily,
                         QString("item not found %1").arg(Singletons::m_currentFamilyId));
-                Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+                TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
             // save old image in case we need to delete it
@@ -95,7 +96,7 @@ namespace PenyaManager {
             // update in ddbb
             bool ok = Singletons::m_pDAO->updateProductFamilyItem(pFamilyResultPtr->m_family);
             if (!ok) {
-                Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+                TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
             // if there is previously one image, and it has been changed -> delete it
@@ -136,7 +137,7 @@ namespace PenyaManager {
             // create in ddbb
             Int32 familyId = Singletons::m_pDAO->createProductFamilyItem(pFamilyPtr);
             if (familyId < 0) {
-                Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+                TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
             Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kFamily,
@@ -145,7 +146,7 @@ namespace PenyaManager {
 
         // reset var
         this->m_familyImageFilename.clear();
-        Singletons::m_pDialogManager->infoMessageBoxTitled(this, tr("Done successfully"),
+        TimedMessageBox::infoMessageBoxTitled(this, tr("Done successfully"),
                 std::bind(&AdminFamilyView::onFamilyUpdated, this)
                 );
         // nothing should be added here
@@ -164,7 +165,7 @@ namespace PenyaManager {
         if (!imagePath.isDir() || !imagePath.isWritable()) {
             Singletons::m_pLogger->Warn(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kFamily,
                     QString("Unable to write to %1").arg(imagePath.absoluteFilePath()));
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Unable to write to %1").arg(imagePath.absoluteFilePath()), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Unable to write to %1").arg(imagePath.absoluteFilePath()), [](){});
             return;
         }
 
@@ -180,7 +181,7 @@ namespace PenyaManager {
     void AdminFamilyView::onFamilyImageSelected(const QString &fn)
     {
         if (fn.isEmpty()) {
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("No file selected"), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("No file selected"), [](){});
             return;
         }
         // fn has absolute path
@@ -198,13 +199,13 @@ namespace PenyaManager {
     {
         ProductFamilyResultPtr pProductFamilyResultPtr = Singletons::m_pDAO->getProductFamily(familyId);
         if (pProductFamilyResultPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         if (!pProductFamilyResultPtr->m_family) {
             Singletons::m_pLogger->Warn(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kFamily,
                     QString("item not found %1").arg(familyId));
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         // name

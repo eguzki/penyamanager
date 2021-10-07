@@ -193,22 +193,9 @@
 <context>
     <name>NumItemDialog</name>
     <message>
-        <location filename="../commons/numitemdialog.ui" line="93"/>
+        <location filename="../user/numitemdialog.ui" line="93"/>
         <source>TextLabel</source>
         <translation></translation>
-    </message>
-</context>
-<context>
-    <name>PassChangeDialog</name>
-    <message>
-        <location filename="../commons/passchangedialog.ui" line="40"/>
-        <source>Password</source>
-        <translation>Pasahitza</translation>
-    </message>
-    <message>
-        <location filename="../commons/passchangedialog.ui" line="63"/>
-        <source>Repeat Password</source>
-        <translation>Pasahitza errepikatu</translation>
     </message>
 </context>
 <context>
@@ -546,19 +533,6 @@
         <location filename="../user/memberdashboardwindow.cpp" line="295"/>
         <source>Current invoice is empty</source>
         <translation>Eguneroko ordainagiria hutsik dago</translation>
-    </message>
-</context>
-<context>
-    <name>PenyaManager::PassChangeDialog</name>
-    <message>
-        <location filename="../commons/passchangedialog.cpp" line="40"/>
-        <source>password fields cannot be empty</source>
-        <translation>Pasahitz okerra</translation>
-    </message>
-    <message>
-        <location filename="../commons/passchangedialog.cpp" line="45"/>
-        <source>password fields do not match</source>
-        <translation>Pasahitz okerra</translation>
     </message>
 </context>
 <context>

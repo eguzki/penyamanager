@@ -2,6 +2,7 @@
 
 #include <commons/guiutils.h>
 #include <commons/singletons.h>
+#include <commons/timedmessagebox.h>
 #include "providerinvoicelistview.h"
 #include "ui_providerinvoicelistview.h"
 
@@ -101,7 +102,7 @@ namespace PenyaManager {
 
         ProviderListResultPtr pProviderListResultPtr = Singletons::m_pDAO->getProviderList();
         if (pProviderListResultPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
 
@@ -132,23 +133,23 @@ namespace PenyaManager {
         if (providerId >= 0) {
             pProviderInvoiceListResult = Singletons::m_pDAO->getProviderInvoiceListByProviderId(providerId, fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
             if (pProviderInvoiceListResult->m_error) {
-                Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+                TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
             pProviderInvoiceListStatsResult = Singletons::m_pDAO->getProviderInvoiceListByProviderIdStats(providerId, fromDate, toDate);
             if (pProviderInvoiceListStatsResult->m_error) {
-                Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+                TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
         } else {
             pProviderInvoiceListResult = Singletons::m_pDAO->getProviderInvoiceList(fromDate, toDate, m_currentPage, Constants::kInvoiceListPageCount);
             if (pProviderInvoiceListResult->m_error) {
-                Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+                TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
             pProviderInvoiceListStatsResult = Singletons::m_pDAO->getProviderInvoiceListStats(fromDate, toDate);
             if (pProviderInvoiceListStatsResult->m_error) {
-                Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+                TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
         }

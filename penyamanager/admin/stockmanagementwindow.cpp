@@ -6,6 +6,7 @@
 #include <commons/utils.h>
 #include <commons/guiutils.h>
 #include <commons/singletons.h>
+#include <commons/timedmessagebox.h>
 #include "stockmanagementwindow.h"
 #include "ui_stockmanagementwindow.h"
 
@@ -94,13 +95,13 @@ namespace PenyaManager {
         // fetch data
         StockProductItemListResultPtr pStockProductItemListResultPtr = Singletons::m_pDAO->getAllStockProductsList();
         if (pStockProductItemListResultPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
 
         QFile f(filename);
         if (!f.open( QIODevice::WriteOnly )) {
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Error opening %1").arg(filename), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Error opening %1").arg(filename), [](){});
             return;
         }
 
@@ -115,7 +116,7 @@ namespace PenyaManager {
             out << Singletons::m_pTranslationManager->getStringTranslation(pStockProductItemPtr->m_nameEus, pStockProductItemPtr->m_nameEs) << ", " << QString::number(pStockProductItemPtr->m_stock) << Qt::endl;
         }
         f.close();
-        Singletons::m_pDialogManager->infoMessageBoxTitled(this, tr("Successfully exported. Filename: %1").arg(filename), [](){});
+        TimedMessageBox::infoMessageBoxTitled(this, tr("Successfully exported. Filename: %1").arg(filename), [](){});
         // nothing should be added here
     }
     //
@@ -135,12 +136,12 @@ namespace PenyaManager {
     {
         StockProductItemListResultPtr pStockProductItemListResultPtr = Singletons::m_pDAO->getStockProductsList(m_currentPage, Constants::kAdminProductListPageCount);
         if (pStockProductItemListResultPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         ProductListStatsResultPtr pProductListStatsResultPtr = Singletons::m_pDAO->getProductsListStats();
         if (pProductListStatsResultPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         // enable-disable pagination buttons

@@ -6,6 +6,7 @@
 #include <commons/singletons.h>
 #include <commons/familyitemwidget.h>
 #include <commons/productitemwidget.h>
+#include <commons/timedmessagebox.h>
 #include "familyitemmanagementwindow.h"
 #include "ui_familyitemmanagementwindow.h"
 
@@ -34,7 +35,7 @@ namespace PenyaManager {
 
         ProductFamilyListResultPtr pfListPtr = Singletons::m_pDAO->getProductFamilies(false);
         if (pfListPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
 
@@ -113,7 +114,7 @@ namespace PenyaManager {
 
         ProductItemListResultPtr pfListPtr = Singletons::m_pDAO->getProductsFromFamily(familyId, false);
         if (pfListPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
 

@@ -3,6 +3,7 @@
 #include <commons/guiutils.h>
 #include <commons/constants.h>
 #include <commons/singletons.h>
+#include <commons/timedmessagebox.h>
 #include "invoicedetailsview.h"
 #include "ui_invoicedetailsview.h"
 
@@ -58,7 +59,7 @@ namespace PenyaManager {
         Int32 invoiceId = Singletons::m_currentInvoiceId;
         InvoiceResultPtr pInvoicePtr = Singletons::m_pDAO->getInvoice(invoiceId);
         if (pInvoicePtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         if (!pInvoicePtr->m_pInvoice) {
@@ -84,7 +85,7 @@ namespace PenyaManager {
         //
         InvoiceProductItemListResultPtr pInvoiceProductItemListResultPtr = Singletons::m_pDAO->getAllInvoiceProductItems(pInvoicePtr->m_id);
         if (pInvoiceProductItemListResultPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         this->ui->productTableWidget->setRowCount(pInvoiceProductItemListResultPtr->m_list->size());

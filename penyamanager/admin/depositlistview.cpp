@@ -5,6 +5,7 @@
 
 #include <commons/singletons.h>
 #include <commons/guiutils.h>
+#include <commons/timedmessagebox.h>
 #include "depositlistview.h"
 #include "ui_depositlistview.h"
 
@@ -65,7 +66,7 @@ namespace PenyaManager {
     {
         DepositListResultPtr pDepositListResultPtr = Singletons::m_pDAO->getUncheckedDeposits();
         if (pDepositListResultPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         // num rows
@@ -107,7 +108,7 @@ namespace PenyaManager {
         QWidget *pCashWidget = this->ui->depositTableWidget->cellWidget(rowCount, 4);
         QDoubleSpinBox *pDoubleSpinBox = qobject_cast<QDoubleSpinBox *>(pCashWidget);
         if (pDoubleSpinBox == 0) {
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         // get memberId
@@ -122,20 +123,20 @@ namespace PenyaManager {
             QString description = GuiUtils::depositFixDescription(depositId);
             bool ok = Singletons::m_pServices->createAccountTransaction(memberId, amount, description, TransactionType::DepositFix);
             if (!ok) {
-                Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+                TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
         }
         // close deposit
         bool ok = Singletons::m_pDAO->closeDeposit(depositId);
         if (!ok) {
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kDeposit,
                 QString("deposit ID %1 member ID %2 total %3€ diff %4€").arg(depositId).arg(memberId).arg(total, 0, 'f', 2).arg(amount, 0, 'f', 2));
         showUncheckedDeposits();
-        Singletons::m_pDialogManager->infoMessageBoxTitled(this, tr("Deposit checked. Difference: %1 €").arg(amount, 0, 'f', 2), [](){});
+        TimedMessageBox::infoMessageBoxTitled(this, tr("Deposit checked. Difference: %1 €").arg(amount, 0, 'f', 2), [](){});
         // nothing should be added here
     }
 }

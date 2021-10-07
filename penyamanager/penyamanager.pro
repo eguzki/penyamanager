@@ -28,12 +28,20 @@ RC_ICONS = images/alegrialogo.ico
 SOURCES += main.cpp\
         commons/singletons.cpp\
         commons/dao.cpp\
-        user/memberdashboardwindow.cpp\
+        commons/timeddialog.cpp\
+        commons/timedmessagebox.cpp\
         commons/utils.cpp\
         commons/constants.cpp\
         commons/services.cpp\
         commons/IPartner.cpp\
         commons/partnerfinder.cpp\
+        commons/guiutils.cpp \
+        commons/translationmanager.cpp \
+        commons/familyitemwidget.cpp \
+        commons/productitemwidget.cpp \
+        commons/logging.cpp \
+        commons/inactivityeventfilter.cpp \
+        commons/dialogmanager.cpp \
         objs/Transaction.cpp\
         objs/Invoice.cpp\
         objs/Deposit.cpp\
@@ -46,27 +54,21 @@ SOURCES += main.cpp\
         objs/Provider.cpp\
         objs/ProviderInvoice.cpp\
         objs/ProviderInvoiceProductItem.cpp\
+        user/memberdashboardwindow.cpp\
         user/loginwindow.cpp \
-        commons/numitemdialog.cpp \
+        user/numitemdialog.cpp \
         user/depositwindow.cpp \
         user/accountview.cpp \
         user/tablereservationview.cpp \
         user/invoicelistwindow.cpp \
         user/memberprofilegroupbox.cpp \
         user/invoicedetailswindow.cpp \
-        commons/guiutils.cpp \
-        commons/translationmanager.cpp \
         user/mainwindow.cpp \
-        commons/familyitemwidget.cpp \
-        commons/productitemwidget.cpp \
-        commons/logging.cpp \
-        commons/inactivityeventfilter.cpp \
-        commons/dialogmanager.cpp \
-        commons/passchangedialog.cpp
 
-HEADERS  += user/memberdashboardwindow.h\
-        commons/singletons.h\
+HEADERS  += commons/singletons.h\
         commons/dao.h\
+        commons/timeddialog.h\
+        commons/timedmessagebox.h\
         commons/utils.h\
         commons/constants.h\
         commons/services.h\
@@ -74,8 +76,12 @@ HEADERS  += user/memberdashboardwindow.h\
         commons/partnerfinder.h\
         commons/familyitemwidget.h\
         commons/productitemwidget.h\
-        commons/passchangedialog.h \
-        objs/Transaction.h\
+        commons/guiutils.h \
+        commons/translationmanager.h \
+        commons/DataTypes.h \
+        commons/logging.h \
+        commons/inactivityeventfilter.h \
+        commons/dialogmanager.h \
         objs/Invoice.h\
         objs/Deposit.h\
         objs/Member.h\
@@ -87,35 +93,30 @@ HEADERS  += user/memberdashboardwindow.h\
         objs/Provider.h\
         objs/ProviderInvoice.h\
         objs/ProviderInvoiceProductItem.h\
+        objs/Transaction.h\
+        user/memberdashboardwindow.h\
         user/loginwindow.h \
-        commons/numitemdialog.h \
+        user/numitemdialog.h \
         user/depositwindow.h \
         user/accountview.h \
         user/tablereservationview.h \
         user/invoicelistwindow.h \
         user/memberprofilegroupbox.h \
         user/invoicedetailswindow.h \
-        commons/guiutils.h \
-        commons/translationmanager.h \
-        commons/DataTypes.h \
-        user/mainwindow.h \
-        commons/logging.h \
-        commons/inactivityeventfilter.h \
-        commons/dialogmanager.h
+        user/mainwindow.h
 
-FORMS    += user/memberdashboardwindow.ui\
+FORMS    += commons/familyitemwidget.ui \
+        commons/productitemwidget.ui \
+        user/memberdashboardwindow.ui\
         user/loginwindow.ui \
-        commons/numitemdialog.ui \
-        commons/passchangedialog.ui \
+        user/numitemdialog.ui \
         user/depositwindow.ui \
         user/accountview.ui \
         user/tablereservationview.ui \
         user/invoicelistwindow.ui \
         user/memberprofilegroupbox.ui \
         user/invoicedetailswindow.ui \
-        user/mainwindow.ui \
-        commons/familyitemwidget.ui \
-        commons/productitemwidget.ui
+        user/mainwindow.ui
 
 TRANSLATIONS += \
     translations/penyamanager_es.ts \

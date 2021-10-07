@@ -5,6 +5,7 @@
 #include <commons/utils.h>
 #include <commons/singletons.h>
 #include <commons/guiutils.h>
+#include <commons/timedmessagebox.h>
 #include "tablereservationview.h"
 #include "ui_tablereservationview.h"
 
@@ -93,7 +94,7 @@ namespace PenyaManager {
         //
         MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberById(Singletons::m_pCurrMember->m_id);
         if (pMemberResultPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         if (!pMemberResultPtr->m_member) {
@@ -256,19 +257,19 @@ namespace PenyaManager {
         // fetch fireplace reservation data
         ReservationListResultPtr pFireplaceReservationListResultPtr = Singletons::m_pDAO->getFireplaceReservation(reservationType, nowDate);
         if (pFireplaceReservationListResultPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         // fetch fireplace data
         ReservationItemListResultPtr pFireplaceListResultPtr = Singletons::m_pDAO->getFireplaceList(m_currentPage, Constants::kReservationListPageCount);
         if (pFireplaceListResultPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
 
         ReservationItemListStatsPtr pFireplaceListStatsPtr = Singletons::m_pDAO->getFireplaceListStats();
         if (pFireplaceListStatsPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
 
@@ -281,19 +282,19 @@ namespace PenyaManager {
         // fetch oven reservation data
         ReservationListResultPtr pOvenReservationListResultPtr = Singletons::m_pDAO->getOvenReservation(reservationType, nowDate);
         if (pOvenReservationListResultPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         // fetch oven data
         ReservationItemListResultPtr pOvenListResultPtr = Singletons::m_pDAO->getOvenList(m_currentPage, Constants::kReservationListPageCount);
         if (pOvenListResultPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         // fetch oven list stats
         ReservationItemListStatsPtr pOvenListStatsPtr = Singletons::m_pDAO->getOvenListStats();
         if (pOvenListStatsPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
 
@@ -306,19 +307,19 @@ namespace PenyaManager {
         // fetch table reservation data
         ReservationListResultPtr pTableReservationListResultPtr = Singletons::m_pDAO->getTableReservation(reservationType, nowDate);
         if (pTableReservationListResultPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         // fetch tables data
         ReservationItemListResultPtr pTableListResultPtr = Singletons::m_pDAO->getLunchTableList(m_currentPage, Constants::kReservationListPageCount);
         if (pTableListResultPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         // fetch table list stats
         ReservationItemListStatsPtr pTableListStatsPtr = Singletons::m_pDAO->getLunchTableListStats();
         if (pTableListStatsPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
 
@@ -423,16 +424,17 @@ namespace PenyaManager {
         }
 
         if (!ok) {
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         QLocale enLocale = QLocale("en");
         Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kReservation,
                 QString("reserved %1, itemid %2, %3 %4").arg(GetStringFromReservationItemTypeEnum(reservationItemType)).arg(itemId).arg(GetStringFromReservationTypeEnum(reservationType)).arg(enLocale.toString(date)));
-        Singletons::m_pDialogManager->infoMessageBox(this,
+        TimedMessageBox::infoMessageBox(this,
                 tr("Reserved %1 at %2").arg(GetStringFromReservationItemTypeEnum(reservationItemType, true)).arg(GetStringFromReservationTypeEnum(reservationType, true)),
                 std::bind(&TableReservationView::onReserved, this, reservationItemType, date, reservationType)
                 );
+        // no code should be added after infoMessageBox
     }
     //
     void TableReservationView::onReserved(ReservationItemType reservationItemType, QDate reservationDate, ReservationType reservationType)
@@ -477,13 +479,13 @@ namespace PenyaManager {
                 break;
         }
         if (!ok) {
-            Singletons::m_pDialogManager->criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBox(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         QLocale enLocale = QLocale("en");
         Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kReservation,
                 QString("canceled %1, reservationid %2, %3 %4").arg(GetStringFromReservationItemTypeEnum(reservationItemType)).arg(reservationId).arg(GetStringFromReservationTypeEnum(reservationType)).arg(enLocale.toString(date)));
-        Singletons::m_pDialogManager->infoMessageBox(this,
+        TimedMessageBox::infoMessageBox(this,
                 tr("Cancelled %1 at %2").arg(GetStringFromReservationItemTypeEnum(reservationItemType, true)).arg(GetStringFromReservationTypeEnum(reservationType, true)),
                 std::bind(&TableReservationView::onCancel, this, reservationItemType, date, reservationType)
                 );
