@@ -7,12 +7,9 @@
 #include <QObject>
 
 #include "DataTypes.h"
-//#include "numitemdialog.h"
 //#include "passchangedialog.h"
 
 namespace PenyaManager {
-    //
-    typedef std::function<void(QString resultStr)> NumItemDialogCallback;
     //
     typedef std::function<void(int res, QString passStr)> PassChangeDialogCallback;
     //
@@ -26,8 +23,6 @@ namespace PenyaManager {
             //
             explicit DialogManager(QObject *parent = 0);
             //
-            void numItemDialog(QWidget *parent, const QString &message, const NumItemDialogCallback &callback);
-            //
             void passChangeDialog(QWidget *parent, const PassChangeDialogCallback &callback);
             //
             void getOpenFileName(QWidget *parent,
@@ -38,8 +33,6 @@ namespace PenyaManager {
 
         public slots:
             //
-            void numItemDialogClosed();
-            //
             void passChangeDialogClosed(int);
             //
             void fileDialogFileSelected(const QString &file);
@@ -48,13 +41,9 @@ namespace PenyaManager {
 
         private:
             //
-            NumItemDialogCallback           m_numItemCallback;
-            //
             PassChangeDialogCallback        m_passChangeCallback;
             //
             FileDialogCallback              m_fileDialogCallback;
-            //
-            //NumItemDialog                  *m_pNumItemDialog;
             //
             //PassChangeDialog               *m_pPassChangeDialog;
             //

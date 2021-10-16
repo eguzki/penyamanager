@@ -6,6 +6,7 @@
 #include <commons/timedmessagebox.h>
 #include <commons/familyitemwidget.h>
 #include <commons/productitemwidget.h>
+#include "timednumitemdialog.h"
 #include "memberdashboardwindow.h"
 #include "ui_memberdashboardwindow.h"
 
@@ -392,7 +393,7 @@ namespace PenyaManager {
         }
         Int32 productId = rowMap->second;
 
-        Singletons::m_pDialogManager->numItemDialog(this, tr("Number of items?"),
+        TimedNumItemDialog::numItemDialog(this, tr("Number of items?"),
                 std::bind(&MemberDashboardWindow::onNumItemSelectedFromInvoice, this, productId, _1)
                 );
     }
@@ -451,7 +452,7 @@ namespace PenyaManager {
     void MemberDashboardWindow::on_productListWidget_itemClicked(QListWidgetItem *item)
     {
         Int32 productId = item->data(Constants::kIdRole).toInt();
-        Singletons::m_pDialogManager->numItemDialog(this, tr("Number of items?"),
+        TimedNumItemDialog::numItemDialog(this, tr("Number of items?"),
                 std::bind(&MemberDashboardWindow::onNumItemSelectedFromProductList, this, productId, _1)
                 );
     }

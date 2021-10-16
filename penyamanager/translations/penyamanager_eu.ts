@@ -191,9 +191,9 @@
     </message>
 </context>
 <context>
-    <name>NumItemDialog</name>
+    <name>TimedNumItemDialog</name>
     <message>
-        <location filename="../user/numitemdialog.ui" line="93"/>
+        <location filename="../user/timednumitemdialog.ui" line="93"/>
         <source>TextLabel</source>
         <translation></translation>
     </message>

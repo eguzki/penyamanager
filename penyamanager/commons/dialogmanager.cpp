@@ -16,33 +16,6 @@ namespace PenyaManager {
 
     }
     //
-    // Non blocking version of NumItemDialog
-    // required when inactivity timeout triggers when NumItemDialog is displayed and not answered yet
-    void DialogManager::numItemDialog(QWidget *parent, const QString &message, const NumItemDialogCallback &callback)
-    {
-        Q_UNUSED(parent)
-        Q_UNUSED(message)
-        Q_UNUSED(callback)
-        //m_numItemCallback = callback;
-        //m_pNumItemDialog = new NumItemDialog(parent, message);
-        ////makes sure the numitemdialog is deleted automatically when closed
-        //m_pNumItemDialog->setAttribute(Qt::WA_DeleteOnClose);
-        //m_pNumItemDialog->open(this, SLOT(numItemDialogClosed()));
-    }
-    //
-    void DialogManager::numItemDialogClosed()
-    {
-        //QString result;
-        //if (m_pNumItemDialog) {
-        //    result = m_pNumItemDialog->getKeyStr();
-        //    m_pNumItemDialog = NULL;
-        //}
-        //// only call callback when user pressed button
-        //if (!m_inactivityFlag) {
-        //    m_numItemCallback(result);
-        //}
-    }
-    //
     void DialogManager::passChangeDialog(QWidget *parent, const PassChangeDialogCallback &callback)
     {
         Q_UNUSED(parent)

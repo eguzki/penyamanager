@@ -56,7 +56,7 @@ SOURCES += main.cpp\
         objs/ProviderInvoiceProductItem.cpp\
         user/memberdashboardwindow.cpp\
         user/loginwindow.cpp \
-        user/numitemdialog.cpp \
+        user/timednumitemdialog.cpp \
         user/depositwindow.cpp \
         user/accountview.cpp \
         user/tablereservationview.cpp \
@@ -96,7 +96,7 @@ HEADERS  += commons/singletons.h\
         objs/Transaction.h\
         user/memberdashboardwindow.h\
         user/loginwindow.h \
-        user/numitemdialog.h \
+        user/timednumitemdialog.h \
         user/depositwindow.h \
         user/accountview.h \
         user/tablereservationview.h \
@@ -109,7 +109,7 @@ FORMS    += commons/familyitemwidget.ui \
         commons/productitemwidget.ui \
         user/memberdashboardwindow.ui\
         user/loginwindow.ui \
-        user/numitemdialog.ui \
+        user/timednumitemdialog.ui \
         user/depositwindow.ui \
         user/accountview.ui \
         user/tablereservationview.ui \

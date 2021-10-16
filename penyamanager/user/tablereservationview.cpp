@@ -6,6 +6,7 @@
 #include <commons/singletons.h>
 #include <commons/guiutils.h>
 #include <commons/timedmessagebox.h>
+#include "timednumitemdialog.h"
 #include "tablereservationview.h"
 #include "ui_tablereservationview.h"
 
@@ -382,7 +383,7 @@ namespace PenyaManager {
 
         if (reservationItemType == ReservationItemType::LunchTableType)
         {
-            Singletons::m_pDialogManager->numItemDialog(this, tr("Number of guests?"),
+            TimedNumItemDialog::numItemDialog(this, tr("Number of guests?"),
                     std::bind(&TableReservationView::onTableItemGiven, this, itemId, _1)
                     );
             return;

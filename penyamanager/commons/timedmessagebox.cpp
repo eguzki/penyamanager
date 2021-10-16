@@ -1,6 +1,5 @@
 //
 
-#include "qnamespace.h"
 #include "singletons.h"
 #include "timedmessagebox.h"
 
@@ -36,7 +35,6 @@ namespace PenyaManager {
         this->deleteLater();
         this->close();
     }
-
 
     //
     void TimedMessageBox::infoMessageBox(QWidget *parent, const QString &message, const InfoMessageBoxCallback &callback)
