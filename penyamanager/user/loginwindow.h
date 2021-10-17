@@ -21,7 +21,7 @@ namespace PenyaManager {
 
         public:
             //
-            explicit LoginWindow(QWidget *parent, QTranslator *pTranslator, QTimer *pInactivityTimer, const CentralWidgetCallback &callback);
+            explicit LoginWindow(QWidget *parent, QTranslator *pTranslator, const CentralWidgetCallback &callback);
             //
             ~LoginWindow();
             //

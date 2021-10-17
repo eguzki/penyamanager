@@ -829,14 +829,14 @@
     </message>
 </context>
 <context>
-    <name>PassChangeDialog</name>
+    <name>TimedPassChangeDialog</name>
     <message>
-        <location filename="../admin/passchangedialog.ui" line="40"/>
+        <location filename="../admin/timedpasschangedialog.ui" line="40"/>
         <source>Password</source>
         <translation>Contraseña (4 números)</translation>
     </message>
     <message>
-        <location filename="../admin/passchangedialog.ui" line="63"/>
+        <location filename="../admin/timedpasschangedialog.ui" line="63"/>
         <source>Repeat Password</source>
         <translation>Repetir contraseña</translation>
     </message>
@@ -1583,14 +1583,14 @@
     </message>
 </context>
 <context>
-    <name>PenyaManager::PassChangeDialog</name>
+    <name>PenyaManager::TimedPassChangeDialog</name>
     <message>
-        <location filename="../admin/passchangedialog.cpp" line="40"/>
+        <location filename="../admin/timedpasschangedialog.cpp" line="40"/>
         <source>password fields cannot be empty</source>
         <translation>La contraseña no puede estar vacía</translation>
     </message>
     <message>
-        <location filename="../admin/passchangedialog.cpp" line="45"/>
+        <location filename="../admin/timedpasschangedialog.cpp" line="45"/>
         <source>password fields do not match</source>
         <translation>Las contraseñas no coinciden</translation>
     </message>

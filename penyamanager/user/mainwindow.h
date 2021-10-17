@@ -21,7 +21,7 @@ namespace PenyaManager {
 
         public:
             //
-            explicit MainWindow(QWidget *parent, QTranslator *pTranslator, QTimer *pInactivityTimer);
+            explicit MainWindow(QWidget *parent, QTranslator *pTranslator);
             //
             ~MainWindow();
             //

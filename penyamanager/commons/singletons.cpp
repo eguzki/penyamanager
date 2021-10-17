@@ -24,19 +24,17 @@ namespace PenyaManager {
     DialogManager *Singletons::m_pDialogManager = NULL;
     QTimer *Singletons::m_pInactivityTimer = NULL;
 
-    void Singletons::Create(QSettings *pSettings, PenyaManagerLoggerPtr pLogger)
+    void Singletons::Create(QSettings *pSettings, PenyaManagerLoggerPtr pLogger, QTimer *pInactivityTimer)
     {
         m_pSettings = pSettings;
         m_pLogger = pLogger;
+        m_pInactivityTimer = pInactivityTimer;
         m_pSettings->beginGroup(Constants::kDatabaseGroupName);
         QString ddbbHost(m_pSettings->value(Constants::kDatabaseHost).toString());
         QString ddbbName(m_pSettings->value(Constants::kDatabaseName).toString());
         QString ddbbUser(m_pSettings->value(Constants::kDatabaseUser).toString());
         QString cryptedDDBBPass(m_pSettings->value(Constants::kDatabasePass).toString());
         m_pSettings->endGroup();
-
-        m_pInactivityTimer = new QTimer(NULL);
-        m_pInactivityTimer->setInterval(Constants::kInactivityTimeoutSec * 1000);
 
         // Translation Manager
         m_pTranslationManager = new TranslationManager;

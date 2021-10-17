@@ -16,31 +16,6 @@ namespace PenyaManager {
 
     }
     //
-    void DialogManager::passChangeDialog(QWidget *parent, const PassChangeDialogCallback &callback)
-    {
-        Q_UNUSED(parent)
-        Q_UNUSED(callback)
-        //m_passChangeCallback = callback;
-        //m_pPassChangeDialog = new PassChangeDialog(parent);
-        ////makes sure the passChangeDialog is deleted automatically when closed
-        //m_pPassChangeDialog->setAttribute(Qt::WA_DeleteOnClose);
-        //m_pPassChangeDialog->open(this, SLOT(passChangeDialogClosed(int)));
-    }
-    //
-    void DialogManager::passChangeDialogClosed(int res)
-    {
-        Q_UNUSED(res)
-        //QString result;
-        //if (m_pPassChangeDialog) {
-        //    result = m_pPassChangeDialog->getPassword();
-        //    m_pPassChangeDialog = NULL;
-        //}
-        //// only call callback when user pressed button
-        //if (!m_inactivityFlag) {
-        //    m_passChangeCallback(res, result);
-        //}
-    }
-    //
     void DialogManager::getOpenFileName(QWidget *parent,
             const QString &caption, const QString &directory,
             const QString &filter, QFileDialog::FileMode filemode, const FileDialogCallback &callback)
@@ -80,14 +55,6 @@ namespace PenyaManager {
         m_inactivityFlag = true;
         // More than one of the dialog types should not be active,
         // otherwise, code bug
-        //} else if (m_pNumItemDialog) {
-        //    m_pNumItemDialog->close();
-        //    // m_pNumItemDialog is deleted automatically (Qt::WA_DeleteOnClose is set)
-        //    m_pNumItemDialog = NULL;
-        //} else if (m_pPassChangeDialog) {
-        //    m_pPassChangeDialog->close();
-        //    // m_pPassChangeDialog is deleted automatically (Qt::WA_DeleteOnClose is set)
-        //    m_pPassChangeDialog = NULL;
         if (m_pFileDialog) {
             // triggers fileDialogRejected slot
             m_pFileDialog->close();

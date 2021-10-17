@@ -74,7 +74,7 @@ SOURCES += adminmain.cpp\
         admin/adminreservationswindow.cpp \
         admin/providerinvoiceview.cpp \
         admin/invoicedetailsview.cpp \
-        admin/passchangedialog.cpp \
+        admin/timedpasschangedialog.cpp \
         admin/alertsview.cpp
 
 HEADERS += commons/singletons.h\
@@ -126,7 +126,7 @@ HEADERS += commons/singletons.h\
         admin/adminreservationswindow.h \
         admin/providerinvoiceview.h \
         admin/invoicedetailsview.h \
-        admin/passchangedialog.h \
+        admin/timedpasschangedialog.h \
         admin/alertsview.h
 
 FORMS   += commons/familyitemwidget.ui \
@@ -151,7 +151,7 @@ FORMS   += commons/familyitemwidget.ui \
         admin/adminreservationswindow.ui \
         admin/providerinvoiceview.ui \
         admin/invoicedetailsview.ui \
-        admin/passchangedialog.ui \
+        admin/timedpasschangedialog.ui \
         admin/alertsview.ui
 
 TRANSLATIONS += \

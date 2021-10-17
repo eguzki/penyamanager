@@ -18,7 +18,7 @@ namespace PenyaManager {
     {
         public:
             //
-            static void Create(QSettings *pSettings, PenyaManagerLoggerPtr pLogger);
+            static void Create(QSettings *pSettings, PenyaManagerLoggerPtr pLogger, QTimer *pInactivityTimer);
             //
             static void Destroy();
 

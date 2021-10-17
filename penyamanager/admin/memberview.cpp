@@ -5,6 +5,7 @@
 #include <commons/utils.h>
 #include <commons/singletons.h>
 #include <commons/timedmessagebox.h>
+#include "timedpasschangedialog.h"
 #include "memberview.h"
 #include "ui_memberview.h"
 
@@ -517,9 +518,9 @@ namespace PenyaManager {
             return;
         }
 
-        Singletons::m_pDialogManager->passChangeDialog(this,
-                std::bind(&MemberView::onPassGiven, this, _1, _2)
-                );
+        TimedPassChangeDialog::passChangeDialog(this, std::bind(&MemberView::onPassGiven, this, _1, _2));
+        // nothing should be added here
+        return;
     }
     //
     void MemberView::onPassGiven(int res, QString pass)

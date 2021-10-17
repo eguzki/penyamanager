@@ -31,9 +31,12 @@ int main(int argc, char *argv[])
 
     pLogger->Info(PenyaManager::Constants::kNoUserId, PenyaManager::LogAction::kMain, "Init");
 
+    QTimer *pInactivityTimer = new QTimer(NULL);
+    pInactivityTimer->setInterval(PenyaManager::Constants::kAdminInactivityTimeoutSec * 1000);
+
     // Singletons initialization
     // Includes ddbb connection
-    PenyaManager::Singletons::Create(&settings, pLogger);
+    PenyaManager::Singletons::Create(&settings, pLogger, pInactivityTimer);
 
     if (!PenyaManager::Singletons::m_pDAO->isOpen()) {
         PenyaManager::Singletons::m_pLogger->Error(PenyaManager::Constants::kNoUserId, PenyaManager::LogAction::kMain, "Database connection failed");
@@ -47,13 +50,11 @@ int main(int argc, char *argv[])
     penyamanagerTranslator.load(PenyaManager::Singletons::m_pTranslationManager->getAdminTranslationFile());
     app.installTranslator(&penyamanagerTranslator);
 
-    QTimer inactivityTimer(NULL);
-    inactivityTimer.setInterval(PenyaManager::Constants::kAdminInactivityTimeoutSec * 1000);
 
-    PenyaManager::InactivityEventFilter inactivityEventFilter(&inactivityTimer);
+    PenyaManager::InactivityEventFilter inactivityEventFilter(pInactivityTimer);
     app.installEventFilter(&inactivityEventFilter);
 
-    PenyaManager::AdminMainWindow adminMainWindow(NULL, &inactivityTimer);
+    PenyaManager::AdminMainWindow adminMainWindow(NULL);
 
     PenyaManager::AdminLoginWindow *pLoginWindow = new PenyaManager::AdminLoginWindow(NULL, &adminMainWindow, &penyamanagerTranslator);
     PenyaManager::Singletons::m_pParnetFinder->addPartner(PenyaManager::WindowKey::kAdminLoginWindowKey, pLoginWindow);

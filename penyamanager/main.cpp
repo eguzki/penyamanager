@@ -31,9 +31,12 @@ int main(int argc, char *argv[])
 
     pLogger->Info(PenyaManager::Constants::kNoUserId, PenyaManager::LogAction::kMain, "Init");
 
+    QTimer *pInactivityTimer = new QTimer(NULL);
+    pInactivityTimer->setInterval(PenyaManager::Constants::kInactivityTimeoutSec * 1000);
+
     // Singletons initialization
     // Includes ddbb connection
-    PenyaManager::Singletons::Create(&settings, pLogger);
+    PenyaManager::Singletons::Create(&settings, pLogger, pInactivityTimer);
 
     if (!PenyaManager::Singletons::m_pDAO->isOpen()) {
         PenyaManager::Singletons::m_pLogger->Error(PenyaManager::Constants::kNoUserId, PenyaManager::LogAction::kMain, "Database connection failed");
@@ -51,7 +54,7 @@ int main(int argc, char *argv[])
     PenyaManager::InactivityEventFilter inactivityEventFilter(PenyaManager::Singletons::m_pInactivityTimer);
     app.installEventFilter(&inactivityEventFilter);
 
-    PenyaManager::MainWindow mainWindow(NULL, &penyamanagerTranslator, PenyaManager::Singletons::m_pInactivityTimer);
+    PenyaManager::MainWindow mainWindow(NULL, &penyamanagerTranslator);
 
     mainWindow.init();
     // To disable Full Screen, comment the line below.

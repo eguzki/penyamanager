@@ -12,13 +12,13 @@
 namespace PenyaManager {
 
     //
-    LoginWindow::LoginWindow(QWidget *parent, QTranslator *pTranslator, QTimer *pInactivityTimer, const CentralWidgetCallback &callback) :
+    LoginWindow::LoginWindow(QWidget *parent, QTranslator *pTranslator, const CentralWidgetCallback &callback) :
         IPartner(parent),
         ui(new Ui::LoginWindow),
         m_currentPage(0),
         m_username(-1),
         m_pTranslator(pTranslator),
-        m_pInactivityTimer(pInactivityTimer),
+        m_pInactivityTimer(Singletons::m_pInactivityTimer),
         m_switchCentralWidgetCallback(callback)
     {
         ui->setupUi(this);
