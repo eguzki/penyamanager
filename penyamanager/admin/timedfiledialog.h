@@ -6,7 +6,7 @@
 
 namespace PenyaManager {
     //
-    typedef std::function<void(QString filename)> FileDialogCallback;
+    typedef std::function<void(const QString &filename)> FileDialogCallback;
     //
     class TimedFileDialog : public QFileDialog
     {
@@ -16,18 +16,16 @@ namespace PenyaManager {
             //
             TimedFileDialog(QTimer *pInactivityTimer,
                     QWidget *parent, const QString &caption, const QString &directory,
-                    const QString &filter, QFileDialog::FileMode filemode,
+                    const QString &filter, QFileDialog::AcceptMode acceptMode,
                     const FileDialogCallback &callback);
             //
             static void fileDialog(QWidget *parent,
                     const QString &caption, const QString &directory,
-                    const QString &filter, QFileDialog::FileMode filemode, const FileDialogCallback &callback);
+                    const QString &filter, QFileDialog::AcceptMode acceptMode, const FileDialogCallback &callback);
 
         private slots:
             //
             void onFilesSelected(const QStringList &selected);
-            //
-            void onFileSelected(const QString &file);
             //
             void onRejected();
             //

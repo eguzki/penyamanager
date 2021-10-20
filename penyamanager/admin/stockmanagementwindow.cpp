@@ -79,7 +79,7 @@ namespace PenyaManager {
         // open file dialog
         // start in home dir
         TimedFileDialog::fileDialog(this, tr("Open File..."), QDir::homePath(),
-                tr("CSV Files (*.csv)"), QFileDialog::AnyFile,
+                tr("CSV Files (*.csv)"), QFileDialog::AcceptSave,
                 std::bind(&StockManagementWindow::onStockCsvSelected, this, _1)
                 );
         // nothing should be added here
