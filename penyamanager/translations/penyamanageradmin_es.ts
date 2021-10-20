@@ -2167,19 +2167,6 @@
         <translation>Correc. Ingr.</translation>
     </message>
     <message>
-        <location filename="../commons/dialogmanager.cpp" line="27"/>
-        <location filename="../commons/dialogmanager.cpp" line="40"/>
-        <location filename="../commons/dialogmanager.cpp" line="53"/>
-        <source>Yes</source>
-        <translation>Si</translation>
-    </message>
-    <message>
-        <location filename="../commons/dialogmanager.cpp" line="28"/>
-        <location filename="../commons/dialogmanager.cpp" line="41"/>
-        <source>No</source>
-        <translation>No</translation>
-    </message>
-    <message>
         <location filename="../commons/guiutils.cpp" line="189"/>
         <source>invoice ref: %1</source>
         <translation>ref de sobre %1</translation>

@@ -2166,19 +2166,6 @@
         <translation>Sarrera zuz.</translation>
     </message>
     <message>
-        <location filename="../commons/dialogmanager.cpp" line="27"/>
-        <location filename="../commons/dialogmanager.cpp" line="40"/>
-        <location filename="../commons/dialogmanager.cpp" line="53"/>
-        <source>Yes</source>
-        <translation>Bai</translation>
-    </message>
-    <message>
-        <location filename="../commons/dialogmanager.cpp" line="28"/>
-        <location filename="../commons/dialogmanager.cpp" line="41"/>
-        <source>No</source>
-        <translation>Ez</translation>
-    </message>
-    <message>
         <location filename="../commons/guiutils.cpp" line="189"/>
         <source>invoice ref: %1</source>
         <translation>%1 -ren ordainagiri erref.</translation>

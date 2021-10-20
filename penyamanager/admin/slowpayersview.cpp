@@ -6,6 +6,7 @@
 #include <commons/utils.h>
 #include <commons/singletons.h>
 #include <commons/timedmessagebox.h>
+#include "timedfiledialog.h"
 #include "slowpayersview.h"
 #include "ui_slowpayersview.h"
 
@@ -96,11 +97,12 @@ namespace PenyaManager {
         // Assume slow payers list is not empty (buttons should be disabled)
         // open file dialog
         // start in home dir
-        Singletons::m_pDialogManager->getOpenFileName(this, tr("Open File..."), QDir::homePath(),
+        TimedFileDialog::fileDialog(this, tr("Open File..."), QDir::homePath(),
                 tr("CSV Files (*.csv)"), QFileDialog::AnyFile,
                 std::bind(&SlowPayersView::onCsvFileSelected, this, _1)
                 );
         // nothing should be added here
+        return;
     }
     //
     void SlowPayersView::onCsvFileSelected(const QString &fn)

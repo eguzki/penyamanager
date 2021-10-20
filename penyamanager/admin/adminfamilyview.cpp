@@ -5,6 +5,7 @@
 #include <commons/utils.h>
 #include <commons/guiutils.h>
 #include <commons/timedmessagebox.h>
+#include "timedfiledialog.h"
 #include "adminfamilyview.h"
 #include "ui_adminfamilyview.h"
 
@@ -171,11 +172,12 @@ namespace PenyaManager {
 
         // open file dialog
         // start in home dir
-        Singletons::m_pDialogManager->getOpenFileName(this, tr("Open File..."), QDir::homePath(),
+        TimedFileDialog::fileDialog(this, tr("Open File..."), QDir::homePath(),
                 tr("Image Files (*.gif *.jpeg *.jpg *.png)"), QFileDialog::FileMode::ExistingFile,
                 std::bind(&AdminFamilyView::onFamilyImageSelected, this, _1)
                 );
         // nothing should be added here
+        return;
     }
     //
     void AdminFamilyView::onFamilyImageSelected(const QString &fn)

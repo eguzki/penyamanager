@@ -8,6 +8,7 @@
 #include <commons/constants.h>
 #include <commons/singletons.h>
 #include <commons/timedmessagebox.h>
+#include "timedfiledialog.h"
 #include "productexpensesview.h"
 #include "ui_productexpensesview.h"
 
@@ -211,11 +212,12 @@ namespace PenyaManager {
     {
         // open file dialog
         // start in home dir
-        Singletons::m_pDialogManager->getOpenFileName(this, tr("Open File..."), QDir::homePath(),
+        TimedFileDialog::fileDialog(this, tr("Open File..."), QDir::homePath(),
                 tr("CSV Files (*.csv)"), QFileDialog::AnyFile,
                 std::bind(&ProductExpensesView::onProductExpensesCsvSelected, this, _1)
                 );
         // nothing should be added here
+        return;
     }
     //
     void ProductExpensesView::onProductExpensesCsvSelected(const QString &fn)

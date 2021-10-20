@@ -1,6 +1,7 @@
 //
 
 #include <QApplication>
+#include <QMessageBox>
 #include <QTranslator>
 
 #include <commons/constants.h>

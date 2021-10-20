@@ -28,7 +28,6 @@ RC_ICONS = images/alegrialogo.ico
 SOURCES += main.cpp\
         commons/singletons.cpp\
         commons/dao.cpp\
-        commons/timeddialog.cpp\
         commons/timedmessagebox.cpp\
         commons/utils.cpp\
         commons/constants.cpp\
@@ -41,7 +40,6 @@ SOURCES += main.cpp\
         commons/productitemwidget.cpp \
         commons/logging.cpp \
         commons/inactivityeventfilter.cpp \
-        commons/dialogmanager.cpp \
         objs/Transaction.cpp\
         objs/Invoice.cpp\
         objs/Deposit.cpp\
@@ -67,7 +65,6 @@ SOURCES += main.cpp\
 
 HEADERS  += commons/singletons.h\
         commons/dao.h\
-        commons/timeddialog.h\
         commons/timedmessagebox.h\
         commons/utils.h\
         commons/constants.h\
@@ -81,7 +78,6 @@ HEADERS  += commons/singletons.h\
         commons/DataTypes.h \
         commons/logging.h \
         commons/inactivityeventfilter.h \
-        commons/dialogmanager.h \
         objs/Invoice.h\
         objs/Deposit.h\
         objs/Member.h\

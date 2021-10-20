@@ -7,6 +7,7 @@
 #include <commons/utils.h>
 #include <commons/singletons.h>
 #include <commons/timedmessagebox.h>
+#include "timedfiledialog.h"
 #include "adminproductitem.h"
 #include "ui_adminproductitem.h"
 
@@ -334,11 +335,12 @@ namespace PenyaManager {
         }
         // open file dialog
         // start in home dir
-        Singletons::m_pDialogManager->getOpenFileName(this, tr("Open File..."), QDir::homePath(),
+        TimedFileDialog::fileDialog(this, tr("Open File..."), QDir::homePath(),
                 tr("Image Files (*.gif *.jpeg *.jpg *.png)"), QFileDialog::ExistingFile,
                 std::bind(&AdminProductItem::onProductImageSelected, this, _1)
                 );
         // nothing should be added here
+        return;
     }
     //
     void AdminProductItem::onProductImageSelected(const QString &fn)

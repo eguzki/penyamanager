@@ -28,7 +28,6 @@ RC_ICONS = images/alegrialogo.ico
 SOURCES += adminmain.cpp\
         commons/singletons.cpp\
         commons/dao.cpp\
-        commons/timeddialog.cpp\
         commons/timedmessagebox.cpp\
         commons/utils.cpp\
         commons/constants.cpp\
@@ -41,7 +40,6 @@ SOURCES += adminmain.cpp\
         commons/productitemwidget.cpp \
         commons/logging.cpp \
         commons/inactivityeventfilter.cpp \
-        commons/dialogmanager.cpp \
         objs/Transaction.cpp\
         objs/Invoice.cpp\
         objs/Deposit.cpp\
@@ -75,13 +73,13 @@ SOURCES += adminmain.cpp\
         admin/providerinvoiceview.cpp \
         admin/invoicedetailsview.cpp \
         admin/timedpasschangedialog.cpp \
+        admin/timedfiledialog.cpp \
         admin/alertsview.cpp
 
 HEADERS += commons/singletons.h\
         commons/dao.h\
         commons/utils.h\
         commons/constants.h\
-        commons/timeddialog.h\
         commons/timedmessagebox.h\
         commons/services.h\
         commons/IPartner.h\
@@ -93,7 +91,6 @@ HEADERS += commons/singletons.h\
         commons/productitemwidget.h\
         commons/logging.h \
         commons/inactivityeventfilter.h \
-        commons/dialogmanager.h \
         objs/Transaction.h\
         objs/Invoice.h\
         objs/Deposit.h\
@@ -127,6 +124,7 @@ HEADERS += commons/singletons.h\
         admin/providerinvoiceview.h \
         admin/invoicedetailsview.h \
         admin/timedpasschangedialog.h \
+        admin/timedfiledialog.h \
         admin/alertsview.h
 
 FORMS   += commons/familyitemwidget.ui \

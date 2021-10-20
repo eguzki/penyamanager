@@ -4,6 +4,7 @@
 #include <commons/guiutils.h>
 #include <commons/singletons.h>
 #include <commons/timedmessagebox.h>
+#include "timedfiledialog.h"
 #include "memberlistview.h"
 #include "ui_memberlistview.h"
 
@@ -177,11 +178,12 @@ namespace PenyaManager {
         // Assume member list is not empty (buttons should be disabled)
         // open file dialog
         // start in home dir
-        Singletons::m_pDialogManager->getOpenFileName(this, tr("Open File..."), QDir::homePath(),
+        TimedFileDialog::fileDialog(this, tr("Open File..."), QDir::homePath(),
                 tr("CSV Files (*.csv)"), QFileDialog::AnyFile,
                 std::bind(&MemberListView::onMemberListCsvSelected, this, _1)
                 );
         // nothing should be added here
+        return;
     }
     //
     void MemberListView::onMemberListCsvSelected(const QString &fn)

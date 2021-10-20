@@ -8,6 +8,7 @@
 #include <commons/constants.h>
 #include <commons/singletons.h>
 #include <commons/timedmessagebox.h>
+#include "timedfiledialog.h"
 #include "adminnewprovider.h"
 #include "ui_adminnewprovider.h"
 
@@ -106,7 +107,7 @@ namespace PenyaManager {
 
         // open file dialog
         // start in home dir
-        Singletons::m_pDialogManager->getOpenFileName(this, tr("Open File..."), QDir::homePath(),
+        TimedFileDialog::fileDialog(this, tr("Open File..."), QDir::homePath(),
                 tr("Image Files (*.gif *.jpeg *.jpg *.png)"), QFileDialog::FileMode::ExistingFile,
                 std::bind(&AdminNewProvider::onProviderImageSelected, this, _1)
                 );

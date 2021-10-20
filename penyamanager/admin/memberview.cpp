@@ -5,6 +5,7 @@
 #include <commons/utils.h>
 #include <commons/singletons.h>
 #include <commons/timedmessagebox.h>
+#include "timedfiledialog.h"
 #include "timedpasschangedialog.h"
 #include "memberview.h"
 #include "ui_memberview.h"
@@ -486,11 +487,12 @@ namespace PenyaManager {
         }
         // open file dialog
         // start in home dir
-        Singletons::m_pDialogManager->getOpenFileName(this, tr("Open File..."), QDir::homePath(),
+        TimedFileDialog::fileDialog(this, tr("Open File..."), QDir::homePath(),
                 tr("Image Files (*.gif *.jpeg *.jpg *.png)"), QFileDialog::FileMode::ExistingFile,
                 std::bind(&MemberView::onMemberImageSelected, this, _1)
                 );
         // nothing should be added here
+        return;
     }
     //
     void MemberView::onMemberImageSelected(const QString &fn)

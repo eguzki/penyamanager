@@ -7,6 +7,7 @@
 #include <commons/guiutils.h>
 #include <commons/singletons.h>
 #include <commons/timedmessagebox.h>
+#include "timedfiledialog.h"
 #include "stockmanagementwindow.h"
 #include "ui_stockmanagementwindow.h"
 
@@ -77,11 +78,12 @@ namespace PenyaManager {
         // Assume product list is not empty (buttons should be disabled)
         // open file dialog
         // start in home dir
-        Singletons::m_pDialogManager->getOpenFileName(this, tr("Open File..."), QDir::homePath(),
+        TimedFileDialog::fileDialog(this, tr("Open File..."), QDir::homePath(),
                 tr("CSV Files (*.csv)"), QFileDialog::AnyFile,
                 std::bind(&StockManagementWindow::onStockCsvSelected, this, _1)
                 );
         // nothing should be added here
+        return;
     }
     //
     void StockManagementWindow::onStockCsvSelected(const QString &fn)
