@@ -26,10 +26,10 @@
 
 namespace PenyaManager {
     //
-    AdminMainWindow::AdminMainWindow(QWidget *parent, QTimer *pInactivityTimer) :
+    AdminMainWindow::AdminMainWindow(QWidget *parent) :
         QMainWindow(parent),
         ui(new Ui::AdminMainWindow),
-        m_pInactivityTimer(pInactivityTimer)
+        m_pInactivityTimer(Singletons::m_pInactivityTimer)
     {
         ui->setupUi(this);
 
@@ -129,7 +129,6 @@ namespace PenyaManager {
     //
     void AdminMainWindow::on_actionExit_triggered()
     {
-        Singletons::m_pDialogManager->onInactivityTimeout();
         // stop timer
         this->m_pInactivityTimer->stop();
         // call admin login window

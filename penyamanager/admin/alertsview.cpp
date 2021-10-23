@@ -6,6 +6,7 @@
 #include <commons/utils.h>
 #include <commons/guiutils.h>
 #include <commons/singletons.h>
+#include <commons/timedmessagebox.h>
 #include "alertsview.h"
 #include "ui_alertsview.h"
 
@@ -31,7 +32,7 @@ namespace PenyaManager {
         // fetch data
         MemberListResultPtr pMemberListResultPtr = Singletons::m_pDAO->getOldInactiveMembers(Constants::kAdminInactivityPeriodMonths);
         if (pMemberListResultPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
 
@@ -51,8 +52,7 @@ namespace PenyaManager {
         }
 
         if (pMemberListResultPtr->m_list->size() > 0) {
-            Singletons::m_pDialogManager->infoMessageBoxTitled( this,
-                    tr("There are alerts that need your attention"), [](){});
+            TimedMessageBox::infoMessageBoxTitled(this, tr("There are alerts that need your attention"), [](){});
             // nothing should be added here
             return;
         }

@@ -7,6 +7,8 @@
 #include <commons/guiutils.h>
 #include <commons/constants.h>
 #include <commons/singletons.h>
+#include <commons/timedmessagebox.h>
+#include "timedfiledialog.h"
 #include "adminnewprovider.h"
 #include "ui_adminnewprovider.h"
 
@@ -63,7 +65,7 @@ namespace PenyaManager {
     {
         ProviderResultPtr pProviderResultPtr = Singletons::m_pDAO->getProviderById(providerId);
         if (pProviderResultPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         if (!pProviderResultPtr->m_provider){
@@ -99,14 +101,14 @@ namespace PenyaManager {
         if (!imagePath.isDir() || !imagePath.isWritable()) {
             Singletons::m_pLogger->Warn(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kProvider,
                     QString("Unable to write to %1").arg(imagePath.absoluteFilePath()));
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Unable to write to %1").arg(imagePath.absoluteFilePath()), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Unable to write to %1").arg(imagePath.absoluteFilePath()), [](){});
             return;
         }
 
         // open file dialog
         // start in home dir
-        Singletons::m_pDialogManager->getOpenFileName(this, tr("Open File..."), QDir::homePath(),
-                tr("Image Files (*.gif *.jpeg *.jpg *.png)"), QFileDialog::FileMode::ExistingFile,
+        TimedFileDialog::fileDialog(this, tr("Open File..."), QDir::homePath(),
+                tr("Image Files (*.gif *.jpeg *.jpg *.png)"), QFileDialog::AcceptOpen,
                 std::bind(&AdminNewProvider::onProviderImageSelected, this, _1)
                 );
         // nothing should be added here
@@ -116,7 +118,7 @@ namespace PenyaManager {
     {
         // fn has absolute path
         if (fn.isEmpty()) {
-            Singletons::m_pDialogManager->infoMessageBoxTitled(this, tr("No file selected"), [](){});
+            TimedMessageBox::infoMessageBoxTitled(this, tr("No file selected"), [](){});
             return;
         }
         // this object member is being assigned only on image push.
@@ -135,7 +137,7 @@ namespace PenyaManager {
         // validate name is not empty
         QString providerName = this->ui->nameLineEdit->text().trimmed();
         if (providerName.isEmpty()){
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Name cannot be empty"), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Name cannot be empty"), [](){});
             return;
         }
 
@@ -152,7 +154,7 @@ namespace PenyaManager {
         if (Singletons::m_currentProviderId >= 0) {
             ProviderResultPtr pProviderResultPtr = Singletons::m_pDAO->getProviderById(Singletons::m_currentProviderId);
             if (pProviderResultPtr->m_error) {
-                Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+                TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
             if (!pProviderResultPtr->m_provider){
@@ -182,7 +184,7 @@ namespace PenyaManager {
             // update in ddbb
             bool ok = Singletons::m_pDAO->updateProvider(pProviderPtr);
             if (!ok) {
-                Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+                TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
             // if there is previously one image, and it has been changed -> delete it
@@ -211,7 +213,7 @@ namespace PenyaManager {
             pProviderPtr->m_notes = this->ui->notesTextEdit->toPlainText();
             Int32 providerId = Singletons::m_pDAO->createProvider(pProviderPtr);
             if (providerId < 0) {
-                Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+                TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
             Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kProvider,
@@ -219,7 +221,7 @@ namespace PenyaManager {
         }
         // reset var
         this->m_providerImageFilename.clear();
-        Singletons::m_pDialogManager->infoMessageBoxTitled(this, tr("Done successfully"),
+        TimedMessageBox::infoMessageBoxTitled(this, tr("Done successfully"),
                 std::bind(&AdminNewProvider::onProviderUpdated, this)
                 );
     }

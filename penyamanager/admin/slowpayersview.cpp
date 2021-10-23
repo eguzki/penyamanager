@@ -5,6 +5,8 @@
 #include <objs/Member.h>
 #include <commons/utils.h>
 #include <commons/singletons.h>
+#include <commons/timedmessagebox.h>
+#include "timedfiledialog.h"
 #include "slowpayersview.h"
 #include "ui_slowpayersview.h"
 
@@ -60,7 +62,7 @@ namespace PenyaManager {
         MemberListResultPtr pMemberListResultPtr = Singletons::m_pDAO->getSlowPayersList();
 
         if (pMemberListResultPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
 
@@ -95,11 +97,12 @@ namespace PenyaManager {
         // Assume slow payers list is not empty (buttons should be disabled)
         // open file dialog
         // start in home dir
-        Singletons::m_pDialogManager->getOpenFileName(this, tr("Open File..."), QDir::homePath(),
-                tr("CSV Files (*.csv)"), QFileDialog::AnyFile,
+        TimedFileDialog::fileDialog(this, tr("Open File..."), QDir::homePath(),
+                tr("CSV Files (*.csv)"), QFileDialog::AcceptSave,
                 std::bind(&SlowPayersView::onCsvFileSelected, this, _1)
                 );
         // nothing should be added here
+        return;
     }
     //
     void SlowPayersView::onCsvFileSelected(const QString &fn)
@@ -113,13 +116,13 @@ namespace PenyaManager {
         // fetch data
         MemberListResultPtr pMemberListResultPtr = Singletons::m_pDAO->getSlowPayersList();
         if (pMemberListResultPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
 
         QFile f(filename);
         if (!f.open( QIODevice::WriteOnly )) {
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Error opening %1").arg(filename), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Error opening %1").arg(filename), [](){});
             return;
         }
         QTextStream out(&f);
@@ -133,14 +136,14 @@ namespace PenyaManager {
             out << pMemberPtr->m_name << " " << pMemberPtr->m_surname1 << " " << pMemberPtr->m_surname2 << ", " << QString("%1 €").arg(pMemberPtr->m_balance, 0, 'f', 2) << Qt::endl;
         }
         f.close();
-        Singletons::m_pDialogManager->infoMessageBoxTitled(this, tr("Successfully exported. Filename: %1").arg(filename), [](){});
+        TimedMessageBox::infoMessageBoxTitled(this, tr("Successfully exported. Filename: %1").arg(filename), [](){});
         // nothing should be added here
     }
     //
     void SlowPayersView::on_resetAccountsPushButton_clicked()
     {
         // assume slow payers list is not empty (button would be disabled)
-        Singletons::m_pDialogManager->questionMessageBoxTitled(this, tr("Reset accounts. Are you sure?"),
+        TimedMessageBox::questionMessageBoxTitled(this, tr("Reset accounts. Are you sure?"),
                 std::bind(&SlowPayersView::onResetAccountAccepted, this, _1)
                 );
     }
@@ -153,11 +156,11 @@ namespace PenyaManager {
         // reset accounts balance
         bool ok = Singletons::m_pServices->resetSlowPayersBalance();
         if (!ok) {
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
 
-        Singletons::m_pDialogManager->infoMessageBoxTitled(this, tr("Operation done"),
+        TimedMessageBox::infoMessageBoxTitled(this, tr("Operation done"),
                 std::bind(&SlowPayersView::onResetAccountDone, this)
                 );
         // nothing should be added here

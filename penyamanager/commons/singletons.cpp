@@ -21,12 +21,13 @@ namespace PenyaManager {
     Int32 Singletons::m_currentProviderId = 0;
     QString Singletons::m_currentProviderInvoiceId;
     TranslationManager *Singletons::m_pTranslationManager;
-    DialogManager *Singletons::m_pDialogManager = NULL;
+    QTimer *Singletons::m_pInactivityTimer = NULL;
 
-    void Singletons::Create(QSettings *pSettings, PenyaManagerLoggerPtr pLogger)
+    void Singletons::Create(QSettings *pSettings, PenyaManagerLoggerPtr pLogger, QTimer *pInactivityTimer)
     {
         m_pSettings = pSettings;
         m_pLogger = pLogger;
+        m_pInactivityTimer = pInactivityTimer;
         m_pSettings->beginGroup(Constants::kDatabaseGroupName);
         QString ddbbHost(m_pSettings->value(Constants::kDatabaseHost).toString());
         QString ddbbName(m_pSettings->value(Constants::kDatabaseName).toString());
@@ -36,9 +37,6 @@ namespace PenyaManager {
 
         // Translation Manager
         m_pTranslationManager = new TranslationManager;
-
-        // Dialog Manager
-        m_pDialogManager = new DialogManager;
 
         // DAO Acces
         // decrypt pass
@@ -69,11 +67,6 @@ namespace PenyaManager {
         {
             delete m_pTranslationManager;
             m_pTranslationManager = 0;
-        }
-        if (m_pDialogManager)
-        {
-            delete m_pDialogManager;
-            m_pDialogManager = 0;
         }
     }
 }

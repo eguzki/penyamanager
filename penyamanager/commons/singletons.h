@@ -2,6 +2,7 @@
 #define SINGLETONS_H
 
 #include <QSettings>
+#include <QTimer>
 
 #include "translationmanager.h"
 #include "objs/Member.h"
@@ -9,7 +10,6 @@
 #include "partnerfinder.h"
 #include "dao.h"
 #include "logging.h"
-#include "dialogmanager.h"
 
 namespace PenyaManager {
     //
@@ -17,7 +17,7 @@ namespace PenyaManager {
     {
         public:
             //
-            static void Create(QSettings *pSettings, PenyaManagerLoggerPtr pLogger);
+            static void Create(QSettings *pSettings, PenyaManagerLoggerPtr pLogger, QTimer *pInactivityTimer);
             //
             static void Destroy();
 
@@ -50,7 +50,7 @@ namespace PenyaManager {
             //
             static TranslationManager       *m_pTranslationManager;
             //
-            static DialogManager            *m_pDialogManager;
+            static QTimer                   *m_pInactivityTimer;
     };
 }
 

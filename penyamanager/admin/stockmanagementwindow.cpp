@@ -6,6 +6,8 @@
 #include <commons/utils.h>
 #include <commons/guiutils.h>
 #include <commons/singletons.h>
+#include <commons/timedmessagebox.h>
+#include "timedfiledialog.h"
 #include "stockmanagementwindow.h"
 #include "ui_stockmanagementwindow.h"
 
@@ -76,11 +78,12 @@ namespace PenyaManager {
         // Assume product list is not empty (buttons should be disabled)
         // open file dialog
         // start in home dir
-        Singletons::m_pDialogManager->getOpenFileName(this, tr("Open File..."), QDir::homePath(),
-                tr("CSV Files (*.csv)"), QFileDialog::AnyFile,
+        TimedFileDialog::fileDialog(this, tr("Open File..."), QDir::homePath(),
+                tr("CSV Files (*.csv)"), QFileDialog::AcceptSave,
                 std::bind(&StockManagementWindow::onStockCsvSelected, this, _1)
                 );
         // nothing should be added here
+        return;
     }
     //
     void StockManagementWindow::onStockCsvSelected(const QString &fn)
@@ -94,13 +97,13 @@ namespace PenyaManager {
         // fetch data
         StockProductItemListResultPtr pStockProductItemListResultPtr = Singletons::m_pDAO->getAllStockProductsList();
         if (pStockProductItemListResultPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
 
         QFile f(filename);
         if (!f.open( QIODevice::WriteOnly )) {
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Error opening %1").arg(filename), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Error opening %1").arg(filename), [](){});
             return;
         }
 
@@ -115,7 +118,7 @@ namespace PenyaManager {
             out << Singletons::m_pTranslationManager->getStringTranslation(pStockProductItemPtr->m_nameEus, pStockProductItemPtr->m_nameEs) << ", " << QString::number(pStockProductItemPtr->m_stock) << Qt::endl;
         }
         f.close();
-        Singletons::m_pDialogManager->infoMessageBoxTitled(this, tr("Successfully exported. Filename: %1").arg(filename), [](){});
+        TimedMessageBox::infoMessageBoxTitled(this, tr("Successfully exported. Filename: %1").arg(filename), [](){});
         // nothing should be added here
     }
     //
@@ -135,12 +138,12 @@ namespace PenyaManager {
     {
         StockProductItemListResultPtr pStockProductItemListResultPtr = Singletons::m_pDAO->getStockProductsList(m_currentPage, Constants::kAdminProductListPageCount);
         if (pStockProductItemListResultPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         ProductListStatsResultPtr pProductListStatsResultPtr = Singletons::m_pDAO->getProductsListStats();
         if (pProductListStatsResultPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         // enable-disable pagination buttons

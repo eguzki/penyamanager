@@ -161,24 +161,11 @@
     </message>
 </context>
 <context>
-    <name>NumItemDialog</name>
+    <name>TimedNumItemDialog</name>
     <message>
-        <location filename="../commons/numitemdialog.ui" line="93"/>
+        <location filename="../user/timednumitemdialog.ui" line="93"/>
         <source>TextLabel</source>
         <translation></translation>
-    </message>
-</context>
-<context>
-    <name>PassChangeDialog</name>
-    <message>
-        <location filename="../commons/passchangedialog.ui" line="40"/>
-        <source>Password</source>
-        <translation>Contraseña</translation>
-    </message>
-    <message>
-        <location filename="../commons/passchangedialog.ui" line="63"/>
-        <source>Repeat Password</source>
-        <translation>Repetir contraseña</translation>
     </message>
 </context>
 <context>
@@ -593,19 +580,6 @@
     </message>
 </context>
 <context>
-    <name>PenyaManager::PassChangeDialog</name>
-    <message>
-        <location filename="../commons/passchangedialog.cpp" line="40"/>
-        <source>password fields cannot be empty</source>
-        <translation>Contraseña no válida</translation>
-    </message>
-    <message>
-        <location filename="../commons/passchangedialog.cpp" line="45"/>
-        <source>password fields do not match</source>
-        <translation>Contraseña no válida</translation>
-    </message>
-</context>
-<context>
     <name>PenyaManager::TableReservationView</name>
     <message>
         <location filename="../user/tablereservationview.cpp" line="66"/>
@@ -724,19 +698,6 @@
 </context>
 <context>
     <name>QWidget</name>
-    <message>
-        <location filename="../commons/dialogmanager.cpp" line="27"/>
-        <location filename="../commons/dialogmanager.cpp" line="40"/>
-        <location filename="../commons/dialogmanager.cpp" line="53"/>
-        <source>Yes</source>
-        <translation>Si</translation>
-    </message>
-    <message>
-        <location filename="../commons/dialogmanager.cpp" line="28"/>
-        <location filename="../commons/dialogmanager.cpp" line="41"/>
-        <source>No</source>
-        <translation>No</translation>
-    </message>
     <message>
         <location filename="../commons/guiutils.cpp" line="189"/>
         <source>invoice ref: %1</source>

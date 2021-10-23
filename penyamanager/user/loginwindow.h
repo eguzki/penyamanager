@@ -21,7 +21,7 @@ namespace PenyaManager {
 
         public:
             //
-            explicit LoginWindow(QWidget *parent, QTranslator *pTranslator, QTimer *pInactivityTimer, const CentralWidgetCallback &callback);
+            explicit LoginWindow(QWidget *parent, QTranslator *pTranslator, const CentralWidgetCallback &callback);
             //
             ~LoginWindow();
             //
@@ -40,6 +40,10 @@ namespace PenyaManager {
             void fillLastInvoiceOwnerInfo(const MemberPtr &pLastInvoiceOwnerPtr);
             //
             void fillLastInvoiceInfo(const InvoicePtr &pLastInvoicePtr);
+            //
+            void onUsernameProvided(QString usernameStr);
+            //
+            void onPassProvided(QString passStr);
 
         private slots:
             //
@@ -58,8 +62,6 @@ namespace PenyaManager {
             Ui::LoginWindow             *ui;
             //
             Uint32                      m_currentPage;
-            //
-            QString                     m_password;
             //
             Int32                       m_username;
             //

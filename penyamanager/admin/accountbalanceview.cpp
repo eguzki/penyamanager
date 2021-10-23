@@ -1,6 +1,7 @@
 //
 #include <commons/singletons.h>
 #include <commons/guiutils.h>
+#include <commons/timedmessagebox.h>
 #include <objs/Transaction.h>
 
 #include "accountbalanceview.h"
@@ -140,12 +141,12 @@ namespace PenyaManager {
             this->ui->memberIdResValueLabel->setText(tr("ALL"));
             pTransactionListResultPtr = Singletons::m_pDAO->getAccountList(fromDate, toDate, m_currentPage, Constants::kAdminAccountListPageCount);
             if (pTransactionListResultPtr->m_error) {
-                Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+                TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
             pTransactionListStatsResultPtr = Singletons::m_pServices->getAccountListStats(fromDate, toDate);
             if (pTransactionListStatsResultPtr->m_error) {
-                Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+                TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
         } else {
@@ -153,28 +154,28 @@ namespace PenyaManager {
             Int32 memberUsername = usernameStr.toInt(&ok);
             if (!ok) {
                 this->ui->memberIdLineEdit->clear();
-                Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Username not valid"), [](){});
+                TimedMessageBox::criticalMessageBoxTitled(this, tr("Username not valid"), [](){});
                 return;
             } else {
                 MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberByUsername(memberUsername);
                 if (pMemberResultPtr->m_error) {
-                    Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+                    TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                     return;
                 }
                 if (!pMemberResultPtr->m_member)
                 {
                     // User could not be found
-                    Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Username not found"), [](){});
+                    TimedMessageBox::criticalMessageBoxTitled(this, tr("Username not found"), [](){});
                     return;
                 }
                 pTransactionListResultPtr = Singletons::m_pDAO->getAccountListByMemberId(pMemberResultPtr->m_member->m_id, fromDate, toDate, m_currentPage, Constants::kAdminAccountListPageCount);
                 if (pTransactionListResultPtr->m_error) {
-                    Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+                    TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                     return;
                 }
                 pTransactionListStatsResultPtr = Singletons::m_pServices->getAccountListByMemberIdStats(pMemberResultPtr->m_member->m_id, fromDate, toDate);
                 if (pTransactionListStatsResultPtr->m_error) {
-                    Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+                    TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                     return;
                 }
                 this->ui->memberIdResValueLabel->setText(QString::number(memberUsername));

@@ -28,20 +28,18 @@ RC_ICONS = images/alegrialogo.ico
 SOURCES += adminmain.cpp\
         commons/singletons.cpp\
         commons/dao.cpp\
+        commons/timedmessagebox.cpp\
         commons/utils.cpp\
         commons/constants.cpp\
         commons/services.cpp\
         commons/IPartner.cpp\
         commons/partnerfinder.cpp\
-        commons/numitemdialog.cpp \
         commons/guiutils.cpp \
         commons/translationmanager.cpp \
         commons/familyitemwidget.cpp \
         commons/productitemwidget.cpp \
         commons/logging.cpp \
-        commons/passchangedialog.cpp \
         commons/inactivityeventfilter.cpp \
-        commons/dialogmanager.cpp \
         objs/Transaction.cpp\
         objs/Invoice.cpp\
         objs/Deposit.cpp\
@@ -74,25 +72,25 @@ SOURCES += adminmain.cpp\
         admin/adminreservationswindow.cpp \
         admin/providerinvoiceview.cpp \
         admin/invoicedetailsview.cpp \
+        admin/timedpasschangedialog.cpp \
+        admin/timedfiledialog.cpp \
         admin/alertsview.cpp
 
 HEADERS += commons/singletons.h\
         commons/dao.h\
         commons/utils.h\
         commons/constants.h\
+        commons/timedmessagebox.h\
         commons/services.h\
         commons/IPartner.h\
         commons/partnerfinder.h\
-        commons/numitemdialog.h \
         commons/DataTypes.h \
         commons/guiutils.h \
         commons/translationmanager.h \
         commons/familyitemwidget.h\
         commons/productitemwidget.h\
         commons/logging.h \
-        commons/passchangedialog.h \
         commons/inactivityeventfilter.h \
-        commons/dialogmanager.h \
         objs/Transaction.h\
         objs/Invoice.h\
         objs/Deposit.h\
@@ -125,12 +123,12 @@ HEADERS += commons/singletons.h\
         admin/adminreservationswindow.h \
         admin/providerinvoiceview.h \
         admin/invoicedetailsview.h \
+        admin/timedpasschangedialog.h \
+        admin/timedfiledialog.h \
         admin/alertsview.h
 
-FORMS   += commons/passchangedialog.ui \
-        commons/familyitemwidget.ui \
+FORMS   += commons/familyitemwidget.ui \
         commons/productitemwidget.ui \
-        commons/numitemdialog.ui \
         admin/adminloginwindow.ui\
         admin/adminmainwindow.ui \
         admin/slowpayersview.ui \
@@ -151,6 +149,7 @@ FORMS   += commons/passchangedialog.ui \
         admin/adminreservationswindow.ui \
         admin/providerinvoiceview.ui \
         admin/invoicedetailsview.ui \
+        admin/timedpasschangedialog.ui \
         admin/alertsview.ui
 
 TRANSLATIONS += \

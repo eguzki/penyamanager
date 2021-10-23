@@ -1,6 +1,7 @@
 //
 
 #include <QApplication>
+#include <QMessageBox>
 #include <QTranslator>
 
 #include <commons/constants.h>
@@ -31,9 +32,12 @@ int main(int argc, char *argv[])
 
     pLogger->Info(PenyaManager::Constants::kNoUserId, PenyaManager::LogAction::kMain, "Init");
 
+    QTimer inactivityTimer(NULL);
+    inactivityTimer.setInterval(PenyaManager::Constants::kInactivityTimeoutSec * 1000);
+
     // Singletons initialization
     // Includes ddbb connection
-    PenyaManager::Singletons::Create(&settings, pLogger);
+    PenyaManager::Singletons::Create(&settings, pLogger, &inactivityTimer);
 
     if (!PenyaManager::Singletons::m_pDAO->isOpen()) {
         PenyaManager::Singletons::m_pLogger->Error(PenyaManager::Constants::kNoUserId, PenyaManager::LogAction::kMain, "Database connection failed");
@@ -48,13 +52,10 @@ int main(int argc, char *argv[])
     penyamanagerTranslator.load(PenyaManager::Singletons::m_pTranslationManager->getTranslationFile());
     app.installTranslator(&penyamanagerTranslator);
 
-    QTimer inactivityTimer(NULL);
-    inactivityTimer.setInterval(PenyaManager::Constants::kInactivityTimeoutSec * 1000);
-
     PenyaManager::InactivityEventFilter inactivityEventFilter(&inactivityTimer);
     app.installEventFilter(&inactivityEventFilter);
 
-    PenyaManager::MainWindow mainWindow(NULL, &penyamanagerTranslator, &inactivityTimer);
+    PenyaManager::MainWindow mainWindow(NULL, &penyamanagerTranslator);
 
     mainWindow.init();
     // To disable Full Screen, comment the line below.

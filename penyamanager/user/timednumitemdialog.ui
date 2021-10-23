@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>NumItemDialog</class>
- <widget class="QDialog" name="NumItemDialog">
+ <class>TimedNumItemDialog</class>
+ <widget class="QDialog" name="TimedNumItemDialog">
   <property name="windowModality">
    <enum>Qt::WindowModal</enum>
   </property>
@@ -38,7 +38,7 @@ font: 22pt &quot;Calibri&quot;;
 qproperty-alignment: AlignCenter;
 }
 
-#NumItemDialog {
+#TimedNumItemDialog {
 background:rgb(117,117,117);
 }
 
@@ -289,22 +289,5 @@ background-color: rgb(56,142,60);
  <resources>
   <include location="../penyamanager.qrc"/>
  </resources>
- <connections>
-  <connection>
-   <sender>toolButton_Done</sender>
-   <signal>clicked()</signal>
-   <receiver>NumItemDialog</receiver>
-   <slot>accept()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>295</x>
-     <y>514</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>182</x>
-     <y>291</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

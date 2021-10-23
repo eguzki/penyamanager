@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>PassChangeDialog</class>
- <widget class="QDialog" name="PassChangeDialog">
+ <class>TimedPassChangeDialog</class>
+ <widget class="QDialog" name="TimedPassChangeDialog">
   <property name="windowModality">
    <enum>Qt::WindowModal</enum>
   </property>
@@ -106,22 +106,5 @@ qproperty-alignment: AlignCenter;
   </layout>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>buttonBox</sender>
-   <signal>rejected()</signal>
-   <receiver>PassChangeDialog</receiver>
-   <slot>reject()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>199</x>
-     <y>279</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>199</x>
-     <y>149</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

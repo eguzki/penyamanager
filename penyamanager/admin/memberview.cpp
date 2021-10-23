@@ -4,7 +4,9 @@
 #include <commons/guiutils.h>
 #include <commons/utils.h>
 #include <commons/singletons.h>
-#include <commons/passchangedialog.h>
+#include <commons/timedmessagebox.h>
+#include "timedfiledialog.h"
+#include "timedpasschangedialog.h"
 #include "memberview.h"
 #include "ui_memberview.h"
 
@@ -38,7 +40,7 @@ namespace PenyaManager {
         // member username
         Int32 proposedUsername = Singletons::m_pDAO->getLastUsername();
         if (proposedUsername < 0) {
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         // RegDate
@@ -137,32 +139,32 @@ namespace PenyaManager {
             memberUsernameStr.toInt(&usernameOk);
         }
         if (!usernameOk) {
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Username must be correct number"), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Username must be correct number"), [](){});
             return;
         }
         // name
         QString memberName = this->ui->nameLineEdit->text();
         if (memberName.isEmpty()){
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Name cannot be empty"), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Name cannot be empty"), [](){});
             return;
         }
         // surname1
         QString memberSurname1 = this->ui->memberSurname1LineEdit->text();
         if (memberSurname1.isEmpty()){
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("First surname cannot be empty"), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("First surname cannot be empty"), [](){});
             return;
         }
         // surname2
         QString memberSurname2 = this->ui->memberSurname2LineEdit->text();
         if (memberSurname2.isEmpty()){
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Second surname cannot be empty"), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Second surname cannot be empty"), [](){});
             return;
         }
         // bank_account
         // TODO check bank account format
         QString bankAccount = this->ui->bankAccountLineEdit->text();
         if (bankAccount.isEmpty()){
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Bank Account cannot be empty"), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Bank Account cannot be empty"), [](){});
             return;
         }
 
@@ -171,13 +173,13 @@ namespace PenyaManager {
             // edit previous item
             MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberById(Singletons::m_currentMemberId);
             if (pMemberResultPtr->m_error) {
-                Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+                TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
             if (!pMemberResultPtr->m_member) {
                 Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kMember,
                         QString("Editing itemid %1 not found in ddbb").arg(Singletons::m_currentMemberId));
-                Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+                TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
             // save old image in case we need to delete it
@@ -244,7 +246,7 @@ namespace PenyaManager {
             // update in ddbb
             bool ok = Singletons::m_pDAO->updateMember(pMemberResultPtr->m_member);
             if (!ok) {
-                Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+                TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
             // if there is previously one image, and it has been changed -> delete it
@@ -270,11 +272,11 @@ namespace PenyaManager {
             // Check username is not in use
             BoolResult usernameUsed = Singletons::m_pDAO->checkUsername(pMemberPtr->m_username);
             if (usernameUsed.error) {
-                Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+                TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
             if (usernameUsed.result) {
-                Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("username already in use"), [](){});
+                TimedMessageBox::criticalMessageBoxTitled(this, tr("username already in use"), [](){});
                 return;
             }
             // name
@@ -336,13 +338,13 @@ namespace PenyaManager {
             // create in ddbb
             Int32 memberId = Singletons::m_pDAO->createMember(pMemberPtr);
             if (memberId < 0) {
-                Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+                TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
             // create account
             bool ok = Singletons::m_pServices->createAccountTransaction(memberId, 0.0, QString(""), TransactionType::NewAccount);
             if (!ok) {
-                Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+                TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
             Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kMember,
@@ -351,7 +353,7 @@ namespace PenyaManager {
 
         // reset var
         this->m_memberImageFilename.clear();
-        Singletons::m_pDialogManager->infoMessageBoxTitled(this, tr("Done successfully"),
+        TimedMessageBox::infoMessageBoxTitled(this, tr("Done successfully"),
                 std::bind(&MemberView::onMemberUpdated, this)
                 );
         // nothing should be added here
@@ -367,7 +369,7 @@ namespace PenyaManager {
     {
         MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberById(memberId);
         if (pMemberResultPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         if (!pMemberResultPtr->m_member){
@@ -480,23 +482,24 @@ namespace PenyaManager {
         if (!imagePath.isDir() || !imagePath.isWritable()) {
             Singletons::m_pLogger->Warn(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kMember,
                     QString("Unable to write to %1").arg(imagePath.absoluteFilePath()));
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Unable to write to %1").arg(imagePath.absoluteFilePath()), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Unable to write to %1").arg(imagePath.absoluteFilePath()), [](){});
             return;
         }
         // open file dialog
         // start in home dir
-        Singletons::m_pDialogManager->getOpenFileName(this, tr("Open File..."), QDir::homePath(),
-                tr("Image Files (*.gif *.jpeg *.jpg *.png)"), QFileDialog::FileMode::ExistingFile,
+        TimedFileDialog::fileDialog(this, tr("Open File..."), QDir::homePath(),
+                tr("Image Files (*.gif *.jpeg *.jpg *.png)"), QFileDialog::AcceptOpen,
                 std::bind(&MemberView::onMemberImageSelected, this, _1)
                 );
         // nothing should be added here
+        return;
     }
     //
     void MemberView::onMemberImageSelected(const QString &fn)
     {
         // fn has absolute path
         if (fn.isEmpty()) {
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("No file selected"), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("No file selected"), [](){});
             return;
         }
         // this object member is being assigned only on image push.
@@ -517,9 +520,9 @@ namespace PenyaManager {
             return;
         }
 
-        Singletons::m_pDialogManager->passChangeDialog(this,
-                std::bind(&MemberView::onPassGiven, this, _1, _2)
-                );
+        TimedPassChangeDialog::passChangeDialog(this, std::bind(&MemberView::onPassGiven, this, _1, _2));
+        // nothing should be added here
+        return;
     }
     //
     void MemberView::onPassGiven(int res, QString pass)
@@ -533,13 +536,13 @@ namespace PenyaManager {
         // save new password in ddbb
         bool ok = Singletons::m_pDAO->changeMemberPassword(Singletons::m_currentMemberId, pwdHash, QDateTime::currentDateTimeUtc());
         if (!ok) {
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
 
         Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kMember,
                 QString("passchange memberid %1").arg(Singletons::m_currentMemberId));
-        Singletons::m_pDialogManager->infoMessageBoxTitled(this, tr("Password changed successfully"), [](){});
+        TimedMessageBox::infoMessageBoxTitled(this, tr("Password changed successfully"), [](){});
         // nothing should be added here
     }
     //
@@ -590,13 +593,13 @@ namespace PenyaManager {
         bool ok = Singletons::m_pServices->createAccountTransaction(Singletons::m_currentMemberId,
                 this->ui->entryDoubleSpinBox->value(), this->ui->descriptionLineEdit->text(), TransactionType::AccountFix);
         if (!ok) {
-            Singletons::m_pDialogManager->infoMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::infoMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
 
         Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kMember,
                 QString("new account fix entry: %1 €; memberId %2 ").arg(this->ui->entryDoubleSpinBox->value(), 0, 'f', 2).arg(Singletons::m_currentMemberId));
-        Singletons::m_pDialogManager->infoMessageBoxTitled(this, tr("New account entry created successfully"),
+        TimedMessageBox::infoMessageBoxTitled(this, tr("New account entry created successfully"),
                 std::bind(&MemberView::newAccountEntrySaved, this));
     }
     //
@@ -609,7 +612,7 @@ namespace PenyaManager {
     {
         MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberById(Singletons::m_currentMemberId);
         if (pMemberResultPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         if (!pMemberResultPtr->m_member){
@@ -623,7 +626,7 @@ namespace PenyaManager {
         // update in ddbb
         bool ok = Singletons::m_pDAO->updateMember(pMemberResultPtr->m_member);
         if (!ok) {
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
 
@@ -635,7 +638,7 @@ namespace PenyaManager {
     {
         MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberById(Singletons::m_currentMemberId);
         if (pMemberResultPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         if (!pMemberResultPtr->m_member){
@@ -649,7 +652,7 @@ namespace PenyaManager {
         // update in ddbb
         bool ok = Singletons::m_pDAO->updateMember(pMemberResultPtr->m_member);
         if (!ok) {
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
 
@@ -661,7 +664,7 @@ namespace PenyaManager {
     {
         MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberById(Singletons::m_currentMemberId);
         if (pMemberResultPtr->m_error) {
-            Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
             return;
         }
         if (!pMemberResultPtr->m_member){
@@ -671,7 +674,7 @@ namespace PenyaManager {
         if (!pMemberResultPtr->m_member->m_active) {
             bool ok = Singletons::m_pDAO->renewInactiveMember(Singletons::m_currentMemberId, QDate::currentDate());
             if (!ok) {
-                Singletons::m_pDialogManager->criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+                TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
             Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kMember, QString("inactivity renewed"));
