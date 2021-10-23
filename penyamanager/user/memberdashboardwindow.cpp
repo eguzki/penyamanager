@@ -290,18 +290,11 @@ namespace PenyaManager {
         this->ui->totalDisplayLabel->setText(QString("%1 €").arg(totalInvoice, 0, 'f', 2));
     }
     //
-    void MemberDashboardWindow::onMessageBoxCallback()
-    {
-        Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kDashboard,
-                QString("onMessageBoxCallback"));
-    }
-    //
     void MemberDashboardWindow::on_invoiceCloseButton_clicked()
     {
         // check invoice is not empty
         if (!this->ui->invoiceTableWidget->rowCount()) {
-            TimedMessageBox::infoMessageBox(this, tr("Current invoice is empty"), 
-                std::bind(&MemberDashboardWindow::onMessageBoxCallback, this));
+            TimedMessageBox::infoMessageBox(this, tr("Current invoice is empty"), [](){});
             // no code should be added after infoMessageBox
             return;
         }

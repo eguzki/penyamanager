@@ -58,8 +58,6 @@ namespace PenyaManager {
             void onNumItemSelectedFromInvoice(Int32 productId, QString resultStr);
             //
             void onNumItemSelectedFromProductList(Int32 productId, QString resultStr);
-            //
-            void onMessageBoxCallback();
 
         private:
             //

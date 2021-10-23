@@ -43,7 +43,7 @@ namespace PenyaManager {
             //
             static MessageBoxCallback convertQuestionMessageBox(const QuestionMessageBoxCallback &callback);
 
-        public slots:
+        private slots:
             //
             void OnButtonClicked(QAbstractButton *pButton);
             //
