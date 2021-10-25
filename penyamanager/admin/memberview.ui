@@ -724,7 +724,7 @@ qproperty-alignment: AlignCenter;
              <widget class="QDateEdit" name="birthdateDateEdit">
               <property name="minimumSize">
                <size>
-                <width>90</width>
+                <width>120</width>
                 <height>0</height>
                </size>
               </property>
@@ -748,6 +748,15 @@ qproperty-alignment: AlignCenter;
             </item>
             <item>
              <widget class="QDateEdit" name="regDateDateEdit">
+              <property name="minimumSize">
+               <size>
+                <width>120</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
               <property name="displayFormat">
                <string>dd/MM/yyyy</string>
               </property>

@@ -349,6 +349,7 @@ namespace PenyaManager {
             }
             Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kMember,
                     QString("newmember %1").arg(memberId));
+            Singletons::m_currentMemberId = memberId;
         }
 
         // reset var
@@ -361,8 +362,7 @@ namespace PenyaManager {
     //
     void MemberView::onMemberUpdated()
     {
-        // call family product management window throw adminmainwindow
-        m_switchCentralWidgetCallback(WindowKey::kMemberListViewWindowKey);
+        init();
     }
     //
     void MemberView::fillMemberInfo(Int32 memberId)
