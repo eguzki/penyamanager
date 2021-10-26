@@ -45,6 +45,8 @@ namespace PenyaManager {
             bool newAccountEntryFormEnabled();
             //
             void newAccountEntrySaved();
+            //
+            void onMemberDroped();
 
         private slots:
             //
@@ -63,6 +65,8 @@ namespace PenyaManager {
             void on_deactivatePushButton_clicked();
             //
             void on_renewPushButton_clicked();
+            //
+            void on_dropPushButton_clicked();
 
     private:
             //

@@ -147,7 +147,7 @@ namespace PenyaManager {
             this->ui->memberTableWidget->setItem(rowCount, column++, new QTableWidgetItem(QString::number(pMemberPtr->m_balance, 'f', 2)));
             this->ui->memberTableWidget->setItem(rowCount, column++, new QTableWidgetItem(pMemberPtr->m_email));
             QTableWidgetItem *statusIconItem = new QTableWidgetItem;
-            QPixmap statusPixmap = GuiUtils::getImage(pMemberPtr->m_active ? (":images/icon-active.png"):(":images/icon-inactive.png")).scaled(35, 35);
+            QPixmap statusPixmap = GuiUtils::getImage(pMemberPtr->IsActive() ? (":images/icon-active.png"):(":images/icon-inactive.png")).scaled(35, 35);
             statusIconItem->setData(Qt::DecorationRole, statusPixmap);
             this->ui->memberTableWidget->setItem(rowCount, column++, statusIconItem);
             this->m_rowProductIdMap[rowCount] = pMemberPtr->m_id;
@@ -253,7 +253,7 @@ namespace PenyaManager {
                 << pMemberPtr->m_cardNumber << ", "
                 << memberType << ", "
                 << regDateLocalized << ", "
-                << pMemberPtr->m_active << ", "
+                << pMemberPtr->IsActive() << ", "
                 << pMemberPtr->m_isAdmin << ", "
                 << birthDateLocalized << ", "
                 << cleanAddress << ", "

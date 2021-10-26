@@ -29,11 +29,93 @@ namespace PenyaManager {
     {
         this->ui->alertListWidget->clear();
 
+        Int32 error = processData();
+        if (error) {
+            return;
+        }
+
+        error = fillAlertList();
+        if (error) {
+            return;
+        }
+
+        if (this->ui->alertListWidget->count() > 0) {
+            TimedMessageBox::infoMessageBoxTitled(this, tr("There are alerts that require your attention"), [](){});
+            // nothing should be added here
+            return;
+        }
+    }
+    //
+    Int32 AlertsView::processData()
+    {
+        Int32 error = processDroppedMembers();
+        if (error) {
+            return error;
+        }
+
+        return 0;
+    }
+    //
+    Int32 AlertsView::processDroppedMembers()
+    {
+        // fetch data
+        MemberListResultPtr pMemberListResultPtr = Singletons::m_pDAO->getOldDroppedMembers(Constants::kAdminMemberDroppedPeriodYears);
+        if (pMemberListResultPtr->m_error) {
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            return pMemberListResultPtr->m_error;
+        }
+
+        // fill data
+        for (MemberList::iterator iter = pMemberListResultPtr->m_list->begin(); iter != pMemberListResultPtr->m_list->end(); ++iter)
+        {
+            MemberPtr pMemberPtr = *iter;
+
+            pMemberPtr->m_imagePath = QString();
+            pMemberPtr->m_active = Member::DROPPED;
+            pMemberPtr->m_isAdmin = false;
+            pMemberPtr->m_birthdate = QDate();
+            pMemberPtr->m_address = QString();
+            pMemberPtr->m_zipCode = QString();
+            pMemberPtr->m_town = QString();
+            pMemberPtr->m_state = QString();
+            pMemberPtr->m_phone = QString();
+            pMemberPtr->m_phone2 = QString();
+            pMemberPtr->m_email = QString();
+            pMemberPtr->m_bank_account = QString("");
+            pMemberPtr->m_notes = QString();
+            pMemberPtr->m_idCard = QString();
+            pMemberPtr->m_cardNumber = QString();
+
+            // update in ddbb
+            bool ok = Singletons::m_pDAO->updateMember(pMemberPtr);
+            if (!ok) {
+                TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+                return 1;
+            }
+            Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kMember,
+                    QString("erased %1").arg(pMemberPtr->m_id));
+        }
+
+        return 0;
+    }
+    //
+    Int32 AlertsView::fillAlertList()
+    {
+        Int32 error = fillOldInactiveMembers();
+        if (error) {
+            return error;
+        }
+
+        return 0;
+    }
+    //
+    Int32 AlertsView::fillOldInactiveMembers()
+    {
         // fetch data
         MemberListResultPtr pMemberListResultPtr = Singletons::m_pDAO->getOldInactiveMembers(Constants::kAdminInactivityPeriodMonths);
         if (pMemberListResultPtr->m_error) {
             TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
-            return;
+            return pMemberListResultPtr->m_error;
         }
 
         // fill data
@@ -51,11 +133,7 @@ namespace PenyaManager {
             this->ui->alertListWidget->addItem(item);
         }
 
-        if (pMemberListResultPtr->m_list->size() > 0) {
-            TimedMessageBox::infoMessageBoxTitled(this, tr("There are alerts that need your attention"), [](){});
-            // nothing should be added here
-            return;
-        }
+        return 0;
     }
     //
     void AlertsView::retranslate()

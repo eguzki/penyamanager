@@ -15,16 +15,27 @@ namespace PenyaManager
     class Member
     {
         public:
+            // Member Type
             //
             static const Uint32 NORMAL;
             //
             static const Uint32 RETIRED;
             //
             static const Uint32 HONORARY;
+
+            // Member State
+            //
+            static const int INACTIVE;
+            //
+            static const int ACTIVE;
+            //
+            static const int DROPPED;
             //
             Member();
             //
             virtual ~Member(){}
+            //
+            bool IsActive();
 
         public:
             //
@@ -44,7 +55,7 @@ namespace PenyaManager
             //
             QDateTime           m_regDate;
             //
-            bool                m_active;
+            int                 m_active;
             //
             bool                m_isAdmin;
             //

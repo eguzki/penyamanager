@@ -32,5 +32,6 @@
         <file>images/login.png</file>
         <file>images/icon-active.png</file>
         <file>images/icon-inactive.png</file>
+        <file>images/skull.ico</file>
     </qresource>
 </RCC>

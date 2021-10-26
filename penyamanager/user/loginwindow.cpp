@@ -201,14 +201,14 @@ namespace PenyaManager {
 
         if (pMemberResultPtr->m_member->m_pwd != Utils::hashSHA256asHex(passStr))
         {
-            // User not active
+            // password does not match
             Singletons::m_pLogger->Info(PenyaManager::Constants::kNoUserId, PenyaManager::LogAction::kLogin,
                     QString("id %1 username %2 pass check failed").arg(pMemberResultPtr->m_member->m_id).arg(this->m_username));
             TimedMessageBox::infoMessageBox(this, tr("Password incorrect"), [](){});
             return;
         }
 
-        if (!pMemberResultPtr->m_member->m_active)
+        if (!pMemberResultPtr->m_member->IsActive())
         {
             // User not active
             Singletons::m_pLogger->Info(PenyaManager::Constants::kNoUserId, PenyaManager::LogAction::kLogin,

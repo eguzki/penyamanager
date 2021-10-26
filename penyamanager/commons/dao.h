@@ -241,6 +241,8 @@ namespace PenyaManager {
             bool renewInactiveMember(Int32 memberId, const QDate &modificationDate);
             //
             MemberListResultPtr getOldInactiveMembers(Uint32 intervalInMonths);
+            //
+            MemberListResultPtr getOldDroppedMembers(Uint32 intervalInYears);
 
         private:
             //
