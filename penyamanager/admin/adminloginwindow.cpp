@@ -92,14 +92,14 @@ namespace PenyaManager {
         QString hashedPwd = Utils::hashSHA256asHex(plainPwd);
         if (pMemberResultPtr->m_member->m_pwd != hashedPwd)
         {
+            // password does not match
             Singletons::m_pLogger->Info(PenyaManager::Constants::kNoUserId, PenyaManager::LogAction::kLogin,
                     QString("id %1 username %2 pass check failed").arg(pMemberResultPtr->m_member->m_id).arg(loginName));
-            // User not active
             QMessageBox::about(this, tr("Login failed"), tr("Password incorrect"));
             return;
         }
 
-        if (!pMemberResultPtr->m_member->m_active)
+        if (!pMemberResultPtr->m_member->IsActive())
         {
             Singletons::m_pLogger->Info(PenyaManager::Constants::kNoUserId, PenyaManager::LogAction::kLogin,
                     QString("User id %1 not active").arg(pMemberResultPtr->m_member->m_id));

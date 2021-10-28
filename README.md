@@ -88,7 +88,8 @@ penyamanager
   * member Info (can be edited)
   * Member create
   * Account fix
-  * Inactive members management.
+  * Inactive members management
+  * Drop member (cannot be undone)
 * Configuration Application
   * Resource path and ddbb access via configuration system platform independent. QSettings.
   * Database credentials encrypted using SimpleCrypt library

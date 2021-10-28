@@ -13,8 +13,19 @@ namespace PenyaManager
     //
     const Uint32 Member::HONORARY = 2;
     //
+    const int Member::INACTIVE = 0;
+    //
+    const int Member::ACTIVE = 1;
+    //
+    const int Member::DROPPED = 2;
+    //
     Member::Member()
     {}
+    //
+    bool Member::IsActive()
+    {
+        return m_active == ACTIVE;
+    }
     //
     MemberListStats::MemberListStats()
     {}

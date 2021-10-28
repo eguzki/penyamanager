@@ -73,5 +73,7 @@ namespace PenyaManager {
     const Uint32    Constants::kAdminInactivityTimeoutSec       = 300;
     //
     const Uint32    Constants::kAdminInactivityPeriodMonths     = 24;
+    //
+    const Uint32    Constants::kAdminMemberDroppedPeriodYears   = 5;
 }
 

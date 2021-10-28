@@ -29,6 +29,16 @@ namespace PenyaManager {
             //
             void retranslate();
 
+        private:
+            //
+            Int32 processData();
+            //
+            Int32 fillAlertList();
+            //
+            Int32 fillOldInactiveMembers();
+            //
+            Int32 processDroppedMembers();
+
         private slots:
             void on_alertListWidget_itemClicked(QListWidgetItem *item);
 

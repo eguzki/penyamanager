@@ -74,6 +74,7 @@ SOURCES += adminmain.cpp\
         admin/invoicedetailsview.cpp \
         admin/timedpasschangedialog.cpp \
         admin/timedfiledialog.cpp \
+        admin/timedmemberdropdialog.cpp \
         admin/alertsview.cpp
 
 HEADERS += commons/singletons.h\
@@ -125,10 +126,12 @@ HEADERS += commons/singletons.h\
         admin/invoicedetailsview.h \
         admin/timedpasschangedialog.h \
         admin/timedfiledialog.h \
+        admin/timedmemberdropdialog.h \
         admin/alertsview.h
 
 FORMS   += commons/familyitemwidget.ui \
         commons/productitemwidget.ui \
+        admin/timedmemberdropdialog.ui \
         admin/adminloginwindow.ui\
         admin/adminmainwindow.ui \
         admin/slowpayersview.ui \

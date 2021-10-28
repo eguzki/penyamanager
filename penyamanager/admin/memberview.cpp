@@ -7,6 +7,7 @@
 #include <commons/timedmessagebox.h>
 #include "timedfiledialog.h"
 #include "timedpasschangedialog.h"
+#include "timedmemberdropdialog.h"
 #include "memberview.h"
 #include "ui_memberview.h"
 
@@ -100,6 +101,8 @@ namespace PenyaManager {
         this->ui->accountBalanceValueLabel->setText(QString("%1 €").arg(0.0, 0, 'f', 2));
         // New Account Entry button
         this->ui->depositButton->setEnabled(false);
+        // Drop member button
+        this->ui->dropPushButton->setVisible(false);
     }
     //
     void MemberView::init()
@@ -191,13 +194,13 @@ namespace PenyaManager {
 
             // id -> no change
             // name
-            pMemberResultPtr->m_member->m_name = this->ui->nameLineEdit->text();
+            pMemberResultPtr->m_member->m_name = this->ui->nameLineEdit->text().trimmed();
             // username
             pMemberResultPtr->m_member->m_username = this->ui->usernameLineEdit->text().toInt();
             // surname1
-            pMemberResultPtr->m_member->m_surname1 = this->ui->memberSurname1LineEdit->text();
+            pMemberResultPtr->m_member->m_surname1 = this->ui->memberSurname1LineEdit->text().trimmed();
             // surname2
-            pMemberResultPtr->m_member->m_surname2 = this->ui->memberSurname2LineEdit->text();
+            pMemberResultPtr->m_member->m_surname2 = this->ui->memberSurname2LineEdit->text().trimmed();
             // imagePath (optional)
             if (!this->m_memberImageFilename.isEmpty()) {
                 QString destFileName = Utils::newImageName("member", this->m_memberImageFilename);
@@ -209,37 +212,37 @@ namespace PenyaManager {
             // isAdmin
             pMemberResultPtr->m_member->m_isAdmin = this->ui->isAdminCheckBox->isChecked();
             // bank account
-            pMemberResultPtr->m_member->m_bank_account = this->ui->bankAccountLineEdit->text();
+            pMemberResultPtr->m_member->m_bank_account = this->ui->bankAccountLineEdit->text().trimmed();
             // birthdate
             QDate birthdate = this->ui->birthdateDateEdit->date();
             pMemberResultPtr->m_member->m_birthdate = (birthdate == this->m_minDate)?(QDate()):(birthdate);
             // postal send
             pMemberResultPtr->m_member->m_postalSend = this->ui->postalSendCheckBox->isChecked();
             // email (optional)
-            pMemberResultPtr->m_member->m_email = this->ui->emailLineEdit->text();
+            pMemberResultPtr->m_member->m_email = this->ui->emailLineEdit->text().trimmed();
             // address (optional)
-            pMemberResultPtr->m_member->m_address = this->ui->addressLineEdit->text();
+            pMemberResultPtr->m_member->m_address = this->ui->addressLineEdit->text().trimmed();
             // zip code (optional)
-            pMemberResultPtr->m_member->m_zipCode = this->ui->zipCodeLineEdit->text();
+            pMemberResultPtr->m_member->m_zipCode = this->ui->zipCodeLineEdit->text().trimmed();
             // town (optional)
-            pMemberResultPtr->m_member->m_town = this->ui->townLineEdit->text();
+            pMemberResultPtr->m_member->m_town = this->ui->townLineEdit->text().trimmed();
             // state (optional)
-            QString state = this->ui->stateLineEdit->text();
+            pMemberResultPtr->m_member->m_state = this->ui->stateLineEdit->text().trimmed();
             // phone (optional)
-            pMemberResultPtr->m_member->m_phone = this->ui->phoneLineEdit->text();
+            pMemberResultPtr->m_member->m_phone = this->ui->phoneLineEdit->text().trimmed();
             // phone 2 (optional)
-            pMemberResultPtr->m_member->m_phone2 = this->ui->phone2LineEdit->text();
+            pMemberResultPtr->m_member->m_phone2 = this->ui->phone2LineEdit->text().trimmed();
             // notes (optional)
             pMemberResultPtr->m_member->m_notes = this->ui->notesTextEdit->toPlainText();
             // regDate
             pMemberResultPtr->m_member->m_regDate = this->ui->regDateDateEdit->date().startOfDay();
             pMemberResultPtr->m_member->m_regDate.setTimeSpec(Qt::UTC);
-            // lastmodfies
+            // lastmodified
             pMemberResultPtr->m_member->m_lastModified = QDateTime::currentDateTimeUtc();
             // card id
-            pMemberResultPtr->m_member->m_idCard = this->ui->idCardLineEdit->text();
+            pMemberResultPtr->m_member->m_idCard = this->ui->idCardLineEdit->text().trimmed();
             // card number
-            pMemberResultPtr->m_member->m_cardNumber = this->ui->cardLineEdit->text();
+            pMemberResultPtr->m_member->m_cardNumber = this->ui->cardLineEdit->text().trimmed();
             // member type
             pMemberResultPtr->m_member->m_memberType = this->ui->memberTypeComboBox->currentData().toUInt();
 
@@ -280,10 +283,10 @@ namespace PenyaManager {
                 return;
             }
             // name
-            pMemberPtr->m_name = this->ui->nameLineEdit->text();
+            pMemberPtr->m_name = this->ui->nameLineEdit->text().trimmed();
             // surname1
-            pMemberPtr->m_surname1 = this->ui->memberSurname1LineEdit->text();
-            pMemberPtr->m_surname2 = this->ui->memberSurname2LineEdit->text();
+            pMemberPtr->m_surname1 = this->ui->memberSurname1LineEdit->text().trimmed();
+            pMemberPtr->m_surname2 = this->ui->memberSurname2LineEdit->text().trimmed();
             // imagePath (optional)
             if (!this->m_memberImageFilename.isEmpty()) {
                 // new image was selected
@@ -294,30 +297,30 @@ namespace PenyaManager {
             }
             // active
             // By default will be activated
-            pMemberPtr->m_active = true;
+            pMemberPtr->m_active = Member::ACTIVE;
             // isAdmin
             pMemberPtr->m_isAdmin = this->ui->isAdminCheckBox->isChecked();
             // bank account
-            pMemberPtr->m_bank_account = this->ui->bankAccountLineEdit->text();
+            pMemberPtr->m_bank_account = this->ui->bankAccountLineEdit->text().trimmed();
             // birthdate
             QDate birthdate = this->ui->birthdateDateEdit->date();
             pMemberPtr->m_birthdate = (birthdate == this->m_minDate)?(QDate()):(birthdate);
             // postal send
             pMemberPtr->m_postalSend = this->ui->postalSendCheckBox->isChecked();
             // email (optional)
-            pMemberPtr->m_email = this->ui->emailLineEdit->text();
+            pMemberPtr->m_email = this->ui->emailLineEdit->text().trimmed();
             // address (optional)
-            pMemberPtr->m_address = this->ui->addressLineEdit->text();
+            pMemberPtr->m_address = this->ui->addressLineEdit->text().trimmed();
             // zip code (optional)
-            pMemberPtr->m_zipCode = this->ui->zipCodeLineEdit->text();
+            pMemberPtr->m_zipCode = this->ui->zipCodeLineEdit->text().trimmed();
             // town (optional)
-            pMemberPtr->m_town = this->ui->townLineEdit->text();
+            pMemberPtr->m_town = this->ui->townLineEdit->text().trimmed();
             // state (optional)
-            pMemberPtr->m_state = this->ui->stateLineEdit->text();
+            pMemberPtr->m_state = this->ui->stateLineEdit->text().trimmed();
             // phone (optional)
-            pMemberPtr->m_phone = this->ui->phoneLineEdit->text();
+            pMemberPtr->m_phone = this->ui->phoneLineEdit->text().trimmed();
             // phone 2 (optional)
-            pMemberPtr->m_phone2 = this->ui->phone2LineEdit->text();
+            pMemberPtr->m_phone2 = this->ui->phone2LineEdit->text().trimmed();
             // notes (optional)
             pMemberPtr->m_notes = this->ui->notesTextEdit->toPlainText();
             // regDate
@@ -330,9 +333,9 @@ namespace PenyaManager {
             // default password: "0000"
             pMemberPtr->m_pwd = Utils::hashSHA256asHex("0000");
             // card id
-            pMemberPtr->m_idCard = this->ui->idCardLineEdit->text();
+            pMemberPtr->m_idCard = this->ui->idCardLineEdit->text().trimmed();
             // card number
-            pMemberPtr->m_cardNumber = this->ui->cardLineEdit->text();
+            pMemberPtr->m_cardNumber = this->ui->cardLineEdit->text().trimmed();
             // member type
             pMemberPtr->m_memberType = this->ui->memberTypeComboBox->currentData().toUInt();
             // create in ddbb
@@ -439,25 +442,25 @@ namespace PenyaManager {
         this->ui->depositButton->setEnabled(true);
 
         // Status
-        this->ui->activatePushButton->setVisible(!pMemberResultPtr->m_member->m_active);
-        this->ui->deactivatePushButton->setVisible(pMemberResultPtr->m_member->m_active);
-        this->ui->label_5->setVisible(pMemberResultPtr->m_member->m_active);
+        this->ui->activatePushButton->setVisible(!pMemberResultPtr->m_member->IsActive());
+        this->ui->deactivatePushButton->setVisible(pMemberResultPtr->m_member->IsActive());
+        this->ui->label_5->setVisible(pMemberResultPtr->m_member->IsActive());
         this->ui->inactivityStartDateEdit->setDate(QDate::currentDate());
-        this->ui->inactivityStartDateEdit->setVisible(pMemberResultPtr->m_member->m_active);
-        this->ui->renewalWidget->setVisible(!pMemberResultPtr->m_member->m_active);
+        this->ui->inactivityStartDateEdit->setVisible(pMemberResultPtr->m_member->IsActive());
+        this->ui->renewalWidget->setVisible(!pMemberResultPtr->m_member->IsActive());
         this->ui->renewPushButton->setEnabled(
-                !pMemberResultPtr->m_member->m_active &&
+                !pMemberResultPtr->m_member->IsActive() &&
                 pMemberResultPtr->m_member->m_inactiveStartDate.isValid() &&
                 pMemberResultPtr->m_member->m_inactiveModificationDate.isValid() &&
                 pMemberResultPtr->m_member->m_inactiveModificationDate != QDate::currentDate()
                 );
-        QPixmap statusPixmap = GuiUtils::getImage(pMemberResultPtr->m_member->m_active ? (":images/icon-active.png"):(":images/icon-inactive.png"));
+        QPixmap statusPixmap = GuiUtils::getImage(pMemberResultPtr->m_member->IsActive() ? (":images/icon-active.png"):(":images/icon-inactive.png"));
         this->ui->memberStatus->setPixmap(statusPixmap);
         this->ui->memberStatus->setFixedWidth(25);
         this->ui->memberStatus->setFixedHeight(25);
         this->ui->memberStatus->setScaledContents(true);
 
-        if (!pMemberResultPtr->m_member->m_active) {
+        if (!pMemberResultPtr->m_member->IsActive()) {
             // inactive_start
             if (pMemberResultPtr->m_member->m_inactiveStartDate.isValid()) {
                 QString tmp = Singletons::m_pTranslationManager->getLocale().toString(pMemberResultPtr->m_member->m_inactiveStartDate, QLocale::NarrowFormat);
@@ -473,6 +476,9 @@ namespace PenyaManager {
                 this->ui->lastRenewalDateLabel->setText("-");
             }
         }
+
+        // Drop member button
+        this->ui->dropPushButton->setVisible(Singletons::m_pCurrMember->m_id != memberId);
     }
     //
     void MemberView::on_imagePushButton_clicked()
@@ -619,7 +625,7 @@ namespace PenyaManager {
             return;
         }
 
-        pMemberResultPtr->m_member->m_active = true;
+        pMemberResultPtr->m_member->m_active = Member::ACTIVE;
         pMemberResultPtr->m_member->m_inactiveStartDate = QDate();
         pMemberResultPtr->m_member->m_inactiveModificationDate = QDate();
 
@@ -630,7 +636,8 @@ namespace PenyaManager {
             return;
         }
 
-        Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kMember, QString("activated"));
+        Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kMember,
+                QString("activated %1").arg(Singletons::m_currentMemberId));
         init();
     }
     //
@@ -645,7 +652,7 @@ namespace PenyaManager {
             return;
         }
 
-        pMemberResultPtr->m_member->m_active = false;
+        pMemberResultPtr->m_member->m_active = Member::INACTIVE;
         pMemberResultPtr->m_member->m_inactiveStartDate = this->ui->inactivityStartDateEdit->date();
         pMemberResultPtr->m_member->m_inactiveModificationDate = this->ui->inactivityStartDateEdit->date();
 
@@ -656,7 +663,8 @@ namespace PenyaManager {
             return;
         }
 
-        Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kMember, QString("deactivated"));
+        Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kMember,
+                QString("deactivated %1").arg(Singletons::m_currentMemberId));
         init();
     }
     //
@@ -671,14 +679,61 @@ namespace PenyaManager {
             return;
         }
 
-        if (!pMemberResultPtr->m_member->m_active) {
+        if (!pMemberResultPtr->m_member->IsActive()) {
             bool ok = Singletons::m_pDAO->renewInactiveMember(Singletons::m_currentMemberId, QDate::currentDate());
             if (!ok) {
                 TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
-            Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kMember, QString("inactivity renewed"));
+            Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kMember,
+                    QString("inactivity renewed %1").arg(Singletons::m_currentMemberId));
         }
         init();
+    }
+    //
+    void MemberView::on_dropPushButton_clicked()
+    {
+        MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberById(Singletons::m_currentMemberId);
+        if (pMemberResultPtr->m_error) {
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            return;
+        }
+        if (!pMemberResultPtr->m_member){
+            return;
+        }
+
+        TimedMemberDropDialog::memberDropDialog(this, pMemberResultPtr->m_member->m_name,
+                std::bind(&MemberView::onMemberDroped, this));
+        // no code should be added after infoMessageBox
+        return;
+    }
+    //
+    void MemberView::onMemberDroped()
+    {
+        MemberResultPtr pMemberResultPtr = Singletons::m_pServices->getMemberById(Singletons::m_currentMemberId);
+        if (pMemberResultPtr->m_error) {
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            return;
+        }
+        if (!pMemberResultPtr->m_member){
+            return;
+        }
+
+        pMemberResultPtr->m_member->m_active = Member::DROPPED;
+        // lastmodified
+        pMemberResultPtr->m_member->m_lastModified = QDateTime::currentDateTimeUtc();
+
+        // update in ddbb
+        bool ok = Singletons::m_pDAO->updateMember(pMemberResultPtr->m_member);
+        if (!ok) {
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            return;
+        }
+
+        Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kMember,
+                QString("dropped %1").arg(Singletons::m_currentMemberId));
+
+        m_switchCentralWidgetCallback(WindowKey::kMemberListViewWindowKey);
+        return;
     }
 }

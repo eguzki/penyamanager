@@ -90,6 +90,8 @@ namespace PenyaManager {
             static const Uint32     kAdminInactivityTimeoutSec;
             //
             static const Uint32     kAdminInactivityPeriodMonths;
+            //
+            static const Uint32     kAdminMemberDroppedPeriodYears;
 
         private:
             Constants() {}

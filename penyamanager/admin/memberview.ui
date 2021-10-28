@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>987</width>
+    <width>993</width>
     <height>863</height>
    </rect>
   </property>
@@ -383,6 +383,39 @@ qproperty-alignment: AlignCenter;
          </size>
         </property>
        </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="dropPushButton">
+        <property name="minimumSize">
+         <size>
+          <width>64</width>
+          <height>64</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>64</width>
+          <height>64</height>
+         </size>
+        </property>
+        <property name="text">
+         <string notr="true"/>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normalon>:/images/skull.ico</normalon>
+         </iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>64</width>
+          <height>64</height>
+         </size>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
       </item>
       <item>
        <widget class="QLabel" name="imageLabel">
