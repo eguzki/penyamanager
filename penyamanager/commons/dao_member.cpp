@@ -755,4 +755,77 @@ namespace PenyaManager {
 
         return pMemberListResultPtr;
     }
+    //
+    MemberListResultPtr DAO::getYoungMembersOlderThan(Uint32 minYearsOld)
+    {
+        MemberListResultPtr pMemberListResultPtr(new MemberListResult);
+
+        auto query = [=](){
+            QueryPtr queryPtr(new QSqlQuery);
+            // old dropped members
+            queryPtr->prepare(
+                    "SELECT idmember, name, username, surname1, surname2, image, lastmodified, reg_date, active, "
+                    "isAdmin, birth, address, zip_code, town, state, tel, tel2, email, "
+                    "bank_account, postal_send, notes, pwd, lastlogin, id_card, card, type, "
+                    "inactive_start_date, inactive_modification_date "
+                    "FROM member "
+                    "WHERE member.active!=:droppedmember AND member.active!=:deadmember "
+                    "AND type=:youngtype "
+                    "AND DATE_ADD(birth, INTERVAL :minYearsOld YEAR) < now()"
+                    );
+            //
+            queryPtr->bindValue(":droppedmember", Member::DROPPED);
+            queryPtr->bindValue(":deadmember", Member::DEAD);
+            queryPtr->bindValue(":youngtype", Member::YOUNG);
+            queryPtr->bindValue(":minYearsOld", minYearsOld);
+            return queryPtr;
+        };
+
+        // run query
+        QueryResponse queryResponse = exec(query);
+        if (queryResponse.error) {
+            Singletons::m_pLogger->Error(Constants::kNoUserId, PenyaManager::LogAction::kDb,
+                    QString("getYoungMembersOlderThan"));
+            pMemberListResultPtr->m_error = 1;
+        } else {
+            pMemberListResultPtr->m_list = MemberListPtr(new MemberList);
+            while (queryResponse.query->next()) {
+                MemberPtr pMemberPtr(new Member);
+                Uint32 column = 0;
+                pMemberPtr->m_id =  queryResponse.query->value(column++).toInt();
+                pMemberPtr->m_name = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_username = queryResponse.query->value(column++).toInt();
+                pMemberPtr->m_surname1 = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_surname2 = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_imagePath = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_lastModified = queryResponse.query->value(column++).toDateTime();
+                pMemberPtr->m_lastModified.setTimeSpec(Qt::UTC);
+                pMemberPtr->m_regDate = queryResponse.query->value(column++).toDateTime();
+                pMemberPtr->m_regDate.setTimeSpec(Qt::UTC);
+                pMemberPtr->m_active = queryResponse.query->value(column++).toInt();
+                pMemberPtr->m_isAdmin = queryResponse.query->value(column++).toInt() == 1;
+                pMemberPtr->m_birthdate = queryResponse.query->value(column++).toDate();
+                pMemberPtr->m_address = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_zipCode = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_town = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_state = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_phone = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_phone2 = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_email = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_bank_account = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_postalSend = queryResponse.query->value(column++).toInt() == 1;
+                pMemberPtr->m_notes = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_pwd = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_lastLogin = queryResponse.query->value(column++).toDateTime();
+                pMemberPtr->m_lastLogin.setTimeSpec(Qt::UTC);
+                pMemberPtr->m_idCard = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_cardNumber = queryResponse.query->value(column++).toString();
+                pMemberPtr->m_memberType = queryResponse.query->value(column++).toUInt();
+                pMemberPtr->m_inactiveStartDate = queryResponse.query->value(column++).toDate();
+                pMemberPtr->m_inactiveModificationDate = queryResponse.query->value(column++).toDate();
+                pMemberListResultPtr->m_list->push_back(pMemberPtr);
+            }
+        }
+        return pMemberListResultPtr;
+    }
 }

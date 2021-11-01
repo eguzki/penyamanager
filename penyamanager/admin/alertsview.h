@@ -33,9 +33,13 @@ namespace PenyaManager {
             //
             Int32 processData();
             //
+            Int32 processOldYoungMembers();
+            //
             Int32 fillAlertList();
             //
             Int32 fillOldInactiveMembers();
+            //
+            Int32 fillExpiredYoungMembers();
             //
             Int32 processDroppedMembers();
 

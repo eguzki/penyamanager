@@ -93,10 +93,6 @@ namespace PenyaManager {
         // Card number
         this->ui->cardLineEdit->clear();
         // MemberType
-        this->ui->memberTypeComboBox->clear();
-        this->ui->memberTypeComboBox->insertItem(Member::NORMAL, GetStringFromMemberType(Member::NORMAL), Member::NORMAL);
-        this->ui->memberTypeComboBox->insertItem(Member::RETIRED, GetStringFromMemberType(Member::RETIRED), Member::RETIRED);
-        this->ui->memberTypeComboBox->insertItem(Member::HONORARY, GetStringFromMemberType(Member::HONORARY), Member::HONORARY);
         this->ui->memberTypeComboBox->setCurrentIndex(Member::NORMAL);
         // Account balance
         this->ui->accountBalanceValueLabel->setText(QString("%1 €").arg(0.0, 0, 'f', 2));
@@ -108,6 +104,13 @@ namespace PenyaManager {
     //
     void MemberView::init()
     {
+        // MemberType
+        this->ui->memberTypeComboBox->clear();
+        this->ui->memberTypeComboBox->insertItem(Member::NORMAL, GetStringFromMemberType(Member::NORMAL), Member::NORMAL);
+        this->ui->memberTypeComboBox->insertItem(Member::RETIRED, GetStringFromMemberType(Member::RETIRED), Member::RETIRED);
+        this->ui->memberTypeComboBox->insertItem(Member::HONORARY, GetStringFromMemberType(Member::HONORARY), Member::HONORARY);
+        this->ui->memberTypeComboBox->insertItem(Member::YOUNG, GetStringFromMemberType(Member::YOUNG), Member::YOUNG);
+        // member image
         this->m_memberImageFilename.clear();
         // change password button
         this->ui->changePasswordPushButton->setEnabled(Singletons::m_currentMemberId >= 0);
@@ -432,10 +435,6 @@ namespace PenyaManager {
         // card number
         this->ui->cardLineEdit->setText(pMemberResultPtr->m_member->m_cardNumber);
         // member type
-        this->ui->memberTypeComboBox->clear();
-        this->ui->memberTypeComboBox->insertItem(Member::NORMAL, GetStringFromMemberType(Member::NORMAL), Member::NORMAL);
-        this->ui->memberTypeComboBox->insertItem(Member::RETIRED, GetStringFromMemberType(Member::RETIRED), Member::RETIRED);
-        this->ui->memberTypeComboBox->insertItem(Member::HONORARY, GetStringFromMemberType(Member::HONORARY), Member::HONORARY);
         this->ui->memberTypeComboBox->setCurrentIndex(pMemberResultPtr->m_member->m_memberType);
         // Account balance
         this->ui->accountBalanceValueLabel->setText(QString("%1 €").arg(pMemberResultPtr->m_member->m_balance, 0, 'f', 2));
