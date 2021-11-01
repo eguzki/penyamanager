@@ -71,7 +71,8 @@ namespace PenyaManager {
             MemberPtr pMemberPtr = *iter;
 
             pMemberPtr->m_imagePath = QString();
-            pMemberPtr->m_active = Member::DROPPED;
+            pMemberPtr->m_active = Member::DEAD;
+            pMemberPtr->m_lastModified = QDateTime::currentDateTimeUtc();
             pMemberPtr->m_isAdmin = false;
             pMemberPtr->m_birthdate = QDate();
             pMemberPtr->m_address = QString();

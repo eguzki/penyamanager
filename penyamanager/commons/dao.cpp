@@ -195,11 +195,12 @@ namespace PenyaManager {
                     "member.address, member.zip_code, member.town, member.state, member.tel, member.tel2, member.email, member.bank_account, member.postal_send, "
                     "member.notes, member.pwd, member.lastlogin, member.id_card, member.card, member.type, member.inactive_start_date, member.inactive_modification_date "
                     "FROM member "
-                    "WHERE member.idmember=:memberid AND member.active != :droppedmember"
+                    "WHERE member.idmember=:memberid AND member.active != :droppedmember AND member.active != :deadmember"
                     );
             // member and balance
             queryPtr->bindValue(":memberid", memberId);
             queryPtr->bindValue(":droppedmember", Member::DROPPED);
+            queryPtr->bindValue(":deadmember", Member::DEAD);
             return queryPtr;
         };
 
@@ -261,11 +262,12 @@ namespace PenyaManager {
                     "member.address, member.zip_code, member.town, member.state, member.tel, member.tel2, member.email, member.bank_account, member.postal_send, "
                     "member.notes, member.pwd, member.lastlogin, member.id_card, member.card, member.type, member.inactive_start_date, member.inactive_modification_date "
                     "FROM member "
-                    "WHERE member.username=:username AND member.active != :droppedmember"
+                    "WHERE member.username=:username AND member.active != :droppedmember AND member.active != :deadmember "
                     );
             // member and balance
             queryPtr->bindValue(":username", username);
             queryPtr->bindValue(":droppedmember", Member::DROPPED);
+            queryPtr->bindValue(":deadmember", Member::DEAD);
             return queryPtr;
         };
 
@@ -3130,7 +3132,7 @@ namespace PenyaManager {
                         "INNER JOIN (SELECT account.idmember, MAX(account.date) AS MaxDate FROM account GROUP BY account.idmember) groupedAccount "
                         "ON ac.idmember = groupedAccount.idmember AND ac.date=groupedAccount.MaxDate "
                         "INNER JOIN member ON member.idmember=ac.idmember "
-                        "WHERE member.postal_send = 1 AND member.active != :droppedmember "
+                        "WHERE member.postal_send = 1 AND member.active != :droppedmember AND member.active != :deadmember "
                         "ORDER BY member.surname1 ASC "
                         "LIMIT :limit OFFSET :offset"
                         );
@@ -3144,12 +3146,13 @@ namespace PenyaManager {
                         "INNER JOIN (SELECT account.idmember, MAX(account.date) AS MaxDate FROM account GROUP BY account.idmember) groupedAccount "
                         "ON ac.idmember = groupedAccount.idmember AND ac.date=groupedAccount.MaxDate "
                         "INNER JOIN member ON member.idmember=ac.idmember "
-                        "WHERE member.active != :droppedmember "
+                        "WHERE member.active != :droppedmember AND member.active != :deadmember "
                         "ORDER BY member.surname1 ASC "
                         "LIMIT :limit OFFSET :offset"
                         );
             }
             queryPtr->bindValue(":droppedmember", Member::DROPPED);
+            queryPtr->bindValue(":deadmember", Member::DEAD);
             queryPtr->bindValue(":limit", count);
             queryPtr->bindValue(":offset", page * count);
             return queryPtr;

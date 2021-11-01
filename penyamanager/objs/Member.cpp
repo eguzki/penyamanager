@@ -19,6 +19,8 @@ namespace PenyaManager
     //
     const int Member::DROPPED = 2;
     //
+    const int Member::DEAD = 3;
+    //
     Member::Member()
     {}
     //
