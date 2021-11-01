@@ -27,7 +27,20 @@ RC_ICONS = images/alegrialogo.ico
 
 SOURCES += adminmain.cpp\
         commons/singletons.cpp\
-        commons/dao.cpp\
+        commons/dao.cpp \
+        commons/dao_member.cpp \
+        commons/dao_invoice.cpp \
+        commons/dao_account.cpp \
+        commons/dao_oven.cpp \
+        commons/dao_fireplace.cpp \
+        commons/dao_lunchtable.cpp \
+        commons/dao_productfamily.cpp \
+        commons/dao_product.cpp \
+        commons/dao_invoice_product.cpp \
+        commons/dao_deposit.cpp \
+        commons/dao_provider.cpp \
+        commons/dao_provider_invoice.cpp \
+        commons/dao_provider_invoices_product.cpp \
         commons/timedmessagebox.cpp\
         commons/utils.cpp\
         commons/constants.cpp\
