@@ -1,5 +1,6 @@
 //
 #include <QCalendarWidget>
+#include <QLocale>
 
 #include <commons/guiutils.h>
 #include <commons/utils.h>
@@ -450,9 +451,7 @@ namespace PenyaManager {
         this->ui->renewalWidget->setVisible(!pMemberResultPtr->m_member->IsActive());
         this->ui->renewPushButton->setEnabled(
                 !pMemberResultPtr->m_member->IsActive() &&
-                pMemberResultPtr->m_member->m_inactiveStartDate.isValid() &&
-                pMemberResultPtr->m_member->m_inactiveModificationDate.isValid() &&
-                pMemberResultPtr->m_member->m_inactiveModificationDate != QDate::currentDate()
+                pMemberResultPtr->m_member->IsInactivityExpired()
                 );
         QPixmap statusPixmap = GuiUtils::getImage(pMemberResultPtr->m_member->IsActive() ? (":images/icon-active.png"):(":images/icon-inactive.png"));
         this->ui->memberStatus->setPixmap(statusPixmap);
@@ -468,9 +467,9 @@ namespace PenyaManager {
             } else {
                 this->ui->inactiveStartDateLabel->setText("-");
             }
-            // inactive_modification_date
+            // Renewed until
             if (pMemberResultPtr->m_member->m_inactiveModificationDate.isValid()) {
-                QString tmp = Singletons::m_pTranslationManager->getLocale().toString(pMemberResultPtr->m_member->m_inactiveModificationDate, QLocale::NarrowFormat);
+                QString tmp = Singletons::m_pTranslationManager->getLocale().toString(pMemberResultPtr->m_member->ExpirationDate(), QLocale::NarrowFormat);
                 this->ui->lastRenewalDateLabel->setText(tmp);
             } else {
                 this->ui->lastRenewalDateLabel->setText("-");
@@ -679,14 +678,16 @@ namespace PenyaManager {
             return;
         }
 
-        if (!pMemberResultPtr->m_member->IsActive()) {
-            bool ok = Singletons::m_pDAO->renewInactiveMember(Singletons::m_currentMemberId, QDate::currentDate());
+        if (pMemberResultPtr->m_member->IsInactivityExpired()) {
+            bool ok = Singletons::m_pDAO->renewInactiveMember(Singletons::m_currentMemberId, pMemberResultPtr->m_member->ExpirationDate());
             if (!ok) {
                 TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
                 return;
             }
+            QLocale enLocale(QLocale("en_US"));
             Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kMember,
-                    QString("inactivity renewed %1").arg(Singletons::m_currentMemberId));
+                    QString("member %1 inactivity period renewed. Starting new period on: %2").arg(Singletons::m_currentMemberId)
+                    .arg(enLocale.toString(pMemberResultPtr->m_member->ExpirationDate())));
         }
         init();
     }

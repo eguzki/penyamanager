@@ -38,6 +38,10 @@ namespace PenyaManager
             virtual ~Member(){}
             //
             bool IsActive();
+            //
+            bool IsInactivityExpired();
+            //
+            QDate ExpirationDate();
 
         public:
             //

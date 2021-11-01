@@ -1,7 +1,9 @@
 //
 
 #include <QObject>
+#include <QDate>
 
+#include <commons/constants.h>
 #include "Member.h"
 
 namespace PenyaManager
@@ -27,6 +29,23 @@ namespace PenyaManager
     bool Member::IsActive()
     {
         return m_active == ACTIVE;
+    }
+    //
+    bool Member::IsInactivityExpired()
+    {
+        if (!ExpirationDate().isValid()){
+            return false;
+        }
+        return ExpirationDate() <= QDate::currentDate();
+    }
+    //
+    QDate Member::ExpirationDate()
+    {
+        if (!m_inactiveModificationDate.isValid()){
+            return QDate();
+        }
+
+        return m_inactiveModificationDate.addMonths(Constants::kAdminInactivityPeriodMonths);
     }
     //
     MemberListStats::MemberListStats()
