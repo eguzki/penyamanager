@@ -31,6 +31,8 @@ namespace PenyaManager
             //
             static const int DROPPED;
             //
+            static const int DEAD;
+            //
             Member();
             //
             virtual ~Member(){}
