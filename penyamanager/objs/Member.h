@@ -22,6 +22,8 @@ namespace PenyaManager
             static const Uint32 RETIRED;
             //
             static const Uint32 HONORARY;
+            //
+            static const Uint32 YOUNG;
 
             // Member State
             //
@@ -42,6 +44,8 @@ namespace PenyaManager
             bool IsInactivityExpired();
             //
             QDate ExpirationDate();
+            //
+            QDate Turn19Date();
 
         public:
             //

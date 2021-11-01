@@ -15,6 +15,8 @@ namespace PenyaManager
     //
     const Uint32 Member::HONORARY = 2;
     //
+    const Uint32 Member::YOUNG = 3;
+    //
     const int Member::INACTIVE = 0;
     //
     const int Member::ACTIVE = 1;
@@ -48,6 +50,15 @@ namespace PenyaManager
         return m_inactiveModificationDate.addMonths(Constants::kAdminInactivityPeriodMonths);
     }
     //
+    QDate Member::Turn19Date()
+    {
+        if (!m_birthdate.isValid()) {
+            return QDate();
+        }
+
+        return m_birthdate.addYears(19);
+    }
+    //
     MemberListStats::MemberListStats()
     {}
     //
@@ -78,6 +89,7 @@ namespace PenyaManager
             case Member::NORMAL: return QObject::tr("Normal");
             case Member::RETIRED: return QObject::tr("Retired");
             case Member::HONORARY: return QObject::tr("Honorary");
+            case Member::YOUNG: return QObject::tr("Young");
         }
         return "-";
     }

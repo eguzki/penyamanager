@@ -53,6 +53,41 @@ namespace PenyaManager {
             return error;
         }
 
+        error = processOldYoungMembers();
+        if (error) {
+            return error;
+        }
+
+        return 0;
+    }
+    //
+    Int32 AlertsView::processOldYoungMembers()
+    {
+        // fetch data
+        MemberListResultPtr pMemberListResultPtr = Singletons::m_pDAO->getYoungMembersOlderThan(19);
+        if (pMemberListResultPtr->m_error) {
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            return pMemberListResultPtr->m_error;
+        }
+
+        // fill data
+        for (MemberList::iterator iter = pMemberListResultPtr->m_list->begin(); iter != pMemberListResultPtr->m_list->end(); ++iter)
+        {
+            MemberPtr pMemberPtr = *iter;
+
+            pMemberPtr->m_active = Member::DROPPED;
+            pMemberPtr->m_lastModified = QDateTime::currentDateTimeUtc();
+
+            // update in ddbb
+            bool ok = Singletons::m_pDAO->updateMember(pMemberPtr);
+            if (!ok) {
+                TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+                return 1;
+            }
+            Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kMember,
+                    QString("dropped young member %1").arg(pMemberPtr->m_id));
+        }
+
         return 0;
     }
     //
@@ -105,6 +140,38 @@ namespace PenyaManager {
         Int32 error = fillOldInactiveMembers();
         if (error) {
             return error;
+        }
+
+        error = fillExpiredYoungMembers();
+        if (error) {
+            return error;
+        }
+
+        return 0;
+    }
+    //
+    Int32 AlertsView::fillExpiredYoungMembers()
+    {
+        // fetch data
+        MemberListResultPtr pMemberListResultPtr = Singletons::m_pDAO->getYoungMembersOlderThan(18);
+        if (pMemberListResultPtr->m_error) {
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            return pMemberListResultPtr->m_error;
+        }
+
+        // fill data
+        for (MemberList::iterator iter = pMemberListResultPtr->m_list->begin(); iter != pMemberListResultPtr->m_list->end(); ++iter)
+        {
+            MemberPtr pMemberPtr = *iter;
+            QPixmap icon = GuiUtils::getImage(":images/icon-inactive.png").scaled(35, 35);
+            QString expiryDate = Singletons::m_pTranslationManager->getLocale().
+                toString(pMemberPtr->Turn19Date(), QLocale::NarrowFormat);
+            QString message = tr("%1 %2 %3 (%4) is over 18 years old. Change to normal type. On %5 will be deleted").
+                arg(pMemberPtr->m_name).arg(pMemberPtr->m_surname1).arg(pMemberPtr->m_surname2).
+                arg(pMemberPtr->m_username).arg(expiryDate);
+            QListWidgetItem *item = new QListWidgetItem(icon, message);
+            item->setData(Constants::kIdRole, pMemberPtr->m_id);
+            this->ui->alertListWidget->addItem(item);
         }
 
         return 0;

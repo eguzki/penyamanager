@@ -243,6 +243,8 @@ namespace PenyaManager {
             MemberListResultPtr getOldInactiveMembers(Uint32 intervalInMonths);
             //
             MemberListResultPtr getOldDroppedMembers(Uint32 intervalInYears);
+            //
+            MemberListResultPtr getYoungMembersOlderThan(Uint32 minYearsOld);
 
         private:
             //
