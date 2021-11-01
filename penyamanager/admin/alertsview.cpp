@@ -125,7 +125,7 @@ namespace PenyaManager {
             MemberPtr pMemberPtr = *iter;
             QPixmap icon = GuiUtils::getImage(":images/icon-inactive.png").scaled(35, 35);
             QString lastRenewalDateLocalized = Singletons::m_pTranslationManager->getLocale().
-                toString(pMemberPtr->m_inactiveModificationDate.startOfDay().toLocalTime(), QLocale::NarrowFormat);
+                toString(pMemberPtr->m_inactiveModificationDate, QLocale::NarrowFormat);
             QString message = tr("%1 %2 %3 (%4) has been inactive since %5 and not renewed").
                 arg(pMemberPtr->m_name).arg(pMemberPtr->m_surname1).arg(pMemberPtr->m_surname2).
                 arg(pMemberPtr->m_username).arg(lastRenewalDateLocalized);
