@@ -130,12 +130,12 @@ namespace PenyaManager {
         //
         // check credit limit
         //
-        if (pCurrMemberPtr->m_balance < Constants::kCreditLimit)
+        if (pCurrMemberPtr->m_balance < Singletons::m_creditLimit)
         {
             // User has gone over credit limit. Do not allow creating invoice
             this->ui->familyListWidget->setDisabled(true);
             this->ui->invoiceCloseButton->setDisabled(true);
-            TimedMessageBox::criticalMessageBox(this, tr("Your current balance is over limit (%1 €): %2 €").arg(Constants::kCreditLimit, 0, 'f', 2).arg(pCurrMemberPtr->m_balance, 0, 'f', 2), [](){});
+            TimedMessageBox::criticalMessageBox(this, tr("Your current balance is over limit (%1 €): %2 €").arg(Singletons::m_creditLimit, 0, 'f', 2).arg(pCurrMemberPtr->m_balance, 0, 'f', 2), [](){});
             return;
         } else {
             this->ui->familyListWidget->setDisabled(false);

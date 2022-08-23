@@ -51,6 +51,8 @@ namespace PenyaManager {
             static TranslationManager       *m_pTranslationManager;
             //
             static QTimer                   *m_pInactivityTimer;
+            //
+            static Float                    m_creditLimit;
     };
 }
 

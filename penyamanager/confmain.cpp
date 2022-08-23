@@ -95,6 +95,13 @@ int main(int argc, char *argv[])
             "Disable parameter checks");
     parser.addOption(forceOption);
 
+    // An option value (--creditlimit). Optional.
+    const QCommandLineOption creditLimitOption(
+            "creditlimit",
+            QString("Credit Limit. Default: %1 €").arg(PenyaManager::Constants::kDefaultCreditLimit, 0, 'f', 2),
+            "creditlimit");
+    parser.addOption(creditLimitOption);
+
     if (!parser.parse(QCoreApplication::arguments())) {
         fputs(qPrintable(parser.errorText()), stderr);
         fputs("\n\n", stderr);
@@ -137,6 +144,17 @@ int main(int argc, char *argv[])
         return 1;
     }
 
+    Float creditLimit(PenyaManager::Constants::kDefaultCreditLimit);
+    if (parser.isSet(creditLimitOption)) {
+        bool ok;
+        Float tmpCreditLimit = parser.value(creditLimitOption).toFloat(&ok);
+        if (!ok) {
+            fputs("Check credit limit param. Not a valid float. You fool user\n", stderr);
+            return 1;
+        }
+        creditLimit = tmpCreditLimit;
+    }
+
     QSettings settings(PenyaManager::Constants::kOrganizationName, PenyaManager::Constants::kApplicationName);
     // resource path
     settings.setValue(PenyaManager::Constants::kResourcePathKey, resourcePath);
@@ -152,6 +170,9 @@ int main(int argc, char *argv[])
     } else {
         settings.setValue(PenyaManager::Constants::kDebugConfig, 0);
     }
+
+    // Credit Limit
+    settings.setValue(PenyaManager::Constants::kCreditLimitSettingsKey, QString("%1").arg(creditLimit, 0, 'f', 2));
 
     // db settings
     settings.beginGroup(PenyaManager::Constants::kDatabaseGroupName);

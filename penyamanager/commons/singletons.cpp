@@ -22,6 +22,7 @@ namespace PenyaManager {
     QString Singletons::m_currentProviderInvoiceId;
     TranslationManager *Singletons::m_pTranslationManager;
     QTimer *Singletons::m_pInactivityTimer = NULL;
+    Float Singletons::m_creditLimit = 0;
 
     void Singletons::Create(QSettings *pSettings, PenyaManagerLoggerPtr pLogger, QTimer *pInactivityTimer)
     {
@@ -34,6 +35,18 @@ namespace PenyaManager {
         QString ddbbUser(m_pSettings->value(Constants::kDatabaseUser).toString());
         QString cryptedDDBBPass(m_pSettings->value(Constants::kDatabasePass).toString());
         m_pSettings->endGroup();
+
+        // Credit Limit
+        bool ok;
+        float tmpCreditLimit = m_pSettings->value(Constants::kCreditLimitSettingsKey, Constants::kDefaultCreditLimit).toFloat(&ok);
+        if (!ok) {
+            m_pLogger->Warn(Constants::kNoUserId, PenyaManager::LogAction::kMain,
+                    QString("Credit Limit setting not valid. Fix needed. Value: %1").arg(
+                        m_pSettings->value(Constants::kCreditLimitSettingsKey).toString()
+                        ));
+            tmpCreditLimit = Constants::kDefaultCreditLimit;
+        }
+        m_creditLimit = tmpCreditLimit;
 
         // Translation Manager
         m_pTranslationManager = new TranslationManager;

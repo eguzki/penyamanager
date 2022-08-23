@@ -72,8 +72,6 @@ namespace PenyaManager {
             static const quint64    kLogMaxSizeBytes;
             // Open invoice timeout in hours
             static const Uint32     kOpenInvoiceTimeoutH;
-            // Credit limit
-            static const Float      kCreditLimit;
             // Dashboard product item list
             static const Uint32     kDashboardProductListPageCount;
             // LoginWindow product item list
@@ -92,6 +90,10 @@ namespace PenyaManager {
             static const Uint32     kAdminInactivityPeriodMonths;
             //
             static const Uint32     kAdminMemberDroppedPeriodYears;
+            //
+            static const QString    kCreditLimitSettingsKey;
+            //
+            static const Float      kDefaultCreditLimit;
 
         private:
             Constants() {}
