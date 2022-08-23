@@ -58,6 +58,11 @@ namespace PenyaManager {
             return error;
         }
 
+        error = processKidMembers();
+        if (error) {
+            return error;
+        }
+
         return 0;
     }
     //
@@ -216,5 +221,35 @@ namespace PenyaManager {
 
         // call member window
         m_switchCentralWidgetCallback(WindowKey::kMemberViewKey);
+    }
+    //
+    Int32 AlertsView::processKidMembers()
+    {
+        // fetch data
+        MemberListResultPtr pMemberListResultPtr = Singletons::m_pDAO->getKidMembersOlderThan(16);
+        if (pMemberListResultPtr->m_error) {
+            TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+            return pMemberListResultPtr->m_error;
+        }
+
+        // fill data
+        for (MemberList::iterator iter = pMemberListResultPtr->m_list->begin(); iter != pMemberListResultPtr->m_list->end(); ++iter)
+        {
+            MemberPtr pMemberPtr = *iter;
+
+            pMemberPtr->m_memberType = Member::YOUNG;
+            pMemberPtr->m_lastModified = QDateTime::currentDateTimeUtc();
+
+            // update in ddbb
+            bool ok = Singletons::m_pDAO->updateMember(pMemberPtr);
+            if (!ok) {
+                TimedMessageBox::criticalMessageBoxTitled(this, tr("Database error. Contact administrator"), [](){});
+                return 1;
+            }
+            Singletons::m_pLogger->Info(Singletons::m_pCurrMember->m_id, PenyaManager::LogAction::kMember,
+                    QString("promoted kid member %1 to young").arg(pMemberPtr->m_id));
+        }
+
+        return 0;
     }
 }

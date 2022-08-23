@@ -35,6 +35,8 @@ namespace PenyaManager {
             //
             Int32 processOldYoungMembers();
             //
+            Int32 processKidMembers();
+            //
             Int32 fillAlertList();
             //
             Int32 fillOldInactiveMembers();

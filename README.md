@@ -91,7 +91,7 @@ penyamanager
   * Inactive members management
   * Drop member (cannot be undone)
   * Member Type
-    * Normal, retired, honorary and young types
+    * Normal, retired, honorary, young and kid types
 * Configuration Application
   * Resource path and ddbb access via configuration system platform independent. QSettings.
   * Database credentials encrypted using SimpleCrypt library
