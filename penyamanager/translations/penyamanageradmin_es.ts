@@ -1290,22 +1290,24 @@
         <translation>Hay alertas que requieren ser revisadas</translation>
     </message>
     <message>
-        <location filename="../admin/alertsview.cpp" line="69"/>
-        <location filename="../admin/alertsview.cpp" line="84"/>
-        <location filename="../admin/alertsview.cpp" line="99"/>
-        <location filename="../admin/alertsview.cpp" line="128"/>
-        <location filename="../admin/alertsview.cpp" line="158"/>
-        <location filename="../admin/alertsview.cpp" line="185"/>
+        <location filename="../admin/alertsview.cpp" line="74"/>
+        <location filename="../admin/alertsview.cpp" line="89"/>
+        <location filename="../admin/alertsview.cpp" line="104"/>
+        <location filename="../admin/alertsview.cpp" line="133"/>
+        <location filename="../admin/alertsview.cpp" line="163"/>
+        <location filename="../admin/alertsview.cpp" line="190"/>
+        <location filename="../admin/alertsview.cpp" line="231"/>
+        <location filename="../admin/alertsview.cpp" line="246"/>
         <source>Database error. Contact administrator</source>
         <translation>Error de base de datos, Contacta con el administrador</translation>
     </message>
     <message>
-        <location filename="../admin/alertsview.cpp" line="169"/>
+        <location filename="../admin/alertsview.cpp" line="174"/>
         <source>%1 %2 %3 (%4) is over 18 years old. Change to normal type. On %5 will be deleted</source>
         <translation>%1 %2 %3 (%4) es mayor de 18 años. Se debe cambiar a socio normal. El %5 se borrará.</translation>
     </message>
     <message>
-        <location filename="../admin/alertsview.cpp" line="196"/>
+        <location filename="../admin/alertsview.cpp" line="201"/>
         <source>%1 %2 %3 (%4) has been inactive since %5 and not renewed</source>
         <translation>%1 %2 %3 (%4) ha estado inactivo desde %5 y no se ha renovado.</translation>
     </message>
@@ -1569,99 +1571,99 @@
     <name>PenyaManager::MemberView</name>
     <message>
         <location filename="../admin/memberview.cpp" line="45"/>
-        <location filename="../admin/memberview.cpp" line="183"/>
-        <location filename="../admin/memberview.cpp" line="189"/>
-        <location filename="../admin/memberview.cpp" line="256"/>
-        <location filename="../admin/memberview.cpp" line="282"/>
-        <location filename="../admin/memberview.cpp" line="348"/>
-        <location filename="../admin/memberview.cpp" line="354"/>
-        <location filename="../admin/memberview.cpp" line="379"/>
-        <location filename="../admin/memberview.cpp" line="543"/>
-        <location filename="../admin/memberview.cpp" line="600"/>
-        <location filename="../admin/memberview.cpp" line="619"/>
-        <location filename="../admin/memberview.cpp" line="633"/>
-        <location filename="../admin/memberview.cpp" line="646"/>
-        <location filename="../admin/memberview.cpp" line="660"/>
-        <location filename="../admin/memberview.cpp" line="673"/>
-        <location filename="../admin/memberview.cpp" line="683"/>
-        <location filename="../admin/memberview.cpp" line="698"/>
-        <location filename="../admin/memberview.cpp" line="715"/>
-        <location filename="../admin/memberview.cpp" line="729"/>
+        <location filename="../admin/memberview.cpp" line="184"/>
+        <location filename="../admin/memberview.cpp" line="190"/>
+        <location filename="../admin/memberview.cpp" line="257"/>
+        <location filename="../admin/memberview.cpp" line="283"/>
+        <location filename="../admin/memberview.cpp" line="349"/>
+        <location filename="../admin/memberview.cpp" line="355"/>
+        <location filename="../admin/memberview.cpp" line="380"/>
+        <location filename="../admin/memberview.cpp" line="544"/>
+        <location filename="../admin/memberview.cpp" line="601"/>
+        <location filename="../admin/memberview.cpp" line="620"/>
+        <location filename="../admin/memberview.cpp" line="634"/>
+        <location filename="../admin/memberview.cpp" line="647"/>
+        <location filename="../admin/memberview.cpp" line="661"/>
+        <location filename="../admin/memberview.cpp" line="674"/>
+        <location filename="../admin/memberview.cpp" line="684"/>
+        <location filename="../admin/memberview.cpp" line="699"/>
+        <location filename="../admin/memberview.cpp" line="716"/>
+        <location filename="../admin/memberview.cpp" line="730"/>
         <source>Database error. Contact administrator</source>
         <translation>Error de base de datos, Contacta con el administrador</translation>
     </message>
     <message>
-        <location filename="../admin/memberview.cpp" line="149"/>
+        <location filename="../admin/memberview.cpp" line="150"/>
         <source>Username must be correct number</source>
         <translation>El nº de socio tiene que ser un número</translation>
     </message>
     <message>
-        <location filename="../admin/memberview.cpp" line="155"/>
+        <location filename="../admin/memberview.cpp" line="156"/>
         <source>Name cannot be empty</source>
         <translation>El nombre no puede estar vacío</translation>
     </message>
     <message>
-        <location filename="../admin/memberview.cpp" line="161"/>
+        <location filename="../admin/memberview.cpp" line="162"/>
         <source>First surname cannot be empty</source>
         <translation>El primer apellido no puede estar vacío</translation>
     </message>
     <message>
-        <location filename="../admin/memberview.cpp" line="167"/>
+        <location filename="../admin/memberview.cpp" line="168"/>
         <source>Second surname cannot be empty</source>
         <translation>El segundo apellido no puede estar vacío</translation>
     </message>
     <message>
-        <location filename="../admin/memberview.cpp" line="174"/>
+        <location filename="../admin/memberview.cpp" line="175"/>
         <source>Bank Account cannot be empty</source>
         <translation>El número de cuenta no puede estar vacío</translation>
     </message>
     <message>
-        <location filename="../admin/memberview.cpp" line="489"/>
+        <location filename="../admin/memberview.cpp" line="490"/>
         <source>Unable to write to %1</source>
         <translation>No se pudo guardar en: %1</translation>
     </message>
     <message>
-        <location filename="../admin/memberview.cpp" line="586"/>
+        <location filename="../admin/memberview.cpp" line="587"/>
         <source>Entry values do not match</source>
         <translation>Los valores no coinciden</translation>
     </message>
     <message>
-        <location filename="../admin/memberview.cpp" line="592"/>
+        <location filename="../admin/memberview.cpp" line="593"/>
         <source>Description value cannot be empty</source>
         <translation>La descripción no puede estar vacía.</translation>
     </message>
     <message>
-        <location filename="../admin/memberview.cpp" line="606"/>
+        <location filename="../admin/memberview.cpp" line="607"/>
         <source>New account entry created successfully</source>
         <translation>Nueva entrada creada satisfactoriamente</translation>
     </message>
     <message>
-        <location filename="../admin/memberview.cpp" line="364"/>
+        <location filename="../admin/memberview.cpp" line="365"/>
         <source>Done successfully</source>
         <translation>Realizado</translation>
     </message>
     <message>
-        <location filename="../admin/memberview.cpp" line="286"/>
+        <location filename="../admin/memberview.cpp" line="287"/>
         <source>username already in use</source>
         <translation>Nº de socio en uso</translation>
     </message>
     <message>
-        <location filename="../admin/memberview.cpp" line="494"/>
+        <location filename="../admin/memberview.cpp" line="495"/>
         <source>Open File...</source>
         <translation>Abrir archivo...</translation>
     </message>
     <message>
-        <location filename="../admin/memberview.cpp" line="495"/>
+        <location filename="../admin/memberview.cpp" line="496"/>
         <source>Image Files (*.gif *.jpeg *.jpg *.png)</source>
         <translation>Archivos de imagen (*.gif *.jpeg *.jpg *.png)</translation>
     </message>
     <message>
-        <location filename="../admin/memberview.cpp" line="506"/>
+        <location filename="../admin/memberview.cpp" line="507"/>
         <source>No file selected</source>
         <translation>Archivo no seleccionado</translation>
     </message>
     <message>
-        <location filename="../admin/memberview.cpp" line="549"/>
+        <location filename="../admin/memberview.cpp" line="550"/>
         <source>Password changed successfully</source>
         <translation>Contraseña cambiada</translation>
     </message>
@@ -2254,24 +2256,29 @@
         <translation>asador</translation>
     </message>
     <message>
-        <location filename="../objs/Member.cpp" line="89"/>
+        <location filename="../objs/Member.cpp" line="91"/>
         <source>Normal</source>
         <translation>Ordinario</translation>
     </message>
     <message>
-        <location filename="../objs/Member.cpp" line="90"/>
+        <location filename="../objs/Member.cpp" line="92"/>
         <source>Retired</source>
         <translation>Jubilado</translation>
     </message>
     <message>
-        <location filename="../objs/Member.cpp" line="91"/>
+        <location filename="../objs/Member.cpp" line="93"/>
         <source>Honorary</source>
         <translation>Honorífico</translation>
     </message>
     <message>
-        <location filename="../objs/Member.cpp" line="92"/>
+        <location filename="../objs/Member.cpp" line="94"/>
         <source>Young</source>
         <translation>Joven</translation>
+    </message>
+    <message>
+        <location filename="../objs/Member.cpp" line="95"/>
+        <source>Kid</source>
+        <translation>Txiki</translation>
     </message>
 </context>
 <context>
