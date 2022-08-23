@@ -17,6 +17,8 @@ namespace PenyaManager
     //
     const Uint32 Member::YOUNG = 3;
     //
+    const Uint32 Member::KID = 4;
+    //
     const int Member::INACTIVE = 0;
     //
     const int Member::ACTIVE = 1;
@@ -90,6 +92,7 @@ namespace PenyaManager
             case Member::RETIRED: return QObject::tr("Retired");
             case Member::HONORARY: return QObject::tr("Honorary");
             case Member::YOUNG: return QObject::tr("Young");
+            case Member::KID: return QObject::tr("Kid");
         }
         return "-";
     }

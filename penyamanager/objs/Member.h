@@ -24,6 +24,8 @@ namespace PenyaManager
             static const Uint32 HONORARY;
             //
             static const Uint32 YOUNG;
+            //
+            static const Uint32 KID;
 
             // Member State
             //

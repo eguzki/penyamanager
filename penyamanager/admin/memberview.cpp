@@ -110,6 +110,7 @@ namespace PenyaManager {
         this->ui->memberTypeComboBox->insertItem(Member::RETIRED, GetStringFromMemberType(Member::RETIRED), Member::RETIRED);
         this->ui->memberTypeComboBox->insertItem(Member::HONORARY, GetStringFromMemberType(Member::HONORARY), Member::HONORARY);
         this->ui->memberTypeComboBox->insertItem(Member::YOUNG, GetStringFromMemberType(Member::YOUNG), Member::YOUNG);
+        this->ui->memberTypeComboBox->insertItem(Member::KID, GetStringFromMemberType(Member::KID), Member::KID);
         // member image
         this->m_memberImageFilename.clear();
         // change password button
