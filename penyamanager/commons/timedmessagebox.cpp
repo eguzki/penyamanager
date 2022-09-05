@@ -89,6 +89,9 @@ namespace PenyaManager {
                 QMessageBox::Question, QString("Penyamanager"), message, QMessageBox::Yes|QMessageBox::No, parent);
         // connects buttonClicked signal
         pMsgBox->open(pMsgBox, SLOT(OnButtonClicked(QAbstractButton*)));
+
+        pMsgBox->setButtonText(QMessageBox::Yes, tr("Yes"));
+        pMsgBox->setButtonText(QMessageBox::No, tr("No"));
     }
 
     //
@@ -100,6 +103,9 @@ namespace PenyaManager {
                 QMessageBox::Question, QString(), message, QMessageBox::Yes|QMessageBox::No, parent, Qt::FramelessWindowHint);
         // connects buttonClicked signal
         pMsgBox->open(pMsgBox, SLOT(OnButtonClicked(QAbstractButton*)));
+
+        pMsgBox->setButtonText(QMessageBox::Yes, tr("Yes"));
+        pMsgBox->setButtonText(QMessageBox::No, tr("No"));
     }
 
     //
@@ -113,6 +119,8 @@ namespace PenyaManager {
         return [callback](QAbstractButton *pButton)
         {
             QMessageBox::StandardButton standardButton = QMessageBox::Yes;
+            //qDebug() << "pbutton text: " << pButton->text();
+            //qDebug() << "tr(Yes): " << QWidget::tr("Yes");
             if (pButton->text() != QWidget::tr("Yes")) {
                 standardButton = QMessageBox::No;
             }

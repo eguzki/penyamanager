@@ -2015,6 +2015,21 @@
     </message>
 </context>
 <context>
+    <name>PenyaManager::TimedMessageBox</name>
+    <message>
+        <location filename="../commons/timedmessagebox.cpp" line="93"/>
+        <location filename="../commons/timedmessagebox.cpp" line="107"/>
+        <source>Yes</source>
+        <translation>Sí</translation>
+    </message>
+    <message>
+        <location filename="../commons/timedmessagebox.cpp" line="94"/>
+        <location filename="../commons/timedmessagebox.cpp" line="108"/>
+        <source>No</source>
+        <translation>No</translation>
+    </message>
+</context>
+<context>
     <name>PenyaManager::TimedPassChangeDialog</name>
     <message>
         <location filename="../admin/timedpasschangedialog.cpp" line="63"/>
@@ -2324,7 +2339,8 @@
         <translation>Ref. deposito %1 :</translation>
     </message>
     <message>
-        <location filename="../commons/timedmessagebox.cpp" line="116"/>
+        <location filename="../commons/timedmessagebox.cpp" line="123"/>
+        <location filename="../commons/timedmessagebox.cpp" line="124"/>
         <source>Yes</source>
         <translation>Sí</translation>
     </message>

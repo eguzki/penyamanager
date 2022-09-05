@@ -1,4 +1,3 @@
-
 #!/bin/bash
 #
 # Simple build script for Unix

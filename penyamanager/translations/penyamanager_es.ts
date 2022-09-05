@@ -565,6 +565,21 @@
     </message>
 </context>
 <context>
+    <name>PenyaManager::TimedMessageBox</name>
+    <message>
+        <location filename="../commons/timedmessagebox.cpp" line="93"/>
+        <location filename="../commons/timedmessagebox.cpp" line="107"/>
+        <source>Yes</source>
+        <translation>Sí</translation>
+    </message>
+    <message>
+        <location filename="../commons/timedmessagebox.cpp" line="94"/>
+        <location filename="../commons/timedmessagebox.cpp" line="108"/>
+        <source>No</source>
+        <translation>No</translation>
+    </message>
+</context>
+<context>
     <name>QObject</name>
     <message>
         <location filename="../main.cpp" line="28"/>
@@ -602,25 +617,30 @@
         <translation>asador</translation>
     </message>
     <message>
-        <location filename="../objs/Member.cpp" line="89"/>
+        <location filename="../objs/Member.cpp" line="91"/>
         <source>Normal</source>
         <translation>Ordinario</translation>
     </message>
     <message>
-        <location filename="../objs/Member.cpp" line="90"/>
+        <location filename="../objs/Member.cpp" line="92"/>
         <source>Retired</source>
         <translation>Jubilado</translation>
     </message>
     <message>
-        <location filename="../objs/Member.cpp" line="91"/>
+        <location filename="../objs/Member.cpp" line="93"/>
         <source>Honorary</source>
         <translation>Honorífico</translation>
     </message>
     <message>
-        <location filename="../objs/Member.cpp" line="92"/>
+        <location filename="../objs/Member.cpp" line="94"/>
         <source>Young</source>
         <translatorcomment>Joven</translatorcomment>
         <translation>Joven</translation>
+    </message>
+    <message>
+        <location filename="../objs/Member.cpp" line="95"/>
+        <source>Kid</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -667,7 +687,8 @@
         <translation>Corrección</translation>
     </message>
     <message>
-        <location filename="../commons/timedmessagebox.cpp" line="116"/>
+        <location filename="../commons/timedmessagebox.cpp" line="123"/>
+        <location filename="../commons/timedmessagebox.cpp" line="124"/>
         <source>Yes</source>
         <translatorcomment>Sí</translatorcomment>
         <translation>Sí</translation>
