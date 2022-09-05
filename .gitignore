@@ -5,6 +5,7 @@ penyamanager/penyamanageradmin.pro.*
 penyamanager/penyamanagerconf.pro.*
 build-penyamanager-Desktop-Debug
 dist
+penyamanager.log
 
 # vim ide stuff
 .ycm_extra_conf.pyc
