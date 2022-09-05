@@ -18,7 +18,7 @@ namespace PenyaManager {
     void TimedMessageBox::OnButtonClicked(QAbstractButton *pButton)
     {
         finish();
-        m_callback(pButton);
+        m_callback(this->buttonRole(pButton));
     }
 
     //
@@ -89,6 +89,9 @@ namespace PenyaManager {
                 QMessageBox::Question, QString("Penyamanager"), message, QMessageBox::Yes|QMessageBox::No, parent);
         // connects buttonClicked signal
         pMsgBox->open(pMsgBox, SLOT(OnButtonClicked(QAbstractButton*)));
+
+        pMsgBox->setButtonText(QMessageBox::Yes, tr("Yes"));
+        pMsgBox->setButtonText(QMessageBox::No, tr("No"));
     }
 
     //
@@ -100,20 +103,23 @@ namespace PenyaManager {
                 QMessageBox::Question, QString(), message, QMessageBox::Yes|QMessageBox::No, parent, Qt::FramelessWindowHint);
         // connects buttonClicked signal
         pMsgBox->open(pMsgBox, SLOT(OnButtonClicked(QAbstractButton*)));
+
+        pMsgBox->setButtonText(QMessageBox::Yes, tr("Yes"));
+        pMsgBox->setButtonText(QMessageBox::No, tr("No"));
     }
 
     //
     MessageBoxCallback TimedMessageBox::convertInfoMessageBox(const InfoMessageBoxCallback &callback)
     {
-        return [callback](QAbstractButton *pButton){ Q_UNUSED(pButton); callback(); };
+        return [callback](QMessageBox::ButtonRole){ callback(); };
     }
     //
     MessageBoxCallback TimedMessageBox::convertQuestionMessageBox(const QuestionMessageBoxCallback &callback)
     {
-        return [callback](QAbstractButton *pButton)
+        return [callback](QMessageBox::ButtonRole buttonRole)
         {
             QMessageBox::StandardButton standardButton = QMessageBox::Yes;
-            if (pButton->text() != QWidget::tr("Yes")) {
+            if (buttonRole == QMessageBox::NoRole) {
                 standardButton = QMessageBox::No;
             }
             callback(standardButton);

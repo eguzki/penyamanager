@@ -7,7 +7,7 @@
 
 namespace PenyaManager {
     //
-    typedef std::function<void(QAbstractButton *p)> MessageBoxCallback;
+    typedef std::function<void(QMessageBox::ButtonRole answerButton)> MessageBoxCallback;
     //
     typedef std::function<void()> InfoMessageBoxCallback;
     //
