@@ -640,7 +640,7 @@
     <message>
         <location filename="../objs/Member.cpp" line="95"/>
         <source>Kid</source>
-        <translation type="unfinished"></translation>
+        <translation>Joven</translation>
     </message>
 </context>
 <context>
@@ -685,13 +685,6 @@
         <source>Account Fix</source>
         <translatorcomment>Corrección</translatorcomment>
         <translation>Corrección</translation>
-    </message>
-    <message>
-        <location filename="../commons/timedmessagebox.cpp" line="123"/>
-        <location filename="../commons/timedmessagebox.cpp" line="124"/>
-        <source>Yes</source>
-        <translatorcomment>Sí</translatorcomment>
-        <translation>Sí</translation>
     </message>
 </context>
 <context>
